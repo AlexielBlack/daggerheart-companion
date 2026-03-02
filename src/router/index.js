@@ -26,7 +26,7 @@ const routes = [
   {
     path: '/characters',
     name: 'characters',
-    component: () => import('@modules/characters/views/CharacterList.vue'),
+    component: () => import('@modules/characters/views/CharacterBuilder.vue'),
     meta: { title: 'Personnages', module: 'characters' }
   },
   {
