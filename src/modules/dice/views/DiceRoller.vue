@@ -1,38 +1,124 @@
 <template>
-  <ModuleBoundary
-    module-name="Lanceur de Dés"
-    module-id="dice"
-  >
-    <div class="module-placeholder">
-      <h2>🎲 Lanceur de Dés</h2>
-      <p class="text-secondary">
-        Lancez les Duality Dice, des pools de dés, avec avantage ou désavantage.
-      </p>
-      <p class="text-muted text-sm">
-        Module en cours de développement — Sprint 5
-      </p>
+  <div class="dice-roller">
+    <div class="roller-layout">
+      <!-- ═══ Main panels ═══ -->
+      <div class="roller-main">
+        <DualityPanel
+          ref="dualityPanel"
+          @roll="onDualityRoll"
+        />
+        <div class="panels-row">
+          <DamagePanel
+            ref="damagePanel"
+            @roll="onDamageRoll"
+          />
+          <QuickDice
+            ref="quickDice"
+            @roll-quick="onQuickRoll"
+            @roll-g-m="onGMRoll"
+          />
+        </div>
+      </div>
+
+      <!-- ═══ Sidebar: History ═══ -->
+      <div class="roller-sidebar">
+        <DiceHistory
+          :entries="store.history"
+          @clear="store.clearHistory()"
+        />
+      </div>
     </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
+import { ref } from 'vue'
+import { useDiceStore } from '../stores/diceStore'
+import DualityPanel from '../components/DualityPanel.vue'
+import DamagePanel from '../components/DamagePanel.vue'
+import QuickDice from '../components/QuickDice.vue'
+import DiceHistory from '../components/DiceHistory.vue'
 
 export default {
   name: 'DiceRoller',
-  components: { ModuleBoundary }
+  components: { DualityPanel, DamagePanel, QuickDice, DiceHistory },
+  setup() {
+    const store = useDiceStore()
+    const dualityPanel = ref(null)
+    const damagePanel = ref(null)
+    const quickDice = ref(null)
+
+    function onDualityRoll(options) {
+      const result = store.rollDuality(options)
+      if (dualityPanel.value) {
+        dualityPanel.value.setResult(result)
+      }
+    }
+
+    function onDamageRoll(options) {
+      const result = store.rollDamage(options)
+      if (result && damagePanel.value) {
+        damagePanel.value.setResult(result)
+      }
+    }
+
+    function onQuickRoll(sides) {
+      const result = store.rollQuick(sides)
+      if (quickDice.value) {
+        quickDice.value.setQuickResult(result)
+      }
+    }
+
+    function onGMRoll(options) {
+      const result = store.rollGM(options)
+      if (quickDice.value) {
+        quickDice.value.setGMResult(result)
+      }
+    }
+
+    return {
+      store,
+      dualityPanel, damagePanel, quickDice,
+      onDualityRoll, onDamageRoll, onQuickRoll, onGMRoll
+    }
+  }
 }
 </script>
 
 <style scoped>
-.module-placeholder {
+.dice-roller {
+  min-height: 100%;
+}
+
+.roller-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .roller-layout { grid-template-columns: 1fr; }
+}
+
+.roller-main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: var(--space-2xl);
   gap: var(--space-md);
-  min-height: 300px;
+}
+
+.panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 600px) {
+  .panels-row { grid-template-columns: 1fr; }
+}
+
+.roller-sidebar {
+  position: sticky;
+  top: var(--space-md);
 }
 </style>
