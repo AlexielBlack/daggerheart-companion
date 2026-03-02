@@ -85,6 +85,7 @@ export const ENCOUNTER_STATUS = {
 
 export const NAV_ITEMS = [
   { id: 'adversaries', label: 'Adversaires', icon: '⚔️', route: '/adversaries' },
+  { id: 'environments', label: 'Environnements', icon: '🌍', route: '/environments' },
   { id: 'encounters', label: 'Rencontres', icon: '🗺️', route: '/encounters' },
   { id: 'characters', label: 'Personnages', icon: '🧙', route: '/characters' },
   { id: 'dice', label: 'Dés', icon: '🎲', route: '/dice' }

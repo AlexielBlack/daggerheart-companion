@@ -12,6 +12,12 @@ const routes = [
     meta: { title: 'Adversaires', module: 'adversaries' }
   },
   {
+    path: '/environments',
+    name: 'environments',
+    component: () => import('@modules/environments/views/EnvironmentBrowser.vue'),
+    meta: { title: 'Environnements', module: 'environments' }
+  },
+  {
     path: '/encounters',
     name: 'encounters',
     component: () => import('@modules/encounter/views/EncounterBuilder.vue'),

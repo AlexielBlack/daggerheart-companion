@@ -1,0 +1,205 @@
+[
+  {
+    "id": "chaos-realm",
+    "name": "Chaos Realm",
+    "tier": 4,
+    "type": "Traversal",
+    "description": "An otherworldly space where the laws of reality are unstable and dangerous.",
+    "impulses": ["Annihilate certainty", "Consume power", "Defy logic"],
+    "difficulty": 20,
+    "potentialAdversaries": [
+      { "group": "Outer Realms Monstrosities", "names": ["Abomination", "Corruptor", "Thrall"] }
+    ],
+    "features": [
+      {
+        "name": "Impossible Architecture",
+        "type": "passive",
+        "fearCost": null,
+        "description": "Up is down, down is right, right is starward. Gravity and directionality themselves are in flux, and any attempt to move through this realm is an odyssey unto itself, requiring a Progress Countdown (8). On a failure, a PC must mark a Stress in addition to the roll's other consequences.",
+        "questions": "What does it feel like to move in a space so alien to the Mortal Realm? What landmark or point do you fixate on to maintain your balance? What bizarre landmarks do you traverse on your journey?"
+      },
+      {
+        "name": "Everything You Are This Place Will Take from You",
+        "type": "action",
+        "fearCost": null,
+        "description": "Countdown (Loop 1d4). Activate the countdown. When it triggers, all PCs must succeed on a Presence Reaction Roll or their highest trait is temporarily reduced by 1d4 unless they mark a number of Stress equal to its value. Any lost trait points are regained if the PC critically succeeds or escapes the Chaos Realm.",
+        "questions": "How does this place try to steal from you that which makes you legendary? What does it feel like to have this power taken from you?"
+      },
+      {
+        "name": "Unmaking",
+        "type": "action",
+        "fearCost": 1,
+        "description": "Spend a Fear to force a PC to make a Strength Reaction Roll. On a failure, they take 4d10 direct magic damage. On a success, they must mark a Stress.",
+        "questions": "What glimpse of other worlds do you catch while this place tries to unmake you? What core facet of your personality does the unmaking try to erase?"
+      },
+      {
+        "name": "Outer Realms Predators",
+        "type": "action",
+        "fearCost": 1,
+        "description": "Spend a Fear to summon an Outer Realms Abomination, an Outer Realms Corruptor, and 2d6 Outer Realms Thralls, who appear at Close range of a chosen PC in defiance of logic and causality. Immediately spotlight one of these adversaries, and you can spend an additional Fear to automatically succeed on that adversary's standard attack.",
+        "questions": "What half-consumed remnants of the shattered world do these monstrosities cast aside in pursuit of living flesh? What jagged reflections of former personhood do you catch between moments of unquestioning malice?"
+      },
+      {
+        "name": "Disorienting Reality",
+        "type": "reaction",
+        "fearCost": null,
+        "description": "On a result with Fear, you can ask the PC to describe which of their fears the Chaos Realm evokes as a vision of reality unmakes and reconstitutes itself to the PC. The PC loses a Hope. If it is their last Hope, you gain a Fear.",
+        "questions": "What moment do they see? If it's a memory, how is it warped by this place? How hard will it be to hold on to the real memory?"
+      }
+    ]
+  },
+  {
+    "id": "divine-usurpation",
+    "name": "Divine Usurpation",
+    "tier": 4,
+    "type": "Event",
+    "description": "A massive ritual designed to breach the gates of the Hallows Above and unseat the New Gods themselves.",
+    "impulses": ["Collect power", "Overawe", "Silence dissent"],
+    "difficulty": 20,
+    "potentialAdversaries": [
+      { "group": null, "names": ["Arch-Necromancer", "Fallen Shock Troops", "Mortal Hunter", "Oracle of Doom", "Perfected Zombie"] }
+    ],
+    "features": [
+      {
+        "name": "Final Preparations",
+        "type": "passive",
+        "fearCost": null,
+        "description": "When the environment first takes the spotlight, designate one adversary as the Usurper seeking to overthrow the gods. Activate a Long-Term Countdown (8) as the Usurper assembles what they need to conduct the ritual. When it triggers, spotlight this environment to use the \"Beginning of the End\" feature. While this environment remains in play, you can hold up to 15 Fear.",
+        "questions": "What does the Usurper still require: The heart of a High Seraph? The lodestone of an ancient waygate? The loyalty of two archenemies? The heartbroken tears of a pure soul?"
+      },
+      {
+        "name": "Divine Blessing",
+        "type": "passive",
+        "fearCost": null,
+        "description": "When a PC critically succeeds, they can spend 2 Hope to refresh an ability normally limited by uses (such as once per rest, once per session).",
+        "questions": "What god favors you as you fight against this usurpation? How does your renewed power reflect their influence?"
+      },
+      {
+        "name": "Defilers Abound",
+        "type": "action",
+        "fearCost": 2,
+        "description": "Spend 2 Fear to summon 1d4+2 Fallen Shock Troops that appear within Close range of the Usurper to assist their divine siege. Immediately spotlight the Shock Troops to use a \"Group Attack\" action.",
+        "questions": "Which High Fallen do these troops serve? Which god's flesh do they wish to feast upon?"
+      },
+      {
+        "name": "Godslayer",
+        "type": "action",
+        "fearCost": 3,
+        "description": "If the Divine Siege Countdown (see \"Beginning of the End\") has triggered, you can spend 3 Fear to describe the Usurper slaying one of the gods of the Hallows Above, feasting upon their power and growing stronger. The Usurper clears 2 HP. Increase their Difficulty, damage, attack modifier, or give them a new feature from the slain god.",
+        "questions": "Which god meets their end? What are their last words? How does the Usurper's new stolen power manifest?"
+      },
+      {
+        "name": "Beginning of the End",
+        "type": "reaction",
+        "fearCost": null,
+        "description": "When the \"Final Preparations\" long-term countdown triggers, the Usurper begins hammering on the gates of the Hallows themselves. Activate a Divine Siege Countdown (10). Spotlight the Usurper to describe the Usurper's assault and tick down this countdown by 1. If the Usurper takes Major or greater damage, tick up the countdown by 1. When it triggers, the Usurper shatters the barrier between the Mortal Realm and the Hallows Above to slay the gods and take their place. You gain a Fear for each unmarked HP the Usurper has. You can immediately use the \"Godslayer\" feature without spending Fear to make an additional GM move.",
+        "questions": "How does the Mortal Realm writhe as the natural order is violated? What mortals witness this blasphemy from afar?"
+      },
+      {
+        "name": "Ritual Nexus",
+        "type": "reaction",
+        "fearCost": null,
+        "description": "On any failure with Fear against the Usurper, the PC must mark 1d4 Stress from the backlash of magical power.",
+        "questions": "What visions of failures past torment you as your efforts fall short? How are these memories twisted by the Usurper?"
+      }
+    ]
+  },
+  {
+    "id": "imperial-court",
+    "name": "Imperial Court",
+    "tier": 4,
+    "type": "Social",
+    "description": "The majestic domain of a powerful empire, lavishly appointed with stolen treasures.",
+    "impulses": ["Justify and perpetuate imperial rule", "Seduce rivals with promises of power and comfort"],
+    "difficulty": 20,
+    "potentialAdversaries": [
+      { "group": null, "names": ["Bladed Guard", "Courtesan", "Knight of the Realm", "Monarch", "Spy"] }
+    ],
+    "features": [
+      {
+        "name": "All Roads Lead Here",
+        "type": "passive",
+        "fearCost": null,
+        "description": "While in the Imperial Court, a PC has disadvantage on Presence Rolls made to take actions that don't fit the imperial way of life or support the empire's dominance.",
+        "questions": "How does the way language is used make even discussing alternative ways of living difficult? What obvious benefits for loyalty create friction when you try to discuss alternatives?"
+      },
+      {
+        "name": "Rival Vassals",
+        "type": "passive",
+        "fearCost": null,
+        "description": "The PCs can find imperial subjects, vassals, and supplicants in the court, each vying for favor, seeking proximity to power, exchanging favors for loyalty, and elevating their status above others'. Some might be desperate to undermine their rivals, while others might even be open to discussions that verge on sedition.",
+        "questions": "How do they benefit from vassalage, and what has it cost them? What exploitation drives them to consider opposing the unstoppable?"
+      },
+      {
+        "name": "The Gravity of Empire",
+        "type": "action",
+        "fearCost": 1,
+        "description": "Spend a Fear to present a PC with a golden opportunity or offer to satisfy a major goal in exchange for obeying or supporting the empire. The target must make a Presence Reaction Roll. On a failure, they must mark all their Stress or accept the offer. If they have already marked all their Stress, they must accept the offer or exile themselves from the empire. On a success, they must mark 1d4 Stress as they're taxed by temptation.",
+        "questions": "What do the PCs want so desperately they might consider throwing in with this ruthless power? How did imperial agents learn the PC's greatest desires?"
+      },
+      {
+        "name": "Imperial Decree",
+        "type": "action",
+        "fearCost": 1,
+        "description": "Spend a Fear to tick down a long-term countdown related to the empire's agenda by 1d4. If this triggers the countdown, a proclamation related to the agenda is announced at court as the plan is executed.",
+        "questions": "What display of power or transfer of wealth was needed to expedite this plan? Whose lives were disrupted or upended to make this happen?"
+      },
+      {
+        "name": "Eyes Everywhere",
+        "type": "reaction",
+        "fearCost": 1,
+        "description": "On a result with Fear, you can spend a Fear to have someone loyal to the empire overhear seditious talk within the court. A PC must succeed on an Instinct Reaction Roll to notice that the group has been overheard so they can try to intercept the witness before the PCs are exposed.",
+        "questions": "How has the empire compromised this witness? Why is their first impulse to protect the empire, even if it doesn't treat them well?"
+      }
+    ]
+  },
+  {
+    "id": "necromancers-ossuary",
+    "name": "Necromancer's Ossuary",
+    "tier": 4,
+    "type": "Exploration",
+    "description": "A dusty crypt with a library, twisting corridors, and abundant sarcophagi, spattered with the blood of ill-fated invaders.",
+    "impulses": ["Confound intruders", "Delve into secrets best left buried", "Manifest unlife", "Unleash a tide of undead"],
+    "difficulty": 19,
+    "potentialAdversaries": [
+      { "group": "Arch-Necromancer's Host", "names": ["Perfected Zombie", "Zombie Legion"] }
+    ],
+    "features": [
+      {
+        "name": "No Place for the Living",
+        "type": "passive",
+        "fearCost": null,
+        "description": "A feature or action that clears HP requires spending a Hope to use. If it already costs Hope, a PC must spend an additional Hope.",
+        "questions": "What does it feel like to try to heal in a place so antithetical to life?"
+      },
+      {
+        "name": "Centuries of Knowledge",
+        "type": "passive",
+        "fearCost": null,
+        "description": "A PC can investigate the library and laboratory and make a Knowledge Roll to learn information related to arcana, local history, and the Necromancer's plans.",
+        "questions": "What are the names of the tomes? What project is the necromancer working on and what does it communicate about their plans?"
+      },
+      {
+        "name": "Skeletal Burst",
+        "type": "action",
+        "fearCost": null,
+        "description": "All targets within Close range of a point you choose in this environment must succeed on an Agility Reaction Roll or take 4d8+8 physical damage from skeletal shrapnel as part of the ossuary detonates around them.",
+        "questions": "What ancient skeletal architecture is destroyed? What bones stick in your armor?"
+      },
+      {
+        "name": "Aura of Death",
+        "type": "action",
+        "fearCost": null,
+        "description": "Once per scene, roll a d4. Each undead within Far range of the Necromancer can clear HP and Stress equal to the result rolled. The undead can choose how that number is divided between HP and Stress.",
+        "questions": "How does their renewed vigor manifest? Do they look more lifelike or, paradoxically, are they more decayed but vigorous?"
+      },
+      {
+        "name": "They Just Keep Coming!",
+        "type": "action",
+        "fearCost": 1,
+        "description": "Spend a Fear to summon 1d6 Rotted Zombies, two Perfected Zombies, or a Zombie Legion, who appear at Close range of a chosen PC.",
+        "questions": "Who were these people before they became the necromancer's pawns? What vestiges of those lives remain for the heroes to see?"
+      }
+    ]
+  }
+]
