@@ -50,7 +50,7 @@ const routes = [
   {
     path: '/characters/communaute',
     name: 'characters-communaute',
-    component: () => import('@modules/characters/views/CommunityBrowser.vue'),
+    component: () => import('@modules/communities/views/CommunityBrowser.vue'),
     meta: { title: 'Communautés', module: 'characters', parent: 'characters' }
   },
   {

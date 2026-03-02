@@ -1,7 +1,14 @@
 /**
  * @module communities/data
- * @description Communautés officielles du SRD Daggerheart.
- * Source : Communities_SRD.pdf
+ * @description Communautés officielles du SRD Daggerheart (9 communautés).
+ * Source : Communities_SRD.pdf — vérifié le 02/03/2026 contre le SRD officiel.
+ *
+ * Chaque communauté possède :
+ *  - id, name, emoji, source
+ *  - description : texte descriptif du SRD
+ *  - feature : { name, description } — feature mécanique de la communauté
+ *  - adjectives : 6 adjectifs suggérés pour la personnalité (issus du SRD)
+ *  - flavor : phrase d'exemple « I'm [community], so of course I know how to… »
  */
 
 export const COMMUNITIES = [
@@ -9,110 +16,136 @@ export const COMMUNITIES = [
     id: 'highborne',
     name: 'Highborne',
     emoji: '👑',
-    description: 'Élevés dans les cercles de la noblesse et de l\'élite sociale, les Highborne maîtrisent les règles de la haute société et du protocole.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté highborne signifie être habitué à une vie d\'élégance, d\'opulence et de prestige dans les plus hautes sphères de la société. Traditionnellement, les membres d\'une communauté highborne possèdent une richesse matérielle incroyable. Celle-ci peut prendre différentes formes selon la communauté — or et autres minerais, terres ou contrôle des moyens de production — mais ce statut s\'accompagne toujours de pouvoir et d\'influence. Les Highborne accordent une grande valeur aux titres et possessions, et la mobilité sociale y est très faible. Ils contrôlent souvent le statut politique et économique des zones où ils vivent grâce à leur capacité à influencer les gens et l\'économie avec leur richesse considérable. La santé et la sécurité des personnes moins aisées vivant dans ces lieux dépendent souvent de la capacité de cette classe dirigeante highborne à prioriser le bien-être de leurs sujets par rapport au profit.',
     feature: {
-      name: 'Haute Naissance',
-      description: 'Vous avez accès aux espaces réservés à l\'élite (palais, salles de conseil, clubs privés) et aux personnes qui les fréquentent. Vous avez avantage sur les jets de Présence lorsque vous interagissez avec des membres de la noblesse ou de l\'aristocratie.'
+      name: 'Privilege',
+      description:
+        'Vous avez l\'avantage sur les jets pour fréquenter les nobles, négocier des prix ou exploiter votre réputation pour obtenir ce que vous voulez.'
     },
-    traits: ['Charme', 'Étiquette', 'Réseau social'],
-    flavor: 'Je suis Highborne, alors bien sûr que je sais naviguer dans les cours royales.'
+    adjectives: ['amiable', 'candid', 'conniving', 'enterprising', 'ostentatious', 'unflappable'],
+    flavor: 'Je suis Highborne, alors bien sûr que je sais négocier avec les nobles.'
   },
   {
     id: 'loreborne',
     name: 'Loreborne',
     emoji: '📚',
-    description: 'Formés dans des académies, bibliothèques ou auprès de maîtres érudits, les Loreborne valorisent le savoir par-dessus tout.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté loreborne signifie être issu d\'une société qui favorise de solides prouesses académiques ou politiques. Les communautés Loreborne valorisent hautement le savoir, souvent sous forme de préservation historique, d\'avancement politique, d\'études scientifiques, de développement de compétences ou de compilation de connaissances et de mythologie. La plupart de leurs membres mènent des recherches dans des institutions construites dans des bastions de civilisation, tandis que quelques rares excentriques préfèrent récolter des informations dans le monde naturel. Certains peuvent être isolationnistes, opérant dans de plus petites enclaves, écoles ou guildes et suivant leur propre éthos unique. D\'autres encore exercent leur savoir à plus grande échelle, réalisant d\'habiles manœuvres politiques à travers les paysages gouvernementaux.',
     feature: {
-      name: 'Érudit',
-      description: 'Vous avez avantage sur les jets de Savoir pour la recherche, l\'identification d\'artefacts ou la récupération d\'informations historiques. De plus, une fois par session, vous pouvez déclarer une information sur un lieu, un monstre ou un événement historique que votre personnage connaît.'
+      name: 'Well-Read',
+      description:
+        'Vous avez l\'avantage sur les jets impliquant l\'histoire, la culture ou la politique d\'une personne ou d\'un lieu important.'
     },
-    traits: ['Recherche', 'Identification', 'Histoire'],
-    flavor: 'Je suis Loreborne, alors bien sûr que je sais trouver la réponse dans un texte.'
+    adjectives: ['direct', 'eloquent', 'inquisitive', 'patient', 'rhapsodic', 'witty'],
+    flavor: 'Je suis Loreborne, alors bien sûr que je connais l\'histoire de ce lieu.'
   },
   {
     id: 'orderborne',
     name: 'Orderborne',
     emoji: '⚖️',
-    description: 'Issus d\'institutions militaires, religieuses ou légales, les Orderborne opèrent selon des règles strictes et des hiérarchies claires.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté orderborne signifie être issu d\'un collectif axé sur la discipline ou la foi, et défendre un ensemble de principes reflétant votre expérience en son sein. Les Orderborne sont souvent parmi les plus puissants de leur entourage. En alignant les membres de leur société autour d\'une valeur ou d\'un objectif commun — un dieu, une doctrine, un ethos, ou même un commerce partagé — les dirigeants de ces enclaves peuvent mobiliser de plus grandes populations avec moins d\'effort. Bien que les communautés Orderborne prennent des formes variées, dont certaines profondément pacifistes, les plus redoutées sont celles structurées autour de la prouesse militaire. Dans ce cas, il n\'est pas rare que les Orderborne fournissent des soldats mercenaires à d\'autres cités ou pays.',
     feature: {
-      name: 'Discipline',
-      description: 'Vous avez avantage sur les jets pour résister à la peur, à la contrainte ou aux effets mentaux. De plus, quand vous interagissez avec des membres d\'une organisation hiérarchique (garde, armée, clergé), vous pouvez faire valoir votre rang ou affiliation pour obtenir des informations ou de l\'aide.'
+      name: 'Dedicated',
+      description:
+        'Notez trois dictons ou valeurs que votre éducation vous a inculqués. Une fois par repos, quand vous décrivez comment vous incarnez un de ces principes à travers votre action actuelle, vous pouvez lancer un d20 comme Dé d\'Espoir (Hope Die).'
     },
-    traits: ['Autorité', 'Résistance', 'Protocole'],
-    flavor: 'Je suis Orderborne, alors bien sûr que je sais comment fonctionnent les chaînes de commandement.'
+    adjectives: ['ambitious', 'benevolent', 'pensive', 'prudent', 'sardonic', 'stoic'],
+    flavor: 'Je suis Orderborne, alors bien sûr que je sais incarner mes principes.'
   },
   {
     id: 'ridgeborne',
     name: 'Ridgeborne',
     emoji: '⛰️',
-    description: 'Élevés dans les montagnes et les terrains escarpés, les Ridgeborne sont des survivants nés qui naviguent les environnements hostiles avec aisance.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté ridgeborne signifie avoir élu domicile sur les pics rocheux et les falaises escarpées de la montagne. Ceux qui ont vécu en montagne se considèrent souvent comme plus résistants que la moyenne, car ils ont prospéré parmi les terrains les plus dangereux que de nombreux continents ont à offrir. Ces groupes sont adeptes de l\'adaptation, développant des technologies et équipements uniques pour déplacer personnes et marchandises à travers des terrains difficiles. Ainsi, les Ridgeborne grandissent en escaladant et en grimpant, ce qui les rend robustes et volontaires. Les localités Ridgeborne prennent des formes variées — certaines cités creusent des falaises entières, d\'autres construisent des châteaux de pierre, et d\'autres encore vivent dans de petites maisons sur des pics balayés par le vent. Les forces extérieures peinent souvent à attaquer les groupes ridgeborne, car les petites milices et les grandes forces militaires des montagnes sont expertes dans l\'utilisation de leur avantage de terrain élevé.',
     feature: {
-      name: 'Navigateur des Montagnes',
-      description: 'Vous avez avantage sur les jets pour naviguer dans des environnements difficiles (montagne, tempête, terrain hostile). Vous êtes immunisé aux effets des températures extrêmes et des altitudes élevées.'
+      name: 'Steady',
+      description:
+        'Vous avez l\'avantage sur les jets pour traverser des falaises et des rebords dangereux, naviguer dans des environnements hostiles et utiliser vos connaissances de survie.'
     },
-    traits: ['Survie', 'Navigation', 'Endurance'],
-    flavor: 'Je suis Ridgeborne, alors bien sûr que je sais naviguer dans les environnements hostiles.'
+    adjectives: ['bold', 'hardy', 'indomitable', 'loyal', 'reserved', 'stubborn'],
+    flavor: 'Je suis Ridgeborne, alors bien sûr que je sais naviguer en terrain hostile.'
   },
   {
     id: 'seaborne',
     name: 'Seaborne',
     emoji: '⚓',
-    description: 'Nés en mer ou dans des communautés côtières, les Seaborne sont à l\'aise sur l\'eau et connaissent les mystères des océans.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté seaborne signifie avoir vécu sur ou près d\'une grande étendue d\'eau. Les communautés Seaborne sont construites, physiquement et culturellement, autour des eaux qu\'elles appellent leur foyer. Certains groupes vivent le long du rivage, construisant des ports pour les locaux et les voyageurs. Ces ports fonctionnent comme centres de commerce, attractions touristiques, ou simplement un lieu sûr où poser la tête après des semaines de voyage. D\'autres vivent sur l\'eau dans de petits bateaux ou de grands navires, le concept de « foyer » étant un navire et son équipage plutôt qu\'une masse terrestre. Quelle que soit leur localisation exacte, les communautés seaborne sont étroitement liées aux marées océaniques et aux créatures qui les peuplent. Les Seaborne apprennent à pêcher dès leur plus jeune âge et s\'entraînent dès la naissance à retenir leur souffle et à nager même dans les eaux les plus tumultueuses. Les individus issus de ces groupes sont très recherchés pour leurs compétences en navigation, et beaucoup deviennent capitaines de navires, que ce soit au sein de leur propre communauté, au service d\'une autre, ou même à la barre d\'une puissante opération navale.',
     feature: {
-      name: 'Enfant de la Mer',
-      description: 'Vous nagez à votre vitesse de déplacement. Vous avez avantage sur les jets liés à la navigation, à la météo maritime ou à la vie en mer. Vous ne souffrez pas du mal de mer et résistez aux effets des tempêtes maritimes.'
+      name: 'Know the Tide',
+      description:
+        'Vous pouvez sentir le flux et le reflux de la vie. Quand vous lancez avec Peur (Fear), placez un jeton sur votre carte de communauté. Vous pouvez détenir un nombre de jetons égal à votre niveau. Avant de faire un jet d\'action, vous pouvez dépenser un nombre quelconque de ces jetons pour obtenir un bonus de +1 au jet par jeton dépensé. À la fin de chaque session, retirez tous les jetons non dépensés.'
     },
-    traits: ['Navigation maritime', 'Météo', 'Commerce côtier'],
-    flavor: 'Je suis Seaborne, alors bien sûr que je sais comment lire les étoiles et les vents.'
+    adjectives: ['candid', 'cooperative', 'exuberant', 'fierce', 'resolute', 'weathered'],
+    flavor: 'Je suis Seaborne, alors bien sûr que je sais sentir le flux et le reflux.'
   },
   {
     id: 'slyborne',
     name: 'Slyborne',
     emoji: '🎭',
-    description: 'Issus des ruelles et des marchés noirs, les Slyborne excellent dans l\'art de la ruse, du mensonge et de la manipulation.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté slyborne signifie être issu d\'un groupe opérant en dehors de la loi, incluant toutes sortes de criminels, escrocs et arnaqueurs. Les membres des communautés Slyborne sont rassemblés par leurs objectifs peu recommandables et leurs moyens astucieux pour les atteindre. Beaucoup possèdent un éventail de compétences peu scrupuleuses : contrefaçon, vol, contrebande et violence. Des gens de toute classe sociale peuvent être Slyborne, de ceux qui ont amassé une vaste richesse et influence à ceux qui n\'ont pas un sou en poche. Pour un observateur extérieur, ils pourraient ressembler à des voyous sans loyauté, mais ces communautés possèdent certains des codes d\'honneur les plus stricts qui, lorsqu\'ils sont brisés, peuvent entraîner une fin terrifiante pour le transgresseur.',
     feature: {
-      name: 'Esprit de la Rue',
-      description: 'Vous avez avantage sur les jets de Finesse pour tricher, voler ou dissimuler des objets. De plus, vous connaissez toujours comment trouver le marché noir, un receleur ou un informateur dans n\'importe quelle ville importante.'
+      name: 'Scoundrel',
+      description:
+        'Vous avez l\'avantage sur les jets pour négocier avec des criminels, détecter les mensonges ou trouver un endroit sûr où se cacher.'
     },
-    traits: ['Tromperie', 'Furtivité', 'Contrebande'],
-    flavor: 'Je suis Slyborne, alors bien sûr que je sais comment disparaître dans une foule.'
+    adjectives: ['calculating', 'clever', 'formidable', 'perceptive', 'shrewd', 'tenacious'],
+    flavor: 'Je suis Slyborne, alors bien sûr que je sais détecter les mensonges.'
   },
   {
     id: 'underborne',
     name: 'Underborne',
     emoji: '⛏️',
-    description: 'Élevés dans les profondeurs de la terre, les Underborne connaissent les tunnels, les mines et les merveilles souterraines.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté underborne signifie être issu d\'une société souterraine. Beaucoup d\'Underborne vivent juste sous les villes et villages d\'autres collectifs, tandis que d\'autres vivent bien plus profondément. Ces communautés vont de petits groupes familiaux dans des terriers à de vastes métropoles dans des cavernes de pierre. Dans de nombreuses localités, les Underborne sont reconnus pour leur incroyable audace et leur habileté qui permettent de grands exploits d\'architecture et d\'ingénierie. Les Underborne sont régulièrement embauchés pour leur bravoure, car même les moins audacieux d\'entre eux ont probablement rencontré de redoutables bêtes souterraines, et apprendre à les affronter est une pratique courante au sein de ces sociétés. En raison des dangers de leur environnement, beaucoup développent des langages non verbaux uniques, tout aussi utiles en surface.',
     feature: {
-      name: 'Vision des Profondeurs',
-      description: 'Vous voyez clairement dans l\'obscurité complète jusqu\'à Portée Proche. Vous avez avantage sur les jets pour naviguer ou survivre dans des environnements souterrains, et vous ressentez les vibrations dans la roche à Portée Proche.'
+      name: 'Low-Light Living',
+      description:
+        'Quand vous êtes dans une zone de faible luminosité ou d\'ombre épaisse, vous avez l\'avantage sur les jets pour vous cacher, enquêter ou percevoir des détails dans cette zone.'
     },
-    traits: ['Orientation souterraine', 'Minier', 'Géologie'],
-    flavor: 'Je suis Underborne, alors bien sûr que je sais trouver mon chemin dans le noir absolu.'
+    adjectives: ['composed', 'elusive', 'indomitable', 'innovative', 'resourceful', 'unpretentious'],
+    flavor: 'Je suis Underborne, alors bien sûr que je sais me repérer dans l\'obscurité.'
   },
   {
     id: 'wanderborne',
     name: 'Wanderborne',
     emoji: '🗺️',
-    description: 'Sans patrie fixe, les Wanderborne ont traversé des régions et des cultures variées, accumulant des expériences et des contacts partout.',
+    source: 'srd',
+    description:
+      'Faire partie d\'une communauté wanderborne signifie avoir vécu comme nomade, renonçant à un foyer permanent et expérimentant une grande variété de cultures. Contrairement à de nombreuses communautés définies par leur lieu, les Wanderborne sont définis par leur mode de vie itinérant. En raison de leurs migrations fréquentes, ils accordent moins de valeur à l\'accumulation de possessions matérielles au profit de l\'acquisition d\'informations, de compétences et de contacts. Les dangers posés par la vie sur la route et le choix de continuer ensemble signifient que les Wanderborne sont connus pour leur loyauté indéfectible.',
     feature: {
-      name: 'Voyageur du Monde',
-      description: 'Vous parlez deux langues supplémentaires et connaissez les coutumes d\'un large éventail de cultures. De plus, dans presque n\'importe quelle ville, vous pouvez trouver un contact ou un allié (à la discrétion du MJ) lié à vos voyages passés.'
+      name: 'Nomadic Pack',
+      description:
+        'Ajoutez un Paquetage Nomade à votre inventaire. Une fois par session, vous pouvez dépenser un Espoir (Hope) pour fouiller dans ce paquetage et en sortir un objet ordinaire utile à votre situation. Travaillez avec le MJ pour déterminer quel objet vous en tirez.'
     },
-    traits: ['Langues', 'Diplomatie', 'Contacts'],
-    flavor: 'Je suis Wanderborne, alors bien sûr que je sais m\'adapter à n\'importe quelle culture.'
+    adjectives: ['inscrutable', 'magnanimous', 'mirthful', 'reliable', 'savvy', 'unorthodox'],
+    flavor: 'Je suis Wanderborne, alors bien sûr que j\'ai exactement ce qu\'il faut dans mon sac.'
   },
   {
     id: 'wildborne',
     name: 'Wildborne',
     emoji: '🌲',
     source: 'srd',
-    description: 'Issus des forêts, des plaines et des régions sauvages, les Wildborne sont en harmonie avec la nature et ses habitants.',
+    description:
+      'Faire partie d\'une communauté wildborne signifie avoir vécu au cœur de la forêt. Les communautés Wildborne sont définies par leur dévouement à la conservation de leurs terres natales, et beaucoup ont de forts liens religieux ou culturels avec la faune parmi laquelle ils vivent. Cela se traduit par des avancées architecturales et technologiques uniques favorisant la durabilité plutôt que les résultats à court terme. C\'est une marque distinctive des sociétés Wildborne d\'intégrer leurs villages et cités avec l\'environnement naturel et d\'éviter de perturber la vie des plantes et des animaux.',
     feature: {
-      name: 'Enfant de la Nature',
-      description: 'Vous avez avantage sur les jets de Discrétion dans des environnements naturels. Vous communiquez par signaux de base avec les animaux ordinaires (pas les monstres). Vous ne vous perdez jamais dans la nature et trouvez toujours de la nourriture et de l\'eau en milieu sauvage.'
+      name: 'Lightfoot',
+      description:
+        'Votre déplacement est naturellement silencieux. Vous avez l\'avantage sur les jets pour vous déplacer sans être entendu.'
     },
-    traits: ['Pistage', 'Survie naturelle', 'Communication animale'],
-    flavor: 'Je suis Wildborne, alors bien sûr que je sais me déplacer sans laisser de traces.'
+    adjectives: ['hardy', 'loyal', 'nurturing', 'reclusive', 'sagacious', 'vibrant'],
+    flavor: 'Je suis Wildborne, alors bien sûr que je sais me déplacer sans un bruit.'
   }
 ]
 
@@ -122,5 +155,25 @@ export const COMMUNITIES = [
  * @returns {Object|null}
  */
 export function getCommunityById(id) {
+  if (!id || typeof id !== 'string') return null
   return COMMUNITIES.find((c) => c.id === id) || null
+}
+
+/**
+ * Retourne toutes les communautés correspondant à un filtre texte.
+ * @param {string} query — texte de recherche
+ * @returns {Array}
+ */
+export function searchCommunities(query) {
+  if (!query || typeof query !== 'string') return [...COMMUNITIES]
+  const q = query.toLowerCase().trim()
+  if (!q) return [...COMMUNITIES]
+  return COMMUNITIES.filter(
+    (c) =>
+      c.name.toLowerCase().includes(q) ||
+      c.description.toLowerCase().includes(q) ||
+      c.feature.name.toLowerCase().includes(q) ||
+      c.feature.description.toLowerCase().includes(q) ||
+      c.adjectives.some((a) => a.toLowerCase().includes(q))
+  )
 }
