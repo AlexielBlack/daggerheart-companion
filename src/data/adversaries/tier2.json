@@ -1,0 +1,191 @@
+[
+  {
+    "id": "elite-soldier",
+    "name": "Elite Soldier",
+    "tier": 2,
+    "type": "Standard",
+    "description": "An armored squire or experienced commoner looking to advance.",
+    "motives": ["Gain glory", "Keep order", "Make alliances"],
+    "difficulty": 15,
+    "thresholds": { "major": 9, "severe": 18 },
+    "hp": 4,
+    "stress": 3,
+    "attack": { "modifier": 1, "name": "Spear", "range": "Very Close", "damage": "2d8+4", "damageType": "phy" },
+    "experiences": [],
+    "features": [
+      { "name": "Reinforce", "type": "action", "cost": "Mark a Stress", "description": "Move into Melee range of an ally and make a standard attack against a target within Very Close range. On a success, deal 2d10+2 physical damage and the ally can clear a Stress." },
+      { "name": "Vassal's Loyalty", "type": "reaction", "cost": "Mark a Stress", "description": "When the Soldier is within Very Close range of a knight or other noble who would take damage, move into Melee range of them and take the damage instead." }
+    ]
+  },
+  {
+    "id": "failed-experiment",
+    "name": "Failed Experiment",
+    "tier": 2,
+    "type": "Standard",
+    "description": "A magical necromantic experiment gone wrong, leaving them warped and ungainly.",
+    "motives": ["Devour", "Hunt", "Track"],
+    "difficulty": 13,
+    "thresholds": { "major": 12, "severe": 23 },
+    "hp": 3,
+    "stress": 3,
+    "attack": { "modifier": 1, "name": "Bite and Claw", "range": "Melee", "damage": "2d6+5", "damageType": "phy" },
+    "experiences": [{ "name": "Copycat", "modifier": 3 }],
+    "features": [
+      { "name": "Warped Fortitude", "type": "passive", "description": "The Experiment is resistant to physical damage." },
+      { "name": "Overwhelm", "type": "passive", "description": "When a target the Experiment attacks has other adversaries within Very Close range, the Experiment deals double damage." },
+      { "name": "Lurching Lunge", "type": "action", "cost": "Mark a Stress", "description": "Spotlight the Experiment as an additional GM move instead of spending Fear." }
+    ]
+  },
+  {
+    "id": "giant-beastmaster",
+    "name": "Giant Beastmaster",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A leather-clad warrior bearing a whip and massive bow.",
+    "motives": ["Command", "Make a living", "Maneuver", "Pin down", "Protect companion animals"],
+    "difficulty": 16,
+    "thresholds": { "major": 12, "severe": 24 },
+    "hp": 6,
+    "stress": 5,
+    "attack": { "modifier": 2, "name": "Longbow", "range": "Far", "damage": "2d8+4", "damageType": "phy" },
+    "experiences": [{ "name": "Animal Handling", "modifier": 3 }],
+    "features": [
+      { "name": "Two as One", "type": "passive", "description": "When the Beastmaster is spotlighted, you can also spotlight a Tier 1 animal adversary currently under their control." },
+      { "name": "Pinning Strike", "type": "action", "cost": "Mark a Stress", "description": "Make a standard attack against a target. On a success, pin them to a nearby surface. The pinned target is Restrained until they break free with a successful Finesse or Strength Roll." },
+      { "name": "Deadly Companion", "type": "action", "description": "Twice per scene, summon a Bear, Dire Wolf, or similar Tier 1 animal adversary under the Beastmaster's control. The adversary appears at Close range and is immediately spotlighted." }
+    ]
+  },
+  {
+    "id": "giant-brawler",
+    "name": "Giant Brawler",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "An especially muscular giant wielding a warhammer larger than a human.",
+    "motives": ["Make a living", "Overwhelm", "Slam", "Topple"],
+    "difficulty": 15,
+    "thresholds": { "major": 14, "severe": 28 },
+    "hp": 7,
+    "stress": 4,
+    "attack": { "modifier": 2, "name": "Warhammer", "range": "Very Close", "damage": "2d12+3", "damageType": "phy" },
+    "experiences": [{ "name": "Intrusion", "modifier": 2 }],
+    "features": [
+      { "name": "Battering Ram", "type": "action", "cost": "Mark a Stress", "description": "Charge at an inanimate object within Close range and destroy it. All targets within Very Close range of the object must succeed on an Agility Reaction Roll or take 2d4+3 physical damage from the shrapnel." },
+      { "name": "Bloody Reprisal", "type": "reaction", "description": "When the Brawler marks 2 or more HP from an attack within Very Close range, make a standard attack against the attacker. On a success, deal 2d6+15 physical damage instead of standard damage." },
+      { "name": "Momentum", "type": "reaction", "description": "When the Brawler makes a successful attack against a PC, you gain a Fear." }
+    ]
+  },
+  {
+    "id": "giant-recruit",
+    "name": "Giant Recruit",
+    "tier": 2,
+    "type": "Minion",
+    "description": "A giant fighter wearing borrowed armor.",
+    "motives": ["Batter", "Make a living", "Overwhelm", "Terrify"],
+    "difficulty": 13,
+    "thresholds": { "major": null, "severe": null },
+    "hp": 1,
+    "stress": 2,
+    "attack": { "modifier": 1, "name": "Warhammer", "range": "Very Close", "damage": "5", "damageType": "phy" },
+    "experiences": [],
+    "features": [
+      { "name": "Minion (7)", "type": "passive", "description": "The Recruit is defeated when they take any damage. For every 7 damage a PC deals to the Recruit, defeat an additional Minion within range the attack would succeed against." },
+      { "name": "Group Attack", "type": "action", "cost": "Spend a Fear", "description": "Choose a target and spotlight all Giant Recruits within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage." }
+    ]
+  },
+  {
+    "id": "electric-eels",
+    "name": "Electric Eels",
+    "tier": 2,
+    "type": "Horde",
+    "hordeRatio": "3/HP",
+    "description": "A swarm of shocking aquatic predators.",
+    "motives": ["Avoid larger predators", "Shock prey", "Tear apart"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": { "modifier": 0, "name": "Shocking Bite", "range": "Melee", "damage": "2d6+4", "damageType": "phy" },
+    "experiences": [],
+    "features": [
+      { "name": "Horde (2d4+1)", "type": "passive", "description": "When the Eels have marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead." },
+      { "name": "Paralyzing Shock", "type": "action", "cost": "Mark a Stress", "description": "Make a standard attack against all targets within Very Close range. You gain a Fear for each target that marks HP." }
+    ]
+  },
+  {
+    "id": "minotaur-wrecker",
+    "name": "Minotaur Wrecker",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A massive bull-headed firbolg with a quick temper.",
+    "motives": ["Consume", "Gore", "Navigate", "Overpower", "Pursue"],
+    "difficulty": 16,
+    "thresholds": { "major": 14, "severe": 27 },
+    "hp": 7,
+    "stress": 5,
+    "attack": { "modifier": 2, "name": "Battleaxe", "range": "Very Close", "damage": "2d8+5", "damageType": "phy" },
+    "experiences": [{ "name": "Navigation", "modifier": 2 }],
+    "features": [
+      { "name": "Ramp Up", "type": "passive", "description": "You must spend a Fear to spotlight the Minotaur. While spotlighted, they can make their standard attack against all targets within range." },
+      { "name": "Charging Bull", "type": "action", "cost": "Mark a Stress", "description": "Charge through a group within Close range and make an attack against all targets in the Minotaur's path. Targets the Minotaur succeeds against take 2d6+8 physical damage and are knocked back to Very Far range. If a target is knocked into a solid object or another creature, they take an extra 1d6 damage (combine the damage)." },
+      { "name": "Gore", "type": "action", "description": "Make an attack against a target within Very Close range, moving the Minotaur into Melee range of them. On a success, deal 2d8 direct physical damage." }
+    ]
+  },
+  {
+    "id": "giant-eagle",
+    "name": "Giant Eagle",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A giant bird of prey with blood-stained talons.",
+    "motives": ["Hunt prey", "Stay mobile", "Strike decisively"],
+    "difficulty": 14,
+    "thresholds": { "major": 8, "severe": 19 },
+    "hp": 4,
+    "stress": 4,
+    "attack": { "modifier": 1, "name": "Claws and Beak", "range": "Very Close", "damage": "2d6+3", "damageType": "phy" },
+    "experiences": [],
+    "features": [
+      { "name": "Flight", "type": "passive", "description": "While flying, the Eagle gains a +3 bonus to their Difficulty." },
+      { "name": "Deadly Dive", "type": "action", "cost": "Mark a Stress", "description": "Attack a target within Far range. On a success, deal 2d10+2 physical damage and knock the target over, making them Vulnerable until they next act." },
+      { "name": "Take Off", "type": "action", "description": "Make an attack against a target within Very Close range. On a success, deal 2d4+3 physical damage and the target must succeed on an Agility Reaction Roll or become temporarily Restrained within the Eagle's massive talons." }
+    ]
+  },
+  {
+    "id": "gorgon",
+    "name": "Gorgon",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A snake-headed, scaled humanoid with a gilded bow, enraged that their peace has been disturbed.",
+    "motives": ["Corner", "Hit-and-run", "Petrify", "Seek vengeance"],
+    "difficulty": 15,
+    "thresholds": { "major": 13, "severe": 25 },
+    "hp": 9,
+    "stress": 3,
+    "attack": { "modifier": 4, "name": "Sunsear Shortbow", "range": "Far", "damage": "2d20+3", "damageType": "mag" },
+    "experiences": [{ "name": "Stealth", "modifier": 3 }],
+    "features": [
+      { "name": "Relentless (2)", "type": "passive", "description": "The Gorgon can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them." },
+      { "name": "Sunsear Arrows", "type": "passive", "description": "When the Gorgon makes a successful standard attack, the target Glows until the end of the scene and can't become Hidden. Attack rolls made against a Glowing target have advantage." },
+      { "name": "Crown of Serpents", "type": "action", "cost": "Mark a Stress", "description": "Make an attack roll against a target within Melee range using the Gorgon's protective snakes. On a success, deal 2d10+4 physical damage and the target must mark a Stress." },
+      { "name": "Petrifying Gaze", "type": "reaction", "cost": "Spend a Fear", "description": "When the Gorgon takes damage from an attack within Close range, force the attacker to make an Instinct Reaction Roll. On a failure, they begin to turn to stone, marking a HP and starting a Petrification Countdown (4). This countdown ticks down when the Gorgon is attacked. When it triggers, the target must make a death move. If the Gorgon is defeated, all petrification countdowns end." },
+      { "name": "Momentum", "type": "reaction", "description": "When the Gorgon makes a successful attack against a PC, you gain a Fear." }
+    ]
+  },
+  {
+    "id": "merchant-baron",
+    "name": "Merchant Baron",
+    "tier": 2,
+    "type": "Social",
+    "description": "An accomplished merchant with a large operation under their command.",
+    "motives": ["Abuse power", "Gather resources", "Mobilize minions"],
+    "difficulty": 15,
+    "thresholds": { "major": 9, "severe": 19 },
+    "hp": 5,
+    "stress": 3,
+    "attack": { "modifier": -2, "name": "Rapier", "range": "Melee", "damage": "1d6+2", "damageType": "phy" },
+    "experiences": [{ "name": "Nobility", "modifier": 2 }, { "name": "Trade", "modifier": 2 }],
+    "features": [
+      { "name": "Everyone Has a Price", "type": "action", "cost": "Spend a Fear", "description": "Offer a target a dangerous bargain for something they want or need. If used on a PC, they must make a Presence Reaction Roll (17). On a failure, they must mark 2 Stress or take the deal." },
+      { "name": "The Best Muscle Money Can Buy", "type": "action", "cost": "Mark a Stress", "description": "Once per scene, summon 1d4+1 Tier 1 adversaries, who appear at Far range, to enforce the Baron's will." }
+    ]
+  }
+]
