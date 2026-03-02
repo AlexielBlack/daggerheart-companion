@@ -5,16 +5,39 @@
     "tier": 2,
     "type": "Standard",
     "description": "An armored squire or experienced commoner looking to advance.",
-    "motives": ["Gain glory", "Keep order", "Make alliances"],
+    "motives": [
+      "Gain glory",
+      "Keep order",
+      "Make alliances"
+    ],
     "difficulty": 15,
-    "thresholds": { "major": 9, "severe": 18 },
+    "thresholds": {
+      "major": 9,
+      "severe": 18
+    },
     "hp": 4,
     "stress": 3,
-    "attack": { "modifier": 1, "name": "Spear", "range": "Very Close", "damage": "2d8+4", "damageType": "phy" },
+    "attack": {
+      "modifier": 1,
+      "name": "Spear",
+      "range": "Very Close",
+      "damage": "2d8+4",
+      "damageType": "phy"
+    },
     "experiences": [],
     "features": [
-      { "name": "Reinforce", "type": "action", "cost": "Mark a Stress", "description": "Move into Melee range of an ally and make a standard attack against a target within Very Close range. On a success, deal 2d10+2 physical damage and the ally can clear a Stress." },
-      { "name": "Vassal's Loyalty", "type": "reaction", "cost": "Mark a Stress", "description": "When the Soldier is within Very Close range of a knight or other noble who would take damage, move into Melee range of them and take the damage instead." }
+      {
+        "name": "Reinforce",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Move into Melee range of an ally and make a standard attack against a target within Very Close range. On a success, deal 2d10+2 physical damage and the ally can clear a Stress."
+      },
+      {
+        "name": "Vassal's Loyalty",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When the Soldier is within Very Close range of a knight or other noble who would take damage, move into Melee range of them and take the damage instead."
+      }
     ]
   },
   {
@@ -23,17 +46,48 @@
     "tier": 2,
     "type": "Standard",
     "description": "A magical necromantic experiment gone wrong, leaving them warped and ungainly.",
-    "motives": ["Devour", "Hunt", "Track"],
+    "motives": [
+      "Devour",
+      "Hunt",
+      "Track"
+    ],
     "difficulty": 13,
-    "thresholds": { "major": 12, "severe": 23 },
+    "thresholds": {
+      "major": 12,
+      "severe": 23
+    },
     "hp": 3,
     "stress": 3,
-    "attack": { "modifier": 1, "name": "Bite and Claw", "range": "Melee", "damage": "2d6+5", "damageType": "phy" },
-    "experiences": [{ "name": "Copycat", "modifier": 3 }],
+    "attack": {
+      "modifier": 1,
+      "name": "Bite and Claw",
+      "range": "Melee",
+      "damage": "2d6+5",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Copycat",
+        "modifier": 3
+      }
+    ],
     "features": [
-      { "name": "Warped Fortitude", "type": "passive", "description": "The Experiment is resistant to physical damage." },
-      { "name": "Overwhelm", "type": "passive", "description": "When a target the Experiment attacks has other adversaries within Very Close range, the Experiment deals double damage." },
-      { "name": "Lurching Lunge", "type": "action", "cost": "Mark a Stress", "description": "Spotlight the Experiment as an additional GM move instead of spending Fear." }
+      {
+        "name": "Warped Fortitude",
+        "type": "passive",
+        "description": "The Experiment is resistant to physical damage."
+      },
+      {
+        "name": "Overwhelm",
+        "type": "passive",
+        "description": "When a target the Experiment attacks has other adversaries within Very Close range, the Experiment deals double damage."
+      },
+      {
+        "name": "Lurching Lunge",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Spotlight the Experiment as an additional GM move instead of spending Fear."
+      }
     ]
   },
   {
@@ -42,17 +96,50 @@
     "tier": 2,
     "type": "Leader",
     "description": "A leather-clad warrior bearing a whip and massive bow.",
-    "motives": ["Command", "Make a living", "Maneuver", "Pin down", "Protect companion animals"],
+    "motives": [
+      "Command",
+      "Make a living",
+      "Maneuver",
+      "Pin down",
+      "Protect companion animals"
+    ],
     "difficulty": 16,
-    "thresholds": { "major": 12, "severe": 24 },
+    "thresholds": {
+      "major": 12,
+      "severe": 24
+    },
     "hp": 6,
     "stress": 5,
-    "attack": { "modifier": 2, "name": "Longbow", "range": "Far", "damage": "2d8+4", "damageType": "phy" },
-    "experiences": [{ "name": "Animal Handling", "modifier": 3 }],
+    "attack": {
+      "modifier": 2,
+      "name": "Longbow",
+      "range": "Far",
+      "damage": "2d8+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Animal Handling",
+        "modifier": 3
+      }
+    ],
     "features": [
-      { "name": "Two as One", "type": "passive", "description": "When the Beastmaster is spotlighted, you can also spotlight a Tier 1 animal adversary currently under their control." },
-      { "name": "Pinning Strike", "type": "action", "cost": "Mark a Stress", "description": "Make a standard attack against a target. On a success, pin them to a nearby surface. The pinned target is Restrained until they break free with a successful Finesse or Strength Roll." },
-      { "name": "Deadly Companion", "type": "action", "description": "Twice per scene, summon a Bear, Dire Wolf, or similar Tier 1 animal adversary under the Beastmaster's control. The adversary appears at Close range and is immediately spotlighted." }
+      {
+        "name": "Two as One",
+        "type": "passive",
+        "description": "When the Beastmaster is spotlighted, you can also spotlight a Tier 1 animal adversary currently under their control."
+      },
+      {
+        "name": "Pinning Strike",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Make a standard attack against a target. On a success, pin them to a nearby surface. The pinned target is Restrained until they break free with a successful Finesse or Strength Roll."
+      },
+      {
+        "name": "Deadly Companion",
+        "type": "action",
+        "description": "Twice per scene, summon a Bear, Dire Wolf, or similar Tier 1 animal adversary under the Beastmaster's control. The adversary appears at Close range and is immediately spotlighted."
+      }
     ]
   },
   {
@@ -61,17 +148,49 @@
     "tier": 2,
     "type": "Bruiser",
     "description": "An especially muscular giant wielding a warhammer larger than a human.",
-    "motives": ["Make a living", "Overwhelm", "Slam", "Topple"],
+    "motives": [
+      "Make a living",
+      "Overwhelm",
+      "Slam",
+      "Topple"
+    ],
     "difficulty": 15,
-    "thresholds": { "major": 14, "severe": 28 },
+    "thresholds": {
+      "major": 14,
+      "severe": 28
+    },
     "hp": 7,
     "stress": 4,
-    "attack": { "modifier": 2, "name": "Warhammer", "range": "Very Close", "damage": "2d12+3", "damageType": "phy" },
-    "experiences": [{ "name": "Intrusion", "modifier": 2 }],
+    "attack": {
+      "modifier": 2,
+      "name": "Warhammer",
+      "range": "Very Close",
+      "damage": "2d12+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Intrusion",
+        "modifier": 2
+      }
+    ],
     "features": [
-      { "name": "Battering Ram", "type": "action", "cost": "Mark a Stress", "description": "Charge at an inanimate object within Close range and destroy it. All targets within Very Close range of the object must succeed on an Agility Reaction Roll or take 2d4+3 physical damage from the shrapnel." },
-      { "name": "Bloody Reprisal", "type": "reaction", "description": "When the Brawler marks 2 or more HP from an attack within Very Close range, make a standard attack against the attacker. On a success, deal 2d6+15 physical damage instead of standard damage." },
-      { "name": "Momentum", "type": "reaction", "description": "When the Brawler makes a successful attack against a PC, you gain a Fear." }
+      {
+        "name": "Battering Ram",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Charge at an inanimate object within Close range and destroy it. All targets within Very Close range of the object must succeed on an Agility Reaction Roll or take 2d4+3 physical damage from the shrapnel."
+      },
+      {
+        "name": "Bloody Reprisal",
+        "type": "reaction",
+        "description": "When the Brawler marks 2 or more HP from an attack within Very Close range, make a standard attack against the attacker. On a success, deal 2d6+15 physical damage instead of standard damage."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Brawler makes a successful attack against a PC, you gain a Fear."
+      }
     ]
   },
   {
@@ -80,16 +199,39 @@
     "tier": 2,
     "type": "Minion",
     "description": "A giant fighter wearing borrowed armor.",
-    "motives": ["Batter", "Make a living", "Overwhelm", "Terrify"],
+    "motives": [
+      "Batter",
+      "Make a living",
+      "Overwhelm",
+      "Terrify"
+    ],
     "difficulty": 13,
-    "thresholds": { "major": null, "severe": null },
+    "thresholds": {
+      "major": null,
+      "severe": null
+    },
     "hp": 1,
     "stress": 2,
-    "attack": { "modifier": 1, "name": "Warhammer", "range": "Very Close", "damage": "5", "damageType": "phy" },
+    "attack": {
+      "modifier": 1,
+      "name": "Warhammer",
+      "range": "Very Close",
+      "damage": "5",
+      "damageType": "phy"
+    },
     "experiences": [],
     "features": [
-      { "name": "Minion (7)", "type": "passive", "description": "The Recruit is defeated when they take any damage. For every 7 damage a PC deals to the Recruit, defeat an additional Minion within range the attack would succeed against." },
-      { "name": "Group Attack", "type": "action", "cost": "Spend a Fear", "description": "Choose a target and spotlight all Giant Recruits within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage." }
+      {
+        "name": "Minion (7)",
+        "type": "passive",
+        "description": "The Recruit is defeated when they take any damage. For every 7 damage a PC deals to the Recruit, defeat an additional Minion within range the attack would succeed against."
+      },
+      {
+        "name": "Group Attack",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a target and spotlight all Giant Recruits within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage."
+      }
     ]
   },
   {
@@ -99,16 +241,38 @@
     "type": "Horde",
     "hordeRatio": "3/HP",
     "description": "A swarm of shocking aquatic predators.",
-    "motives": ["Avoid larger predators", "Shock prey", "Tear apart"],
+    "motives": [
+      "Avoid larger predators",
+      "Shock prey",
+      "Tear apart"
+    ],
     "difficulty": 14,
-    "thresholds": { "major": 10, "severe": 20 },
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
     "hp": 5,
     "stress": 3,
-    "attack": { "modifier": 0, "name": "Shocking Bite", "range": "Melee", "damage": "2d6+4", "damageType": "phy" },
+    "attack": {
+      "modifier": 0,
+      "name": "Shocking Bite",
+      "range": "Melee",
+      "damage": "2d6+4",
+      "damageType": "phy"
+    },
     "experiences": [],
     "features": [
-      { "name": "Horde (2d4+1)", "type": "passive", "description": "When the Eels have marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead." },
-      { "name": "Paralyzing Shock", "type": "action", "cost": "Mark a Stress", "description": "Make a standard attack against all targets within Very Close range. You gain a Fear for each target that marks HP." }
+      {
+        "name": "Horde (2d4+1)",
+        "type": "passive",
+        "description": "When the Eels have marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead."
+      },
+      {
+        "name": "Paralyzing Shock",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Make a standard attack against all targets within Very Close range. You gain a Fear for each target that marks HP."
+      }
     ]
   },
   {
@@ -117,17 +281,50 @@
     "tier": 2,
     "type": "Bruiser",
     "description": "A massive bull-headed firbolg with a quick temper.",
-    "motives": ["Consume", "Gore", "Navigate", "Overpower", "Pursue"],
+    "motives": [
+      "Consume",
+      "Gore",
+      "Navigate",
+      "Overpower",
+      "Pursue"
+    ],
     "difficulty": 16,
-    "thresholds": { "major": 14, "severe": 27 },
+    "thresholds": {
+      "major": 14,
+      "severe": 27
+    },
     "hp": 7,
     "stress": 5,
-    "attack": { "modifier": 2, "name": "Battleaxe", "range": "Very Close", "damage": "2d8+5", "damageType": "phy" },
-    "experiences": [{ "name": "Navigation", "modifier": 2 }],
+    "attack": {
+      "modifier": 2,
+      "name": "Battleaxe",
+      "range": "Very Close",
+      "damage": "2d8+5",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Navigation",
+        "modifier": 2
+      }
+    ],
     "features": [
-      { "name": "Ramp Up", "type": "passive", "description": "You must spend a Fear to spotlight the Minotaur. While spotlighted, they can make their standard attack against all targets within range." },
-      { "name": "Charging Bull", "type": "action", "cost": "Mark a Stress", "description": "Charge through a group within Close range and make an attack against all targets in the Minotaur's path. Targets the Minotaur succeeds against take 2d6+8 physical damage and are knocked back to Very Far range. If a target is knocked into a solid object or another creature, they take an extra 1d6 damage (combine the damage)." },
-      { "name": "Gore", "type": "action", "description": "Make an attack against a target within Very Close range, moving the Minotaur into Melee range of them. On a success, deal 2d8 direct physical damage." }
+      {
+        "name": "Ramp Up",
+        "type": "passive",
+        "description": "You must spend a Fear to spotlight the Minotaur. While spotlighted, they can make their standard attack against all targets within range."
+      },
+      {
+        "name": "Charging Bull",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Charge through a group within Close range and make an attack against all targets in the Minotaur's path. Targets the Minotaur succeeds against take 2d6+8 physical damage and are knocked back to Very Far range. If a target is knocked into a solid object or another creature, they take an extra 1d6 damage (combine the damage)."
+      },
+      {
+        "name": "Gore",
+        "type": "action",
+        "description": "Make an attack against a target within Very Close range, moving the Minotaur into Melee range of them. On a success, deal 2d8 direct physical damage."
+      }
     ]
   },
   {
@@ -136,17 +333,43 @@
     "tier": 2,
     "type": "Skulk",
     "description": "A giant bird of prey with blood-stained talons.",
-    "motives": ["Hunt prey", "Stay mobile", "Strike decisively"],
+    "motives": [
+      "Hunt prey",
+      "Stay mobile",
+      "Strike decisively"
+    ],
     "difficulty": 14,
-    "thresholds": { "major": 8, "severe": 19 },
+    "thresholds": {
+      "major": 8,
+      "severe": 19
+    },
     "hp": 4,
     "stress": 4,
-    "attack": { "modifier": 1, "name": "Claws and Beak", "range": "Very Close", "damage": "2d6+3", "damageType": "phy" },
+    "attack": {
+      "modifier": 1,
+      "name": "Claws and Beak",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
     "experiences": [],
     "features": [
-      { "name": "Flight", "type": "passive", "description": "While flying, the Eagle gains a +3 bonus to their Difficulty." },
-      { "name": "Deadly Dive", "type": "action", "cost": "Mark a Stress", "description": "Attack a target within Far range. On a success, deal 2d10+2 physical damage and knock the target over, making them Vulnerable until they next act." },
-      { "name": "Take Off", "type": "action", "description": "Make an attack against a target within Very Close range. On a success, deal 2d4+3 physical damage and the target must succeed on an Agility Reaction Roll or become temporarily Restrained within the Eagle's massive talons." }
+      {
+        "name": "Flight",
+        "type": "passive",
+        "description": "While flying, the Eagle gains a +3 bonus to their Difficulty."
+      },
+      {
+        "name": "Deadly Dive",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Attack a target within Far range. On a success, deal 2d10+2 physical damage and knock the target over, making them Vulnerable until they next act."
+      },
+      {
+        "name": "Take Off",
+        "type": "action",
+        "description": "Make an attack against a target within Very Close range. On a success, deal 2d4+3 physical damage and the target must succeed on an Agility Reaction Roll or become temporarily Restrained within the Eagle's massive talons."
+      }
     ]
   },
   {
@@ -155,19 +378,60 @@
     "tier": 2,
     "type": "Solo",
     "description": "A snake-headed, scaled humanoid with a gilded bow, enraged that their peace has been disturbed.",
-    "motives": ["Corner", "Hit-and-run", "Petrify", "Seek vengeance"],
+    "motives": [
+      "Corner",
+      "Hit-and-run",
+      "Petrify",
+      "Seek vengeance"
+    ],
     "difficulty": 15,
-    "thresholds": { "major": 13, "severe": 25 },
+    "thresholds": {
+      "major": 13,
+      "severe": 25
+    },
     "hp": 9,
     "stress": 3,
-    "attack": { "modifier": 4, "name": "Sunsear Shortbow", "range": "Far", "damage": "2d20+3", "damageType": "mag" },
-    "experiences": [{ "name": "Stealth", "modifier": 3 }],
+    "attack": {
+      "modifier": 4,
+      "name": "Sunsear Shortbow",
+      "range": "Far",
+      "damage": "2d20+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Stealth",
+        "modifier": 3
+      }
+    ],
     "features": [
-      { "name": "Relentless (2)", "type": "passive", "description": "The Gorgon can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them." },
-      { "name": "Sunsear Arrows", "type": "passive", "description": "When the Gorgon makes a successful standard attack, the target Glows until the end of the scene and can't become Hidden. Attack rolls made against a Glowing target have advantage." },
-      { "name": "Crown of Serpents", "type": "action", "cost": "Mark a Stress", "description": "Make an attack roll against a target within Melee range using the Gorgon's protective snakes. On a success, deal 2d10+4 physical damage and the target must mark a Stress." },
-      { "name": "Petrifying Gaze", "type": "reaction", "cost": "Spend a Fear", "description": "When the Gorgon takes damage from an attack within Close range, force the attacker to make an Instinct Reaction Roll. On a failure, they begin to turn to stone, marking a HP and starting a Petrification Countdown (4). This countdown ticks down when the Gorgon is attacked. When it triggers, the target must make a death move. If the Gorgon is defeated, all petrification countdowns end." },
-      { "name": "Momentum", "type": "reaction", "description": "When the Gorgon makes a successful attack against a PC, you gain a Fear." }
+      {
+        "name": "Relentless (2)",
+        "type": "passive",
+        "description": "The Gorgon can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+      },
+      {
+        "name": "Sunsear Arrows",
+        "type": "passive",
+        "description": "When the Gorgon makes a successful standard attack, the target Glows until the end of the scene and can't become Hidden. Attack rolls made against a Glowing target have advantage."
+      },
+      {
+        "name": "Crown of Serpents",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Make an attack roll against a target within Melee range using the Gorgon's protective snakes. On a success, deal 2d10+4 physical damage and the target must mark a Stress."
+      },
+      {
+        "name": "Petrifying Gaze",
+        "type": "reaction",
+        "cost": "Spend a Fear",
+        "description": "When the Gorgon takes damage from an attack within Close range, force the attacker to make an Instinct Reaction Roll. On a failure, they begin to turn to stone, marking a HP and starting a Petrification Countdown (4). This countdown ticks down when the Gorgon is attacked. When it triggers, the target must make a death move. If the Gorgon is defeated, all petrification countdowns end."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Gorgon makes a successful attack against a PC, you gain a Fear."
+      }
     ]
   },
   {
@@ -176,16 +440,1375 @@
     "tier": 2,
     "type": "Social",
     "description": "An accomplished merchant with a large operation under their command.",
-    "motives": ["Abuse power", "Gather resources", "Mobilize minions"],
+    "motives": [
+      "Abuse power",
+      "Gather resources",
+      "Mobilize minions"
+    ],
     "difficulty": 15,
-    "thresholds": { "major": 9, "severe": 19 },
+    "thresholds": {
+      "major": 9,
+      "severe": 19
+    },
     "hp": 5,
     "stress": 3,
-    "attack": { "modifier": -2, "name": "Rapier", "range": "Melee", "damage": "1d6+2", "damageType": "phy" },
-    "experiences": [{ "name": "Nobility", "modifier": 2 }, { "name": "Trade", "modifier": 2 }],
+    "attack": {
+      "modifier": -2,
+      "name": "Rapier",
+      "range": "Melee",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Nobility",
+        "modifier": 2
+      },
+      {
+        "name": "Trade",
+        "modifier": 2
+      }
+    ],
     "features": [
-      { "name": "Everyone Has a Price", "type": "action", "cost": "Spend a Fear", "description": "Offer a target a dangerous bargain for something they want or need. If used on a PC, they must make a Presence Reaction Roll (17). On a failure, they must mark 2 Stress or take the deal." },
-      { "name": "The Best Muscle Money Can Buy", "type": "action", "cost": "Mark a Stress", "description": "Once per scene, summon 1d4+1 Tier 1 adversaries, who appear at Far range, to enforce the Baron's will." }
+      {
+        "name": "Everyone Has a Price",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Offer a target a dangerous bargain for something they want or need. If used on a PC, they must make a Presence Reaction Roll (17). On a failure, they must mark 2 Stress or take the deal."
+      },
+      {
+        "name": "The Best Muscle Money Can Buy",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Once per scene, summon 1d4+1 Tier 1 adversaries, who appear at Far range, to enforce the Baron's will."
+      }
+    ]
+  },
+  {
+    "id": "archer-squadron",
+    "name": "Archer Squadron",
+    "tier": 2,
+    "type": "Horde",
+    "hordeRatio": "2/HP",
+    "description": "A group of trained archers bearing massive bows.",
+    "motives": [
+      "Stick together",
+      "survive",
+      "volley fire"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 0,
+      "name": "Longbow",
+      "range": "Far",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Horde (1d6+3)",
+        "type": "passive",
+        "description": "When the Squadron has marked half or more of their HP, their standard attack deals 1d6+3 physical damage instead."
+      },
+      {
+        "name": "Focused Volley",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Target a point within Far range. Make an attack with advantage against all targets within Close range of that point. Targets the Squadron succeeds against take 1d10+4 physical damage."
+      },
+      {
+        "name": "Suppressing Fire",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Target a point within Far range. Until the next roll with Fear, a creature who moves within Close range of that point must make an Agility Reaction Roll. On a failure, they take 2d6+3 physical damage. On a success, they take half damage."
+      }
+    ]
+  },
+  {
+    "id": "apprentice-assassin",
+    "name": "Apprentice Assassin",
+    "tier": 2,
+    "type": "Minion",
+    "description": "A young trainee eager to prove themselves.",
+    "motives": [
+      "Act reckless",
+      "kill",
+      "prove their worth",
+      "show off"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": null,
+      "severe": null
+    },
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": -1,
+      "name": "Thrown Dagger",
+      "range": "Very Close",
+      "damage": "4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Intrusion",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Minion (6)",
+        "type": "passive",
+        "description": "The Assassin is defeated when they take any damage. For every 6 damage a PC deals to the Assassin, defeat an additional Minion within range the attack would succeed against."
+      },
+      {
+        "name": "Group Attack",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a target and spotlight all Apprentice Assassins within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 4 physical damage each. Combine this damage."
+      }
+    ]
+  },
+  {
+    "id": "assassin-poisoner",
+    "name": "Assassin Poisoner",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A cunning scoundrel skilled in both poisons and ambushing.",
+    "motives": [
+      "Anticipate",
+      "get paid",
+      "kill",
+      "taint food and water"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Poisoned Throwing Dagger",
+      "range": "Close",
+      "damage": "2d8+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Intrusion",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Grindletooth Venom",
+        "type": "passive",
+        "description": "Targets who mark HP from the Assassin's attacks are Vulnerable until they clear a HP."
+      },
+      {
+        "name": "Out of Nowhere",
+        "type": "passive",
+        "description": "The Assassin has advantage on attacks if they are Hidden."
+      },
+      {
+        "name": "Fumigation",
+        "type": "action",
+        "description": "Drop a smoke bomb that fills the air within Close range with smoke, Dizzying all targets in this area. Dizzied targets have disadvantage on their next action roll, then clear the condition."
+      }
+    ]
+  },
+  {
+    "id": "master-assassin",
+    "name": "Master Assassin",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A seasoned killer with a threatening voice and a deadly blade.",
+    "motives": [
+      "Ambush",
+      "get out alive",
+      "kill",
+      "prepare for all scenarios"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 12,
+      "severe": 25
+    },
+    "hp": 7,
+    "stress": 5,
+    "attack": {
+      "modifier": 5,
+      "name": "Serrated Dagger",
+      "range": "Close",
+      "damage": "2d10+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Command",
+        "modifier": 3
+      },
+      {
+        "name": "Intrusion",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Won't See It Coming",
+        "type": "passive",
+        "description": "The Assassin deals direct damage while they're Hidden."
+      },
+      {
+        "name": "Strike as One",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Spotlight a number of other Assassins equal to the Assassin's unmarked Stress."
+      },
+      {
+        "name": "The Subtle Blade",
+        "type": "reaction",
+        "cost": "Spend a Fear",
+        "description": "When the Assassin successfully makes a standard attack against a Vulnerable target, deal Severe damage instead of their standard damage."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Assassin makes a successful attack against a PC, you gain a Fear."
+      }
+    ]
+  },
+  {
+    "id": "battle-box",
+    "name": "Battle Box",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A cube-shaped construct with a different rune on each of their six sides.",
+    "motives": [
+      "Change tactics",
+      "trample foes",
+      "wait in disguise"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 8,
+    "stress": 6,
+    "attack": {
+      "modifier": 2,
+      "name": "Slam",
+      "range": "Melee",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Camouflage",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "type": "passive",
+        "description": "The Box can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+      },
+      {
+        "name": "Randomized Tactics",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Roll a d6. 1: Mana Beam — attack Far, 2d10+2 mag. 2: Fire Jets — attack all Close, 2d8 phy. 3: Trample — attack all Close, 1d6+5 phy + Vulnerable. 4: Shocking Gas — Finesse Reaction or mark 3 Stress. 5: Stunning Clap — Strength Reaction or Vulnerable. 6: Psionic Whine — Presence Reaction or 2d4+9 direct mag."
+      },
+      {
+        "name": "Overcharge",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "Before rolling damage for the Box's attack, add a d6 to the damage roll. Additionally, you gain a Fear."
+      },
+      {
+        "name": "Death Quake",
+        "type": "reaction",
+        "description": "When the Box marks their last HP, the magic powering them ruptures in an explosion. All targets within Close range must succeed on an Instinct Reaction Roll or take 2d8+1 magic damage."
+      }
+    ]
+  },
+  {
+    "id": "chaos-skull",
+    "name": "Chaos Skull",
+    "tier": 2,
+    "type": "Ranged",
+    "description": "A floating humanoid skull animated by scintillating magic.",
+    "motives": [
+      "Cackle",
+      "consume magic",
+      "serve creator"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 5,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Energy Blast",
+      "range": "Close",
+      "damage": "2d8+3",
+      "damageType": "mag"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Levitation",
+        "type": "passive",
+        "description": "The Skull levitates several feet off the ground and can't be Restrained."
+      },
+      {
+        "name": "Wards",
+        "type": "passive",
+        "description": "The Skull is resistant to magic damage."
+      },
+      {
+        "name": "Magic Burst",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Make an attack against all targets within Close range. Targets the Skull succeeds against take 2d6+4 magic damage."
+      },
+      {
+        "name": "Siphon Magic",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Make an attack against a PC with a Spellcast trait within Very Close range. On a success, the target marks 1d4 Stress and the Skull clears that many Stress. On a success, the Skull can immediately be spotlighted again."
+      }
+    ]
+  },
+  {
+    "id": "conscript",
+    "name": "Conscript",
+    "tier": 2,
+    "type": "Minion",
+    "description": "A poorly trained civilian pressed into war.",
+    "motives": [
+      "Follow orders",
+      "gang up",
+      "survive"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": null,
+      "severe": null
+    },
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": 0,
+      "name": "Spears",
+      "range": "Very Close",
+      "damage": "6",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Minion (6)",
+        "type": "passive",
+        "description": "The Conscript is defeated when they take any damage. For every 6 damage a PC deals to the Conscript, defeat an additional Minion within range the attack would succeed against."
+      },
+      {
+        "name": "Group Attack",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a target and spotlight all Conscripts within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 6 physical damage each. Combine this damage."
+      }
+    ]
+  },
+  {
+    "id": "courtesan",
+    "name": "Courtesan",
+    "tier": 2,
+    "type": "Social",
+    "description": "An accomplished manipulator and master of the social arts.",
+    "motives": [
+      "Entice",
+      "maneuver",
+      "secure patrons"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 7,
+      "severe": 13
+    },
+    "hp": 3,
+    "stress": 4,
+    "attack": {
+      "modifier": -3,
+      "name": "Dagger",
+      "range": "Melee",
+      "damage": "1d4+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Manipulation",
+        "modifier": 3
+      },
+      {
+        "name": "Socialite",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Searing Glance",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When a PC within Close range makes a Presence Roll, cast a gaze toward the aftermath. On the target's failure, they must mark 2 Stress and are Vulnerable until the scene ends or they succeed on a social action against the Courtesan. On the target's success, they must mark a Stress."
+      }
+    ]
+  },
+  {
+    "id": "cult-adept",
+    "name": "Cult Adept",
+    "tier": 2,
+    "type": "Support",
+    "description": "An experienced mage wielding shadow and fear.",
+    "motives": [
+      "Curry favor",
+      "hinder foes",
+      "uncover knowledge"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 9,
+      "severe": 18
+    },
+    "hp": 4,
+    "stress": 6,
+    "attack": {
+      "modifier": 2,
+      "name": "Rune-Covered Rod",
+      "range": "Far",
+      "damage": "2d4+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Fallen Lore",
+        "modifier": 2
+      },
+      {
+        "name": "Rituals",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Enervating Blast",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Make a standard attack against a target within range. On a success, the target must mark a Stress."
+      },
+      {
+        "name": "Shroud of the Fallen",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Wrap an ally within Close range in a shroud of Protection until the Adept marks their last HP. While Protected, the target has resistance to all damage."
+      },
+      {
+        "name": "Shadow Shackles",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a point within Far range. All targets within Close range of that point are Restrained in smoky chains until they break free with a successful Strength or Instinct Roll. A target Restrained by this feature must spend a Hope to make an action roll."
+      },
+      {
+        "name": "Fear Is Fuel",
+        "type": "reaction",
+        "description": "Twice per scene, when a PC rolls a failure with Fear, clear a Stress."
+      }
+    ]
+  },
+  {
+    "id": "cult-fang",
+    "name": "Cult Fang",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A professional killer-turned-cultist.",
+    "motives": [
+      "Capture sacrifices",
+      "isolate prey",
+      "rise in the ranks"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 9,
+      "severe": 17
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Long Knife",
+      "range": "Melee",
+      "damage": "2d8+4",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Shadow's Embrace",
+        "type": "passive",
+        "description": "The Fang can climb and walk on vertical surfaces. Mark a Stress to move from one shadow to another within Far range."
+      },
+      {
+        "name": "Pick Off the Straggler",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Cause a target within Melee range to make an Instinct Reaction Roll. On a failure, the target must mark 2 Stress and is teleported with the Fang to a shadow within Far range, making them temporarily Vulnerable. On a success, the target must mark a Stress."
+      }
+    ]
+  },
+  {
+    "id": "cult-initiate",
+    "name": "Cult Initiate",
+    "tier": 2,
+    "type": "Minion",
+    "description": "A low-ranking cultist in simple robes, eager to gain power.",
+    "motives": [
+      "Follow orders",
+      "gain power",
+      "seek forbidden knowledge"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": null,
+      "severe": null
+    },
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": 0,
+      "name": "Ritual Dagger",
+      "range": "Melee",
+      "damage": "5",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Minion (6)",
+        "type": "passive",
+        "description": "The Initiate is defeated when they take any damage. For every 6 damage a PC deals to the Initiate, defeat an additional Minion within range the attack would succeed against."
+      },
+      {
+        "name": "Group Attack",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a target and spotlight all Cult Initiates within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage."
+      }
+    ]
+  },
+  {
+    "id": "demonic-hound-pack",
+    "name": "Demonic Hound Pack",
+    "tier": 2,
+    "type": "Horde",
+    "hordeRatio": "1/HP",
+    "description": "Unnatural hounds lit from within by hellfire.",
+    "motives": [
+      "Cause fear",
+      "consume flesh",
+      "please masters"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 11,
+      "severe": 23
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 0,
+      "name": "Claws and Fangs",
+      "range": "Melee",
+      "damage": "2d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Scent Tracking",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d4+1)",
+        "type": "passive",
+        "description": "When the Pack has marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead."
+      },
+      {
+        "name": "Dreadhowl",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Make all targets within Very Close range lose a Hope. If a target is not able to lose a Hope, they must instead mark 2 Stress."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Pack makes a successful attack against a PC, you gain a Fear."
+      }
+    ]
+  },
+  {
+    "id": "juvenile-flickerfly",
+    "name": "Juvenile Flickerfly",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A horse-sized insect with iridescent scales and crystalline wings moving faster than the eye can see.",
+    "motives": [
+      "Collect shiny things",
+      "hunt",
+      "swoop"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 13,
+      "severe": 26
+    },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Wing Slash",
+      "range": "Very Close",
+      "damage": "2d10+4",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Relentless (3)",
+        "type": "passive",
+        "description": "The Flickerfly can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+      },
+      {
+        "name": "Peerless Accuracy",
+        "type": "passive",
+        "description": "Before the Flickerfly makes an attack, roll a d6. On a result of 4 or higher, the target's Evasion is halved against this attack."
+      },
+      {
+        "name": "Mind Dance",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Create a magically dazzling display that grapples the minds of nearby foes. All targets within Close range must make an Instinct Reaction Roll. For each target who failed, you gain a Fear and the Flickerfly learns one of the target's fears."
+      },
+      {
+        "name": "Hallucinatory Breath",
+        "type": "reaction",
+        "description": "Countdown (Loop 1d6). When the Flickerfly takes damage for the first time, activate the countdown. When it triggers, breathe hallucinatory gas on all targets in front of them up to Far range. Targets must succeed on an Instinct Reaction Roll or be tormented by fearful hallucinations. Targets whose fears are known have disadvantage. Targets who fail must mark a Stress and lose a Hope."
+      }
+    ]
+  },
+  {
+    "id": "knight-of-the-realm",
+    "name": "Knight of the Realm",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A decorated soldier with heavy armor and a powerful steed.",
+    "motives": [
+      "Run down",
+      "seek glory",
+      "show dominance"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 13,
+      "severe": 26
+    },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 4,
+      "name": "Longsword",
+      "range": "Melee",
+      "damage": "2d10+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ancient Knowledge",
+        "modifier": 3
+      },
+      {
+        "name": "High Society",
+        "modifier": 2
+      },
+      {
+        "name": "Tactics",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Chevalier",
+        "type": "passive",
+        "description": "While the Knight is on a mount, they gain a +2 bonus to their Difficulty. When they take Severe damage, they're knocked from their mount and lose this benefit until they're next spotlighted."
+      },
+      {
+        "name": "Heavily Armored",
+        "type": "passive",
+        "description": "When the Knight takes physical damage, reduce it by 3."
+      },
+      {
+        "name": "Cavalry Charge",
+        "type": "action",
+        "description": "If the Knight is mounted, move up to Far range and make a standard attack against a target. On a success, deal 2d8+4 physical damage and the target must mark a Stress."
+      },
+      {
+        "name": "For the Realm!",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Spotlight 1d4+1 allies. Attacks they make while spotlighted in this way deal half damage."
+      }
+    ]
+  },
+  {
+    "id": "masked-thief",
+    "name": "Masked Thief",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A cunning thief with acrobatic skill and a flair for the dramatic.",
+    "motives": [
+      "Evade",
+      "hide",
+      "pilfer",
+      "profit"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 17
+    },
+    "hp": 4,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Backsword",
+      "range": "Melee",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Acrobatics",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Quick Hands",
+        "type": "action",
+        "description": "Make an attack against a target within Melee range. On a success, deal 1d8+2 physical damage and the Thief steals one item or consumable from the target's inventory."
+      },
+      {
+        "name": "Escape Plan",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Reveal a snare trap set anywhere on the battlefield. All targets within Very Close range must succeed on an Agility Reaction Roll (13) or be pulled off their feet and suspended upside down. A target is Restrained and Vulnerable until they break free with a successful Finesse or Strength Roll (13)."
+      }
+    ]
+  },
+  {
+    "id": "mortal-hunter",
+    "name": "Mortal Hunter",
+    "tier": 2,
+    "type": "Leader",
+    "description": "An undead figure wearing a heavy leather coat, with searching eyes and a casually cruel demeanor.",
+    "motives": [
+      "Devour",
+      "hunt",
+      "track"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 15,
+      "severe": 27
+    },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 5,
+      "name": "Tear at Flesh",
+      "range": "Very Close",
+      "damage": "2d12+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Bloodhound",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Terrifying",
+        "type": "passive",
+        "description": "When the Hunter makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+      },
+      {
+        "name": "Deathlock",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Curse a target within Very Close range with a necrotic Deathlock until the end of the scene. Attacks made by the Hunter against a Deathlocked target deal direct damage. The Hunter can only maintain one Deathlock at a time."
+      },
+      {
+        "name": "Inevitable Death",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Spotlight 1d4 allies. Attacks they make while spotlighted in this way deal half damage."
+      },
+      {
+        "name": "Rampage",
+        "type": "reaction",
+        "description": "Countdown (Loop 1d6). When the Hunter is in the spotlight for the first time, activate the countdown. When it triggers, move the Hunter in a straight line to a point within Far range and make an attack against all targets in their path. Targets the Hunter succeeds against take 2d8+2 physical damage."
+      }
+    ]
+  },
+  {
+    "id": "royal-advisor",
+    "name": "Royal Advisor",
+    "tier": 2,
+    "type": "Social",
+    "description": "A high-ranking courtier with the ear of the local nobility.",
+    "motives": [
+      "Curry favor",
+      "manufacture evidence",
+      "scheme"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 15
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": -3,
+      "name": "Wand",
+      "range": "Far",
+      "damage": "1d4+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Administration",
+        "modifier": 3
+      },
+      {
+        "name": "Courtier",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Devastating Retort",
+        "type": "passive",
+        "description": "A PC who rolls less than 17 on an action roll targeting the Advisor must mark a Stress."
+      },
+      {
+        "name": "Bend Ears",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Influence an NPC within Melee range with whispered words. That target's opinion on one matter shifts toward the Advisor's preference unless it is in direct opposition to the target's motives."
+      },
+      {
+        "name": "Scapegoat",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Convince a crowd or notable individual that one person or group is responsible for some problem facing the target. The target becomes hostile to the scapegoat until convinced of their innocence with a successful Presence Roll (17)."
+      }
+    ]
+  },
+  {
+    "id": "secret-keeper",
+    "name": "Secret-Keeper",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A clandestine leader with a direct channel to the Fallen Gods.",
+    "motives": [
+      "Amass great power",
+      "plot",
+      "take command"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 13,
+      "severe": 26
+    },
+    "hp": 7,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Sigil-laden Staff",
+      "range": "Far",
+      "damage": "2d12",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Coercion",
+        "modifier": 2
+      },
+      {
+        "name": "Fallen Lore",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Seize Your Moment",
+        "type": "action",
+        "cost": "Spend 2 Fear",
+        "description": "Spotlight 1d4 allies. Attacks they make while spotlighted in this way deal half damage."
+      },
+      {
+        "name": "Our Master's Will",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When you spotlight an ally within Far range, gain a Fear."
+      },
+      {
+        "name": "Summoning Ritual",
+        "type": "reaction",
+        "description": "Countdown (6). When the Secret-Keeper is in the spotlight for the first time, activate the countdown. When they mark HP, tick down this countdown by the number of HP marked. When it triggers, summon a Minor Demon who appears at Close range."
+      },
+      {
+        "name": "Fallen Hounds",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "Once per scene, when the Secret-Keeper marks 2 or more HP, summon a Demonic Hound Pack, which appears at Close range and is immediately spotlighted."
+      }
+    ]
+  },
+  {
+    "id": "shark",
+    "name": "Shark",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A large aquatic predator, always on the move.",
+    "motives": [
+      "Find the blood",
+      "isolate prey",
+      "target the weak"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 14,
+      "severe": 28
+    },
+    "hp": 7,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Toothy Maw",
+      "range": "Very Close",
+      "damage": "2d12+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Sense of Smell",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Terrifying",
+        "type": "passive",
+        "description": "When the Shark makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+      },
+      {
+        "name": "Rending Bite",
+        "type": "passive",
+        "description": "When the Shark makes a successful attack, the target must mark an Armor Slot without receiving its benefits. If they can't mark an Armor Slot, they must mark an additional HP."
+      },
+      {
+        "name": "Blood in the Water",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When a creature within Close range of the Shark marks HP from another creature's attack, immediately spotlight the Shark, moving them into Melee range of the target and making a standard attack."
+      }
+    ]
+  },
+  {
+    "id": "siren",
+    "name": "Siren",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A half-fish person with shimmering scales and an irresistible voice.",
+    "motives": [
+      "Consume",
+      "lure prey",
+      "subdue with song"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 9,
+      "severe": 18
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Distended Jaw Bite",
+      "range": "Melee",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Song Repertoire",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Captive Audience",
+        "type": "passive",
+        "description": "If the Siren makes a standard attack against a target Entranced by their song, the attack deals 2d10+1 damage instead of their standard damage."
+      },
+      {
+        "name": "Enchanting Song",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Sing a song that affects all targets within Close range. Targets must succeed on an Instinct Reaction Roll or become Entranced until they mark 2 Stress. Other Sirens within Close range of the target can mark a Stress to each add a +1 bonus to the Difficulty of the reaction roll. While Entranced, a target can't act and is Vulnerable."
+      }
+    ]
+  },
+  {
+    "id": "spectral-archer",
+    "name": "Spectral Archer",
+    "tier": 2,
+    "type": "Ranged",
+    "description": "A ghostly fighter with an ethereal bow, unable to move on while their charge is vulnerable.",
+    "motives": [
+      "Move through solid objects",
+      "stay out of the fray",
+      "rehash old battles"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 6,
+      "severe": 14
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 3,
+      "name": "Longbow",
+      "range": "Far",
+      "damage": "2d10+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ancient Knowledge",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Ghost",
+        "type": "passive",
+        "description": "The Archer has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+      },
+      {
+        "name": "Pick Your Target",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Make an attack within Far range against a PC who is within Very Close range of at least two other PCs. On a success, the target takes 2d8+12 physical damage."
+      }
+    ]
+  },
+  {
+    "id": "spectral-captain",
+    "name": "Spectral Captain",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A ghostly commander leading their troops beyond death.",
+    "motives": [
+      "Move through solid objects",
+      "rally troops",
+      "rehash old battles"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 13,
+      "severe": 26
+    },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Longbow",
+      "range": "Far",
+      "damage": "2d10+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ancient Knowledge",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Ghost",
+        "type": "passive",
+        "description": "The Captain has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+      },
+      {
+        "name": "Unending Battle",
+        "type": "action",
+        "cost": "Spend 2 Fear",
+        "description": "Return up to 1d4+1 defeated Spectral allies to the battle at the points where they first appeared (with no marked HP or Stress)."
+      },
+      {
+        "name": "Hold Fast",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When the Captain's Spectral allies are forced to make a reaction roll, give those allies a +2 bonus to the roll."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Captain makes a successful attack against a PC, you gain a Fear."
+      }
+    ]
+  },
+  {
+    "id": "spectral-guardian",
+    "name": "Spectral Guardian",
+    "tier": 2,
+    "type": "Standard",
+    "description": "A ghostly fighter with spears and swords, anchored by duty.",
+    "motives": [
+      "Move through solid objects",
+      "protect treasure",
+      "rehash old battles"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 7,
+      "severe": 15
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Spear",
+      "range": "Very Close",
+      "damage": "2d8+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ancient Knowledge",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Ghost",
+        "type": "passive",
+        "description": "The Guardian has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+      },
+      {
+        "name": "Grave Blade",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Make an attack against a target within Very Close range. On a success, deal 2d10+6 physical damage and the target must mark a Stress."
+      }
+    ]
+  },
+  {
+    "id": "spy",
+    "name": "Spy",
+    "tier": 2,
+    "type": "Social",
+    "description": "A skilled espionage agent with a knack for being in the right place to overhear secrets.",
+    "motives": [
+      "Cut and run",
+      "disguise appearance",
+      "eavesdrop"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 8,
+      "severe": 17
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": -2,
+      "name": "Dagger",
+      "range": "Melee",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Espionage",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Gathering Secrets",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Describe how the Spy knows a secret about a PC in the scene."
+      },
+      {
+        "name": "Fly on the Wall",
+        "type": "reaction",
+        "cost": "Mark a Stress",
+        "description": "When a PC or group is discussing something sensitive, reveal that the Spy is present in the scene, observing them. If the Spy escapes the scene to report their findings, you gain 1d4 Fear."
+      }
+    ]
+  },
+  {
+    "id": "stonewraith",
+    "name": "Stonewraith",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A prowling hunter, like a slinking mountain lion, with a slate-gray stone body.",
+    "motives": [
+      "Defend territory",
+      "isolate prey",
+      "stalk"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 11,
+      "severe": 22
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 3,
+      "name": "Bite and Claws",
+      "range": "Melee",
+      "damage": "2d8+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Stonesense",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Stonestrider",
+        "type": "passive",
+        "description": "The Stonewraith can move through stone and earth as easily as air. While within stone or earth, they are Hidden and immune to all damage."
+      },
+      {
+        "name": "Rocky Ambush",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "While Hidden, leap into Melee range with a target within Very Close range. The target must succeed on an Agility or Instinct Reaction Roll (15) or take 2d8 physical damage and become temporarily Restrained."
+      },
+      {
+        "name": "Avalanche Roar",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Roar while within a cave and cause a cave-in. All targets within Close range must succeed on an Agility Reaction Roll (14) or take 2d10 physical damage. The rubble can be cleared with a Progress Countdown (8)."
+      },
+      {
+        "name": "Momentum",
+        "type": "reaction",
+        "description": "When the Stonewraith makes a successful attack against a PC, you gain a Fear."
+      }
+    ]
+  },
+  {
+    "id": "war-wizard",
+    "name": "War Wizard",
+    "tier": 2,
+    "type": "Ranged",
+    "description": "A battle-hardened mage trained in destructive magic.",
+    "motives": [
+      "Develop new spells",
+      "seek power",
+      "shatter formations"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 11,
+      "severe": 23
+    },
+    "hp": 5,
+    "stress": 6,
+    "attack": {
+      "modifier": 4,
+      "name": "Staff",
+      "range": "Far",
+      "damage": "2d10+4",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Magical Knowledge",
+        "modifier": 2
+      },
+      {
+        "name": "Strategize",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Battle Teleport",
+        "type": "passive",
+        "description": "Before or after making a standard attack, you can mark a Stress to teleport to a location within Far range."
+      },
+      {
+        "name": "Refresh Warding Sphere",
+        "type": "action",
+        "cost": "Mark a Stress",
+        "description": "Refresh the Wizard's Warding Sphere reaction."
+      },
+      {
+        "name": "Eruption",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Choose a point within Far range. A Very Close area around that point erupts into impassable terrain. All targets within that area must make an Agility Reaction Roll (14). Targets who fail take 2d10 physical damage and are thrown out of the area. Targets who succeed take half damage and aren't moved."
+      },
+      {
+        "name": "Arcane Artillery",
+        "type": "action",
+        "cost": "Spend a Fear",
+        "description": "Unleash a precise hail of magical blasts. All targets in the scene must make an Agility Reaction Roll. Targets who fail take 2d12 magic damage. Targets who succeed take half damage."
+      },
+      {
+        "name": "Warding Sphere",
+        "type": "reaction",
+        "description": "When the Wizard takes damage from an attack within Close range, deal 2d6 magic damage to the attacker. This reaction can't be used again until refreshed."
+      }
     ]
   }
 ]
