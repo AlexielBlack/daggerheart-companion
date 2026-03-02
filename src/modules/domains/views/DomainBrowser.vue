@@ -3,10 +3,10 @@
     <!-- ═══ En-tête ═══ -->
     <header class="browser-header">
       <h1 class="browser-header__title">
-        🃏 Domains
+        🃏 Domaines
       </h1>
       <p class="browser-header__subtitle">
-        {{ store.domainCount }} domains — {{ store.totalCardCount }} cards
+        {{ store.domainCount }} domaines — {{ store.totalCardCount }} cartes
       </p>
     </header>
 
@@ -14,25 +14,25 @@
     <div
       class="browser-filters"
       role="search"
-      aria-label="Filter domains"
+      aria-label="Filtrer les domaines"
     >
       <label
         class="sr-only"
         for="domain-search"
-      >Search a domain</label>
+      >Rechercher un domaine</label>
       <input
         id="domain-search"
         :value="store.searchQuery"
         type="search"
         class="filter-input"
-        placeholder="Search domain, class, card..."
-        aria-label="Search a domain"
+        placeholder="Rechercher domaine, classe, carte..."
+        aria-label="Rechercher un domaine"
         @input="store.setSearch($event.target.value)"
       />
       <div
         class="filter-group"
         role="group"
-        aria-label="Filter by spell type"
+        aria-label="Filtrer par type de sort"
       >
         <button
           v-for="f in spellFilters"
@@ -52,7 +52,7 @@
       v-if="store.filteredDomains.length"
       class="domain-grid"
       role="list"
-      aria-label="Domain list"
+      aria-label="Liste des domaines"
     >
       <article
         v-for="domain in store.filteredDomains"
@@ -80,9 +80,9 @@
             <span
               v-if="domain.hasSpells"
               class="badge badge--spell"
-              aria-label="This domain has spells"
-            >Spells</span>
-            <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cards</span>
+              aria-label="Ce domaine possède des sorts"
+            >Sorts</span>
+            <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cartes</span>
           </div>
           <span
             class="domain-card__chevron"
@@ -115,17 +115,17 @@
             v-if="domain.cards.length > 0"
             class="card-filters"
             role="group"
-            aria-label="Filter cards"
+            aria-label="Filtrer les cartes"
           >
             <div class="card-filters__row">
-              <span class="card-filters__label">Type:</span>
+              <span class="card-filters__label">Type :</span>
               <button
                 class="filter-chip filter-chip--sm"
                 :class="{ 'filter-chip--active': store.filterType === 'all' }"
                 :aria-pressed="store.filterType === 'all'"
                 @click="store.setFilterType('all')"
               >
-                All
+                Tous
               </button>
               <button
                 v-for="t in store.availableTypes"
@@ -139,14 +139,14 @@
               </button>
             </div>
             <div class="card-filters__row">
-              <span class="card-filters__label">Level:</span>
+              <span class="card-filters__label">Niveau :</span>
               <button
                 class="filter-chip filter-chip--sm"
                 :class="{ 'filter-chip--active': store.filterLevel === 0 }"
                 :aria-pressed="store.filterLevel === 0"
                 @click="store.setFilterLevel(0)"
               >
-                All
+                Tous
               </button>
               <button
                 v-for="lv in store.availableLevels"
@@ -165,10 +165,10 @@
           <section
             v-if="store.selectedDomainCards.length > 0"
             class="domain-section"
-            :aria-label="`${domain.name} domain cards`"
+            :aria-label="`Cartes du domaine ${domain.name}`"
           >
             <h3 class="domain-section__title">
-              Cards ({{ store.selectedDomainCards.length }})
+              Cartes ({{ store.selectedDomainCards.length }})
             </h3>
             <div
               class="cards-grid"
@@ -183,19 +183,10 @@
             </div>
           </section>
 
-          <!-- État vide pour les stubs -->
-          <div
-            v-else-if="domain.cards.length === 0"
-            class="stub-notice"
-            role="status"
-          >
-            <p>⏳ Cards pending — coming in a future update.</p>
-          </div>
-
           <!-- Classes liées -->
           <section class="domain-section">
             <h3 class="domain-section__title">
-              Linked classes
+              Classes liées
             </h3>
             <div class="linked-classes">
               <span
@@ -223,7 +214,7 @@
         🔍
       </p>
       <p class="empty-state__text">
-        No domain found for "{{ store.searchQuery }}"
+        Aucun domaine trouvé pour « {{ store.searchQuery }} »
       </p>
     </div>
   </div>
@@ -243,9 +234,9 @@ export default {
     const store = useDomainStore()
 
     const spellFilters = [
-      { id: 'all', label: 'All' },
-      { id: 'spells', label: 'With spells' },
-      { id: 'martial', label: 'No spells' }
+      { id: 'all', label: 'Tous' },
+      { id: 'spells', label: 'Avec sorts' },
+      { id: 'martial', label: 'Sans sorts' }
     ]
 
     function getTypeLabel(type) {
@@ -318,9 +309,6 @@ export default {
 
 /* ── Cartes grid ── */
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-sm); }
-
-/* ── Stub notice ── */
-.stub-notice { text-align: center; padding: var(--space-lg); color: var(--color-text-muted); font-size: var(--font-size-sm); }
 
 /* ── Classes liées ── */
 .linked-classes { display: flex; flex-wrap: wrap; gap: var(--space-xs); }

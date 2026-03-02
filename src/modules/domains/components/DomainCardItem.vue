@@ -8,7 +8,7 @@
       <div class="dci__meta">
         <span
           class="dci__level"
-          :aria-label="`Level ${card.level}`"
+          :aria-label="`Niveau ${card.level}`"
         >Lv. {{ card.level }}</span>
         <span
           class="dci__type"
@@ -21,7 +21,7 @@
       <div
         v-if="card.recallCost > 0"
         class="dci__recall"
-        :aria-label="`Recall cost: ${card.recallCost} Hope`"
+        :aria-label="`Coût de rappel : ${card.recallCost} Espoir`"
       >
         ✨ {{ card.recallCost }}
       </div>
