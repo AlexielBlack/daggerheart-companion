@@ -14,14 +14,16 @@ export const TRAITS = [
   { id: 'knowledge', label: 'Savoir', skills: ['Recall', 'Analyze', 'Comprehend'] }
 ]
 
-/** Conditions disponibles */
+/**
+ * Conditions standard SRD.
+ * Source : CoreMechanics_SRD.pdf — Conditions
+ * Note : Daggerheart ne possède que 3 conditions standard.
+ * Certaines features appliquent des conditions spéciales décrites dans leur texte.
+ */
 export const CONDITIONS = [
-  { id: 'vulnerable', label: 'Vulnérable', description: 'Attaques contre vous ont avantage.' },
-  { id: 'restrained', label: 'Entravé', description: 'Vous ne pouvez pas vous déplacer.' },
-  { id: 'hidden', label: 'Caché', description: 'Les adversaires ne vous voient pas.' },
-  { id: 'frightened', label: 'Effrayé', description: 'Désavantage sur les jets contre la source.' },
-  { id: 'distracted', label: 'Distrait', description: '-2 à la Difficulté.' },
-  { id: 'empowered', label: 'Renforcé', description: 'Avantage sur vos jets d\'attaque.' }
+  { id: 'vulnerable', label: 'Vulnérable', description: 'Tous les jets ciblant cette créature ont avantage.' },
+  { id: 'restrained', label: 'Entravé', description: 'Vous ne pouvez pas vous déplacer, mais vous pouvez toujours effectuer des actions depuis votre position actuelle.' },
+  { id: 'hidden', label: 'Caché', description: 'Tant que vous êtes hors de vue de tous les ennemis et qu\'ils ne connaissent pas votre position, vous obtenez la condition Caché. Tous les jets contre une créature Cachée ont désavantage. Après qu\'un adversaire se déplace là où il vous verrait, que vous entrez dans sa ligne de vue, ou que vous attaquez, vous n\'êtes plus Caché.' }
 ]
 
 /** Domaines Daggerheart */
@@ -34,7 +36,7 @@ export const DOMAINS = [
 export const MAX_HP = 12
 export const MAX_STRESS = 12
 export const MAX_ARMOR = 12
-export const MAX_HOPE = 10
+export const MAX_HOPE = 6    // SRD : "A PC can have a maximum of 6 Hope at one time"
 export const MAX_CHARACTERS = 8
 
 /**

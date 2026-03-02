@@ -59,17 +59,18 @@ export const FEATURE_TYPES = {
   passive: 'Passif'
 }
 
+/**
+ * Conditions standard SRD (CoreMechanics_SRD.pdf).
+ * Daggerheart ne possède que 3 conditions standard.
+ */
 export const CONDITIONS = [
   'Vulnerable',
   'Restrained',
-  'Hidden',
-  'Frightened',
-  'Disoriented',
-  'Slowed'
+  'Hidden'
 ]
 
 export const MAX_FEAR = 12
-export const MAX_HOPE = 12
+export const MAX_HOPE = 6    // SRD : "A PC can have a maximum of 6 Hope at one time"
 
 export const GOLD_UNITS = {
   handfuls: 'Poignée(s)',
