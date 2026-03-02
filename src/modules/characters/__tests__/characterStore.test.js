@@ -27,6 +27,7 @@ import {
   MAX_STRESS,
   MAX_ARMOR,
   MAX_CHARACTERS,
+  MAX_HOPE,
   getClassById,
   createDefaultCharacter
 } from '@data/classes'
@@ -36,12 +37,12 @@ import {
 // ═════════════════════════════════════════════════════════
 
 describe('Classes SRD data', () => {
-  it('should have 8 official SRD classes', () => {
-    expect(SRD_CLASSES).toHaveLength(8)
+  it('should have 9 official SRD classes', () => {
+    expect(SRD_CLASSES).toHaveLength(9)
   })
 
-  it('CLASSES includes homebrew (>= 8 entries)', () => {
-    expect(CLASSES.length).toBeGreaterThanOrEqual(8)
+  it('CLASSES includes homebrew (>= 9 entries)', () => {
+    expect(CLASSES.length).toBeGreaterThanOrEqual(9)
   })
 
   it('should have all expected SRD class IDs', () => {
@@ -54,6 +55,7 @@ describe('Classes SRD data', () => {
     expect(ids).toContain('druid')
     expect(ids).toContain('ranger')
     expect(ids).toContain('wizard')
+    expect(ids).toContain('sorcerer')
   })
 
   it('each class (SRD + homebrew) has required fields', () => {
@@ -108,10 +110,10 @@ describe('Classes SRD data', () => {
     expect(g.domains).toEqual(['Valor', 'Blade'])
   })
 
-  it('Rogue: Evasion 12, HP 5, Midnight & Grace', () => {
+  it('Rogue: Evasion 12, HP 6, Midnight & Grace', () => {
     const r = getClassById('rogue')
     expect(r.baseEvasion).toBe(12)
-    expect(r.baseHP).toBe(5)
+    expect(r.baseHP).toBe(6)
     expect(r.domains).toEqual(['Midnight', 'Grace'])
   })
 
@@ -137,9 +139,11 @@ describe('Constants', () => {
     }
   })
 
-  it('should have conditions', () => {
-    expect(CONDITIONS.length).toBeGreaterThanOrEqual(5)
+  it('should have 3 standard SRD conditions', () => {
+    expect(CONDITIONS).toHaveLength(3)
     expect(CONDITIONS.find((c) => c.id === 'vulnerable')).toBeTruthy()
+    expect(CONDITIONS.find((c) => c.id === 'restrained')).toBeTruthy()
+    expect(CONDITIONS.find((c) => c.id === 'hidden')).toBeTruthy()
   })
 
   it('should have 9 domains', () => {
@@ -150,6 +154,7 @@ describe('Constants', () => {
     expect(MAX_HP).toBe(12)
     expect(MAX_STRESS).toBe(12)
     expect(MAX_ARMOR).toBe(12)
+    expect(MAX_HOPE).toBe(6)
     expect(MAX_CHARACTERS).toBe(8)
   })
 })
@@ -180,7 +185,7 @@ describe('createDefaultCharacter', () => {
 
   it('pre-fills suggested traits', () => {
     const char = createDefaultCharacter('rogue')
-    expect(char.traits.agility).toBe(2)
+    expect(char.traits.agility).toBe(1)
     expect(char.traits.strength).toBe(-1)
     expect(char.traits.finesse).toBe(2)
   })
@@ -422,11 +427,11 @@ describe('characterStore', () => {
       expect(store.selectedCharacter.hope).toBe(5)
     })
 
-    it('clamps hope 0-10', () => {
+    it('clamps hope 0-MAX_HOPE', () => {
       store.setHope(-5)
       expect(store.selectedCharacter.hope).toBe(0)
       store.setHope(99)
-      expect(store.selectedCharacter.hope).toBe(10)
+      expect(store.selectedCharacter.hope).toBe(MAX_HOPE)
     })
   })
 

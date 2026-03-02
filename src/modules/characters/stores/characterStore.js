@@ -12,6 +12,7 @@ import {
   CONDITIONS,
   MAX_HP,
   MAX_STRESS,
+  MAX_HOPE,
   MAX_CHARACTERS,
   getClassById,
   createDefaultCharacter
@@ -210,7 +211,7 @@ export const useCharacterStore = defineStore('characters', () => {
   function setHope(value) {
     const char = selectedCharacter.value
     if (!char) return
-    char.hope = Math.max(0, Math.min(10, value))
+    char.hope = Math.max(0, Math.min(MAX_HOPE, value))
     char.updatedAt = new Date().toISOString()
     persist()
   }
