@@ -87,6 +87,19 @@ export const NAV_ITEMS = [
   { id: 'adversaries', label: 'Adversaires', icon: '⚔️', route: '/adversaries' },
   { id: 'environments', label: 'Environnements', icon: '🌍', route: '/environments' },
   { id: 'encounters', label: 'Rencontres', icon: '🗺️', route: '/encounters' },
-  { id: 'characters', label: 'Personnages', icon: '🧙', route: '/characters' },
+  {
+    id: 'characters',
+    label: 'Personnages',
+    icon: '🧙',
+    route: '/characters',
+    children: [
+      { id: 'characters-builder', label: 'Fiche', icon: '📝', route: '/characters' },
+      { id: 'characters-classe', label: 'Classe', icon: '⚔️', route: '/characters/classe' },
+      { id: 'characters-domaines', label: 'Domaines', icon: '🃏', route: '/characters/domaines' },
+      { id: 'characters-ascendance', label: 'Ascendance', icon: '🧬', route: '/characters/ascendance' },
+      { id: 'characters-communaute', label: 'Communauté', icon: '🏘️', route: '/characters/communaute' },
+      { id: 'characters-equipement', label: 'Équipement', icon: '🗡️', route: '/characters/equipement' }
+    ]
+  },
   { id: 'dice', label: 'Dés', icon: '🎲', route: '/dice' }
 ]

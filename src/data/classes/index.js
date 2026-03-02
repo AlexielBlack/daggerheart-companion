@@ -164,7 +164,43 @@ export const CLASSES = [
       'Strange Patterns: Choose a number 1–12. When you roll it on a Duality Die, gain a Hope or clear a Stress. Change on long rest.'
     ],
     suggestedTraits: { agility: -1, strength: -1, finesse: 0, instinct: 1, presence: 1, knowledge: 2 },
-    suggestedArmor: 'Gambeson Armor — Thresholds 5/11 — Score 3 — Flexible: +1 to Evasion'
+    suggestedArmor: 'Gambeson Armor — Thresholds 5/11 — Score 3 — Flexible: +1 to Evasion',
+    source: 'srd'
+  },
+  // ═══ Classes personnalisées ═══
+  {
+    id: 'assassin',
+    name: 'Assassin',
+    emoji: '🗡️',
+    domains: ['Midnight', 'Blade'],
+    baseEvasion: 12,
+    baseHP: 5,
+    baseStress: 6,
+    hopeFeature: 'Shadow Contract: Spend 3 Hope to designate a target. Your next successful attack against them this scene deals maximum damage.',
+    classFeatures: [
+      'Mark: When you enter a scene, you can designate one adversary as your Mark. While they are your Mark, you have advantage on attack rolls against them and add +1d6 to damage.',
+      'Vanish: When you successfully hit your Mark, you can mark a Stress to immediately become Hidden.'
+    ],
+    suggestedTraits: { agility: 2, strength: 0, finesse: 2, instinct: 1, presence: -1, knowledge: -1 },
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'custom'
+  },
+  {
+    id: 'duellist',
+    name: 'Duellist',
+    emoji: '🤺',
+    domains: ['Bone', 'Grace'],
+    baseEvasion: 12,
+    baseHP: 5,
+    baseStress: 6,
+    hopeFeature: 'Parkour: Spend 3 Hope, then work with the GM to create a pathway to quickly move around the area (chandelier, bookcase ladder, etc.). Gain advantage on rolls related to this pathway.',
+    classFeatures: [
+      'Boast: Mark a Stress to gain advantage on an action roll. If you roll with Hope, gain an additional Hope; if you roll with Fear, the GM gains an additional Fear.',
+      'Flash of Rivalry: Spend a Hope to make a Presence roll against an adversary within Far range — on success, they become your Rival until end of scene. Rivals have disadvantage when targeting creatures other than you. Add d6 to damage dealt between you and a Rival. Can have Rivals equal to your tier.'
+    ],
+    suggestedTraits: { agility: 1, strength: 0, finesse: 2, instinct: 1, presence: 2, knowledge: -1 },
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'custom'
   }
 ]
 

@@ -30,6 +30,36 @@ const routes = [
     meta: { title: 'Personnages', module: 'characters' }
   },
   {
+    path: '/characters/classe',
+    name: 'characters-classe',
+    component: () => import('@modules/characters/views/ClassBrowser.vue'),
+    meta: { title: 'Classes & Spécialisations', module: 'characters', parent: 'characters' }
+  },
+  {
+    path: '/characters/domaines',
+    name: 'characters-domaines',
+    component: () => import('@modules/characters/views/DomainBrowser.vue'),
+    meta: { title: 'Domaines', module: 'characters', parent: 'characters' }
+  },
+  {
+    path: '/characters/ascendance',
+    name: 'characters-ascendance',
+    component: () => import('@modules/characters/views/AncestryBrowser.vue'),
+    meta: { title: 'Ascendances', module: 'characters', parent: 'characters' }
+  },
+  {
+    path: '/characters/communaute',
+    name: 'characters-communaute',
+    component: () => import('@modules/characters/views/CommunityBrowser.vue'),
+    meta: { title: 'Communautés', module: 'characters', parent: 'characters' }
+  },
+  {
+    path: '/characters/equipement',
+    name: 'characters-equipement',
+    component: () => import('@modules/characters/views/EquipmentBrowser.vue'),
+    meta: { title: 'Équipement', module: 'characters', parent: 'characters' }
+  },
+  {
     path: '/dice',
     name: 'dice',
     component: () => import('@modules/dice/views/DiceRoller.vue'),
@@ -55,7 +85,6 @@ const router = createRouter({
   }
 })
 
-// Mise à jour du titre de la page
 router.afterEach((to) => {
   const title = to.meta?.title
   document.title = title
