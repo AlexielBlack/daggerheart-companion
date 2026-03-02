@@ -1,279 +1,434 @@
 /**
  * @module subclasses/data
  * @description Sous-classes officielles SRD + sous-classes personnalisées Daggerheart.
- * Sources : OfficialClasses_SRD.pdf, CustomClass_Duellist.rtf
+ * Sources : OfficialClasses_SRD.pdf, CustomClass_Assassin.pdf, CustomClass_Duellist.rtf
+ *
+ * Structure par sous-classe :
+ *  - id            {string}        identifiant unique
+ *  - name          {string}        nom affiché
+ *  - spellcastTrait {string|null}  trait de sort associé
+ *  - description   {string}        phrase d'accroche SRD
+ *  - foundation    {string[]}      features Fondation  (Niv. 1–4)
+ *  - specialization {string[]}     features Spécialisation (Niv. 5–7)
+ *  - mastery       {string[]}      features Maîtrise (Niv. 8+)
  */
 
-/**
- * Sous-classes par classe.
- * Chaque sous-classe a 3 niveaux : Foundation (1-4), Specialization (5-7), Mastery (8+).
- */
+// ═══════════════════════════════════════════════════════════
+//  CLASSES OFFICIELLES SRD
+// ═══════════════════════════════════════════════════════════
+
 export const SUBCLASSES = {
+  // ── GUARDIAN ────────────────────────────────────────────
   guardian: [
     {
       id: 'stalwart',
       name: 'Stalwart',
       spellcastTrait: null,
-      description: 'Le Stalwart est le guerrier défensif par excellence, un roc sur lequel ses alliés peuvent compter.',
+      description: 'Jouez le Stalwart si vous voulez encaisser de lourds coups et continuer à combattre.',
       foundation: [
-        'Iron Wall: Quand vous effectuez une réaction de défense, gagnez +2 à l\'Évasion jusqu\'au début de votre prochain tour.',
-        'Rallying Cry: Une fois par round, quand vous subissez des dégâts, un allié à Portée Très Proche peut effacer un Stress.'
+        'Unwavering: Gagnez un bonus permanent de +1 à vos seuils de dégâts.',
+        'Iron Will: Quand vous subissez des dégâts physiques, vous pouvez marquer un emplacement d\'armure supplémentaire pour réduire la sévérité.'
       ],
-      specialization: 'Fortress: Réduisez tous les dégâts subis de 1 supplémentaire (cumulatif avec d\'autres réductions).',
-      mastery: 'Unbreakable: Une fois par session courte, ignorez tous les dégâts d\'une seule attaque.'
+      specialization: [
+        'Unrelenting: Gagnez un bonus permanent de +2 à vos seuils de dégâts.',
+        'Partners-in-Arms: Quand un allié à Portée Très Proche subit des dégâts, vous pouvez marquer un emplacement d\'armure pour réduire la sévérité d\'un seuil.'
+      ],
+      mastery: [
+        'Undaunted: Gagnez un bonus permanent de +3 à vos seuils de dégâts.',
+        'Loyal Protector: Quand un allié à Portée Proche a 2 PV ou moins non marqués et subirait des dégâts, vous pouvez marquer un Stress pour sprinter à ses côtés et subir les dégâts à sa place.'
+      ]
     },
     {
-      id: 'warden',
-      name: 'Warden',
-      spellcastTrait: 'Présence',
-      description: 'Le Warden protège ses alliés avec des capacités magiques de protection divine.',
+      id: 'vengeance',
+      name: 'Vengeance',
+      spellcastTrait: null,
+      description: 'Jouez la Vengeance si vous voulez abattre les ennemis qui vous blessent, vous ou vos alliés.',
       foundation: [
-        'Sacred Ground: Marquez un Stress pour consacrer une zone à Portée Très Proche. Les alliés dans la zone gagnent +1 à l\'Évasion.',
-        'Aura of Protection: Les alliés à Portée Très Proche bénéficient d\'un bouclier de 1 point de dégâts absorbés par attaque.'
+        'At Ease: Gagnez un emplacement de Stress supplémentaire.',
+        'Revenge: Quand un adversaire à Portée de Mêlée réussit une attaque contre vous, vous pouvez marquer 2 Stress pour forcer l\'attaquant à marquer un PV.'
       ],
-      specialization: 'Divine Shield: Dépensez 2 Espoir pour créer un bouclier magique sur un allié — la prochaine attaque contre lui rate automatiquement.',
-      mastery: 'Sanctuary: Une fois par session, créez une zone sacrée. Toutes les créatures hostiles doivent réussir un jet de Présence (14) pour y entrer.'
+      specialization: [
+        'Act of Reprisal: Quand un adversaire blesse un allié à Portée de Mêlée, vous gagnez un bonus de +1 à votre Maîtrise pour la prochaine attaque réussie contre cet adversaire.'
+      ],
+      mastery: [
+        'Nemesis: Dépensez 2 Espoir pour Prioriser un adversaire jusqu\'à votre prochain repos. Quand vous attaquez votre adversaire Priorisé, vous pouvez échanger les résultats de vos Dés d\'Espoir et de Peur. Vous ne pouvez Prioriser qu\'un adversaire à la fois.'
+      ]
     }
   ],
+
+  // ── SERAPH ─────────────────────────────────────────────
   seraph: [
     {
-      id: 'divine',
-      name: 'Divine',
-      spellcastTrait: 'Présence',
-      description: 'Le Divin canalise la lumière sacrée pour soigner et protéger.',
+      id: 'divine_wielder',
+      name: 'Divine Wielder',
+      spellcastTrait: 'Strength',
+      description: 'Jouez le Divine Wielder si vous voulez dominer le champ de bataille avec une arme légendaire.',
       foundation: [
-        'Healing Light: Votre Radiant Touch efface 1 PV supplémentaire.',
-        'Blessed Armor: Gagnez +1 aux seuils d\'armure (Mineur et Majeur).'
+        'Spirit Weapon: Quand vous avez une arme équipée avec une portée de Mêlée ou Très Proche, elle peut voler de votre main pour attaquer un adversaire à Portée Proche puis revenir. Vous pouvez marquer un Stress pour cibler un adversaire supplémentaire à portée avec le même jet d\'attaque.',
+        'Sparing Touch: Une fois par repos long, touchez une créature et effacez 2 PV ou 2 Stress.'
       ],
-      specialization: 'Resurrection: Une fois par session, ramenez un allié K.O. avec 2 PV effacés. Marquez 3 Stress.',
-      mastery: 'Divine Intervention: Une fois par campagne, invoquez une intervention divine. Le MJ doit permettre un résultat narratif en votre faveur.'
+      specialization: [
+        'Devout: Quand vous lancez vos Dés de Prière, vous pouvez lancer un dé supplémentaire et défausser le résultat le plus bas. De plus, vous pouvez utiliser votre feature « Sparing Touch » deux fois au lieu d\'une par repos long.'
+      ],
+      mastery: [
+        'Sacred Resonance: Quand vous lancez les dégâts pour votre feature « Spirit Weapon », si des résultats de dés correspondent, doublez la valeur de chaque dé correspondant.'
+      ]
     },
     {
-      id: 'zealot',
-      name: 'Zealot',
-      spellcastTrait: 'Présence',
-      description: 'Le Zélote transforme sa foi en puissance offensive sacrée.',
+      id: 'winged_sentinel',
+      name: 'Winged Sentinel',
+      spellcastTrait: 'Strength',
+      description: 'Jouez le Winged Sentinel si vous voulez prendre votre envol et frapper des coups dévastateurs depuis le ciel.',
       foundation: [
-        'Smite: Dépensez 1 Espoir pour ajouter d6 dégâts magiques (sacrés) à une attaque réussie.',
-        'Righteous Fury: Quand un allié est vaincu, gagnez avantage sur tous les jets jusqu\'à la fin du round.'
+        'Wings of Light: Vous pouvez voler. En vol, vous pouvez : marquer un Stress pour transporter une autre créature consentante de votre taille ou moins ; dépenser un Espoir pour infliger 1d8 dégâts supplémentaires sur une attaque réussie.'
       ],
-      specialization: 'Holy Vengeance: Vos attaques contre des créatures mortes-vivantes ou démoniaques infligent +2d6 dégâts.',
-      mastery: 'Avatar of Faith: Une fois par session, entrez en état de zèle divin pendant 3 rounds : toutes vos attaques infligent des dégâts magiques (sacrés) supplémentaires égaux à votre Présence.'
+      specialization: [
+        'Ethereal Visage: Votre visage surnaturel inspire crainte et respect. En vol, vous avez avantage sur les jets de Présence. Quand vous réussissez avec Espoir sur un jet de Présence, vous pouvez retirer une Peur de la réserve du MJ au lieu de gagner un Espoir.'
+      ],
+      mastery: [
+        'Ascendant: Gagnez un bonus permanent de +4 à votre seuil de dégâts Sévères.',
+        'Power of the Gods: En vol, vous infligez 1d12 dégâts supplémentaires au lieu de 1d8 grâce à votre feature « Wings of Light ».'
+      ]
     }
   ],
+
+  // ── WARRIOR ────────────────────────────────────────────
   warrior: [
     {
-      id: 'berserker',
-      name: 'Berserker',
+      id: 'call_of_the_brave',
+      name: 'Call of the Brave',
       spellcastTrait: null,
-      description: 'Le Berserker puise dans une rage animale pour déchaîner une puissance dévastatrice.',
+      description: 'Jouez le Call of the Brave si vous voulez utiliser la puissance de vos ennemis pour alimenter votre propre pouvoir.',
       foundation: [
-        'Rage: Marquez un Stress pour entrer en Rage. Gagnez +1d6 aux dégâts et ignorez le premier PV marqué chaque round. Sortez de Rage après 3 rounds ou quand vous choisissez.',
-        'Reckless Attack: Attaquez avec avantage mais les adversaires ont aussi avantage contre vous jusqu\'à votre prochain tour.'
+        'Courage: Quand vous échouez un jet avec Peur, vous gagnez un Espoir.',
+        'Battle Ritual: Une fois par repos long, avant de tenter quelque chose d\'incroyablement dangereux ou d\'affronter un ennemi qui vous surpasse clairement, décrivez le rituel ou les préparatifs que vous effectuez. Effacez 2 Stress et gagnez 2 Espoir.'
       ],
-      specialization: 'Unstoppable Rage: En Rage, ignorez la condition Entravé et réduisez les dégâts subis de 2.',
-      mastery: 'Eternal Warrior: Une fois par session, entrez en Rage légendaire — durée illimitée cette scène, +2d6 dégâts, et régénérez 1 PV à chaque attaque réussie.'
+      specialization: [
+        'Rise to the Challenge: Vous êtes vigilant face au danger croissant. Tant que vous avez 2 PV non marqués ou moins, vous pouvez lancer un d20 comme Dé d\'Espoir.'
+      ],
+      mastery: [
+        'Camaraderie: Votre bravoure inébranlable est un point de ralliement pour vos alliés. Vous pouvez initier un Tag Team Roll une fois supplémentaire par session. De plus, quand un allié initie un Tag Team Roll avec vous, il n\'a besoin de dépenser que 2 Espoir.'
+      ]
     },
     {
-      id: 'knight',
-      name: 'Knight',
+      id: 'call_of_the_slayer',
+      name: 'Call of the Slayer',
       spellcastTrait: null,
-      description: 'Le Chevalier maîtrise les techniques de combat disciplinées et le combat en armure lourde.',
+      description: 'Jouez le Call of the Slayer si vous voulez abattre les adversaires avec une force immense.',
       foundation: [
-        'Disciplined Strike: Vos attaques ignorent 1 point d\'armure de la cible.',
-        'Mounted Combat: Avantage sur tous les jets de combat lorsque vous êtes monté. Votre monture ne peut pas être ciblée par des attaques si vous êtes à Portée de Mêlée d\'un adversaire.'
+        'Slayer: Vous obtenez une réserve de dés appelés Slayer Dice. Sur un jet avec Espoir, vous pouvez placer un d6 sur cette carte au lieu de gagner un Espoir. Vous pouvez stocker un nombre de Slayer Dice égal à votre Maîtrise. Quand vous faites un jet d\'attaque ou de dégâts, vous pouvez dépenser n\'importe quel nombre de ces dés en les lançant et ajoutant le résultat. À la fin de chaque session, effacez les Slayer Dice non dépensés et gagnez un Espoir par dé effacé.'
       ],
-      specialization: 'Heavy Hitter: Vos attaques à deux mains infligent +2 dégâts supplémentaires.',
-      mastery: 'Legendary Warrior: Votre Maîtrise augmente de +1 pour tous les jets de combat.'
+      specialization: [
+        'Weapon Specialist: Vous pouvez manier plusieurs armes avec une aise dangereuse. Quand vous réussissez une attaque, vous pouvez dépenser un Espoir pour ajouter un dé de dégâts de votre arme secondaire au jet de dégâts. De plus, une fois par repos long quand vous lancez vos Slayer Dice, relancez les 1.'
+      ],
+      mastery: [
+        'Martial Preparation: Vous êtes un guerrier inspirant pour tous ceux qui voyagent avec vous. Votre groupe gagne accès au mouvement de temps libre Martial Preparation. Pour l\'utiliser pendant un repos, décrivez comment vous entraînez votre groupe. Vous et chaque allié qui choisit ce mouvement gagnez un Slayer Die d6.'
+      ]
     }
   ],
+
+  // ── ROGUE ──────────────────────────────────────────────
   rogue: [
     {
-      id: 'shadow',
-      name: 'Shadow',
+      id: 'nightwalker',
+      name: 'Nightwalker',
       spellcastTrait: 'Finesse',
-      description: 'Le Shadow maîtrise l\'art de l\'infiltration et de l\'assassinat depuis les ténèbres.',
+      description: 'Jouez le Nightwalker si vous voulez manipuler les ombres pour manœuvrer à travers l\'environnement.',
       foundation: [
-        'Smoke and Mirrors: Dépensez 1 Espoir pour créer une distraction, permettant à vous et vos alliés de vous déplacer sans déclencher de réactions.',
-        'Assassinate: Doublez les dégâts d\'une attaque effectuée depuis l\'état Caché.'
+        'Shadow Stepper: Vous pouvez vous déplacer d\'ombre en ombre. Quand vous entrez dans une zone d\'obscurité ou une ombre projetée par une créature ou un objet, vous pouvez marquer un Stress pour disparaître et réapparaître dans une autre ombre à Portée Lointaine. Quand vous réapparaissez, vous êtes Dissimulé (Cloaked).'
       ],
-      specialization: 'Death from Above: Quand vous attaquez depuis une position surélevée tout en étant Caché, infligez dégâts maximaux et l\'adversaire est Vulnérable pendant 1 round.',
-      mastery: 'Phantom: Vous pouvez devenir invisible à volonté (marquez un Stress). Tant qu\'invisible, vous ne pouvez pas être ciblé.'
+      specialization: [
+        'Dark Cloud: Faites un Spellcast Roll (15). En cas de succès, créez un nuage sombre temporaire couvrant une zone à Portée Proche. Personne dans ce nuage ne peut voir à l\'extérieur, et personne à l\'extérieur ne peut voir à l\'intérieur. Vous êtes considéré Dissimulé pour tout adversaire dont le nuage bloque la ligne de vue.',
+        'Adrenaline: Tant que vous êtes Vulnérable, ajoutez votre niveau à vos jets de dégâts.'
+      ],
+      mastery: [
+        'Fleeting Shadow: Gagnez un bonus permanent de +1 à votre Évasion. Vous pouvez utiliser votre feature « Shadow Stepper » pour vous déplacer à Portée Très Lointaine.',
+        'Vanishing Act: Marquez un Stress pour devenir Dissimulé à tout moment. Quand vous êtes Dissimulé par cette feature, vous effacez automatiquement la condition Entravé si vous l\'avez. Vous restez Dissimulé jusqu\'à ce que vous rouliez avec Peur ou jusqu\'à votre prochain repos.'
+      ]
     },
     {
-      id: 'trickster',
-      name: 'Trickster',
-      spellcastTrait: 'Présence',
-      description: 'Le Trickster utilise la ruse et la magie illusoire pour mystifier ses ennemis.',
+      id: 'syndicate',
+      name: 'Syndicate',
+      spellcastTrait: 'Finesse',
+      description: 'Jouez le Syndicate si vous voulez avoir un réseau de contacts partout où vous allez.',
       foundation: [
-        'Illusory Double: Créez un double illusoire de vous-même. La première attaque contre vous rate automatiquement (il frappe l\'illusion). Marquez un Stress.',
-        'Misdirection: Faites un jet de Présence pour convaincre un adversaire qu\'une menace vient d\'une autre direction.'
+        'Well-Connected: Quand vous arrivez dans une ville ou un environnement important, vous connaissez quelqu\'un qui y vit. Donnez-lui un nom, notez comment il pourrait être utile, et choisissez un fait : il vous doit une faveur mais sera difficile à trouver ; il va demander quelque chose en échange ; il est toujours dans de gros ennuis ; vous étiez ensemble, c\'est une longue histoire ; vous ne vous êtes pas quittés en bons termes.'
       ],
-      specialization: 'Confounding Strike: Vos attaques réussies Désorientent la cible jusqu\'à la fin de son prochain tour.',
-      mastery: 'Grand Illusion: Créez une illusion complexe de taille jusqu\'à Grande Taille. Elle dure une scène et peut bouger selon vos instructions mentales.'
+      specialization: [
+        'Contacts Everywhere: Une fois par session, vous pouvez brièvement faire appel à un contact louche. Choisissez un bénéfice et décrivez ce qui l\'a amené ici : il fournit 1 poignée d\'or, un outil unique, ou un objet mundain nécessaire ; sur votre prochain jet d\'action, son aide fournit un bonus de +3 au résultat de votre Dé d\'Espoir ou de Peur ; la prochaine fois que vous infligez des dégâts, il tire depuis les ombres, ajoutant 2d8 à votre jet de dégâts.'
+      ],
+      mastery: [
+        'Reliable Backup: Vous pouvez utiliser votre feature « Contacts Everywhere » trois fois par session. Les options suivantes s\'ajoutent à la liste de bénéfices : quand vous marquez 1+ PV, il peut se précipiter pour vous protéger, réduisant les PV marqués de 1 ; quand vous faites un jet de Présence en conversation, il vous soutient — vous pouvez lancer un d20 comme Dé d\'Espoir.'
+      ]
     }
   ],
+
+  // ── BARD ───────────────────────────────────────────────
   bard: [
     {
       id: 'troubadour',
       name: 'Troubadour',
-      spellcastTrait: 'Présence',
-      description: 'Le Troubadour inspire et soutient ses alliés par la musique et l\'éloquence.',
+      spellcastTrait: 'Presence',
+      description: 'Jouez le Troubadour si vous voulez jouer de la musique pour renforcer vos alliés.',
       foundation: [
-        'Battle Hymn: Vos alliés dans la scène gagnent +1 à tous les jets d\'attaque quand vous utilisez votre action pour jouer un hymne de bataille.',
-        'Soothing Melody: Marquez un Stress pour permettre à un allié d\'effacer 1 Stress.'
+        'Gifted Performer: Vous pouvez jouer trois types de chansons différentes, une fois chacune par repos long ; décrivez comment vous jouez pour obtenir le bénéfice : Relaxing Song — vous et tous les alliés à Portée Proche effacez un PV ; Epic Song — rendez temporairement une cible à Portée Proche Vulnérable ; Heartbreaking Song — vous et tous les alliés à Portée Proche gagnez un Espoir.'
       ],
-      specialization: 'Virtuoso: Votre Rally Die passe à d10 et vos alliés peuvent utiliser leur Rally Die pour effacer 1 PV (au lieu de Stress uniquement).',
-      mastery: 'Symphony of Battle: Une fois par session, votre musique transcende. Tous les alliés effacent 2 Stress et gagnent +2 à l\'Évasion pendant 3 rounds.'
+      specialization: [
+        'Maestro: Vos chants de ralliement renforcent le courage de ceux qui écoutent. Quand vous donnez un Rally Die à un allié, il peut gagner un Espoir ou effacer un Stress.'
+      ],
+      mastery: [
+        'Virtuoso: Vous êtes parmi les plus grands de votre art et votre talent est sans limites. Vous pouvez interpréter chacune des chansons de votre feature « Gifted Performer » deux fois par repos long.'
+      ]
     },
     {
-      id: 'lore_keeper',
-      name: 'Lore Keeper',
-      spellcastTrait: 'Savoir',
-      description: 'Le Gardien du Savoir maîtrise une vaste bibliothèque de sorts tirés des traditions.',
+      id: 'wordsmith',
+      name: 'Wordsmith',
+      spellcastTrait: 'Presence',
+      description: 'Jouez le Wordsmith si vous voulez utiliser des jeux de mots habiles et captiver les foules.',
       foundation: [
-        'Ancient Knowledge: Une fois par session, identifiez instantanément les capacités, faiblesses ou origines d\'un monstre ou artefact.',
-        'Spellbook: Apprenez un sort supplémentaire de n\'importe quel domaine (pas nécessairement le vôtre).'
+        'Rousing Speech: Une fois par repos long, vous pouvez donner un discours inspirant et sincère. Tous les alliés à Portée Lointaine effacent 2 Stress.',
+        'Heart of a Poet: Après un jet d\'action pour impressionner, persuader ou offenser quelqu\'un, vous pouvez dépenser un Espoir pour ajouter un d4 au jet.'
       ],
-      specialization: 'Adapt and Counter: Après avoir observé un adversaire utiliser une capacité, gagnez avantage sur les jets pour y résister ou la contrer.',
-      mastery: 'Master of Lore: Vous connaissez tous les sorts de votre domaine et pouvez en utiliser un gratuitement (sans coût de rappel) une fois par session courte.'
+      specialization: [
+        'Eloquent: Vos mots émouvants remontent le moral. Une fois par session, quand vous encouragez un allié, vous pouvez : lui permettre de trouver un objet ou outil mundain dont il a besoin ; Aider un Allié sans dépenser d\'Espoir ; lui donner un mouvement de temps libre supplémentaire pendant son prochain repos.'
+      ],
+      mastery: [
+        'Epic Poetry: Votre Rally Die passe à un d10. De plus, quand vous Aidez un Allié, vous pouvez narrer le moment comme si vous écriviez le récit de leur héroïsme dans des mémoires. Quand vous le faites, lancez un d10 comme dé d\'avantage.'
+      ]
     }
   ],
+
+  // ── DRUID ──────────────────────────────────────────────
   druid: [
     {
-      id: 'shapechanger',
-      name: 'Shapechanger',
+      id: 'warden_of_the_elements',
+      name: 'Warden of the Elements',
       spellcastTrait: 'Instinct',
-      description: 'Le Métamorphe maîtrise l\'art de la transformation, prenant des formes animales de plus en plus puissantes.',
+      description: 'Jouez le Warden of the Elements si vous voulez incarner les éléments naturels de la nature sauvage.',
       foundation: [
-        'Wild Heart: Votre Beastform ne coûte pas de Stress — marquez 1 Espoir à la place.',
-        'Extended Form: Restez en Beastform jusqu\'à 3 rounds supplémentaires par session sans marquer de Stress additionnel.'
+        'Elemental Incarnation: Marquez un Stress pour Canaliser un des éléments suivants jusqu\'à ce que vous subissiez des dégâts Sévères ou jusqu\'à votre prochain repos — Feu : quand un adversaire à Portée de Mêlée vous inflige des dégâts, il subit 1d10 dégâts magiques ; Terre : gagnez un bonus à vos seuils de dégâts égal à votre Maîtrise ; Eau : quand vous infligez des dégâts à un adversaire à Portée de Mêlée, tous les autres adversaires à Portée Très Proche doivent marquer un Stress ; Air : vous pouvez léviter, gagnant avantage sur les jets d\'Agilité.'
       ],
-      specialization: 'Greater Beast: Votre Beastform peut être d\'un tier supérieur au vôtre.',
-      mastery: 'True Shapeshifter: Vous pouvez adopter la forme de n\'importe quelle créature de votre tier ou inférieur, y compris humanoïdes.'
+      specialization: [
+        'Elemental Aura: Une fois par repos en Canalisant, vous pouvez assumer une aura correspondant à votre élément. L\'aura affecte les cibles à Portée Proche jusqu\'à la fin de votre Canalisation — Feu : quand un adversaire marque 1+ PV, il doit aussi marquer un Stress ; Terre : vos alliés gagnent +1 en Force ; Eau : quand un adversaire vous inflige des dégâts, marquez un Stress pour le déplacer n\'importe où à Portée Très Proche de sa position ; Air : quand vous ou un allié subissez des dégâts d\'une attaque au-delà de Mêlée, réduisez les dégâts de 1d8.'
+      ],
+      mastery: [
+        'Elemental Dominion: Vous incarnez davantage votre élément. En Canalisant, vous gagnez le bénéfice suivant — Feu : +1 à votre Maîtrise pour les attaques et sorts qui infligent des dégâts ; Terre : quand vous marquez des PV, lancez un d6 par PV marqué — pour chaque résultat de 6, réduisez les PV marqués de 1 ; Eau : quand une attaque contre vous réussit, marquez un Stress pour rendre l\'attaquant temporairement Vulnérable ; Air : +1 à votre Évasion et vous pouvez voler.'
+      ]
     },
     {
-      id: 'nature_guardian',
-      name: 'Nature Guardian',
+      id: 'warden_of_renewal',
+      name: 'Warden of Renewal',
       spellcastTrait: 'Instinct',
-      description: 'Le Gardien de la Nature contrôle les forces élémentaires et l\'environnement naturel.',
+      description: 'Jouez le Warden of Renewal si vous voulez utiliser une magie puissante pour soigner votre groupe.',
       foundation: [
-        'Terrain Control: Dépensez 1 Espoir pour modifier le terrain à Portée Proche (créer des ronces, faire surgir des rochers, inonder une zone).',
-        'Storm Call: Invoquez une tempête locale. Tous les adversaires à Portée Lointaine ont désavantage sur les jets de déplacement.'
+        'Clarity of Nature: Une fois par repos long, vous pouvez créer un espace de sérénité naturelle à Portée Proche. Quand vous passez quelques minutes à vous reposer dans cet espace, effacez du Stress égal à votre Instinct, réparti comme vous le souhaitez entre vous et vos alliés.',
+        'Regeneration: Touchez une créature et dépensez 3 Espoir. Cette créature efface 1d4 PV.'
       ],
-      specialization: 'Elemental Form: En Beastform, gagnez une résistance à un type de dégâts (choisissez : feu, froid, foudre, acide).',
-      mastery: 'Avatar of Nature: Une fois par session, fusionnez avec la nature. Pendant 3 rounds, contrôlez tous les éléments naturels à Portée Lointaine et immobilisez les adversaires sans jet.'
+      specialization: [
+        'Regenerative Reach: Vous pouvez cibler des créatures à Portée Très Proche avec votre feature « Regeneration ».',
+        'Warden\'s Protection: Une fois par repos long, dépensez 2 Espoir pour effacer 2 PV sur 1d4 alliés à Portée Proche.'
+      ],
+      mastery: [
+        'Defender: Votre transformation animale incarne un esprit gardien guérisseur. Quand vous êtes en Beastform et qu\'un allié à Portée Proche marque 2 PV ou plus, vous pouvez marquer un Stress pour réduire le nombre de PV qu\'il marque de 1.'
+      ]
     }
   ],
+
+  // ── RANGER ─────────────────────────────────────────────
   ranger: [
     {
-      id: 'hunter',
-      name: 'Hunter',
-      spellcastTrait: 'Instinct',
-      description: 'Le Chasseur traque sa proie avec une précision implacable et une connaissance approfondie des bêtes.',
+      id: 'beastbound',
+      name: 'Beastbound',
+      spellcastTrait: 'Agility',
+      description: 'Jouez le Beastbound si vous voulez forger un lien profond avec un allié animal.',
       foundation: [
-        'Favored Enemy: Choisissez un type de créature (morts-vivants, humanoïdes, bêtes, etc.). Gagnez +2 aux jets d\'attaque et de dégâts contre eux.',
-        'Hunter\'s Mark: Dépensez 1 Espoir pour marquer une cible. Vous connaissez toujours sa position et avez avantage sur les jets de Pistage.'
+        'Companion: Vous avez un compagnon animal de votre choix (à la discrétion du MJ). Il reste à vos côtés sauf indication contraire. Prenez la feuille Ranger Companion. Quand vous montez de niveau, choisissez une option de montée de niveau pour votre compagnon également.'
       ],
-      specialization: 'Deadly Hunter: Votre Favored Enemy gagne +1d6 dégâts supplémentaires.',
-      mastery: 'Apex Predator: Contre votre Favored Enemy, vos attaques sont automatiquement des coups critiques si vous avez l\'avantage.'
+      specialization: [
+        'Expert Training: Choisissez une option de montée de niveau supplémentaire pour votre compagnon.',
+        'Battle-Bonded: Quand un adversaire vous attaque alors qu\'il est à Portée de Mêlée de votre compagnon, vous gagnez un bonus de +2 à votre Évasion contre l\'attaque.'
+      ],
+      mastery: [
+        'Advanced Training: Choisissez deux options de montée de niveau supplémentaires pour votre compagnon.',
+        'Loyal Friend: Une fois par repos long, quand les dégâts d\'une attaque marqueraient le dernier Stress de votre compagnon ou votre dernier PV et que vous êtes à Portée Proche l\'un de l\'autre, vous ou votre compagnon pouvez vous précipiter aux côtés de l\'autre et subir ces dégâts à sa place.'
+      ]
     },
     {
-      id: 'scout',
-      name: 'Scout',
-      spellcastTrait: null,
-      description: 'L\'Éclaireur est un expert de la survie et du mouvement tactique.',
+      id: 'wayfinder',
+      name: 'Wayfinder',
+      spellcastTrait: 'Agility',
+      description: 'Jouez le Wayfinder si vous voulez traquer votre proie et frapper avec une force mortelle.',
       foundation: [
-        'Camouflage: Dans un environnement naturel, vous pouvez devenir Caché sans action si vous restez immobile.',
-        'Pathfinder: Votre groupe ne peut jamais se perdre et effectue les Voyages deux fois plus vite.'
+        'Ruthless Predator: Quand vous faites un jet de dégâts, vous pouvez marquer un Stress pour gagner un bonus de +1 à votre Maîtrise. De plus, quand vous infligez des dégâts Sévères à un adversaire, il doit marquer un Stress.',
+        'Path Forward: Quand vous voyagez vers un lieu que vous avez déjà visité ou que vous portez un objet qui s\'y trouvait, vous pouvez identifier le chemin le plus court et le plus direct vers votre destination.'
       ],
-      specialization: 'Ghost Ranger: Vous pouvez maintenir l\'état Caché même après avoir attaqué si vous vous déplacez immédiatement.',
-      mastery: 'Guerrilla Tactics: Une fois par round, effectuez un déplacement gratuit sans déclencher de réactions après avoir attaqué.'
+      specialization: [
+        'Elusive Predator: Quand votre Focus vous attaque, vous gagnez un bonus de +2 à votre Évasion contre l\'attaque.'
+      ],
+      mastery: [
+        'Apex Predator: Avant de faire un jet d\'attaque contre votre Focus, vous pouvez dépenser un Espoir. Sur une attaque réussie, vous retirez une Peur de la réserve du MJ.'
+      ]
     }
   ],
+
+  // ── WIZARD ─────────────────────────────────────────────
   wizard: [
     {
-      id: 'archmage',
-      name: 'Archmage',
-      spellcastTrait: 'Savoir',
-      description: 'L\'Archimage pousse la magie arcanique à ses limites absolues.',
+      id: 'school_of_knowledge',
+      name: 'School of Knowledge',
+      spellcastTrait: 'Knowledge',
+      description: 'Jouez la School of Knowledge si vous voulez une compréhension aiguë du monde qui vous entoure.',
       foundation: [
-        'Spell Mastery: Choisissez un sort de votre domaine. Il ne coûte plus d\'Espoir à rappeler.',
-        'Arcane Recovery: Une fois par session courte, récupérez 2 Espoir dépensés pour des sorts.'
+        'Prepared: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
+        'Adept: Quand vous Utilisez une Expérience, vous pouvez marquer un Stress au lieu de dépenser un Espoir. Si vous le faites, doublez votre modificateur d\'Expérience pour ce jet.'
       ],
-      specialization: 'Empowered Spells: Vos sorts infligent +1d6 dégâts supplémentaires.',
-      mastery: 'Arcane Supremacy: Une fois par session, lancez un sort sans coût (aucun Espoir, aucun Stress).'
+      specialization: [
+        'Accomplished: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
+        'Perfect Recall: Une fois par repos, quand vous rappelez une carte de domaine de votre coffre, vous pouvez réduire son Coût de Rappel de 1.'
+      ],
+      mastery: [
+        'Brilliant: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
+        'Honed Expertise: Quand vous utilisez une Expérience, lancez un d6. Sur un résultat de 5 ou plus, vous pouvez l\'utiliser sans dépenser d\'Espoir.'
+      ]
     },
     {
-      id: 'enchanter',
-      name: 'Enchanter',
-      spellcastTrait: 'Présence',
-      description: 'L\'Enchanteur spécialise dans la magie mentale et la manipulation des esprits.',
+      id: 'school_of_war',
+      name: 'School of War',
+      spellcastTrait: 'Knowledge',
+      description: 'Jouez la School of War si vous voulez utiliser la magie entraînée pour la violence.',
       foundation: [
-        'Charm: Faites un jet de Présence contre une cible humanoïde — en cas de succès, elle vous considère comme un ami pour 1 scène.',
-        'Suggestion: Implantez une suggestion simple dans l\'esprit d\'une cible Charmée. Elle suit la suggestion si elle n\'est pas clairement contre ses intérêts.'
+        'Battlemage: Vous avez concentré vos études pour devenir une force imparable sur le champ de bataille. Gagnez un emplacement de PV supplémentaire.',
+        'Face Your Fear: Quand vous réussissez avec Peur sur un jet d\'attaque, vous infligez 1d10 dégâts magiques supplémentaires.'
       ],
-      specialization: 'Dominate: Prenez le contrôle total d\'une cible Charmée pendant 1 round. Elle agit selon vos ordres.',
-      mastery: 'Mass Enchantment: Affectez jusqu\'à [Présence] cibles simultanément avec vos sorts d\'enchantement.'
+      specialization: [
+        'Conjure Shield: Vous pouvez maintenir une barrière protectrice de magie. Tant que vous avez au moins 2 Espoir, vous ajoutez votre Maîtrise à votre Évasion.',
+        'Fueled by Fear: Les dégâts magiques supplémentaires de votre feature « Face Your Fear » passent à 2d10.'
+      ],
+      mastery: [
+        'Thrive in Chaos: Quand vous réussissez une attaque, vous pouvez marquer un Stress après avoir lancé les dégâts pour forcer la cible à marquer un PV supplémentaire.',
+        'Have No Fear: Les dégâts magiques supplémentaires de votre feature « Face Your Fear » passent à 3d10.'
+      ]
     }
   ],
-  // ═══ Classes personnalisées ═══
+
+  // ── SORCERER ───────────────────────────────────────────
+  sorcerer: [
+    {
+      id: 'elemental_origin',
+      name: 'Elemental Origin',
+      spellcastTrait: 'Instinct',
+      description: 'Jouez l\'Elemental Origin si vous voulez canaliser la magie brute pour prendre la forme d\'un élément particulier.',
+      foundation: [
+        'Elementalist: Choisissez un élément à la création du personnage : air, terre, feu, foudre, eau. Vous pouvez façonner cet élément en effets inoffensifs. De plus, dépensez un Espoir et décrivez comment votre contrôle de cet élément aide un jet d\'action que vous allez faire, puis gagnez un bonus de +2 au jet ou un bonus de +3 aux dégâts du jet.'
+      ],
+      specialization: [
+        'Natural Evasion: Vous pouvez invoquer votre élément pour vous protéger. Quand un jet d\'attaque contre vous réussit, vous pouvez marquer un Stress et décrire comment vous utilisez votre élément pour vous défendre. Quand vous le faites, lancez un d6 et ajoutez son résultat à votre Évasion contre l\'attaque.'
+      ],
+      mastery: [
+        'Transcendence: Une fois par repos long, vous pouvez vous transformer en une manifestation physique de votre élément. Décrivez votre transformation et choisissez deux des bénéfices suivants jusqu\'à votre prochain repos : +4 au seuil Sévère ; +1 à un trait de personnage de votre choix ; +1 à votre Maîtrise ; +2 à votre Évasion.'
+      ]
+    },
+    {
+      id: 'primal_origin',
+      name: 'Primal Origin',
+      spellcastTrait: 'Instinct',
+      description: 'Jouez le Primal Origin si vous voulez étendre la versatilité de vos sorts de manières puissantes.',
+      foundation: [
+        'Manipulate Magic: Votre origine primale vous permet de modifier l\'essence même de la magie. Après avoir lancé un sort ou fait une attaque avec une arme infligeant des dégâts magiques, vous pouvez marquer un Stress pour : étendre la portée du sort ou de l\'attaque d\'un cran ; gagner un bonus de +2 au résultat du jet d\'action ; doubler un dé de dégâts de votre choix ; toucher une cible supplémentaire à portée.'
+      ],
+      specialization: [
+        'Enchanted Aid: Vous pouvez améliorer la magie des autres avec votre essence. Quand vous Aidez un Allié avec un Spellcast Roll, vous pouvez lancer un d8 comme dé d\'avantage. Une fois par repos long, après qu\'un allié a fait un Spellcast Roll avec votre aide, vous pouvez échanger les résultats de ses Duality Dice.'
+      ],
+      mastery: [
+        'Arcane Charge: Vous pouvez accumuler de l\'énergie magique pour améliorer vos capacités. Quand vous subissez des dégâts magiques, vous devenez Chargé. Alternativement, vous pouvez dépenser 2 Espoir pour devenir Chargé. Quand vous réussissez une attaque infligeant des dégâts magiques en étant Chargé, vous pouvez dissiper votre Charge pour gagner un bonus de +10 aux dégâts ou un bonus de +3 à la Difficulté d\'un jet de réaction que le sort impose à la cible. Vous cessez d\'être Chargé à votre prochain repos long.'
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════
+  //  CLASSES PERSONNALISÉES (HOMEBREW)
+  // ═══════════════════════════════════════════════════════
+
+  // ── ASSASSIN (The Void v1.5) ───────────────────────────
   assassin: [
     {
-      id: 'enforcer',
-      name: 'Enforcer',
+      id: 'executioners_guild',
+      name: 'Executioners Guild',
       spellcastTrait: null,
-      description: 'L\'Exécuteur élimine ses cibles avec efficacité brutale et sans laisser de témoins.',
+      description: 'La Guilde des Exécuteurs se spécialise dans l\'élimination rapide et brutale de ses cibles.',
       foundation: [
-        'Execute: Quand votre Mark n\'a plus que la moitié de ses PV, vos attaques infligent +2d6 dégâts.',
-        'Ruthless: Après avoir vaincu votre Mark, récupérez immédiatement 2 Espoir.'
+        'First Strike: La première fois dans une scène que vous réussissez un jet d\'attaque, doublez les dégâts de l\'attaque.',
+        'Ambush: Votre feature « Marked for Death » utilise des d6 au lieu de d4.'
       ],
-      specialization: 'Coup de Grâce: Une fois par scène, effectuez une attaque automatiquement réussie contre une cible à Portée de Mêlée qui ne vous a pas encore vu ce round.',
-      mastery: 'Death\'s Champion: Votre Mark cause toujours des dégâts maximaux à la première attaque réussie de chaque round.'
+      specialization: [
+        'Death Strike: Quand vous infligez des dégâts Sévères à une créature, vous pouvez marquer un Stress pour lui faire marquer un PV supplémentaire.',
+        'Scorpion\'s Poise: Vous gagnez un bonus de +2 à votre Évasion contre toute attaque effectuée par une créature Marked for Death.'
+      ],
+      mastery: [
+        'True Strike: Une fois par repos long, quand vous échouez un jet d\'attaque, vous pouvez dépenser un Espoir pour en faire une réussite.',
+        'Backstab: Votre feature « Marked for Death » utilise des d8 au lieu de d6.'
+      ]
     },
     {
-      id: 'infiltrator',
-      name: 'Infiltrator',
-      spellcastTrait: 'Finesse',
-      description: 'L\'Infiltrateur est un maître de l\'espionnage et de la manipulation des informations.',
+      id: 'poisoners_guild',
+      name: 'Poisoners Guild',
+      spellcastTrait: 'Knowledge',
+      description: 'La Guilde des Empoisonneurs maîtrise l\'art des toxines et des concoctions mortelles.',
       foundation: [
-        'Perfect Disguise: Passez 10 minutes à vous préparer pour adopter l\'identité de n\'importe quelle personne. Avantage sur les jets pour maintenir la tromperie.',
-        'Network: Vous avez des contacts dans le monde criminel. Une fois par session, obtenez des informations ou de l\'aide via votre réseau.'
+        'Toxic Concoctions: Marquez un Stress pour ajouter 1d4+1 jetons sur cette carte. À votre prochain repos long, videz cette carte. Vous connaissez ces poisons : Gorgon Root (la cible reçoit un malus permanent de -1 à sa Difficulté, une seule fois) ; Grave Spore (la cible doit aussi marquer un Stress) ; Leech Weed (bonus de +1d6 aux dégâts de cette attaque).',
+        'Envenomate: Quand vous réussissez une attaque avec une arme, vous pouvez dépenser un jeton de cette carte pour infliger à la cible l\'effet d\'un poison connu.'
       ],
-      specialization: 'Social Chameleon: Vous ne pouvez jamais être détecté comme intrus sauf par magie ou sur un échec critique.',
-      mastery: 'Ghost Protocol: Pendant une scène entière, vous laissez zéro trace de votre présence — aucun souvenir, aucune preuve.'
+      specialization: [
+        'Poison Compendium: Vous connaissez aussi ces poisons : Midnight\'s Veil (malus permanent de -2 aux jets d\'attaque de la cible, une seule fois) ; Ghost Petal (diminuez d\'un cran les dés de dégâts de l\'attaque standard de la cible, une seule fois).',
+        'Adder\'s Blessing: Vous êtes immunisé aux poisons et autres toxines.'
+      ],
+      mastery: [
+        'Venomancer: Vous connaissez aussi ces poisons : Blight Seed (malus permanent de -3 aux seuils de dégâts de la cible, une seule fois) ; Fear Leaf (cette attaque gagne un bonus aux dégâts égal au résultat de votre Dé de Peur).',
+        'Twin Fang: Quand vous infligez l\'effet d\'un poison connu à une cible, vous pouvez dépenser un jeton supplémentaire pour infliger l\'effet d\'un second poison connu.'
+      ]
     }
   ],
+
+  // ── DUELLIST (Homebrew) ────────────────────────────────
   duellist: [
     {
       id: 'swashbuckler',
       name: 'Swashbuckler',
-      spellcastTrait: 'Présence',
-      description: 'Le Bretteur surclasse ses rivaux dans les duels avec panache et bravade.',
+      spellcastTrait: 'Presence',
+      description: 'Jouez le Swashbuckler si vous voulez surpasser vos rivaux en duel avec panache.',
       foundation: [
-        'Roiling Braggart: Quand vous Fanfaronnez (Boast), vous pouvez donner une Peur au MJ pour augmenter le dé d\'avantage à d8.',
+        'Roiling Braggart: Quand vous Fanfaronnez (Boast), vous pouvez donner une Peur au MJ pour augmenter le dé d\'avantage à un d8.',
         'A Tale to Tell: Décrivez comme si vous racontiez l\'histoire plus tard — narrez comment vous rendez un Rival Vulnérable. Il reste Vulnérable jusqu\'à ce que quelqu\'un l\'attaque.'
       ],
-      specialization: 'Deflective Dodge: Quand un adversaire vous attaque et qu\'un autre adversaire est à Portée de Mêlée, marquez un Stress pour rediriger l\'attaque vers cet adversaire.',
-      mastery: 'A Worthy Opponent: Vous pouvez avoir un Rival Juré. Cette Rivalité ne compte pas dans votre limite et ne se termine pas en fin de scène. Deux fois par repos, tant que vous voyez votre Rival Juré, vous pouvez Fanfaronner pour 2 Espoir.'
+      specialization: [
+        'Deflective Dodge: Quand un adversaire vous attaque alors qu\'un autre adversaire est à Portée de Mêlée, marquez un Stress pour rediriger l\'attaque et infliger ses dégâts à cet adversaire.'
+      ],
+      mastery: [
+        'A Worthy Opponent: Vous pouvez avoir un Rival Juré. Cette Rivalité ne compte pas dans votre limite de Rivaux et ne se termine pas à la fin d\'une scène. Deux fois par repos, tant que vous pouvez voir votre Rival Juré, vous pouvez Fanfaronner un jet pour 2 Espoir. De plus, vous pouvez facilement découvrir la localisation et les activités récentes de votre Rival Juré. Vous ne pouvez pas avoir de nouveau Rival Juré sans en informer le précédent.'
+      ]
     },
     {
       id: 'acrobat',
       name: 'Acrobat',
-      spellcastTrait: 'Agilité',
-      description: 'L\'Acrobate échappe facilement à ses poursuivants et utilise la mobilité comme arme.',
+      spellcastTrait: 'Agility',
+      description: 'Jouez l\'Acrobat si vous voulez échapper facilement à ceux qui vous poursuivent.',
       foundation: [
-        'Stunt Performer: Quand vous Fanfaronnez un jet d\'Agilité, ajoutez le résultat du dé d\'avantage à votre Espoir (d) plutôt qu\'à votre total.',
-        'Evasive Leap: En réaction à une attaque, dépensez 1 Espoir pour vous déplacer hors de portée avant que l\'attaque soit résolue.'
+        'Stunt Performer: Quand vous Fanfaronnez un jet d\'Agilité, au lieu d\'ajouter le résultat du dé d\'avantage à votre total, ajoutez-le à votre Dé d\'Espoir.',
+        'Roll With the Punches: Une fois par repos long, quand vous échouez un jet d\'action, vous pouvez dépenser 2 Espoir pour faire un jet d\'Agilité afin de rapidement fuir ou vous cacher — utilisez un d20 pour le Dé de Peur.'
       ],
-      specialization: 'Impossible Escape: Vous pouvez vous déplacer à travers l\'espace occupé par des adversaires sans jet. Lors d\'un tel déplacement, gagnez +2 à l\'Évasion.',
-      mastery: 'Untouchable: Tant que vous vous êtes déplacé ce round, vous avez +2 à l\'Évasion et les adversaires ont désavantage pour vous attaquer.'
+      specialization: [
+        'Tumbler: Vous êtes immunisé aux dégâts physiques causés par les chutes ou le fait d\'être projeté.',
+        'A Double Act: Une fois par repos long, vous pouvez choisir un allié. Le coût pour initier un Tag Team Roll avec cet allié est réduit à 1 Espoir.'
+      ],
+      mastery: [
+        'Steal the Spotlight: Une fois par repos, marquez un Stress pour commencer une démonstration éblouissante. Pendant cette démonstration, tous les adversaires deviennent vos Rivaux. Placez un d4 Dazzling Die sur cette carte avec la valeur 4. Quand un adversaire vous attaque ou vous inflige des dégâts, ajoutez la valeur actuelle du Dazzling Die à votre Évasion et vos seuils de dégâts, déplacez-vous immédiatement jusqu\'à Portée Lointaine, puis diminuez la valeur du dé de 1. Une fois que la valeur atteint 0 ou que la scène se termine, la démonstration prend fin.'
+      ]
     }
   ]
 }
 
 /**
- * Retourne les sous-classes d\'une classe donnée.
+ * Retourne les sous-classes d'une classe donnée.
  * @param {string} classId
  * @returns {Object[]}
  */

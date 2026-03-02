@@ -173,11 +173,25 @@
                   </div>
                   <div class="tier-block">
                     <span class="tier-block__label">Spécialisation (Niv. 5–7)</span>
-                    <p>{{ sub.specialization }}</p>
+                    <ul class="tier-block__list">
+                      <li
+                        v-for="(s, si) in sub.specialization"
+                        :key="si"
+                      >
+                        {{ s }}
+                      </li>
+                    </ul>
                   </div>
                   <div class="tier-block">
                     <span class="tier-block__label">Maîtrise (Niv. 8+)</span>
-                    <p>{{ sub.mastery }}</p>
+                    <ul class="tier-block__list">
+                      <li
+                        v-for="(m, mi) in sub.mastery"
+                        :key="mi"
+                      >
+                        {{ m }}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </article>
