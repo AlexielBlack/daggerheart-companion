@@ -38,8 +38,8 @@ const routes = [
   {
     path: '/characters/domaines',
     name: 'characters-domaines',
-    component: () => import('@modules/characters/views/DomainBrowser.vue'),
-    meta: { title: 'Domaines', module: 'characters', parent: 'characters' }
+    component: () => import('@modules/domains/views/DomainBrowser.vue'),
+    meta: { title: 'Domaines', module: 'domains', parent: 'characters' }
   },
   {
     path: '/characters/ascendance',
