@@ -7,12 +7,12 @@
 export const midnight = {
   id: 'midnight',
   name: 'Midnight',
-  emoji: '🌙',
-  color: '#6366f1',
+  emoji: '🌑',
+  color: '#4338ca',
   description:
-    'Le domaine de Midnight représente la furtivité, les ombres et la tromperie. Les adeptes de Midnight opèrent dans l\'obscurité et frappent depuis les ténèbres.',
+    'Le domaine de Midnight représente la furtivité, les ombres et la manipulation des ténèbres. Les pratiquants de Midnight opèrent dans l\'obscurité, frappant depuis les ombres et manipulant la peur.',
   classes: ['Rogue', 'Sorcerer', 'Assassin'],
-  themes: ['Furtivité', 'Ombres', 'Tromperie'],
+  themes: ['Furtivité', 'Ombres', 'Ténèbres'],
   hasSpells: true,
   cardCount: 21,
   cards: [
@@ -24,7 +24,7 @@ export const midnight = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'Vous avez l\'avantage sur les jets d\'action pour crocheter des serrures non magiques, désarmer des pièges non magiques ou voler des objets à une cible (que ce soit par la discrétion ou par la force).'
+        'Vous avez un avantage sur les jets d\'action pour crocheter des serrures non magiques, désamorcer des pièges non magiques, ou voler des objets à une cible (que ce soit par furtivité ou par la force).'
     },
     {
       id: 'midnight-rain-of-blades',
@@ -42,7 +42,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Quand vous avez quelques minutes pour vous préparer, vous pouvez marquer un Stress pour revêtir l\'apparence de n\'importe quel humanoïde que vous pouvez visualiser clairement dans votre esprit. Tant que vous êtes déguisé, vous avez l\'avantage sur les jets de Présence pour éviter l\'examen. Placez un nombre de jetons égal à votre trait de Sort sur cette carte. Quand vous effectuez une action sous déguisement, dépensez un jeton de cette carte. Après la résolution de l\'action qui dépense le dernier jeton, le déguisement tombe.'
+        'Quand vous avez quelques minutes pour vous préparer, vous pouvez marquer un Stress pour revêtir l\'apparence de n\'importe quel humanoïde que vous pouvez vous représenter clairement. Tant que vous êtes déguisé, vous avez un avantage sur les jets de Présence pour éviter les soupçons. Placez un nombre de jetons égal à votre trait de Sort sur cette carte. Quand vous effectuez une action sous ce déguisement, dépensez un jeton. Après la résolution de l\'action qui dépense le dernier jeton, le déguisement tombe.'
     },
 
     // ── Level 2 (2 cards) ──────────────────────────────
@@ -53,7 +53,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Dépensez un Espoir pour invoquer un esprit de taille humaine qui peut déplacer ou transporter des choses pour vous jusqu\'à votre prochain repos. Vous pouvez aussi l\'envoyer attaquer un adversaire. Dans ce cas, faites un jet de Sort contre une cible à Portée Très Lointaine. Sur un succès, l\'esprit se déplace à Portée de Mêlée de cette cible. Lancez un nombre de d6 égal à votre trait de Sort et infligez autant de dégâts magiques à la cible. L\'esprit se dissipe ensuite. Vous ne pouvez avoir qu\'un seul esprit à la fois.'
+        'Dépensez un Espoir pour invoquer un esprit de taille humaine qui peut déplacer ou transporter des objets pour vous jusqu\'à votre prochain repos. Vous pouvez aussi l\'envoyer attaquer un adversaire. Ce faisant, faites un jet de Sort contre une cible à Portée Très Lointaine. Sur un succès, l\'esprit se déplace à Portée de Mêlée de la cible. Lancez un nombre de d6 égal à votre trait de Sort et infligez autant de dégâts magiques à la cible. L\'esprit se dissipe ensuite. Vous ne pouvez avoir qu\'un seul esprit à la fois.'
     },
     {
       id: 'midnight-shadowbind',
@@ -62,7 +62,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Faites un jet de Sort contre tous les adversaires à Portée Très Proche. Les cibles contre lesquelles vous réussissez sont temporairement Entravées tandis que leur ombre les immobilise sur place.'
+        'Faites un jet de Sort contre tous les adversaires à Portée Très Proche. Les cibles contre lesquelles vous réussissez sont temporairement Entravées alors que leur ombre les immobilise sur place.'
     },
 
     // ── Level 3 (2 cards) ──────────────────────────────
@@ -73,7 +73,7 @@ export const midnight = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'Quand vous vous positionnez derrière une créature de taille similaire à la vôtre, vous pouvez marquer un Stress pour l\'attraper en étranglement, la rendant temporairement Vulnérable. Quand une créature attaque une cible Vulnérable de cette façon, elle inflige 2d6 dégâts supplémentaires.'
+        'Quand vous vous positionnez derrière une créature à peu près de votre taille, vous pouvez marquer un Stress pour l\'immobiliser dans une prise d\'étranglement, la rendant temporairement Vulnérable. Quand une créature attaque une cible Vulnérable de cette manière, elle inflige 2d6 dégâts supplémentaires.'
     },
     {
       id: 'midnight-veil-of-night',
@@ -82,7 +82,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Faites un jet de Sort (13). Sur un succès, vous pouvez créer un rideau temporaire d\'obscurité entre deux points à Portée Lointaine. Vous seul pouvez voir à travers cette obscurité. Vous êtes considéré comme Caché pour les adversaires de l\'autre côté du voile, et vous avez l\'avantage sur les attaques que vous faites à travers l\'obscurité. Le voile reste en place jusqu\'à ce que vous lanciez un autre sort.'
+        'Faites un jet de Sort (13). Sur un succès, vous pouvez créer un rideau temporaire d\'obscurité entre deux points à Portée Lointaine. Vous seul pouvez voir à travers ces ténèbres. Vous êtes considéré comme Caché pour les adversaires de l\'autre côté du voile, et vous avez un avantage sur les attaques que vous faites à travers l\'obscurité. Le voile persiste jusqu\'à ce que vous lanciez un autre sort.'
     },
 
     // ── Level 4 (2 cards) ──────────────────────────────
@@ -93,7 +93,7 @@ export const midnight = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'Quand vous obtenez la Peur en tentant de vous déplacer sans être remarqué dans une zone dangereuse, vous pouvez marquer un Stress pour obtenir l\'Espoir à la place. Si un allié à Portée Proche tente aussi de se déplacer sans être remarqué et obtient la Peur, vous pouvez marquer un Stress pour changer son résultat en Espoir.'
+        'Quand vous obtenez un jet avec la Peur en tentant de vous déplacer discrètement dans une zone dangereuse, vous pouvez marquer un Stress pour obtenir un jet avec l\'Espoir à la place. Si un allié à Portée Proche tente aussi de se déplacer discrètement et obtient un jet avec la Peur, vous pouvez marquer un Stress pour transformer son résultat en jet avec l\'Espoir.'
     },
     {
       id: 'midnight-glyph-of-nightfall',
@@ -113,7 +113,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Faites un jet de Sort contre une cible à Portée Proche. Sur un succès, dépensez un Espoir pour conjurer une magie suppressive autour de la cible qui englobe tout à Portée Très Proche d\'elle et la suit dans ses déplacements. La cible et tout ce qui se trouve dans la zone est Réduit au Silence jusqu\'à ce que le MJ dépense une Peur lors de son tour pour lever cette condition, que vous lanciez à nouveau Hush, ou que vous subissiez des dégâts Majeurs. Tant qu\'elles sont Réduites au Silence, elles ne peuvent faire aucun bruit et ne peuvent lancer de sorts.'
+        'Faites un jet de Sort contre une cible à Portée Proche. Sur un succès, dépensez un Espoir pour conjurer une magie suppressive autour de la cible qui englobe tout à Portée Très Proche d\'elle et la suit dans ses déplacements. La cible et tout ce qui se trouve dans la zone est Réduit au Silence jusqu\'à ce que le MJ dépense une Peur lors de son tour pour lever cette condition, que vous lanciez Hush à nouveau, ou que vous subissiez des dégâts Majeurs. Tant qu\'elles sont Réduites au Silence, les cibles ne peuvent ni faire de bruit ni lancer de sorts.'
     },
     {
       id: 'midnight-phantom-retreat',
@@ -122,7 +122,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Dépensez un Espoir pour activer Phantom Retreat à l\'endroit où vous vous tenez actuellement. Dépensez un autre Espoir à tout moment avant votre prochain repos pour disparaître de votre position et réapparaître là où vous étiez quand vous avez activé Phantom Retreat. Ce sort prend fin après votre réapparition.'
+        'Dépensez un Espoir pour activer Phantom Retreat à l\'endroit où vous vous tenez actuellement. Dépensez un autre Espoir à tout moment avant votre prochain repos pour disparaître de là où vous êtes et réapparaître à l\'endroit où vous vous teniez quand vous avez activé Phantom Retreat. Ce sort prend fin après votre réapparition.'
     },
 
     // ── Level 6 (2 cards) ──────────────────────────────
@@ -133,7 +133,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Vous pouvez parler dans l\'esprit de toute personne avec laquelle vous avez eu un contact physique. Une fois le canal ouvert, elle peut aussi parler dans votre esprit. De plus, vous pouvez marquer un Stress pour faire un jet de Sort contre elle. Sur un succès, vous pouvez poser au MJ une des questions suivantes et recevoir une réponse : Où est-elle ? Que fait-elle ? De quoi a-t-elle peur ? Qu\'est-ce qu\'elle chérit le plus au monde ?'
+        'Vous pouvez parler dans l\'esprit de toute personne avec laquelle vous avez eu un contact physique. Une fois le canal ouvert, elle peut vous répondre mentalement. De plus, vous pouvez marquer un Stress pour faire un jet de Sort contre elle. Sur un succès, vous pouvez poser au MJ l\'une des questions suivantes et recevoir une réponse : Où est-elle ? Que fait-elle ? De quoi a-t-elle peur ? Qu\'est-ce qu\'elle chérit le plus au monde ?'
     },
     {
       id: 'midnight-mass-disguise',
@@ -142,7 +142,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Quand vous avez quelques minutes de silence pour vous concentrer, vous pouvez marquer un Stress pour changer l\'apparence de toutes les créatures consentantes à Portée Proche. Leurs nouvelles formes doivent partager une structure corporelle et une taille similaires, et peuvent être quelqu\'un ou quelque chose que vous avez déjà vu ou entièrement inventé. Une créature déguisée a l\'avantage sur les jets de Présence pour éviter l\'examen. Activez un Compte à Rebours (8). Il diminue comme conséquence choisie par le MJ. Quand il se déclenche, le déguisement tombe.'
+        'Quand vous avez quelques minutes de silence pour vous concentrer, vous pouvez marquer un Stress pour changer l\'apparence de toutes les créatures consentantes à Portée Proche. Leurs nouvelles formes doivent partager une structure corporelle et une taille similaires, et peuvent être quelqu\'un ou quelque chose que vous avez déjà vu ou être entièrement inventées. Une créature déguisée a un avantage sur les jets de Présence pour éviter les soupçons. Activez un Compte à Rebours (8). Il décompte comme conséquence choisie par le MJ. Quand il se déclenche, le déguisement tombe.'
     },
 
     // ── Level 7 (2 cards) ──────────────────────────────
@@ -162,7 +162,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Quand une attaque contre vous qui infligerait des dégâts physiques échoue, vous pouvez dépenser un Espoir pour vous envelopper d\'ombre, devenant Caché et vous téléportant à un point à Portée Proche de l\'attaquant. Vous restez Caché jusqu\'à la prochaine fois que vous faites un jet d\'action.'
+        'Quand une attaque contre vous qui infligerait des dégâts physiques échoue, vous pouvez dépenser un Espoir pour vous envelopper d\'ombre, devenant Caché et vous téléportant à un point à Portée Proche de l\'attaquant. Vous restez Caché jusqu\'à votre prochain jet d\'action.'
     },
 
     // ── Level 8 (2 cards) ──────────────────────────────
@@ -173,7 +173,7 @@ export const midnight = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'Vos prouesses sont améliorées sous le couvert de l\'ombre. Tant que vous êtes enveloppé de faible lumière ou d\'obscurité, vous gagnez un bonus de +1 à votre Évasion et faites vos jets d\'attaque avec avantage.'
+        'Vos prouesses sont améliorées sous le couvert de l\'ombre. Tant que vous êtes enveloppé dans une lumière faible ou l\'obscurité, vous gagnez un bonus de +1 à votre Évasion et faites vos jets d\'attaque avec un avantage.'
     },
     {
       id: 'midnight-spellcharge',
@@ -182,7 +182,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Quand vous subissez des dégâts magiques, placez sur cette carte un nombre de jetons égal au nombre de Points de Vie que vous avez marqués. Vous pouvez stocker un nombre de jetons égal à votre trait de Sort. Quand vous réussissez une attaque contre une cible, vous pouvez dépenser autant de jetons que vous le souhaitez pour ajouter un d6 par jeton dépensé à votre jet de dégâts.'
+        'Quand vous subissez des dégâts magiques, placez un nombre de jetons égal au nombre de Points de Vie que vous avez marqués sur cette carte. Vous pouvez stocker un nombre de jetons égal à votre trait de Sort. Quand vous réussissez une attaque contre une cible, vous pouvez dépenser autant de jetons que souhaité pour ajouter un d6 par jeton dépensé à votre jet de dégâts.'
     },
 
     // ── Level 9 (2 cards) ──────────────────────────────
@@ -202,7 +202,7 @@ export const midnight = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'Choisissez une cible à Portée Lointaine. Quand vous réussissez un jet d\'action contre elle qui n\'entraîne pas de jet de dégâts, placez un jeton sur cette carte. Quand vous infligez des dégâts à cette cible, dépensez autant de jetons que vous le souhaitez pour ajouter un d12 par jeton dépensé à votre jet de dégâts. Vous ne pouvez maintenir Twilight Toll que sur une créature à la fois. Quand vous choisissez une nouvelle cible ou prenez un repos, retirez tous les jetons non dépensés.'
+        'Choisissez une cible à Portée Lointaine. Quand vous réussissez un jet d\'action contre elle qui ne résulte pas en un jet de dégâts, placez un jeton sur cette carte. Quand vous infligez des dégâts à cette cible, dépensez autant de jetons que souhaité pour ajouter un d12 par jeton dépensé à votre jet de dégâts. Vous ne pouvez maintenir Twilight Toll que sur une seule créature à la fois. Quand vous choisissez une nouvelle cible ou prenez un repos, retirez tous les jetons non dépensés.'
     },
 
     // ── Level 10 (2 cards) ─────────────────────────────
@@ -213,7 +213,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Faites un jet de Sort (16). Une fois par repos long sur un succès, plongez toute la zone à Portée Lointaine dans une obscurité totale que seuls vous et vos alliés pouvez percer. Les jets d\'attaque ont le désavantage quand ils ciblent vous ou un allié dans cette ombre. De plus, quand vous ou un allié réussissez avec Espoir contre un adversaire dans cette ombre, la cible doit marquer un Stress. Ce sort dure jusqu\'à ce que le MJ dépense une Peur lors de son tour pour lever cet effet ou que vous subissiez des dégâts Sévères.'
+        'Faites un jet de Sort (16). Une fois par repos long sur un succès, plongez toute la zone à Portée Lointaine dans une obscurité totale que seuls vous et vos alliés pouvez percer du regard. Les jets d\'attaque ont un désavantage lorsqu\'ils ciblent vous ou un allié dans cette ombre. De plus, quand vous ou un allié réussit avec l\'Espoir contre un adversaire dans cette ombre, la cible doit marquer un Stress. Ce sort dure jusqu\'à ce que le MJ dépense une Peur lors de son tour pour dissiper cet effet ou que vous subissiez des dégâts Sévères.'
     },
     {
       id: 'midnight-specter-of-the-dark',
@@ -222,7 +222,7 @@ export const midnight = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Marquez un Stress pour devenir Spectral jusqu\'à ce que vous fassiez un jet d\'action ciblant une autre créature. Tant que vous êtes Spectral, vous êtes immunisé aux dégâts physiques et pouvez flotter et traverser les objets solides. Les autres créatures peuvent toujours vous voir sous cette forme.'
+        'Marquez un Stress pour devenir Spectral jusqu\'à ce que vous fassiez un jet d\'action ciblant une autre créature. Tant que vous êtes Spectral, vous êtes immunisé aux dégâts physiques et pouvez flotter et passer à travers les objets solides. Les autres créatures peuvent toujours vous voir sous cette forme.'
     }
   ]
 }

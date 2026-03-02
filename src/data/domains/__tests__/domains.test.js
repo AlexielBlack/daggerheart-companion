@@ -11,6 +11,9 @@ import { bone } from '../bone.js'
 import { codex } from '../codex.js'
 import { grace } from '../grace.js'
 import { midnight } from '../midnight.js'
+import { sage } from '../sage.js'
+import { splendor } from '../splendor.js'
+import { valor } from '../valor.js'
 import {
   DOMAINS,
   CARD_TYPES,
@@ -571,6 +574,223 @@ describe('Midnight domain', () => {
 
   it('classes should be Rogue, Sorcerer, Assassin', () => {
     expect(midnight.classes.sort()).toEqual(['Assassin', 'Rogue', 'Sorcerer'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// SAGE DOMAIN
+// ═══════════════════════════════════════════════════════════
+
+describe('Sage domain — SRD cards', () => {
+  it('should have 21 cards', () => {
+    expect(sage.cards).toHaveLength(21)
+  })
+
+  it('all card IDs should be unique', () => {
+    const ids = sage.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('level distribution: 3 at level 1, 2 each for levels 2-10', () => {
+    const byLevel = {}
+    sage.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let l = 2; l <= 10; l++) {
+      expect(byLevel[l]).toBe(2)
+    }
+  })
+
+  it('card types should be spell or ability', () => {
+    sage.cards.forEach((c) => {
+      expect(['spell', 'ability']).toContain(c.type)
+    })
+  })
+
+  it('should contain all SRD card names', () => {
+    const names = sage.cards.map((c) => c.name)
+    expect(names).toContain('Gifted Tracker')
+    expect(names).toContain("Nature's Tongue")
+    expect(names).toContain('Vicious Entangle')
+    expect(names).toContain('Conjure Swarm')
+    expect(names).toContain('Natural Familiar')
+    expect(names).toContain('Corrosive Projectile')
+    expect(names).toContain('Towering Stalk')
+    expect(names).toContain('Death Grip')
+    expect(names).toContain('Healing Field')
+    expect(names).toContain('Thorn Skin')
+    expect(names).toContain('Wild Fortress')
+    expect(names).toContain('Conjured Steeds')
+    expect(names).toContain('Forager')
+    expect(names).toContain('Sage-Touched')
+    expect(names).toContain('Wild Surge')
+    expect(names).toContain('Forest Sprites')
+    expect(names).toContain('Rejuvenation Barrier')
+    expect(names).toContain('Fane of the Wilds')
+    expect(names).toContain('Plant Dominion')
+    expect(names).toContain('Force of Nature')
+    expect(names).toContain('Tempest')
+  })
+
+  it('Sage-Touched should be level 7 with correct feature', () => {
+    const touched = sage.cards.find((c) => c.name === 'Sage-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+  })
+
+  it('hasSpells should be true', () => {
+    expect(sage.hasSpells).toBe(true)
+  })
+
+  it('classes should be Druid, Ranger', () => {
+    expect(sage.classes.sort()).toEqual(['Druid', 'Ranger'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// SPLENDOR DOMAIN
+// ═══════════════════════════════════════════════════════════
+
+describe('Splendor domain — SRD cards', () => {
+  it('should have 21 cards', () => {
+    expect(splendor.cards).toHaveLength(21)
+  })
+
+  it('all card IDs should be unique', () => {
+    const ids = splendor.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('level distribution: 3 at level 1, 2 each for levels 2-10', () => {
+    const byLevel = {}
+    splendor.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let l = 2; l <= 10; l++) {
+      expect(byLevel[l]).toBe(2)
+    }
+  })
+
+  it('card types should be spell or ability', () => {
+    splendor.cards.forEach((c) => {
+      expect(['spell', 'ability']).toContain(c.type)
+    })
+  })
+
+  it('should contain all SRD card names', () => {
+    const names = splendor.cards.map((c) => c.name)
+    expect(names).toContain('Bolt Beacon')
+    expect(names).toContain('Mending Touch')
+    expect(names).toContain('Reassurance')
+    expect(names).toContain('Final Words')
+    expect(names).toContain('Healing Hands')
+    expect(names).toContain('Second Wind')
+    expect(names).toContain('Voice of Reason')
+    expect(names).toContain('Divination')
+    expect(names).toContain('Life Ward')
+    expect(names).toContain('Shape Material')
+    expect(names).toContain('Smite')
+    expect(names).toContain('Restoration')
+    expect(names).toContain('Zone of Protection')
+    expect(names).toContain('Healing Strike')
+    expect(names).toContain('Splendor-Touched')
+    expect(names).toContain('Shield Aura')
+    expect(names).toContain('Stunning Sunlight')
+    expect(names).toContain('Overwhelming Aura')
+    expect(names).toContain('Salvation Beam')
+    expect(names).toContain('Invigoration')
+    expect(names).toContain('Resurrection')
+  })
+
+  it('Splendor-Touched should be level 7 with correct feature', () => {
+    const touched = splendor.cards.find((c) => c.name === 'Splendor-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+  })
+
+  it('hasSpells should be true', () => {
+    expect(splendor.hasSpells).toBe(true)
+  })
+
+  it('classes should be Seraph, Wizard', () => {
+    expect(splendor.classes.sort()).toEqual(['Seraph', 'Wizard'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// VALOR DOMAIN
+// ═══════════════════════════════════════════════════════════
+
+describe('Valor domain — SRD cards', () => {
+  it('should have 21 cards', () => {
+    expect(valor.cards).toHaveLength(21)
+  })
+
+  it('all card IDs should be unique', () => {
+    const ids = valor.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('level distribution: 3 at level 1, 2 each for levels 2-10', () => {
+    const byLevel = {}
+    valor.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let l = 2; l <= 10; l++) {
+      expect(byLevel[l]).toBe(2)
+    }
+  })
+
+  it('card types should be ability only (no spells)', () => {
+    valor.cards.forEach((c) => {
+      expect(c.type).toBe('ability')
+    })
+  })
+
+  it('should contain all SRD card names', () => {
+    const names = valor.cards.map((c) => c.name)
+    expect(names).toContain('Bare Bones')
+    expect(names).toContain('Forceful Push')
+    expect(names).toContain('I Am Your Shield')
+    expect(names).toContain('Body Basher')
+    expect(names).toContain('Bold Presence')
+    expect(names).toContain('Critical Inspiration')
+    expect(names).toContain('Lean on Me')
+    expect(names).toContain('Goad Them On')
+    expect(names).toContain('Support Tank')
+    expect(names).toContain('Armorer')
+    expect(names).toContain('Rousing Strike')
+    expect(names).toContain('Inevitable')
+    expect(names).toContain('Rise Up')
+    expect(names).toContain('Shrug It Off')
+    expect(names).toContain('Valor-Touched')
+    expect(names).toContain('Full Surge')
+    expect(names).toContain('Ground Pound')
+    expect(names).toContain('Hold the Line')
+    expect(names).toContain('Lead by Example')
+    expect(names).toContain('Unbreakable')
+    expect(names).toContain('Unyielding Armor')
+  })
+
+  it('Valor-Touched should be level 7 with correct feature', () => {
+    const touched = valor.cards.find((c) => c.name === 'Valor-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('Score d\'Armure')
+  })
+
+  it('hasSpells should be false', () => {
+    expect(valor.hasSpells).toBe(false)
+  })
+
+  it('classes should be Guardian, Seraph', () => {
+    expect(valor.classes.sort()).toEqual(['Guardian', 'Seraph'])
   })
 })
 
