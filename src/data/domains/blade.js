@@ -10,9 +10,9 @@ export const blade = {
   emoji: '⚔️',
   color: '#dc2626',
   description:
-    'The domain of Blade represents weapon mastery and close combat. Blade warriors transform their weapon into an extension of their will.',
+    'Le domaine de Blade représente la maîtrise des armes et le combat rapproché. Les guerriers de Blade transforment leur arme en une extension de leur volonté.',
   classes: ['Guardian', 'Warrior', 'Assassin'],
-  themes: ['Combat', 'Weapons', 'Martial mastery'],
+  themes: ['Combat', 'Armes', 'Maîtrise martiale'],
   hasSpells: false,
   cardCount: 21,
   cards: [
@@ -24,7 +24,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'When you take Severe damage, you can mark a Stress to reduce the severity by one threshold.'
+        'Quand vous subissez des dégâts Sévères, vous pouvez marquer un Stress pour réduire la sévérité d\'un palier.'
     },
     {
       id: 'blade-not-good-enough',
@@ -32,7 +32,7 @@ export const blade = {
       level: 1,
       type: 'ability',
       recallCost: 1,
-      feature: 'When you roll your damage dice, you can reroll any 1s or 2s.'
+      feature: 'Quand vous lancez vos dés de dégâts, vous pouvez relancer tous les 1 et les 2.'
     },
     {
       id: 'blade-whirlwind',
@@ -41,7 +41,7 @@ export const blade = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'When you make a successful attack against a target within Very Close range, you can spend a Hope to use the attack against all other targets within Very Close range. All additional adversaries you succeed against with this ability take half damage.'
+        'Quand vous réussissez une attaque contre une cible à Portée Très Proche, vous pouvez dépenser un Espoir pour utiliser l\'attaque contre toutes les autres cibles à Portée Très Proche. Tous les adversaires supplémentaires contre lesquels vous réussissez avec cette capacité subissent la moitié des dégâts.'
     },
 
     // ── Level 2 (2 cards) ──────────────────────────────
@@ -52,7 +52,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'Once per long rest, when you compliment someone or ask them about something they\'re good at, you can both gain 3 Hope.'
+        'Une fois par repos long, quand vous complimentez quelqu\'un ou lui posez une question sur quelque chose dans lequel il excelle, vous gagnez tous les deux 3 Espoir.'
     },
     {
       id: 'blade-reckless',
@@ -60,7 +60,7 @@ export const blade = {
       level: 2,
       type: 'ability',
       recallCost: 1,
-      feature: 'Mark a Stress to gain advantage on an attack.'
+      feature: 'Marquez un Stress pour obtenir un avantage sur une attaque.'
     },
 
     // ── Level 3 (2 cards) ──────────────────────────────
@@ -71,7 +71,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'Once per rest, when a creature within Melee range would deal damage to you, you can avoid the attack and safely move out of Melee range of the enemy.'
+        'Une fois par repos, quand une créature à Portée de Mêlée vous infligerait des dégâts, vous pouvez esquiver l\'attaque et vous déplacer en sécurité hors de Portée de Mêlée de l\'ennemi.'
     },
     {
       id: 'blade-versatile-fighter',
@@ -80,7 +80,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'You can use a different character trait for an equipped weapon, rather than the trait the weapon calls for. When you deal damage, you can mark a Stress to use the maximum result of one of your damage dice instead of rolling it.'
+        'Vous pouvez utiliser un trait de personnage différent pour une arme équipée, plutôt que le trait requis par l\'arme. Quand vous infligez des dégâts, vous pouvez marquer un Stress pour utiliser le résultat maximum d\'un de vos dés de dégâts au lieu de le lancer.'
     },
 
     // ── Level 4 (2 cards) ──────────────────────────────
@@ -91,7 +91,7 @@ export const blade = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'Once per rest, you can apply all your focus toward a target of your choice. Until you attack another creature, you defeat the target, or the battle ends, gain a +1 bonus to your Proficiency.'
+        'Une fois par repos, vous pouvez concentrer toute votre attention sur une cible de votre choix. Jusqu\'à ce que vous attaquiez une autre créature, que vous vainquiez la cible ou que le combat se termine, gagnez un bonus de +1 à votre Maîtrise.'
     },
     {
       id: 'blade-fortified-armor',
@@ -100,7 +100,7 @@ export const blade = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'While you are wearing armor, gain a +2 bonus to your damage thresholds.'
+        'Tant que vous portez une armure, gagnez un bonus de +2 à vos seuils de dégâts.'
     },
 
     // ── Level 5 (2 cards) ──────────────────────────────
@@ -111,7 +111,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'When you critically succeed on an attack, you can spend up to 3 Hope and choose one of the following options for each Hope spent: You clear a Hit Point; You clear an Armor Slot; The target must mark an additional Hit Point. You can\'t choose the same option more than once.'
+        'Quand vous obtenez un succès critique sur une attaque, vous pouvez dépenser jusqu\'à 3 Espoir et choisir une des options suivantes pour chaque Espoir dépensé : Vous effacez un Point de Vie ; Vous effacez un Emplacement d\'Armure ; La cible doit marquer un Point de Vie supplémentaire. Vous ne pouvez pas choisir la même option plus d\'une fois.'
     },
     {
       id: 'blade-vitality',
@@ -120,7 +120,7 @@ export const blade = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'When you choose this card, permanently gain two of the following benefits: One Stress slot; One Hit Point slot; +2 bonus to your damage thresholds. Then place this card in your vault permanently.'
+        'Quand vous choisissez cette carte, gagnez définitivement deux des bénéfices suivants : Un emplacement de Stress ; Un emplacement de Point de Vie ; Un bonus de +2 à vos seuils de dégâts. Puis placez cette carte dans votre coffre de façon permanente.'
     },
 
     // ── Level 6 (2 cards) ──────────────────────────────
@@ -131,7 +131,7 @@ export const blade = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'Once per long rest when you would make a Death Move, you can spend a Hope to clear a Hit Point instead.'
+        'Une fois par repos long, quand vous devriez effectuer un Mouvement de Mort, vous pouvez dépenser un Espoir pour effacer un Point de Vie à la place.'
     },
     {
       id: 'blade-rage-up',
@@ -140,7 +140,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'Before you make an attack, you can mark a Stress to gain a bonus to your damage roll equal to twice your Strength. You can Rage Up twice per attack.'
+        'Avant de faire une attaque, vous pouvez marquer un Stress pour gagner un bonus à votre jet de dégâts égal au double de votre Force. Vous pouvez utiliser Rage Up deux fois par attaque.'
     },
 
     // ── Level 7 (2 cards) ──────────────────────────────
@@ -151,7 +151,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'When 4 or more of the domain cards in your loadout are from the Blade domain, gain the following benefits: +2 bonus to your attack rolls; +4 bonus to your Severe damage threshold.'
+        'Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Blade, vous gagnez les bénéfices suivants : bonus de +2 à vos jets d\'attaque ; bonus de +4 à votre seuil de dégâts Sévères.'
     },
     {
       id: 'blade-glancing-blow',
@@ -160,7 +160,7 @@ export const blade = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'When you fail an attack, you can mark a Stress to deal weapon damage using half your Proficiency.'
+        'Quand vous ratez une attaque, vous pouvez marquer un Stress pour infliger des dégâts d\'arme en utilisant la moitié de votre Maîtrise.'
     },
 
     // ── Level 8 (2 cards) ──────────────────────────────
@@ -171,7 +171,7 @@ export const blade = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'Once per long rest, while you\'re charging into danger, you can muster a rousing call that inspires your allies. All allies who can hear you each clear a Stress and gain a Hope. Additionally, your allies gain advantage on attack rolls until you or an ally rolls a failure with Fear.'
+        'Une fois par repos long, alors que vous chargez vers le danger, vous pouvez pousser un cri galvanisant qui inspire vos alliés. Tous les alliés qui vous entendent effacent chacun un Stress et gagnent un Espoir. De plus, vos alliés obtiennent un avantage sur les jets d\'attaque jusqu\'à ce que vous ou un allié obteniez un échec avec la Peur.'
     },
     {
       id: 'blade-frenzy',
@@ -180,7 +180,7 @@ export const blade = {
       type: 'ability',
       recallCost: 3,
       feature:
-        'Once per long rest, you can go into a Frenzy until there are no more adversaries within sight. While Frenzied, you can\'t use Armor Slots, and you gain a +10 bonus to your damage rolls and a +8 bonus to your Severe damage threshold.'
+        'Une fois par repos long, vous pouvez entrer en Frénésie jusqu\'à ce qu\'il n\'y ait plus d\'adversaires en vue. En Frénésie, vous ne pouvez pas utiliser les Emplacements d\'Armure, et vous gagnez un bonus de +10 à vos jets de dégâts et un bonus de +8 à votre seuil de dégâts Sévères.'
     },
 
     // ── Level 9 (2 cards) ──────────────────────────────
@@ -191,7 +191,7 @@ export const blade = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'When you critically succeed on a weapon attack, gain an additional Hope or clear an additional Stress. Additionally, when you deal enough damage to defeat an enemy, gain a Hope or clear a Stress.'
+        'Quand vous obtenez un succès critique sur une attaque d\'arme, gagnez un Espoir supplémentaire ou effacez un Stress supplémentaire. De plus, quand vous infligez suffisamment de dégâts pour vaincre un ennemi, gagnez un Espoir ou effacez un Stress.'
     },
     {
       id: 'blade-reapers-strike',
@@ -200,7 +200,7 @@ export const blade = {
       type: 'ability',
       recallCost: 3,
       feature:
-        'Once per long rest, spend a Hope to make an attack roll. The GM tells you which targets within range it would succeed against. Choose one of these targets and force them to mark 5 Hit Points.'
+        'Une fois par repos long, dépensez un Espoir pour faire un jet d\'attaque. Le MJ vous indique quelles cibles à portée seraient touchées. Choisissez l\'une de ces cibles et forcez-la à marquer 5 Points de Vie.'
     },
 
     // ── Level 10 (2 cards) ─────────────────────────────
@@ -211,7 +211,7 @@ export const blade = {
       type: 'ability',
       recallCost: 0,
       feature:
-        'When you make a successful attack against an adversary, you can mark 4 Stress to force the target to mark a number of Hit Points equal to the number of Hit Points you currently have marked instead of rolling for damage.'
+        'Quand vous réussissez une attaque contre un adversaire, vous pouvez marquer 4 Stress pour forcer la cible à marquer un nombre de Points de Vie égal au nombre de Points de Vie que vous avez actuellement marqués, au lieu de lancer les dégâts.'
     },
     {
       id: 'blade-onslaught',
@@ -220,7 +220,7 @@ export const blade = {
       type: 'ability',
       recallCost: 3,
       feature:
-        'When you successfully make an attack with your weapon, you never deal damage beneath a target\'s Major damage threshold (the target always marks a minimum of 2 Hit Points). Additionally, when a creature within your weapon\'s range deals damage to an ally with an attack that doesn\'t include you, you can mark a Stress to force them to make a Reaction Roll (15). On a failure, the target must mark a Hit Point.'
+        'Quand vous réussissez une attaque avec votre arme, vous n\'infligez jamais de dégâts en dessous du seuil de dégâts Majeurs de la cible (la cible marque toujours un minimum de 2 Points de Vie). De plus, quand une créature à portée de votre arme inflige des dégâts à un allié avec une attaque qui ne vous inclut pas, vous pouvez marquer un Stress pour la forcer à faire un Jet de Réaction (15). Sur un échec, la cible doit marquer un Point de Vie.'
     }
   ]
 }

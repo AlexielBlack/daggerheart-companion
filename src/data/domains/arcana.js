@@ -10,9 +10,9 @@ export const arcana = {
   emoji: '🔮',
   color: '#7c3aed',
   description:
-    'The domain of Arcana represents pure magic and the manipulation of mystical forces. Practitioners channel raw cosmic energy to unleash supernatural phenomena.',
+    'Le domaine d\'Arcana représente la magie pure et la manipulation des forces mystiques. Les pratiquants d\'Arcana canalisent l\'énergie brute du cosmos pour déchaîner des phénomènes surnaturels.',
   classes: ['Druid', 'Sorcerer'],
-  themes: ['Arcane magic', 'Elements', 'Mystical forces'],
+  themes: ['Magie arcanique', 'Éléments', 'Forces mystiques'],
   hasSpells: true,
   cardCount: 21,
   cards: [
@@ -24,7 +24,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'You have a deeply personal trinket that can be infused with protective magic and held as a ward by you or an ally. Describe what it is and why it\'s important to you. The ward\'s holder can spend a Hope to reduce incoming damage by 1d8. If the Ward Die result is 8, the ward\'s power ends after it reduces damage this turn. It can be recharged for free on your next rest.'
+        'Vous possédez un bibelot profondément personnel qui peut être imprégné de magie protectrice et tenu comme une protection par vous ou un allié. Décrivez ce que c\'est et pourquoi c\'est important pour vous. Le porteur de la protection peut dépenser un Espoir pour réduire les dégâts entrants de 1d8. Si le résultat du Dé de Protection est 8, le pouvoir de la protection prend fin après avoir réduit les dégâts ce tour. Elle peut être rechargée gratuitement lors de votre prochain repos.'
     },
     {
       id: 'arcana-unleash-chaos',
@@ -33,7 +33,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'At the beginning of a session, place a number of tokens equal to your Spellcast trait on this card. Make a Spellcast Roll against a target within Far range and spend any number of tokens to channel raw energy from within yourself to unleash against them. On a success, roll a number of d10s equal to the tokens you spent and deal that much magic damage to the target. Mark a Stress to replenish this card with tokens (up to your Spellcast trait). At the end of each session, clear all unspent tokens.'
+        'Au début d\'une session, placez un nombre de jetons égal à votre trait de Sort sur cette carte. Faites un jet de Sort contre une cible à Portée Lointaine et dépensez autant de jetons que vous le souhaitez pour canaliser l\'énergie brute en vous et la déchaîner contre elle. Sur un succès, lancez un nombre de d10 égal aux jetons dépensés et infligez autant de dégâts magiques à la cible. Marquez un Stress pour recharger cette carte en jetons (jusqu\'à votre trait de Sort). À la fin de chaque session, retirez tous les jetons non dépensés.'
     },
     {
       id: 'arcana-wall-walk',
@@ -42,7 +42,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Spend a Hope to allow a creature you can touch to climb on walls and ceilings as easily as walking on the ground. This lasts until the end of the scene or you cast Wall Walk again.'
+        'Dépensez un Espoir pour permettre à une créature que vous pouvez toucher de grimper sur les murs et les plafonds aussi facilement que de marcher au sol. Cela dure jusqu\'à la fin de la scène ou jusqu\'à ce que vous lanciez Wall Walk à nouveau.'
     },
 
     // ── Level 2 (2 cards) ──────────────────────────────
@@ -53,7 +53,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Make a Spellcast Roll against a target within Melee range. On a success, the target instantly bursts into flames, takes 1d20+3 magic damage, and is temporarily lit On Fire. When a creature acts while On Fire, they must take an extra 2d6 magic damage if they are still On Fire at the end of their action.'
+        'Faites un jet de Sort contre une cible à Portée de Mêlée. Sur un succès, la cible s\'embrase instantanément, subit 1d20+3 dégâts magiques, et est temporairement En Feu. Quand une créature agit alors qu\'elle est En Feu, elle doit subir 2d6 dégâts magiques supplémentaires si elle est encore En Feu à la fin de son action.'
     },
     {
       id: 'arcana-floating-eye',
@@ -62,7 +62,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Spend a Hope to create a single, small floating orb that you can move anywhere within Very Far range. While this spell is active, you can see through the orb as though you\'re looking out from its position. You can transition between using your own senses and seeing through the orb freely. If the orb takes damage or moves out of range, the spell ends.'
+        'Dépensez un Espoir pour créer un petit orbe flottant que vous pouvez déplacer n\'importe où à Portée Très Lointaine. Tant que ce sort est actif, vous pouvez voir à travers l\'orbe comme si vous regardiez depuis sa position. Vous pouvez alterner librement entre vos propres sens et la vision de l\'orbe. Si l\'orbe subit des dégâts ou sort de portée, le sort prend fin.'
     },
 
     // ── Level 3 (2 cards) ──────────────────────────────
@@ -73,7 +73,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'You can interrupt a magical effect taking place by making a reaction roll using your Spellcast trait. On a success, the effect stops and any consequences are avoided, and this card is placed in your vault.'
+        'Vous pouvez interrompre un effet magique en cours en faisant un jet de réaction avec votre trait de Sort. Sur un succès, l\'effet s\'arrête et toutes les conséquences sont évitées, et cette carte est placée dans votre coffre.'
     },
     {
       id: 'arcana-flight',
@@ -82,7 +82,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Make a Spellcast Roll (15). On a success, place a number of tokens equal to your Agility on this card (minimum 1). When you make an action roll while flying, spend a token from this card. After the action that spends the last token is resolved, you descend to the ground directly below you.'
+        'Faites un jet de Sort (15). Sur un succès, placez un nombre de jetons égal à votre Agilité sur cette carte (minimum 1). Quand vous faites un jet d\'action en volant, dépensez un jeton de cette carte. Après la résolution de l\'action qui dépense le dernier jeton, vous descendez au sol directement en dessous de vous.'
     },
 
     // ── Level 4 (2 cards) ──────────────────────────────
@@ -93,7 +93,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Make a Spellcast Roll (12). On a success, spend a Hope to teleport to another point you can see within Far range. If any willing creatures are within Very Close range, spend an additional Hope for each creature to bring them with you.'
+        'Faites un jet de Sort (12). Sur un succès, dépensez un Espoir pour vous téléporter à un autre point visible à Portée Lointaine. Si des créatures consentantes sont à Portée Très Proche, dépensez un Espoir supplémentaire par créature pour les emmener avec vous.'
     },
     {
       id: 'arcana-preservation-blast',
@@ -102,7 +102,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Make a Spellcast Roll against all targets within Melee range. Targets you succeed against are forced back to Far range and take d8+3 magic damage using your Spellcast trait.'
+        'Faites un jet de Sort contre toutes les cibles à Portée de Mêlée. Les cibles contre lesquelles vous réussissez sont repoussées à Portée Lointaine et subissent d8+3 dégâts magiques en utilisant votre trait de Sort.'
     },
 
     // ── Level 5 (2 cards) ──────────────────────────────
@@ -113,7 +113,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Mark 2 Stress to make a Spellcast Roll, unleashing lightning on all targets within Close range. Targets you succeed against must make a reaction roll with a Difficulty equal to the result of your Spellcast Roll. Targets who fail take 2d8+4 magic damage. Additional adversaries not already targeted by Chain Lightning and within Close range of previous targets who took damage must also make the reaction roll. Targets who fail take 2d8+4 magic damage. This chain continues until there are no more adversaries within range.'
+        'Marquez 2 Stress pour faire un jet de Sort, déchaînant la foudre sur toutes les cibles à Portée Proche. Les cibles contre lesquelles vous réussissez doivent faire un jet de réaction avec une Difficulté égale au résultat de votre jet de Sort. Celles qui échouent subissent 2d8+4 dégâts magiques. Les adversaires supplémentaires non encore ciblés et à Portée Proche des cibles ayant subi des dégâts doivent aussi faire le jet de réaction. Cette chaîne continue jusqu\'à ce qu\'il n\'y ait plus d\'adversaires à portée.'
     },
     {
       id: 'arcana-premonition',
@@ -122,7 +122,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'You can channel arcane energy to have visions of the future. Once per long rest, immediately after the GM conveys the consequences of a roll you made, you can rescind the move and consequences like they never happened and make another move instead.'
+        'Vous pouvez canaliser l\'énergie arcanique pour avoir des visions du futur. Une fois par repos long, immédiatement après que le MJ annonce les conséquences d\'un jet que vous avez fait, vous pouvez annuler l\'action et les conséquences comme si elles n\'avaient jamais eu lieu et faire une autre action à la place.'
     },
 
     // ── Level 6 (2 cards) ──────────────────────────────
@@ -133,7 +133,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Make a Spellcast Roll (15). On a success, you place an arcane marking on the ground where you currently stand. The next time you successfully cast Rift Walker, a rift in space opens up, providing safe passage back to the exact spot where the marking was placed. This rift stays open until you choose to close it or you cast another spell. You can drop the spell at any time to cast Rift Walker again and place the marking somewhere new.'
+        'Faites un jet de Sort (15). Sur un succès, vous placez une marque arcanique au sol où vous vous tenez. La prochaine fois que vous lancez Rift Walker avec succès, une faille dans l\'espace s\'ouvre, offrant un passage sûr vers l\'endroit exact de la marque. Cette faille reste ouverte jusqu\'à ce que vous choisissiez de la fermer ou que vous lanciez un autre sort. Vous pouvez abandonner le sort à tout moment pour relancer Rift Walker et placer la marque ailleurs.'
     },
     {
       id: 'arcana-telekinesis',
@@ -142,7 +142,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Make a Spellcast Roll against a target within Far range. On a success, you can use your mind to move them anywhere within Far range of their original position. You can throw the lifted target as an attack by making an additional Spellcast Roll against the second target you\'re trying to attack. On a success, deal d12+4 physical damage to the second target using your Proficiency. This spell then ends.'
+        'Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, vous pouvez utiliser votre esprit pour la déplacer n\'importe où à Portée Lointaine de sa position d\'origine. Vous pouvez lancer la cible soulevée comme une attaque en faisant un jet de Sort supplémentaire contre la seconde cible. Sur un succès, infligez d12+4 dégâts physiques à la seconde cible en utilisant votre Maîtrise. Le sort prend alors fin.'
     },
 
     // ── Level 7 (2 cards) ──────────────────────────────
@@ -153,7 +153,7 @@ export const arcana = {
       type: 'ability',
       recallCost: 2,
       feature:
-        'When 4 or more of the domain cards in your loadout are from the Arcana domain, gain the following benefits: +1 bonus to your Spellcast Rolls; Once per rest, you can switch the results of your Hope and Fear Dice.'
+        'Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Arcana, vous gagnez les bénéfices suivants : +1 aux jets de Sort ; Une fois par repos, vous pouvez échanger les résultats de vos Dés d\'Espoir et de Peur.'
     },
     {
       id: 'arcana-cloaking-blast',
@@ -162,7 +162,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'When you make a successful Spellcast Roll to cast a different spell, you can spend a Hope to become Cloaked. While Cloaked, you remain unseen if you are stationary when an adversary moves to where they would normally see you. When you move into or within an adversary\'s line of sight or make an attack, you are no longer Cloaked.'
+        'Quand vous réussissez un jet de Sort pour lancer un autre sort, vous pouvez dépenser un Espoir pour devenir Voilé. Tant que vous êtes Voilé, vous restez invisible si vous êtes immobile quand un adversaire se déplace là où il vous verrait normalement. Quand vous vous déplacez dans ou dans la ligne de vue d\'un adversaire ou faites une attaque, vous n\'êtes plus Voilé.'
     },
 
     // ── Level 8 (2 cards) ──────────────────────────────
@@ -173,7 +173,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'When you would take magic damage, you can spend any number of Hope to roll that many d6s. If any roll a 6, the attack is reflected back to the caster, dealing the damage to them instead.'
+        'Quand vous devriez subir des dégâts magiques, vous pouvez dépenser autant d\'Espoir que vous le souhaitez pour lancer autant de d6. Si l\'un d\'eux donne un 6, l\'attaque est renvoyée au lanceur, lui infligeant les dégâts à sa place.'
     },
     {
       id: 'arcana-confusing-aura',
@@ -182,7 +182,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Make a Spellcast Roll (14). Once per long rest on a success, you create a layer of illusion over your body that makes it hard to tell exactly where you are. Mark any number of Stress to make that many additional layers. When an adversary makes an attack against you, roll a number of d6s equal to the number of layers currently active. If any roll a 5 or higher, one layer of the aura is destroyed and the attack fails. If all the results are 4 or lower, you take the damage and this spell ends.'
+        'Faites un jet de Sort (14). Une fois par repos long sur un succès, vous créez une couche d\'illusion sur votre corps qui rend difficile de déterminer où vous êtes exactement. Marquez autant de Stress que vous le souhaitez pour créer autant de couches supplémentaires. Quand un adversaire vous attaque, lancez un nombre de d6 égal aux couches actives. Si l\'un donne 5 ou plus, une couche est détruite et l\'attaque échoue. Si tous les résultats sont 4 ou moins, vous subissez les dégâts et le sort prend fin.'
     },
 
     // ── Level 9 (2 cards) ──────────────────────────────
@@ -193,7 +193,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 2,
       feature:
-        'Make a Spellcast Roll (16). Once per rest on a success, all targets within Very Far range who aren\'t flying must make a Reaction Roll (18). Targets who fail take 3d10+8 physical damage and are temporarily Vulnerable. Targets who succeed take half damage. Additionally, when you succeed on the Spellcast Roll, all terrain within Very Far range becomes difficult to move through and structures within this range might sustain damage or crumble.'
+        'Faites un jet de Sort (16). Une fois par repos sur un succès, toutes les cibles à Portée Très Lointaine qui ne volent pas doivent faire un Jet de Réaction (18). Celles qui échouent subissent 3d10+8 dégâts physiques et sont temporairement Vulnérables. Celles qui réussissent subissent la moitié des dégâts. De plus, tout le terrain à Portée Très Lointaine devient difficile à traverser et les structures à portée peuvent être endommagées ou s\'écrouler.'
     },
     {
       id: 'arcana-sensory-projection',
@@ -202,7 +202,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 0,
       feature:
-        'Once per rest, make a Spellcast Roll (15). On a success, drop into a vision that lets you clearly see and hear any place you have been before as though you are standing there in this moment. You can move freely in this vision and are not constrained by the physics or impediments of a physical body. This spell cannot be detected by mundane or magical means. You drop out of this vision upon taking damage or casting another spell.'
+        'Une fois par repos, faites un jet de Sort (15). Sur un succès, plongez dans une vision qui vous permet de voir et d\'entendre clairement tout endroit où vous êtes déjà allé comme si vous y étiez en ce moment. Vous pouvez vous déplacer librement dans cette vision sans être limité par la physique ou les obstacles d\'un corps physique. Ce sort ne peut être détecté par des moyens ordinaires ou magiques. Vous quittez la vision si vous subissez des dégâts ou lancez un autre sort.'
     },
 
     // ── Level 10 (2 cards) ─────────────────────────────
@@ -213,7 +213,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'After you or a willing ally make any roll, you can spend 5 Hope to change the numerical result of that roll to a result of your choice instead. The result must be plausible within the range of the dice.'
+        'Après que vous ou un allié consentant faites un jet quelconque, vous pouvez dépenser 5 Espoir pour changer le résultat numérique de ce jet par un résultat de votre choix. Le résultat doit être plausible dans l\'éventail des dés.'
     },
     {
       id: 'arcana-falling-sky',
@@ -222,7 +222,7 @@ export const arcana = {
       type: 'spell',
       recallCost: 1,
       feature:
-        'Make a Spellcast Roll against all adversaries within Far range. Mark any number of Stress to make shards of arcana rain down from above. Targets you succeed against take 1d20+2 magic damage for each Stress marked.'
+        'Faites un jet de Sort contre tous les adversaires à Portée Lointaine. Marquez autant de Stress que vous le souhaitez pour faire pleuvoir des éclats d\'arcane depuis le ciel. Les cibles contre lesquelles vous réussissez subissent 1d20+2 dégâts magiques par Stress marqué.'
     }
   ]
 }

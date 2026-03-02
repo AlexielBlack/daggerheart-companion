@@ -7,6 +7,10 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { arcana } from '../arcana.js'
 import { blade } from '../blade.js'
+import { bone } from '../bone.js'
+import { codex } from '../codex.js'
+import { grace } from '../grace.js'
+import { midnight } from '../midnight.js'
 import {
   DOMAINS,
   CARD_TYPES,
@@ -159,8 +163,8 @@ describe('Arcana domain — SRD cards', () => {
     const touched = arcana.cards.find((c) => c.name === 'Arcana-Touched')
     expect(touched.level).toBe(7)
     expect(touched.type).toBe('ability')
-    expect(touched.feature).toContain('4 or more')
-    expect(touched.feature).toContain('+1 bonus to your Spellcast Rolls')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('+1 aux jets de Sort')
   })
 
   it('each card should have required fields', () => {
@@ -243,8 +247,8 @@ describe('Blade domain — SRD cards', () => {
     const touched = blade.cards.find((c) => c.name === 'Blade-Touched')
     expect(touched.level).toBe(7)
     expect(touched.type).toBe('ability')
-    expect(touched.feature).toContain('4 or more')
-    expect(touched.feature).toContain('+2 bonus to your attack rolls')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('+2 à vos jets d\'attaque')
   })
 
   it('hasSpells should be false', () => {
@@ -264,6 +268,309 @@ describe('Blade domain — SRD cards', () => {
       expect(card.recallCost).toBeGreaterThanOrEqual(0)
       expect(card.feature.length).toBeGreaterThan(10)
     })
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// BONE DOMAIN — 21 CARDS
+// ═══════════════════════════════════════════════════════════
+
+describe('Bone domain — SRD cards', () => {
+  it('should have 21 cards', () => {
+    expect(bone.cards).toHaveLength(21)
+  })
+
+  it('should have unique card IDs', () => {
+    const ids = bone.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('should have 3 level-1 cards and 2 cards per level 2-10', () => {
+    const byLevel = {}
+    bone.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let lv = 2; lv <= 10; lv++) {
+      expect(byLevel[lv]).toBe(2)
+    }
+  })
+
+  it('should only have ability type (no spells)', () => {
+    const types = new Set(bone.cards.map((c) => c.type))
+    expect(types.size).toBe(1)
+    expect(types.has('ability')).toBe(true)
+  })
+
+  it('should have all SRD card names', () => {
+    const names = bone.cards.map((c) => c.name)
+    expect(names).toContain('Deft Maneuvers')
+    expect(names).toContain('I See It Coming')
+    expect(names).toContain('Untouchable')
+    expect(names).toContain('Ferocity')
+    expect(names).toContain('Strategic Approach')
+    expect(names).toContain('Brace')
+    expect(names).toContain('Tactician')
+    expect(names).toContain('Boost')
+    expect(names).toContain('Redirect')
+    expect(names).toContain('Know Thy Enemy')
+    expect(names).toContain('Signature Move')
+    expect(names).toContain('Rapid Riposte')
+    expect(names).toContain('Recovery')
+    expect(names).toContain('Bone-Touched')
+    expect(names).toContain('Cruel Precision')
+    expect(names).toContain('Breaking Blow')
+    expect(names).toContain('Wrangle')
+    expect(names).toContain('On The Brink')
+    expect(names).toContain('Splintering Strike')
+    expect(names).toContain('Deathrun')
+    expect(names).toContain('Swift Step')
+  })
+
+  it('Bone-Touched should be level 7 ability', () => {
+    const touched = bone.cards.find((c) => c.name === 'Bone-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('+1 à l\'Agilité')
+  })
+
+  it('hasSpells should be false', () => {
+    expect(bone.hasSpells).toBe(false)
+  })
+
+  it('classes should be Warrior, Ranger, Duellist', () => {
+    expect(bone.classes.sort()).toEqual(['Duellist', 'Ranger', 'Warrior'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// CODEX DOMAIN — 21 CARDS
+// ═══════════════════════════════════════════════════════════
+
+describe('Codex domain — SRD cards', () => {
+  it('should have 21 cards', () => {
+    expect(codex.cards).toHaveLength(21)
+  })
+
+  it('should have unique card IDs', () => {
+    const ids = codex.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('should have 3 level-1 cards and 2 cards per level 2-10', () => {
+    const byLevel = {}
+    codex.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let lv = 2; lv <= 10; lv++) {
+      expect(byLevel[lv]).toBe(2)
+    }
+  })
+
+  it('should have grimoire, spell, and ability types', () => {
+    const types = new Set(codex.cards.map((c) => c.type))
+    expect(types.has('grimoire')).toBe(true)
+    expect(types.has('spell')).toBe(true)
+    expect(types.has('ability')).toBe(true)
+  })
+
+  it('grimoire cards should be the majority (Codex is the only domain with grimoires)', () => {
+    const grimoires = codex.cards.filter((c) => c.type === 'grimoire')
+    expect(grimoires.length).toBeGreaterThanOrEqual(10)
+  })
+
+  it('should have all SRD card names', () => {
+    const names = codex.cards.map((c) => c.name)
+    expect(names).toContain('Book of Ava')
+    expect(names).toContain('Book of Illiat')
+    expect(names).toContain('Book of Tyfar')
+    expect(names).toContain('Book of Sitil')
+    expect(names).toContain('Book of Vagras')
+    expect(names).toContain('Book of Korvax')
+    expect(names).toContain('Book of Norai')
+    expect(names).toContain('Book of Exota')
+    expect(names).toContain('Book of Grynn')
+    expect(names).toContain('Manifest Wall')
+    expect(names).toContain('Teleport')
+    expect(names).toContain('Banish')
+    expect(names).toContain('Sigil of Retribution')
+    expect(names).toContain('Book of Homet')
+    expect(names).toContain('Codex-Touched')
+    expect(names).toContain('Book of Vyola')
+    expect(names).toContain('Safe Haven')
+    expect(names).toContain('Book of Ronin')
+    expect(names).toContain('Disintegration Wave')
+    expect(names).toContain('Book of Yarrow')
+    expect(names).toContain('Transcendent Union')
+  })
+
+  it('Codex-Touched should be level 7 ability', () => {
+    const touched = codex.cards.find((c) => c.name === 'Codex-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('Maîtrise à un jet de Sort')
+  })
+
+  it('Disintegration Wave should have recallCost 4', () => {
+    const card = codex.cards.find((c) => c.name === 'Disintegration Wave')
+    expect(card.recallCost).toBe(4)
+  })
+
+  it('hasSpells should be true', () => {
+    expect(codex.hasSpells).toBe(true)
+  })
+
+  it('classes should be Bard, Wizard', () => {
+    expect(codex.classes.sort()).toEqual(['Bard', 'Wizard'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// GRACE DOMAIN
+// ═══════════════════════════════════════════════════════════
+
+describe('Grace domain', () => {
+  it('should have 21 cards', () => {
+    expect(grace.cards).toHaveLength(21)
+  })
+
+  it('all card IDs should be unique', () => {
+    const ids = grace.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('level distribution: 3 at level 1, 2 each for levels 2-10', () => {
+    const byLevel = {}
+    grace.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let l = 2; l <= 10; l++) {
+      expect(byLevel[l]).toBe(2)
+    }
+  })
+
+  it('card types should be spell or ability', () => {
+    grace.cards.forEach((c) => {
+      expect(['spell', 'ability']).toContain(c.type)
+    })
+  })
+
+  it('should contain all SRD card names', () => {
+    const names = grace.cards.map((c) => c.name)
+    expect(names).toContain('Deft Deceiver')
+    expect(names).toContain('Enrapture')
+    expect(names).toContain('Inspirational Words')
+    expect(names).toContain('Tell No Lies')
+    expect(names).toContain('Troublemaker')
+    expect(names).toContain('Hypnotic Shimmer')
+    expect(names).toContain('Invisibility')
+    expect(names).toContain('Soothing Speech')
+    expect(names).toContain('Through Your Eyes')
+    expect(names).toContain('Thought Delver')
+    expect(names).toContain('Words of Discord')
+    expect(names).toContain('Never Upstaged')
+    expect(names).toContain('Share the Burden')
+    expect(names).toContain('Endless Charisma')
+    expect(names).toContain('Grace-Touched')
+    expect(names).toContain('Astral Projection')
+    expect(names).toContain('Mass Enrapture')
+    expect(names).toContain('Copycat')
+    expect(names).toContain('Master of the Craft')
+    expect(names).toContain('Encore')
+    expect(names).toContain('Notorious')
+  })
+
+  it('Grace-Touched should be level 7 with correct feature', () => {
+    const touched = grace.cards.find((c) => c.name === 'Grace-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('Emplacement d\'Armure')
+  })
+
+  it('hasSpells should be true', () => {
+    expect(grace.hasSpells).toBe(true)
+  })
+
+  it('classes should be Bard, Rogue, Duellist', () => {
+    expect(grace.classes.sort()).toEqual(['Bard', 'Duellist', 'Rogue'])
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+// MIDNIGHT DOMAIN
+// ═══════════════════════════════════════════════════════════
+
+describe('Midnight domain', () => {
+  it('should have 21 cards', () => {
+    expect(midnight.cards).toHaveLength(21)
+  })
+
+  it('all card IDs should be unique', () => {
+    const ids = midnight.cards.map((c) => c.id)
+    expect(new Set(ids).size).toBe(21)
+  })
+
+  it('level distribution: 3 at level 1, 2 each for levels 2-10', () => {
+    const byLevel = {}
+    midnight.cards.forEach((c) => {
+      byLevel[c.level] = (byLevel[c.level] || 0) + 1
+    })
+    expect(byLevel[1]).toBe(3)
+    for (let l = 2; l <= 10; l++) {
+      expect(byLevel[l]).toBe(2)
+    }
+  })
+
+  it('card types should be spell or ability', () => {
+    midnight.cards.forEach((c) => {
+      expect(['spell', 'ability']).toContain(c.type)
+    })
+  })
+
+  it('should contain all SRD card names', () => {
+    const names = midnight.cards.map((c) => c.name)
+    expect(names).toContain('Pick and Pull')
+    expect(names).toContain('Rain of Blades')
+    expect(names).toContain('Uncanny Disguise')
+    expect(names).toContain('Midnight Spirit')
+    expect(names).toContain('Shadowbind')
+    expect(names).toContain('Chokehold')
+    expect(names).toContain('Veil of Night')
+    expect(names).toContain('Stealth Expertise')
+    expect(names).toContain('Glyph of Nightfall')
+    expect(names).toContain('Hush')
+    expect(names).toContain('Phantom Retreat')
+    expect(names).toContain('Dark Whispers')
+    expect(names).toContain('Mass Disguise')
+    expect(names).toContain('Midnight-Touched')
+    expect(names).toContain('Vanishing Dodge')
+    expect(names).toContain('Shadowhunter')
+    expect(names).toContain('Spellcharge')
+    expect(names).toContain('Night Terror')
+    expect(names).toContain('Twilight Toll')
+    expect(names).toContain('Eclipse')
+    expect(names).toContain('Specter of the Dark')
+  })
+
+  it('Midnight-Touched should be level 7 with correct feature', () => {
+    const touched = midnight.cards.find((c) => c.name === 'Midnight-Touched')
+    expect(touched.level).toBe(7)
+    expect(touched.type).toBe('ability')
+    expect(touched.feature).toContain('4 ou plus')
+    expect(touched.feature).toContain('Dé de Peur')
+  })
+
+  it('hasSpells should be true', () => {
+    expect(midnight.hasSpells).toBe(true)
+  })
+
+  it('classes should be Rogue, Sorcerer, Assassin', () => {
+    expect(midnight.classes.sort()).toEqual(['Assassin', 'Rogue', 'Sorcerer'])
   })
 })
 
@@ -375,7 +682,7 @@ describe('Domain store', () => {
 
   it('should count total cards', () => {
     // At least arcana (21) + blade (21) = 42
-    expect(store.totalCardCount).toBeGreaterThanOrEqual(42)
+    expect(store.totalCardCount).toBeGreaterThanOrEqual(126)
   })
 
   it('should filter domains by search query', () => {
