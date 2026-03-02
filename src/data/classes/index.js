@@ -55,7 +55,8 @@ export const CLASSES = [
       'Unstoppable: Once per long rest, become Unstoppable. Gain an Unstoppable Die (d4 at lvl 1, d6 at lvl 5). After dealing 1+ HP, increase die value. While Unstoppable: reduce physical damage severity by 1 threshold, add die value to damage, can\'t be Restrained or Vulnerable.'
     ],
     suggestedTraits: { agility: 0, strength: 2, finesse: 0, instinct: 1, presence: 1, knowledge: -1 },
-    suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion'
+    suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion',
+    source: 'srd'
   },
   {
     id: 'seraph',
@@ -70,7 +71,8 @@ export const CLASSES = [
       'Prayer Dice: At session start, roll d4s equal to Spellcast trait. Spend to: reduce incoming damage, add to a roll, or gain Hope equal to result. Clear at session end.'
     ],
     suggestedTraits: { agility: 0, strength: 2, finesse: 0, instinct: 1, presence: 1, knowledge: -1 },
-    suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion'
+    suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion',
+    source: 'srd'
   },
   {
     id: 'warrior',
@@ -86,7 +88,8 @@ export const CLASSES = [
       'Combat Training: Ignore burden on weapons. Add level to physical damage rolls.'
     ],
     suggestedTraits: { agility: 1, strength: 2, finesse: 1, instinct: 0, presence: 0, knowledge: -1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3'
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
   },
   {
     id: 'rogue',
@@ -102,7 +105,8 @@ export const CLASSES = [
       'Sneak Attack: When attacking while Cloaked or ally in Melee of target, add d6s equal to tier to damage.'
     ],
     suggestedTraits: { agility: 2, strength: -1, finesse: 2, instinct: 0, presence: 1, knowledge: -1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3'
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
   },
   {
     id: 'bard',
@@ -117,7 +121,8 @@ export const CLASSES = [
       'Rally: Once per session, give yourself and each ally a Rally Die (d6 at lvl 1, d8 at lvl 5). Spend to add to action/reaction/damage roll or clear Stress equal to result. Clear at session end.'
     ],
     suggestedTraits: { agility: 0, strength: -1, finesse: 1, instinct: 0, presence: 2, knowledge: 1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3'
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
   },
   {
     id: 'druid',
@@ -133,7 +138,8 @@ export const CLASSES = [
       'Wildtouch: Perform harmless, subtle nature effects at will (grow flower, gust of wind, start campfire).'
     ],
     suggestedTraits: { agility: 0, strength: 0, finesse: -1, instinct: 2, presence: 1, knowledge: 1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3'
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
   },
   {
     id: 'ranger',
@@ -148,7 +154,8 @@ export const CLASSES = [
       'Ranger\'s Focus: Spend a Hope + attack a target. On success: deal normal damage, target becomes Focus. Against Focus: know their direction, they mark Stress on damage, can end Focus to reroll on failed attack.'
     ],
     suggestedTraits: { agility: 1, strength: 0, finesse: 1, instinct: 2, presence: -1, knowledge: 0 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3'
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
   },
   {
     id: 'wizard',
@@ -203,6 +210,12 @@ export const CLASSES = [
     source: 'custom'
   }
 ]
+
+/**
+ * Classes officielles SRD uniquement (sans homebrew).
+ * @type {Object[]}
+ */
+export const SRD_CLASSES = CLASSES.filter((c) => c.source === 'srd')
 
 /**
  * Retourne une classe par ID.

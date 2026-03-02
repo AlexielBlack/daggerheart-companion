@@ -19,6 +19,7 @@ vi.mock('@core/composables/useStorage', () => ({
 import { useCharacterStore } from '../stores/characterStore'
 import {
   CLASSES,
+  SRD_CLASSES,
   TRAITS,
   CONDITIONS,
   DOMAINS,
@@ -35,12 +36,16 @@ import {
 // ═════════════════════════════════════════════════════════
 
 describe('Classes SRD data', () => {
-  it('should have 8 official classes', () => {
-    expect(CLASSES).toHaveLength(8)
+  it('should have 8 official SRD classes', () => {
+    expect(SRD_CLASSES).toHaveLength(8)
   })
 
-  it('should have all expected class IDs', () => {
-    const ids = CLASSES.map((c) => c.id)
+  it('CLASSES includes homebrew (>= 8 entries)', () => {
+    expect(CLASSES.length).toBeGreaterThanOrEqual(8)
+  })
+
+  it('should have all expected SRD class IDs', () => {
+    const ids = SRD_CLASSES.map((c) => c.id)
     expect(ids).toContain('guardian')
     expect(ids).toContain('seraph')
     expect(ids).toContain('warrior')
@@ -51,7 +56,7 @@ describe('Classes SRD data', () => {
     expect(ids).toContain('wizard')
   })
 
-  it('each class has required fields', () => {
+  it('each class (SRD + homebrew) has required fields', () => {
     for (const cls of CLASSES) {
       expect(cls.id).toBeTruthy()
       expect(cls.name).toBeTruthy()
