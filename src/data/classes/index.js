@@ -56,7 +56,7 @@ export const CLASSES = [
     classFeatures: [
       'Unstoppable: Once per long rest, become Unstoppable. Gain an Unstoppable Die (d4 at lvl 1, d6 at lvl 5). After dealing 1+ HP, increase die value. While Unstoppable: reduce physical damage severity by 1 threshold, add die value to damage, can\'t be Restrained or Vulnerable.'
     ],
-    suggestedTraits: { agility: 0, strength: 2, finesse: 0, instinct: 1, presence: 1, knowledge: -1 },
+    suggestedTraits: { agility: 1, strength: 2, finesse: -1, instinct: 0, presence: 1, knowledge: 0 },
     suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion',
     source: 'srd'
   },
@@ -89,8 +89,8 @@ export const CLASSES = [
       'Attack of Opportunity: When adversary in Melee leaves range, reaction roll. On success choose: stop them, deal primary weapon damage, or move with them. Crit: choose two.',
       'Combat Training: Ignore burden on weapons. Add level to physical damage rolls.'
     ],
-    suggestedTraits: { agility: 1, strength: 2, finesse: 1, instinct: 0, presence: 0, knowledge: -1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    suggestedTraits: { agility: 2, strength: 1, finesse: 0, instinct: 1, presence: -1, knowledge: 0 },
+    suggestedArmor: 'Chainmail Armor — Thresholds 7/15 — Score 4 — Heavy: -1 to Evasion',
     source: 'srd'
   },
   {
@@ -99,15 +99,15 @@ export const CLASSES = [
     emoji: '🗡️',
     domains: ['Midnight', 'Grace'],
     baseEvasion: 12,
-    baseHP: 5,
+    baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Rogue\'s Dodge: Spend 3 Hope to gain +2 Evasion until next successful attack against you or next rest.',
     classFeatures: [
       'Cloaked: Hidden becomes Cloaked — remain unseen if stationary when adversary moves to see you. Ends after attack or move in line of sight.',
       'Sneak Attack: When attacking while Cloaked or ally in Melee of target, add d6s equal to tier to damage.'
     ],
-    suggestedTraits: { agility: 2, strength: -1, finesse: 2, instinct: 0, presence: 1, knowledge: -1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    suggestedTraits: { agility: 1, strength: -1, finesse: 2, instinct: 0, presence: 1, knowledge: 0 },
+    suggestedArmor: 'Gambeson Armor — Thresholds 5/11 — Score 3 — Flexible: +1 to Evasion',
     source: 'srd'
   },
   {
@@ -123,7 +123,7 @@ export const CLASSES = [
       'Rally: Once per session, give yourself and each ally a Rally Die (d6 at lvl 1, d8 at lvl 5). Spend to add to action/reaction/damage roll or clear Stress equal to result. Clear at session end.'
     ],
     suggestedTraits: { agility: 0, strength: -1, finesse: 1, instinct: 0, presence: 2, knowledge: 1 },
-    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    suggestedArmor: 'Gambeson Armor — Thresholds 5/11 — Score 3 — Flexible: +1 to Evasion',
     source: 'srd'
   },
   {
@@ -139,7 +139,7 @@ export const CLASSES = [
       'Beastform: Mark a Stress to transform into creature of your tier or lower. Gain Beastform features, add Evasion bonus, use specified trait for attacks. Can\'t use weapons/spells from domain cards while transformed.',
       'Wildtouch: Perform harmless, subtle nature effects at will (grow flower, gust of wind, start campfire).'
     ],
-    suggestedTraits: { agility: 0, strength: 0, finesse: -1, instinct: 2, presence: 1, knowledge: 1 },
+    suggestedTraits: { agility: 1, strength: 0, finesse: 1, instinct: 2, presence: -1, knowledge: 0 },
     suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
     source: 'srd'
   },
@@ -155,7 +155,7 @@ export const CLASSES = [
     classFeatures: [
       'Ranger\'s Focus: Spend a Hope + attack a target. On success: deal normal damage, target becomes Focus. Against Focus: know their direction, they mark Stress on damage, can end Focus to reroll on failed attack.'
     ],
-    suggestedTraits: { agility: 1, strength: 0, finesse: 1, instinct: 2, presence: -1, knowledge: 0 },
+    suggestedTraits: { agility: 2, strength: 0, finesse: 1, instinct: 1, presence: -1, knowledge: 0 },
     suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
     source: 'srd'
   },
@@ -172,7 +172,25 @@ export const CLASSES = [
       'Prestidigitation: Perform harmless, subtle magical effects at will (change color, create smell, light candle, float tiny object, illuminate room, repair small object).',
       'Strange Patterns: Choose a number 1–12. When you roll it on a Duality Die, gain a Hope or clear a Stress. Change on long rest.'
     ],
-    suggestedTraits: { agility: -1, strength: -1, finesse: 0, instinct: 1, presence: 1, knowledge: 2 },
+    suggestedTraits: { agility: -1, strength: 0, finesse: 0, instinct: 1, presence: 1, knowledge: 2 },
+    suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
+    source: 'srd'
+  },
+  {
+    id: 'sorcerer',
+    name: 'Sorcerer',
+    emoji: '⚡',
+    domains: ['Arcana', 'Midnight'],
+    baseEvasion: 10,
+    baseHP: 6,
+    baseStress: 6,
+    hopeFeature: 'Volatile Magic: Spend 3 Hope to reroll any number of your damage dice on an attack that deals magic damage.',
+    classFeatures: [
+      'Arcane Sense: You can sense the presence of magical people and objects within Close range.',
+      'Minor Illusion: Make a Spellcast Roll (10). On a success, create a minor visual illusion no larger than yourself within Close range, convincing to anyone at Close range or farther.',
+      'Channel Raw Power: Once per long rest, place a domain card from your loadout into your vault. Either gain Hope equal to the card\'s level, or enhance a damage spell with a bonus equal to twice the card\'s level.'
+    ],
+    suggestedTraits: { agility: 0, strength: -1, finesse: 1, instinct: 2, presence: 1, knowledge: 0 },
     suggestedArmor: 'Gambeson Armor — Thresholds 5/11 — Score 3 — Flexible: +1 to Evasion',
     source: 'srd'
   },
@@ -185,12 +203,12 @@ export const CLASSES = [
     baseEvasion: 12,
     baseHP: 5,
     baseStress: 6,
-    hopeFeature: 'Shadow Contract: Spend 3 Hope to designate a target. Your next successful attack against them this scene deals maximum damage.',
+    hopeFeature: 'Grim Resolve: Spend 3 Hope to clear 2 Stress.',
     classFeatures: [
-      'Mark: When you enter a scene, you can designate one adversary as your Mark. While they are your Mark, you have advantage on attack rolls against them and add +1d6 to damage.',
-      'Vanish: When you successfully hit your Mark, you can mark a Stress to immediately become Hidden.'
+      'Marked for Death: On a successful weapon attack, mark a Stress to make the target Marked for Death. Attacks against a Marked target gain +1d4 damage per tier. One Marked target at a time; ends on defeat, rest, or GM spending Fear equal to your Proficiency.',
+      'Get In & Get Out: Spend a Hope to ask the GM for a quick or inconspicuous way into or out of a building or structure you can see. Your next roll capitalizing on this info has advantage.'
     ],
-    suggestedTraits: { agility: 2, strength: 0, finesse: 2, instinct: 1, presence: -1, knowledge: -1 },
+    suggestedTraits: { agility: 2, strength: -1, finesse: 1, instinct: 0, presence: 0, knowledge: 1 },
     suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
     source: 'custom'
   },
@@ -199,8 +217,8 @@ export const CLASSES = [
     name: 'Duellist',
     emoji: '🤺',
     domains: ['Bone', 'Grace'],
-    baseEvasion: 12,
-    baseHP: 5,
+    baseEvasion: 11,
+    baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Parkour: Spend 3 Hope, then work with the GM to create a pathway to quickly move around the area (chandelier, bookcase ladder, etc.). Gain advantage on rolls related to this pathway.',
     classFeatures: [
