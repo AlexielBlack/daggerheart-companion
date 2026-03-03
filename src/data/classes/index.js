@@ -225,7 +225,7 @@ export const CLASSES = [
       'Boast: Mark a Stress to gain advantage on an action roll. If you roll with Hope, gain an additional Hope; if you roll with Fear, the GM gains an additional Fear.',
       'Flash of Rivalry: Spend a Hope to make a Presence roll against an adversary within Far range — on success, they become your Rival until end of scene. Rivals have disadvantage when targeting creatures other than you. Add d6 to damage dealt between you and a Rival. Can have Rivals equal to your tier.'
     ],
-    suggestedTraits: { agility: 1, strength: 0, finesse: 2, instinct: 1, presence: 2, knowledge: -1 },
+    suggestedTraits: { agility: 1, strength: 0, finesse: 0, instinct: 1, presence: 2, knowledge: -1 },
     suggestedArmor: 'Leather Armor — Thresholds 6/13 — Score 3',
     source: 'custom'
   }
