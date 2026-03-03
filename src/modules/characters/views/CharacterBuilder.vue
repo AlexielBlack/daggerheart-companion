@@ -65,6 +65,8 @@
           @move-card-to-loadout="store.moveCardToLoadout"
           @move-card-to-vault="store.moveCardToVault"
           @remove-card="store.removeCard"
+          @level-up="onLevelUp"
+          @rollback="onRollback"
         />
 
         <!-- Empty state -->
@@ -90,6 +92,12 @@
         </div>
       </main>
     </div>
+
+    <!-- ═══ Level Up Wizard ═══ -->
+    <LevelUpWizard
+      @levelup-complete="onLevelUpComplete"
+      @levelup-error="onLevelUpError"
+    />
 
     <!-- ═══ Toast notifications ═══ -->
     <Transition name="toast">
@@ -147,15 +155,18 @@
 <script>
 import { ref, computed } from 'vue'
 import { useCharacterStore } from '../stores/characterStore'
+import { useLevelUpStore } from '@modules/levelup/stores/levelUpStore'
 import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
+import LevelUpWizard from '@modules/levelup/components/LevelUpWizard.vue'
 
 export default {
   name: 'CharacterBuilder',
-  components: { CharacterList, ClassPicker, CharacterSheet },
+  components: { CharacterList, ClassPicker, CharacterSheet, LevelUpWizard },
   setup() {
     const store = useCharacterStore()
+    const levelUpStore = useLevelUpStore()
     const showPicker = ref(false)
     const deleteTarget = ref(null)
 
@@ -199,6 +210,31 @@ export default {
       }
     }
 
+    // Level Up
+    function onLevelUp() {
+      const opened = levelUpStore.open()
+      if (!opened) {
+        showToast(levelUpStore.wizardError || 'Impossible de level up.', 'error')
+      }
+    }
+
+    function onRollback() {
+      const result = levelUpStore.rollback()
+      if (result.success) {
+        showToast('Level up annulé.', 'info')
+      } else {
+        showToast(result.error || 'Impossible d\'annuler.', 'error')
+      }
+    }
+
+    function onLevelUpComplete() {
+      showToast('Level up appliqué !', 'success')
+    }
+
+    function onLevelUpError(error) {
+      showToast(error || 'Erreur lors du level up.', 'error')
+    }
+
     // Show picker if no characters
     if (store.characters.length === 0) {
       showPicker.value = false // Start with empty state
@@ -212,7 +248,11 @@ export default {
       toast,
       onClassSelected,
       confirmDelete,
-      executeDelete
+      executeDelete,
+      onLevelUp,
+      onRollback,
+      onLevelUpComplete,
+      onLevelUpError
     }
   }
 }

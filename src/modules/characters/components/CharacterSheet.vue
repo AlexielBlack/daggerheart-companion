@@ -70,6 +70,27 @@
             @input="emit('update', 'level', clampInt($event.target.value, 1, 10))"
           />
         </div>
+        <div class="field field--level-actions">
+          <span class="field-label">Level Up</span>
+          <div class="level-actions">
+            <button
+              v-if="char.level < 10"
+              class="level-btn level-btn--up"
+              aria-label="Ouvrir le wizard de level up"
+              @click="emit('levelUp')"
+            >
+              ⬆️ Level Up
+            </button>
+            <button
+              v-if="char.levelHistory && char.levelHistory.length > 0"
+              class="level-btn level-btn--rollback"
+              aria-label="Annuler le dernier level up"
+              @click="emit('rollback')"
+            >
+              ↩ Annuler
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -613,7 +634,8 @@ export default {
     'addCondition', 'removeCondition',
     'applySelection',
     'addCardToLoadout', 'addCardToVault',
-    'moveCardToLoadout', 'moveCardToVault', 'removeCard'
+    'moveCardToLoadout', 'moveCardToVault', 'removeCard',
+    'levelUp', 'rollback'
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS
@@ -722,6 +744,39 @@ export default {
 
 .field-value { font-size: 0.9rem; color: var(--text-primary); padding: 5px 0; }
 .field-value--class { font-weight: 600; }
+
+.field--level-actions { justify-content: flex-end; }
+
+.level-actions {
+  display: flex;
+  gap: var(--space-xs, 0.25rem);
+}
+
+.level-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 150ms;
+}
+
+.level-btn:hover { opacity: 0.9; }
+
+.level-btn--up {
+  background: var(--accent-hope, #53a8b6);
+  color: #fff;
+}
+
+.level-btn--rollback {
+  background: transparent;
+  border: 1px solid var(--border-color, #3a3a5a);
+  color: var(--text-secondary, #a0a0b8);
+  font-size: 0.7rem;
+}
+
+.level-btn--rollback:hover { border-color: var(--accent-fear, #c84b31); color: var(--accent-fear, #c84b31); }
 
 .field-textarea {
   width: 100%;
