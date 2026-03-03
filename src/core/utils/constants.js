@@ -102,5 +102,14 @@ export const NAV_ITEMS = [
       { id: 'characters-equipement', label: 'Équipement', icon: '🗡️', route: '/characters/equipement' }
     ]
   },
-  { id: 'dice', label: 'Dés', icon: '🎲', route: '/dice' }
+  { id: 'dice', label: 'Dés', icon: '🎲', route: '/dice' },
+  {
+    id: 'homebrew',
+    label: 'Homebrew',
+    icon: '✎',
+    route: '/homebrew',
+    children: [
+      { id: 'homebrew-adversary', label: 'Adversaires', icon: '⚔️', route: '/homebrew/adversary' }
+    ]
+  }
 ]

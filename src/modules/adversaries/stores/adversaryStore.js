@@ -7,6 +7,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { allAdversaries, ADVERSARY_TYPES, TIERS } from '@data/adversaries'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
+
+export { useAdversaryHomebrewStore }
 
 export const useAdversaryStore = defineStore('adversaries', () => {
   // ── État ───────────────────────────────────────────────
@@ -17,23 +20,37 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   const sortDirection = ref('asc')
   const selectedAdversaryId = ref(null)
 
+  // ── Store Homebrew ────────────────────────────────────
+  const homebrewStore = useAdversaryHomebrewStore()
+
   // ── Constantes exposées ────────────────────────────────
   const availableTypes = ADVERSARY_TYPES
   const availableTiers = TIERS
 
   // ── Getters ────────────────────────────────────────────
 
+  /** Tous les adversaires : SRD + homebrew fusionnés */
+  const allItems = computed(() => [
+    ...allAdversaries,
+    ...homebrewStore.items.map((item) => ({
+      ...item,
+      source: 'custom'
+    }))
+  ])
+
+  // ── Getters ────────────────────────────────────────────
+
   /** Liste filtrée et triée des adversaires */
   const filteredAdversaries = computed(() => {
-    let result = [...allAdversaries]
+    let result = [...allItems.value]
 
     // Filtre par recherche textuelle
     if (searchQuery.value.trim()) {
       const q = searchQuery.value.trim().toLowerCase()
       result = result.filter((a) =>
         a.name.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q) ||
-        a.motives.some((m) => m.toLowerCase().includes(q))
+        (a.description || '').toLowerCase().includes(q) ||
+        (a.motives || []).some((m) => m.toLowerCase().includes(q))
       )
     }
 
@@ -76,7 +93,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   })
 
   /** Nombre total d'adversaires (sans filtre) */
-  const totalCount = computed(() => allAdversaries.length)
+  const totalCount = computed(() => allItems.value.length)
 
   /** Nombre d'adversaires filtrés */
   const filteredCount = computed(() => filteredAdversaries.value.length)
@@ -84,7 +101,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   /** Adversaire actuellement sélectionné */
   const selectedAdversary = computed(() => {
     if (!selectedAdversaryId.value) return null
-    return allAdversaries.find((a) => a.id === selectedAdversaryId.value) || null
+    return allItems.value.find((a) => a.id === selectedAdversaryId.value) || null
   })
 
   /** Indique si des filtres sont actifs */
@@ -150,7 +167,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
 
   /** Cherche un adversaire par id */
   function getAdversaryById(id) {
-    return allAdversaries.find((a) => a.id === id) || null
+    return allItems.value.find((a) => a.id === id) || null
   }
 
   return {
@@ -165,6 +182,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     availableTypes,
     availableTiers,
     // Getters
+    allItems,
     filteredAdversaries,
     totalCount,
     filteredCount,

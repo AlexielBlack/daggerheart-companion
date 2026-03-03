@@ -66,6 +66,24 @@ const routes = [
     meta: { title: 'Lanceur de Dés', module: 'dice' }
   },
   {
+    path: '/homebrew/adversary',
+    name: 'homebrew-adversary-list',
+    component: () => import('@modules/homebrew/views/HomebrewAdversaryList.vue'),
+    meta: { title: 'Adversaires custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/adversary/new',
+    name: 'homebrew-adversary-create',
+    component: () => import('@modules/homebrew/views/HomebrewAdversaryEditor.vue'),
+    meta: { title: 'Nouvel adversaire', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/adversary/:id',
+    name: 'homebrew-adversary-edit',
+    component: () => import('@modules/homebrew/views/HomebrewAdversaryEditor.vue'),
+    meta: { title: 'Modifier adversaire', module: 'homebrew' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@core/components/ErrorFallback.vue'),

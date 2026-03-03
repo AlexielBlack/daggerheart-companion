@@ -125,8 +125,8 @@ export function useFormSchema(schema, initialData = null) {
     return JSON.stringify(formData.value) !== snapshot.value
   })
 
-  /** Mode édition (true si des données initiales ont été fournies) */
-  const isEditMode = computed(() => initialData !== null)
+  /** Mode édition (true si des données initiales ont été fournies ou hydratées) */
+  const isEditMode = ref(initialData !== null)
 
   /**
    * Réinitialise le formulaire aux valeurs par défaut du schéma.
@@ -147,6 +147,7 @@ export function useFormSchema(schema, initialData = null) {
     const merged = mergeWithDefaults(data, schema.fields)
     formData.value = deepClone(merged)
     snapshot.value = JSON.stringify(merged)
+    isEditMode.value = true
   }
 
   /**

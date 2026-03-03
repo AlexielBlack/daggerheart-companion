@@ -25,5 +25,12 @@ export { default as HomebrewCard } from './core/components/HomebrewCard.vue'
 export { default as HomebrewList } from './core/components/HomebrewList.vue'
 export { default as ImportExportPanel } from './core/components/ImportExportPanel.vue'
 
+// ── Composants spécialisés ──────────────────────────────────
+export { default as AdversaryPreview } from './categories/adversary/AdversaryPreview.vue'
+
+// ── Vues ────────────────────────────────────────────────────
+export { default as HomebrewAdversaryList } from './views/HomebrewAdversaryList.vue'
+export { default as HomebrewAdversaryEditor } from './views/HomebrewAdversaryEditor.vue'
+
 // ── Schémas ────────────────────────────────────────────────
 export { adversarySchema, ADVERSARY_TIER_BENCHMARKS } from './schemas/adversarySchema.js'
