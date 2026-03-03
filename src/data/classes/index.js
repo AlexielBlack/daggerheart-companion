@@ -325,6 +325,11 @@ export function createDefaultCharacter(classId) {
     // Conditions actives
     conditions: [],
 
+    // ── Level Up ──
+    levelHistory: [],       // Historique complet des level ups
+    markedTraits: [],       // Traits marqués (ne peuvent être réaugmentés avant clear)
+    subclassProgression: 'foundation', // 'foundation' | 'specialization' | 'mastery'
+
     // Notes libres
     notes: '',
 
