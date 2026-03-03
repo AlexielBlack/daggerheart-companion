@@ -830,25 +830,22 @@
     "id": "sellsword",
     "name": "Sellsword",
     "tier": 1,
-    "type": "Standard",
+    "type": "Minion",
     "description": "A battle-hardened mercenary for hire.",
     "motives": [
       "Earn gold",
       "Fight",
       "Survive"
     ],
-    "difficulty": 12,
-    "thresholds": {
-      "major": 7,
-      "severe": 13
-    },
-    "hp": 5,
-    "stress": 3,
+    "difficulty": 10,
+    "thresholds": null,
+    "hp": 1,
+    "stress": 1,
     "attack": {
-      "modifier": 2,
+      "modifier": 3,
       "name": "Greatsword",
       "range": "Melee",
-      "damage": "1d10+2",
+      "damage": "3",
       "damageType": "phy"
     },
     "experiences": [
@@ -857,7 +854,8 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 3
   },
   {
     "id": "spellblade",
@@ -870,15 +868,15 @@
       "Prove superiority",
       "Seek challenge"
     ],
-    "difficulty": 13,
+    "difficulty": 14,
     "thresholds": {
-      "major": 6,
-      "severe": 11
+      "major": 8,
+      "severe": 14
     },
-    "hp": 4,
-    "stress": 4,
+    "hp": 6,
+    "stress": 3,
     "attack": {
-      "modifier": 2,
+      "modifier": 3,
       "name": "Enchanted Blade",
       "range": "Melee",
       "damage": "1d8+2",
@@ -890,7 +888,8 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 3
   },
   {
     "id": "weaponmaster",
@@ -905,13 +904,13 @@
     ],
     "difficulty": 14,
     "thresholds": {
-      "major": 7,
-      "severe": 13
+      "major": 8,
+      "severe": 15
     },
-    "hp": 5,
+    "hp": 6,
     "stress": 3,
     "attack": {
-      "modifier": 3,
+      "modifier": 2,
       "name": "Varied Weapons",
       "range": "Close",
       "damage": "1d10+3",
@@ -923,7 +922,8 @@
         "modifier": 3
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 2
   },
   {
     "id": "skeleton-warrior",
@@ -936,22 +936,23 @@
       "Guard",
       "Obey"
     ],
-    "difficulty": 11,
+    "difficulty": 10,
     "thresholds": {
-      "major": 5,
-      "severe": 10
+      "major": 4,
+      "severe": 8
     },
-    "hp": 4,
+    "hp": 3,
     "stress": 2,
     "attack": {
-      "modifier": 1,
+      "modifier": 0,
       "name": "Rusted Blade",
       "range": "Melee",
       "damage": "1d8+2",
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 0
   },
   {
     "id": "skeleton-archer",
@@ -964,10 +965,10 @@
       "Guard",
       "Obey"
     ],
-    "difficulty": 11,
+    "difficulty": 9,
     "thresholds": {
       "major": 4,
-      "severe": 8
+      "severe": 7
     },
     "hp": 3,
     "stress": 2,
@@ -994,20 +995,21 @@
     ],
     "difficulty": 13,
     "thresholds": {
-      "major": 8,
-      "severe": 14
+      "major": 7,
+      "severe": 13
     },
-    "hp": 6,
+    "hp": 5,
     "stress": 2,
     "attack": {
-      "modifier": 1,
+      "modifier": 2,
       "name": "Greatsword",
       "range": "Melee",
       "damage": "1d12+3",
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 2
   },
   {
     "id": "skeleton-dredge",
@@ -1020,7 +1022,7 @@
       "Obey",
       "Swarm"
     ],
-    "difficulty": 10,
+    "difficulty": 8,
     "thresholds": {
       "major": null,
       "severe": null
@@ -1056,20 +1058,21 @@
     ],
     "difficulty": 10,
     "thresholds": {
-      "major": 7,
-      "severe": 12
+      "major": 4,
+      "severe": 6
     },
-    "hp": 5,
-    "stress": 2,
+    "hp": 4,
+    "stress": 1,
     "attack": {
-      "modifier": -1,
+      "modifier": 0,
       "name": "Slam",
       "range": "Melee",
       "damage": "1d8+3",
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 0
   },
   {
     "id": "brawny-zombie",
@@ -1082,22 +1085,23 @@
       "Devour",
       "Obey"
     ],
-    "difficulty": 11,
+    "difficulty": 10,
     "thresholds": {
       "major": 8,
       "severe": 15
     },
     "hp": 7,
-    "stress": 2,
+    "stress": 4,
     "attack": {
-      "modifier": 1,
-      "name": "Fists",
-      "range": "Melee",
-      "damage": "1d10+4",
+      "modifier": 2,
+      "name": "Slam",
+      "range": "Very Close",
+      "damage": "1d12+3",
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 2
   },
   {
     "id": "rotted-zombie",
@@ -1110,7 +1114,7 @@
       "Obey",
       "Swarm"
     ],
-    "difficulty": 10,
+    "difficulty": 8,
     "thresholds": {
       "major": null,
       "severe": null
@@ -1145,10 +1149,10 @@
       "Overwhelm",
       "Shamble"
     ],
-    "difficulty": 10,
+    "difficulty": 8,
     "thresholds": {
       "major": 6,
-      "severe": 11
+      "severe": 12
     },
     "hp": 6,
     "stress": 3,
@@ -1185,15 +1189,15 @@
       "Destroy",
       "Obey"
     ],
-    "difficulty": 12,
+    "difficulty": 13,
     "thresholds": {
-      "major": 9,
-      "severe": 16
+      "major": 8,
+      "severe": 15
     },
-    "hp": 9,
+    "hp": 10,
     "stress": 3,
     "attack": {
-      "modifier": 2,
+      "modifier": 4,
       "name": "Massive Fists",
       "range": "Very Close",
       "damage": "1d12+4",
@@ -1206,7 +1210,8 @@
         "type": "passive",
         "description": "The Hulk can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
       }
-    ]
+    ],
+    "atk_mod": 4
   },
   {
     "id": "swarm-of-rats",
@@ -1222,10 +1227,10 @@
     ],
     "difficulty": 10,
     "thresholds": {
-      "major": 5,
-      "severe": 9
+      "major": 6,
+      "severe": 10
     },
-    "hp": 5,
+    "hp": 6,
     "stress": 2,
     "attack": {
       "modifier": -1,
@@ -1254,22 +1259,23 @@
       "Destroy",
       "Spread chaos"
     ],
-    "difficulty": 13,
+    "difficulty": 14,
     "thresholds": {
-      "major": 6,
-      "severe": 11
+      "major": 8,
+      "severe": 15
     },
-    "hp": 4,
-    "stress": 3,
+    "hp": 8,
+    "stress": 4,
     "attack": {
-      "modifier": 1,
+      "modifier": 3,
       "name": "Claws",
       "range": "Melee",
       "damage": "1d8+2",
       "damageType": "mag"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 3
   },
   {
     "id": "minor-fire-elemental",
@@ -1282,22 +1288,23 @@
       "Consume",
       "Spread"
     ],
-    "difficulty": 12,
+    "difficulty": 13,
     "thresholds": {
-      "major": 5,
-      "severe": 10
+      "major": 7,
+      "severe": 15
     },
-    "hp": 4,
+    "hp": 9,
     "stress": 3,
     "attack": {
-      "modifier": 1,
+      "modifier": 3,
       "name": "Flame Touch",
       "range": "Melee",
       "damage": "1d8+3",
       "damageType": "mag"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 3
   },
   {
     "id": "minor-chaos-elemental",
@@ -1310,22 +1317,23 @@
       "Distort",
       "Warp"
     ],
-    "difficulty": 13,
+    "difficulty": 14,
     "thresholds": {
-      "major": 6,
-      "severe": 11
+      "major": 7,
+      "severe": 14
     },
-    "hp": 4,
-    "stress": 4,
+    "hp": 7,
+    "stress": 3,
     "attack": {
-      "modifier": 1,
+      "modifier": 3,
       "name": "Chaos Bolt",
       "range": "Close",
       "damage": "1d10+1",
       "damageType": "mag"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": 3
   },
   {
     "id": "minor-treant",
@@ -1371,13 +1379,13 @@
       "Protect the forest",
       "Nurture"
     ],
-    "difficulty": 12,
+    "difficulty": 11,
     "thresholds": {
-      "major": 5,
-      "severe": 10
+      "major": 6,
+      "severe": 11
     },
-    "hp": 4,
-    "stress": 4,
+    "hp": 6,
+    "stress": 2,
     "attack": {
       "modifier": 0,
       "name": "Vine Whip",
@@ -1391,7 +1399,8 @@
         "modifier": 3
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": null
   },
   {
     "id": "sylvan-soldier",
@@ -1404,15 +1413,15 @@
       "Patrol",
       "Protect"
     ],
-    "difficulty": 13,
+    "difficulty": 11,
     "thresholds": {
       "major": 6,
       "severe": 11
     },
     "hp": 4,
-    "stress": 3,
+    "stress": 2,
     "attack": {
-      "modifier": 2,
+      "modifier": 0,
       "name": "Longbow",
       "range": "Far",
       "damage": "1d8+2",
@@ -1424,7 +1433,8 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 0
   },
   {
     "id": "petty-noble",
@@ -1437,13 +1447,13 @@
       "Gain power",
       "Scheme"
     ],
-    "difficulty": 12,
+    "difficulty": 14,
     "thresholds": {
-      "major": 4,
-      "severe": 8
+      "major": 6,
+      "severe": 10
     },
     "hp": 3,
-    "stress": 4,
+    "stress": 5,
     "attack": {
       "modifier": -3,
       "name": "Rapier",
@@ -1457,7 +1467,8 @@
         "modifier": 3
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": null
   },
   {
     "id": "pirate-captain",
@@ -1473,12 +1484,12 @@
     "difficulty": 14,
     "thresholds": {
       "major": 7,
-      "severe": 13
+      "severe": 14
     },
-    "hp": 6,
-    "stress": 4,
+    "hp": 7,
+    "stress": 5,
     "attack": {
-      "modifier": 3,
+      "modifier": 4,
       "name": "Cutlass",
       "range": "Melee",
       "damage": "1d10+3",
@@ -1494,7 +1505,8 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 4
   },
   {
     "id": "pirate-raiders",
@@ -1508,18 +1520,18 @@
       "Overwhelm",
       "Plunder"
     ],
-    "difficulty": 11,
+    "difficulty": 12,
     "thresholds": {
-      "major": 6,
+      "major": 5,
       "severe": 11
     },
-    "hp": 6,
+    "hp": 4,
     "stress": 3,
     "attack": {
-      "modifier": 0,
-      "name": "Cutlasses",
+      "modifier": 1,
+      "name": "Cutlass",
       "range": "Melee",
-      "damage": "1d8+3",
+      "damage": "1d8+2",
       "damageType": "phy"
     },
     "experiences": [],
@@ -1529,7 +1541,8 @@
         "type": "passive",
         "description": "When the Raiders have marked half or more of their HP, their standard attack deals 1d4+1 physical damage instead."
       }
-    ]
+    ],
+    "atk_mod": 1
   },
   {
     "id": "pirate-tough",
@@ -1542,13 +1555,13 @@
       "Intimidate",
       "Protect captain"
     ],
-    "difficulty": 12,
+    "difficulty": 13,
     "thresholds": {
       "major": 8,
-      "severe": 14
+      "severe": 15
     },
-    "hp": 6,
-    "stress": 2,
+    "hp": 5,
+    "stress": 3,
     "attack": {
       "modifier": 1,
       "name": "Fists",
@@ -1576,15 +1589,15 @@
       "Dissolve",
       "Envelop"
     ],
-    "difficulty": 11,
+    "difficulty": 8,
     "thresholds": {
-      "major": 6,
-      "severe": 11
+      "major": 5,
+      "severe": 10
     },
     "hp": 5,
-    "stress": 3,
+    "stress": 2,
     "attack": {
-      "modifier": 0,
+      "modifier": 1,
       "name": "Pseudopod",
       "range": "Melee",
       "damage": "1d8+2",
@@ -1596,7 +1609,8 @@
         "modifier": 3
       }
     ],
-    "features": []
+    "features": [],
+    "atk_mod": 1
   },
   {
     "id": "red-ooze",
@@ -1609,10 +1623,10 @@
       "Dissolve",
       "Hunt"
     ],
-    "difficulty": 12,
+    "difficulty": 10,
     "thresholds": {
-      "major": 7,
-      "severe": 12
+      "major": 6,
+      "severe": 11
     },
     "hp": 5,
     "stress": 3,
@@ -1637,15 +1651,15 @@
       "Merge",
       "Spread"
     ],
-    "difficulty": 10,
+    "difficulty": 14,
     "thresholds": {
-      "major": null,
+      "major": 4,
       "severe": null
     },
-    "hp": 1,
+    "hp": 2,
     "stress": 1,
     "attack": {
-      "modifier": -2,
+      "modifier": -1,
       "name": "Acid Touch",
       "range": "Melee",
       "damage": "2",
@@ -1658,7 +1672,8 @@
         "type": "passive",
         "description": "The Ooze is defeated when they take any damage. For every 4 damage a PC deals to the Ooze, defeat an additional Minion within range the attack would succeed against."
       }
-    ]
+    ],
+    "atk_mod": -1
   },
   {
     "id": "tiny-red-ooze",
@@ -1671,12 +1686,12 @@
       "Merge",
       "Spread"
     ],
-    "difficulty": 10,
+    "difficulty": 11,
     "thresholds": {
-      "major": null,
+      "major": 5,
       "severe": null
     },
-    "hp": 1,
+    "hp": 2,
     "stress": 1,
     "attack": {
       "modifier": -1,
@@ -1698,7 +1713,7 @@
     "id": "tangle-bramble",
     "name": "Tangle Bramble",
     "tier": 1,
-    "type": "Standard",
+    "type": "Minion",
     "description": "An animated thorny plant that lashes at intruders.",
     "motives": [
       "Defend territory",
@@ -1706,21 +1721,19 @@
       "Feed"
     ],
     "difficulty": 11,
-    "thresholds": {
-      "major": 6,
-      "severe": 11
-    },
-    "hp": 4,
-    "stress": 2,
+    "thresholds": null,
+    "hp": 1,
+    "stress": 1,
     "attack": {
-      "modifier": 1,
+      "modifier": -1,
       "name": "Thorns",
       "range": "Close",
-      "damage": "1d8+2",
+      "damage": "2",
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "atk_mod": -1
   },
   {
     "id": "tangle-bramble-swarm",
@@ -1734,13 +1747,13 @@
       "Entangle",
       "Spread"
     ],
-    "difficulty": 10,
+    "difficulty": 12,
     "thresholds": {
-      "major": 5,
-      "severe": 10
+      "major": 6,
+      "severe": 11
     },
-    "hp": 5,
-    "stress": 2,
+    "hp": 6,
+    "stress": 3,
     "attack": {
       "modifier": 0,
       "name": "Thorns",
@@ -1755,7 +1768,8 @@
         "type": "passive",
         "description": "When the Swarm has marked half or more of their HP, their standard attack deals 1d4 physical damage instead."
       }
-    ]
+    ],
+    "atk_mod": null
   },
   {
     "id": "jagged-knife-hexer",
