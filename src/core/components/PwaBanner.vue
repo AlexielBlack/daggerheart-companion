@@ -1,6 +1,31 @@
 <template>
   <Transition name="banner-slide">
     <div
+      v-if="canInstall"
+      class="install-banner"
+      role="status"
+      aria-live="polite"
+    >
+      <span class="install-banner__text">
+        Installer Daggerheart Companion pour un acces hors ligne rapide.
+      </span>
+      <button
+        class="install-banner__btn"
+        @click="onInstall"
+      >
+        Installer
+      </button>
+      <button
+        class="install-banner__dismiss"
+        aria-label="Ignorer l'installation"
+        @click="installDismissed = true"
+      >
+        ✕
+      </button>
+    </div>
+  </Transition>
+  <Transition name="banner-slide">
+    <div
       v-if="hasUpdate"
       class="update-banner"
       role="alert"
@@ -41,27 +66,51 @@
 <script>
 import { ref, computed } from 'vue'
 import { useServiceWorker } from '@core/composables/useServiceWorker'
+import { useInstallPrompt } from '@core/composables/useInstallPrompt'
 
 export default {
   name: 'PwaBanner',
   setup() {
     const { hasUpdate: swHasUpdate, isOffline, applyUpdate } = useServiceWorker()
+    const {
+      canInstall: rawCanInstall,
+      isInstalled,
+      promptInstall
+    } = useInstallPrompt()
+
     const dismissed = ref(false)
+    const installDismissed = ref(false)
 
     const hasUpdate = computed(() => swHasUpdate.value && !dismissed.value)
+    const canInstall = computed(
+      () => rawCanInstall.value && !installDismissed.value && !isInstalled.value
+    )
 
     function onApply() {
       applyUpdate()
     }
 
-    return { hasUpdate, isOffline, dismissed, onApply }
+    async function onInstall() {
+      await promptInstall()
+    }
+
+    return {
+      hasUpdate,
+      isOffline,
+      dismissed,
+      installDismissed,
+      canInstall,
+      onApply,
+      onInstall
+    }
   }
 }
 </script>
 
 <style scoped>
 .update-banner,
-.offline-banner {
+.offline-banner,
+.install-banner {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -85,10 +134,15 @@ export default {
   color: var(--color-text-inverse);
 }
 
-.update-banner__btn {
+.install-banner {
+  background: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+}
+
+.update-banner__btn,
+.install-banner__btn {
   padding: 4px 12px;
   background: #fff;
-  color: var(--color-accent-hope);
   border: none;
   border-radius: var(--radius-sm);
   font-size: var(--font-size-xs);
@@ -97,19 +151,30 @@ export default {
   transition: opacity var(--transition-fast);
 }
 
-.update-banner__btn:hover { opacity: 0.9; }
+.update-banner__btn {
+  color: var(--color-accent-hope);
+}
 
-.update-banner__dismiss {
+.install-banner__btn {
+  color: var(--color-accent-gold);
+}
+
+.update-banner__btn:hover,
+.install-banner__btn:hover { opacity: 0.9; }
+
+.update-banner__dismiss,
+.install-banner__dismiss {
   background: none;
   border: none;
-  color: #fff;
+  color: inherit;
   cursor: pointer;
   font-size: var(--font-size-md);
   padding: 2px 6px;
   opacity: 0.8;
 }
 
-.update-banner__dismiss:hover { opacity: 1; }
+.update-banner__dismiss:hover,
+.install-banner__dismiss:hover { opacity: 1; }
 
 .banner-slide-enter-active,
 .banner-slide-leave-active {

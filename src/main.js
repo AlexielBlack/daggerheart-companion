@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import router from './router/index.js'
 import App from './App.vue'
 import { registerServiceWorker } from '@core/composables/useServiceWorker'
+import { initInstallPrompt } from '@core/composables/useInstallPrompt'
 import { useNotification } from '@core/composables/useNotification'
 
 import './styles/variables.css'
@@ -20,6 +21,9 @@ app.config.errorHandler = (err, instance, info) => {
 }
 
 app.mount('#app')
+
+// PWA — ecouteurs d'installation (avant SW pour capter beforeinstallprompt tot)
+initInstallPrompt()
 
 // Service Worker — enregistrement apres montage
 if (import.meta.env.PROD) {
