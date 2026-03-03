@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
+import { swPrecache } from './vite-plugin-sw-precache.js'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), swPrecache()],
   base: '/daggerheart-companion/',
   resolve: {
     alias: {

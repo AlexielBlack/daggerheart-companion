@@ -3,36 +3,50 @@
  * @description Service Worker pour Daggerheart Companion.
  *
  * Strategie de cache :
- *   - INSTALL  : pre-cache du shell applicatif (index.html, icones)
+ *   - INSTALL  : pre-cache du shell applicatif + assets Vite
  *   - FETCH    : cache-first pour assets statiques (JS, CSS, images)
  *                network-first pour navigation (HTML)
+ *                fallback offline.html si tout echoue
  *   - ACTIVATE : nettoyage des anciens caches
  *
- * Le versionning se fait via CACHE_VERSION.
- * Chaque build deploye invalide le cache via un nouveau hash Vite
- * dans les noms de fichiers assets.
+ * Le tableau PRECACHE_URLS est injecte automatiquement par le plugin
+ * Vite `vite-plugin-sw-precache` apres chaque build de production.
+ * En developpement, seul le shell minimal est pre-cache.
  */
 
-const CACHE_VERSION = 'dh-v1'
+const CACHE_VERSION = 'dh-v2'
 const SHELL_CACHE = `${CACHE_VERSION}-shell`
 const ASSETS_CACHE = `${CACHE_VERSION}-assets`
 
-/** Ressources a pre-cacher lors de l'installation */
+/** Shell minimal — toujours pre-cache */
 const SHELL_URLS = [
   '/daggerheart-companion/',
   '/daggerheart-companion/index.html',
+  '/daggerheart-companion/offline.html',
   '/daggerheart-companion/icon.svg',
   '/daggerheart-companion/icon-192.png',
   '/daggerheart-companion/icon-512.png'
 ]
 
-// ── Install : pre-cache du shell ──
+/**
+ * Assets Vite hashes — injectes automatiquement par le build.
+ * @see vite-plugin-sw-precache.js
+ * @placeholder PRECACHE_INJECT
+ */
+const PRECACHE_URLS = []
+
+// ── Install : pre-cache du shell + assets ──
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(SHELL_URLS))
-      .then(() => self.skipWaiting())
+    Promise.all([
+      caches.open(SHELL_CACHE)
+        .then((cache) => cache.addAll(SHELL_URLS)),
+      PRECACHE_URLS.length > 0
+        ? caches.open(ASSETS_CACHE)
+          .then((cache) => cache.addAll(PRECACHE_URLS))
+        : Promise.resolve()
+    ]).then(() => self.skipWaiting())
   )
 })
 
@@ -62,9 +76,9 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return
   if (url.origin !== self.location.origin) return
 
-  // Navigation (HTML) : network-first avec fallback cache
+  // Navigation (HTML) : network-first avec fallback offline.html
   if (request.mode === 'navigate') {
-    event.respondWith(networkFirstWithFallback(request, SHELL_CACHE))
+    event.respondWith(handleNavigation(request))
     return
   }
 
@@ -79,6 +93,35 @@ self.addEventListener('fetch', (event) => {
 })
 
 // ── Strategies de cache ──
+
+/**
+ * Navigation : network-first → cache index.html → offline.html.
+ * Trois niveaux de fallback pour ne jamais afficher une erreur brute.
+ */
+async function handleNavigation(request) {
+  try {
+    const response = await fetch(request)
+    if (response.ok) {
+      const cache = await caches.open(SHELL_CACHE)
+      cache.put(request, response.clone())
+    }
+    return response
+  } catch {
+    // Niveau 1 : page demandee en cache
+    const cached = await caches.match(request)
+    if (cached) return cached
+
+    // Niveau 2 : index.html (SPA routing)
+    const index = await caches.match('/daggerheart-companion/index.html')
+    if (index) return index
+
+    // Niveau 3 : page offline dediee
+    const offline = await caches.match('/daggerheart-companion/offline.html')
+    if (offline) return offline
+
+    return new Response('Offline', { status: 503, statusText: 'Service Unavailable' })
+  }
+}
 
 /**
  * Cache-first : verifie le cache d'abord, reseau en fallback.
@@ -96,14 +139,13 @@ async function cacheFirstWithNetwork(request, cacheName) {
     }
     return response
   } catch {
-    // Offline et pas en cache — retourner une reponse generique
     return new Response('Offline', { status: 503, statusText: 'Service Unavailable' })
   }
 }
 
 /**
  * Network-first : tente le reseau, fallback sur le cache.
- * Ideal pour les pages HTML qui peuvent changer.
+ * Ideal pour les requetes dynamiques.
  */
 async function networkFirstWithFallback(request, cacheName) {
   try {
@@ -116,12 +158,6 @@ async function networkFirstWithFallback(request, cacheName) {
   } catch {
     const cached = await caches.match(request)
     if (cached) return cached
-
-    // Fallback ultime : retourner index.html pour le routing SPA
-    if (request.mode === 'navigate') {
-      const fallback = await caches.match('/daggerheart-companion/index.html')
-      if (fallback) return fallback
-    }
 
     return new Response('Offline', { status: 503, statusText: 'Service Unavailable' })
   }
