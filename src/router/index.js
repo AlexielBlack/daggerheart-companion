@@ -156,6 +156,42 @@ const routes = [
     meta: { title: 'Modifier équipement', module: 'homebrew' }
   },
   {
+    path: '/homebrew/class',
+    name: 'homebrew-class-list',
+    component: () => import('@modules/homebrew/views/HomebrewClassList.vue'),
+    meta: { title: 'Classes custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/class/new',
+    name: 'homebrew-class-create',
+    component: () => import('@modules/homebrew/views/HomebrewClassEditor.vue'),
+    meta: { title: 'Nouvelle classe', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/class/:id',
+    name: 'homebrew-class-edit',
+    component: () => import('@modules/homebrew/views/HomebrewClassEditor.vue'),
+    meta: { title: 'Modifier classe', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/domain',
+    name: 'homebrew-domain-list',
+    component: () => import('@modules/homebrew/views/HomebrewDomainList.vue'),
+    meta: { title: 'Domaines custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/domain/new',
+    name: 'homebrew-domain-create',
+    component: () => import('@modules/homebrew/views/HomebrewDomainEditor.vue'),
+    meta: { title: 'Nouveau domaine', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/domain/:id',
+    name: 'homebrew-domain-edit',
+    component: () => import('@modules/homebrew/views/HomebrewDomainEditor.vue'),
+    meta: { title: 'Modifier domaine', module: 'homebrew' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@core/components/ErrorFallback.vue'),

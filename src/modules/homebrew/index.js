@@ -57,3 +57,18 @@ export { ancestrySchema, ANCESTRY_EMOJIS } from './schemas/ancestrySchema.js'
 export { communitySchema, COMMUNITY_EMOJIS } from './schemas/communitySchema.js'
 export { environmentSchema, ENVIRONMENT_TYPES, ENVIRONMENT_TIER_BENCHMARKS } from './schemas/environmentSchema.js'
 export { equipmentSchema, EQUIPMENT_CATEGORIES, WEAPON_TRAITS, getRelevantFields } from './schemas/equipmentSchema.js'
+
+// ── Phase F : Classe & Domaine ──────────────────────────
+export { default as ClassPreview } from './categories/class/ClassPreview.vue'
+export { default as DomainPreview } from './categories/domain/DomainPreview.vue'
+
+export { useClassHomebrewStore } from './categories/class/useClassHomebrewStore.js'
+export { useDomainHomebrewStore } from './categories/domain/useDomainHomebrewStore.js'
+
+export { default as HomebrewClassList } from './views/HomebrewClassList.vue'
+export { default as HomebrewClassEditor } from './views/HomebrewClassEditor.vue'
+export { default as HomebrewDomainList } from './views/HomebrewDomainList.vue'
+export { default as HomebrewDomainEditor } from './views/HomebrewDomainEditor.vue'
+
+export { classSchema, AVAILABLE_DOMAINS, CLASS_EMOJIS, TRAIT_KEYS } from './schemas/classSchema.js'
+export { domainSchema, CARD_TYPES, CARD_LEVELS, DOMAIN_COLORS } from './schemas/domainSchema.js'
