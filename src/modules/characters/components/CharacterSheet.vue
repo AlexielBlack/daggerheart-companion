@@ -162,19 +162,41 @@
           <span class="combat-stat__detail">
             base {{ char.evasion }}
             <span v-if="char.evasionBonus !== 0">
-              {{ char.evasionBonus > 0 ? '+' : '' }}{{ char.evasionBonus }}
+              {{ char.evasionBonus > 0 ? '+' : '' }}{{ char.evasionBonus }} armure
+            </span>
+            <span
+              v-if="statBonuses.evasion > 0"
+              class="bonus-indicator"
+            >
+              +{{ statBonuses.evasion }} trait
             </span>
           </span>
         </div>
         <div class="combat-stat">
           <span class="combat-stat__label">Seuil Majeur</span>
           <span class="combat-stat__value">{{ thresholds.major }}</span>
-          <span class="combat-stat__detail">base + lvl {{ char.level }}</span>
+          <span class="combat-stat__detail">
+            base + lvl {{ char.level }}
+            <span
+              v-if="statBonuses.thresholds.major > 0"
+              class="bonus-indicator"
+            >
+              +{{ statBonuses.thresholds.major }}
+            </span>
+          </span>
         </div>
         <div class="combat-stat">
           <span class="combat-stat__label">Seuil Sévère</span>
           <span class="combat-stat__value">{{ thresholds.severe }}</span>
-          <span class="combat-stat__detail">base + lvl {{ char.level }}</span>
+          <span class="combat-stat__detail">
+            base + lvl {{ char.level }}
+            <span
+              v-if="statBonuses.thresholds.severe > 0"
+              class="bonus-indicator"
+            >
+              +{{ statBonuses.thresholds.severe }}
+            </span>
+          </span>
         </div>
         <div class="combat-stat">
           <span class="combat-stat__label">Proficiency</span>
@@ -248,7 +270,7 @@
         <SlotTracker
           label="HP"
           variant="hp"
-          :max="char.maxHP"
+          :max="effectiveMaxHP || char.maxHP"
           :marked="char.currentHP"
           @mark="emit('markHP')"
           @clear="emit('clearHP')"
@@ -257,7 +279,7 @@
         <SlotTracker
           label="Stress"
           variant="stress"
-          :max="char.maxStress"
+          :max="effectiveMaxStress || char.maxStress"
           :marked="char.currentStress"
           @mark="emit('markStress')"
           @clear="emit('clearStress')"
@@ -295,6 +317,19 @@
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Résumé des bonus de stats actifs -->
+      <div
+        v-if="statBonuses.sources.length > 0"
+        class="stat-bonus-summary"
+        role="note"
+        aria-label="Bonus de stats actifs"
+      >
+        <span class="stat-bonus-summary__icon">✦</span>
+        <span class="stat-bonus-summary__text">
+          {{ statBonuses.sources.join(' · ') }}
+        </span>
       </div>
     </section>
 
@@ -528,6 +563,9 @@ export default {
     classData: { type: Object, default: null },
     thresholds: { type: Object, default: () => ({ major: 0, severe: 0 }) },
     effectiveEvasion: { type: Number, default: 0 },
+    effectiveMaxHP: { type: Number, default: 0 },
+    effectiveMaxStress: { type: Number, default: 0 },
+    statBonuses: { type: Object, default: () => ({ maxHP: 0, maxStress: 0, evasion: 0, thresholds: { major: 0, severe: 0 }, sources: [] }) },
     // Données de sélection
     subclasses: { type: Array, default: () => [] },
     subclassData: { type: Object, default: null },
@@ -699,6 +737,34 @@ export default {
 .combat-stat__detail {
   font-size: 0.65rem;
   color: var(--text-muted, #6b7280);
+}
+
+.bonus-indicator {
+  color: var(--accent-hope, #53a8b6);
+  font-weight: 600;
+}
+
+.stat-bonus-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(83, 168, 182, 0.08);
+  border-left: 2px solid var(--accent-hope, #53a8b6);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #9ca3af);
+  line-height: 1.4;
+}
+
+.stat-bonus-summary__icon {
+  color: var(--accent-hope, #53a8b6);
+  flex-shrink: 0;
+}
+
+.stat-bonus-summary__text {
+  word-break: break-word;
 }
 
 .armor-row {

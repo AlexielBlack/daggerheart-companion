@@ -21,6 +21,7 @@ import { getSubclassesForClass, getSubclassById } from '@data/subclasses'
 import { ALL_ANCESTRIES, getAncestryById } from '@data/ancestries'
 import { COMMUNITIES, getCommunityById } from '@data/communities'
 import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
+import { computeStatBonuses } from '@data/statModifiers'
 import { useStorage } from '@core/composables/useStorage'
 
 export const useCharacterStore = defineStore('characters', () => {
@@ -67,26 +68,62 @@ export const useCharacterStore = defineStore('characters', () => {
     return getClassById(selectedCharacter.value.classId)
   })
 
+  // ── Bonus de stats (ascendance + sous-classe) ──────────
+
+  /**
+   * Bonus agrégés de l'ascendance et de la sous-classe sélectionnées.
+   * Recalculé automatiquement quand ancestryId, subclassId, level ou proficiency changent.
+   */
+  const selectedStatBonuses = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return { maxHP: 0, maxStress: 0, evasion: 0, thresholds: { major: 0, severe: 0 }, sources: [] }
+    return computeStatBonuses(char)
+  })
+
+  /**
+   * Max HP effectif = base classe + bonus ascendance/sous-classe.
+   */
+  const selectedEffectiveMaxHP = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return 0
+    const cls = getClassById(char.classId)
+    const baseHP = cls ? cls.baseHP : 6
+    return baseHP + selectedStatBonuses.value.maxHP
+  })
+
+  /**
+   * Max Stress effectif = base classe + bonus ascendance/sous-classe.
+   */
+  const selectedEffectiveMaxStress = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return 0
+    const cls = getClassById(char.classId)
+    const baseStress = cls ? cls.baseStress : 6
+    return baseStress + selectedStatBonuses.value.maxStress
+  })
+
   /**
    * Seuils de dégâts effectifs du personnage sélectionné.
-   * = base thresholds armure + niveau du personnage
+   * = base thresholds armure + niveau du personnage + bonus ascendance/sous-classe
    */
   const selectedThresholds = computed(() => {
     const char = selectedCharacter.value
     if (!char) return { major: 0, severe: 0 }
+    const bonuses = selectedStatBonuses.value
     return {
-      major: (char.armorBaseThresholds?.major || 0) + char.level,
-      severe: (char.armorBaseThresholds?.severe || 0) + char.level
+      major: (char.armorBaseThresholds?.major || 0) + char.level + bonuses.thresholds.major,
+      severe: (char.armorBaseThresholds?.severe || 0) + char.level + bonuses.thresholds.severe
     }
   })
 
   /**
-   * Évasion effective = base évasion + bonus
+   * Évasion effective = base évasion + bonus armure + bonus ascendance/sous-classe
    */
   const selectedEffectiveEvasion = computed(() => {
     const char = selectedCharacter.value
     if (!char) return 0
-    return char.evasion + (char.evasionBonus || 0)
+    const bonuses = selectedStatBonuses.value
+    return char.evasion + (char.evasionBonus || 0) + bonuses.evasion
   })
 
   // ── Données de sélection (pour les déroulants) ──────────
@@ -150,6 +187,20 @@ export const useCharacterStore = defineStore('characters', () => {
   // ── Actions de sélection ────────────────────────────────
 
   /**
+   * Synchronise maxHP et maxStress du personnage selon les bonus courants.
+   * Appelé après chaque changement d'ascendance, sous-classe ou niveau.
+   * @param {Object} char - Personnage mutable
+   */
+  function _syncDerivedStats(char) {
+    if (!char) return
+    const cls = getClassById(char.classId)
+    if (!cls) return
+    const bonuses = computeStatBonuses(char)
+    char.maxHP = cls.baseHP + bonuses.maxHP
+    char.maxStress = cls.baseStress + bonuses.maxStress
+  }
+
+  /**
    * Applique une sélection d'équipement et met à jour les champs dérivés.
    * @param {'subclassId'|'ancestryId'|'communityId'|'armorId'|'primaryWeaponId'|'secondaryWeaponId'} field
    * @param {string} value - L'ID sélectionné (ou '' pour désélectionner)
@@ -164,11 +215,6 @@ export const useCharacterStore = defineStore('characters', () => {
     // Appliquer les modifications dérivées selon le type de sélection
     try {
       switch (field) {
-        case 'subclassId': {
-          const sub = getSubclassById(char.classId, value)
-          char.subclass = sub ? sub.name : ''
-          break
-        }
         case 'armorId': {
           const armor = getArmorById(value)
           if (armor) {
@@ -221,7 +267,16 @@ export const useCharacterStore = defineStore('characters', () => {
           }
           break
         }
-        // ancestryId et communityId ne modifient pas directement les stats
+        // ancestryId et communityId : recalculer les stats dérivées
+        case 'ancestryId':
+        case 'subclassId':
+          // Recalculer maxHP et maxStress avec les nouveaux bonus
+          _syncDerivedStats(char)
+          if (field === 'subclassId') {
+            const sub = getSubclassById(char.classId, value)
+            char.subclass = sub ? sub.name : ''
+          }
+          break
         default:
           break
       }
@@ -289,6 +344,12 @@ export const useCharacterStore = defineStore('characters', () => {
     }
     target[keys[keys.length - 1]] = value
     char.updatedAt = new Date().toISOString()
+
+    // Recalculer les stats dérivées si le niveau ou la proficiency change
+    if (path === 'level' || path === 'proficiency') {
+      _syncDerivedStats(char)
+    }
+
     persist()
   }
 
@@ -485,6 +546,9 @@ export const useCharacterStore = defineStore('characters', () => {
     selectedCharacterClass,
     selectedThresholds,
     selectedEffectiveEvasion,
+    selectedStatBonuses,
+    selectedEffectiveMaxHP,
+    selectedEffectiveMaxStress,
 
     // Getters de sélection
     availableSubclasses,
