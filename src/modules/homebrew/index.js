@@ -16,5 +16,14 @@ export { createHomebrewStore } from './core/composables/useHomebrewStore.js'
 export { useFormSchema, buildDefaults, mergeWithDefaults } from './core/composables/useFormSchema.js'
 export { validateHomebrewData, getFieldErrors } from './core/composables/useHomebrewValidation.js'
 
+// ── Composants génériques ────────────────────────────────────
+export { default as HomebrewFormField } from './core/components/HomebrewFormField.vue'
+export { default as FeatureEditor } from './core/components/FeatureEditor.vue'
+export { default as ArrayFieldEditor } from './core/components/ArrayFieldEditor.vue'
+export { default as HomebrewForm } from './core/components/HomebrewForm.vue'
+export { default as HomebrewCard } from './core/components/HomebrewCard.vue'
+export { default as HomebrewList } from './core/components/HomebrewList.vue'
+export { default as ImportExportPanel } from './core/components/ImportExportPanel.vue'
+
 // ── Schémas ────────────────────────────────────────────────
 export { adversarySchema, ADVERSARY_TIER_BENCHMARKS } from './schemas/adversarySchema.js'
