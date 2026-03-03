@@ -170,7 +170,7 @@
 
 <script>
 import { computed } from 'vue'
-import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { useCharacterStore } from '@modules/characters'
 import { useLevelUpStore, WIZARD_STEPS } from '../stores/levelUpStore'
 import TierAchievementStep from './TierAchievementStep.vue'
 import AdvancementStep from './AdvancementStep.vue'

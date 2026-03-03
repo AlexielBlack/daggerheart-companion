@@ -16,7 +16,7 @@
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { useCharacterStore } from '@modules/characters'
 import {
   getTierForLevel,
   getTierAchievement,
