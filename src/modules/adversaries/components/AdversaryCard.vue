@@ -43,7 +43,7 @@
         💢 {{ adversary.stress }}
       </span>
       <span
-        v-if="adversary.thresholds.major !== null"
+        v-if="adversary.thresholds && adversary.thresholds.major !== null"
         class="adversary-card__stat"
         :aria-label="`Seuils ${adversary.thresholds.major} / ${adversary.thresholds.severe}`"
         title="Seuils Majeur/Sévère"

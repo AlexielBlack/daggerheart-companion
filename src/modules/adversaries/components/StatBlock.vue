@@ -72,7 +72,7 @@
         <div class="stat-block__stat">
           <span class="stat-block__stat-label">Seuils</span>
           <span class="stat-block__stat-value">
-            <template v-if="adversary.thresholds.major !== null">
+            <template v-if="adversary.thresholds && adversary.thresholds.major !== null">
               {{ adversary.thresholds.major }}/{{ adversary.thresholds.severe }}
             </template>
             <template v-else>—</template>
