@@ -42,6 +42,11 @@
           :armor="store.allArmor"
           :primary-weapons="store.allPrimaryWeapons"
           :secondary-weapons="store.allSecondaryWeapons"
+          :available-domains="store.availableDomains"
+          :available-domain-cards="store.availableDomainCards"
+          :loadout-cards="store.selectedLoadoutCards"
+          :vault-cards="store.selectedVaultCards"
+          :is-loadout-full="store.isLoadoutFull"
           @update="store.updateField"
           @apply-selection="store.applySelection"
           @mark-h-p="store.markHP()"
@@ -55,6 +60,11 @@
           @remove-condition="store.removeCondition"
           @add-experience="store.addExperience()"
           @remove-experience="store.removeExperience"
+          @add-card-to-loadout="store.addCardToLoadout"
+          @add-card-to-vault="store.addCardToVault"
+          @move-card-to-loadout="store.moveCardToLoadout"
+          @move-card-to-vault="store.moveCardToVault"
+          @remove-card="store.removeCard"
         />
 
         <!-- Empty state -->

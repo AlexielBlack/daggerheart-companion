@@ -37,6 +37,7 @@ export const MAX_HP = 12
 export const MAX_STRESS = 12
 export const MAX_ARMOR = 12
 export const MAX_HOPE = 6    // SRD : "A PC can have a maximum of 6 Hope at one time"
+export const MAX_LOADOUT = 5  // SRD : max 5 domain cards in loadout
 export const MAX_CHARACTERS = 8
 
 /**
@@ -314,6 +315,12 @@ export function createDefaultCharacter(classId) {
     // Inventaire
     inventory: [],
     gold: { handfuls: 0, bags: 0, chests: 0 },
+
+    // Cartes de domaine
+    domainCards: {
+      loadout: [],  // max 5 cartes actives (card IDs)
+      vault: []     // cartes en réserve (card IDs)
+    },
 
     // Conditions actives
     conditions: [],

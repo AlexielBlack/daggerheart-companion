@@ -475,6 +475,27 @@
       </div>
     </section>
 
+    <!-- ═══ Cartes de domaine ═══ -->
+    <section class="sheet-section">
+      <h3 class="section-heading">
+        🎴 Cartes de domaine
+      </h3>
+      <DomainCardPicker
+        :domains="availableDomains"
+        :catalog-cards="availableDomainCards"
+        :loadout-cards="loadoutCards"
+        :vault-cards="vaultCards"
+        :loadout-full="isLoadoutFull"
+        :character-level="char.level"
+        :acquired-card-ids="acquiredCardIds"
+        @add-to-loadout="(id) => emit('addCardToLoadout', id)"
+        @add-to-vault="(id) => emit('addCardToVault', id)"
+        @move-to-loadout="(id) => emit('moveCardToLoadout', id)"
+        @move-to-vault="(id) => emit('moveCardToVault', id)"
+        @remove-card="(id) => emit('removeCard', id)"
+      />
+    </section>
+
     <!-- ═══ Sous-classe Features ═══ -->
     <section
       v-if="subclassData"
@@ -550,14 +571,16 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { CONDITIONS } from '@data/classes'
 import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
 import CharacterSelectors from './CharacterSelectors.vue'
+import DomainCardPicker from './DomainCardPicker.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock, CharacterSelectors },
+  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
@@ -575,17 +598,31 @@ export default {
     communities: { type: Array, default: () => [] },
     armor: { type: Array, default: () => [] },
     primaryWeapons: { type: Array, default: () => [] },
-    secondaryWeapons: { type: Array, default: () => [] }
+    secondaryWeapons: { type: Array, default: () => [] },
+    // Cartes de domaine
+    availableDomains: { type: Array, default: () => [] },
+    availableDomainCards: { type: Array, default: () => [] },
+    loadoutCards: { type: Array, default: () => [] },
+    vaultCards: { type: Array, default: () => [] },
+    isLoadoutFull: { type: Boolean, default: false }
   },
   emits: [
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',
     'markArmor', 'clearArmor', 'setHope',
     'addExperience', 'removeExperience',
     'addCondition', 'removeCondition',
-    'applySelection'
+    'applySelection',
+    'addCardToLoadout', 'addCardToVault',
+    'moveCardToLoadout', 'moveCardToVault', 'removeCard'
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS
+
+    /** IDs des cartes acquises (loadout + vault) */
+    const acquiredCardIds = computed(() => {
+      if (!props.char || !props.char.domainCards) return []
+      return [...(props.char.domainCards.loadout || []), ...(props.char.domainCards.vault || [])]
+    })
 
     function clampInt(val, min, max) {
       const num = parseInt(val) || min
@@ -610,7 +647,7 @@ export default {
       return 'foundation'
     }
 
-    return { conditions, clampInt, toggleCondition, emit, getSubclassFeatureTier }
+    return { conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier }
   }
 }
 </script>

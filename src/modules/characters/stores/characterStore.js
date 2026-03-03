@@ -13,6 +13,7 @@ import {
   MAX_HP,
   MAX_STRESS,
   MAX_HOPE,
+  MAX_LOADOUT,
   MAX_CHARACTERS,
   getClassById,
   createDefaultCharacter
@@ -22,6 +23,7 @@ import { ALL_ANCESTRIES, getAncestryById } from '@data/ancestries'
 import { COMMUNITIES, getCommunityById } from '@data/communities'
 import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import { computeStatBonuses } from '@data/statModifiers'
+import { getDomainsForClass, getCardById } from '@data/domains'
 import { useStorage } from '@core/composables/useStorage'
 
 export const useCharacterStore = defineStore('characters', () => {
@@ -183,6 +185,71 @@ export const useCharacterStore = defineStore('characters', () => {
   const allArmor = ARMOR
   const allPrimaryWeapons = PRIMARY_WEAPONS
   const allSecondaryWeapons = SECONDARY_WEAPONS
+
+  // ── Cartes de domaine ───────────────────────────────────
+
+  /** Domaines disponibles pour la classe du personnage sélectionné */
+  const availableDomains = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return []
+    return getDomainsForClass(char.className)
+  })
+
+  /**
+   * Cartes de domaine éligibles pour le personnage sélectionné.
+   * Filtrées par : domaines de la classe + niveau <= niveau du personnage.
+   */
+  const availableDomainCards = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return []
+    const domains = getDomainsForClass(char.className)
+    const results = []
+    for (const domain of domains) {
+      for (const card of domain.cards) {
+        if (card.level <= char.level) {
+          results.push({ ...card, domainId: domain.id, domainName: domain.name, domainColor: domain.color, domainEmoji: domain.emoji })
+        }
+      }
+    }
+    return results
+  })
+
+  /** Données complètes des cartes du loadout du personnage sélectionné */
+  const selectedLoadoutCards = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.domainCards) return []
+    return char.domainCards.loadout
+      .map((cardId) => {
+        const data = getCardById(cardId)
+        if (!data) return null
+        const domains = getDomainsForClass(char.className)
+        const domain = domains.find((d) => d.id === data.domain)
+        return { ...data, domainColor: domain?.color || '#53a8b6', domainName: domain?.name || '', domainEmoji: domain?.emoji || '' }
+      })
+      .filter(Boolean)
+  })
+
+  /** Données complètes des cartes du vault du personnage sélectionné */
+  const selectedVaultCards = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.domainCards) return []
+    return char.domainCards.vault
+      .map((cardId) => {
+        const data = getCardById(cardId)
+        if (!data) return null
+        const domains = getDomainsForClass(char.className)
+        const domain = domains.find((d) => d.id === data.domain)
+        return { ...data, domainColor: domain?.color || '#53a8b6', domainName: domain?.name || '', domainEmoji: domain?.emoji || '' }
+      })
+      .filter(Boolean)
+  })
+
+  /** Le loadout est-il plein ? (max 5) */
+  const isLoadoutFull = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.domainCards) return false
+    return char.domainCards.loadout.length >= MAX_LOADOUT
+  })
 
   // ── Actions de sélection ────────────────────────────────
 
@@ -506,6 +573,117 @@ export const useCharacterStore = defineStore('characters', () => {
     persist()
   }
 
+  // ── Cartes de domaine ──────────────────────────────────
+
+  /**
+   * Assure la structure domainCards sur le personnage.
+   * @param {Object} char
+   */
+  function _ensureDomainCards(char) {
+    if (!char.domainCards) {
+      char.domainCards = { loadout: [], vault: [] }
+    }
+    if (!Array.isArray(char.domainCards.loadout)) char.domainCards.loadout = []
+    if (!Array.isArray(char.domainCards.vault)) char.domainCards.vault = []
+  }
+
+  /**
+   * Ajoute une carte de domaine au loadout.
+   * @param {string} cardId
+   * @returns {boolean} true si ajouté
+   */
+  function addCardToLoadout(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    _ensureDomainCards(char)
+    if (char.domainCards.loadout.length >= MAX_LOADOUT) return false
+    if (char.domainCards.loadout.includes(cardId)) return false
+    // Retirer du vault si présent
+    char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
+    char.domainCards.loadout.push(cardId)
+    char.updatedAt = new Date().toISOString()
+    persist()
+    return true
+  }
+
+  /**
+   * Ajoute une carte de domaine au vault.
+   * @param {string} cardId
+   * @returns {boolean} true si ajouté
+   */
+  function addCardToVault(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    _ensureDomainCards(char)
+    if (char.domainCards.vault.includes(cardId)) return false
+    // Retirer du loadout si présent
+    char.domainCards.loadout = char.domainCards.loadout.filter((id) => id !== cardId)
+    char.domainCards.vault.push(cardId)
+    char.updatedAt = new Date().toISOString()
+    persist()
+    return true
+  }
+
+  /**
+   * Déplace une carte du vault vers le loadout.
+   * @param {string} cardId
+   * @returns {boolean}
+   */
+  function moveCardToLoadout(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    _ensureDomainCards(char)
+    if (char.domainCards.loadout.length >= MAX_LOADOUT) return false
+    if (!char.domainCards.vault.includes(cardId)) return false
+    char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
+    char.domainCards.loadout.push(cardId)
+    char.updatedAt = new Date().toISOString()
+    persist()
+    return true
+  }
+
+  /**
+   * Déplace une carte du loadout vers le vault.
+   * @param {string} cardId
+   * @returns {boolean}
+   */
+  function moveCardToVault(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    _ensureDomainCards(char)
+    if (!char.domainCards.loadout.includes(cardId)) return false
+    char.domainCards.loadout = char.domainCards.loadout.filter((id) => id !== cardId)
+    char.domainCards.vault.push(cardId)
+    char.updatedAt = new Date().toISOString()
+    persist()
+    return true
+  }
+
+  /**
+   * Retire complètement une carte (du loadout ou du vault).
+   * @param {string} cardId
+   */
+  function removeCard(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return
+    _ensureDomainCards(char)
+    char.domainCards.loadout = char.domainCards.loadout.filter((id) => id !== cardId)
+    char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  /**
+   * Vérifie si une carte est déjà acquise (loadout ou vault).
+   * @param {string} cardId
+   * @returns {boolean}
+   */
+  function hasCard(cardId) {
+    const char = selectedCharacter.value
+    if (!char || !char.domainCards) return false
+    return char.domainCards.loadout.includes(cardId) || char.domainCards.vault.includes(cardId)
+  }
+
   // ── Utilitaires ────────────────────────────────────────
 
   function persist() {
@@ -559,6 +737,13 @@ export const useCharacterStore = defineStore('characters', () => {
     selectedPrimaryWeaponData,
     selectedSecondaryWeaponData,
 
+    // Getters domaines
+    availableDomains,
+    availableDomainCards,
+    selectedLoadoutCards,
+    selectedVaultCards,
+    isLoadoutFull,
+
     // Listes de référence
     allAncestries,
     allCommunities,
@@ -597,6 +782,14 @@ export const useCharacterStore = defineStore('characters', () => {
     // Actions level up
     increaseMaxHP,
     increaseMaxStress,
+
+    // Actions cartes de domaine
+    addCardToLoadout,
+    addCardToVault,
+    moveCardToLoadout,
+    moveCardToVault,
+    removeCard,
+    hasCard,
 
     // Utilitaires
     persist,

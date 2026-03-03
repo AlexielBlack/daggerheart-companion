@@ -1,0 +1,183 @@
+/**
+ * @module characters/__tests__/domainCards
+ * @description Tests for domain card management in character store.
+ */
+import { describe, it, expect, beforeEach } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+import { useCharacterStore } from '../stores/characterStore'
+
+// Known card IDs from blade/bone domains (Warrior class)
+const BLADE_L1 = ['blade-get-back-up', 'blade-not-good-enough', 'blade-whirlwind']
+const BONE_L1 = ['bone-deft-maneuvers', 'bone-i-see-it-coming', 'bone-untouchable']
+const ALL_L1 = [...BLADE_L1, ...BONE_L1]
+
+describe('Domain Cards Management', () => {
+  let store
+
+  beforeEach(() => {
+    localStorage.clear()
+    setActivePinia(createPinia())
+    store = useCharacterStore()
+    store.createCharacter('warrior')
+  })
+
+  describe('Initial state', () => {
+    it('should have empty domainCards on new character', () => {
+      const char = store.selectedCharacter
+      expect(char.domainCards).toBeDefined()
+      expect(char.domainCards.loadout).toEqual([])
+      expect(char.domainCards.vault).toEqual([])
+    })
+
+    it('should have available domains matching class', () => {
+      expect(store.availableDomains.length).toBe(2)
+      const domainIds = store.availableDomains.map((d) => d.id)
+      expect(domainIds).toContain('blade')
+      expect(domainIds).toContain('bone')
+    })
+
+    it('should have available cards filtered by level', () => {
+      const cards = store.availableDomainCards
+      expect(cards.length).toBeGreaterThan(0)
+      expect(cards.every((c) => c.level <= 1)).toBe(true)
+    })
+
+    it('should not be loadout full initially', () => {
+      expect(store.isLoadoutFull).toBe(false)
+    })
+  })
+
+  describe('addCardToLoadout', () => {
+    it('should add a card to loadout', () => {
+      const result = store.addCardToLoadout(ALL_L1[0])
+      expect(result).toBe(true)
+      expect(store.selectedCharacter.domainCards.loadout).toContain(ALL_L1[0])
+    })
+
+    it('should not add duplicate card to loadout', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      const result = store.addCardToLoadout(ALL_L1[0])
+      expect(result).toBe(false)
+      expect(
+        store.selectedCharacter.domainCards.loadout.filter((id) => id === ALL_L1[0]).length
+      ).toBe(1)
+    })
+
+    it('should not exceed max loadout (5)', () => {
+      for (let i = 0; i < 5; i++) {
+        store.addCardToLoadout(ALL_L1[i])
+      }
+      expect(store.isLoadoutFull).toBe(true)
+      const result = store.addCardToLoadout(ALL_L1[5])
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('addCardToVault', () => {
+    it('should add a card to vault', () => {
+      const result = store.addCardToVault(ALL_L1[0])
+      expect(result).toBe(true)
+      expect(store.selectedCharacter.domainCards.vault).toContain(ALL_L1[0])
+    })
+
+    it('should not add duplicate card to vault', () => {
+      store.addCardToVault(ALL_L1[0])
+      const result = store.addCardToVault(ALL_L1[0])
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('moveCardToVault', () => {
+    it('should move card from loadout to vault', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      const result = store.moveCardToVault(ALL_L1[0])
+      expect(result).toBe(true)
+      expect(store.selectedCharacter.domainCards.loadout).not.toContain(ALL_L1[0])
+      expect(store.selectedCharacter.domainCards.vault).toContain(ALL_L1[0])
+    })
+  })
+
+  describe('moveCardToLoadout', () => {
+    it('should move card from vault to loadout', () => {
+      store.addCardToVault(ALL_L1[0])
+      const result = store.moveCardToLoadout(ALL_L1[0])
+      expect(result).toBe(true)
+      expect(store.selectedCharacter.domainCards.vault).not.toContain(ALL_L1[0])
+      expect(store.selectedCharacter.domainCards.loadout).toContain(ALL_L1[0])
+    })
+
+    it('should not move to loadout if full', () => {
+      for (let i = 0; i < 5; i++) {
+        store.addCardToLoadout(ALL_L1[i])
+      }
+      store.addCardToVault(ALL_L1[5])
+      const result = store.moveCardToLoadout(ALL_L1[5])
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('removeCard', () => {
+    it('should remove card from loadout', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      store.removeCard(ALL_L1[0])
+      expect(store.selectedCharacter.domainCards.loadout).not.toContain(ALL_L1[0])
+    })
+
+    it('should remove card from vault', () => {
+      store.addCardToVault(ALL_L1[0])
+      store.removeCard(ALL_L1[0])
+      expect(store.selectedCharacter.domainCards.vault).not.toContain(ALL_L1[0])
+    })
+  })
+
+  describe('hasCard', () => {
+    it('should detect card in loadout', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      expect(store.hasCard(ALL_L1[0])).toBe(true)
+    })
+
+    it('should detect card in vault', () => {
+      store.addCardToVault(ALL_L1[1])
+      expect(store.hasCard(ALL_L1[1])).toBe(true)
+    })
+
+    it('should return false for unknown card', () => {
+      expect(store.hasCard('nonexistent')).toBe(false)
+    })
+  })
+
+  describe('Computed card data', () => {
+    it('should return enriched loadout card data', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      expect(store.selectedLoadoutCards.length).toBe(1)
+      expect(store.selectedLoadoutCards[0].name).toBeDefined()
+      expect(store.selectedLoadoutCards[0].domainColor).toBeDefined()
+    })
+
+    it('should return enriched vault card data', () => {
+      store.addCardToVault(ALL_L1[0])
+      expect(store.selectedVaultCards.length).toBe(1)
+      expect(store.selectedVaultCards[0].name).toBeDefined()
+    })
+  })
+
+  describe('Cross-class validation', () => {
+    it('should have different domains for sorcerer', () => {
+      store.createCharacter('sorcerer')
+      const sorcerer = store.characters[store.characters.length - 1]
+      store.selectCharacter(sorcerer.id)
+      const domainIds = store.availableDomains.map((d) => d.id)
+      expect(domainIds).toContain('arcana')
+      expect(domainIds).toContain('midnight')
+    })
+  })
+
+  describe('Level-gated cards', () => {
+    it('should show more cards at higher levels', () => {
+      const cardsLvl1 = store.availableDomainCards.length
+      store.updateField('level', 5)
+      const cardsLvl5 = store.availableDomainCards.length
+      expect(cardsLvl5).toBeGreaterThan(cardsLvl1)
+    })
+  })
+})
