@@ -155,11 +155,11 @@
 <script>
 import { ref, computed } from 'vue'
 import { useCharacterStore } from '../stores/characterStore'
-import { useLevelUpStore } from '@modules/levelup/stores/levelUpStore'
+import { useLevelUpStore } from '@modules/levelup'
 import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
-import LevelUpWizard from '@modules/levelup/components/LevelUpWizard.vue'
+import { LevelUpWizard } from '@modules/levelup'
 
 export default {
   name: 'CharacterBuilder',
