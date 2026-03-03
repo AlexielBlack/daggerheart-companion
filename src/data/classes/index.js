@@ -266,6 +266,14 @@ export function createDefaultCharacter(classId) {
     level: 1,
     proficiency: 1,
 
+    // ── Sélections déroulantes (IDs) ──
+    subclassId: '',
+    ancestryId: '',
+    communityId: '',
+    armorId: '',
+    primaryWeaponId: '',
+    secondaryWeaponId: '',
+
     // Traits — préremplis avec suggestions
     traits: {
       agility: cls.suggestedTraits.agility,

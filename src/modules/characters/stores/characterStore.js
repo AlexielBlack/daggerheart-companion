@@ -17,6 +17,10 @@ import {
   getClassById,
   createDefaultCharacter
 } from '@data/classes'
+import { getSubclassesForClass, getSubclassById } from '@data/subclasses'
+import { ALL_ANCESTRIES, getAncestryById } from '@data/ancestries'
+import { COMMUNITIES, getCommunityById } from '@data/communities'
+import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import { useStorage } from '@core/composables/useStorage'
 
 export const useCharacterStore = defineStore('characters', () => {
@@ -84,6 +88,149 @@ export const useCharacterStore = defineStore('characters', () => {
     if (!char) return 0
     return char.evasion + (char.evasionBonus || 0)
   })
+
+  // ── Données de sélection (pour les déroulants) ──────────
+
+  /** Sous-classes disponibles pour la classe du personnage sélectionné */
+  const availableSubclasses = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return []
+    return getSubclassesForClass(char.classId)
+  })
+
+  /** Donnée de la sous-classe sélectionnée */
+  const selectedSubclassData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.subclassId) return null
+    return getSubclassById(char.classId, char.subclassId)
+  })
+
+  /** Donnée de l'ascendance sélectionnée */
+  const selectedAncestryData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.ancestryId) return null
+    return getAncestryById(char.ancestryId)
+  })
+
+  /** Donnée de la communauté sélectionnée */
+  const selectedCommunityData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.communityId) return null
+    return getCommunityById(char.communityId)
+  })
+
+  /** Donnée de l'armure sélectionnée */
+  const selectedArmorData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.armorId) return null
+    return getArmorById(char.armorId)
+  })
+
+  /** Donnée de l'arme primaire sélectionnée */
+  const selectedPrimaryWeaponData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.primaryWeaponId) return null
+    return getPrimaryWeaponById(char.primaryWeaponId)
+  })
+
+  /** Donnée de l'arme secondaire sélectionnée */
+  const selectedSecondaryWeaponData = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.secondaryWeaponId) return null
+    return getSecondaryWeaponById(char.secondaryWeaponId)
+  })
+
+  /** Listes de référence pour les déroulants */
+  const allAncestries = ALL_ANCESTRIES
+  const allCommunities = COMMUNITIES
+  const allArmor = ARMOR
+  const allPrimaryWeapons = PRIMARY_WEAPONS
+  const allSecondaryWeapons = SECONDARY_WEAPONS
+
+  // ── Actions de sélection ────────────────────────────────
+
+  /**
+   * Applique une sélection d'équipement et met à jour les champs dérivés.
+   * @param {'subclassId'|'ancestryId'|'communityId'|'armorId'|'primaryWeaponId'|'secondaryWeaponId'} field
+   * @param {string} value - L'ID sélectionné (ou '' pour désélectionner)
+   */
+  function applySelection(field, value) {
+    const char = selectedCharacter.value
+    if (!char) return
+
+    char[field] = value
+    char.updatedAt = new Date().toISOString()
+
+    // Appliquer les modifications dérivées selon le type de sélection
+    try {
+      switch (field) {
+        case 'subclassId': {
+          const sub = getSubclassById(char.classId, value)
+          char.subclass = sub ? sub.name : ''
+          break
+        }
+        case 'armorId': {
+          const armor = getArmorById(value)
+          if (armor) {
+            char.armorName = armor.name
+            char.armorBaseThresholds = { major: armor.thresholds.major, severe: armor.thresholds.severe }
+            char.armorScore = armor.baseScore
+            char.armorSlotsMarked = 0
+            // Appliquer les modificateurs d'évasion de l'armure
+            let armorEvasionBonus = 0
+            if (armor.featureKey === 'Flexible') armorEvasionBonus = 1
+            else if (armor.featureKey === 'Heavy') armorEvasionBonus = -1
+            else if (armor.featureKey === 'Very Heavy') armorEvasionBonus = -2
+            char.evasionBonus = armorEvasionBonus
+          } else {
+            char.armorName = ''
+            char.armorBaseThresholds = { major: 0, severe: 0 }
+            char.armorScore = 0
+            char.armorSlotsMarked = 0
+            char.evasionBonus = 0
+          }
+          break
+        }
+        case 'primaryWeaponId': {
+          const wpn = getPrimaryWeaponById(value)
+          if (wpn) {
+            char.primaryWeapon = {
+              name: wpn.name,
+              trait: wpn.trait,
+              range: wpn.range,
+              damage: wpn.damage,
+              feature: wpn.feature || ''
+            }
+          } else {
+            char.primaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '' }
+          }
+          break
+        }
+        case 'secondaryWeaponId': {
+          const wpn = getSecondaryWeaponById(value)
+          if (wpn) {
+            char.secondaryWeapon = {
+              name: wpn.name,
+              trait: wpn.trait,
+              range: wpn.range,
+              damage: wpn.damage,
+              feature: wpn.feature || ''
+            }
+          } else {
+            char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '' }
+          }
+          break
+        }
+        // ancestryId et communityId ne modifient pas directement les stats
+        default:
+          break
+      }
+    } catch (err) {
+      console.error(`[characterStore] applySelection error for ${field}:`, err)
+    }
+
+    persist()
+  }
 
   // ── Actions ────────────────────────────────────────────
 
@@ -339,11 +486,28 @@ export const useCharacterStore = defineStore('characters', () => {
     selectedThresholds,
     selectedEffectiveEvasion,
 
+    // Getters de sélection
+    availableSubclasses,
+    selectedSubclassData,
+    selectedAncestryData,
+    selectedCommunityData,
+    selectedArmorData,
+    selectedPrimaryWeaponData,
+    selectedSecondaryWeaponData,
+
+    // Listes de référence
+    allAncestries,
+    allCommunities,
+    allArmor,
+    allPrimaryWeapons,
+    allSecondaryWeapons,
+
     // Actions CRUD
     createCharacter,
     deleteCharacter,
     selectCharacter,
     updateField,
+    applySelection,
 
     // Actions HP/Stress/Armor
     markHP,

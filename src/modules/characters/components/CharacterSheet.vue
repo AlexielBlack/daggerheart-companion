@@ -58,20 +58,6 @@
         <div class="field">
           <label
             class="field-label"
-            for="char-subclass"
-          >Sous-classe</label>
-          <input
-            id="char-subclass"
-            type="text"
-            class="field-input"
-            :value="char.subclass"
-            placeholder="Sous-classe"
-            @input="emit('update', 'subclass', $event.target.value)"
-          />
-        </div>
-        <div class="field">
-          <label
-            class="field-label"
             for="char-level"
           >Niveau</label>
           <input
@@ -83,6 +69,72 @@
             max="10"
             @input="emit('update', 'level', clampInt($event.target.value, 1, 10))"
           />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Choix du personnage (déroulants) ═══ -->
+    <section class="sheet-section">
+      <h3 class="section-heading">
+        📋 Choix du personnage
+      </h3>
+      <CharacterSelectors
+        :char="char"
+        :subclasses="subclasses"
+        :subclass-data="subclassData"
+        :ancestry-data="ancestryData"
+        :community-data="communityData"
+        :ancestries="ancestries"
+        :communities="communities"
+        :armor="armor"
+        :primary-weapons="primaryWeapons"
+        :secondary-weapons="secondaryWeapons"
+        @select="(field, value) => emit('applySelection', field, value)"
+      />
+    </section>
+
+    <!-- ═══ Ascendance (features) ═══ -->
+    <section
+      v-if="ancestryData"
+      class="sheet-section"
+    >
+      <h3 class="section-heading">
+        {{ ancestryData.emoji }} Ascendance : {{ ancestryData.name }}
+      </h3>
+      <div class="feature-list">
+        <div class="feature-block">
+          <span class="feature-name">{{ ancestryData.topFeature.name }}</span>
+          <p class="feature-desc">
+            {{ ancestryData.topFeature.description }}
+          </p>
+        </div>
+        <div class="feature-block">
+          <span class="feature-name">{{ ancestryData.bottomFeature.name }}</span>
+          <p class="feature-desc">
+            {{ ancestryData.bottomFeature.description }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Communauté (feature) ═══ -->
+    <section
+      v-if="communityData"
+      class="sheet-section"
+    >
+      <h3 class="section-heading">
+        {{ communityData.emoji }} Communauté : {{ communityData.name }}
+      </h3>
+      <div class="feature-list">
+        <div class="feature-block">
+          <span class="feature-name">{{ communityData.feature.name }}</span>
+          <p class="feature-desc">
+            {{ communityData.feature.description }}
+          </p>
+        </div>
+        <div class="community-adjectives">
+          <span class="adjective-label">Adjectifs :</span>
+          {{ communityData.adjectives.join(', ') }}
         </div>
       </div>
     </section>
@@ -357,6 +409,12 @@
             @input="emit('update', `${key}Weapon.damage`, $event.target.value)"
           />
         </div>
+        <p
+          v-if="char[key + 'Weapon'].feature"
+          class="weapon-feature-text"
+        >
+          {{ char[key + 'Weapon'].feature }}
+        </p>
       </div>
     </section>
 
@@ -382,6 +440,63 @@
       </div>
     </section>
 
+    <!-- ═══ Sous-classe Features ═══ -->
+    <section
+      v-if="subclassData"
+      class="sheet-section"
+    >
+      <h3 class="section-heading">
+        🎯 Sous-classe : {{ subclassData.name }}
+      </h3>
+      <div class="class-features">
+        <p
+          v-if="subclassData.spellcastTrait"
+          class="spellcast-trait"
+        >
+          <strong>Spellcast Trait :</strong> {{ subclassData.spellcastTrait }}
+        </p>
+        <!-- Foundation (toujours affiché) -->
+        <div class="subclass-tier-block">
+          <span class="subclass-tier-label">Fondation (Niv. 1–4)</span>
+          <p
+            v-for="(feat, i) in subclassData.foundation"
+            :key="'f'+i"
+            class="class-feature-text"
+          >
+            {{ feat }}
+          </p>
+        </div>
+        <!-- Spécialisation (si niveau 5+) -->
+        <div
+          v-if="char.level >= 5 && subclassData.specialization.length"
+          class="subclass-tier-block"
+        >
+          <span class="subclass-tier-label">Spécialisation (Niv. 5–7)</span>
+          <p
+            v-for="(feat, i) in subclassData.specialization"
+            :key="'s'+i"
+            class="class-feature-text"
+          >
+            {{ feat }}
+          </p>
+        </div>
+        <!-- Maîtrise (si niveau 8+) -->
+        <div
+          v-if="char.level >= 8 && subclassData.mastery.length"
+          class="subclass-tier-block"
+        >
+          <span class="subclass-tier-label">Maîtrise (Niv. 8+)</span>
+          <p
+            v-for="(feat, i) in subclassData.mastery"
+            :key="'m'+i"
+            class="class-feature-text"
+          >
+            {{ feat }}
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ Notes ═══ -->
     <section class="sheet-section">
       <h3 class="section-heading">
@@ -403,21 +518,33 @@
 import { CONDITIONS } from '@data/classes'
 import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
+import CharacterSelectors from './CharacterSelectors.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock },
+  components: { SlotTracker, TraitBlock, CharacterSelectors },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
     thresholds: { type: Object, default: () => ({ major: 0, severe: 0 }) },
-    effectiveEvasion: { type: Number, default: 0 }
+    effectiveEvasion: { type: Number, default: 0 },
+    // Données de sélection
+    subclasses: { type: Array, default: () => [] },
+    subclassData: { type: Object, default: null },
+    ancestryData: { type: Object, default: null },
+    communityData: { type: Object, default: null },
+    ancestries: { type: Array, default: () => [] },
+    communities: { type: Array, default: () => [] },
+    armor: { type: Array, default: () => [] },
+    primaryWeapons: { type: Array, default: () => [] },
+    secondaryWeapons: { type: Array, default: () => [] }
   },
   emits: [
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',
     'markArmor', 'clearArmor', 'setHope',
     'addExperience', 'removeExperience',
-    'addCondition', 'removeCondition'
+    'addCondition', 'removeCondition',
+    'applySelection'
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS
@@ -435,7 +562,17 @@ export default {
       }
     }
 
-    return { conditions, clampInt, toggleCondition, emit }
+    /**
+     * Détermine le tier de features de sous-classe à afficher
+     * selon le niveau du personnage.
+     */
+    function getSubclassFeatureTier(level) {
+      if (level >= 8) return 'mastery'
+      if (level >= 5) return 'specialization'
+      return 'foundation'
+    }
+
+    return { conditions, clampInt, toggleCondition, emit, getSubclassFeatureTier }
   }
 }
 </script>
@@ -739,5 +876,80 @@ export default {
 
 .class-feature-text {
   margin: 0 0 var(--space-xs);
+}
+
+/* ── Feature blocks (ancestry, community, subclass) ── */
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.feature-block {
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-tertiary, #2a2a4a);
+  border-radius: 4px;
+}
+
+.feature-name {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-hope, #53a8b6);
+  margin-bottom: 2px;
+}
+
+.feature-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.community-adjectives {
+  font-size: 0.8rem;
+  color: var(--text-muted, #6b7280);
+  font-style: italic;
+}
+
+.adjective-label {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.spellcast-trait {
+  margin: 0 0 var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(139, 92, 246, 0.08);
+  border-left: 3px solid #8b5cf6;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.subclass-tier-block {
+  margin-bottom: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-tertiary, #2a2a4a);
+  border-radius: 4px;
+}
+
+.subclass-tier-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8b5cf6;
+  margin-bottom: var(--space-xs);
+}
+
+.weapon-feature-text {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+  margin: 4px 0 0;
+  line-height: 1.35;
+  font-style: italic;
 }
 </style>
