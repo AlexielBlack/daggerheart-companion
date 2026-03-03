@@ -25,6 +25,9 @@ import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeap
 import { computeStatBonuses } from '@data/statModifiers'
 import { getDomainsForClass, getCardById } from '@data/domains'
 import { useStorage } from '@core/composables/useStorage'
+import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
+
+export { useAncestryHomebrewStore }
 
 export const useCharacterStore = defineStore('characters', () => {
   // ── Persistence ────────────────────────────────────────
@@ -180,7 +183,16 @@ export const useCharacterStore = defineStore('characters', () => {
   })
 
   /** Listes de référence pour les déroulants */
-  const allAncestries = ALL_ANCESTRIES
+  // ── Store Homebrew Ancestry ────────────────────────────
+  const ancestryHomebrewStore = useAncestryHomebrewStore()
+
+  const allAncestries = computed(() => [
+    ...ALL_ANCESTRIES,
+    ...ancestryHomebrewStore.items.map((item) => ({
+      ...item,
+      source: 'custom'
+    }))
+  ])
   const allCommunities = COMMUNITIES
   const allArmor = ARMOR
   const allPrimaryWeapons = PRIMARY_WEAPONS

@@ -84,6 +84,42 @@ const routes = [
     meta: { title: 'Modifier adversaire', module: 'homebrew' }
   },
   {
+    path: '/homebrew/ancestry',
+    name: 'homebrew-ancestry-list',
+    component: () => import('@modules/homebrew/views/HomebrewAncestryList.vue'),
+    meta: { title: 'Ascendances custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/ancestry/new',
+    name: 'homebrew-ancestry-create',
+    component: () => import('@modules/homebrew/views/HomebrewAncestryEditor.vue'),
+    meta: { title: 'Nouvelle ascendance', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/ancestry/:id',
+    name: 'homebrew-ancestry-edit',
+    component: () => import('@modules/homebrew/views/HomebrewAncestryEditor.vue'),
+    meta: { title: 'Modifier ascendance', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/community',
+    name: 'homebrew-community-list',
+    component: () => import('@modules/homebrew/views/HomebrewCommunityList.vue'),
+    meta: { title: 'Communautés custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/community/new',
+    name: 'homebrew-community-create',
+    component: () => import('@modules/homebrew/views/HomebrewCommunityEditor.vue'),
+    meta: { title: 'Nouvelle communauté', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/community/:id',
+    name: 'homebrew-community-edit',
+    component: () => import('@modules/homebrew/views/HomebrewCommunityEditor.vue'),
+    meta: { title: 'Modifier communauté', module: 'homebrew' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@core/components/ErrorFallback.vue'),

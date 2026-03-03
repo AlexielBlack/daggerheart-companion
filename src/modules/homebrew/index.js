@@ -27,10 +27,23 @@ export { default as ImportExportPanel } from './core/components/ImportExportPane
 
 // ── Composants spécialisés ──────────────────────────────────
 export { default as AdversaryPreview } from './categories/adversary/AdversaryPreview.vue'
+export { default as AncestryPreview } from './categories/ancestry/AncestryPreview.vue'
+export { default as CommunityPreview } from './categories/community/CommunityPreview.vue'
+
+// ── Stores par catégorie ────────────────────────────────────
+export { useAdversaryHomebrewStore } from './categories/adversary/useAdversaryHomebrewStore.js'
+export { useAncestryHomebrewStore } from './categories/ancestry/useAncestryHomebrewStore.js'
+export { useCommunityHomebrewStore } from './categories/community/useCommunityHomebrewStore.js'
 
 // ── Vues ────────────────────────────────────────────────────
 export { default as HomebrewAdversaryList } from './views/HomebrewAdversaryList.vue'
 export { default as HomebrewAdversaryEditor } from './views/HomebrewAdversaryEditor.vue'
+export { default as HomebrewAncestryList } from './views/HomebrewAncestryList.vue'
+export { default as HomebrewAncestryEditor } from './views/HomebrewAncestryEditor.vue'
+export { default as HomebrewCommunityList } from './views/HomebrewCommunityList.vue'
+export { default as HomebrewCommunityEditor } from './views/HomebrewCommunityEditor.vue'
 
 // ── Schémas ────────────────────────────────────────────────
 export { adversarySchema, ADVERSARY_TIER_BENCHMARKS } from './schemas/adversarySchema.js'
+export { ancestrySchema, ANCESTRY_EMOJIS } from './schemas/ancestrySchema.js'
+export { communitySchema, COMMUNITY_EMOJIS } from './schemas/communitySchema.js'
