@@ -19,6 +19,9 @@ export const ENVIRONMENT_TYPES = [
   'Traversal'
 ]
 
+/** Environment feature type constants */
+export const FEATURE_TYPES = ['passive', 'action', 'reaction']
+
 /** Tier definitions with level ranges */
 export const TIERS = [
   { value: 1, label: 'Tier 1', levels: '1' },
@@ -26,9 +29,6 @@ export const TIERS = [
   { value: 3, label: 'Tier 3', levels: '5–7' },
   { value: 4, label: 'Tier 4', levels: '8–10' }
 ]
-
-/** Feature type constants */
-export const FEATURE_TYPES = ['passive', 'action', 'reaction']
 
 /** Environment type emoji mapping */
 export const ENVIRONMENT_TYPE_ICONS = {

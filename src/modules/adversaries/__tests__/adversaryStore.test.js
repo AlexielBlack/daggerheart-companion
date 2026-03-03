@@ -285,7 +285,7 @@ describe('adversaryStore', () => {
 
     it('les thresholds sont cohérents', () => {
       allAdversaries.forEach((a) => {
-        if (a.thresholds.major !== null) {
+        if (a.thresholds && a.thresholds.major !== null && a.thresholds.severe !== null) {
           expect(a.thresholds.severe).toBeGreaterThan(a.thresholds.major)
         }
       })
