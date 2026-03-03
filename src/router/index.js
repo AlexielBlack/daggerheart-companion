@@ -120,6 +120,42 @@ const routes = [
     meta: { title: 'Modifier communauté', module: 'homebrew' }
   },
   {
+    path: '/homebrew/environment',
+    name: 'homebrew-environment-list',
+    component: () => import('@modules/homebrew/views/HomebrewEnvironmentList.vue'),
+    meta: { title: 'Environnements custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/environment/new',
+    name: 'homebrew-environment-create',
+    component: () => import('@modules/homebrew/views/HomebrewEnvironmentEditor.vue'),
+    meta: { title: 'Nouvel environnement', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/environment/:id',
+    name: 'homebrew-environment-edit',
+    component: () => import('@modules/homebrew/views/HomebrewEnvironmentEditor.vue'),
+    meta: { title: 'Modifier environnement', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/equipment',
+    name: 'homebrew-equipment-list',
+    component: () => import('@modules/homebrew/views/HomebrewEquipmentList.vue'),
+    meta: { title: 'Équipement custom', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/equipment/new',
+    name: 'homebrew-equipment-create',
+    component: () => import('@modules/homebrew/views/HomebrewEquipmentEditor.vue'),
+    meta: { title: 'Nouvel équipement', module: 'homebrew' }
+  },
+  {
+    path: '/homebrew/equipment/:id',
+    name: 'homebrew-equipment-edit',
+    component: () => import('@modules/homebrew/views/HomebrewEquipmentEditor.vue'),
+    meta: { title: 'Modifier équipement', module: 'homebrew' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@core/components/ErrorFallback.vue'),

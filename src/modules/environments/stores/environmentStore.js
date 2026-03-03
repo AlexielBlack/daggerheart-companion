@@ -7,6 +7,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { allEnvironments, ENVIRONMENT_TYPES, TIERS } from '@data/environments'
+import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/environment/useEnvironmentHomebrewStore.js'
+
+export { useEnvironmentHomebrewStore }
 
 export const useEnvironmentStore = defineStore('environments', () => {
   // ── État ───────────────────────────────────────────────
@@ -17,23 +20,35 @@ export const useEnvironmentStore = defineStore('environments', () => {
   const sortDirection = ref('asc')
   const selectedEnvironmentId = ref(null)
 
+  // ── Store Homebrew ────────────────────────────────────
+  const homebrewStore = useEnvironmentHomebrewStore()
+
   // ── Constantes exposées ────────────────────────────────
   const availableTypes = ENVIRONMENT_TYPES
   const availableTiers = TIERS
 
   // ── Getters ────────────────────────────────────────────
 
+  /** Tous les environnements : SRD + homebrew fusionnés */
+  const allItems = computed(() => [
+    ...allEnvironments,
+    ...homebrewStore.items.map((item) => ({
+      ...item,
+      source: 'custom'
+    }))
+  ])
+
   /** Liste filtrée et triée des environnements */
   const filteredEnvironments = computed(() => {
-    let result = [...allEnvironments]
+    let result = [...allItems.value]
 
     // Filtre par recherche textuelle
     if (searchQuery.value.trim()) {
       const q = searchQuery.value.trim().toLowerCase()
       result = result.filter((e) =>
         e.name.toLowerCase().includes(q) ||
-        e.description.toLowerCase().includes(q) ||
-        e.impulses.some((i) => i.toLowerCase().includes(q))
+        (e.description || '').toLowerCase().includes(q) ||
+        (e.impulses || []).some((i) => i.toLowerCase().includes(q))
       )
     }
 
@@ -73,7 +88,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
   })
 
   /** Nombre total d'environnements (sans filtre) */
-  const totalCount = computed(() => allEnvironments.length)
+  const totalCount = computed(() => allItems.value.length)
 
   /** Nombre d'environnements filtrés */
   const filteredCount = computed(() => filteredEnvironments.value.length)
@@ -81,7 +96,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
   /** Environnement actuellement sélectionné */
   const selectedEnvironment = computed(() => {
     if (!selectedEnvironmentId.value) return null
-    return allEnvironments.find((e) => e.id === selectedEnvironmentId.value) || null
+    return allItems.value.find((e) => e.id === selectedEnvironmentId.value) || null
   })
 
   /** Indique si des filtres sont actifs */
@@ -147,7 +162,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
 
   /** Cherche un environnement par id */
   function getEnvironmentById(id) {
-    return allEnvironments.find((e) => e.id === id) || null
+    return allItems.value.find((e) => e.id === id) || null
   }
 
   return {

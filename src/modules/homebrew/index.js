@@ -29,11 +29,15 @@ export { default as ImportExportPanel } from './core/components/ImportExportPane
 export { default as AdversaryPreview } from './categories/adversary/AdversaryPreview.vue'
 export { default as AncestryPreview } from './categories/ancestry/AncestryPreview.vue'
 export { default as CommunityPreview } from './categories/community/CommunityPreview.vue'
+export { default as EnvironmentPreview } from './categories/environment/EnvironmentPreview.vue'
+export { default as EquipmentPreview } from './categories/equipment/EquipmentPreview.vue'
 
 // ── Stores par catégorie ────────────────────────────────────
 export { useAdversaryHomebrewStore } from './categories/adversary/useAdversaryHomebrewStore.js'
 export { useAncestryHomebrewStore } from './categories/ancestry/useAncestryHomebrewStore.js'
 export { useCommunityHomebrewStore } from './categories/community/useCommunityHomebrewStore.js'
+export { useEnvironmentHomebrewStore } from './categories/environment/useEnvironmentHomebrewStore.js'
+export { useEquipmentHomebrewStore } from './categories/equipment/useEquipmentHomebrewStore.js'
 
 // ── Vues ────────────────────────────────────────────────────
 export { default as HomebrewAdversaryList } from './views/HomebrewAdversaryList.vue'
@@ -42,8 +46,14 @@ export { default as HomebrewAncestryList } from './views/HomebrewAncestryList.vu
 export { default as HomebrewAncestryEditor } from './views/HomebrewAncestryEditor.vue'
 export { default as HomebrewCommunityList } from './views/HomebrewCommunityList.vue'
 export { default as HomebrewCommunityEditor } from './views/HomebrewCommunityEditor.vue'
+export { default as HomebrewEnvironmentList } from './views/HomebrewEnvironmentList.vue'
+export { default as HomebrewEnvironmentEditor } from './views/HomebrewEnvironmentEditor.vue'
+export { default as HomebrewEquipmentList } from './views/HomebrewEquipmentList.vue'
+export { default as HomebrewEquipmentEditor } from './views/HomebrewEquipmentEditor.vue'
 
 // ── Schémas ────────────────────────────────────────────────
 export { adversarySchema, ADVERSARY_TIER_BENCHMARKS } from './schemas/adversarySchema.js'
 export { ancestrySchema, ANCESTRY_EMOJIS } from './schemas/ancestrySchema.js'
 export { communitySchema, COMMUNITY_EMOJIS } from './schemas/communitySchema.js'
+export { environmentSchema, ENVIRONMENT_TYPES, ENVIRONMENT_TIER_BENCHMARKS } from './schemas/environmentSchema.js'
+export { equipmentSchema, EQUIPMENT_CATEGORIES, WEAPON_TRAITS, getRelevantFields } from './schemas/equipmentSchema.js'
