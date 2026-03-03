@@ -56,8 +56,8 @@ const routes = [
   {
     path: '/characters/equipement',
     name: 'characters-equipement',
-    component: () => import('@modules/characters/views/EquipmentBrowser.vue'),
-    meta: { title: 'Équipement', module: 'characters', parent: 'characters' }
+    component: () => import('@modules/equipment/views/EquipmentBrowser.vue'),
+    meta: { title: 'Équipement', module: 'equipment', parent: 'characters' }
   },
   {
     path: '/dice',
