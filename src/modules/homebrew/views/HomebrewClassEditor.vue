@@ -159,14 +159,11 @@ export default {
 
     onMounted(() => {
       const id = route.params.id
-      console.warn('[ClassEditor] onMounted, id:', id, 'store.count:', store.count)
       if (id && id !== 'new') {
         const existing = store.getById(id)
-        console.warn('[ClassEditor] getById result:', existing ? existing.name : 'NULL')
         if (existing) { hydrate(existing) }
         else { submitError.value = `Classe "${id}" introuvable.` }
       }
-      console.warn('[ClassEditor] isEditMode:', isEditMode.value)
     })
 
     function onFieldUpdate({ key, value }) {
@@ -183,39 +180,28 @@ export default {
       validationErrors.value = result.errors
       if (!result.valid) {
         submitError.value = `${result.errors.length} erreur(s) de validation.`
-        console.warn('[ClassEditor] Validation échouée:', result.errors)
         return
       }
       isSubmitting.value = true
       try {
         const raw = toRawData()
         if (isEditMode.value) {
-          console.warn('[ClassEditor] Mode EDIT, id:', route.params.id)
           const updated = store.update(route.params.id, raw)
-          console.warn('[ClassEditor] store.update result:', updated.success, updated.error || '')
           if (!updated.success) {
             submitError.value = updated.error || 'Echec de la mise a jour.'
-            if (updated.errors) {
-              console.warn('[ClassEditor] Store validation errors:', updated.errors)
-              validationErrors.value = updated.errors
-            }
+            if (updated.errors) { validationErrors.value = updated.errors }
             return
           }
         } else {
-          console.warn('[ClassEditor] Mode CREATE')
           const created = store.create(raw)
-          console.warn('[ClassEditor] store.create result:', created.success, created.error || '')
           if (!created.success) {
             submitError.value = created.error || 'Echec de la creation.'
-            if (created.errors) {
-              validationErrors.value = created.errors
-            }
+            if (created.errors) { validationErrors.value = created.errors }
             return
           }
         }
         router.push('/homebrew/class')
       } catch (err) {
-        console.warn('[ClassEditor] Exception:', err)
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
         isSubmitting.value = false
