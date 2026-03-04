@@ -204,5 +204,35 @@ describe('Domain Cards Management', () => {
       store.updateField('level', 10)
       expect(store.selectedMaxLoadout).toBe(5)
     })
+
+    it('should increase max loadout with domain_card advancements', () => {
+      // Niv. 1 sans bonus → 2
+      expect(store.selectedMaxLoadout).toBe(2)
+
+      // Simuler un levelHistory avec 1 avancement domain_card
+      const char = store.selectedCharacter
+      char.level = 2
+      char.levelHistory = [{
+        level: 2,
+        tier: 2,
+        advancements: [{ type: 'domain_card', tier: 2 }],
+        domainCard: null,
+        timestamp: new Date().toISOString()
+      }]
+      // Niv. 2 base = 3, + 1 bonus = 4
+      expect(store.selectedMaxLoadout).toBe(4)
+    })
+
+    it('should cap max loadout at 5 even with many bonuses', () => {
+      const char = store.selectedCharacter
+      char.level = 4
+      char.levelHistory = [
+        { level: 2, tier: 2, advancements: [{ type: 'domain_card', tier: 2 }], domainCard: null, timestamp: '' },
+        { level: 3, tier: 2, advancements: [{ type: 'domain_card', tier: 2 }], domainCard: null, timestamp: '' },
+        { level: 4, tier: 2, advancements: [{ type: 'domain_card', tier: 2 }], domainCard: null, timestamp: '' }
+      ]
+      // Niv. 4 base = 5, + 3 bonus = 8 → plafond 5
+      expect(store.selectedMaxLoadout).toBe(5)
+    })
   })
 })

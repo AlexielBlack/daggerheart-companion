@@ -40,14 +40,21 @@ export const MAX_HOPE = 6    // SRD : "A PC can have a maximum of 6 Hope at one 
 export const MAX_LOADOUT = 5  // SRD : max absolu 5 domain cards in loadout
 
 /**
- * Calcule le nombre max de cartes dans le loadout selon le niveau.
- * Niveau 1 → 2 cartes (fondation sous-classe + 1 carte domaine de création).
- * Chaque niveau suivant ajoute 1 slot, plafonné à 5.
+ * Calcule le nombre max de cartes dans le loadout selon le niveau et les bonus.
+ *
+ * Formule SRD :
+ *  - Niveau 1 (création) : 2 cartes (fondation sous-classe + 1 carte domaine)
+ *  - Chaque level-up : +1 carte automatique (étape 4)
+ *  - Avancement « carte de domaine supplémentaire » : +1 par choix
+ *  - Plafond absolu : 5
+ *
  * @param {number} level - Niveau du personnage (1-10)
+ * @param {number} [bonusDomainCards=0] - Nombre d'avancements « carte supplémentaire »
  * @returns {number} Nombre max de cartes dans le loadout
  */
-export function getMaxLoadout(level) {
-  return Math.min(Math.max(1, (level || 1)) + 1, MAX_LOADOUT)
+export function getMaxLoadout(level, bonusDomainCards = 0) {
+  const base = Math.max(1, level || 1) + 1  // 2 à niv. 1, 3 à niv. 2, etc.
+  return Math.min(base + (bonusDomainCards || 0), MAX_LOADOUT)
 }
 export const MAX_CHARACTERS = 8
 

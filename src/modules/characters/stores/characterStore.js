@@ -256,11 +256,25 @@ export const useCharacterStore = defineStore('characters', () => {
       .filter(Boolean)
   })
 
-  /** Nombre max de cartes dans le loadout selon le niveau */
+  /** Nombre de cartes de domaine supplémentaires choisies en avancement */
+  const bonusDomainCards = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !Array.isArray(char.levelHistory)) return 0
+    let count = 0
+    for (const entry of char.levelHistory) {
+      if (!Array.isArray(entry.advancements)) continue
+      for (const adv of entry.advancements) {
+        if (adv.type === 'domain_card') count++
+      }
+    }
+    return count
+  })
+
+  /** Nombre max de cartes dans le loadout selon le niveau + bonus */
   const selectedMaxLoadout = computed(() => {
     const char = selectedCharacter.value
-    if (!char) return getMaxLoadout(1)
-    return getMaxLoadout(char.level)
+    if (!char) return getMaxLoadout(1, 0)
+    return getMaxLoadout(char.level, bonusDomainCards.value)
   })
 
   /** Le loadout est-il plein ? (dynamique selon le niveau) */
@@ -615,7 +629,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char) return false
     _ensureDomainCards(char)
-    if (char.domainCards.loadout.length >= getMaxLoadout(char.level)) return false
+    if (char.domainCards.loadout.length >= selectedMaxLoadout.value) return false
     if (char.domainCards.loadout.includes(cardId)) return false
     // Retirer du vault si présent
     char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
@@ -652,7 +666,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char) return false
     _ensureDomainCards(char)
-    if (char.domainCards.loadout.length >= getMaxLoadout(char.level)) return false
+    if (char.domainCards.loadout.length >= selectedMaxLoadout.value) return false
     if (!char.domainCards.vault.includes(cardId)) return false
     char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
     char.domainCards.loadout.push(cardId)
