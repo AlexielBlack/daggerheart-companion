@@ -51,7 +51,7 @@
         </div>
 
         <div class="array-editor__item-fields">
-          <homebrew-form-field
+          <HomebrewFormField
             v-for="subField in itemFields"
             :key="subField.key"
             :field="subField"
@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import HomebrewFormField from './HomebrewFormField.vue'
+
 /**
  * @component ArrayFieldEditor
  * @description Éditeur générique pour les champs de type ARRAY.
@@ -82,6 +84,10 @@
  */
 export default {
   name: 'ArrayFieldEditor',
+
+  components: {
+    HomebrewFormField
+  },
 
   props: {
     /** Tableau d'objets */
