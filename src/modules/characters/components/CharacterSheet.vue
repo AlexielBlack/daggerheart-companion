@@ -508,6 +508,7 @@
         :vault-cards="vaultCards"
         :loadout-full="isLoadoutFull"
         :character-level="char.level"
+        :max-loadout="maxLoadout"
         :acquired-card-ids="acquiredCardIds"
         @add-to-loadout="(id) => emit('addCardToLoadout', id)"
         @add-to-vault="(id) => emit('addCardToVault', id)"
@@ -625,7 +626,8 @@ export default {
     availableDomainCards: { type: Array, default: () => [] },
     loadoutCards: { type: Array, default: () => [] },
     vaultCards: { type: Array, default: () => [] },
-    isLoadoutFull: { type: Boolean, default: false }
+    isLoadoutFull: { type: Boolean, default: false },
+    maxLoadout: { type: Number, default: 2 }
   },
   emits: [
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',

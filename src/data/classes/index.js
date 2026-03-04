@@ -37,7 +37,18 @@ export const MAX_HP = 12
 export const MAX_STRESS = 12
 export const MAX_ARMOR = 12
 export const MAX_HOPE = 6    // SRD : "A PC can have a maximum of 6 Hope at one time"
-export const MAX_LOADOUT = 5  // SRD : max 5 domain cards in loadout
+export const MAX_LOADOUT = 5  // SRD : max absolu 5 domain cards in loadout
+
+/**
+ * Calcule le nombre max de cartes dans le loadout selon le niveau.
+ * Niveau 1 → 2 cartes (fondation sous-classe + 1 carte domaine de création).
+ * Chaque niveau suivant ajoute 1 slot, plafonné à 5.
+ * @param {number} level - Niveau du personnage (1-10)
+ * @returns {number} Nombre max de cartes dans le loadout
+ */
+export function getMaxLoadout(level) {
+  return Math.min(Math.max(1, (level || 1)) + 1, MAX_LOADOUT)
+}
 export const MAX_CHARACTERS = 8
 
 /**

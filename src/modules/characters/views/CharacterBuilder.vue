@@ -47,6 +47,7 @@
           :loadout-cards="store.selectedLoadoutCards"
           :vault-cards="store.selectedVaultCards"
           :is-loadout-full="store.isLoadoutFull"
+          :max-loadout="store.selectedMaxLoadout"
           @update="store.updateField"
           @apply-selection="store.applySelection"
           @mark-h-p="store.markHP()"

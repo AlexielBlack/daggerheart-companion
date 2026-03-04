@@ -325,8 +325,8 @@ export default {
     loadoutFull: { type: Boolean, default: false },
     /** Niveau du personnage */
     characterLevel: { type: Number, default: 1 },
-    /** Max loadout (constante) */
-    maxLoadout: { type: Number, default: 5 },
+    /** Max loadout (dynamique selon le niveau) */
+    maxLoadout: { type: Number, default: 2 },
     /** IDs des cartes acquises (loadout + vault) */
     acquiredCardIds: { type: Array, default: () => [] }
   },

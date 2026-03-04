@@ -63,7 +63,16 @@ describe('Domain Cards Management', () => {
       ).toBe(1)
     })
 
-    it('should not exceed max loadout (5)', () => {
+    it('should not exceed max loadout at level 1 (2 cards)', () => {
+      store.addCardToLoadout(ALL_L1[0])
+      store.addCardToLoadout(ALL_L1[1])
+      expect(store.isLoadoutFull).toBe(true)
+      const result = store.addCardToLoadout(ALL_L1[2])
+      expect(result).toBe(false)
+    })
+
+    it('should allow 5 cards at level 4+', () => {
+      store.updateField('level', 4)
       for (let i = 0; i < 5; i++) {
         store.addCardToLoadout(ALL_L1[i])
       }
@@ -107,11 +116,10 @@ describe('Domain Cards Management', () => {
     })
 
     it('should not move to loadout if full', () => {
-      for (let i = 0; i < 5; i++) {
-        store.addCardToLoadout(ALL_L1[i])
-      }
-      store.addCardToVault(ALL_L1[5])
-      const result = store.moveCardToLoadout(ALL_L1[5])
+      store.addCardToLoadout(ALL_L1[0])
+      store.addCardToLoadout(ALL_L1[1])
+      store.addCardToVault(ALL_L1[2])
+      const result = store.moveCardToLoadout(ALL_L1[2])
       expect(result).toBe(false)
     })
   })
@@ -178,6 +186,23 @@ describe('Domain Cards Management', () => {
       store.updateField('level', 5)
       const cardsLvl5 = store.availableDomainCards.length
       expect(cardsLvl5).toBeGreaterThan(cardsLvl1)
+    })
+  })
+
+  describe('Dynamic max loadout', () => {
+    it('should have max loadout of 2 at level 1', () => {
+      expect(store.selectedMaxLoadout).toBe(2)
+    })
+
+    it('should scale loadout max with level (level+1, cap 5)', () => {
+      store.updateField('level', 2)
+      expect(store.selectedMaxLoadout).toBe(3)
+      store.updateField('level', 3)
+      expect(store.selectedMaxLoadout).toBe(4)
+      store.updateField('level', 4)
+      expect(store.selectedMaxLoadout).toBe(5)
+      store.updateField('level', 10)
+      expect(store.selectedMaxLoadout).toBe(5)
     })
   })
 })

@@ -13,7 +13,7 @@ import {
   MAX_HP,
   MAX_STRESS,
   MAX_HOPE,
-  MAX_LOADOUT,
+  getMaxLoadout,
   MAX_CHARACTERS,
   getClassById,
   createDefaultCharacter
@@ -256,11 +256,18 @@ export const useCharacterStore = defineStore('characters', () => {
       .filter(Boolean)
   })
 
-  /** Le loadout est-il plein ? (max 5) */
+  /** Nombre max de cartes dans le loadout selon le niveau */
+  const selectedMaxLoadout = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return getMaxLoadout(1)
+    return getMaxLoadout(char.level)
+  })
+
+  /** Le loadout est-il plein ? (dynamique selon le niveau) */
   const isLoadoutFull = computed(() => {
     const char = selectedCharacter.value
     if (!char || !char.domainCards) return false
-    return char.domainCards.loadout.length >= MAX_LOADOUT
+    return char.domainCards.loadout.length >= selectedMaxLoadout.value
   })
 
   // ── Actions de sélection ────────────────────────────────
@@ -608,7 +615,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char) return false
     _ensureDomainCards(char)
-    if (char.domainCards.loadout.length >= MAX_LOADOUT) return false
+    if (char.domainCards.loadout.length >= getMaxLoadout(char.level)) return false
     if (char.domainCards.loadout.includes(cardId)) return false
     // Retirer du vault si présent
     char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
@@ -645,7 +652,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char) return false
     _ensureDomainCards(char)
-    if (char.domainCards.loadout.length >= MAX_LOADOUT) return false
+    if (char.domainCards.loadout.length >= getMaxLoadout(char.level)) return false
     if (!char.domainCards.vault.includes(cardId)) return false
     char.domainCards.vault = char.domainCards.vault.filter((id) => id !== cardId)
     char.domainCards.loadout.push(cardId)
@@ -755,6 +762,7 @@ export const useCharacterStore = defineStore('characters', () => {
     selectedLoadoutCards,
     selectedVaultCards,
     isLoadoutFull,
+    selectedMaxLoadout,
 
     // Listes de référence
     allAncestries,
