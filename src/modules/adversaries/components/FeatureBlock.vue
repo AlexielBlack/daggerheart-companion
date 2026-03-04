@@ -22,12 +22,14 @@
       </span>
     </div>
     <p class="feature-block__description">
-      {{ feature.description }}
+      <GlossaryText :text="feature.description" />
     </p>
   </div>
 </template>
 
 <script>
+import GlossaryText from '@core/components/GlossaryText.vue'
+
 /**
  * @component FeatureBlock
  * @description Affiche une feature d'adversaire (action, reaction, passive).
@@ -40,6 +42,7 @@ const TYPE_CONFIG = {
 
 export default {
   name: 'FeatureBlock',
+  components: { GlossaryText },
   props: {
     feature: {
       type: Object,

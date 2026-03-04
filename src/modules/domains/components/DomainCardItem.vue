@@ -27,7 +27,7 @@
       </div>
     </header>
     <p class="dci__feature">
-      {{ card.feature }}
+      <GlossaryText :text="card.feature" />
     </p>
   </article>
 </template>
@@ -35,9 +35,11 @@
 <script>
 import { computed } from 'vue'
 import { CARD_TYPES } from '@/data/domains/index.js'
+import GlossaryText from '@core/components/GlossaryText.vue'
 
 export default {
   name: 'DomainCardItem',
+  components: { GlossaryText },
 
   props: {
     card: {

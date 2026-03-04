@@ -24,7 +24,7 @@
     </div>
 
     <p class="env-feature__description">
-      {{ feature.description }}
+      <GlossaryText :text="feature.description" />
     </p>
 
     <p
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import GlossaryText from '@core/components/GlossaryText.vue'
+
 /**
  * @component EnvironmentFeatureBlock
  * @description Affiche une capacité d'environnement (passive, action, réaction).
@@ -50,6 +52,7 @@ const TYPE_LABELS = {
 
 export default {
   name: 'EnvironmentFeatureBlock',
+  components: { GlossaryText },
   props: {
     feature: {
       type: Object,
