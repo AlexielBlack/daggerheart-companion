@@ -1,0 +1,572 @@
+/**
+ * @module homebrew/data/adversaryTypeBenchmarks
+ * @description Données de référence par type d'adversaire et par tier.
+ *
+ * Source : OG-DHSRD (callmepartario.github.io/og-dhsrd/#adversary-benchmarks)
+ * — section « Adversary Type Benchmarks »
+ *
+ * Chaque type contient :
+ * - description : rôle narratif du type
+ * - battlePoints : coût en Battle Points (encounter builder)
+ * - guidelines : conseils de création
+ * - suggestedFeatures : passifs/actions/réactions typiques
+ * - tiers[1..4] : difficulty, thresholds, hp, stress, attack, experiences
+ */
+
+/**
+ * Benchmarks détaillés pour les 10 types d'adversaires × 4 tiers.
+ * Les valeurs min/max sont extraites des tableaux OG-DHSRD.
+ * On expose ici la valeur « médiane » comme valeur par défaut,
+ * et les fourchettes pour la comparaison.
+ */
+export const ADVERSARY_TYPE_BENCHMARKS = {
+  Bruiser: {
+    description: 'Résistant et puissant. Les Bruisers encaissent beaucoup et frappent fort.',
+    battlePoints: 4,
+    guidelines: [
+      'HP et seuils élevés — conçu pour durer au combat',
+      'Attaque puissante avec dégâts élevés',
+      'Ajouter Momentum (Réaction) — gain de Fear sur attaque réussie',
+      'Considérer Ramp Up (Passif) — coûte 1 Fear pour spotlight, attaque tous dans la portée',
+      'Features possibles : Restrain, dégâts supplémentaires, attaque multi-cibles'
+    ],
+    suggestedFeatures: [
+      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Ramp Up', type: 'Passive', description: 'Dépenser 1 Fear pour spotlight. Attaque standard contre toutes les cibles à portée.' },
+      { name: 'Haymaker', type: 'Action', description: 'Attaque à Very Close. Succès = dégâts directs physiques.' },
+      { name: 'Shredding Strike', type: 'Action', description: 'Attaque à Very Close. Succès = dégâts + marquer un Armor Slot sans bénéfice.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 7, max: 9, default: 8 }, severe: { min: 14, max: 18, default: 15 } },
+        hp: { min: 5, max: 7, default: 6 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 0, max: 2, default: 1 }, damage: '1d10+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 10, max: 15, default: 12 }, severe: { min: 24, max: 28, default: 26 } },
+        hp: { min: 5, max: 7, default: 6 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 2, max: 4, default: 3 }, damage: '2d10+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 16, max: 18, default: 17 },
+        thresholds: { major: { min: 18, max: 25, default: 21 }, severe: { min: 35, max: 40, default: 37 } },
+        hp: { min: 6, max: 8, default: 7 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 3, max: 5, default: 4 }, damage: '3d10+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 18, max: 20, default: 19 },
+        thresholds: { major: { min: 30, max: 40, default: 35 }, severe: { min: 60, max: 70, default: 65 } },
+        hp: { min: 7, max: 9, default: 8 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 5, max: 8, default: 6 }, damage: '4d10+10', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Horde: {
+    description: 'Groupes de créatures agissant ensemble comme une seule unité.',
+    battlePoints: 2,
+    guidelines: [
+      'Feature Horde (X) obligatoire — dégâts réduits quand HP à moitié marqués',
+      'Peu de features — simplicité est la clé',
+      'Attaque de base moins précise que les autres types',
+      'X = dégâts réduits ≈ moitié des dégâts normaux',
+      'Stress bas — le Horde ne devrait pas durer longtemps individuellement'
+    ],
+    suggestedFeatures: [
+      { name: 'Horde (X)', type: 'Passive', description: 'Quand le Horde a marqué la moitié+ de ses HP, attaque standard fait X dégâts.' },
+      { name: 'Group Attack', type: 'Action', description: 'Dépenser 1 Fear pour spotlight tous les Hordes à Close. Attaque partagée.' },
+      { name: 'Overwhelm', type: 'Reaction', description: 'Quand un allié à Very Close inflige des dégâts, attaque la même cible.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 10, max: 12, default: 11 },
+        thresholds: { major: { min: 5, max: 10, default: 7 }, severe: { min: 9, max: 12, default: 10 } },
+        hp: { min: 5, max: 6, default: 5 },
+        stress: { min: 2, max: 3, default: 2 },
+        attack: { modifier: { min: -2, max: 0, default: -1 }, damage: '1d8+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 10, max: 15, default: 12 }, severe: { min: 16, max: 20, default: 18 } },
+        hp: { min: 5, max: 6, default: 5 },
+        stress: { min: 2, max: 3, default: 2 },
+        attack: { modifier: { min: -1, max: 1, default: 0 }, damage: '2d8+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 15, max: 25, default: 20 }, severe: { min: 27, max: 32, default: 29 } },
+        hp: { min: 6, max: 7, default: 6 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 0, max: 2, default: 1 }, damage: '3d8+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 16, max: 18, default: 17 },
+        thresholds: { major: { min: 20, max: 30, default: 25 }, severe: { min: 35, max: 45, default: 40 } },
+        hp: { min: 7, max: 8, default: 7 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 1, max: 3, default: 2 }, damage: '4d8+8', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Leader: {
+    description: 'Commande et invoque d\'autres adversaires. Puissant en coordination.',
+    battlePoints: 3,
+    guidelines: [
+      'Au moins une feature qui spotlight ou invoque des alliés',
+      'La plupart ont Momentum (gain Fear sur attaque réussie)',
+      'Stress plus élevé — pour alimenter les features de commandement',
+      'Modificateur d\'attaque élevé — le Leader est précis',
+      'Considérer Tactician, Reinforcements, Move as Unit, For the Realm!'
+    ],
+    suggestedFeatures: [
+      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Tactician', type: 'Action', description: 'Marquer 1 Stress pour spotlight 2 alliés à Close.' },
+      { name: 'Reinforcements', type: 'Action', description: '1x/scène, marquer 1 Stress pour invoquer 2d4 adversaires à Far.' },
+      { name: 'Move as Unit', type: 'Action', description: 'Dépenser 2 Fear pour spotlight jusqu\'à 5 alliés à Far.' },
+      { name: 'For the Realm!', type: 'Action', description: 'Marquer 1 Stress pour spotlight 1d4+1 alliés. Dégâts réduits de moitié.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 8, max: 12, default: 10 }, severe: { min: 13, max: 16, default: 14 } },
+        hp: { min: 5, max: 7, default: 6 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 2, max: 4, default: 3 }, damage: '1d10+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 12, max: 15, default: 13 }, severe: { min: 24, max: 28, default: 26 } },
+        hp: { min: 5, max: 7, default: 6 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 3, max: 5, default: 4 }, damage: '2d10+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 17, max: 19, default: 18 },
+        thresholds: { major: { min: 18, max: 25, default: 21 }, severe: { min: 36, max: 42, default: 39 } },
+        hp: { min: 6, max: 8, default: 7 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 5, max: 7, default: 6 }, damage: '3d10+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 19, max: 21, default: 20 },
+        thresholds: { major: { min: 30, max: 60, default: 45 }, severe: { min: 60, max: 70, default: 65 } },
+        hp: { min: 7, max: 9, default: 8 },
+        stress: { min: 6, max: 8, default: 7 },
+        attack: { modifier: { min: 8, max: 10, default: 9 }, damage: '4d10+8', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Minion: {
+    description: 'Facilement éliminé mais dangereux en nombre. Pas de seuils de dégâts.',
+    battlePoints: 1,
+    guidelines: [
+      'Toujours 1 HP — vaincu par n\'importe quels dégâts',
+      'Pas de seuils de dégâts (Thresholds: None)',
+      'Feature Minion (X) obligatoire — X = seuil pour éliminer des Minions supplémentaires',
+      'Ajouter Group Attack obligatoirement — attaque groupée avec Fear',
+      'Dégâts FIXES (pas de dés) — ex: 2, pas 1d4+1',
+      'Peu de features supplémentaires — simplicité maximale'
+    ],
+    suggestedFeatures: [
+      { name: 'Minion (X)', type: 'Passive', description: 'Vaincu par tout dégât. Pour chaque X dégâts, vaincre un Minion supplémentaire à portée.' },
+      { name: 'Group Attack', type: 'Action', description: 'Dépenser 1 Fear, spotlight tous les Minions du même nom à Close. Attaque partagée.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 10, max: 13, default: 11 },
+        thresholds: null,
+        hp: 1,
+        stress: { min: 1, max: 1, default: 1 },
+        attack: { modifier: { min: -2, max: 0, default: -1 }, damage: '2', damageType: 'phy', range: 'Melee' },
+        minionThreshold: { min: 3, max: 5, default: 4 },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: null,
+        hp: 1,
+        stress: { min: 1, max: 1, default: 1 },
+        attack: { modifier: { min: -1, max: 1, default: 0 }, damage: '3', damageType: 'phy', range: 'Melee' },
+        minionThreshold: { min: 5, max: 7, default: 6 },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: null,
+        hp: 1,
+        stress: { min: 1, max: 2, default: 1 },
+        attack: { modifier: { min: 0, max: 2, default: 1 }, damage: '6', damageType: 'phy', range: 'Melee' },
+        minionThreshold: { min: 7, max: 9, default: 8 },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 16, max: 18, default: 17 },
+        thresholds: null,
+        hp: 1,
+        stress: { min: 1, max: 2, default: 1 },
+        attack: { modifier: { min: 1, max: 3, default: 2 }, damage: '11', damageType: 'phy', range: 'Melee' },
+        minionThreshold: { min: 9, max: 12, default: 10 },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Ranged: {
+    description: 'Fragile au corps-à-corps mais inflige des dégâts élevés à distance.',
+    battlePoints: 2,
+    guidelines: [
+      'Seuils et HP bas — fragile, s\'appuie sur la distance',
+      'Dégâts élevés — récompense la distance maintenue',
+      'Portée Far ou Very Far sur l\'attaque standard',
+      'Considérer des features conditionnelles sur la distance',
+      'Momentum est commun pour ce type',
+      'Features possibles : attaque multi-cibles via Fear, bonus conditionnel aux dégâts'
+    ],
+    suggestedFeatures: [
+      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Deadly Shot', type: 'Action', description: 'Attaque contre cible Vulnerable à Far. Succès + marquer Stress = dégâts amplifiés.' },
+      { name: 'Suppressing Fire', type: 'Action', description: 'Dépenser Fear pour attaquer toutes les cibles dans une zone.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 10, max: 12, default: 11 },
+        thresholds: { major: { min: 3, max: 5, default: 4 }, severe: { min: 6, max: 9, default: 7 } },
+        hp: { min: 3, max: 4, default: 3 },
+        stress: { min: 2, max: 3, default: 2 },
+        attack: { modifier: { min: 1, max: 2, default: 1 }, damage: '1d10+3', damageType: 'phy', range: 'Far' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 13, max: 15, default: 14 },
+        thresholds: { major: { min: 5, max: 8, default: 6 }, severe: { min: 13, max: 18, default: 15 } },
+        hp: { min: 3, max: 5, default: 4 },
+        stress: { min: 2, max: 3, default: 2 },
+        attack: { modifier: { min: 2, max: 5, default: 3 }, damage: '2d10+4', damageType: 'phy', range: 'Far' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 15, max: 17, default: 16 },
+        thresholds: { major: { min: 12, max: 15, default: 13 }, severe: { min: 25, max: 30, default: 27 } },
+        hp: { min: 3, max: 6, default: 4 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 3, max: 7, default: 5 }, damage: '3d10+3', damageType: 'phy', range: 'Far' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 17, max: 19, default: 18 },
+        thresholds: { major: { min: 18, max: 25, default: 21 }, severe: { min: 30, max: 40, default: 35 } },
+        hp: { min: 3, max: 6, default: 4 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 4, max: 8, default: 6 }, damage: '4d10+8', damageType: 'phy', range: 'Far' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Skulk: {
+    description: 'Très mobile, manœuvre pour tendre des embuscades. Style assassin/rogue.',
+    battlePoints: 2,
+    guidelines: [
+      'HP et seuils modérés — entre Standard et Ranged',
+      'Modificateur d\'attaque élevé — précis et furtif',
+      'Features de type Cloaked/Sneak Attack à la Rogue',
+      'Attaques réussies appliquent souvent Restrained ou Vulnerable',
+      'Considérer une feature de gain de Fear'
+    ],
+    suggestedFeatures: [
+      { name: 'Backstab', type: 'Passive', description: 'Dégâts doublés contre cibles Vulnerable ou attaquées par un allié.' },
+      { name: 'Cloaked', type: 'Action', description: 'Marquer 1 Stress pour devenir Hidden.' },
+      { name: 'Out of Nowhere', type: 'Passive', description: 'Premier tour, attaque depuis Hidden avec dégâts bonus.' },
+      { name: 'Pack Tactics', type: 'Passive', description: 'Si un allié du même nom est à Melee de la cible, dégâts augmentés + gain Fear.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 10, max: 12, default: 11 },
+        thresholds: { major: { min: 5, max: 7, default: 6 }, severe: { min: 8, max: 12, default: 10 } },
+        hp: { min: 3, max: 4, default: 3 },
+        stress: { min: 2, max: 3, default: 2 },
+        attack: { modifier: { min: 1, max: 2, default: 1 }, damage: '1d6+2', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 7, max: 9, default: 8 }, severe: { min: 16, max: 20, default: 18 } },
+        hp: { min: 3, max: 5, default: 4 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 2, max: 5, default: 3 }, damage: '2d6+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 15, max: 20, default: 17 }, severe: { min: 27, max: 32, default: 29 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 3, max: 7, default: 5 }, damage: '3d6+6', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 16, max: 18, default: 17 },
+        thresholds: { major: { min: 20, max: 30, default: 25 }, severe: { min: 35, max: 45, default: 40 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 4, max: 8, default: 6 }, damage: '4d8+8', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Social: {
+    description: 'Défi en conversation, pas en combat. Expériences et features sociales.',
+    battlePoints: 1,
+    guidelines: [
+      'Pas forcément redoutable en combat — c\'est voulu',
+      'Expériences utiles et features sociales sont prioritaires',
+      'Peut causer du Stress via la conversation',
+      'Peut invoquer, spotlight ou renforcer des alliés (comme un Leader)',
+      'Peut influencer la disposition d\'autres NPCs'
+    ],
+    suggestedFeatures: [
+      { name: 'Mockery', type: 'Action', description: 'Cible doit réussir un jet de Présence ou marquer 1 Stress.' },
+      { name: 'Scapegoat', type: 'Action', description: 'Dépenser Fear pour rediriger l\'attention vers un allié ou un PJ.' },
+      { name: 'Guards, Seize Them!', type: 'Action', description: 'Invoquer des gardes/alliés pour combattre à sa place.' },
+      { name: 'Exile', type: 'Action', description: 'Dépenser Fear pour bannir un PJ de la zone sociale.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 4, max: 6, default: 5 }, severe: { min: 8, max: 10, default: 9 } },
+        hp: { min: 2, max: 4, default: 3 },
+        stress: { min: 3, max: 5, default: 4 },
+        attack: { modifier: { min: -4, max: 0, default: -2 }, damage: '1d4+2', damageType: 'phy', range: 'Close' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 13, max: 15, default: 14 },
+        thresholds: { major: { min: 7, max: 9, default: 8 }, severe: { min: 13, max: 19, default: 16 } },
+        hp: { min: 3, max: 5, default: 4 },
+        stress: { min: 3, max: 5, default: 4 },
+        attack: { modifier: { min: -2, max: 2, default: 0 }, damage: '1d6+2', damageType: 'phy', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 15, max: 20, default: 17 }, severe: { min: 30, max: 35, default: 32 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 0, max: 4, default: 2 }, damage: '3d6+1', damageType: 'phy', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 17, max: 18, default: 17 },
+        thresholds: { major: { min: 25, max: 35, default: 30 }, severe: { min: 40, max: 50, default: 45 } },
+        hp: { min: 5, max: 7, default: 6 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 2, max: 6, default: 4 }, damage: '4d6+4', damageType: 'phy', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Solo: {
+    description: 'Défi redoutable pour tout le groupe. Relentless et Momentum obligatoires.',
+    battlePoints: 5,
+    guidelines: [
+      'HP très élevés — conçu pour résister à tout le groupe',
+      'Ajouter Relentless (X) — peut être spotlight X fois par tour MJ',
+      'Ajouter Momentum obligatoirement — gain Fear constant',
+      'Considérer un Countdown intéressant',
+      'Malgré le nom, accompagner de Minions/Standards/Supports',
+      'Dégâts élevés pour menacer les PJs individuellement'
+    ],
+    suggestedFeatures: [
+      { name: 'Relentless (X)', type: 'Passive', description: 'Peut être spotlight X fois par tour MJ. Dépenser Fear normalement.' },
+      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Terrifying', type: 'Passive', description: 'Attaque réussie = tous les PJs à Far perdent 1 Hope, MJ gagne 1 Fear.' },
+      { name: 'Phase Change', type: 'Reaction', description: 'Quand HP atteint un seuil, change de stat block ou de phase.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 8, max: 12, default: 10 }, severe: { min: 13, max: 16, default: 14 } },
+        hp: { min: 8, max: 10, default: 9 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 2, max: 3, default: 2 }, damage: '1d12+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 12, max: 15, default: 13 }, severe: { min: 24, max: 28, default: 26 } },
+        hp: { min: 8, max: 10, default: 9 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 3, max: 4, default: 3 }, damage: '2d10+4', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 17, max: 19, default: 18 },
+        thresholds: { major: { min: 18, max: 25, default: 21 }, severe: { min: 30, max: 40, default: 35 } },
+        hp: { min: 10, max: 12, default: 11 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 4, max: 7, default: 5 }, damage: '3d12+6', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 19, max: 21, default: 20 },
+        thresholds: { major: { min: 30, max: 40, default: 35 }, severe: { min: 60, max: 70, default: 65 } },
+        hp: { min: 10, max: 12, default: 11 },
+        stress: { min: 6, max: 8, default: 7 },
+        attack: { modifier: { min: 7, max: 10, default: 8 }, damage: '4d12+12', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Standard: {
+    description: 'Représentatif de son groupe fictif. Le fantassin de base.',
+    battlePoints: 2,
+    guidelines: [
+      'Stats équilibrées — ni trop fort, ni trop faible',
+      'Features qui bonifient l\'attaque standard (jet ou dégâts)',
+      'Le type le plus versatile — peut jouer de nombreux rôles',
+      'Bon point de départ pour créer un adversaire'
+    ],
+    suggestedFeatures: [
+      { name: 'Shield Wall', type: 'Passive', description: 'Quand un allié du même nom est adjacent, +X aux seuils.' },
+      { name: 'Reform', type: 'Reaction', description: 'Quand vaincu, lancer 1d6. Sur 6, se reforme si d\'autres adversaires existent.' },
+      { name: 'Reinforce', type: 'Action', description: 'Marquer 1 Stress pour donner avantage à un allié pour son prochain jet.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 11, max: 13, default: 12 },
+        thresholds: { major: { min: 5, max: 8, default: 6 }, severe: { min: 8, max: 12, default: 10 } },
+        hp: { min: 3, max: 4, default: 3 },
+        stress: { min: 3, max: 4, default: 3 },
+        attack: { modifier: { min: 0, max: 2, default: 1 }, damage: '1d6+2', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 13, max: 15, default: 14 },
+        thresholds: { major: { min: 8, max: 12, default: 10 }, severe: { min: 16, max: 20, default: 18 } },
+        hp: { min: 3, max: 5, default: 4 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 1, max: 3, default: 2 }, damage: '2d6+3', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 15, max: 17, default: 16 },
+        thresholds: { major: { min: 15, max: 20, default: 17 }, severe: { min: 27, max: 32, default: 29 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 2, max: 4, default: 3 }, damage: '3d8+2', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 17, max: 19, default: 18 },
+        thresholds: { major: { min: 25, max: 35, default: 30 }, severe: { min: 35, max: 50, default: 42 } },
+        hp: { min: 5, max: 6, default: 5 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 3, max: 5, default: 4 }, damage: '4d8+6', damageType: 'phy', range: 'Melee' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  },
+
+  Support: {
+    description: 'Renforce les alliés ou perturbe les PJs. Attaque faible, features puissantes.',
+    battlePoints: 1,
+    guidelines: [
+      'Attaque standard plus faible — compensée par des features utilitaires',
+      'Features qui causent Stress ou perte de Hope aux PJs',
+      'Features qui renforcent les capacités des autres adversaires',
+      'Stress élevé — carburant pour les features de soutien',
+      'Considérer des features qui gênent les PJs (conditions, désavantage)'
+    ],
+    suggestedFeatures: [
+      { name: 'Curse', type: 'Action', description: 'Appliquer une condition (Cursed, Vulnerable) à un PJ.' },
+      { name: 'Chaotic Flux', type: 'Action', description: 'Marquer 1 Stress pour donner avantage ou imposer désavantage.' },
+      { name: 'Shroud of the Fallen', type: 'Action', description: 'Protéger un allié — réduit les dégâts ou impose condition.' },
+      { name: 'Enervating Blast', type: 'Action', description: 'Dépenser Fear pour attaquer et forcer Stress.' }
+    ],
+    tiers: {
+      1: {
+        difficulty: { min: 12, max: 14, default: 13 },
+        thresholds: { major: { min: 5, max: 8, default: 6 }, severe: { min: 9, max: 12, default: 10 } },
+        hp: { min: 3, max: 4, default: 3 },
+        stress: { min: 4, max: 5, default: 4 },
+        attack: { modifier: { min: 0, max: 2, default: 1 }, damage: '1d6+2', damageType: 'mag', range: 'Close' },
+        experiences: { count: { min: 0, max: 2 }, bonus: { min: 2, max: 3 } }
+      },
+      2: {
+        difficulty: { min: 14, max: 16, default: 15 },
+        thresholds: { major: { min: 8, max: 23, default: 12 }, severe: { min: 16, max: 20, default: 18 } },
+        hp: { min: 3, max: 5, default: 4 },
+        stress: { min: 4, max: 6, default: 5 },
+        attack: { modifier: { min: 1, max: 3, default: 2 }, damage: '2d6+2', damageType: 'mag', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      3: {
+        difficulty: { min: 16, max: 18, default: 17 },
+        thresholds: { major: { min: 15, max: 20, default: 17 }, severe: { min: 28, max: 35, default: 31 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 2, max: 4, default: 3 }, damage: '3d8+2', damageType: 'mag', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 4 } }
+      },
+      4: {
+        difficulty: { min: 18, max: 20, default: 19 },
+        thresholds: { major: { min: 20, max: 30, default: 25 }, severe: { min: 35, max: 45, default: 40 } },
+        hp: { min: 4, max: 6, default: 5 },
+        stress: { min: 5, max: 6, default: 5 },
+        attack: { modifier: { min: 3, max: 5, default: 4 }, damage: '4d8+6', damageType: 'mag', range: 'Close' },
+        experiences: { count: { min: 0, max: 3 }, bonus: { min: 2, max: 5 } }
+      }
+    }
+  }
+}
+
+/**
+ * Récupère les benchmarks pour un type et un tier donné.
+ * @param {string} type - Le type d'adversaire (ex: 'Bruiser')
+ * @param {number} tier - Le tier (1-4)
+ * @returns {object|null} Objet benchmark tier ou null
+ */
+export function getBenchmarkForTypeTier(type, tier) {
+  const typeData = ADVERSARY_TYPE_BENCHMARKS[type]
+  if (!typeData) return null
+  return typeData.tiers[tier] || null
+}
+
+/**
+ * Récupère les infos générales d'un type (description, guidelines, features).
+ * @param {string} type - Le type d'adversaire
+ * @returns {object|null} Objet { description, battlePoints, guidelines, suggestedFeatures }
+ */
+export function getTypeInfo(type) {
+  const typeData = ADVERSARY_TYPE_BENCHMARKS[type]
+  if (!typeData) return null
+  return {
+    description: typeData.description,
+    battlePoints: typeData.battlePoints,
+    guidelines: typeData.guidelines,
+    suggestedFeatures: typeData.suggestedFeatures
+  }
+}

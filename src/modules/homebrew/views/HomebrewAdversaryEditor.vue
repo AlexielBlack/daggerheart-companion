@@ -44,13 +44,22 @@
           />
         </div>
 
-        <!-- Aperçu temps réel -->
+        <!-- Aperçu temps réel + Benchmarks -->
         <aside class="hb-adv-editor__preview-panel">
           <div class="hb-adv-editor__preview-sticky">
             <h3 class="hb-adv-editor__preview-title">
               Aperçu
             </h3>
             <AdversaryPreview :data="formData" />
+
+            <AdversaryBenchmarkPanel
+              :form-data="formData"
+              :benchmark="currentBenchmark"
+              :type-info="typeInfo"
+              :has-benchmark="hasBenchmark"
+              :comparison="comparison"
+              @apply="applyBenchmarkToForm"
+            />
           </div>
         </aside>
       </div>
@@ -64,10 +73,12 @@ import { useRoute, useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewForm from '../core/components/HomebrewForm.vue'
 import AdversaryPreview from '../categories/adversary/AdversaryPreview.vue'
-import { adversarySchema, ADVERSARY_TIER_BENCHMARKS } from '../schemas/adversarySchema.js'
+import AdversaryBenchmarkPanel from '../components/AdversaryBenchmarkPanel.vue'
+import { adversarySchema } from '../schemas/adversarySchema.js'
 import { useFormSchema } from '../core/composables/useFormSchema.js'
 import { validateHomebrewData } from '../core/composables/useHomebrewValidation.js'
 import { useAdversaryHomebrewStore } from '../categories/adversary/useAdversaryHomebrewStore.js'
+import { useAdversaryBenchmarks } from '../composables/useAdversaryBenchmarks.js'
 
 /**
  * @component HomebrewAdversaryEditor
@@ -81,7 +92,8 @@ export default {
   components: {
     ModuleBoundary,
     HomebrewForm,
-    AdversaryPreview
+    AdversaryPreview,
+    AdversaryBenchmarkPanel
   },
 
   setup() {
@@ -116,30 +128,22 @@ export default {
       }
     })
 
-    // Appliquer les benchmarks de tier au changement
-    function applyTierDefaults(tier) {
-      const benchmarks = ADVERSARY_TIER_BENCHMARKS[tier]
-      if (!benchmarks) return
-
-      setField('difficulty', benchmarks.difficulty)
-      setField('thresholds', { ...benchmarks.thresholds })
-      setField('hp', benchmarks.hp)
-      setField('stress', benchmarks.stress)
-      setField('attack', {
-        ...formData.value.attack,
-        modifier: benchmarks.attack.modifier,
-        damage: benchmarks.attack.damage,
-        damageType: benchmarks.attack.damageType
-      })
-    }
+    // Composable benchmarks par type/tier
+    const {
+      currentBenchmark,
+      typeInfo,
+      hasBenchmark,
+      comparison,
+      applyBenchmarkToForm
+    } = useAdversaryBenchmarks(formData, setField)
 
     function onFieldUpdate({ key, value }) {
       setField(key, value)
 
-      // Callback onChange du schéma (tier → benchmarks)
+      // Callback onChange du schéma (type ou tier → recalcul benchmarks + application auto)
       const fieldDef = adversarySchema.fields.find((f) => f.key === key)
-      if (fieldDef?.onChange === 'applyTierDefaults' && value) {
-        applyTierDefaults(value)
+      if (fieldDef?.onChange === 'applyTypeTierDefaults' && value) {
+        applyBenchmarkToForm()
       }
 
       // Revalider si des erreurs étaient affichées
@@ -207,6 +211,11 @@ export default {
       validationErrors,
       submitError,
       isSubmitting,
+      currentBenchmark,
+      typeInfo,
+      hasBenchmark,
+      comparison,
+      applyBenchmarkToForm,
       onFieldUpdate,
       onSubmit,
       onReset,
@@ -263,6 +272,9 @@ export default {
 .hb-adv-editor__preview-sticky {
   position: sticky;
   top: calc(var(--header-height) + var(--space-md));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
 .hb-adv-editor__preview-title {

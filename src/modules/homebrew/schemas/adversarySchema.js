@@ -99,7 +99,7 @@ export const adversarySchema = {
       defaultValue: 1,
       helpText: 'Tier 1 (niv. 1), Tier 2 (niv. 2-4), Tier 3 (niv. 5-7), Tier 4 (niv. 8-10).',
       /** Clé de callback pour pré-remplir les benchmarks au changement de tier */
-      onChange: 'applyTierDefaults'
+      onChange: 'applyTypeTierDefaults'
     },
     {
       key: 'type',
@@ -108,7 +108,9 @@ export const adversarySchema = {
       required: true,
       options: ADVERSARY_TYPES,
       defaultValue: 'Standard',
-      helpText: 'Rôle de l\'adversaire dans un conflit.'
+      helpText: 'Rôle de l\'adversaire dans un conflit.',
+      /** Clé de callback pour recalculer les benchmarks au changement de type */
+      onChange: 'applyTypeTierDefaults'
     },
     {
       key: 'description',
