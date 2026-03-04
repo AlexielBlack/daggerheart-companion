@@ -593,6 +593,16 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Vérifier défaite : Minions n'ont pas de seuils
     if (adv.type === 'Minion' && adv.markedHP > 0) {
       adv.isDefeated = true
+      const pcDown = participantPcs.value.find((p) => p.id === activePcId.value)
+      encounterLog.value.push({
+        action: 'adv_down',
+        instanceId,
+        advName: adv.name,
+        pcId: activePcId.value || null,
+        pcName: pcDown ? pcDown.name : '?',
+        round: round.value,
+        timestamp: Date.now()
+      })
     }
     persistState()
   }
@@ -672,6 +682,54 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
+  // ═══════════════════════════════════════════════════════
+  //  Actions — PJ touché (par un adversaire)
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Enregistre qu'un PJ a pris des dégâts de l'adversaire actif.
+   * @param {string} pcId
+   * @param {number} hpAmount - Nombre de HP marqués (1 à 4)
+   */
+  function logPcHit(pcId, hpAmount) {
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    const adv = activeAdversary.value
+    if (!pc) return
+    const entry = {
+      action: 'pc_hit',
+      pcId,
+      pcName: pc.name,
+      instanceId: adv ? adv.instanceId : null,
+      advName: adv ? adv.name : '?',
+      hpMarked: hpAmount,
+      round: round.value,
+      timestamp: Date.now()
+    }
+    combatLog.value.push(entry)
+    encounterLog.value.push(entry)
+    persistState()
+  }
+
+  /**
+   * Enregistre qu'un PJ a été mis à terre par l'adversaire actif.
+   * @param {string} pcId
+   */
+  function logPcDown(pcId) {
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    const adv = activeAdversary.value
+    if (!pc) return
+    encounterLog.value.push({
+      action: 'pc_down',
+      pcId,
+      pcName: pc.name,
+      instanceId: adv ? adv.instanceId : null,
+      advName: adv ? adv.name : '?',
+      round: round.value,
+      timestamp: Date.now()
+    })
+    persistState()
+  }
+
   /**
    * Ajoute une condition à un adversaire.
    * @param {string} instanceId
@@ -707,6 +765,17 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = true
+    // Logger qui l'a abattu
+    const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+    encounterLog.value.push({
+      action: 'adv_down',
+      instanceId,
+      advName: adv.name,
+      pcId: activePcId.value || null,
+      pcName: pc ? pc.name : '?',
+      round: round.value,
+      timestamp: Date.now()
+    })
     // Si c'était l'adversaire actif, sélectionner le prochain non vaincu
     if (activeAdversaryId.value === instanceId) {
       const next = activeAdversaries.value[0]
@@ -1054,6 +1123,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     addAdversaryCondition,
     removeAdversaryCondition,
     removeCombatLogEntry,
+    logPcHit,
+    logPcDown,
     defeatAdversary,
     reviveAdversary,
 

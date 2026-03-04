@@ -102,6 +102,48 @@
       </div>
     </div>
 
+    <!-- Contrôles dégâts reçus (quand adversaire attaque) -->
+    <div
+      v-if="!isActor"
+      class="pc-panel__hit-controls"
+    >
+      <span class="pc-panel__hit-label">HP marqués :</span>
+      <div class="pc-panel__hit-btns">
+        <button
+          v-for="n in 4"
+          :key="n"
+          class="pc-panel__hit-btn"
+          :title="'Marquer ' + n + ' HP'"
+          @click="logHit(n)"
+        >
+          {{ n }}
+        </button>
+      </div>
+      <button
+        class="pc-panel__down-btn"
+        title="PJ mis à terre"
+        @click="logDown()"
+      >
+        💀 Down
+      </button>
+    </div>
+
+    <!-- Log des coups reçus -->
+    <div
+      v-if="pcHitLog.length > 0"
+      class="pc-panel__hit-log"
+    >
+      <button
+        v-for="(entry, idx) in pcHitLog"
+        :key="idx"
+        class="pc-panel__hit-entry"
+        :title="entry.advName + ' : ' + (entry.hpMarked || 0) + ' HP (clic pour annuler)'"
+        @click="removeHitLog(entry._globalIdx)"
+      >
+        {{ entry.advName }} ❤️{{ entry.hpMarked }}
+      </button>
+    </div>
+
     <!-- Expériences (affichées en mode Social) -->
     <div
       v-if="showExperiences && pcExperiences.length > 0"
@@ -195,8 +237,10 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import FeatureCard from './FeatureCard.vue'
 import { getPrimaryWeaponById } from '@data/equipment'
+import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 
 export default {
   name: 'PcLivePanel',
@@ -209,6 +253,39 @@ export default {
     secondaryFeatures: { type: Array, default: () => [] },
     passiveFeatures: { type: Array, default: () => [] },
     reactionFeatures: { type: Array, default: () => [] }
+  },
+  setup(props) {
+    const store = useEncounterLiveStore()
+
+    /** Log des coups reçus par ce PJ, avec index global */
+    const pcHitLog = computed(() => {
+      const entries = []
+      store.combatLog.forEach((entry, globalIdx) => {
+        if (entry.action === 'pc_hit' && entry.pcId === props.pc.id) {
+          entries.push({ ...entry, _globalIdx: globalIdx })
+        }
+      })
+      return entries
+    })
+
+    function logHit(hpAmount) {
+      store.logPcHit(props.pc.id, hpAmount)
+    }
+
+    function logDown() {
+      store.logPcDown(props.pc.id)
+    }
+
+    function removeHitLog(globalIdx) {
+      store.removeCombatLogEntry(globalIdx)
+    }
+
+    return {
+      pcHitLog,
+      logHit,
+      logDown,
+      removeHitLog
+    }
   },
   computed: {
     effectiveEvasion() {
@@ -465,5 +542,95 @@ export default {
   font-weight: var(--font-bold);
   color: var(--color-accent-gold);
   font-variant-numeric: tabular-nums;
+}
+
+/* ── Hit controls (quand adversaire attaque) ── */
+
+.pc-panel__hit-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(200, 75, 49, 0.06);
+  border: 1px solid rgba(200, 75, 49, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.pc-panel__hit-label {
+  font-size: var(--font-xs);
+  color: var(--color-accent-fear);
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+}
+
+.pc-panel__hit-btns {
+  display: flex;
+  gap: 3px;
+}
+
+.pc-panel__hit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-fear);
+  background: transparent;
+  color: var(--color-accent-fear);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pc-panel__hit-btn:hover {
+  background: rgba(200, 75, 49, 0.15);
+}
+
+.pc-panel__down-btn {
+  margin-left: auto;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-danger);
+  background: transparent;
+  color: var(--color-accent-danger);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pc-panel__down-btn:hover {
+  background: rgba(244, 67, 54, 0.15);
+}
+
+/* ── Hit log (pastilles coups reçus) ── */
+
+.pc-panel__hit-log {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.pc-panel__hit-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: var(--font-semibold);
+  line-height: 1.3;
+  background: rgba(200, 75, 49, 0.1);
+  color: var(--color-accent-fear);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.pc-panel__hit-entry:hover {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 </style>
