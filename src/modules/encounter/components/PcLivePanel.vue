@@ -102,6 +102,27 @@
       </div>
     </div>
 
+    <!-- Expériences (affichées en mode Social) -->
+    <div
+      v-if="showExperiences && pcExperiences.length > 0"
+      class="pc-panel__experiences"
+    >
+      <h4 class="pc-panel__exp-title">
+        📋 Expériences
+      </h4>
+      <div
+        v-for="exp in pcExperiences"
+        :key="exp.name"
+        class="pc-panel__exp"
+      >
+        <span class="pc-panel__exp-name">{{ exp.name }}</span>
+        <span
+          v-if="exp.bonus"
+          class="pc-panel__exp-bonus"
+        >+{{ exp.bonus }}</span>
+      </div>
+    </div>
+
     <!-- Features filtrées par section -->
     <div class="pc-panel__features">
       <!-- Features principales -->
@@ -205,6 +226,14 @@ export default {
         traversal: '🔧 Utilitaires'
       }
       return labels[this.sceneMode] || '⚔️ Prioritaires'
+    },
+    showExperiences() {
+      return this.sceneMode === 'social'
+    },
+    pcExperiences() {
+      return Array.isArray(this.pc.experiences)
+        ? this.pc.experiences.filter((e) => e && e.name)
+        : []
     }
   }
 }
@@ -396,5 +425,45 @@ export default {
   font-size: 0.65rem;
   color: var(--color-text-muted);
   font-weight: normal;
+}
+
+/* ── Experiences ── */
+
+.pc-panel__experiences {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  border-left: 3px solid #d97706;
+}
+
+.pc-panel__exp-title {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: #d97706;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.pc-panel__exp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-sm);
+}
+
+.pc-panel__exp-name {
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.pc-panel__exp-bonus {
+  font-weight: var(--font-bold);
+  color: var(--color-accent-gold);
+  font-variant-numeric: tabular-nums;
 }
 </style>

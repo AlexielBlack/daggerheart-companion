@@ -110,6 +110,18 @@
       </div>
     </div>
 
+    <!-- Spotlight Tracker -->
+    <SpotlightTracker
+      :pcs="store.participantPcs"
+      :active-pc-id="store.activePcId"
+      :spotlight="store.spotlight"
+      :spotlight-tokens="store.spotlightTokens"
+      :total-tokens="store.totalSpotlightTokens"
+      @give-spotlight="store.giveSpotlight($event)"
+      @remove-token="store.removeSpotlightToken($event)"
+      @gm-spotlight="store.setGmSpotlight()"
+    />
+
     <!-- Panels contextuels — ordre piloté par le mode de scène -->
     <div
       class="enc-live__battlefield"
@@ -128,11 +140,18 @@
       />
 
       <AdversaryTargetPanel
-        v-if="store.activeAdversary"
+        v-if="store.activeAdversary && !isTraversalMode"
         :adversary="store.activeAdversary"
         :scene-mode="store.sceneMode"
         :is-actor="!isPcActor"
         :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
+      />
+
+      <!-- En mode Traversal : environnement à droite au lieu de l'adversaire -->
+      <EnvironmentPanel
+        v-if="store.activeEnvironment && isTraversalMode"
+        :environment="store.activeEnvironment"
+        class="enc-live__panel--second"
       />
     </div>
 
@@ -150,23 +169,11 @@
       <span>{{ store.defeatedAdversaries.length }} vaincus</span>
     </div>
 
-    <!-- Environnement -->
-    <section
-      v-if="store.activeEnvironment"
-      class="enc-live__section enc-live__section--env"
-    >
-      <h2 class="enc-live__section-title">
-        <span class="enc-live__section-emoji">🗺️</span>
-        {{ store.activeEnvironment.name }}
-        <span class="enc-live__env-tier">Tier {{ store.activeEnvironment.tier }}</span>
-      </h2>
-      <p
-        v-if="store.activeEnvironment.description"
-        class="enc-live__env-desc"
-      >
-        {{ store.activeEnvironment.description }}
-      </p>
-    </section>
+    <!-- Environnement (compact hors mode Traversal) -->
+    <EnvironmentPanel
+      v-if="store.activeEnvironment && !isTraversalMode"
+      :environment="store.activeEnvironment"
+    />
 
     <!-- Message si aucune rencontre active -->
     <div
@@ -194,6 +201,8 @@ import SceneModeSelector from '../components/SceneModeSelector.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import PcLivePanel from '../components/PcLivePanel.vue'
 import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
+import EnvironmentPanel from '../components/EnvironmentPanel.vue'
+import SpotlightTracker from '../components/SpotlightTracker.vue'
 
 export default {
   name: 'EncounterLive',
@@ -202,7 +211,9 @@ export default {
     SceneModeSelector,
     SpotlightToggle,
     PcLivePanel,
-    AdversaryTargetPanel
+    AdversaryTargetPanel,
+    EnvironmentPanel,
+    SpotlightTracker
   },
   setup() {
     const store = useEncounterLiveStore()
@@ -219,6 +230,8 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
+    const isTraversalMode = computed(() => store.sceneMode === 'traversal')
+
     onMounted(() => {
       if (!store.isActive) {
         store.restoreState()
@@ -229,6 +242,7 @@ export default {
       store,
       showHistory,
       isPcActor,
+      isTraversalMode,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -472,49 +486,6 @@ export default {
 
 .enc-live__summary-sep {
   color: var(--color-text-muted);
-}
-
-/* ── Sections ── */
-
-.enc-live__section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.enc-live__section--env {
-  padding: var(--space-sm);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-.enc-live__section-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--font-md, 1rem);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-  margin: 0;
-}
-
-.enc-live__section-emoji {
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.enc-live__env-tier {
-  font-size: var(--font-xs);
-  color: var(--color-accent-gold);
-  font-weight: normal;
-}
-
-.enc-live__env-desc {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
-  line-height: 1.5;
-  margin: 0;
 }
 
 /* ── Inactive state ── */

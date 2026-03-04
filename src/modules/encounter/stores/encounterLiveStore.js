@@ -95,6 +95,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Compteur de rounds ─────────────────────────────────
   const round = ref(1)
 
+  // ── Spotlight Tracker (tokens par PJ) ──────────────────
+  /** Nombre de fois que chaque PJ a eu le projecteur ce round { pcId: count } */
+  const spotlightTokens = ref({})
+
   // ═══════════════════════════════════════════════════════
   //  Getters
   // ═══════════════════════════════════════════════════════
@@ -137,7 +141,11 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
             proficiency: c.proficiency || 1,
             // Armes
             primaryWeaponId: c.primaryWeaponId || '',
-            secondaryWeaponId: c.secondaryWeaponId || ''
+            secondaryWeaponId: c.secondaryWeaponId || '',
+            // Expériences (pour mode Social)
+            experiences: Array.isArray(c.experiences) ? c.experiences.filter((e) => e.name) : [],
+            // Progression sous-classe (pour filtrage features)
+            subclassProgression: c.subclassProgression || 'foundation'
           }
         })
         .filter(Boolean)
@@ -518,14 +526,54 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
-  //  Actions — Rounds
+  //  Actions — Rounds & Spotlight Tracker
   // ═══════════════════════════════════════════════════════
 
   /**
-   * Passe au round suivant.
+   * Enregistre un usage du projecteur pour un PJ.
+   * @param {string} pcId
+   */
+  function giveSpotlight(pcId) {
+    if (!participantPcIds.value.includes(pcId)) return
+    if (!spotlightTokens.value[pcId]) {
+      spotlightTokens.value[pcId] = 0
+    }
+    spotlightTokens.value[pcId]++
+    activePcId.value = pcId
+    spotlight.value = SPOTLIGHT_PC
+    persistState()
+  }
+
+  /**
+   * Retire un token de projecteur d'un PJ.
+   * @param {string} pcId
+   */
+  function removeSpotlightToken(pcId) {
+    if (spotlightTokens.value[pcId] > 0) {
+      spotlightTokens.value[pcId]--
+      persistState()
+    }
+  }
+
+  /**
+   * Réinitialise les tokens de projecteur (début de round).
+   */
+  function resetSpotlightTokens() {
+    spotlightTokens.value = {}
+    persistState()
+  }
+
+  /** Nombre total de tokens distribués ce round */
+  const totalSpotlightTokens = computed(() => {
+    return Object.values(spotlightTokens.value).reduce((s, v) => s + v, 0)
+  })
+
+  /**
+   * Passe au round suivant (reset tokens projecteur).
    */
   function nextRound() {
     round.value++
+    resetSpotlightTokens()
     persistState()
   }
 
@@ -571,7 +619,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       })),
       activeAdversaryId: activeAdversaryId.value,
       environmentId: environmentId.value,
-      round: round.value
+      round: round.value,
+      spotlightTokens: { ...spotlightTokens.value }
     }
   }
 
@@ -605,6 +654,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaryId.value = data.activeAdversaryId || null
     environmentId.value = data.environmentId || null
     round.value = data.round || 1
+    spotlightTokens.value = data.spotlightTokens && typeof data.spotlightTokens === 'object'
+      ? { ...data.spotlightTokens }
+      : {}
 
     return true
   }
@@ -627,6 +679,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaryId.value = null
     environmentId.value = null
     round.value = 1
+    spotlightTokens.value = {}
     liveStorage.remove()
   }
 
@@ -657,6 +710,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaryId,
     environmentId,
     round,
+    spotlightTokens,
 
     // Getters
     currentSceneModeMeta,
@@ -669,6 +723,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     adversaryCombatSummary,
     isPlayerSpotlight,
     isGmSpotlight,
+    totalSpotlightTokens,
 
     // Actions — Initialisation
     startEncounter,
@@ -697,9 +752,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     defeatAdversary,
     reviveAdversary,
 
-    // Actions — Rounds
+    // Actions — Rounds & Spotlight
     nextRound,
     previousRound,
+    giveSpotlight,
+    removeSpotlightToken,
+    resetSpotlightTokens,
 
     // Actions — Persistence
     serializeLiveState,
