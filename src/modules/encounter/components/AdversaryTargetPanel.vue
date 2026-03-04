@@ -149,15 +149,15 @@
       class="adv-panel__features"
     >
       <div
-        v-if="classified.primaryFeatures.length > 0"
+        v-if="classified.actionFeatures.length > 0"
         class="adv-panel__feat-section"
       >
-        <h4 class="adv-panel__feat-title adv-panel__feat-title--primary">
-          {{ isActor ? '⚔️ Offensives' : '🛡️ Défensives' }}
-          <span class="adv-panel__feat-count">{{ classified.primaryFeatures.length }}</span>
+        <h4 class="adv-panel__feat-title adv-panel__feat-title--action">
+          🟢 Actions
+          <span class="adv-panel__feat-count">{{ classified.actionFeatures.length }}</span>
         </h4>
         <FeatureCard
-          v-for="f in classified.primaryFeatures"
+          v-for="f in classified.actionFeatures"
           :key="f.name"
           :feature="f"
         />
@@ -261,11 +261,11 @@ export default {
       return this.siblings.length > 1
     },
     classified() {
-      return classifyAdversaryFeatures(this.adversary, this.sceneMode)
+      return classifyAdversaryFeatures(this.adversary)
     },
     hasFeatures() {
       const c = this.classified
-      return c.primaryFeatures.length > 0 || c.passiveFeatures.length > 0 || c.reactionFeatures.length > 0
+      return c.actionFeatures.length > 0 || c.passiveFeatures.length > 0 || c.reactionFeatures.length > 0
     },
     focusResults() {
       if (!this.pcs.length || !this.adversary.focusProfile) return []
@@ -582,7 +582,7 @@ export default {
   margin: 0;
 }
 
-.adv-panel__feat-title--primary  { color: var(--color-accent-fear); }
+.adv-panel__feat-title--action   { color: #22c55e; }
 .adv-panel__feat-title--reaction { color: #f59e0b; }
 .adv-panel__feat-title--passive  { color: #3b82f6; }
 

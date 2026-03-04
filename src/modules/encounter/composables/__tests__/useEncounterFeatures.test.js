@@ -411,10 +411,12 @@ describe('classifyAdversaryFeatures', () => {
     ]
   }
 
-  it('classifie les features en mode PJ Attaque', () => {
-    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_PC_ATTACK)
-    // En mode PJ attaque, les tags primaires adversaire sont 'offensif'
-    // mais l'inversion se fait au niveau du panel UI, pas ici
+  it('classifie toutes les features par type d\'activation', () => {
+    const result = classifyAdversaryFeatures(MOCK_ADVERSARY)
+    // 2 actions (Claw Attack + Intimidate), 1 passive (Tough Hide), 1 reaction (Counterattack)
+    expect(result.actionFeatures).toHaveLength(2)
+    expect(result.actionFeatures[0].name).toBe('Claw Attack')
+    expect(result.actionFeatures[1].name).toBe('Intimidate')
     expect(result.passiveFeatures).toHaveLength(1)
     expect(result.passiveFeatures[0].name).toBe('Tough Hide')
     expect(result.reactionFeatures).toHaveLength(1)
@@ -422,25 +424,31 @@ describe('classifyAdversaryFeatures', () => {
   })
 
   it('retourne des tableaux vides pour adversaire null', () => {
-    const result = classifyAdversaryFeatures(null, SCENE_MODE_PC_ATTACK)
-    expect(result.primaryFeatures).toEqual([])
+    const result = classifyAdversaryFeatures(null)
+    expect(result.actionFeatures).toEqual([])
     expect(result.passiveFeatures).toEqual([])
     expect(result.reactionFeatures).toEqual([])
   })
 
   it('retourne des tableaux vides pour adversaire sans features', () => {
-    const result = classifyAdversaryFeatures({ name: 'Empty', features: [] }, SCENE_MODE_PC_ATTACK)
-    expect(result.primaryFeatures).toEqual([])
+    const result = classifyAdversaryFeatures({ name: 'Empty', features: [] })
+    expect(result.actionFeatures).toEqual([])
   })
 
-  it('priorise différemment selon le mode de scène', () => {
-    const pcAttack = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_PC_ATTACK)
-    const social = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_SOCIAL)
-    // En mode Social, Intimidate doit être primaire
-    const intimidateSocial = social.primaryFeatures.find((f) => f.name === 'Intimidate')
-    expect(intimidateSocial).toBeTruthy()
-    // En mode PJ Attaque, Claw Attack doit être primaire
-    const clawPcAttack = pcAttack.primaryFeatures.find((f) => f.name === 'Claw Attack')
-    expect(clawPcAttack).toBeTruthy()
+  it('affiche TOUTES les features quel que soit leurs tags', () => {
+    // Vérification que rien n'est filtré — le bug original masquait
+    // les features utilitaires comme Cloaked
+    const advWithUtility = {
+      name: 'Shadow',
+      features: [
+        { name: 'Backstab', tags: ['offensif'], activationType: 'passive' },
+        { name: 'Cloaked', tags: ['utilitaire'], activationType: 'action' }
+      ]
+    }
+    const result = classifyAdversaryFeatures(advWithUtility)
+    expect(result.actionFeatures).toHaveLength(1)
+    expect(result.actionFeatures[0].name).toBe('Cloaked')
+    expect(result.passiveFeatures).toHaveLength(1)
+    expect(result.passiveFeatures[0].name).toBe('Backstab')
   })
 })

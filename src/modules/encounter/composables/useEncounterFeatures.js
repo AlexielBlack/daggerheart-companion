@@ -339,36 +339,25 @@ export function useEncounterFeatures(pcRef, sceneModeRef, characterRef = null) {
 // ═══════════════════════════════════════════════════════════
 
 /**
- * Collecte les features d'un adversaire live (déjà normalisées dans les données).
- * Filtre par mode de scène pour la pertinence.
+ * Collecte les features d'un adversaire live, classées par type d'activation.
+ * Contrairement aux features PJ, les features adversaire ne sont PAS filtrées
+ * par le mode de scène : le MJ a besoin de voir TOUTES les features disponibles.
  * @param {Object} adversary - Adversaire live depuis le store
- * @param {string} sceneMode - Mode de scène actif
- * @returns {Object} { primaryFeatures, secondaryFeatures, passiveFeatures, reactionFeatures }
+ * @returns {Object} { actionFeatures, passiveFeatures, reactionFeatures }
  */
-export function classifyAdversaryFeatures(adversary, sceneMode) {
+export function classifyAdversaryFeatures(adversary) {
   if (!adversary || !Array.isArray(adversary.features)) {
-    return { primaryFeatures: [], secondaryFeatures: [], passiveFeatures: [], reactionFeatures: [] }
+    return { actionFeatures: [], passiveFeatures: [], reactionFeatures: [] }
   }
 
-  const meta = SCENE_MODE_META[sceneMode] || SCENE_MODE_META[SCENE_MODE_PC_ATTACK]
   const normalized = adversary.features.map((f) =>
     normalizeFeature(f, 'adversary', adversary.name)
   )
-  const scored = normalized
-    .map((f) => ({ ...f, _score: computePriorityScore(f, meta) }))
-    .sort((a, b) => b._score - a._score)
 
   return {
-    primaryFeatures: scored.filter((f) =>
-      f.activationType !== 'passive' && f.tags.some((t) => meta.primaryTags.includes(t))
-    ),
-    secondaryFeatures: scored.filter((f) => {
-      if (f.activationType === 'passive') return false
-      if (f.tags.some((t) => meta.primaryTags.includes(t))) return false
-      return f._score > 0
-    }),
-    passiveFeatures: scored.filter((f) => f.activationType === 'passive'),
-    reactionFeatures: scored.filter((f) => f.activationType === 'reaction')
+    actionFeatures: normalized.filter((f) => f.activationType === 'action'),
+    passiveFeatures: normalized.filter((f) => f.activationType === 'passive'),
+    reactionFeatures: normalized.filter((f) => f.activationType === 'reaction')
   }
 }
 
