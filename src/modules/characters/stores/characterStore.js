@@ -783,22 +783,100 @@ export const useCharacterStore = defineStore('characters', () => {
 
   // ── Inventaire ─────────────────────────────────────────
 
-  /** Ajoute un objet à l'inventaire */
-  function addInventoryItem(item = '') {
+  /**
+   * Ajoute un slot d'inventaire structuré.
+   * @param {'loot'|'consumable'|'custom'} [type='custom']
+   */
+  function addInventoryItem(type = 'custom') {
     const char = selectedCharacter.value
     if (!char) return
-    char.inventory.push(item)
+    // Migrer si l'inventaire contient des chaînes brutes
+    _migrateInventory(char)
+    char.inventory.push({
+      id: `inv-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      type,
+      itemId: '',
+      customName: '',
+      quantity: 1
+    })
     char.updatedAt = new Date().toISOString()
     persist()
   }
 
-  /** Supprime un objet de l'inventaire */
+  /** Supprime un slot d'inventaire par index */
   function removeInventoryItem(index) {
     const char = selectedCharacter.value
     if (!char || index < 0 || index >= char.inventory.length) return
     char.inventory.splice(index, 1)
     char.updatedAt = new Date().toISOString()
     persist()
+  }
+
+  /**
+   * Met à jour un champ d'un slot d'inventaire.
+   * @param {number} index
+   * @param {string} field - 'type' | 'itemId' | 'customName' | 'quantity'
+   * @param {*} value
+   */
+  function updateInventoryItem(index, field, value) {
+    const char = selectedCharacter.value
+    if (!char || index < 0 || index >= char.inventory.length) return
+    const slot = char.inventory[index]
+    if (!slot || typeof slot !== 'object') return
+
+    // Si on change le type, réinitialiser les champs liés
+    if (field === 'type') {
+      slot.type = value
+      slot.itemId = ''
+      slot.customName = ''
+      slot.quantity = value === 'consumable' ? 1 : 1
+    } else if (field === 'itemId') {
+      slot.itemId = value
+    } else if (field === 'customName') {
+      slot.customName = value
+    } else if (field === 'quantity') {
+      slot.quantity = Math.max(1, parseInt(value) || 1)
+    }
+
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  /**
+   * Met à jour le gold du personnage.
+   * @param {string} tier - 'handfuls' | 'bags' | 'chests'
+   * @param {number} value
+   */
+  function updateGold(tier, value) {
+    const char = selectedCharacter.value
+    if (!char) return
+    if (!char.gold) char.gold = { handfuls: 0, bags: 0, chests: 0 }
+    char.gold[tier] = Math.max(0, parseInt(value) || 0)
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  /**
+   * Migration : convertit les anciens éléments string en objets structurés.
+   * @param {Object} char
+   */
+  function _migrateInventory(char) {
+    if (!Array.isArray(char.inventory)) {
+      char.inventory = []
+      return
+    }
+    for (let i = 0; i < char.inventory.length; i++) {
+      const item = char.inventory[i]
+      if (typeof item === 'string') {
+        char.inventory[i] = {
+          id: `inv-migrated-${i}-${Date.now()}`,
+          type: 'custom',
+          itemId: '',
+          customName: item,
+          quantity: 1
+        }
+      }
+    }
   }
 
   // ── Max HP/Stress adjustment (level ups) ───────────────
@@ -1129,6 +1207,8 @@ export const useCharacterStore = defineStore('characters', () => {
     // Actions Inventaire
     addInventoryItem,
     removeInventoryItem,
+    updateInventoryItem,
+    updateGold,
 
     // Actions level up
     increaseMaxHP,

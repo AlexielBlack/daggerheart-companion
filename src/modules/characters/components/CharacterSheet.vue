@@ -495,6 +495,21 @@
       </div>
     </section>
 
+    <!-- ═══ Inventaire ═══ -->
+    <section class="sheet-section">
+      <h3 class="section-heading">
+        🎒 Inventaire
+      </h3>
+      <InventoryPanel
+        :inventory="char.inventory"
+        :gold="char.gold || { handfuls: 0, bags: 0, chests: 0 }"
+        @add-item="(type) => emit('addInventoryItem', type)"
+        @remove-item="(i) => emit('removeInventoryItem', i)"
+        @update-item="(i, field, val) => emit('updateInventoryItem', i, field, val)"
+        @update-gold="(tier, val) => emit('updateGold', tier, val)"
+      />
+    </section>
+
     <!-- ═══ Class Feature (read-only SRD) ═══ -->
     <section
       v-if="classData"
@@ -621,10 +636,11 @@ import TraitBlock from './TraitBlock.vue'
 import CharacterSelectors from './CharacterSelectors.vue'
 import DomainCardPicker from './DomainCardPicker.vue'
 import ActiveModifiersPanel from './ActiveModifiersPanel.vue'
+import InventoryPanel from './InventoryPanel.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel },
+  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel, InventoryPanel },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
@@ -665,7 +681,9 @@ export default {
     'addCardToLoadout', 'addCardToVault',
     'moveCardToLoadout', 'moveCardToVault', 'removeCard',
     'levelUp', 'rollback',
-    'toggleEffect'
+    'toggleEffect',
+    'addInventoryItem', 'removeInventoryItem', 'updateInventoryItem',
+    'updateGold'
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS

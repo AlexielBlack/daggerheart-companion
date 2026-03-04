@@ -71,6 +71,10 @@
           @move-card-to-vault="store.moveCardToVault"
           @remove-card="store.removeCard"
           @toggle-effect="store.toggleEffect"
+          @add-inventory-item="store.addInventoryItem"
+          @remove-inventory-item="store.removeInventoryItem"
+          @update-inventory-item="store.updateInventoryItem"
+          @update-gold="store.updateGold"
           @level-up="onLevelUp"
           @rollback="onRollback"
         />
