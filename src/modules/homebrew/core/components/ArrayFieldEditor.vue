@@ -137,6 +137,10 @@ export default {
           item[field.key] = field.defaultValue
         } else if (field.type === 'number') {
           item[field.key] = 0
+        } else if (field.type === 'tags' || field.type === 'multi_select') {
+          item[field.key] = []
+        } else if (field.type === 'boolean') {
+          item[field.key] = false
         } else {
           item[field.key] = ''
         }

@@ -95,6 +95,76 @@
       </div>
     </section>
     <section
+      v-if="displaySubclasses.length > 0"
+      class="class-preview__subclasses"
+      aria-label="Specialisations"
+    >
+      <h4 class="class-preview__section-title">
+        🎯 Spécialisations
+      </h4>
+      <div
+        v-for="(sub, si) in displaySubclasses"
+        :key="si"
+        class="class-preview__subclass"
+      >
+        <div class="class-preview__subclass-header">
+          <strong class="class-preview__subclass-name">{{ sub.name || 'Sans nom' }}</strong>
+          <span
+            v-if="sub.spellcastTrait"
+            class="class-preview__spell-badge"
+          >✨ {{ sub.spellcastTrait }}</span>
+        </div>
+        <p
+          v-if="sub.description"
+          class="class-preview__subclass-desc"
+        >
+          {{ sub.description }}
+        </p>
+        <div
+          v-if="sub.foundation && sub.foundation.length"
+          class="class-preview__tier-block"
+        >
+          <span class="class-preview__tier-label">Foundation (Niv. 1–4)</span>
+          <ul class="class-preview__tier-list">
+            <li
+              v-for="(f, fi) in sub.foundation"
+              :key="fi"
+            >
+              {{ f }}
+            </li>
+          </ul>
+        </div>
+        <div
+          v-if="sub.specialization && sub.specialization.length"
+          class="class-preview__tier-block"
+        >
+          <span class="class-preview__tier-label">Spécialisation (Niv. 5–7)</span>
+          <ul class="class-preview__tier-list">
+            <li
+              v-for="(s, ssi) in sub.specialization"
+              :key="ssi"
+            >
+              {{ s }}
+            </li>
+          </ul>
+        </div>
+        <div
+          v-if="sub.mastery && sub.mastery.length"
+          class="class-preview__tier-block"
+        >
+          <span class="class-preview__tier-label">Maîtrise (Niv. 8+)</span>
+          <ul class="class-preview__tier-list">
+            <li
+              v-for="(m, mi) in sub.mastery"
+              :key="mi"
+            >
+              {{ m }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section
       v-if="hasTraits"
       class="class-preview__traits"
       aria-label="Traits recommandes"
@@ -142,6 +212,7 @@ export default {
     balanceScore() { const ev = this.data.baseEvasion; const hp = this.data.baseHP; return (ev && hp) ? ev + hp : null },
     balanceClass() { const s = this.balanceScore; if (!s) return ''; return (s >= 15 && s <= 17) ? 'class-preview__stat-value--good' : 'class-preview__stat-value--warn' },
     displayFeatures() { return Array.isArray(this.data.classFeatures) ? this.data.classFeatures.filter(f => f && (f.name || f.description)) : [] },
+    displaySubclasses() { return Array.isArray(this.data.subclasses) ? this.data.subclasses.filter(s => s && (s.name || s.description)) : [] },
     hasTraits() { return this.data.suggestedTraits && typeof this.data.suggestedTraits === 'object' },
     traitEntries() { if (!this.hasTraits) return []; return Object.entries(TRAIT_LABELS).map(([key, label]) => ({ key, label, value: this.data.suggestedTraits[key] || 0 })) }
   }
@@ -173,6 +244,16 @@ export default {
 .class-preview__feature-item { padding: var(--space-xs) var(--space-sm); background-color: var(--color-bg-primary); border-radius: var(--radius-sm); border-left: 2px solid var(--color-accent-hope); }
 .class-preview__feature-name { font-size: var(--font-sm); color: var(--color-text-primary); }
 .class-preview__feature-desc { font-size: var(--font-xs); color: var(--color-text-secondary); line-height: 1.4; margin: 2px 0 0; }
+.class-preview__subclasses { display: flex; flex-direction: column; gap: var(--space-sm); }
+.class-preview__subclass { padding: var(--space-sm); background-color: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: var(--space-xs); }
+.class-preview__subclass-header { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+.class-preview__subclass-name { font-size: var(--font-sm); color: var(--color-text-primary); }
+.class-preview__spell-badge { font-size: var(--font-xs); padding: 1px var(--space-xs); background: rgba(83, 168, 182, 0.15); border: 1px solid rgba(83, 168, 182, 0.3); border-radius: var(--radius-full); color: var(--color-accent-hope); }
+.class-preview__subclass-desc { font-size: var(--font-xs); color: var(--color-text-secondary); line-height: 1.4; margin: 0; }
+.class-preview__tier-block { padding-left: var(--space-sm); border-left: 2px solid var(--color-border); }
+.class-preview__tier-label { font-size: var(--font-xs); font-weight: var(--font-semibold); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.03em; }
+.class-preview__tier-list { margin: 2px 0 0; padding-left: var(--space-md); list-style: disc; }
+.class-preview__tier-list li { font-size: var(--font-xs); color: var(--color-text-secondary); line-height: 1.5; }
 .class-preview__traits { display: flex; flex-direction: column; gap: var(--space-xs); }
 .class-preview__trait-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xs); }
 .class-preview__trait-item { display: flex; justify-content: space-between; align-items: center; padding: 2px var(--space-sm); background-color: var(--color-bg-primary); border-radius: var(--radius-sm); font-size: var(--font-xs); }

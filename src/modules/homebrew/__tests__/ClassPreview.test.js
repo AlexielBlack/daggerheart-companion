@@ -195,4 +195,75 @@ describe('ClassPreview', () => {
     const w = factory({ name: 'Test', emoji: '🔮' })
     expect(w.find('.class-preview__emoji').attributes('aria-hidden')).toBe('true')
   })
+
+  // ── Specialisations (sous-classes) ──────────────────────
+  it('affiche la section specialisations', () => {
+    const w = factory({
+      name: 'Guerrier',
+      subclasses: [
+        { name: 'Stalwart', description: 'Tank lourd', foundation: ['Unwavering'], specialization: ['Unrelenting'], mastery: ['Undaunted'] }
+      ]
+    })
+    expect(w.find('.class-preview__subclasses').exists()).toBe(true)
+    expect(w.text()).toContain('Spécialisations')
+    expect(w.text()).toContain('Stalwart')
+  })
+
+  it('affiche plusieurs specialisations', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Alpha', description: 'First', foundation: ['F1'], specialization: ['S1'], mastery: ['M1'] },
+        { name: 'Beta', description: 'Second', foundation: ['F2'], specialization: ['S2'], mastery: ['M2'] }
+      ]
+    })
+    const subs = w.findAll('.class-preview__subclass')
+    expect(subs).toHaveLength(2)
+  })
+
+  it('affiche le badge spellcastTrait', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Mage', spellcastTrait: 'Knowledge', description: 'Sort', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    const badge = w.find('.class-preview__spell-badge')
+    expect(badge.exists()).toBe(true)
+    expect(badge.text()).toContain('Knowledge')
+  })
+
+  it('masque le badge spellcastTrait si null', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Martial', spellcastTrait: null, description: 'Pas de sort', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    expect(w.find('.class-preview__spell-badge').exists()).toBe(false)
+  })
+
+  it('affiche les 3 tiers de features', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Sub', description: 'Desc', foundation: ['Found1', 'Found2'], specialization: ['Spec1'], mastery: ['Mast1'] }
+      ]
+    })
+    const tiers = w.findAll('.class-preview__tier-block')
+    expect(tiers).toHaveLength(3)
+    expect(w.text()).toContain('Found1')
+    expect(w.text()).toContain('Spec1')
+    expect(w.text()).toContain('Mast1')
+  })
+
+  it('masque la section specialisations si vide', () => {
+    const w = factory({ name: 'Test', subclasses: [] })
+    expect(w.find('.class-preview__subclasses').exists()).toBe(false)
+  })
+
+  it('masque la section specialisations si absente', () => {
+    const w = factory({ name: 'Test' })
+    expect(w.find('.class-preview__subclasses').exists()).toBe(false)
+  })
 })

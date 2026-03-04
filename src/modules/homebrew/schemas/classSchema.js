@@ -140,6 +140,71 @@ export const classSchema = {
       }
     },
     {
+      key: 'subclasses',
+      type: FIELD_TYPES.ARRAY,
+      label: 'Specialisations (sous-classes)',
+      helpText: 'Chaque classe propose 2 specialisations. Foundation (Niv. 1-4), Specialisation (Niv. 5-7), Maitrise (Niv. 8+).',
+      minItems: 0,
+      maxItems: 4,
+      itemSchema: {
+        fields: [
+          {
+            key: 'name',
+            type: FIELD_TYPES.TEXT,
+            label: 'Nom',
+            required: true,
+            minLength: 2,
+            maxLength: 60,
+            placeholder: 'Ex: Stalwart, Vengeance, Divine Wielder'
+          },
+          {
+            key: 'spellcastTrait',
+            type: FIELD_TYPES.SELECT,
+            label: 'Trait de sort',
+            required: false,
+            options: [null, 'Agility', 'Strength', 'Finesse', 'Instinct', 'Presence', 'Knowledge'],
+            helpText: 'Laisser vide si la specialisation n\'utilise pas de sorts.'
+          },
+          {
+            key: 'description',
+            type: FIELD_TYPES.TEXTAREA,
+            label: 'Description',
+            required: true,
+            minLength: 10,
+            maxLength: 400,
+            placeholder: 'Phrase d\'accroche decrivant le style de jeu…'
+          },
+          {
+            key: 'foundation',
+            type: FIELD_TYPES.TAGS,
+            label: 'Foundation (Niv. 1-4)',
+            required: true,
+            minItems: 1,
+            maxItems: 6,
+            helpText: 'Features obtenues aux niveaux 1 a 4.'
+          },
+          {
+            key: 'specialization',
+            type: FIELD_TYPES.TAGS,
+            label: 'Specialisation (Niv. 5-7)',
+            required: true,
+            minItems: 1,
+            maxItems: 4,
+            helpText: 'Features obtenues aux niveaux 5 a 7.'
+          },
+          {
+            key: 'mastery',
+            type: FIELD_TYPES.TAGS,
+            label: 'Maitrise (Niv. 8+)',
+            required: true,
+            minItems: 1,
+            maxItems: 4,
+            helpText: 'Features obtenues au niveau 8 et au-dela.'
+          }
+        ]
+      }
+    },
+    {
       key: 'suggestedTraits',
       type: FIELD_TYPES.GROUP,
       label: 'Traits recommandes',

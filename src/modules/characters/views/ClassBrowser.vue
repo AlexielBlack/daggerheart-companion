@@ -280,7 +280,37 @@ export default {
 
     function duplicateToHomebrew(cls) {
       const homebrewStore = useClassHomebrewStore()
-      const result = homebrewStore.createFromTemplate(cls)
+
+      // Convertir classFeatures (string[]) → objets {name, description}
+      const formattedFeatures = Array.isArray(cls.classFeatures)
+        ? cls.classFeatures.map((f) => {
+          if (typeof f === 'string') {
+            const colonIdx = f.indexOf(':')
+            return colonIdx > 0
+              ? { name: f.slice(0, colonIdx).trim(), description: f.slice(colonIdx + 1).trim() }
+              : { name: f, description: '' }
+          }
+          return f
+        })
+        : []
+
+      // Recuperer les sous-classes associees
+      const subs = getSubclasses(cls.id).map((s) => ({
+        name: s.name,
+        spellcastTrait: s.spellcastTrait || null,
+        description: s.description || '',
+        foundation: Array.isArray(s.foundation) ? [...s.foundation] : [],
+        specialization: Array.isArray(s.specialization) ? [...s.specialization] : [],
+        mastery: Array.isArray(s.mastery) ? [...s.mastery] : []
+      }))
+
+      const data = {
+        ...cls,
+        classFeatures: formattedFeatures,
+        subclasses: subs
+      }
+
+      const result = homebrewStore.createFromTemplate(data)
       if (result.success) {
         router.push(`/homebrew/class/${result.id}`)
       }
