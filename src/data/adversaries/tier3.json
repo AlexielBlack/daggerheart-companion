@@ -4,11 +4,11 @@
     "name": "Adult Flickerfly",
     "tier": 3,
     "type": "Solo",
-    "description": "A massive insect with iridescent scales and crystalline wings moving faster than the eye can see.",
+    "description": "Un insecte massif aux écailles iridescentes et aux ailes cristallines se déplaçant plus vite que l’œil ne peut suivre.",
     "motives": [
-      "Collect shiny things",
-      "Hunt",
-      "Swoop"
+      "Collecter des objets brillants",
+      "Chasser",
+      "Fondre en piqué"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -29,40 +29,40 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Flickerfly can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "La Luciole peut être mise en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       },
       {
         "name": "Never Misses",
         "type": "passive",
-        "description": "When the Flickerfly makes an attack, the target's Evasion is halved against the attack."
+        "description": "Quand la Luciole fait une attaque, l’Évasion de la cible est divisée par deux contre cette attaque."
       },
       {
         "name": "Deadly Flight",
         "type": "passive",
-        "description": "While flying, the Flickerfly can move up to Far range instead of Close range before taking an action."
+        "description": "En vol, la Luciole peut se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir."
       },
       {
         "name": "Whirlwind",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Whirl, making an attack against all targets within Very Close range. Targets the Flickerfly succeeds against take 3d8 direct physical damage."
+        "cost": "Dépensez une Peur",
+        "description": "Tourbillonnez, faisant une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent 3d8 dégâts physiques directs."
       },
       {
         "name": "Mind Dance",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Create a magically dazzling display that grapples the minds of nearby foes. All targets within Close range must make an Instinct Reaction Roll. For each target who failed, you gain a Fear and the Flickerfly learns one of the target's fears."
+        "cost": "Cochez un Stress",
+        "description": "Créez un spectacle magiquement éblouissant qui emprisonne l’esprit des ennemis proches. Toutes les cibles à Portée Proche doivent faire un jet de Réaction d’Instinct. Pour chaque cible qui échoue, vous gagnez une Peur et la Luciole apprend une des peurs de la cible."
       },
       {
         "name": "Hallucinatory Breath",
         "type": "reaction",
-        "description": "Countdown (Loop 1d6). When the Flickerfly takes damage for the first time, activate the countdown. When it triggers, the Flickerfly breathes hallucinatory gas on all targets in front of them up to Far range. Targets must make an Instinct Reaction Roll or be tormented by fearful hallucinations. Targets whose fears are known to the Flickerfly have disadvantage on this roll. Targets who fail lose 2 Hope and take 3d8+3 direct magic damage."
+        "description": "Compte à rebours (Boucle 1d6). Quand la Luciole subit des dégâts pour la première fois, activez le compte à rebours. Quand il se déclenche, la Luciole souffle un gaz hallucinatoire sur toutes les cibles devant elle jusqu’à Portée Loin. Les cibles doivent faire un jet de Réaction d’Instinct ou être tourmentées par des hallucinations terrifiantes. Les cibles dont les peurs sont connues de la Luciole ont un désavantage. Les cibles qui échouent perdent 2 Espoirs et subissent 3d8+3 dégâts magiques directs."
       },
       {
         "name": "Uncanny Reflexes",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Flickerfly takes damage from an attack within Close range, take half damage."
+        "cost": "Cochez un Stress",
+        "description": "Quand la Luciole subit des dégâts d’une attaque à Portée Proche, subissez la moitié des dégâts."
       }
     ],
     "atk_mod": 3
@@ -72,11 +72,11 @@
     "name": "Demon of Avarice",
     "tier": 3,
     "type": "Support",
-    "description": "A regal cloaked monstrosity with circular horns adorned with treasure.",
+    "description": "Une monstruosité royale encapuchonnée aux cornes circulaires ornées de trésors.",
     "motives": [
-      "Consume",
-      "Fuel greed",
-      "Sow dissent"
+      "Consumer",
+      "Attiser la cupidité",
+      "Semer la discorde"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -102,17 +102,17 @@
       {
         "name": "Money Talks",
         "type": "passive",
-        "description": "Attacks against the Demon are made with disadvantage unless the attacker spends a handful of gold. This Demon starts with a number of handfuls equal to the number of PCs. When a target marks HP from the Demon's standard attack, they can spend a handful of gold instead of marking HP. Add a handful of gold to the Demon for each handful spent by PCs."
+        "description": "Les attaques contre le Démon sont faites avec désavantage à moins que l’attaquant ne dépense une poignée d’or. Ce Démon commence avec un nombre de poignées égal au nombre de PJ. Quand une cible coche des PV suite à l’attaque standard du Démon, elle peut dépenser une poignée d’or au lieu de cocher des PV. Ajoutez une poignée d’or au Démon pour chaque poignée dépensée par les PJ."
       },
       {
         "name": "Numbers Must Go Up",
         "type": "passive",
-        "description": "Add a bonus to the Demon's attack rolls equal to the number of handfuls of gold they have."
+        "description": "Ajoutez un bonus aux jets d’attaque du Démon égal au nombre de poignées d’or qu’il possède."
       },
       {
         "name": "Money Is Time",
         "type": "action",
-        "description": "Spend 3 handfuls of gold (or a Fear) to spotlight 1d4+1 allies."
+        "description": "Dépensez 3 poignées d’or (ou une Peur) pour mettre en vedette 1d4+1 alliés."
       }
     ]
   },
@@ -121,11 +121,11 @@
     "name": "Demon of Despair",
     "tier": 3,
     "type": "Skulk",
-    "description": "A cloaked demon-creature with long limbs, seeping shadows.",
+    "description": "Un démon-créature encapuchonné aux longs membres, suintant les ombres.",
     "motives": [
-      "Make fear contagious",
-      "Stick to the shadows",
-      "Undermine resolve"
+      "Rendre la peur contagieuse",
+      "Rester dans l’ombre",
+      "Saper la détermination"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -151,24 +151,24 @@
       {
         "name": "Depths of Despair",
         "type": "passive",
-        "description": "The Demon deals double damage to PCs with 0 Hope."
+        "description": "Le Démon inflige le double de dégâts aux PJ avec 0 Espoir."
       },
       {
         "name": "Your Struggle Is Pointless",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Weigh down the spirits of all PCs within Far range. All targets affected replace their Hope Die with a d8 until they roll a success with Hope or their next rest."
+        "cost": "Dépensez une Peur",
+        "description": "Accablez l’esprit de tous les PJ à Portée Loin. Toutes les cibles affectées remplacent leur Dé d’Espoir par un d8 jusqu’à ce qu’elles obtiennent un succès avec Espoir ou leur prochain repos."
       },
       {
         "name": "Your Friends Will Fail You",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a PC fails with Fear, cause all other PCs within Close range to lose a Hope."
+        "cost": "Cochez un Stress",
+        "description": "Quand un PJ échoue avec Peur, faites perdre un Espoir à tous les autres PJ à Portée Proche."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Demon makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Démon réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -177,11 +177,11 @@
     "name": "Demon of Hubris",
     "tier": 3,
     "type": "Leader",
-    "description": "A perfectly beautiful and infinitely cruel demon with a gleaming spear and elegant robes.",
+    "description": "Un démon d’une beauté parfaite et d’une cruauté infinie, armé d’une lance étincelante et vêtu de robes élégantes.",
     "motives": [
-      "Condescend",
-      "Declare premature victory",
-      "Prove superiority"
+      "Condescendre",
+      "Déclarer une victoire prématurée",
+      "Prouver sa supériorité"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -207,29 +207,29 @@
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Demon makes a successful attack, all PCs within Far range must lose a Hope and you gain a Fear."
+        "description": "Quand le Démon réussit une attaque, tous les PJ à Portée Loin doivent perdre un Espoir et vous gagnez une Peur."
       },
       {
         "name": "Double or Nothing",
         "type": "passive",
-        "description": "When a PC within Far range fails a roll, they can choose to reroll their Fear Die and take the new result. If they still fail, they mark 2 Stress and the Demon clears a Stress."
+        "description": "Quand un PJ à Portée Loin rate un jet, il peut choisir de relancer son Dé de Peur et prendre le nouveau résultat. S’il échoue encore, il coche 2 Stress et le Démon retire un Stress."
       },
       {
         "name": "Unparalleled Skill",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Deal the Demon's standard attack damage to a target within Close range."
+        "cost": "Cochez un Stress",
+        "description": "Infligez les dégâts d’attaque standard du Démon à une cible à Portée Proche."
       },
       {
         "name": "The Root of Villainy",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Spotlight two other Demons within Far range."
+        "cost": "Dépensez une Peur",
+        "description": "Mettez en vedette deux autres Démons à Portée Loin."
       },
       {
         "name": "You Pale in Comparison",
         "type": "reaction",
-        "description": "When a PC fails a roll within Close range of the Demon, they must mark a Stress."
+        "description": "Quand un PJ rate un jet à Portée Proche du Démon, il doit cocher un Stress."
       }
     ]
   },
@@ -238,11 +238,11 @@
     "name": "Demon of Jealousy",
     "tier": 3,
     "type": "Ranged",
-    "description": "A fickle creature of spindly limbs and insatiable desires.",
+    "description": "Une créature capricieuse aux membres grêles et aux désirs insatiables.",
     "motives": [
-      "Join in on others' success",
-      "Take what belongs to others",
-      "Hold grudges"
+      "S’approprier le succès des autres",
+      "Prendre ce qui appartient aux autres",
+      "Garder rancune"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -268,24 +268,24 @@
       {
         "name": "Unprotected Mind",
         "type": "passive",
-        "description": "The Demon's standard attack deals direct damage."
+        "description": "L’attaque standard du Démon inflige des dégâts directs."
       },
       {
         "name": "My Turn",
         "type": "reaction",
-        "description": "When the Demon marks HP from an attack, spend a number of Fear equal to the HP marked by the Demon to cause the attacker to mark the same number of HP."
+        "description": "Quand le Démon coche des PV suite à une attaque, dépensez un nombre de Peurs égal aux PV cochés par le Démon pour faire cocher le même nombre de PV à l’attaquant."
       },
       {
         "name": "Rivalry",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a creature within Close range takes damage from a different adversary, add a d4 to the damage roll."
+        "cost": "Cochez un Stress",
+        "description": "Quand une créature à Portée Proche subit des dégâts d’un autre adversaire, ajoutez un d4 au jet de dégâts."
       },
       {
         "name": "What's Yours Is Mine",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When a PC takes Severe damage within Very Close range of the Demon, cause the target to make a Finesse Reaction Roll. On a failure, the Demon seizes one item or consumable of their choice from the target's inventory."
+        "cost": "Dépensez une Peur",
+        "description": "Quand un PJ subit des dégâts Sévères à Portée Très Proche du Démon, forcez la cible à faire un jet de Réaction de Finesse. En cas d’échec, le Démon s’empare d’un objet ou consommable de son choix dans l’inventaire de la cible."
       }
     ],
     "atk_mod": 4
@@ -295,11 +295,11 @@
     "name": "Demon of Wrath",
     "tier": 3,
     "type": "Bruiser",
-    "description": "A hulking demon with boulder-sized fists, driven by endless rage.",
+    "description": "Un démon imposant aux poings gros comme des rochers, animé par une rage sans fin.",
     "motives": [
-      "Fuel anger",
-      "Impress rivals",
-      "Wreak havoc"
+      "Attiser la colère",
+      "Impressionner les rivaux",
+      "Semer le chaos"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -325,24 +325,24 @@
       {
         "name": "Anger Unrelenting",
         "type": "passive",
-        "description": "The Demon's attacks deal direct damage."
+        "description": "Les attaques du Démon infligent des dégâts directs."
       },
       {
         "name": "Battle Lust",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Boil the blood of all PCs within Far range. They use a d20 as their Fear Die until the end of the scene."
+        "cost": "Dépensez une Peur",
+        "description": "Faites bouillir le sang de tous les PJ à Portée Loin. Ils utilisent un d20 comme Dé de Peur jusqu’à la fin de la scène."
       },
       {
         "name": "Retaliation",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Demon takes damage from an attack within Close range, make a standard attack against the attacker."
+        "cost": "Cochez un Stress",
+        "description": "Quand le Démon subit des dégâts d’une attaque à Portée Proche, faites une attaque standard contre l’attaquant."
       },
       {
         "name": "Blood and Souls",
         "type": "reaction",
-        "description": "Countdown (Loop 6). Activate the first time an attack is made within sight of the Demon. It ticks down when a PC takes a violent action. When it triggers, summon 1d4 Minor Demons, who appear at Close range."
+        "description": "Compte à rebours (Boucle 6). Activez la première fois qu’une attaque est effectuée à vue du Démon. Il décompte quand un PJ effectue une action violente. Quand il se déclenche, invoquez 1d4 Démons Mineurs, qui apparaissent à Portée Proche."
       }
     ]
   },
@@ -351,11 +351,11 @@
     "name": "Dire Bat",
     "tier": 3,
     "type": "Skulk",
-    "description": "A wide-winged pet endlessly loyal to their vampire owner.",
+    "description": "Une chauve-souris aux larges ailes, éternellement loyale à son maître vampire.",
     "motives": [
-      "Dive-bomb",
-      "Hide",
-      "Protect leader"
+      "Bombarder en piqué",
+      "Se cacher",
+      "Protéger le chef"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -381,19 +381,19 @@
       {
         "name": "Flying",
         "type": "passive",
-        "description": "While flying, the Bat gains a +3 bonus to their Difficulty."
+        "description": "En vol, la Chauve-souris gagne un bonus de +3 à sa Difficulté."
       },
       {
         "name": "Screech",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Send a high-pitch screech out toward all targets in front of the Bat within Far range. Those targets must mark 1d4 Stress."
+        "cost": "Cochez un Stress",
+        "description": "Envoyez un cri strident vers toutes les cibles devant la Chauve-souris à Portée Loin. Ces cibles doivent cocher 1d4 Stress."
       },
       {
         "name": "Guardian",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When an allied Vampire marks HP, fly into Melee range of the attacker and make an attack with advantage against them. On a success, deal 2d6+2 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Quand un Vampire allié coche des PV, volez à Portée de Mêlée de l’attaquant et faites une attaque avec avantage contre lui. En cas de réussite, infligez 2d6+2 dégâts physiques."
       }
     ]
   },
@@ -402,12 +402,12 @@
     "name": "Dryad",
     "tier": 3,
     "type": "Leader",
-    "description": "A nature spirit in the form of a humanoid tree.",
+    "description": "Un esprit de la nature sous la forme d’un arbre humanoïde.",
     "motives": [
-      "Command",
-      "Cultivate",
-      "Drive out",
-      "Preserve the forest"
+      "Commander",
+      "Cultiver",
+      "Chasser les intrus",
+      "Préserver la forêt"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -433,20 +433,20 @@
       {
         "name": "Bramble Patch",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Target a point within Far range. Create a patch of thorns that covers an area within Close range. All targets within that area take 2d6+2 physical damage when they act. A target must succeed on a Finesse Roll or deal more than 20 damage to the Dryad to leave the area."
+        "cost": "Cochez un Stress",
+        "description": "Ciblez un point à Portée Loin. Créez un parterre d’épines couvrant une zone à Portée Proche. Toutes les cibles dans cette zone subissent 2d6+2 dégâts physiques quand elles agissent. Une cible doit réussir un jet de Finesse ou infliger plus de 20 dégâts à la Dryade pour quitter la zone."
       },
       {
         "name": "Grow Saplings",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Grow three Treant Sapling Minions, who appear at Close range and immediately take the spotlight."
+        "cost": "Dépensez une Peur",
+        "description": "Faites pousser trois Minions Arbrisseau Tréant, qui apparaissent à Portée Proche et prennent immédiatement la vedette."
       },
       {
         "name": "We Are All One",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When an ally dies within Close range, clear 2 HP and 2 Stress as the fallen ally's life force is returned to the forest."
+        "cost": "Dépensez une Peur",
+        "description": "Quand un allié meurt à Portée Proche, retirez 2 PV et 2 Stress car la force vitale de l’allié déchu retourne à la forêt."
       }
     ]
   },
@@ -455,11 +455,11 @@
     "name": "Elemental Spark",
     "tier": 3,
     "type": "Minion",
-    "description": "A blazing mote of elemental fire.",
+    "description": "Un éclat flamboyant de feu élémentaire.",
     "motives": [
-      "Blast",
-      "Consume",
-      "Gain mass"
+      "Exploser",
+      "Consumer",
+      "Gagner en masse"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -480,13 +480,13 @@
       {
         "name": "Minion (9)",
         "type": "passive",
-        "description": "The Elemental is defeated when they take any damage. For every 9 damage a PC deals to the Elemental, defeat an additional Minion within range the attack would succeed against."
+        "description": "L’Élémentaire est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 9 dégâts qu’un PJ inflige à l’Élémentaire, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Elemental Sparks within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette toutes les Étincelles Élémentaires à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -495,11 +495,11 @@
     "name": "Greater Earth Elemental",
     "tier": 3,
     "type": "Bruiser",
-    "description": "A living landslide of boulders and dust, as large as a house.",
+    "description": "Un glissement de terrain vivant fait de rochers et de poussière, grand comme une maison.",
     "motives": [
-      "Avalanche",
-      "Knock over",
-      "Pummel"
+      "Provoquer une avalanche",
+      "Renverser",
+      "Marteler"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -520,28 +520,28 @@
       {
         "name": "Slow",
         "type": "passive",
-        "description": "When you spotlight the Elemental and they don't have a token on their stat block, they can't act yet. Place a token. When spotlighted with a token, clear it and they can act."
+        "description": "Quand vous mettez l’Élémentaire en vedette et qu’il n’a pas de jeton sur sa fiche, il ne peut pas encore agir. Placez un jeton. Quand il est mis en vedette avec un jeton, retirez-le et il peut agir."
       },
       {
         "name": "Crushing Blows",
         "type": "passive",
-        "description": "When the Elemental makes a successful attack, the target must mark an Armor Slot without receiving its benefits. If they can't, they must mark an additional HP."
+        "description": "Quand l’Élémentaire réussit une attaque, la cible doit cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elle ne peut pas, elle doit cocher un PV supplémentaire."
       },
       {
         "name": "Immovable Object",
         "type": "passive",
-        "description": "An attack that would move the Elemental moves them two fewer ranges. When the Elemental takes physical damage, reduce it by 7."
+        "description": "Une attaque qui déplacerait l’Élémentaire le déplace de deux portées de moins. Quand l’Élémentaire subit des dégâts physiques, réduisez-les de 7."
       },
       {
         "name": "Rockslide",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Create a rockslide in front of the Elemental within Close range. All targets must make an Agility Reaction Roll (19). Targets who fail take 2d12+5 physical damage and become Vulnerable until their next roll with Hope. Targets who succeed take half damage."
+        "cost": "Cochez un Stress",
+        "description": "Créez un éboulement devant l’Élémentaire à Portée Proche. Toutes les cibles doivent faire un jet de Réaction d’Agilité (19). Les cibles qui échouent subissent 2d12+5 dégâts physiques et deviennent Vulnérables jusqu’à leur prochain jet avec Espoir. Les cibles qui réussissent subissent la moitié des dégâts."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Elemental makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand l’Élémentaire réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -550,11 +550,11 @@
     "name": "Greater Water Elemental",
     "tier": 3,
     "type": "Support",
-    "description": "A huge living wave that crashes down upon enemies.",
+    "description": "Une immense vague vivante qui s’abat sur les ennemis.",
     "motives": [
-      "Deluge",
-      "Disperse",
-      "Drown"
+      "Submerger par un déluge",
+      "Se disperser",
+      "Noyer"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -575,20 +575,20 @@
       {
         "name": "Water Jet",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Attack a target within Very Close range. On a success, deal 2d4+7 physical damage and the target's next action has disadvantage. On a failure, the target must mark a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Attaquez une cible à Portée Très Proche. En cas de réussite, infligez 2d4+7 dégâts physiques et la prochaine action de la cible a un désavantage. En cas d’échec, la cible doit cocher un Stress."
       },
       {
         "name": "Drowning Embrace",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Attack all targets within Very Close range. Targets the Elemental succeeds against become Restrained and Vulnerable as they begin drowning. A target can break free with a successful Strength or Instinct Roll."
+        "cost": "Dépensez une Peur",
+        "description": "Attaquez toutes les cibles à Portée Très Proche. Les cibles touchées deviennent Entravées et Vulnérables car elles commencent à se noyer. Une cible peut se libérer avec un jet de Force ou d’Instinct réussi."
       },
       {
         "name": "High Tide",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Elemental makes a successful standard attack, knock the target back to Close range."
+        "cost": "Cochez un Stress",
+        "description": "Quand l’Élémentaire réussit une attaque standard, repoussez la cible à Portée Proche."
       }
     ]
   },
@@ -597,12 +597,12 @@
     "name": "Huge Green Ooze",
     "tier": 3,
     "type": "Skulk",
-    "description": "A translucent green mound of acid taller than most humans.",
+    "description": "Un monticule vert translucide d’acide plus grand que la plupart des humains.",
     "motives": [
-      "Camouflage",
-      "Creep up",
-      "Envelop",
-      "Multiply"
+      "Se camoufler",
+      "Ramper",
+      "Envelopper",
+      "Se multiplier"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -628,23 +628,23 @@
       {
         "name": "Slow",
         "type": "passive",
-        "description": "When you spotlight the Ooze and they don't have a token on their stat block, they can't act yet. Place a token. When spotlighted with a token, clear it and they can act."
+        "description": "Quand vous mettez la Gelée en vedette et qu’elle n’a pas de jeton sur sa fiche, elle ne peut pas encore agir. Placez un jeton. Quand elle est mise en vedette avec un jeton, retirez-le et elle peut agir."
       },
       {
         "name": "Acidic Form",
         "type": "passive",
-        "description": "When the Ooze makes a successful attack, the target must mark an Armor Slot without receiving its benefits. If they can't, they must mark an additional HP."
+        "description": "Quand la Gelée réussit une attaque, la cible doit cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elle ne peut pas, elle doit cocher un PV supplémentaire."
       },
       {
         "name": "Envelop",
         "type": "action",
-        "description": "Make an attack against a target within Melee range. On a success, the Ooze Envelops them and the target must mark 2 Stress. While Enveloped, the target must mark an additional Stress every time they make an action roll. When the Ooze takes Severe damage, all Enveloped targets are freed."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, la Gelée l’Enveloppe et la cible doit cocher 2 Stress. Tant qu’Enveloppée, la cible doit cocher un Stress supplémentaire chaque fois qu’elle fait un jet d’action. Quand la Gelée subit des dégâts Sévères, toutes les cibles Enveloppées sont libérées."
       },
       {
         "name": "Split",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When the Ooze has 4 or more HP marked, split them into two Green Oozes with no marked HP or Stress. Immediately spotlight both of them."
+        "cost": "Dépensez une Peur",
+        "description": "Quand la Gelée a 4 PV ou plus cochés, divisez-la en deux Gelées Vertes sans PV ni Stress cochés. Mettez-les immédiatement toutes les deux en vedette."
       }
     ]
   },
@@ -653,11 +653,11 @@
     "name": "Hydra",
     "tier": 3,
     "type": "Solo",
-    "description": "A quadrupedal scaled beast with multiple long-necked heads, each filled with menacing fangs.",
+    "description": "Une bête écailleuse quadrupède à multiples têtes au long cou, chacune remplie de crocs menaçants.",
     "motives": [
-      "Devour",
-      "Regenerate",
-      "Terrify"
+      "Dévorer",
+      "Régénérer",
+      "Terrifier"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -678,28 +678,28 @@
       {
         "name": "Many-Headed Menace",
         "type": "passive",
-        "description": "The Hydra begins with three heads and can have up to five. When the Hydra takes Major or greater damage, they lose a head."
+        "description": "L’Hydre commence avec trois têtes et peut en avoir jusqu’à cinq. Quand l’Hydre subit des dégâts Majeurs ou supérieurs, elle perd une tête."
       },
       {
         "name": "Relentless (X)",
         "type": "passive",
-        "description": "The Hydra can be spotlighted X times per GM turn, where X is the Hydra's number of heads. Spend Fear as usual to spotlight them."
+        "description": "L’Hydre peut être mise en vedette X fois par tour du MJ, où X est le nombre de têtes de l’Hydre. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       },
       {
         "name": "Regeneration",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "If the Hydra has any marked HP, clear a HP and grow two heads."
+        "cost": "Dépensez une Peur",
+        "description": "Si l’Hydre a des PV cochés, retirez un PV et faites pousser deux têtes."
       },
       {
         "name": "Terrifying Chorus",
         "type": "action",
-        "description": "All PCs within Far range lose 2 Hope."
+        "description": "Tous les PJ à Portée Loin perdent 2 Espoirs."
       },
       {
         "name": "Magical Weakness",
         "type": "reaction",
-        "description": "When the Hydra takes magic damage, they become Dazed until the next roll with Fear. While Dazed, they can't use their Regeneration action but are immune to magic damage."
+        "description": "Quand l’Hydre subit des dégâts magiques, elle devient Étourdie jusqu’au prochain jet avec Peur. Tant qu’Étourdie, elle ne peut pas utiliser son action Régénération mais est immunisée contre les dégâts magiques."
       }
     ]
   },
@@ -708,11 +708,11 @@
     "name": "Monarch",
     "tier": 3,
     "type": "Social",
-    "description": "The sovereign ruler of a nation, wreathed in the privilege of tradition and wielding unmatched power in their domain.",
+    "description": "Le souverain d’une nation, auréolé du privilège de la tradition et maniant un pouvoir inégalé dans son domaine.",
     "motives": [
-      "Control vassals",
-      "Destroy rivals",
-      "Forge a legacy"
+      "Contrôler les vassaux",
+      "Détruire les rivaux",
+      "Forger un héritage"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -742,19 +742,19 @@
       {
         "name": "Execute Them!",
         "type": "action",
-        "cost": "Spend a Fear per PC",
-        "description": "Have the group condemned for crimes real or imagined. A PC who succeeds on a Presence Roll can demand trial by combat or another special form of trial."
+        "cost": "Dépensez une Peur par PJ",
+        "description": "Faites condamner le groupe pour des crimes réels ou imaginaires. Un PJ qui réussit un jet de Présence peut exiger un procès par combat ou une autre forme spéciale de procès."
       },
       {
         "name": "Crownsguard",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Once per scene, summon six Tier 3 Minions, who appear at Close range to enforce the Monarch's will."
+        "cost": "Cochez un Stress",
+        "description": "Une fois par scène, invoquez six Minions de Tier 3, qui apparaissent à Portée Proche pour faire respecter la volonté du Monarque."
       },
       {
         "name": "Casus Belli",
         "type": "reaction",
-        "description": "Long-Term Countdown (8). Spend a Fear to activate after the Monarch's desire for war is first revealed. When it triggers, the Monarch has a reason to rally the nation to war. You gain 1d4 Fear."
+        "description": "Compte à rebours à long terme (8). Dépensez une Peur pour l’activer après que le désir de guerre du Monarque soit révélé pour la première fois. Quand il se déclenche, le Monarque a une raison de rallier la nation à la guerre. Vous gagnez 1d4 Peurs."
       }
     ]
   },
@@ -763,12 +763,12 @@
     "name": "Stag Knight",
     "tier": 3,
     "type": "Standard",
-    "description": "A knight with huge, majestic antlers wearing armor made of dangerous thorns.",
+    "description": "Un chevalier aux immenses bois majestueux portant une armure faite d’épines dangereuses.",
     "motives": [
-      "Isolate",
-      "Maneuver",
-      "Protect the forest",
-      "Weed the unwelcome"
+      "Isoler",
+      "Manœuvrer",
+      "Protéger la forêt",
+      "Arracher les indésirables"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -794,19 +794,19 @@
       {
         "name": "From Above",
         "type": "passive",
-        "description": "When the Knight succeeds on a standard attack from above a target, they deal 3d12+3 physical damage instead of their standard damage."
+        "description": "Quand le Chevalier réussit une attaque standard depuis une position surélevée, il inflige 3d12+3 dégâts physiques au lieu de ses dégâts standard."
       },
       {
         "name": "Blade of the Forest",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against all targets within Very Close range. Targets the Knight succeeds against take physical damage equal to 3d4 + the target's Major threshold."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent des dégâts physiques égaux à 3d4 + le seuil Majeur de la cible."
       },
       {
         "name": "Thorny Armor",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Knight takes damage from an attack within Melee range, deal 1d10+5 physical damage to the attacker."
+        "cost": "Cochez un Stress",
+        "description": "Quand le Chevalier subit des dégâts d’une attaque à Portée de Mêlée, infligez 1d10+5 dégâts physiques à l’attaquant."
       }
     ]
   },
@@ -815,12 +815,12 @@
     "name": "Oak Treant",
     "tier": 3,
     "type": "Bruiser",
-    "description": "A sturdy animate old-growth tree.",
+    "description": "Un vieux chêne animé robuste et ancien.",
     "motives": [
-      "Hide in plain sight",
-      "Preserve the forest",
-      "Root down",
-      "Swing branches"
+      "Se cacher à la vue de tous",
+      "Préserver la forêt",
+      "S’enraciner",
+      "Fouetter avec ses branches"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -846,19 +846,19 @@
       {
         "name": "Just a Tree",
         "type": "passive",
-        "description": "Before their first attack or after becoming Hidden, the Treant is indistinguishable from other trees until they next act or a PC succeeds on an Instinct Roll."
+        "description": "Avant sa première attaque ou après être devenu Caché, le Tréant est indiscernable des autres arbres jusqu’à ce qu’il agisse ou qu’un PJ réussisse un jet d’Instinct."
       },
       {
         "name": "Seed Barrage",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against up to three targets within Close range. Targets the Treant succeeds against take 2d10+5 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre jusqu’à trois cibles à Portée Proche. Les cibles touchées subissent 2d10+5 dégâts physiques."
       },
       {
         "name": "Take Root",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Root the Treant in place. The Treant is Restrained while Rooted, and can end this effect instead of moving. While Rooted, the Treant has resistance to physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Enracinez le Tréant sur place. Le Tréant est Entravé tant qu’il est Enraciné, et peut mettre fin à cet effet au lieu de se déplacer. Tant qu’Enraciné, le Tréant a une résistance aux dégâts physiques."
       }
     ]
   },
@@ -867,12 +867,12 @@
     "name": "Treant Sapling",
     "tier": 3,
     "type": "Minion",
-    "description": "A small, sentient tree sapling.",
+    "description": "Un petit arbrisseau doué de conscience.",
     "motives": [
-      "Blend in",
-      "Preserve the forest",
-      "Pummel",
-      "Surround"
+      "Se fondre dans le décor",
+      "Préserver la forêt",
+      "Marteler",
+      "Encercler"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -893,13 +893,13 @@
       {
         "name": "Minion (6)",
         "type": "passive",
-        "description": "The Sapling is defeated when they take any damage. For every 6 damage a PC deals to the Sapling, defeat an additional Minion within range the attack would succeed against."
+        "description": "L’Arbrisseau est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 6 dégâts qu’un PJ inflige à l’Arbrisseau, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Treant Saplings within Close range of them. Those Minions move into Melee range and make one shared attack roll. On a success, they deal 8 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Arbrisseaux Tréants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 8 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -908,13 +908,13 @@
     "name": "Head Vampire",
     "tier": 3,
     "type": "Leader",
-    "description": "A captivating undead dressed in aristocratic finery.",
+    "description": "Un mort-vivant captivant vêtu de fines parures aristocratiques.",
     "motives": [
-      "Create thralls",
-      "Charm",
-      "Command",
-      "Fly",
-      "Intimidate"
+      "Créer des serviteurs",
+      "Charmer",
+      "Commander",
+      "Voler",
+      "Intimider"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -940,28 +940,28 @@
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Vampire makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+        "description": "Quand le Vampire réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur."
       },
       {
         "name": "Look into My Eyes",
         "type": "passive",
-        "description": "A creature who moves into Melee range of the Vampire must make an Instinct Reaction Roll. On a failure, you gain 1d4 Fear."
+        "description": "Une créature qui se déplace à Portée de Mêlée du Vampire doit faire un jet de Réaction d’Instinct. En cas d’échec, vous gagnez 1d4 Peurs."
       },
       {
         "name": "Feed on Followers",
         "type": "action",
-        "description": "When the Vampire is within Melee range of an ally, cause the ally to mark a HP. The Vampire then clears a HP."
+        "description": "Quand le Vampire est à Portée de Mêlée d’un allié, faites cocher un PV à l’allié. Le Vampire retire alors un PV."
       },
       {
         "name": "The Hunt Is On",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Summon 1d4 Vampires, who appear at Far range and immediately take the spotlight."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Invoquez 1d4 Vampires, qui apparaissent à Portée Loin et prennent immédiatement la vedette."
       },
       {
         "name": "Lifesuck",
         "type": "reaction",
-        "description": "When the Vampire is spotlighted, roll a d8. On a result of 6 or higher, all targets within Very Close range must mark a HP."
+        "description": "Quand le Vampire est mis en vedette, lancez un d8. Sur un résultat de 6 ou plus, toutes les cibles à Portée Très Proche doivent cocher un PV."
       }
     ]
   },
@@ -970,13 +970,13 @@
     "name": "Vampire",
     "tier": 3,
     "type": "Standard",
-    "description": "An intelligent undead with blood-stained lips and a predator's smile.",
+    "description": "Un mort-vivant intelligent aux lèvres tachées de sang et au sourire de prédateur.",
     "motives": [
-      "Bite",
-      "Charm",
-      "Deceive",
-      "Feed",
-      "Intimidate"
+      "Mordre",
+      "Charmer",
+      "Tromper",
+      "Se nourrir",
+      "Intimider"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1002,13 +1002,13 @@
       {
         "name": "Draining Bite",
         "type": "action",
-        "description": "Make an attack against a target within Melee range. On a success, deal 5d4 physical damage. A target who marks HP loses a Hope and must mark a Stress. The Vampire then clears a HP."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 5d4 dégâts physiques. Une cible qui coche des PV perd un Espoir et doit cocher un Stress. Le Vampire retire alors un PV."
       },
       {
         "name": "Mistform",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When the Vampire takes physical damage, take half damage."
+        "cost": "Dépensez une Peur",
+        "description": "Quand le Vampire subit des dégâts physiques, subissez la moitié des dégâts."
       }
     ]
   },
@@ -1017,12 +1017,12 @@
     "name": "Vault Guardian Gaoler",
     "tier": 3,
     "type": "Support",
-    "description": "A boxy, dust-covered construct with thick metallic swinging doors on their torso.",
+    "description": "Un constructe trapu et poussiéreux avec d’épaisses portes métalliques battantes sur le torse.",
     "motives": [
-      "Carry away",
-      "Entrap",
-      "Protect",
-      "Pummel"
+      "Emporter",
+      "Piéger",
+      "Protéger",
+      "Marteler"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1043,13 +1043,13 @@
       {
         "name": "Blocking Shield",
         "type": "passive",
-        "description": "Creatures within Melee range of the Gaoler have disadvantage on attack rolls against them. Creatures trapped inside the Gaoler are immune to this feature."
+        "description": "Les créatures à Portée de Mêlée du Geôlier ont un désavantage sur les jets d’attaque contre lui. Les créatures piégées à l’intérieur du Geôlier sont immunisées contre cette feature."
       },
       {
         "name": "Lock Up",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Very Close range. On a success, the target is Restrained within the Gaoler until freed with a successful Strength Roll (18). While Restrained, the target can only attack the Gaoler."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, la cible est Entravée à l’intérieur du Geôlier jusqu’à ce qu’elle se libère avec un jet de Force réussi (18). Tant qu’Entravée, la cible ne peut attaquer que le Geôlier."
       }
     ]
   },
@@ -1058,11 +1058,11 @@
     "name": "Vault Guardian Sentinel",
     "tier": 3,
     "type": "Bruiser",
-    "description": "A dust-covered golden construct with boxy limbs and a huge mace for a hand.",
+    "description": "Un constructe doré et poussiéreux aux membres carrés et une immense masse en guise de main.",
     "motives": [
-      "Destroy at any cost",
-      "Expunge",
-      "Protect"
+      "Détruire à tout prix",
+      "Purger",
+      "Protéger"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -1083,24 +1083,24 @@
       {
         "name": "Kinetic Slam",
         "type": "passive",
-        "description": "Targets who take damage from the Sentinel's standard attack are knocked back to Very Close range."
+        "description": "Les cibles qui subissent des dégâts de l’attaque standard de la Sentinelle sont repoussées à Portée Très Proche."
       },
       {
         "name": "Box In",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Choose a target within Very Close range to focus on. That target has disadvantage on attack rolls within Very Close range of the Sentinel. One target at a time."
+        "cost": "Cochez un Stress",
+        "description": "Choisissez une cible à Portée Très Proche sur laquelle vous concentrer. Cette cible a un désavantage sur les jets d’attaque à Portée Très Proche de la Sentinelle. Une seule cible à la fois."
       },
       {
         "name": "Mana Bolt",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Lob explosive magic at a point within Far range. All targets within Very Close range must make an Agility Reaction Roll. Targets who fail take 2d8+20 magic damage and are knocked back to Close range. Targets who succeed take half damage."
+        "cost": "Dépensez une Peur",
+        "description": "Lancez une salve magique explosive sur un point à Portée Loin. Toutes les cibles à Portée Très Proche doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 2d8+20 dégâts magiques et sont repoussées à Portée Proche. Les cibles qui réussissent subissent la moitié des dégâts."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Sentinel makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand la Sentinelle réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -1109,12 +1109,12 @@
     "name": "Vault Guardian Turret",
     "tier": 3,
     "type": "Ranged",
-    "description": "A massive living turret with reinforced armor and twelve piston-driven mechanical legs.",
+    "description": "Une tourelle vivante massive à l’armure renforcée et douze pattes mécaniques à pistons.",
     "motives": [
-      "Concentrate fire",
-      "Lock down",
-      "Mark",
-      "Protect"
+      "Concentrer le feu",
+      "Verrouiller",
+      "Marquer",
+      "Protéger"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1135,24 +1135,24 @@
       {
         "name": "Slow Firing",
         "type": "passive",
-        "description": "When spotlighted without a token, can't attack. Place a token. When spotlighted with a token, clear it and attack."
+        "description": "Quand mise en vedette sans jeton, ne peut pas attaquer. Placez un jeton. Quand mise en vedette avec un jeton, retirez-le et attaquez."
       },
       {
         "name": "Mark Target",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Mark a target within Far range until the Turret is destroyed or the Marked target becomes Hidden. While Marked, the target's Evasion is halved."
+        "cost": "Dépensez une Peur",
+        "description": "Marquez une cible à Portée Loin jusqu’à ce que la Tourelle soit détruite ou que la cible Marquée devienne Cachée. Tant que Marquée, l’Évasion de la cible est divisée par deux."
       },
       {
         "name": "Concentrate Fire",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When another adversary deals damage to a target within Far range of the Turret, add the Turret's standard attack damage to the damage roll."
+        "cost": "Cochez un Stress",
+        "description": "Quand un autre adversaire inflige des dégâts à une cible à Portée Loin de la Tourelle, ajoutez les dégâts d’attaque standard de la Tourelle au jet de dégâts."
       },
       {
         "name": "Detonation",
         "type": "reaction",
-        "description": "When the Turret is destroyed, they explode. All targets within Close range must make an Agility Reaction Roll. Targets who fail take 3d20 physical damage. Targets who succeed take half damage."
+        "description": "Quand la Tourelle est détruite, elle explose. Toutes les cibles à Portée Proche doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 3d20 dégâts physiques. Les cibles qui réussissent subissent la moitié des dégâts."
       }
     ]
   },
@@ -1161,13 +1161,13 @@
     "name": "Young Ice Dragon",
     "tier": 3,
     "type": "Solo",
-    "description": "A glacier-blue dragon with four powerful limbs and frost-tinged wings.",
+    "description": "Un dragon bleu glacier aux quatre membres puissants et aux ailes givrées.",
     "motives": [
-      "Avalanche",
-      "Defend lair",
-      "Fly",
-      "Freeze",
-      "Maul"
+      "Provoquer une avalanche",
+      "Défendre le repaire",
+      "Voler",
+      "Geler",
+      "Lacérer"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -1193,39 +1193,39 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Dragon can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Dragon peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Rend and Crush",
         "type": "passive",
-        "description": "If a target damaged by the Dragon doesn't mark an Armor Slot to reduce the damage, they must mark a Stress."
+        "description": "Si une cible endommagée par le Dragon ne coche pas un Emplacement d’armure pour réduire les dégâts, elle doit cocher un Stress."
       },
       {
         "name": "No Hope",
         "type": "passive",
-        "description": "When a PC rolls with Fear while within Far range of the Dragon, they lose a Hope."
+        "description": "Quand un PJ obtient Peur à Portée Loin du Dragon, il perd un Espoir."
       },
       {
         "name": "Blizzard Breath",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Release an icy whorl in front of the Dragon within Close range. All targets must make an Agility Reaction Roll. Targets who fail take 4d6+5 magic damage and are Restrained by ice until a successful Strength Roll. Targets who succeed must mark 2 Stress or take half damage."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Libérez un tourbillon glacé devant le Dragon à Portée Proche. Toutes les cibles doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 4d6+5 dégâts magiques et sont Entravées par la glace jusqu’à un jet de Force réussi. Les cibles qui réussissent doivent cocher 2 Stress ou subir la moitié des dégâts."
       },
       {
         "name": "Avalanche",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Unleash a huge downfall of snow and ice covering all other creatures within Far range. All targets must succeed on an Instinct Reaction Roll or be buried, becoming Vulnerable until they dig free. For each PC that fails, you gain a Fear."
+        "cost": "Dépensez une Peur",
+        "description": "Déchaînez une immense chute de neige et de glace couvrant toutes les autres créatures à Portée Loin. Toutes les cibles doivent réussir un jet de Réaction d’Instinct ou être ensevelies, devenant Vulnérables jusqu’à ce qu’elles se dégagent. Pour chaque PJ qui échoue, vous gagnez une Peur."
       },
       {
         "name": "Frozen Scales",
         "type": "reaction",
-        "description": "When a creature makes a successful attack against the Dragon from within Very Close range, they must mark a Stress and become Chilled until their next rest or they clear a Stress. While Chilled, they have disadvantage on attack rolls."
+        "description": "Quand une créature réussit une attaque contre le Dragon depuis Portée Très Proche, elle doit cocher un Stress et devenir Glacée jusqu’à son prochain repos ou qu’elle retire un Stress. Tant que Glacée, elle a un désavantage sur les jets d’attaque."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Dragon makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Dragon réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   }
