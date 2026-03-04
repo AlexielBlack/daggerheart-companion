@@ -129,20 +129,13 @@
         />
 
         <AdversaryTargetPanel
-          v-if="store.activeAdversary && !isTraversalMode"
+          v-if="store.activeAdversary"
           :adversary="store.activeAdversary"
           :siblings="store.activeAdversarySiblings"
           :scene-mode="store.sceneMode"
           :is-actor="!isPcActor"
           :pcs="store.participantPcs"
           :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
-        />
-
-        <!-- En mode Traversal : environnement à droite au lieu de l'adversaire -->
-        <EnvironmentPanel
-          v-if="store.activeEnvironment && isTraversalMode"
-          :environment="store.activeEnvironment"
-          class="enc-live__panel--second"
         />
       </div>
 
@@ -160,9 +153,9 @@
         <span>{{ store.defeatedAdversaries.length }} 💀</span>
       </div>
 
-      <!-- ── Environnement (compact hors mode Traversal) ── -->
+      <!-- ── Environnement ── -->
       <EnvironmentPanel
-        v-if="store.activeEnvironment && !isTraversalMode"
+        v-if="store.activeEnvironment"
         :environment="store.activeEnvironment"
       />
     </template>
@@ -205,8 +198,6 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
-    const isTraversalMode = computed(() => store.sceneMode === 'traversal')
-
     onMounted(() => {
       if (!store.isActive) {
         store.restoreState()
@@ -216,7 +207,6 @@ export default {
     return {
       store,
       isPcActor,
-      isTraversalMode,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,

@@ -15,12 +15,10 @@ export const SCENE_MODE_ADVERSARY_ATTACK = 'adversaryAttack'
 export const SCENE_MODE_SOCIAL = 'social'
 export const SCENE_MODE_TRAVERSAL = 'traversal'
 
-/** Liste des modes pour itération / validation */
+/** Liste des modes actifs pour itération / validation */
 export const SCENE_MODES = [
   SCENE_MODE_PC_ATTACK,
-  SCENE_MODE_ADVERSARY_ATTACK,
-  SCENE_MODE_SOCIAL,
-  SCENE_MODE_TRAVERSAL
+  SCENE_MODE_ADVERSARY_ATTACK
 ]
 
 /** Métadonnées d'affichage et de filtrage par mode */

@@ -21,15 +21,13 @@ import {
 
 describe('liveConstants', () => {
   describe('SCENE_MODES', () => {
-    it('contient 4 modes', () => {
-      expect(SCENE_MODES).toHaveLength(4)
+    it('contient 2 modes actifs', () => {
+      expect(SCENE_MODES).toHaveLength(2)
     })
 
-    it('contient les 4 modes attendus', () => {
+    it('contient les 2 modes actifs attendus', () => {
       expect(SCENE_MODES).toContain(SCENE_MODE_PC_ATTACK)
       expect(SCENE_MODES).toContain(SCENE_MODE_ADVERSARY_ATTACK)
-      expect(SCENE_MODES).toContain(SCENE_MODE_SOCIAL)
-      expect(SCENE_MODES).toContain(SCENE_MODE_TRAVERSAL)
     })
   })
 
