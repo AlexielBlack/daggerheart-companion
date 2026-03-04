@@ -171,7 +171,9 @@ function emptyBonuses() {
     disableArmor: false,         // Frenzy : pas d'Armor Slots
     attackAdvantage: false,      // Avantage aux attaques
     presenceOverride: false,     // Overwhelming Aura
-    sources: []
+    sources: [],
+    /** Détail par source : [{ source, maxHP, maxStress, evasion, thresholds, armorScore, ... }] */
+    detailedSources: []
   }
 }
 
@@ -250,6 +252,25 @@ function applyModifier(bonuses, mod, char) {
   }
   if (mod.source) {
     bonuses.sources.push(mod.source)
+    // Détail : quels stats ce modificateur affecte
+    const detail = { source: mod.source }
+    if (mod.maxHP) detail.maxHP = mod.maxHP
+    if (mod.maxStress) detail.maxStress = mod.maxStress
+    if (mod.evasion) detail.evasion = mod.evasion
+    if (mod.thresholds) {
+      detail.thresholds = { major: mod.thresholds.major || 0, severe: mod.thresholds.severe || 0 }
+    }
+    if (mod.thresholdsFn === 'proficiency') {
+      const prof = char.proficiency || 1
+      detail.thresholds = detail.thresholds || { major: 0, severe: 0 }
+      detail.thresholds.major += prof
+      detail.thresholds.severe += prof
+      detail.thresholdsFn = true
+    }
+    if (mod.armorScore) detail.armorScore = mod.armorScore
+    if (mod.armorScoreOverride !== null && mod.armorScoreOverride !== undefined) detail.armorScoreOverride = mod.armorScoreOverride
+    if (mod.disableArmor) detail.disableArmor = true
+    bonuses.detailedSources.push(detail)
   }
 }
 

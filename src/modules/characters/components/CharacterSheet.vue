@@ -393,69 +393,91 @@
         Santé
       </h3>
       <div class="health-grid">
-        <SlotTracker
-          label="HP"
-          variant="hp"
-          :max="effectiveMaxHP || char.maxHP"
-          :marked="char.currentHP"
-          @mark="emit('markHP')"
-          @clear="emit('clearHP')"
-          @set="(v) => emit('update', 'currentHP', v)"
-        />
-        <SlotTracker
-          label="Stress"
-          variant="stress"
-          :max="effectiveMaxStress || char.maxStress"
-          :marked="char.currentStress"
-          @mark="emit('markStress')"
-          @clear="emit('clearStress')"
-          @set="(v) => emit('update', 'currentStress', v)"
-        />
-        <SlotTracker
-          label="Armure"
-          variant="armor"
-          :max="effectiveArmorScore"
-          :marked="char.armorSlotsMarked"
-          @mark="emit('markArmor')"
-          @clear="emit('clearArmor')"
-          @set="(v) => emit('update', 'armorSlotsMarked', v)"
-        />
-        <!-- Hope -->
-        <div class="hope-tracker">
-          <span class="slot-tracker__label">Hope</span>
-          <div class="hope-controls">
-            <button
-              class="hope-btn"
-              :disabled="char.hope <= 0"
-              aria-label="Retirer une Hope"
-              @click="emit('setHope', char.hope - 1)"
-            >
-              −
-            </button>
-            <span class="hope-value">{{ char.hope }}</span>
-            <button
-              class="hope-btn"
-              :disabled="char.hope >= 10"
-              aria-label="Ajouter une Hope"
-              @click="emit('setHope', char.hope + 1)"
-            >
-              +
-            </button>
-          </div>
+        <div class="health-cell">
+          <SlotTracker
+            label="HP"
+            variant="hp"
+            :max="effectiveMaxHP || char.maxHP"
+            :marked="char.currentHP"
+            @mark="emit('markHP')"
+            @clear="emit('clearHP')"
+            @set="(v) => emit('update', 'currentHP', v)"
+          />
+          <span
+            v-if="classData"
+            class="health-detail"
+          >
+            Base {{ classData.baseHP }}
+            <template v-if="hpSources.length">
+              · {{ hpSources.join(' · ') }}
+            </template>
+          </span>
         </div>
-      </div>
-
-      <!-- Résumé des bonus de stats actifs -->
-      <div
-        v-if="statBonuses.sources.length > 0"
-        class="stat-bonus-summary"
-        role="note"
-        aria-label="Bonus de stats actifs"
-      >
-        <span class="stat-bonus-summary__icon">✦</span>
-        <span class="stat-bonus-summary__text">
-          {{ statBonuses.sources.join(' · ') }}
-        </span>
+        <div class="health-cell">
+          <SlotTracker
+            label="Stress"
+            variant="stress"
+            :max="effectiveMaxStress || char.maxStress"
+            :marked="char.currentStress"
+            @mark="emit('markStress')"
+            @clear="emit('clearStress')"
+            @set="(v) => emit('update', 'currentStress', v)"
+          />
+          <span
+            v-if="classData"
+            class="health-detail"
+          >
+            Base {{ classData.baseStress }}
+            <template v-if="stressSources.length">
+              · {{ stressSources.join(' · ') }}
+            </template>
+          </span>
+        </div>
+        <div class="health-cell">
+          <SlotTracker
+            label="Armure"
+            variant="armor"
+            :max="effectiveArmorScore"
+            :marked="char.armorSlotsMarked"
+            @mark="emit('markArmor')"
+            @clear="emit('clearArmor')"
+            @set="(v) => emit('update', 'armorSlotsMarked', v)"
+          />
+          <span class="health-detail">
+            Base {{ char.armorScore }}
+            <template v-if="armorSources.length">
+              · {{ armorSources.join(' · ') }}
+            </template>
+          </span>
+        </div>
+        <!-- Hope -->
+        <div class="health-cell">
+          <div class="hope-tracker">
+            <span class="slot-tracker__label">Hope</span>
+            <div class="hope-controls">
+              <button
+                class="hope-btn"
+                :disabled="char.hope <= 0"
+                aria-label="Retirer une Hope"
+                @click="emit('setHope', char.hope - 1)"
+              >
+                −
+              </button>
+              <span class="hope-value">{{ char.hope }}</span>
+              <button
+                class="hope-btn"
+                :disabled="char.hope >= 10"
+                aria-label="Ajouter une Hope"
+                @click="emit('setHope', char.hope + 1)"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <span class="health-detail health-detail--muted">
+            Gagné en partage ou capacité
+          </span>
+        </div>
       </div>
     </section>
 
@@ -917,6 +939,23 @@ export default {
       return 'foundation'
     }
 
+    // ── Détail des bonus par stat pour la section Santé ──
+    const hpSources = computed(() =>
+      (props.statBonuses.detailedSources || []).filter((s) => s.maxHP).map((s) => `${s.source} (+${s.maxHP})`)
+    )
+    const stressSources = computed(() =>
+      (props.statBonuses.detailedSources || []).filter((s) => s.maxStress).map((s) => `${s.source} (+${s.maxStress})`)
+    )
+    const armorSources = computed(() => {
+      const list = []
+      for (const s of (props.statBonuses.detailedSources || [])) {
+        if (s.armorScore) list.push(`${s.source} (+${s.armorScore})`)
+        if (s.armorScoreOverride !== undefined && s.armorScoreOverride !== null) list.push(`${s.source} (→ ${s.armorScoreOverride})`)
+        if (s.disableArmor) list.push(`${s.source} (désactivé)`)
+      }
+      return list
+    })
+
     // ── Résolution noms pour le résumé verrouillé ──
     function resolveArmorName(id) {
       const a = getArmorById(id)
@@ -935,7 +974,8 @@ export default {
       conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
       resolveArmorName, resolvePrimaryName, resolveSecondaryName,
       primaryWeaponTiers, secondaryWeaponTiers, armorTiers,
-      recommendedPrimaryWeapons, recommendedSecondaryWeapons, recommendedArmors
+      recommendedPrimaryWeapons, recommendedSecondaryWeapons, recommendedArmors,
+      hpSources, stressSources, armorSources
     }
   }
 }
@@ -1197,29 +1237,6 @@ export default {
   font-weight: 600;
 }
 
-.stat-bonus-summary {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-xs);
-  margin-top: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
-  background: rgba(83, 168, 182, 0.08);
-  border-left: 2px solid var(--accent-hope, #53a8b6);
-  border-radius: 0 4px 4px 0;
-  font-size: 0.75rem;
-  color: var(--text-secondary, #9ca3af);
-  line-height: 1.4;
-}
-
-.stat-bonus-summary__icon {
-  color: var(--accent-hope, #53a8b6);
-  flex-shrink: 0;
-}
-
-.stat-bonus-summary__text {
-  word-break: break-word;
-}
-
 .armor-row {
   margin-top: var(--space-sm);
 }
@@ -1239,6 +1256,23 @@ export default {
 }
 
 @media (max-width: 500px) { .health-grid { grid-template-columns: 1fr; } }
+
+.health-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.health-detail {
+  font-size: 0.65rem;
+  color: var(--text-muted, #6b7280);
+  line-height: 1.3;
+}
+
+.health-detail--muted {
+  font-style: italic;
+  opacity: 0.7;
+}
 
 .hope-tracker {
   display: flex;
