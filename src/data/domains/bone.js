@@ -112,7 +112,7 @@ export const bone = {
       type: 'ability',
       recallCost: 1,
       feature:
-        'En observant une créature, vous pouvez faire un jet d\'Instinct contre elle. Sur un succès, dépensez un Espoir et demandez au MJ un ensemble d\'informations sur la cible parmi les options suivantes : Ses Points de Vie et Stress non marqués ; Sa Difficulté et ses seuils de dégâts ; Ses tactiques et dés de dégâts d\'attaque standard ; Ses capacités et Expériences. De plus, sur un succès, vous pouvez marquer un Stress pour retirer une Peur de la Réserve de Peur du MJ.'
+        'En observant une créature, vous pouvez faire un jet d\'Instinct contre elle. Sur un succès, dépensez un Espoir et demandez au MJ un ensemble d\'informations sur la cible parmi les options suivantes : Ses Points de Vie et Stress non marqués ; Sa Difficulté et ses seuils de dégâts ; Ses tactiques et dés de dégâts d\'attaque de base ; Ses capacités et Expériences. De plus, sur un succès, vous pouvez marquer un Stress pour retirer une Peur de la Réserve de Peur du MJ.'
     },
     {
       id: 'bone-signature-move',
