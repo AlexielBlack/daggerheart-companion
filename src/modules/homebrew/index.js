@@ -40,6 +40,7 @@ export { useEnvironmentHomebrewStore } from './categories/environment/useEnviron
 export { useEquipmentHomebrewStore } from './categories/equipment/useEquipmentHomebrewStore.js'
 
 // ── Vues ────────────────────────────────────────────────────
+export { default as HomebrewHub } from './views/HomebrewHub.vue'
 export { default as HomebrewAdversaryList } from './views/HomebrewAdversaryList.vue'
 export { default as HomebrewAdversaryEditor } from './views/HomebrewAdversaryEditor.vue'
 export { default as HomebrewAncestryList } from './views/HomebrewAncestryList.vue'

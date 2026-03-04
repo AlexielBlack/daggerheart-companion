@@ -5,6 +5,7 @@
   >
     <div class="hb-adv-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Adversaires custom"
         label-singular="adversaire"

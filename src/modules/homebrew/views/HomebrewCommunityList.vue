@@ -5,6 +5,7 @@
   >
     <div class="hb-com-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Communautés custom"
         label-singular="communauté"

@@ -109,6 +109,7 @@ export const NAV_ITEMS = [
     icon: '✎',
     route: '/homebrew',
     children: [
+      { id: 'homebrew-hub', label: 'Hub', icon: '🏠', route: '/homebrew' },
       { id: 'homebrew-adversary', label: 'Adversaires', icon: '⚔️', route: '/homebrew/adversary' },
       { id: 'homebrew-ancestry', label: 'Ascendances', icon: '🧬', route: '/homebrew/ancestry' },
       { id: 'homebrew-class', label: 'Classes', icon: '🛡️', route: '/homebrew/class' },

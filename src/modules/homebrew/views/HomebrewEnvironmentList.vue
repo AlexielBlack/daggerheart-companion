@@ -5,6 +5,7 @@
   >
     <div class="hb-env-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Environnements custom"
         label-singular="environnement"

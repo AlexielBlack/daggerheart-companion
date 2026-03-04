@@ -4,6 +4,20 @@
     role="region"
     :aria-label="`Liste ${label}`"
   >
+    <!-- Breadcrumb retour au hub -->
+    <nav
+      v-if="backRoute"
+      class="homebrew-list__breadcrumb"
+      aria-label="Fil d'Ariane"
+    >
+      <router-link
+        :to="backRoute"
+        class="homebrew-list__back-link"
+      >
+        ← {{ backLabel }}
+      </router-link>
+    </nav>
+
     <!-- Toolbar: search + sort + actions -->
     <div
       class="homebrew-list__toolbar"
@@ -165,6 +179,16 @@ export default {
   },
 
   props: {
+    /** Route de retour (breadcrumb) — optionnelle */
+    backRoute: {
+      type: String,
+      default: ''
+    },
+    /** Label du lien retour */
+    backLabel: {
+      type: String,
+      default: 'Hub Homebrew'
+    },
     /** Items à afficher (déjà filtrés/triés) */
     items: {
       type: Array,
@@ -256,6 +280,28 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+}
+
+/* Breadcrumb */
+.homebrew-list__breadcrumb {
+  padding: 0 var(--space-md);
+}
+
+.homebrew-list__back-link {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.homebrew-list__back-link:hover {
+  color: var(--color-accent-hope);
+}
+
+.homebrew-list__back-link:focus-visible {
+  outline: 2px solid var(--color-accent-hope);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* Toolbar */

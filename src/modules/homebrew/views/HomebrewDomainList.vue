@@ -5,6 +5,7 @@
   >
     <div class="hb-dom-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Domaines custom"
         label-singular="domaine"

@@ -5,6 +5,7 @@
   >
     <div class="hb-cla-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Classes custom"
         label-singular="classe"

@@ -66,6 +66,12 @@ const routes = [
     meta: { title: 'Lanceur de Dés', module: 'dice' }
   },
   {
+    path: '/homebrew',
+    name: 'homebrew-hub',
+    component: () => import('@modules/homebrew/views/HomebrewHub.vue'),
+    meta: { title: 'Homebrew', module: 'homebrew' }
+  },
+  {
     path: '/homebrew/adversary',
     name: 'homebrew-adversary-list',
     component: () => import('@modules/homebrew/views/HomebrewAdversaryList.vue'),

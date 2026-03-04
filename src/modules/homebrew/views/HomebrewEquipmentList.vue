@@ -5,6 +5,7 @@
   >
     <div class="hb-eq-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Équipement custom"
         label-singular="équipement"

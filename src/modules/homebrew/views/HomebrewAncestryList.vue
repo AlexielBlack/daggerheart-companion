@@ -5,6 +5,7 @@
   >
     <div class="hb-anc-list">
       <HomebrewList
+        back-route="/homebrew"
         :items="store.filteredItems"
         label="Ascendances custom"
         label-singular="ascendance"
