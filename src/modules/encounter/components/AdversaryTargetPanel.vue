@@ -165,12 +165,39 @@
         />
       </div>
     </div>
+
+    <!-- Focus préférentiel (quand des PJs sont fournis et que l'adversaire a un profil) -->
+    <div
+      v-if="focusResults.length > 0"
+      class="adv-panel__focus"
+    >
+      <h4 class="adv-panel__focus-title">
+        🎯 Focus préférentiel
+      </h4>
+      <div
+        v-for="result in focusResults"
+        :key="result.characterId"
+        class="adv-panel__focus-row"
+      >
+        <span class="adv-panel__focus-name">{{ result.characterName }}</span>
+        <div class="adv-panel__focus-bar">
+          <div
+            class="adv-panel__focus-fill"
+            :style="{ width: result.score + '%' }"
+            :class="focusColorClass(result.score)"
+          ></div>
+        </div>
+        <span class="adv-panel__focus-score">{{ result.score }}%</span>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
+import { computed } from 'vue'
 import FeatureCard from './FeatureCard.vue'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
+import { useAdversaryFocus } from '@modules/adversaries/composables/useAdversaryFocus'
 
 export default {
   name: 'AdversaryTargetPanel',
@@ -178,7 +205,18 @@ export default {
   props: {
     adversary: { type: Object, required: true },
     sceneMode: { type: String, required: true },
-    isActor: { type: Boolean, default: false }
+    isActor: { type: Boolean, default: false },
+    pcs: { type: Array, default: () => [] }
+  },
+  setup(props) {
+    // Refs réactives pour le composable focus
+    const advRef = computed(() => props.adversary)
+    const pcsRef = computed(() => props.pcs)
+    const { focusResults: rawFocusResults } = useAdversaryFocus(advRef, pcsRef)
+
+    return {
+      rawFocusResults
+    }
   },
   computed: {
     hpPercent() {
@@ -195,6 +233,18 @@ export default {
     hasFeatures() {
       const c = this.classified
       return c.primaryFeatures.length > 0 || c.passiveFeatures.length > 0 || c.reactionFeatures.length > 0
+    },
+    focusResults() {
+      // N'afficher que si des PJs sont fournis et l'adversaire a un profil
+      if (!this.pcs.length || !this.adversary.focusProfile) return []
+      return this.rawFocusResults || []
+    }
+  },
+  methods: {
+    focusColorClass(score) {
+      if (score >= 70) return 'adv-panel__focus-fill--high'
+      if (score >= 40) return 'adv-panel__focus-fill--mid'
+      return 'adv-panel__focus-fill--low'
     }
   }
 }
@@ -445,5 +495,67 @@ export default {
   font-size: 0.65rem;
   color: var(--color-text-muted);
   font-weight: normal;
+}
+
+/* ── Focus préférentiel ── */
+
+.adv-panel__focus {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.adv-panel__focus-title {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.adv-panel__focus-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.adv-panel__focus-name {
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  min-width: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adv-panel__focus-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.adv-panel__focus-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.3s;
+}
+
+.adv-panel__focus-fill--high { background: var(--color-accent-danger); }
+.adv-panel__focus-fill--mid  { background: var(--color-accent-warning); }
+.adv-panel__focus-fill--low  { background: var(--color-accent-success); }
+
+.adv-panel__focus-score {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: right;
 }
 </style>

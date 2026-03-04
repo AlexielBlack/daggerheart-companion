@@ -557,4 +557,88 @@ describe('encounterLiveStore', () => {
       expect(store.liveAdversaries).toHaveLength(0)
     })
   })
+
+  // ═══════════════════════════════════════════════════════
+  //  Spotlight Tracker
+  // ═══════════════════════════════════════════════════════
+
+  describe('spotlight tracker', () => {
+    beforeEach(() => {
+      store.startEncounter(MOCK_BUILDER_DATA)
+    })
+
+    it('giveSpotlight enregistre un token', () => {
+      store.giveSpotlight('pc-1')
+      expect(store.spotlightTokens['pc-1']).toBe(1)
+    })
+
+    it('giveSpotlight cumule les tokens', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-1')
+      expect(store.spotlightTokens['pc-1']).toBe(2)
+    })
+
+    it('giveSpotlight sélectionne le PJ et passe le spotlight côté PJ', () => {
+      store.setGmSpotlight()
+      store.giveSpotlight('pc-2')
+      expect(store.activePcId).toBe('pc-2')
+      expect(store.spotlight).toBe('pc')
+    })
+
+    it('giveSpotlight refuse un PJ non-participant', () => {
+      store.giveSpotlight('unknown')
+      expect(store.spotlightTokens['unknown']).toBeUndefined()
+    })
+
+    it('removeSpotlightToken décrémente un token', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-1')
+      store.removeSpotlightToken('pc-1')
+      expect(store.spotlightTokens['pc-1']).toBe(1)
+    })
+
+    it('removeSpotlightToken ne descend pas sous 0', () => {
+      store.removeSpotlightToken('pc-1')
+      // Pas de crash, token reste undefined ou 0
+      expect(store.spotlightTokens['pc-1'] || 0).toBe(0)
+    })
+
+    it('totalSpotlightTokens calcule le total', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-2')
+      store.giveSpotlight('pc-1')
+      expect(store.totalSpotlightTokens).toBe(3)
+    })
+
+    it('resetSpotlightTokens vide les tokens', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-2')
+      store.resetSpotlightTokens()
+      expect(store.totalSpotlightTokens).toBe(0)
+      expect(store.spotlightTokens).toEqual({})
+    })
+
+    it('nextRound réinitialise les tokens', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-2')
+      store.nextRound()
+      expect(store.totalSpotlightTokens).toBe(0)
+      expect(store.round).toBe(2)
+    })
+
+    it('les tokens survivent à la sérialisation/restauration', () => {
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-1')
+      store.giveSpotlight('pc-2')
+      const serialized = store.serializeLiveState()
+      expect(serialized.spotlightTokens['pc-1']).toBe(2)
+      expect(serialized.spotlightTokens['pc-2']).toBe(1)
+    })
+
+    it('resetLive vide les tokens', () => {
+      store.giveSpotlight('pc-1')
+      store.resetLive()
+      expect(store.spotlightTokens).toEqual({})
+    })
+  })
 })

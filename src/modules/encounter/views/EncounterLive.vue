@@ -144,6 +144,7 @@
         :adversary="store.activeAdversary"
         :scene-mode="store.sceneMode"
         :is-actor="!isPcActor"
+        :pcs="store.participantPcs"
         :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
       />
 
