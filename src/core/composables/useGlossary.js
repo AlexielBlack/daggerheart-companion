@@ -30,7 +30,10 @@ function buildDetectionRegex() {
   allTerms.sort((a, b) => b.length - a.length)
   // Échapper les caractères spéciaux regex
   const escaped = allTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-  return new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi')
+  // \\b ne traite pas les caractères accentués (é, è, ê…) comme des lettres,
+  // ce qui provoque des faux positifs (ex: « réaction » matche « Action »).
+  // On utilise un lookbehind/lookahead couvrant les lettres latines étendues.
+  return new RegExp(`(?<![a-zA-ZÀ-ÿ])(${escaped.join('|')})(?![a-zA-ZÀ-ÿ])`, 'gi')
 }
 
 const detectionRegex = buildDetectionRegex()

@@ -177,6 +177,28 @@ describe('Glossaire — parseGlossaryTerms', () => {
     expect(closeMatch).toBeUndefined()
   })
 
+  it('ne détecte pas Action dans « réaction »', () => {
+    const result = parseGlossaryTerms('Ceci est une réaction spéciale.')
+    const keywords = result.filter(s => s.type === 'keyword')
+    const actionMatch = keywords.find(k => k.entry.id === 'action')
+    expect(actionMatch).toBeUndefined()
+  })
+
+  it('ne détecte pas de faux positifs après un caractère accentué', () => {
+    // « préAction » ou « déStress » ne doivent pas matcher
+    const result = parseGlossaryTerms('Le héros fait une préAction et déStress.')
+    const keywords = result.filter(s => s.type === 'keyword')
+    expect(keywords).toHaveLength(0)
+  })
+
+  it('détecte correctement Action quand il est un mot isolé', () => {
+    const result = parseGlossaryTerms('This is an Action ability.')
+    const keywords = result.filter(s => s.type === 'keyword')
+    const actionMatch = keywords.find(k => k.entry.id === 'action')
+    expect(actionMatch).toBeDefined()
+    expect(actionMatch.value).toBe('Action')
+  })
+
   it('détecte Spellcast Roll avec sa Difficulté', () => {
     const result = parseGlossaryTerms('Make a Spellcast Roll (15) against the target.')
     const keywords = result.filter(s => s.type === 'keyword')
