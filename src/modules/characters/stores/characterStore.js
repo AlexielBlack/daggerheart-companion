@@ -298,6 +298,9 @@ export const useCharacterStore = defineStore('characters', () => {
       name: sub.name || `Sous-classe ${i + 1}`,
       spellcastTrait: sub.spellcastTrait || null,
       description: sub.description || '',
+      domainOverride: Array.isArray(sub.domainOverride) && sub.domainOverride.length > 0
+        ? sub.domainOverride
+        : null,
       foundation: Array.isArray(sub.foundation) ? sub.foundation : [],
       specialization: Array.isArray(sub.specialization) ? sub.specialization : [],
       mastery: Array.isArray(sub.mastery) ? sub.mastery : []
@@ -520,6 +523,11 @@ export const useCharacterStore = defineStore('characters', () => {
     // SRD : chercher par nom de classe
     const srd = getDomainsForClass(char.className)
     if (srd.length > 0) return srd
+    // Homebrew : vérifier si la sous-classe remplace les domaines
+    const subclass = selectedSubclassData.value
+    if (subclass && subclass.domainOverride) {
+      return subclass.domainOverride.map((dName) => resolveDomainByName(dName)).filter(Boolean)
+    }
     // Homebrew / fallback : résoudre les domaines par nom depuis la classe
     const cls = resolveClass(char.classId)
     if (!cls || !cls.domains) return []

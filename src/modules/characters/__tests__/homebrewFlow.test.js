@@ -102,4 +102,74 @@ describe('Homebrew class → domain cards + equipment', () => {
     // Le store ne crashe pas quand il résout les domaines
     expect(charStore.availableDomains.length).toBe(2)
   })
+
+  it('domainOverride de sous-classe remplace les domaines de la classe', () => {
+    const classStore = useClassHomebrewStore()
+    classStore.create(createTestClass({
+      subclasses: [
+        {
+          name: 'Shadow Blade',
+          description: 'Spécialisation axée sur les ombres et la lame assassine.',
+          domainOverride: [],
+          foundation: ['Sneak Attack'],
+          specialization: ['Shadow Cloak'],
+          mastery: ['Lethal Strike']
+        },
+        {
+          name: 'Void Walker',
+          description: 'Spécialisation mystique explorant le domaine Midnight.',
+          domainOverride: ['Midnight', 'Bone'],
+          foundation: ['Void Sight'],
+          specialization: ['Phase Step'],
+          mastery: ['Planar Rift']
+        }
+      ]
+    }))
+
+    const hbClass = classStore.items[0]
+    const charStore = useCharacterStore()
+    const charId = charStore.createCharacter(hbClass.id)
+    charStore.selectCharacter(charId)
+
+    // Sans sous-classe : domaines de la classe (Blade + Arcana)
+    expect(charStore.availableDomains.map((d) => d.id).sort()).toEqual(['arcana', 'blade'])
+
+    // Sélectionner Shadow Blade (pas d'override) → domaines de la classe
+    charStore.applySelection('subclassId', 'shadow-blade')
+    expect(charStore.availableDomains.map((d) => d.id).sort()).toEqual(['arcana', 'blade'])
+
+    // Sélectionner Void Walker (override Midnight + Bone) → nouveaux domaines
+    charStore.applySelection('subclassId', 'void-walker')
+    expect(charStore.availableDomains.map((d) => d.id).sort()).toEqual(['bone', 'midnight'])
+
+    // Les domain cards correspondent aux nouveaux domaines
+    const cards = charStore.availableDomainCards
+    const domainNames = [...new Set(cards.map((c) => c.domainName))]
+    expect(domainNames.sort()).toEqual(['Bone', 'Midnight'])
+  })
+
+  it('domainOverride vide ne remplace pas les domaines', () => {
+    const classStore = useClassHomebrewStore()
+    classStore.create(createTestClass({
+      subclasses: [
+        {
+          name: 'Default Sub',
+          description: 'Sous-classe qui garde les domaines par défaut.',
+          domainOverride: [],
+          foundation: ['Basic Strike'],
+          specialization: ['Improved Strike'],
+          mastery: ['Master Strike']
+        }
+      ]
+    }))
+
+    const hbClass = classStore.items[0]
+    const charStore = useCharacterStore()
+    const charId = charStore.createCharacter(hbClass.id)
+    charStore.selectCharacter(charId)
+
+    charStore.applySelection('subclassId', 'default-sub')
+    // Override vide → domaines de la classe conservés
+    expect(charStore.availableDomains.map((d) => d.id).sort()).toEqual(['arcana', 'blade'])
+  })
 })
