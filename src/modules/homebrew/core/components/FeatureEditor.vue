@@ -157,6 +157,27 @@
               @input="updateFeatureField(idx, 'description', $event.target.value)"
             ></textarea>
           </div>
+
+          <!-- Tags -->
+          <div class="feature-editor__field feature-editor__field--tags">
+            <span class="feature-editor__field-label">Tags</span>
+            <div class="feature-editor__tag-group">
+              <label
+                v-for="tag in availableTags"
+                :key="tag"
+                class="feature-editor__tag-option"
+                :class="{ 'feature-editor__tag-option--active': (feature.tags || []).includes(tag) }"
+              >
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  :checked="(feature.tags || []).includes(tag)"
+                  @change="toggleTag(idx, tag)"
+                />
+                {{ tagLabels[tag] }}
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- Erreurs de cette feature -->
@@ -195,6 +216,8 @@
  *
  * Réutilisable pour adversaires, environnements et tout contenu avec features.
  */
+import { FEATURE_TAGS } from '../utils/schemaTypes.js'
+
 let featureUidCounter = 0
 
 export default {
@@ -235,6 +258,18 @@ export default {
 
   emits: ['update:modelValue'],
 
+  data() {
+    return {
+      availableTags: FEATURE_TAGS,
+      tagLabels: {
+        offensif: '⚔️ Offensif',
+        défensif: '🛡️ Défensif',
+        social: '🎭 Social',
+        utilitaire: '🔧 Utilitaire'
+      }
+    }
+  },
+
   computed: {
     fieldId() {
       return `hb-features-${this.path}`
@@ -253,7 +288,8 @@ export default {
         name: '',
         type: 'action',
         description: '',
-        cost: ''
+        cost: '',
+        tags: []
       }
     },
 
@@ -285,6 +321,17 @@ export default {
         return f
       })
       this.$emit('update:modelValue', updated)
+    },
+
+    toggleTag(idx, tag) {
+      const current = [...(this.features[idx].tags || [])]
+      const pos = current.indexOf(tag)
+      if (pos === -1) {
+        current.push(tag)
+      } else {
+        current.splice(pos, 1)
+      }
+      this.updateFeatureField(idx, 'tags', current)
     },
 
     featureErrors(idx) {
@@ -409,6 +456,41 @@ export default {
   grid-column: 1 / -1;
 }
 
+.feature-editor__field--tags {
+  grid-column: 1 / -1;
+}
+
+.feature-editor__tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.feature-editor__tag-option {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.feature-editor__tag-option:hover {
+  border-color: var(--color-accent-hope);
+  color: var(--color-accent-hope);
+}
+
+.feature-editor__tag-option--active {
+  background-color: var(--color-accent-hope);
+  border-color: var(--color-accent-hope);
+  color: #fff;
+  font-weight: var(--font-weight-medium);
+}
+
 .feature-editor__field-label {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
@@ -479,5 +561,17 @@ export default {
   .feature-editor__item-fields {
     grid-template-columns: 1fr;
   }
+}
+
+/* Accessibilité */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 </style>

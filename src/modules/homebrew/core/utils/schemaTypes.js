@@ -113,3 +113,33 @@ export function getDefaultForType(fieldType) {
 export function isValidFieldType(type) {
   return Object.values(FIELD_TYPES).includes(type)
 }
+
+/**
+ * Tags de gameplay applicables aux features homebrew.
+ * Multi-assignables : une feature peut être à la fois offensif et utilitaire.
+ * @type {ReadonlyArray<string>}
+ */
+export const FEATURE_TAGS = Object.freeze([
+  'offensif',
+  'défensif',
+  'social',
+  'utilitaire'
+])
+
+/**
+ * Définition de champ MULTI_SELECT réutilisable pour les tags de features.
+ * À insérer dans les children d'un GROUP ou dans un itemSchema ARRAY.
+ * @returns {Object} Définition de champ prête à l'emploi
+ */
+export function tagsFieldDef() {
+  return {
+    key: 'tags',
+    type: FIELD_TYPES.MULTI_SELECT,
+    label: 'Tags',
+    required: false,
+    options: [...FEATURE_TAGS],
+    minItems: 0,
+    maxItems: 4,
+    helpText: 'Catégorie(s) de gameplay de cette feature.'
+  }
+}

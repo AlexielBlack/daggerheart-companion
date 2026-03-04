@@ -4,7 +4,7 @@
  * Source : DomainCards_SRD.pdf, Daggerheart_Homebrew_KIT.pdf
  */
 
-import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
+import { FIELD_TYPES, tagsFieldDef } from '../core/utils/schemaTypes.js'
 
 export const CARD_TYPES = ['ability', 'spell', 'grimoire']
 export const CARD_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -133,7 +133,8 @@ export const domainSchema = {
             minLength: 10,
             maxLength: 1000,
             placeholder: 'Decrivez l\'effet mecanique de cette carte…'
-          }
+          },
+          tagsFieldDef()
         ]
       }
     }

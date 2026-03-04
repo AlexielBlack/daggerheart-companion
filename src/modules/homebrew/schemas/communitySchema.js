@@ -17,7 +17,7 @@
  *  - Framework : « I'm <community>, so of course I know how to <feature>. »
  */
 
-import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
+import { FIELD_TYPES, tagsFieldDef } from '../core/utils/schemaTypes.js'
 
 /**
  * Liste d'emojis suggérés pour les communautés.
@@ -90,7 +90,8 @@ export const communitySchema = {
           minLength: 10,
           maxLength: 500,
           placeholder: 'Décrivez quand et comment cette feature s\'applique (avantage sur certains jets, bonus…).'
-        }
+        },
+        tagsFieldDef()
       ]
     },
     {

@@ -15,7 +15,7 @@
  * La preview et la validation avancée gèrent la pertinence selon la catégorie choisie.
  */
 
-import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
+import { FIELD_TYPES, tagsFieldDef } from '../core/utils/schemaTypes.js'
 
 /**
  * Catégories d'équipement.
@@ -239,7 +239,8 @@ export const equipmentSchema = {
       maxLength: 40,
       placeholder: 'Ex: Reliable, Heavy, Flexible',
       helpText: 'Nom court de la feature pour les filtres.'
-    }
+    },
+    tagsFieldDef()
   ]
 }
 
@@ -253,12 +254,12 @@ export function getRelevantFields(category) {
   switch (category) {
     case 'primaryWeapon':
     case 'secondaryWeapon':
-      return [...common, 'tier', 'damageType', 'trait', 'range', 'damage', 'burden', 'feature', 'featureKey']
+      return [...common, 'tier', 'damageType', 'trait', 'range', 'damage', 'burden', 'feature', 'featureKey', 'tags']
     case 'armor':
-      return [...common, 'tier', 'thresholds', 'baseScore', 'feature', 'featureKey']
+      return [...common, 'tier', 'thresholds', 'baseScore', 'feature', 'featureKey', 'tags']
     case 'loot':
     case 'consumable':
-      return [...common, 'rarity', 'feature']
+      return [...common, 'rarity', 'feature', 'tags']
     default:
       return common
   }

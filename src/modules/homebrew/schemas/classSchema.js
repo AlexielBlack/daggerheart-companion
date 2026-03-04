@@ -6,7 +6,7 @@
  * Homebrew Kit : Evasion + HP ~ 16, HP 5-7, Hope Feature = 3 Hope.
  */
 
-import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
+import { FIELD_TYPES, tagsFieldDef } from '../core/utils/schemaTypes.js'
 
 export const AVAILABLE_DOMAINS = [
   'Arcana', 'Blade', 'Bone', 'Codex',
@@ -135,7 +135,8 @@ export const classSchema = {
             minLength: 10,
             maxLength: 600,
             placeholder: 'Decrivez l\'effet mecanique de cette feature…'
-          }
+          },
+          tagsFieldDef()
         ]
       }
     },

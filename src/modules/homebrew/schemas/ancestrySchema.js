@@ -16,7 +16,7 @@
  *  - Les deux doivent être physiques/biologiques, jamais culturelles
  */
 
-import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
+import { FIELD_TYPES, tagsFieldDef } from '../core/utils/schemaTypes.js'
 
 /**
  * Liste d'emojis suggérés pour les ascendances.
@@ -89,7 +89,8 @@ export const ancestrySchema = {
           minLength: 10,
           maxLength: 500,
           placeholder: 'Décrivez l\'effet mécanique précis de cette feature…'
-        }
+        },
+        tagsFieldDef()
       ]
     },
     {
@@ -116,7 +117,8 @@ export const ancestrySchema = {
           minLength: 10,
           maxLength: 500,
           placeholder: 'Décrivez l\'effet mécanique précis de cette feature…'
-        }
+        },
+        tagsFieldDef()
       ]
     }
   ]
