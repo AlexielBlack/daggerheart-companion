@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @module characters/__tests__/statModifiers.test
  * @description Tests pour le système de modificateurs de stats (ascendance + sous-classe).

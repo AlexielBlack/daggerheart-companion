@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @module characters/__tests__/characterStore.test
  * @description Tests unitaires du module Personnages (Sprint 4).

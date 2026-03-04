@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest'
 import { useStorage, exportAllData, importAllData } from '../composables/useStorage.js'
 

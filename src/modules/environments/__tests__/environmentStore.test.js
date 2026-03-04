@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @file environmentStore.test.js
  * @description Tests du store Pinia pour les environnements.

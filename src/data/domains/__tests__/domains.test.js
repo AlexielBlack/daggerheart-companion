@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @module domains/__tests__/domains.test
  * @description Tests d'intégrité structurelle, logique utilitaire et store des domaines.

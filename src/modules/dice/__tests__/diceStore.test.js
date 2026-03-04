@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @module dice/__tests__/diceStore.test
  * @description Tests unitaires du module Lanceur de Dés (Sprint 5).

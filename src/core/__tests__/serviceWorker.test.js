@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+// @vitest-environment happy-dom
 /**
  * @module core/__tests__/serviceWorker.test
  * @description Tests pour le composable useServiceWorker et les utilitaires PWA.

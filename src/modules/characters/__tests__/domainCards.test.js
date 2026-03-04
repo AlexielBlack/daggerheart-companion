@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 /**
  * @module characters/__tests__/domainCards
  * @description Tests for domain card management in character store.
