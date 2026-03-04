@@ -13,6 +13,7 @@ export { default as EncounterConfig } from './components/EncounterConfig.vue'
 export { default as EncounterSlotList } from './components/EncounterSlotList.vue'
 export { default as EncounterSummary } from './components/EncounterSummary.vue'
 export { default as EnvironmentPicker } from './components/EnvironmentPicker.vue'
+export { default as PcPicker } from './components/PcPicker.vue'
 export { default as SavedEncounterList } from './components/SavedEncounterList.vue'
 
 // Vues

@@ -25,11 +25,14 @@
               :active-adjustments="store.activeAdjustments"
               :min-pc="store.minPcCount"
               :max-pc="store.maxPcCount"
+              :characters="store.availableCharacters"
+              :selected-pc-ids="store.selectedPcIds"
               @update:name="store.encounterName = $event"
               @update:pc-count="store.setPcCount($event)"
               @update:tier="store.setTier($event)"
               @update:intensity="store.setIntensity($event)"
               @toggle-adjustment="store.toggleAdjustment($event)"
+              @update:selected-pc-ids="store.setSelectedPcIds($event)"
             />
           </div>
 

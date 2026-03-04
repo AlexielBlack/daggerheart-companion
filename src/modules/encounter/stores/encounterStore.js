@@ -19,6 +19,20 @@ import {
   calculateBaseBattlePoints
 } from '@data/encounters/constants'
 import { useStorage } from '@core/composables/useStorage'
+import { useCharacterStore } from '@modules/characters/stores/characterStore'
+
+/**
+ * Calcule le tier d'un personnage selon son niveau.
+ * @param {number} level
+ * @returns {number}
+ */
+function getTierForLevel(level) {
+  if (level < 1 || level > 10) return 1
+  if (level <= 1) return 1
+  if (level <= 4) return 2
+  if (level <= 7) return 3
+  return 4
+}
 
 export const useEncounterStore = defineStore('encounter', () => {
   // ── Persistence ────────────────────────────────────────
@@ -31,6 +45,9 @@ export const useEncounterStore = defineStore('encounter', () => {
   const encounterName = ref('')
   const selectedIntensity = ref('standard')
   const activeAdjustments = ref([])
+
+  /** IDs des PJ sélectionnés depuis le module personnages */
+  const selectedPcIds = ref([])
 
   // ── Composition ────────────────────────────────────────
   /**
@@ -116,6 +133,39 @@ export const useEncounterStore = defineStore('encounter', () => {
   const selectedEnvironment = computed(() => {
     if (!selectedEnvironmentId.value) return null
     return allEnvironments.find((e) => e.id === selectedEnvironmentId.value) || null
+  })
+
+  /** Personnages disponibles depuis le store characters */
+  const availableCharacters = computed(() => {
+    try {
+      const charStore = useCharacterStore()
+      return Array.isArray(charStore.characters) ? charStore.characters : []
+    } catch {
+      return []
+    }
+  })
+
+  /** Personnages sélectionnés avec données enrichies (nom, classe, niveau, tier) */
+  const selectedPcCharacters = computed(() => {
+    return selectedPcIds.value
+      .map((id) => {
+        const c = availableCharacters.value.find((ch) => ch.id === id)
+        if (!c) return null
+        return {
+          id: c.id,
+          name: c.name || 'PJ sans nom',
+          className: c.className || '—',
+          level: c.level || 1,
+          tier: getTierForLevel(c.level || 1)
+        }
+      })
+      .filter(Boolean)
+  })
+
+  /** Tier dérivé du PJ de plus haut niveau parmi la sélection */
+  const derivedPcTier = computed(() => {
+    if (selectedPcCharacters.value.length === 0) return null
+    return Math.max(...selectedPcCharacters.value.map((c) => c.tier))
   })
 
   /** Intensité sélectionnée (objet complet) */
@@ -301,6 +351,22 @@ export const useEncounterStore = defineStore('encounter', () => {
   }
 
   /**
+   * Met à jour les PJ sélectionnés et synchronise pcCount + tier.
+   * @param {string[]} ids - Liste d'IDs de personnages
+   */
+  function setSelectedPcIds(ids) {
+    selectedPcIds.value = Array.isArray(ids) ? [...ids] : []
+    // Synchronisation automatique si des PJ sont sélectionnés
+    if (selectedPcIds.value.length > 0) {
+      setPcCount(selectedPcIds.value.length)
+      const tier = derivedPcTier.value
+      if (tier) {
+        setTier(tier)
+      }
+    }
+  }
+
+  /**
    * Réinitialise la rencontre en cours.
    */
   function resetEncounter() {
@@ -309,6 +375,7 @@ export const useEncounterStore = defineStore('encounter', () => {
     selectedEnvironmentId.value = null
     activeAdjustments.value = []
     selectedIntensity.value = 'standard'
+    selectedPcIds.value = []
   }
 
   /**
@@ -325,6 +392,7 @@ export const useEncounterStore = defineStore('encounter', () => {
       adjustments: [...activeAdjustments.value],
       adversarySlots: adversarySlots.value.map((s) => ({ ...s })),
       environmentId: selectedEnvironmentId.value,
+      selectedPcIds: [...selectedPcIds.value],
       createdAt: new Date().toISOString()
     }
   }
@@ -344,6 +412,7 @@ export const useEncounterStore = defineStore('encounter', () => {
       ? data.adversarySlots.map((s) => ({ ...s }))
       : []
     selectedEnvironmentId.value = data.environmentId || null
+    selectedPcIds.value = Array.isArray(data.selectedPcIds) ? [...data.selectedPcIds] : []
   }
 
   /**
@@ -400,7 +469,7 @@ export const useEncounterStore = defineStore('encounter', () => {
 
   // Auto-save brouillon sur changement (debounced via watch)
   watch(
-    [adversarySlots, encounterName, selectedEnvironmentId, pcCount, selectedTier, selectedIntensity, activeAdjustments],
+    [adversarySlots, encounterName, selectedEnvironmentId, pcCount, selectedTier, selectedIntensity, activeAdjustments, selectedPcIds],
     () => { saveDraft() },
     { deep: true }
   )
@@ -414,6 +483,7 @@ export const useEncounterStore = defineStore('encounter', () => {
     activeAdjustments,
     adversarySlots,
     selectedEnvironmentId,
+    selectedPcIds,
     storageError: savedEncountersStorage.error,
 
     // Constantes
@@ -433,6 +503,9 @@ export const useEncounterStore = defineStore('encounter', () => {
     totalAdversaryHP,
     totalAdversaryStress,
     selectedEnvironment,
+    availableCharacters,
+    selectedPcCharacters,
+    derivedPcTier,
     currentIntensity,
     hasHeavyHitters,
     soloCount,
@@ -449,6 +522,7 @@ export const useEncounterStore = defineStore('encounter', () => {
     removeAdversary,
     setAdversaryQuantity,
     setEnvironment,
+    setSelectedPcIds,
     resetEncounter,
     serializeEncounter,
     loadEncounter,

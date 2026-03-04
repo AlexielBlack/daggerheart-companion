@@ -50,6 +50,12 @@
             +
           </button>
         </div>
+        <PcPicker
+          v-if="characters.length > 0"
+          :characters="characters"
+          :selected-ids="selectedPcIds"
+          @update:selected-ids="$emit('update:selectedPcIds', $event)"
+        />
       </div>
 
       <div class="config-field">
@@ -133,9 +139,11 @@
 
 <script>
 import { SCENE_INTENSITY, BP_ADJUSTMENTS } from '@data/encounters/constants'
+import PcPicker from './PcPicker.vue'
 
 export default {
   name: 'EncounterConfig',
+  components: { PcPicker },
   props: {
     name: { type: String, default: '' },
     pcCount: { type: Number, required: true },
@@ -143,9 +151,11 @@ export default {
     intensity: { type: String, required: true },
     activeAdjustments: { type: Array, default: () => [] },
     minPc: { type: Number, default: 2 },
-    maxPc: { type: Number, default: 8 }
+    maxPc: { type: Number, default: 8 },
+    characters: { type: Array, default: () => [] },
+    selectedPcIds: { type: Array, default: () => [] }
   },
-  emits: ['update:name', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment'],
+  emits: ['update:name', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment', 'update:selectedPcIds'],
   setup() {
     return {
       intensityOptions: SCENE_INTENSITY,
