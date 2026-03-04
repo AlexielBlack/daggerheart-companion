@@ -280,6 +280,18 @@
           — Choisir —
         </option>
         <optgroup
+          v-if="recommendedArmor.length"
+          label="★ Recommandé"
+        >
+          <option
+            v-for="a in recommendedArmor"
+            :key="'rec-' + a.id"
+            :value="a.id"
+          >
+            ★ {{ a.name }} — {{ a.thresholds.major }}/{{ a.thresholds.severe }} — Score {{ a.baseScore }}{{ a.feature ? ` — ${a.feature}` : '' }}
+          </option>
+        </optgroup>
+        <optgroup
           v-for="tier in armorTiers"
           :key="tier.label"
           :label="tier.label"
@@ -311,6 +323,18 @@
         <option value="">
           — Choisir —
         </option>
+        <optgroup
+          v-if="recommendedPrimaryWeapon.length"
+          label="★ Recommandé"
+        >
+          <option
+            v-for="w in recommendedPrimaryWeapon"
+            :key="'rec-' + w.id"
+            :value="w.id"
+          >
+            ★ {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }} ({{ w.damageType === 'phy' ? 'Physique' : 'Magique' }})
+          </option>
+        </optgroup>
         <optgroup
           v-for="tier in primaryWeaponTiers"
           :key="tier.label"
@@ -344,6 +368,18 @@
           — Choisir —
         </option>
         <optgroup
+          v-if="recommendedSecondaryWeapon.length"
+          label="★ Recommandé"
+        >
+          <option
+            v-for="w in recommendedSecondaryWeapon"
+            :key="'rec-' + w.id"
+            :value="w.id"
+          >
+            ★ {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }}{{ w.feature ? ` — ${w.feature}` : '' }}
+          </option>
+        </optgroup>
+        <optgroup
           v-for="tier in secondaryWeaponTiers"
           :key="tier.label"
           :label="tier.label"
@@ -364,6 +400,10 @@
 <script>
 import { computed } from 'vue'
 import { getAncestryById, ALL_ANCESTRIES } from '@data/ancestries'
+import { getRecommendedIds } from '@data/equipment/classRecommendations.js'
+import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
+import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
+import { getArmorById } from '@data/equipment/armor.js'
 
 const TIER_LABELS = {
   1: 'Tier 1 (Niveau 1)',
@@ -404,7 +444,8 @@ export default {
     communities: { type: Array, default: () => [] },
     armor: { type: Array, default: () => [] },
     primaryWeapons: { type: Array, default: () => [] },
-    secondaryWeapons: { type: Array, default: () => [] }
+    secondaryWeapons: { type: Array, default: () => [] },
+    classId: { type: String, default: '' }
   },
   emits: ['select', 'updateMixed'],
   setup(props, { emit }) {
@@ -417,6 +458,23 @@ export default {
     const armorTiers = computed(() => groupByTier(props.armor))
     const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
     const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
+
+    // ── Recommandations par classe ──
+    const recommendedArmor = computed(() =>
+      getRecommendedIds(props.classId, 'armor')
+        .map(getArmorById)
+        .filter(Boolean)
+    )
+    const recommendedPrimaryWeapon = computed(() =>
+      getRecommendedIds(props.classId, 'primaryWeapon')
+        .map(getPrimaryWeaponById)
+        .filter(Boolean)
+    )
+    const recommendedSecondaryWeapon = computed(() =>
+      getRecommendedIds(props.classId, 'secondaryWeapon')
+        .map(getSecondaryWeaponById)
+        .filter(Boolean)
+    )
 
     // ── Mixed Ancestry ──
     /** Config Mixed du personnage actuel */
@@ -456,6 +514,9 @@ export default {
       armorTiers,
       primaryWeaponTiers,
       secondaryWeaponTiers,
+      recommendedArmor,
+      recommendedPrimaryWeapon,
+      recommendedSecondaryWeapon,
       onSelect,
       mixedConfig,
       selectableAncestries,

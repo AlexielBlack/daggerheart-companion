@@ -110,6 +110,7 @@
         :armor="armor"
         :primary-weapons="primaryWeapons"
         :secondary-weapons="secondaryWeapons"
+        :class-id="char.classId || ''"
         @select="(field, value) => emit('applySelection', field, value)"
         @update-mixed="(field, value) => emit('updateMixed', field, value)"
       />
