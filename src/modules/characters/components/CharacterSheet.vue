@@ -247,6 +247,7 @@
       </h3>
       <TraitBlock
         :values="char.traits"
+        :suggested-traits="classData ? classData.suggestedTraits : null"
         @update="(traitId, val) => emit('update', `traits.${traitId}`, val)"
       />
     </section>
