@@ -197,6 +197,14 @@
               </article>
             </div>
           </section>
+
+          <!-- Dupliquer en homebrew -->
+          <button
+            class="btn btn--secondary btn--sm class-card__duplicate-btn"
+            @click.stop="duplicateToHomebrew(cls)"
+          >
+            ✎ Dupliquer en homebrew
+          </button>
         </div>
       </article>
     </div>
@@ -223,13 +231,16 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { CLASSES } from '@/data/classes/index.js'
 import { getSubclassesForClass } from '@/data/subclasses/index.js'
+import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
 
 export default {
   name: 'ClassBrowser',
 
   setup() {
+    const router = useRouter()
     const searchQuery = ref('')
     const expandedClassId = ref(null)
     const activeSource = ref('all')
@@ -267,6 +278,14 @@ export default {
       }
     }
 
+    function duplicateToHomebrew(cls) {
+      const homebrewStore = useClassHomebrewStore()
+      const result = homebrewStore.createFromTemplate(cls)
+      if (result.success) {
+        router.push(`/homebrew/class/${result.id}`)
+      }
+    }
+
     return {
       searchQuery,
       expandedClassId,
@@ -275,7 +294,8 @@ export default {
       filteredClasses,
       toggleClass,
       setSource,
-      getSubclasses
+      getSubclasses,
+      duplicateToHomebrew
     }
   }
 }
@@ -487,5 +507,10 @@ export default {
 @media (max-width: 600px) {
   .subclass-grid { grid-template-columns: 1fr; }
   .browser-filters { flex-direction: column; align-items: stretch; }
+}
+
+.class-card__duplicate-btn {
+  margin-top: var(--space-md);
+  width: 100%;
 }
 </style>

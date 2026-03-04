@@ -212,6 +212,12 @@
             >
               Pas de feature spéciale.
             </p>
+            <button
+              class="btn btn--secondary btn--sm item-details__duplicate-btn"
+              @click.stop="duplicateToHomebrew(weapon)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
           </div>
         </template>
       </div>
@@ -300,6 +306,12 @@
             >
               Pas de feature spéciale.
             </p>
+            <button
+              class="btn btn--secondary btn--sm item-details__duplicate-btn"
+              @click.stop="duplicateToHomebrew(weapon)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
           </div>
         </template>
       </div>
@@ -381,6 +393,12 @@
             >
               Pas de feature spéciale.
             </p>
+            <button
+              class="btn btn--secondary btn--sm item-details__duplicate-btn"
+              @click.stop="duplicateToHomebrew(armor)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
           </div>
         </template>
       </div>
@@ -423,6 +441,12 @@
           <p class="item-card__desc">
             {{ item.description }}
           </p>
+          <button
+            class="btn btn--secondary btn--xs item-card__duplicate-btn"
+            @click.stop="duplicateToHomebrew(item)"
+          >
+            ✎ Homebrew
+          </button>
         </article>
       </div>
     </section>
@@ -464,6 +488,12 @@
           <p class="item-card__desc">
             {{ item.description }}
           </p>
+          <button
+            class="btn btn--secondary btn--xs item-card__duplicate-btn"
+            @click.stop="duplicateToHomebrew(item)"
+          >
+            ✎ Homebrew
+          </button>
         </article>
       </div>
     </section>
@@ -496,14 +526,17 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useEquipmentStore } from '../stores/equipmentStore.js'
 import { RANGES, BURDENS, RARITIES } from '@/data/equipment/constants.js'
+import { useEquipmentHomebrewStore } from '@modules/homebrew/categories/equipment/useEquipmentHomebrewStore.js'
 
 export default {
   name: 'EquipmentBrowser',
 
   setup() {
     const store = useEquipmentStore()
+    const router = useRouter()
     const expandedId = ref(null)
 
     const tierOptions = [
@@ -567,6 +600,14 @@ export default {
       return RARITIES[rarity] || rarity
     }
 
+    function duplicateToHomebrew(item) {
+      const homebrewStore = useEquipmentHomebrewStore()
+      const result = homebrewStore.createFromTemplate(item)
+      if (result.success) {
+        router.push(`/homebrew/equipment/${result.id}`)
+      }
+    }
+
     return {
       store,
       expandedId,
@@ -580,7 +621,8 @@ export default {
       toggleItem,
       rangeLabel,
       burdenLabel,
-      rarityLabel
+      rarityLabel,
+      duplicateToHomebrew
     }
   }
 }
@@ -702,5 +744,14 @@ export default {
   .table-header--armor span:nth-child(4), .table-row--armor .cell-feature-key { display: none; }
   .item-card-grid { grid-template-columns: 1fr; }
   .browser-filters { flex-direction: column; align-items: stretch; }
+}
+
+.item-details__duplicate-btn {
+  margin-top: var(--space-sm);
+}
+
+.item-card__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
 }
 </style>

@@ -54,6 +54,7 @@
         :community="community"
         :is-expanded="store.expandedId === community.id"
         @toggle="store.toggleExpand"
+        @duplicate="duplicateToHomebrew"
       />
     </div>
 
@@ -101,7 +102,9 @@
 
 <script>
 import { useCommunityStore } from '../stores/communityStore.js'
+import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
 import CommunityCard from '../components/CommunityCard.vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'CommunityBrowser',
@@ -112,7 +115,17 @@ export default {
 
   setup() {
     const store = useCommunityStore()
-    return { store }
+    const router = useRouter()
+
+    function duplicateToHomebrew(community) {
+      const homebrewStore = useCommunityHomebrewStore()
+      const result = homebrewStore.createFromTemplate(community)
+      if (result.success) {
+        router.push(`/homebrew/community/${result.id}`)
+      }
+    }
+
+    return { store, duplicateToHomebrew }
   }
 }
 </script>

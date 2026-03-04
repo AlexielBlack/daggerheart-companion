@@ -166,6 +166,76 @@ describe('createHomebrewStore', () => {
     })
   })
 
+  describe('createFromTemplate', () => {
+    it('cree un item homebrew a partir de donnees SRD valides', () => {
+      const store = useTestStore()
+      const srdData = {
+        id: 'srd-goblin',
+        source: 'srd',
+        name: 'Gobelin',
+        tier: 1,
+        difficulty: 8,
+        hp: 3,
+        stress: 1,
+        type: 'Minion',
+        createdAt: '2024-01-01T00:00:00Z'
+      }
+
+      const result = store.createFromTemplate(srdData)
+      expect(result.success).toBe(true)
+      expect(result.item.name).toBe('Gobelin (copie)')
+      expect(result.item.source).toBe('custom')
+      expect(result.item.id).not.toBe('srd-goblin')
+      expect(result.item.createdAt).not.toBe('2024-01-01T00:00:00Z')
+    })
+
+    it('gere les donnees source incompletes avec fallback', () => {
+      const store = useTestStore()
+      const partialData = {
+        name: 'Dragon partiel',
+        tier: 3
+      }
+
+      const result = store.createFromTemplate(partialData)
+      expect(result.success).toBe(true)
+      expect(result.item.name).toBe('Dragon partiel (copie)')
+      expect(result.item.source).toBe('custom')
+    })
+
+    it('attribue un nom par defaut si absent', () => {
+      const store = useTestStore()
+      const result = store.createFromTemplate({ tier: 1 })
+      expect(result.success).toBe(true)
+      expect(result.item.name).toBe('Sans nom (copie)')
+    })
+
+    it('rejette les donnees nulles ou invalides', () => {
+      const store = useTestStore()
+      expect(store.createFromTemplate(null).success).toBe(false)
+      expect(store.createFromTemplate('string').success).toBe(false)
+      expect(store.createFromTemplate(undefined).success).toBe(false)
+    })
+
+    it('supprime les metadonnees source (id, source, timestamps)', () => {
+      const store = useTestStore()
+      const srdData = {
+        id: 'original-id',
+        source: 'srd',
+        createdAt: '2020-01-01T00:00:00Z',
+        updatedAt: '2020-06-01T00:00:00Z',
+        name: 'Template',
+        tier: 2,
+        difficulty: 10,
+        hp: 5,
+        stress: 2
+      }
+
+      const result = store.createFromTemplate(srdData)
+      expect(result.item.id).not.toBe('original-id')
+      expect(result.item.source).toBe('custom')
+    })
+  })
+
   describe('getById', () => {
     it('retourne un item par ID', () => {
       const store = useTestStore()

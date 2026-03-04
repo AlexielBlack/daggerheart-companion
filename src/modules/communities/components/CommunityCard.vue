@@ -76,6 +76,14 @@
           >{{ adj }}</span>
         </div>
       </div>
+
+      <!-- Dupliquer en homebrew -->
+      <button
+        class="btn btn--secondary btn--sm community-card__duplicate-btn"
+        @click.stop="$emit('duplicate', community)"
+      >
+        ✎ Dupliquer en homebrew
+      </button>
     </div>
   </article>
 </template>
@@ -102,7 +110,7 @@ export default {
     }
   },
 
-  emits: ['toggle']
+  emits: ['toggle', 'duplicate']
 }
 </script>
 
@@ -272,5 +280,10 @@ export default {
   border-radius: var(--radius-full);
   color: var(--color-accent-hope);
   text-transform: capitalize;
+}
+
+.community-card__duplicate-btn {
+  margin-top: var(--space-md);
+  width: 100%;
 }
 </style>

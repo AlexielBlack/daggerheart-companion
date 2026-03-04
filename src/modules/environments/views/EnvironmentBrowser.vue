@@ -61,6 +61,12 @@
             :closable="true"
             @close="store.clearSelection"
           />
+          <button
+            class="btn btn--secondary btn--sm env-browser__duplicate-btn"
+            @click="duplicateToHomebrew(store.selectedEnvironment)"
+          >
+            ✎ Dupliquer en homebrew
+          </button>
         </aside>
 
         <!-- Placeholder when no detail -->
@@ -85,6 +91,7 @@ import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
 import EnvironmentStatBlock from '../components/EnvironmentStatBlock.vue'
 import { useEnvironmentStore } from '../stores/environmentStore.js'
+import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/environment/useEnvironmentHomebrewStore.js'
 
 /**
  * @component EnvironmentBrowser
@@ -118,6 +125,13 @@ export default {
     },
     toggleDirection() {
       this.store.setSort(this.store.sortField)
+    },
+    duplicateToHomebrew(item) {
+      const homebrewStore = useEnvironmentHomebrewStore()
+      const result = homebrewStore.createFromTemplate(item)
+      if (result.success) {
+        this.$router.push(`/homebrew/environment/${result.id}`)
+      }
     }
   }
 }
@@ -203,5 +217,10 @@ export default {
   .env-browser__detail {
     position: static;
   }
+}
+
+.env-browser__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
 }
 </style>

@@ -196,6 +196,14 @@
               >{{ cls }}</span>
             </div>
           </section>
+
+          <!-- Dupliquer en homebrew -->
+          <button
+            class="btn btn--secondary btn--sm domain-card__duplicate-btn"
+            @click.stop="duplicateToHomebrew(domain)"
+          >
+            ✎ Dupliquer en homebrew
+          </button>
         </div>
       </article>
     </div>
@@ -224,6 +232,8 @@
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
 import DomainCardItem from '../components/DomainCardItem.vue'
+import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'DomainBrowser',
@@ -232,6 +242,7 @@ export default {
 
   setup() {
     const store = useDomainStore()
+    const router = useRouter()
 
     const spellFilters = [
       { id: 'all', label: 'Tous' },
@@ -243,7 +254,15 @@ export default {
       return CARD_TYPES[type] || type
     }
 
-    return { store, spellFilters, getTypeLabel }
+    function duplicateToHomebrew(domain) {
+      const homebrewStore = useDomainHomebrewStore()
+      const result = homebrewStore.createFromTemplate(domain)
+      if (result.success) {
+        router.push(`/homebrew/domain/${result.id}`)
+      }
+    }
+
+    return { store, spellFilters, getTypeLabel, duplicateToHomebrew }
   }
 }
 </script>
@@ -328,5 +347,10 @@ export default {
 
 @media (max-width: 600px) {
   .cards-grid { grid-template-columns: 1fr; }
+}
+
+.domain-card__duplicate-btn {
+  margin-top: var(--space-md);
+  width: 100%;
 }
 </style>

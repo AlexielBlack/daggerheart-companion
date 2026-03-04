@@ -242,6 +242,55 @@ export function createHomebrewStore(schema) {
     }
 
     /**
+     * Crée un item homebrew à partir d'une source externe (SRD, autre module).
+     * Moins strict que create() : copie toutes les données compatibles
+     * et laisse l'utilisateur corriger dans l'éditeur.
+     *
+     * @param {object} sourceData - Données source (SRD ou autre)
+     * @returns {StoreOperationResult}
+     */
+    function createFromTemplate(sourceData) {
+      if (!sourceData || typeof sourceData !== 'object') {
+        return { success: false, error: 'Données source invalides.' }
+      }
+
+      const cloned = deepClone(sourceData)
+
+      // Nettoyage des métadonnées
+      delete cloned.id
+      delete cloned.source
+      delete cloned.createdAt
+      delete cloned.updatedAt
+
+      // Renommer
+      if (cloned.name) {
+        cloned.name = `${cloned.name} (copie)`
+      } else {
+        cloned.name = 'Sans nom (copie)'
+      }
+
+      // Essayer avec validation d'abord
+      const validated = create(cloned)
+      if (validated.success) {
+        return validated
+      }
+
+      // Si la validation échoue (données SRD incomplètes),
+      // créer quand même avec les métadonnées minimales
+      const now = new Date().toISOString()
+      const item = {
+        ...cloned,
+        id: generateId(schema.key, cloned.name),
+        source: 'custom',
+        createdAt: now,
+        updatedAt: now
+      }
+
+      storedItems.value = [...items.value, item]
+      return { success: true, id: item.id, item: deepClone(item), warnings: validated.errors }
+    }
+
+    /**
      * Récupère un item par son ID.
      *
      * @param {string} id
@@ -365,6 +414,7 @@ export function createHomebrewStore(schema) {
       update,
       remove,
       duplicate,
+      createFromTemplate,
       getById,
 
       // Import / Export

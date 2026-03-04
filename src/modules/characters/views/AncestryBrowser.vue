@@ -135,6 +135,14 @@
                 </p>
               </div>
             </div>
+
+            <!-- Dupliquer en homebrew -->
+            <button
+              class="btn btn--secondary btn--sm ancestry-card__duplicate-btn"
+              @click.stop="duplicateToHomebrew(ancestry)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
           </div>
         </article>
       </div>
@@ -240,12 +248,15 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@/data/ancestries/index.js'
+import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
 
 export default {
   name: 'AncestryBrowser',
 
   setup() {
+    const router = useRouter()
     const searchQuery = ref('')
     const expandedId = ref(null)
     const activeSource = ref('all')
@@ -289,6 +300,14 @@ export default {
       expandedId.value = expandedId.value === id ? null : id
     }
 
+    function duplicateToHomebrew(ancestry) {
+      const homebrewStore = useAncestryHomebrewStore()
+      const result = homebrewStore.createFromTemplate(ancestry)
+      if (result.success) {
+        router.push(`/homebrew/ancestry/${result.id}`)
+      }
+    }
+
     return {
       TRANSFORMATIONS,
       searchQuery,
@@ -299,7 +318,8 @@ export default {
       showTransformations,
       filteredAncestries,
       filteredTransformations,
-      toggleAncestry
+      toggleAncestry,
+      duplicateToHomebrew
     }
   }
 }
@@ -406,5 +426,10 @@ export default {
 
 @media (max-width: 600px) {
   .ancestry-grid { grid-template-columns: 1fr; }
+}
+
+.ancestry-card__duplicate-btn {
+  margin-top: var(--space-md);
+  width: 100%;
 }
 </style>

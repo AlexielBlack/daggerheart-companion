@@ -61,6 +61,12 @@
             :closable="true"
             @close="store.clearSelection"
           />
+          <button
+            class="btn btn--secondary btn--sm adversary-browser__duplicate-btn"
+            @click="duplicateToHomebrew(store.selectedAdversary)"
+          >
+            ✎ Dupliquer en homebrew
+          </button>
         </aside>
 
         <!-- Placeholder when no detail -->
@@ -85,6 +91,7 @@ import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
 import StatBlock from '../components/StatBlock.vue'
 import { useAdversaryStore } from '../stores/adversaryStore.js'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 
 /**
  * @component AdversaryBrowser
@@ -118,6 +125,13 @@ export default {
     },
     toggleDirection() {
       this.store.setSort(this.store.sortField)
+    },
+    duplicateToHomebrew(item) {
+      const homebrewStore = useAdversaryHomebrewStore()
+      const result = homebrewStore.createFromTemplate(item)
+      if (result.success) {
+        this.$router.push(`/homebrew/adversary/${result.id}`)
+      }
     }
   }
 }
@@ -209,5 +223,10 @@ export default {
   .adversary-browser__detail {
     position: static;
   }
+}
+
+.adversary-browser__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
 }
 </style>
