@@ -731,6 +731,45 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
+   * Enregistre une attaque ratée.
+   * @param {string} attackerType - 'pc' ou 'adversary'
+   */
+  function logMiss(attackerType) {
+    if (attackerType === 'pc') {
+      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+      const adv = activeAdversary.value
+      const entry = {
+        action: 'miss',
+        attackerType: 'pc',
+        pcId: activePcId.value || null,
+        pcName: pc ? pc.name : '?',
+        instanceId: adv ? adv.instanceId : null,
+        advName: adv ? adv.name : '?',
+        round: round.value,
+        timestamp: Date.now()
+      }
+      combatLog.value.push(entry)
+      encounterLog.value.push(entry)
+    } else {
+      const adv = activeAdversary.value
+      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+      const entry = {
+        action: 'miss',
+        attackerType: 'adversary',
+        pcId: activePcId.value || null,
+        pcName: pc ? pc.name : '?',
+        instanceId: adv ? adv.instanceId : null,
+        advName: adv ? adv.name : '?',
+        round: round.value,
+        timestamp: Date.now()
+      }
+      combatLog.value.push(entry)
+      encounterLog.value.push(entry)
+    }
+    persistState()
+  }
+
+  /**
    * Ajoute une condition à un adversaire.
    * @param {string} instanceId
    * @param {string} condition
@@ -1125,6 +1164,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     removeCombatLogEntry,
     logPcHit,
     logPcDown,
+    logMiss,
     defeatAdversary,
     reviveAdversary,
 

@@ -282,29 +282,30 @@ export function useEncounterFeatures(pcRef, sceneModeRef, characterRef = null) {
 
   /**
    * Features principales : actions prioritaires pour ce mode.
-   * Critère : score > 0 ET (action ou reaction) ET au moins un tag primaire.
+   * Critère : activationType === 'action' ET au moins un tag primaire.
    * Filtrées par le projecteur : pas d'actions au tour MJ.
+   * Les réactions ont leur propre section, elles sont exclues ici.
    */
   const primaryFeatures = computed(() => {
+    if (!isPlayerTurn.value) return []
     const meta = modeMeta.value
     return scoredFeatures.value.filter((f) => {
-      if (f.activationType === 'passive') return false
-      if (f.activationType === 'action' && !isPlayerTurn.value) return false
+      if (f.activationType !== 'action') return false
       return f.tags.some((t) => meta.primaryTags.includes(t))
     })
   })
 
   /**
-   * Features secondaires : utiles mais pas prioritaires.
-   * Critère : non passives, score > 0, pas déjà dans primary.
+   * Features secondaires : actions utiles mais pas prioritaires.
+   * Critère : activationType === 'action', pas déjà dans primary.
    * Filtrées par le projecteur : pas d'actions au tour MJ.
    */
   const secondaryFeatures = computed(() => {
+    if (!isPlayerTurn.value) return []
     const meta = modeMeta.value
     const primarySet = new Set(primaryFeatures.value.map((f) => f.name + f.source))
     return scoredFeatures.value.filter((f) => {
-      if (f.activationType === 'passive') return false
-      if (f.activationType === 'action' && !isPlayerTurn.value) return false
+      if (f.activationType !== 'action') return false
       const key = f.name + f.source
       if (primarySet.has(key)) return false
       return f.tags.some((t) =>

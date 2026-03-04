@@ -148,21 +148,30 @@
           </div>
         </div>
 
-        <!-- Bouton défaite / réanimer -->
-        <button
-          v-if="!inst.isDefeated"
-          class="adv-panel__defeat-btn"
-          @click.stop="defeat(inst.instanceId)"
-        >
-          💀 Vaincre
-        </button>
-        <button
-          v-else
-          class="adv-panel__revive-btn"
-          @click.stop="revive(inst.instanceId)"
-        >
-          ↩ Réanimer
-        </button>
+        <!-- Boutons d'action : défaite / réanimer / raté -->
+        <div class="adv-panel__inst-actions">
+          <button
+            v-if="!inst.isDefeated && !isActor"
+            class="adv-panel__miss-btn"
+            @click.stop="logPcMiss()"
+          >
+            ✕ Raté
+          </button>
+          <button
+            v-if="!inst.isDefeated"
+            class="adv-panel__defeat-btn"
+            @click.stop="defeat(inst.instanceId)"
+          >
+            💀 Vaincre
+          </button>
+          <button
+            v-else
+            class="adv-panel__revive-btn"
+            @click.stop="revive(inst.instanceId)"
+          >
+            ↩ Réanimer
+          </button>
+        </div>
 
         <!-- Log de dégâts pour cette instance -->
         <div
@@ -173,11 +182,13 @@
             v-for="(entry, logIdx) in instanceLogs[inst.instanceId]"
             :key="logIdx"
             class="adv-panel__log-entry"
-            :class="'adv-panel__log-entry--' + entry.type"
-            :title="'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST') + ' (clic pour annuler)'"
+            :class="'adv-panel__log-entry--' + (entry.action === 'miss' ? 'miss' : entry.type)"
+            :title="entry.action === 'miss'
+              ? entry.pcName + ' : raté (clic pour annuler)'
+              : 'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST') + ' (clic pour annuler)'"
             @click.stop="removeLogEntry(entry._globalIdx)"
           >
-            {{ entry.pcName }} {{ entry.type === 'hp' ? '❤️' : '💢' }}{{ entry.amount }}
+            {{ entry.pcName }} {{ entry.action === 'miss' ? '✕' : (entry.type === 'hp' ? '❤️' : '💢') }}{{ entry.action !== 'miss' ? entry.amount : '' }}
           </button>
         </div>
       </div>
@@ -359,6 +370,10 @@ export default {
       store.removeCombatLogEntry(globalIdx)
     }
 
+    function logPcMiss() {
+      store.logMiss('pc')
+    }
+
     return {
       rawFocusResults,
       selectInstance,
@@ -369,7 +384,8 @@ export default {
       defeat,
       revive,
       instanceLogs,
-      removeLogEntry
+      removeLogEntry,
+      logPcMiss
     }
   },
   computed: {
@@ -658,7 +674,6 @@ export default {
 /* ── Boutons défaite / réanimer ── */
 
 .adv-panel__defeat-btn {
-  align-self: flex-end;
   padding: 2px var(--space-sm);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-accent-danger);
@@ -675,7 +690,6 @@ export default {
 }
 
 .adv-panel__revive-btn {
-  align-self: flex-end;
   padding: 2px var(--space-sm);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-accent-success);
@@ -727,6 +741,35 @@ export default {
 .adv-panel__log-entry--stress {
   background: rgba(139, 92, 246, 0.1);
   color: #8b5cf6;
+}
+
+.adv-panel__log-entry--miss {
+  background: rgba(107, 114, 128, 0.15);
+  color: var(--color-text-muted);
+}
+
+/* ── Actions par instance ── */
+
+.adv-panel__inst-actions {
+  display: flex;
+  gap: var(--space-xs);
+  justify-content: flex-end;
+}
+
+.adv-panel__miss-btn {
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-text-muted);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.adv-panel__miss-btn:hover {
+  background: rgba(107, 114, 128, 0.1);
 }
 
 /* ── Attack ── */

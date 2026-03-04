@@ -126,6 +126,13 @@
       >
         💀 Down
       </button>
+      <button
+        class="pc-panel__miss-btn"
+        title="Attaque ratée"
+        @click="logAdvMiss()"
+      >
+        ✕ Raté
+      </button>
     </div>
 
     <!-- Log des coups reçus -->
@@ -137,10 +144,13 @@
         v-for="(entry, idx) in pcHitLog"
         :key="idx"
         class="pc-panel__hit-entry"
-        :title="entry.advName + ' : ' + (entry.hpMarked || 0) + ' HP (clic pour annuler)'"
+        :class="{ 'pc-panel__hit-entry--miss': entry.action === 'miss' }"
+        :title="entry.action === 'miss'
+          ? entry.advName + ' : raté (clic pour annuler)'
+          : entry.advName + ' : ' + (entry.hpMarked || 0) + ' HP (clic pour annuler)'"
         @click="removeHitLog(entry._globalIdx)"
       >
-        {{ entry.advName }} ❤️{{ entry.hpMarked }}
+        {{ entry.advName }} {{ entry.action === 'miss' ? '✕' : ('❤️' + entry.hpMarked) }}
       </button>
     </div>
 
@@ -257,11 +267,11 @@ export default {
   setup(props) {
     const store = useEncounterLiveStore()
 
-    /** Log des coups reçus par ce PJ, avec index global */
+    /** Log des coups reçus et ratés par ce PJ, avec index global */
     const pcHitLog = computed(() => {
       const entries = []
       store.combatLog.forEach((entry, globalIdx) => {
-        if (entry.action === 'pc_hit' && entry.pcId === props.pc.id) {
+        if (entry.pcId === props.pc.id && (entry.action === 'pc_hit' || (entry.action === 'miss' && entry.attackerType === 'adversary'))) {
           entries.push({ ...entry, _globalIdx: globalIdx })
         }
       })
@@ -276,6 +286,10 @@ export default {
       store.logPcDown(props.pc.id)
     }
 
+    function logAdvMiss() {
+      store.logMiss('adversary')
+    }
+
     function removeHitLog(globalIdx) {
       store.removeCombatLogEntry(globalIdx)
     }
@@ -284,6 +298,7 @@ export default {
       pcHitLog,
       logHit,
       logDown,
+      logAdvMiss,
       removeHitLog
     }
   },
@@ -632,5 +647,26 @@ export default {
 .pc-panel__hit-entry:hover {
   opacity: 0.5;
   text-decoration: line-through;
+}
+
+.pc-panel__hit-entry--miss {
+  background: rgba(107, 114, 128, 0.15);
+  color: var(--color-text-muted);
+}
+
+.pc-panel__miss-btn {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-text-muted);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pc-panel__miss-btn:hover {
+  background: rgba(107, 114, 128, 0.1);
 }
 </style>

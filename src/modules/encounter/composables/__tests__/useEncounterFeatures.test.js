@@ -319,21 +319,31 @@ describe('useEncounterFeatures', () => {
   it('priorise les features offensives en mode PJ Attaque', () => {
     const pcRef = ref(GUARDIAN_PC)
     const modeRef = ref(SCENE_MODE_PC_ATTACK)
-    const { primaryFeatures, scoredFeatures } = useEncounterFeatures(pcRef, modeRef)
-    // Whirlwind (offensif) doit être dans les primary
-    const whirlwind = primaryFeatures.value.find((f) => f.name === 'Whirlwind')
-    expect(whirlwind).toBeTruthy()
+    const { primaryFeatures, reactionFeatures, scoredFeatures } = useEncounterFeatures(pcRef, modeRef)
+    // Whirlwind (offensif + reaction) doit être dans reactionFeatures, pas dans primary
+    const whirlwindPrimary = primaryFeatures.value.find((f) => f.name === 'Whirlwind')
+    expect(whirlwindPrimary).toBeFalsy()
+    const whirlwindReaction = reactionFeatures.value.find((f) => f.name === 'Whirlwind')
+    expect(whirlwindReaction).toBeTruthy()
+    // Primary ne contient que des actions
+    for (const f of primaryFeatures.value) {
+      expect(f.activationType).toBe('action')
+    }
     // Le premier scoré doit avoir un score > 0
     expect(scoredFeatures.value[0]._score).toBeGreaterThan(0)
   })
 
-  it('priorise les features défensives en mode Adversaire Attaque', () => {
+  it('en mode Adversaire Attaque, pas d\'actions PJ et réactions disponibles', () => {
     const pcRef = ref(GUARDIAN_PC)
     const modeRef = ref(SCENE_MODE_ADVERSARY_ATTACK)
-    const { primaryFeatures } = useEncounterFeatures(pcRef, modeRef)
-    // Les features avec tag 'défensif' et activationType non-passive doivent être dans primary
-    for (const f of primaryFeatures.value) {
-      expect(f.tags).toContain('défensif')
+    const { primaryFeatures, secondaryFeatures, reactionFeatures } = useEncounterFeatures(pcRef, modeRef)
+    // Pas d'actions quand ce n'est pas le tour PJ
+    expect(primaryFeatures.value).toHaveLength(0)
+    expect(secondaryFeatures.value).toHaveLength(0)
+    // Mais les réactions sont disponibles
+    expect(reactionFeatures.value.length).toBeGreaterThan(0)
+    for (const f of reactionFeatures.value) {
+      expect(f.activationType).toBe('reaction')
     }
   })
 
