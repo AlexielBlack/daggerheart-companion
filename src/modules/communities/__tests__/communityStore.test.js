@@ -50,7 +50,7 @@ describe('communityStore', () => {
     })
 
     it('filtre par adjectif', () => {
-      store.setSearch('sardonic')
+      store.setSearch('sardonique')
       expect(store.filteredCount).toBe(1)
       expect(store.filteredCommunities[0].id).toBe('orderborne')
     })
