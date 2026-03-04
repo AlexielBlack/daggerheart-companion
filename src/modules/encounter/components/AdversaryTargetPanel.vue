@@ -261,7 +261,7 @@ export default {
       return this.siblings.length > 1
     },
     classified() {
-      return classifyAdversaryFeatures(this.adversary)
+      return classifyAdversaryFeatures(this.adversary, this.sceneMode)
     },
     hasFeatures() {
       const c = this.classified

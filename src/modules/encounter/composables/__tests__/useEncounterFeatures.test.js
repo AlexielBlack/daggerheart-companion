@@ -411,9 +411,8 @@ describe('classifyAdversaryFeatures', () => {
     ]
   }
 
-  it('classifie toutes les features par type d\'activation', () => {
-    const result = classifyAdversaryFeatures(MOCK_ADVERSARY)
-    // 2 actions (Claw Attack + Intimidate), 1 passive (Tough Hide), 1 reaction (Counterattack)
+  it('en mode adversaryAttack (tour MJ), affiche toutes les features', () => {
+    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_ADVERSARY_ATTACK)
     expect(result.actionFeatures).toHaveLength(2)
     expect(result.actionFeatures[0].name).toBe('Claw Attack')
     expect(result.actionFeatures[1].name).toBe('Intimidate')
@@ -423,32 +422,47 @@ describe('classifyAdversaryFeatures', () => {
     expect(result.reactionFeatures[0].name).toBe('Counterattack')
   })
 
+  it('en mode pcAttack (tour PJ), masque les actions adversaire', () => {
+    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_PC_ATTACK)
+    expect(result.actionFeatures).toHaveLength(0)
+    expect(result.passiveFeatures).toHaveLength(1)
+    expect(result.reactionFeatures).toHaveLength(1)
+  })
+
+  it('en mode social (tour PJ), masque les actions adversaire', () => {
+    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_SOCIAL)
+    expect(result.actionFeatures).toHaveLength(0)
+    expect(result.passiveFeatures).toHaveLength(1)
+    expect(result.reactionFeatures).toHaveLength(1)
+  })
+
   it('retourne des tableaux vides pour adversaire null', () => {
-    const result = classifyAdversaryFeatures(null)
+    const result = classifyAdversaryFeatures(null, SCENE_MODE_PC_ATTACK)
     expect(result.actionFeatures).toEqual([])
     expect(result.passiveFeatures).toEqual([])
     expect(result.reactionFeatures).toEqual([])
   })
 
   it('retourne des tableaux vides pour adversaire sans features', () => {
-    const result = classifyAdversaryFeatures({ name: 'Empty', features: [] })
+    const result = classifyAdversaryFeatures({ name: 'Empty', features: [] }, SCENE_MODE_PC_ATTACK)
     expect(result.actionFeatures).toEqual([])
   })
 
-  it('affiche TOUTES les features quel que soit leurs tags', () => {
-    // Vérification que rien n'est filtré — le bug original masquait
-    // les features utilitaires comme Cloaked
-    const advWithUtility = {
+  it('Cloaked (utilitaire/action) apparaît en tour MJ quel que soit le tag', () => {
+    const shadow = {
       name: 'Shadow',
       features: [
         { name: 'Backstab', tags: ['offensif'], activationType: 'passive' },
         { name: 'Cloaked', tags: ['utilitaire'], activationType: 'action' }
       ]
     }
-    const result = classifyAdversaryFeatures(advWithUtility)
-    expect(result.actionFeatures).toHaveLength(1)
-    expect(result.actionFeatures[0].name).toBe('Cloaked')
-    expect(result.passiveFeatures).toHaveLength(1)
-    expect(result.passiveFeatures[0].name).toBe('Backstab')
+    const gmTurn = classifyAdversaryFeatures(shadow, SCENE_MODE_ADVERSARY_ATTACK)
+    expect(gmTurn.actionFeatures).toHaveLength(1)
+    expect(gmTurn.actionFeatures[0].name).toBe('Cloaked')
+    expect(gmTurn.passiveFeatures).toHaveLength(1)
+
+    const pcTurn = classifyAdversaryFeatures(shadow, SCENE_MODE_PC_ATTACK)
+    expect(pcTurn.actionFeatures).toHaveLength(0)
+    expect(pcTurn.passiveFeatures).toHaveLength(1)
   })
 })

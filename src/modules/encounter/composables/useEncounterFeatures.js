@@ -339,13 +339,15 @@ export function useEncounterFeatures(pcRef, sceneModeRef, characterRef = null) {
 // ═══════════════════════════════════════════════════════════
 
 /**
- * Collecte les features d'un adversaire live, classées par type d'activation.
- * Contrairement aux features PJ, les features adversaire ne sont PAS filtrées
- * par le mode de scène : le MJ a besoin de voir TOUTES les features disponibles.
+ * Collecte les features d'un adversaire live, filtrées par mode de scène.
+ * Logique Daggerheart : quand les PJs ont le projecteur, les adversaires
+ * ne peuvent effectuer que des réactions et leurs passifs.
+ * Quand le MJ a le projecteur (adversaryAttack), les actions sont disponibles.
  * @param {Object} adversary - Adversaire live depuis le store
+ * @param {string} sceneMode - Mode de scène actif
  * @returns {Object} { actionFeatures, passiveFeatures, reactionFeatures }
  */
-export function classifyAdversaryFeatures(adversary) {
+export function classifyAdversaryFeatures(adversary, sceneMode) {
   if (!adversary || !Array.isArray(adversary.features)) {
     return { actionFeatures: [], passiveFeatures: [], reactionFeatures: [] }
   }
@@ -354,8 +356,13 @@ export function classifyAdversaryFeatures(adversary) {
     normalizeFeature(f, 'adversary', adversary.name)
   )
 
+  // Les adversaires n'ont accès à leurs actions que pendant le tour MJ
+  const isGmTurn = sceneMode === 'adversaryAttack'
+
   return {
-    actionFeatures: normalized.filter((f) => f.activationType === 'action'),
+    actionFeatures: isGmTurn
+      ? normalized.filter((f) => f.activationType === 'action')
+      : [],
     passiveFeatures: normalized.filter((f) => f.activationType === 'passive'),
     reactionFeatures: normalized.filter((f) => f.activationType === 'reaction')
   }
