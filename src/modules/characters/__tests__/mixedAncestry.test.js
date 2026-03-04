@@ -1,8 +1,11 @@
 /**
  * @module characters/__tests__/mixedAncestry.test
  * @description Tests pour la fonctionnalité Mixed Ancestry :
- * sélection de 2 ascendances parentes, choix croisé des features,
+ * sélection de 2 ascendances parentes, choix libre d'une feature par ascendance,
  * résolution dans selectedAncestryData, et calcul des bonus de stats.
+ *
+ * Modèle : ancestry1Feature / ancestry2Feature = 'top' | 'bottom'
+ * Toutes les combinaisons top-top, top-bottom, bottom-top, bottom-bottom sont valides.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
@@ -20,6 +23,25 @@ function setupMixedCharacter() {
   store.createCharacter('warrior')
   store.applySelection('ancestryId', 'mixed-ancestry')
   return store
+}
+
+/** Crée un personnage brut pour computeStatBonuses */
+function makeMixedChar(overrides = {}) {
+  return {
+    ancestryId: 'mixed-ancestry',
+    subclassId: '',
+    level: 1,
+    proficiency: 1,
+    traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
+    domainCards: { loadout: [], vault: [] },
+    activeEffects: {},
+    permanentCardEffects: [],
+    mixedAncestryConfig: {
+      ancestry1Id: '', ancestry2Id: '',
+      ancestry1Feature: '', ancestry2Feature: ''
+    },
+    ...overrides
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -70,8 +92,8 @@ describe('schéma personnage — mixedAncestryConfig', () => {
     expect(char.mixedAncestryConfig).toBeDefined()
     expect(char.mixedAncestryConfig.ancestry1Id).toBe('')
     expect(char.mixedAncestryConfig.ancestry2Id).toBe('')
-    expect(char.mixedAncestryConfig.topFeatureSource).toBe('')
-    expect(char.mixedAncestryConfig.bottomFeatureSource).toBe('')
+    expect(char.mixedAncestryConfig.ancestry1Feature).toBe('')
+    expect(char.mixedAncestryConfig.ancestry2Feature).toBe('')
   })
 })
 
@@ -97,42 +119,42 @@ describe('updateMixedAncestry', () => {
     expect(store.selectedCharacter.mixedAncestryConfig.ancestry2Id).toBe('simiah')
   })
 
+  it('met à jour ancestry1Feature', () => {
+    const store = setupMixedCharacter()
+    store.updateMixedAncestry('ancestry1Id', 'giant')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry1Feature).toBe('top')
+  })
+
+  it('met à jour ancestry2Feature', () => {
+    const store = setupMixedCharacter()
+    store.updateMixedAncestry('ancestry2Id', 'simiah')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry2Feature).toBe('bottom')
+  })
+
   it('réinitialise les features quand on change ancestry1Id', () => {
     const store = setupMixedCharacter()
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'giant')
-    store.updateMixedAncestry('bottomFeatureSource', 'simiah')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
 
-    // Changer ancestry1 doit réinitialiser les features
     store.updateMixedAncestry('ancestry1Id', 'elf')
-    expect(store.selectedCharacter.mixedAncestryConfig.topFeatureSource).toBe('')
-    expect(store.selectedCharacter.mixedAncestryConfig.bottomFeatureSource).toBe('')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry1Feature).toBe('')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry2Feature).toBe('')
   })
 
   it('réinitialise les features quand on change ancestry2Id', () => {
     const store = setupMixedCharacter()
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'giant')
-    store.updateMixedAncestry('bottomFeatureSource', 'simiah')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
 
     store.updateMixedAncestry('ancestry2Id', 'elf')
-    expect(store.selectedCharacter.mixedAncestryConfig.topFeatureSource).toBe('')
-    expect(store.selectedCharacter.mixedAncestryConfig.bottomFeatureSource).toBe('')
-  })
-
-  it('contrainte SRD : top et bottom ne peuvent pas venir de la même ascendance', () => {
-    const store = setupMixedCharacter()
-    store.updateMixedAncestry('ancestry1Id', 'giant')
-    store.updateMixedAncestry('ancestry2Id', 'simiah')
-
-    // Top = giant
-    store.updateMixedAncestry('topFeatureSource', 'giant')
-    // Bottom = giant → doit effacer top
-    store.updateMixedAncestry('bottomFeatureSource', 'giant')
-    expect(store.selectedCharacter.mixedAncestryConfig.topFeatureSource).toBe('')
-    expect(store.selectedCharacter.mixedAncestryConfig.bottomFeatureSource).toBe('giant')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry1Feature).toBe('')
+    expect(store.selectedCharacter.mixedAncestryConfig.ancestry2Feature).toBe('')
   })
 
   it('ne fait rien si ascendance non mixed', () => {
@@ -140,7 +162,6 @@ describe('updateMixedAncestry', () => {
     store.createCharacter('warrior')
     store.applySelection('ancestryId', 'giant')
     store.updateMixedAncestry('ancestry1Id', 'elf')
-    // Pas de crash, pas de modification
     expect(store.selectedCharacter.mixedAncestryConfig.ancestry1Id).toBe('')
   })
 })
@@ -159,16 +180,15 @@ describe('applySelection ancestryId — reset mixedAncestryConfig', () => {
     const store = setupMixedCharacter()
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'giant')
-    store.updateMixedAncestry('bottomFeatureSource', 'simiah')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
 
-    // Changer pour une ascendance non-mixed
     store.applySelection('ancestryId', 'elf')
     const config = store.selectedCharacter.mixedAncestryConfig
     expect(config.ancestry1Id).toBe('')
     expect(config.ancestry2Id).toBe('')
-    expect(config.topFeatureSource).toBe('')
-    expect(config.bottomFeatureSource).toBe('')
+    expect(config.ancestry1Feature).toBe('')
+    expect(config.ancestry2Feature).toBe('')
   })
 
   it('ne réinitialise PAS quand on sélectionne mixed-ancestry', () => {
@@ -176,7 +196,6 @@ describe('applySelection ancestryId — reset mixedAncestryConfig', () => {
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
 
-    // Re-sélectionner mixed-ancestry ne doit pas effacer
     store.applySelection('ancestryId', 'mixed-ancestry')
     expect(store.selectedCharacter.mixedAncestryConfig.ancestry1Id).toBe('giant')
   })
@@ -209,191 +228,160 @@ describe('selectedAncestryData — Mixed Ancestry résolution', () => {
     expect(data.name).toBe('Mixed (Giant / Simiah)')
   })
 
-  it('résout la top feature de l\'ascendance sélectionnée', () => {
+  // ── Toutes les 4 combinaisons de features ──
+
+  it('combo top-bottom : Giant(top=Endurance) + Simiah(bottom=Nimble)', () => {
     const store = setupMixedCharacter()
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'giant')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
 
     const data = store.selectedAncestryData
     expect(data.topFeature.name).toBe('Endurance')
-  })
-
-  it('résout la bottom feature de l\'ascendance sélectionnée', () => {
-    const store = setupMixedCharacter()
-    store.updateMixedAncestry('ancestry1Id', 'giant')
-    store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('bottomFeatureSource', 'simiah')
-
-    const data = store.selectedAncestryData
     expect(data.bottomFeature.name).toBe('Nimble')
-  })
-
-  it('résout les deux features correctement (Giant top, Simiah bottom)', () => {
-    const store = setupMixedCharacter()
-    store.updateMixedAncestry('ancestry1Id', 'giant')
-    store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'giant')
-    store.updateMixedAncestry('bottomFeatureSource', 'simiah')
-
-    const data = store.selectedAncestryData
-    expect(data.topFeature.name).toBe('Endurance') // Giant top
-    expect(data.bottomFeature.name).toBe('Nimble')  // Simiah bottom
     expect(data._resolved).toBe(true)
   })
 
-  it('résout l\'inverse (Simiah top, Giant bottom)', () => {
+  it('combo bottom-top : Giant(bottom=Reach) + Simiah(top=Natural Climber)', () => {
     const store = setupMixedCharacter()
     store.updateMixedAncestry('ancestry1Id', 'giant')
     store.updateMixedAncestry('ancestry2Id', 'simiah')
-    store.updateMixedAncestry('topFeatureSource', 'simiah')
-    store.updateMixedAncestry('bottomFeatureSource', 'giant')
+    store.updateMixedAncestry('ancestry1Feature', 'bottom')
+    store.updateMixedAncestry('ancestry2Feature', 'top')
 
     const data = store.selectedAncestryData
-    expect(data.topFeature.name).toBe('Natural Climber') // Simiah top
-    expect(data.bottomFeature.name).toBe('Reach')        // Giant bottom
+    expect(data.topFeature.name).toBe('Reach')
+    expect(data.bottomFeature.name).toBe('Natural Climber')
+  })
+
+  it('combo top-top : Giant(top=Endurance) + Simiah(top=Natural Climber)', () => {
+    const store = setupMixedCharacter()
+    store.updateMixedAncestry('ancestry1Id', 'giant')
+    store.updateMixedAncestry('ancestry2Id', 'simiah')
+    store.updateMixedAncestry('ancestry1Feature', 'top')
+    store.updateMixedAncestry('ancestry2Feature', 'top')
+
+    const data = store.selectedAncestryData
+    expect(data.topFeature.name).toBe('Endurance')
+    expect(data.bottomFeature.name).toBe('Natural Climber')
+  })
+
+  it('combo bottom-bottom : Giant(bottom=Reach) + Simiah(bottom=Nimble)', () => {
+    const store = setupMixedCharacter()
+    store.updateMixedAncestry('ancestry1Id', 'giant')
+    store.updateMixedAncestry('ancestry2Id', 'simiah')
+    store.updateMixedAncestry('ancestry1Feature', 'bottom')
+    store.updateMixedAncestry('ancestry2Feature', 'bottom')
+
+    const data = store.selectedAncestryData
+    expect(data.topFeature.name).toBe('Reach')
+    expect(data.bottomFeature.name).toBe('Nimble')
   })
 })
 
 // ═══════════════════════════════════════════════════════════
-//  computeStatBonuses — Mixed Ancestry
+//  computeStatBonuses — Mixed Ancestry (toutes combinaisons)
 // ═══════════════════════════════════════════════════════════
 
 describe('computeStatBonuses — Mixed Ancestry', () => {
-  it('applique le bonus Giant (top) quand topFeatureSource = giant', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 1,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+  it('top-bottom : Giant(top=+1HP) + Simiah(bottom=+1Eva)', () => {
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'giant',
-        ancestry2Id: 'simiah',
-        topFeatureSource: 'giant',
-        bottomFeatureSource: 'simiah'
+        ancestry1Id: 'giant', ancestry2Id: 'simiah',
+        ancestry1Feature: 'top', ancestry2Feature: 'bottom'
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
-    expect(bonuses.maxHP).toBe(1)        // Giant Endurance (top)
-    expect(bonuses.evasion).toBe(1)      // Simiah Nimble (bottom)
+    expect(bonuses.maxHP).toBe(1)
+    expect(bonuses.evasion).toBe(1)
     expect(bonuses.sources).toContain('Endurance (Giant)')
     expect(bonuses.sources).toContain('Nimble (Simiah)')
   })
 
-  it('n\'applique PAS le bonus Giant quand bottomFeatureSource = giant (wrong position)', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 1,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+  it('bottom-top : pas de bonus stat (Giant bottom=Reach, Simiah top=Natural Climber)', () => {
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'giant',
-        ancestry2Id: 'simiah',
-        topFeatureSource: 'simiah',
-        bottomFeatureSource: 'giant'
+        ancestry1Id: 'giant', ancestry2Id: 'simiah',
+        ancestry1Feature: 'bottom', ancestry2Feature: 'top'
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
-    // Giant Endurance est un top feature → pas appliqué si bottomFeatureSource = giant
     expect(bonuses.maxHP).toBe(0)
-    // Simiah Nimble est un bottom feature → pas appliqué si topFeatureSource = simiah
     expect(bonuses.evasion).toBe(0)
   })
 
-  it('applique Galapa Shell (top) + Simiah Nimble (bottom)', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 3,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+  it('top-top : Giant(top=+1HP) + Human(top=+1Stress)', () => {
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'galapa',
-        ancestry2Id: 'simiah',
-        topFeatureSource: 'galapa',
-        bottomFeatureSource: 'simiah'
+        ancestry1Id: 'giant', ancestry2Id: 'human',
+        ancestry1Feature: 'top', ancestry2Feature: 'top'
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
-    expect(bonuses.thresholds.major).toBe(3)  // Galapa Shell = proficiency
+    expect(bonuses.maxHP).toBe(1)
+    expect(bonuses.maxStress).toBe(1)
+    expect(bonuses.sources).toContain('Endurance (Giant)')
+    expect(bonuses.sources).toContain('High Stamina (Human)')
+  })
+
+  it('bottom-bottom : Giant(bottom) + Simiah(bottom=+1Eva)', () => {
+    const char = makeMixedChar({
+      mixedAncestryConfig: {
+        ancestry1Id: 'giant', ancestry2Id: 'simiah',
+        ancestry1Feature: 'bottom', ancestry2Feature: 'bottom'
+      }
+    })
+    const bonuses = computeStatBonuses(char)
+    expect(bonuses.maxHP).toBe(0)
+    expect(bonuses.evasion).toBe(1)
+  })
+
+  it('Galapa(top=Shell) + Simiah(bottom=Nimble)', () => {
+    const char = makeMixedChar({
+      proficiency: 3,
+      mixedAncestryConfig: {
+        ancestry1Id: 'galapa', ancestry2Id: 'simiah',
+        ancestry1Feature: 'top', ancestry2Feature: 'bottom'
+      }
+    })
+    const bonuses = computeStatBonuses(char)
+    expect(bonuses.thresholds.major).toBe(3)
     expect(bonuses.thresholds.severe).toBe(3)
-    expect(bonuses.evasion).toBe(1)            // Simiah Nimble
+    expect(bonuses.evasion).toBe(1)
   })
 
   it('n\'applique rien sans features sélectionnées', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 1,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'giant',
-        ancestry2Id: 'simiah',
-        topFeatureSource: '',
-        bottomFeatureSource: ''
+        ancestry1Id: 'giant', ancestry2Id: 'simiah',
+        ancestry1Feature: '', ancestry2Feature: ''
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
     expect(bonuses.maxHP).toBe(0)
     expect(bonuses.evasion).toBe(0)
   })
 
-  it('gère Human (top: +1 stress) + Giant (top: +1 HP) — seul le bon feature s\'applique', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 1,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+  it('n\'applique pas le bonus si la mauvaise position est choisie', () => {
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'human',
-        ancestry2Id: 'giant',
-        topFeatureSource: 'human',   // High Stamina (top) → +1 stress
-        bottomFeatureSource: 'giant' // Giant bottom = Reach (pas de stat bonus)
+        ancestry1Id: 'giant', ancestry2Id: 'elf',
+        ancestry1Feature: 'bottom', ancestry2Feature: 'top'
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
-    expect(bonuses.maxStress).toBe(1)  // Human High Stamina
-    expect(bonuses.maxHP).toBe(0)      // Giant Endurance NOT applied (it's a top, but bottom is selected)
+    expect(bonuses.maxHP).toBe(0)
   })
 
-  it('ascendance sans modificateur de stats ne cause pas d\'erreur', () => {
-    const char = {
-      ancestryId: 'mixed-ancestry',
-      subclassId: '',
-      level: 1,
-      proficiency: 1,
-      traits: { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-      domainCards: { loadout: [], vault: [] },
-      activeEffects: {},
-      permanentCardEffects: [],
+  it('ascendances sans modificateur ne causent pas d\'erreur', () => {
+    const char = makeMixedChar({
       mixedAncestryConfig: {
-        ancestry1Id: 'elf',
-        ancestry2Id: 'dwarf',
-        topFeatureSource: 'elf',
-        bottomFeatureSource: 'dwarf'
+        ancestry1Id: 'elf', ancestry2Id: 'dwarf',
+        ancestry1Feature: 'top', ancestry2Feature: 'bottom'
       }
-    }
+    })
     const bonuses = computeStatBonuses(char)
-    // Ni Elf ni Dwarf n'ont de modificateur permanent de stats
     expect(bonuses.maxHP).toBe(0)
     expect(bonuses.evasion).toBe(0)
     expect(bonuses.maxStress).toBe(0)

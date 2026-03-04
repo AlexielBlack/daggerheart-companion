@@ -82,8 +82,7 @@
     <template v-if="char.ancestryId === 'mixed-ancestry'">
       <div class="selector-field selector-field--mixed-intro">
         <p class="mixed-intro">
-          🔀 Choisissez deux ascendances parentes, puis une feature de chaque.
-          Vous devez prendre la <strong>Top Feature</strong> d'une ascendance et la <strong>Bottom Feature</strong> de l'autre.
+          🔀 Choisissez deux ascendances parentes, puis <strong>une feature par ascendance</strong> (top ou bottom, librement).
         </p>
       </div>
 
@@ -141,114 +140,95 @@
         </select>
       </div>
 
-      <!-- Sélection croisée des features -->
-      <div
-        v-if="mixedAncestry1 && mixedAncestry2"
-        class="selector-field selector-field--full"
+      <!-- Feature de l'ascendance 1 -->
+      <fieldset
+        v-if="mixedAncestry1"
+        class="selector-field selector-field--full mixed-feature-fieldset"
+        :aria-label="`Feature de ${mixedAncestry1.name}`"
       >
-        <span class="selector-label">Features sélectionnées</span>
-
-        <!-- Top Feature (première feature) -->
-        <fieldset
-          class="mixed-feature-fieldset"
-          aria-label="Choisir la Top Feature"
+        <legend class="mixed-feature-legend">
+          {{ mixedAncestry1.emoji }} Feature de {{ mixedAncestry1.name }}
+        </legend>
+        <label
+          class="mixed-feature-option"
+          :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry1Feature === 'top' }"
         >
-          <legend class="mixed-feature-legend">
-            Top Feature (première feature)
-          </legend>
-          <label
-            class="mixed-feature-option"
-            :class="{ 'mixed-feature-option--selected': mixedConfig.topFeatureSource === mixedConfig.ancestry1Id }"
-          >
-            <input
-              type="radio"
-              name="mixed-top"
-              :value="mixedConfig.ancestry1Id"
-              :checked="mixedConfig.topFeatureSource === mixedConfig.ancestry1Id"
-              :disabled="mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id"
-              @change="$emit('updateMixed', 'topFeatureSource', mixedConfig.ancestry1Id)"
-            />
-            <span class="mixed-feature-option__name">{{ mixedAncestry1.topFeature.name }}</span>
-            <span class="mixed-feature-option__source">{{ mixedAncestry1.emoji }} {{ mixedAncestry1.name }}</span>
-            <p class="mixed-feature-option__desc">
-              {{ mixedAncestry1.topFeature.description }}
-            </p>
-          </label>
-          <label
-            class="mixed-feature-option"
-            :class="{ 'mixed-feature-option--selected': mixedConfig.topFeatureSource === mixedConfig.ancestry2Id }"
-          >
-            <input
-              type="radio"
-              name="mixed-top"
-              :value="mixedConfig.ancestry2Id"
-              :checked="mixedConfig.topFeatureSource === mixedConfig.ancestry2Id"
-              :disabled="mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id"
-              @change="$emit('updateMixed', 'topFeatureSource', mixedConfig.ancestry2Id)"
-            />
-            <span class="mixed-feature-option__name">{{ mixedAncestry2.topFeature.name }}</span>
-            <span class="mixed-feature-option__source">{{ mixedAncestry2.emoji }} {{ mixedAncestry2.name }}</span>
-            <p class="mixed-feature-option__desc">
-              {{ mixedAncestry2.topFeature.description }}
-            </p>
-          </label>
-        </fieldset>
-
-        <!-- Bottom Feature (seconde feature) -->
-        <fieldset
-          class="mixed-feature-fieldset"
-          aria-label="Choisir la Bottom Feature"
+          <input
+            type="radio"
+            :name="`mixed-a1-feature`"
+            value="top"
+            :checked="mixedConfig.ancestry1Feature === 'top'"
+            @change="$emit('updateMixed', 'ancestry1Feature', 'top')"
+          />
+          <span class="mixed-feature-option__name">{{ mixedAncestry1.topFeature.name }}</span>
+          <span class="mixed-feature-option__badge">Top</span>
+          <p class="mixed-feature-option__desc">
+            {{ mixedAncestry1.topFeature.description }}
+          </p>
+        </label>
+        <label
+          class="mixed-feature-option"
+          :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry1Feature === 'bottom' }"
         >
-          <legend class="mixed-feature-legend">
-            Bottom Feature (seconde feature)
-          </legend>
-          <label
-            class="mixed-feature-option"
-            :class="{ 'mixed-feature-option--selected': mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id }"
-          >
-            <input
-              type="radio"
-              name="mixed-bottom"
-              :value="mixedConfig.ancestry1Id"
-              :checked="mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id"
-              :disabled="mixedConfig.topFeatureSource === mixedConfig.ancestry1Id"
-              @change="$emit('updateMixed', 'bottomFeatureSource', mixedConfig.ancestry1Id)"
-            />
-            <span class="mixed-feature-option__name">{{ mixedAncestry1.bottomFeature.name }}</span>
-            <span class="mixed-feature-option__source">{{ mixedAncestry1.emoji }} {{ mixedAncestry1.name }}</span>
-            <p class="mixed-feature-option__desc">
-              {{ mixedAncestry1.bottomFeature.description }}
-            </p>
-          </label>
-          <label
-            class="mixed-feature-option"
-            :class="{ 'mixed-feature-option--selected': mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id }"
-          >
-            <input
-              type="radio"
-              name="mixed-bottom"
-              :value="mixedConfig.ancestry2Id"
-              :checked="mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id"
-              :disabled="mixedConfig.topFeatureSource === mixedConfig.ancestry2Id"
-              @change="$emit('updateMixed', 'bottomFeatureSource', mixedConfig.ancestry2Id)"
-            />
-            <span class="mixed-feature-option__name">{{ mixedAncestry2.bottomFeature.name }}</span>
-            <span class="mixed-feature-option__source">{{ mixedAncestry2.emoji }} {{ mixedAncestry2.name }}</span>
-            <p class="mixed-feature-option__desc">
-              {{ mixedAncestry2.bottomFeature.description }}
-            </p>
-          </label>
-        </fieldset>
+          <input
+            type="radio"
+            :name="`mixed-a1-feature`"
+            value="bottom"
+            :checked="mixedConfig.ancestry1Feature === 'bottom'"
+            @change="$emit('updateMixed', 'ancestry1Feature', 'bottom')"
+          />
+          <span class="mixed-feature-option__name">{{ mixedAncestry1.bottomFeature.name }}</span>
+          <span class="mixed-feature-option__badge">Bottom</span>
+          <p class="mixed-feature-option__desc">
+            {{ mixedAncestry1.bottomFeature.description }}
+          </p>
+        </label>
+      </fieldset>
 
-        <!-- Avertissement contrainte SRD -->
-        <p
-          v-if="mixedConfig.topFeatureSource && mixedConfig.bottomFeatureSource && mixedConfig.topFeatureSource === mixedConfig.bottomFeatureSource"
-          class="mixed-warning"
-          role="alert"
+      <!-- Feature de l'ascendance 2 -->
+      <fieldset
+        v-if="mixedAncestry2"
+        class="selector-field selector-field--full mixed-feature-fieldset"
+        :aria-label="`Feature de ${mixedAncestry2.name}`"
+      >
+        <legend class="mixed-feature-legend">
+          {{ mixedAncestry2.emoji }} Feature de {{ mixedAncestry2.name }}
+        </legend>
+        <label
+          class="mixed-feature-option"
+          :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry2Feature === 'top' }"
         >
-          ⚠ La Top et la Bottom Feature doivent venir de deux ascendances différentes.
-        </p>
-      </div>
+          <input
+            type="radio"
+            :name="`mixed-a2-feature`"
+            value="top"
+            :checked="mixedConfig.ancestry2Feature === 'top'"
+            @change="$emit('updateMixed', 'ancestry2Feature', 'top')"
+          />
+          <span class="mixed-feature-option__name">{{ mixedAncestry2.topFeature.name }}</span>
+          <span class="mixed-feature-option__badge">Top</span>
+          <p class="mixed-feature-option__desc">
+            {{ mixedAncestry2.topFeature.description }}
+          </p>
+        </label>
+        <label
+          class="mixed-feature-option"
+          :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry2Feature === 'bottom' }"
+        >
+          <input
+            type="radio"
+            :name="`mixed-a2-feature`"
+            value="bottom"
+            :checked="mixedConfig.ancestry2Feature === 'bottom'"
+            @change="$emit('updateMixed', 'ancestry2Feature', 'bottom')"
+          />
+          <span class="mixed-feature-option__name">{{ mixedAncestry2.bottomFeature.name }}</span>
+          <span class="mixed-feature-option__badge">Bottom</span>
+          <p class="mixed-feature-option__desc">
+            {{ mixedAncestry2.bottomFeature.description }}
+          </p>
+        </label>
+      </fieldset>
     </template>
 
     <!-- ═══ Communauté ═══ -->
@@ -443,7 +423,7 @@ export default {
     const mixedConfig = computed(() =>
       props.char.mixedAncestryConfig || {
         ancestry1Id: '', ancestry2Id: '',
-        topFeatureSource: '', bottomFeatureSource: ''
+        ancestry1Feature: '', ancestry2Feature: ''
       }
     )
 
@@ -622,9 +602,15 @@ export default {
   color: var(--text-primary, #e5e7eb);
 }
 
-.mixed-feature-option__source {
-  font-size: 0.65rem;
-  color: var(--text-muted, #6b7280);
+.mixed-feature-option__badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(83, 168, 182, 0.15);
+  color: var(--accent-hope, #53a8b6);
   margin-left: auto;
 }
 
@@ -634,15 +620,5 @@ export default {
   color: var(--text-secondary, #9ca3af);
   line-height: 1.35;
   margin: 2px 0 0;
-}
-
-.mixed-warning {
-  font-size: 0.75rem;
-  color: #f97316;
-  padding: 4px 8px;
-  background: rgba(249, 115, 22, 0.08);
-  border-left: 2px solid #f97316;
-  border-radius: 0 4px 4px 0;
-  margin: 4px 0 0;
 }
 </style>

@@ -298,8 +298,8 @@ export function createDefaultCharacter(classId) {
     mixedAncestryConfig: {
       ancestry1Id: '',          // Première ascendance parente
       ancestry2Id: '',          // Seconde ascendance parente
-      topFeatureSource: '',     // ID de l'ascendance fournissant la Top Feature
-      bottomFeatureSource: ''   // ID de l'ascendance fournissant la Bottom Feature
+      ancestry1Feature: '',     // 'top' ou 'bottom' — feature choisie de l'ascendance 1
+      ancestry2Feature: ''      // 'top' ou 'bottom' — feature choisie de l'ascendance 2
     },
 
     // Traits — préremplis avec suggestions

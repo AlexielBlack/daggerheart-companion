@@ -268,19 +268,20 @@ export function computeStatBonuses(char) {
   // ── Bonus d'ascendance ───────────────────────────────
   if (char.ancestryId === 'mixed-ancestry') {
     // Mixed Ancestry : appliquer les modificateurs des ascendances parentes
-    // seulement si le feature correspondant est sélectionné
+    // seulement si la feature correspondante est sélectionnée
     const config = char.mixedAncestryConfig
     if (config) {
-      const ancestryIds = [config.ancestry1Id, config.ancestry2Id].filter(Boolean)
-      for (const aId of ancestryIds) {
+      // Vérifier chaque ascendance parente et sa feature sélectionnée
+      const pairs = [
+        { aId: config.ancestry1Id, selectedFeature: config.ancestry1Feature },
+        { aId: config.ancestry2Id, selectedFeature: config.ancestry2Feature }
+      ]
+      for (const { aId, selectedFeature } of pairs) {
+        if (!aId || !selectedFeature) continue
         const mod = ANCESTRY_MODIFIERS[aId]
         if (!mod) continue
-        // Vérifier que le bon feature est sélectionné pour cette ascendance
-        const isTopSelected = config.topFeatureSource === aId
-        const isBottomSelected = config.bottomFeatureSource === aId
-        if (mod.featurePosition === 'top' && isTopSelected) {
-          applyModifier(bonuses, mod, char)
-        } else if (mod.featurePosition === 'bottom' && isBottomSelected) {
+        // Appliquer le bonus uniquement si la feature sélectionnée correspond à la position du modifier
+        if (mod.featurePosition === selectedFeature) {
           applyModifier(bonuses, mod, char)
         }
       }

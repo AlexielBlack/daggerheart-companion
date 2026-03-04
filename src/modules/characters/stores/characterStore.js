@@ -259,17 +259,15 @@ export const useCharacterStore = defineStore('characters', () => {
       const a2 = config.ancestry2Id ? getAncestryById(config.ancestry2Id) : null
       const base = getAncestryById('mixed-ancestry')
 
-      // Résoudre les features sélectionnées
-      let topFeature = base.topFeature
-      let bottomFeature = base.bottomFeature
+      // Résoudre les features : chaque ascendance contribue la feature choisie (top ou bottom)
+      let feature1 = base.topFeature
+      let feature2 = base.bottomFeature
 
-      if (config.topFeatureSource && (a1 || a2)) {
-        const src = config.topFeatureSource === config.ancestry1Id ? a1 : a2
-        if (src) topFeature = src.topFeature
+      if (a1 && config.ancestry1Feature) {
+        feature1 = config.ancestry1Feature === 'top' ? a1.topFeature : a1.bottomFeature
       }
-      if (config.bottomFeatureSource && (a1 || a2)) {
-        const src = config.bottomFeatureSource === config.ancestry1Id ? a1 : a2
-        if (src) bottomFeature = src.bottomFeature
+      if (a2 && config.ancestry2Feature) {
+        feature2 = config.ancestry2Feature === 'top' ? a2.topFeature : a2.bottomFeature
       }
 
       // Construire le nom composite
@@ -279,8 +277,8 @@ export const useCharacterStore = defineStore('characters', () => {
       return {
         ...base,
         name: label,
-        topFeature,
-        bottomFeature,
+        topFeature: feature1,
+        bottomFeature: feature2,
         // Données brutes pour l'UI
         _resolved: true,
         _ancestry1: a1,
@@ -530,8 +528,8 @@ export const useCharacterStore = defineStore('characters', () => {
             char.mixedAncestryConfig = {
               ancestry1Id: '',
               ancestry2Id: '',
-              topFeatureSource: '',
-              bottomFeatureSource: ''
+              ancestry1Feature: '',
+              ancestry2Feature: ''
             }
           }
           _syncDerivedStats(char)
@@ -556,9 +554,9 @@ export const useCharacterStore = defineStore('characters', () => {
 
   /**
    * Met à jour un champ de la configuration Mixed Ancestry.
-   * Gère la contrainte SRD : top d'une ascendance, bottom d'une autre.
-   * @param {string} field - 'ancestry1Id' | 'ancestry2Id' | 'topFeatureSource' | 'bottomFeatureSource'
-   * @param {string} value - ID de l'ascendance
+   * Chaque ascendance contribue une feature au choix (top ou bottom).
+   * @param {string} field - 'ancestry1Id' | 'ancestry2Id' | 'ancestry1Feature' | 'ancestry2Feature'
+   * @param {string} value - ID d'ascendance ou 'top'/'bottom'
    */
   function updateMixedAncestry(field, value) {
     const char = selectedCharacter.value
@@ -566,28 +564,18 @@ export const useCharacterStore = defineStore('characters', () => {
     if (!char.mixedAncestryConfig) {
       char.mixedAncestryConfig = {
         ancestry1Id: '', ancestry2Id: '',
-        topFeatureSource: '', bottomFeatureSource: ''
+        ancestry1Feature: '', ancestry2Feature: ''
       }
     }
     const config = char.mixedAncestryConfig
 
     if (field === 'ancestry1Id' || field === 'ancestry2Id') {
       config[field] = value
-      // Réinitialiser les features si les ascendances changent
-      config.topFeatureSource = ''
-      config.bottomFeatureSource = ''
-    } else if (field === 'topFeatureSource') {
-      config.topFeatureSource = value
-      // Contrainte SRD : bottom doit venir de l'autre ascendance
-      if (value && config.bottomFeatureSource === value) {
-        config.bottomFeatureSource = ''
-      }
-    } else if (field === 'bottomFeatureSource') {
-      config.bottomFeatureSource = value
-      // Contrainte SRD : top doit venir de l'autre ascendance
-      if (value && config.topFeatureSource === value) {
-        config.topFeatureSource = ''
-      }
+      // Réinitialiser les choix de features si les ascendances changent
+      config.ancestry1Feature = ''
+      config.ancestry2Feature = ''
+    } else if (field === 'ancestry1Feature' || field === 'ancestry2Feature') {
+      config[field] = value
     }
 
     char.updatedAt = new Date().toISOString()
