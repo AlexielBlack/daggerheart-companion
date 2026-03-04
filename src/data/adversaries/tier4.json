@@ -4,12 +4,12 @@
     "name": "Arch-Necromancer",
     "tier": 4,
     "type": "Leader",
-    "description": "A decaying mage adorned in dark, tattered robes.",
+    "description": "Un mage en décomposition paré de robes sombres et déchirées.",
     "motives": [
-      "Corrupt",
-      "Decay",
-      "Flee to fight another day",
-      "Resurrect"
+      "Corrompre",
+      "Décomposer",
+      "Fuir pour combattre un autre jour",
+      "Ressusciter"
     ],
     "difficulty": 21,
     "thresholds": {
@@ -39,31 +39,31 @@
       {
         "name": "Dance of Death",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spotlight 1d4 allies. Attacks they make while spotlighted deal half damage, or full damage if you spend a Fear."
+        "cost": "Cochez un Stress",
+        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts, ou la totalité si vous dépensez une Peur."
       },
       {
         "name": "Beam of Decay",
         "type": "action",
-        "cost": "Mark 2 Stress",
-        "description": "Cause all targets within Far range to make a Strength Reaction Roll. Targets who fail take 2d20+12 magic damage and you gain a Fear. Targets who succeed take half damage. A target who marks 2 or more HP must also mark 2 Stress and becomes Vulnerable until they roll with Hope."
+        "cost": "Cochez 2 Stress",
+        "description": "Forcez toutes les cibles à Portée Loin à faire un jet de Réaction de Force. Les cibles qui échouent subissent 2d20+12 dégâts magiques et vous gagnez une Peur. Les cibles qui réussissent subissent la moitié des dégâts. Une cible qui coche 2 PV ou plus doit aussi cocher 2 Stress et devient Vulnérable jusqu’à ce qu’elle obtienne Espoir."
       },
       {
         "name": "Open the Gates of Death",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Summon a Zombie Legion, which appears at Close range and immediately takes the spotlight."
+        "cost": "Dépensez une Peur",
+        "description": "Invoquez une Légion de Zombies, qui apparaît à Portée Proche et prend immédiatement la vedette."
       },
       {
         "name": "Not Today, My Dears",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When the Necromancer has marked 7 or more HP, teleport away to a safe location. A PC who succeeds on an Instinct Roll can trace the teleportation magic to their destination."
+        "cost": "Dépensez une Peur",
+        "description": "Quand le Nécromancien a coché 7 PV ou plus, téléportez-le dans un lieu sûr. Un PJ qui réussit un jet d’Instinct peut remonter la trace de la magie de téléportation jusqu’à sa destination."
       },
       {
         "name": "Your Life Is Mine",
         "type": "reaction",
-        "description": "Countdown (Loop 2d6). When the Necromancer has marked 6 or more HP, activate the countdown. When it triggers, deal 2d10+6 direct magic damage to a target within Close range. The Necromancer then clears HP or Stress equal to the number of HP marked by the target."
+        "description": "Compte à rebours (Boucle 2d6). Quand le Nécromancien a coché 6 PV ou plus, activez le compte à rebours. Quand il se déclenche, infligez 2d10+6 dégâts magiques directs à une cible à Portée Proche. Le Nécromancien retire alors des PV ou du Stress égal au nombre de PV cochés par la cible."
       }
     ]
   },
@@ -72,12 +72,12 @@
     "name": "Fallen Shock Troop",
     "tier": 4,
     "type": "Minion",
-    "description": "A cursed soul bound to the Fallen's will.",
+    "description": "Une âme maudite liée à la volonté des Déchus.",
     "motives": [
-      "Crush",
-      "Dominate",
-      "Earn relief",
-      "Punish"
+      "Écraser",
+      "Dominer",
+      "Gagner un répit",
+      "Punir"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -98,18 +98,18 @@
       {
         "name": "Minion (12)",
         "type": "passive",
-        "description": "The Shock Troop is defeated when they take any damage. For every 12 damage a PC deals to the Shock Troop, defeat an additional Minion within range the attack would succeed against."
+        "description": "La Troupe de Choc est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 12 dégâts qu’un PJ inflige à la Troupe de Choc, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Aura of Doom",
         "type": "passive",
-        "description": "When a PC marks HP from an attack by the Shock Troop, they lose a Hope."
+        "description": "Quand un PJ coche des PV suite à une attaque de la Troupe de Choc, il perd un Espoir."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Fallen Shock Troops within Close range of them. Those Minions move into Melee range and make one shared attack roll. On a success, they deal 12 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette toutes les Troupes de Choc Déchues à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 12 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -118,12 +118,12 @@
     "name": "Fallen Sorcerer",
     "tier": 4,
     "type": "Support",
-    "description": "A powerful mage bound by the bargains they made in life.",
+    "description": "Un mage puissant lié par les pactes qu’il a conclus de son vivant.",
     "motives": [
-      "Acquire",
-      "Dishearten",
-      "Dominate",
-      "Torment"
+      "Acquérir",
+      "Décourager",
+      "Dominer",
+      "Tourmenter"
     ],
     "difficulty": 19,
     "thresholds": {
@@ -149,24 +149,24 @@
       {
         "name": "Conflagration",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Unleash an all-consuming firestorm and attack all targets within Close range. Targets the Sorcerer succeeds against take 2d10+6 direct magic damage."
+        "cost": "Dépensez une Peur",
+        "description": "Déchaînez une tempête de feu dévorante et attaquez toutes les cibles à Portée Proche. Les cibles touchées subissent 2d10+6 dégâts magiques directs."
       },
       {
         "name": "Nightmare Tableau",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Trap a target within Far range in a powerful illusion of their worst fears. The target is Restrained and Vulnerable until they break free with a successful Instinct Roll."
+        "cost": "Cochez un Stress",
+        "description": "Piégez une cible à Portée Loin dans une puissante illusion de ses pires peurs. La cible est Entravée et Vulnérable jusqu’à ce qu’elle se libère avec un jet d’Instinct réussi."
       },
       {
         "name": "Slippery",
         "type": "reaction",
-        "description": "When the Sorcerer takes damage from an attack, they can teleport up to Far range."
+        "description": "Quand le Sorcier subit des dégâts d’une attaque, il peut se téléporter jusqu’à Portée Loin."
       },
       {
         "name": "Shackles of Guilt",
         "type": "reaction",
-        "description": "Countdown (Loop 2d6). When the Sorcerer is in the spotlight for the first time, activate the countdown. When it triggers, all targets within Far range become Vulnerable and must mark a Stress. A target can break free with a successful Presence or Strength Roll."
+        "description": "Compte à rebours (Boucle 2d6). Quand le Sorcier est en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, toutes les cibles à Portée Loin deviennent Vulnérables et doivent cocher un Stress. Une cible peut se libérer avec un jet de Présence ou de Force réussi."
       }
     ]
   },
@@ -175,12 +175,12 @@
     "name": "Fallen Warlord: Realm-Breaker",
     "tier": 4,
     "type": "Solo",
-    "description": "A terrifying warrior who carves through mortals like paper.",
+    "description": "Un guerrier terrifiant qui tranche les mortels comme du papier.",
     "motives": [
-      "Conquer",
-      "Crush hope",
-      "Destroy",
-      "Inspire dread"
+      "Conquérir",
+      "Écraser l’espoir",
+      "Détruire",
+      "Inspirer l’effroi"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -210,12 +210,12 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Realm-Breaker can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Briseur de Royaumes peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Warlord makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+        "description": "Quand le Seigneur de Guerre réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur."
       }
     ]
   },
@@ -224,11 +224,11 @@
     "name": "Fallen Warlord: Undefeated Champion",
     "tier": 4,
     "type": "Solo",
-    "description": "That which only the most feared have a chance to fear.",
+    "description": "Ce que seuls les plus redoutés ont une chance de craindre.",
     "motives": [
-      "Dispatch merciless death",
-      "Punish the defiant",
-      "Secure victory at any cost"
+      "Distribuer une mort sans pitié",
+      "Punir les rebelles",
+      "Assurer la victoire à tout prix"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -262,39 +262,39 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Undefeated Champion can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Champion Invaincu peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Faltering Armor",
         "type": "passive",
-        "description": "When the Undefeated Champion takes damage, reduce it by 1d10."
+        "description": "Quand le Champion Invaincu subit des dégâts, réduisez-les de 1d10."
       },
       {
         "name": "Shattering Strike",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make a standard attack against all targets within Very Close range. PCs the Champion succeeds against lose a number of Hope equal to the HP they marked from this attack."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque standard contre toutes les cibles à Portée Très Proche. Les PJ touchés perdent un nombre d’Espoirs égal aux PV cochés suite à cette attaque."
       },
       {
         "name": "Endless Legions",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Summon a number of Fallen Shock Troops equal to twice the number of PCs. The Shock Troops appear at Far range."
+        "cost": "Dépensez une Peur",
+        "description": "Invoquez un nombre de Troupes de Choc Déchues égal au double du nombre de PJ. Les Troupes de Choc apparaissent à Portée Loin."
       },
       {
         "name": "Circle of Defilement",
         "type": "reaction",
-        "description": "Countdown (1d8). When in the spotlight for the first time, activate the countdown. When it triggers, activate a magical circle within Far range. Targets within that area are Vulnerable until they leave. The circle can be removed by dealing Severe damage to the Undefeated Champion."
+        "description": "Compte à rebours (1d8). Quand mis en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, activez un cercle magique à Portée Loin. Les cibles dans cette zone sont Vulnérables jusqu’à ce qu’elles la quittent. Le cercle peut être retiré en infligeant des dégâts Sévères au Champion Invaincu."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Undefeated Champion makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Champion Invaincu réussit une attaque contre un PJ, vous gagnez une Peur."
       },
       {
         "name": "Doombringer",
         "type": "reaction",
-        "description": "When a target marks HP from an attack by the Undefeated Champion, all PCs within Far range of the target lose a Hope."
+        "description": "Quand une cible coche des PV suite à une attaque du Champion Invaincu, tous les PJ à Portée Loin de la cible perdent un Espoir."
       }
     ]
   },
@@ -303,12 +303,12 @@
     "name": "Hallowed Archer",
     "tier": 4,
     "type": "Ranged",
-    "description": "Spirit soldiers with sanctified bows.",
+    "description": "Des soldats spirituels avec des arcs sanctifiés.",
     "motives": [
-      "Focus fire",
-      "Obey",
-      "Reposition",
-      "Volley"
+      "Concentrer le feu",
+      "Obéir",
+      "Se repositionner",
+      "Tir de volée"
     ],
     "difficulty": 19,
     "thresholds": {
@@ -329,13 +329,13 @@
       {
         "name": "Punish the Guilty",
         "type": "passive",
-        "description": "The Archer deals double damage to targets marked Guilty by a High Seraph."
+        "description": "L’Archer inflige le double de dégâts aux cibles marquées Coupables par un Haut Séraphin."
       },
       {
         "name": "Divine Volley",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make a standard attack against up to three targets."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque standard contre jusqu’à trois cibles."
       }
     ]
   },
@@ -344,12 +344,12 @@
     "name": "Hallowed Soldier",
     "tier": 4,
     "type": "Minion",
-    "description": "Souls of the faithful, lifted up with divine weaponry.",
+    "description": "Des âmes de fidèles, élevées avec des armes divines.",
     "motives": [
-      "Obey",
-      "Outmaneuver",
-      "Punish",
-      "Swarm"
+      "Obéir",
+      "Surpasser tactiquement",
+      "Punir",
+      "Essaimer"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -370,18 +370,18 @@
       {
         "name": "Minion (13)",
         "type": "passive",
-        "description": "The Soldier is defeated when they take any damage. For every 13 damage a PC deals to the Soldier, defeat an additional Minion within range the attack would succeed against."
+        "description": "Le Soldat est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 13 dégâts qu’un PJ inflige au Soldat, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Divine Flight",
         "type": "passive",
-        "description": "While the Soldier is flying, spend a Fear to move up to Far range instead of Close range before taking an action."
+        "description": "Tant que le Soldat vole, dépensez une Peur pour se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Hallowed Soldiers within Close range of them. Those Minions move into Melee range and make one shared attack roll. On a success, they deal 10 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Soldats Sanctifiés à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 10 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -390,12 +390,12 @@
     "name": "High Seraph",
     "tier": 4,
     "type": "Leader",
-    "description": "A divine champion, head of a hallowed host of warriors who enforce their god's will.",
+    "description": "Un champion divin, à la tête d’une armée sacrée de guerriers qui font respecter la volonté de leur dieu.",
     "motives": [
-      "Enforce dogma",
-      "Fly",
-      "Pronounce judgment",
-      "Smite"
+      "Faire respecter le dogme",
+      "Voler",
+      "Prononcer un jugement",
+      "Châtier"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -421,30 +421,30 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Seraph can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Séraphin peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Divine Flight",
         "type": "passive",
-        "description": "While the Seraph is flying, spend a Fear to move up to Far range instead of Close range before taking an action."
+        "description": "Tant que le Séraphin vole, dépensez une Peur pour se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir."
       },
       {
         "name": "Judgment",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make a target Guilty in the eyes of the Seraph's god until the Seraph is defeated. While Guilty, the target doesn't gain Hope on a result with Hope. The Seraph deals Severe damage to Guilty targets on a successful standard attack. One target at a time."
+        "cost": "Dépensez une Peur",
+        "description": "Rendez une cible à Portée Loin Coupable aux yeux du dieu du Séraphin jusqu’à ce que le Séraphin soit vaincu. Tant que Coupable, la cible ne gagne pas d’Espoir sur un résultat avec Espoir. Le Séraphin inflige des dégâts Sévères aux cibles Coupables sur une attaque standard réussie. Une seule cible à la fois."
       },
       {
         "name": "God Rays",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Reflect a sliver of divinity as a searing beam of light that hits up to twenty targets within Very Far range. Targets must make a Presence Reaction Roll (with disadvantage if Guilty). Targets who fail take 4d6+12 magic damage. Targets who succeed take half damage."
+        "cost": "Cochez un Stress",
+        "description": "Reflétez un éclat de divinité sous forme d’un rayon de lumière brûlant frappant jusqu’à vingt cibles à Portée Très Loin. Les cibles doivent faire un jet de Réaction de Présence (avec désavantage si Coupables). Les cibles qui échouent subissent 4d6+12 dégâts magiques. Les cibles qui réussissent subissent la moitié des dégâts."
       },
       {
         "name": "We Are One",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Once per scene, spotlight all other adversaries within Far range. Attacks they make deal half damage."
+        "cost": "Dépensez une Peur",
+        "description": "Une fois par scène, mettez en vedette tous les autres adversaires à Portée Loin. Les attaques qu’ils effectuent infligent la moitié des dégâts."
       }
     ]
   },
@@ -453,12 +453,12 @@
     "name": "Kraken",
     "tier": 4,
     "type": "Solo",
-    "description": "A legendary beast of the sea, bigger than the largest galleon, with sucker-laden tentacles and a terrifying maw.",
+    "description": "Une bête légendaire des mers, plus grande que le plus grand galion, avec des tentacules à ventouses et une gueule terrifiante.",
     "motives": [
-      "Consume",
-      "Crush",
-      "Drown",
-      "Grapple"
+      "Consumer",
+      "Écraser",
+      "Noyer",
+      "Lutter"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -484,29 +484,29 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Kraken can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Kraken peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Many Tentacles",
         "type": "passive",
-        "description": "While the Kraken has 7 or fewer marked HP, they can make their standard attack against two targets within range."
+        "description": "Tant que le Kraken a 7 PV cochés ou moins, il peut faire son attaque standard contre deux cibles à portée."
       },
       {
         "name": "Grapple and Drown",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack roll against a target within Close range. On a success, grab them with a tentacle and drag them beneath the water. The target is Restrained and Vulnerable until they break free with a successful Strength Roll or the Kraken takes Major or greater damage. While Restrained, the target must mark a Stress when they make an action roll."
+        "cost": "Cochez un Stress",
+        "description": "Faites un jet d’attaque contre une cible à Portée Proche. En cas de réussite, agrippez-la avec un tentacule et entraînez-la sous l’eau. La cible est Entravée et Vulnérable jusqu’à ce qu’elle se libère avec un jet de Force réussi ou que le Kraken subisse des dégâts Majeurs ou supérieurs. Tant qu’Entravée, la cible doit cocher un Stress quand elle fait un jet d’action."
       },
       {
         "name": "Boiling Blast",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Spew a line of boiling water at any number of targets in a line up to Far range. All targets must succeed on an Agility Reaction Roll or take 4d6+9 physical damage. If a target marks an Armor Slot to reduce damage, they must also mark a Stress."
+        "cost": "Dépensez une Peur",
+        "description": "Crachez une ligne d’eau bouillante sur un nombre quelconque de cibles en ligne jusqu’à Portée Loin. Toutes les cibles doivent réussir un jet de Réaction d’Agilité ou subir 4d6+9 dégâts physiques. Si une cible coche un Emplacement d’armure pour réduire les dégâts, elle doit aussi cocher un Stress."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Kraken makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Kraken réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -515,12 +515,12 @@
     "name": "Oracle of Doom",
     "tier": 4,
     "type": "Solo",
-    "description": "A towering immortal and incarnation of fate, cursed to only see bad outcomes.",
+    "description": "Un immortel imposant et incarnation du destin, maudit à ne voir que les issues funestes.",
     "motives": [
-      "Change environment",
-      "Condemn",
-      "Dishearten",
-      "Toss aside"
+      "Modifier l’environnement",
+      "Condamner",
+      "Décourager",
+      "Rejeter au loin"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -546,35 +546,35 @@
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Oracle makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+        "description": "Quand l’Oracle réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur."
       },
       {
         "name": "Walls Closing In",
         "type": "passive",
-        "description": "When a creature rolls a failure while within Very Far range of the Oracle, they must mark a Stress."
+        "description": "Quand une créature obtient un échec à Portée Très Loin de l’Oracle, elle doit cocher un Stress."
       },
       {
         "name": "Pronounce Fate",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Present a target within Far range with a vision of their personal nightmare. The target must make a Knowledge Reaction Roll. On a failure, they lose all Hope and take 2d20+4 direct magic damage. On a success, they take half damage and lose a Hope."
+        "cost": "Dépensez une Peur",
+        "description": "Présentez à une cible à Portée Loin une vision de son cauchemar personnel. La cible doit faire un jet de Réaction de Savoir. En cas d’échec, elle perd tout son Espoir et subit 2d20+4 dégâts magiques directs. En cas de réussite, elle subit la moitié des dégâts et perd un Espoir."
       },
       {
         "name": "Summon Tormentors",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Once per day, summon 2d4 Tier 2 or below Minions relevant to one of the PC's personal nightmares. They appear at Close range relative to that PC."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Une fois par jour, invoquez 2d4 Minions de Tier 2 ou inférieur en rapport avec le cauchemar personnel d’un des PJ. Ils apparaissent à Portée Proche de ce PJ."
       },
       {
         "name": "Ominous Knowledge",
         "type": "reaction",
-        "description": "When the Oracle sees a mortal creature, they instantly know one of their personal nightmares."
+        "description": "Quand l’Oracle voit une créature mortelle, il connaît instantanément l’un de ses cauchemars personnels."
       },
       {
         "name": "Vengeful Fate",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Oracle marks HP from an attack within Very Close range, knock the attacker back to Far range and deal 2d10+4 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Quand l’Oracle coche des PV suite à une attaque à Portée Très Proche, repoussez l’attaquant à Portée Loin et infligez 2d10+4 dégâts physiques."
       }
     ]
   },
@@ -583,11 +583,11 @@
     "name": "Outer Realms Abomination",
     "tier": 4,
     "type": "Bruiser",
-    "description": "A chaotic mockery of life, constantly in flux.",
+    "description": "Une parodie chaotique de la vie, en perpétuelle mutation.",
     "motives": [
-      "Demolish",
-      "Devour",
-      "Undermine"
+      "Démolir",
+      "Dévorer",
+      "Saper"
     ],
     "difficulty": 19,
     "thresholds": {
@@ -608,23 +608,23 @@
       {
         "name": "Chaotic Form",
         "type": "passive",
-        "description": "When the Abomination attacks, roll 2d4 and use the result as their attack modifier."
+        "description": "Quand l’Abomination attaque, lancez 2d4 et utilisez le résultat comme modificateur d’attaque."
       },
       {
         "name": "Disorienting Presence",
         "type": "passive",
-        "description": "When a target takes damage from the Abomination, they must make an Instinct Reaction Roll. On a failure, they gain disadvantage on their next action roll and you gain a Fear."
+        "description": "Quand une cible subit des dégâts de l’Abomination, elle doit faire un jet de Réaction d’Instinct. En cas d’échec, elle gagne un désavantage sur son prochain jet d’action et vous gagnez une Peur."
       },
       {
         "name": "Reality Quake",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Rattle the edges of reality within Far range. All targets within that area must succeed on a Knowledge Reaction Roll or become Unstuck from reality until the end of the scene. When an Unstuck target spends Hope or marks Armor Slots, HP, or Stress, they must double the amount spent or marked."
+        "cost": "Dépensez une Peur",
+        "description": "Ébranlez les limites de la réalité à Portée Loin. Toutes les cibles dans cette zone doivent réussir un jet de Réaction de Savoir ou devenir Déphasées de la réalité jusqu’à la fin de la scène. Quand une cible Déphasée dépense de l’Espoir ou coche des Emplacements d’armure, PV ou Stress, elle doit doubler le montant dépensé ou coché."
       },
       {
         "name": "Unravel Form",
         "type": "reaction",
-        "description": "When the Abomination takes damage, reduce it by 1d20. If the Abomination marks 1 or fewer Hit Points from a successful attack against them, you gain a Fear."
+        "description": "Quand l’Abomination subit des dégâts, réduisez-les de 1d20. Si l’Abomination coche 1 PV ou moins suite à une attaque réussie contre elle, vous gagnez une Peur."
       }
     ]
   },
@@ -633,11 +633,11 @@
     "name": "Outer Realms Corrupter",
     "tier": 4,
     "type": "Support",
-    "description": "A shifting, formless mass seemingly made of chromatic light.",
+    "description": "Une masse changeante et informe apparemment faite de lumière chromatique.",
     "motives": [
-      "Confuse",
-      "Distract",
-      "Overwhelm"
+      "Désorienter",
+      "Distraire",
+      "Submerger"
     ],
     "difficulty": 19,
     "thresholds": {
@@ -658,13 +658,13 @@
       {
         "name": "Will-Shattering Touch",
         "type": "passive",
-        "description": "When a PC takes damage from the Corrupter, they lose a Hope."
+        "description": "Quand un PJ subit des dégâts du Corrupteur, il perd un Espoir."
       },
       {
         "name": "Disgorge Reality Ribbons",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spew partially digested portions of consumed realities at all targets within Close range. Targets must succeed on a Knowledge Reaction Roll or mark 2 Stress."
+        "cost": "Cochez un Stress",
+        "description": "Recrachez des fragments partiellement digérés de réalités consommées sur toutes les cibles à Portée Proche. Les cibles doivent réussir un jet de Réaction de Savoir ou cocher 2 Stress."
       }
     ]
   },
@@ -673,12 +673,12 @@
     "name": "Outer Realms Thrall",
     "tier": 4,
     "type": "Minion",
-    "description": "A vaguely humanoid form stripped of memory and identity.",
+    "description": "Une forme vaguement humanoïde dépouillée de mémoire et d’identité.",
     "motives": [
-      "Destroy",
-      "Disgust",
-      "Disorient",
-      "Intimidate"
+      "Détruire",
+      "Dégoûter",
+      "Désorienter",
+      "Intimider"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -699,13 +699,13 @@
       {
         "name": "Minion (13)",
         "type": "passive",
-        "description": "The Thrall is defeated when they take any damage. For every 13 damage a PC deals to the Thrall, defeat an additional Minion within range the attack would succeed against."
+        "description": "L’Esclave est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 13 dégâts qu’un PJ inflige à l’Esclave, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Outer Realm Thralls within Close range of them. Those Minions move into Melee range and make one shared attack roll. On a success, they deal 11 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Esclaves des Royaumes Extérieurs à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 11 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -714,13 +714,13 @@
     "name": "Volcanic Dragon: Obsidian Predator",
     "tier": 4,
     "type": "Solo",
-    "description": "A massive winged creature with obsidian scales and impossibly sharp claws.",
+    "description": "Une créature ailée massive aux écailles d’obsidienne et aux griffes impossiblement tranchantes.",
     "motives": [
-      "Defend lair",
-      "Dive-bomb",
-      "Fly",
-      "Hunt",
-      "Intimidate"
+      "Défendre le repaire",
+      "Bombarder en piqué",
+      "Voler",
+      "Chasser",
+      "Intimider"
     ],
     "difficulty": 19,
     "thresholds": {
@@ -746,34 +746,34 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "The Obsidian Predator can be spotlighted up to two times per GM turn."
+        "description": "Le Prédateur d’Obsidienne peut être mis en vedette jusqu’à deux fois par tour du MJ."
       },
       {
         "name": "Flying",
         "type": "passive",
-        "description": "While flying, the Obsidian Predator gains a +3 bonus to their Difficulty."
+        "description": "En vol, le Prédateur d’Obsidienne gagne un bonus de +3 à sa Difficulté."
       },
       {
         "name": "Obsidian Scales",
         "type": "passive",
-        "description": "The Obsidian Predator is resistant to physical damage."
+        "description": "Le Prédateur d’Obsidienne est résistant aux dégâts physiques."
       },
       {
         "name": "Avalanche Tail",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against all targets within Close range. Targets the Predator succeeds against take 4d6+4 physical damage and are knocked back to Far range and Vulnerable until their next roll with Hope."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre toutes les cibles à Portée Proche. Les cibles touchées subissent 4d6+4 dégâts physiques et sont repoussées à Portée Loin et Vulnérables jusqu’à leur prochain jet avec Espoir."
       },
       {
         "name": "Dive-Bomb",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "If flying, choose a point within Far range. Move there and attack all targets within Very Close range. Targets the Predator succeeds against take 2d10+6 physical damage and must mark a Stress and lose a Hope."
+        "cost": "Cochez un Stress",
+        "description": "Si en vol, choisissez un point à Portée Loin. Déplacez-vous là et attaquez toutes les cibles à Portée Très Proche. Les cibles touchées subissent 2d10+6 dégâts physiques et doivent cocher un Stress et perdre un Espoir."
       },
       {
         "name": "Erupting Rage (Phase Change)",
         "type": "reaction",
-        "description": "When the Obsidian Predator marks their last HP, replace them with the Molten Scourge and immediately spotlight them."
+        "description": "Quand le Prédateur d’Obsidienne coche son dernier PV, remplacez-le par le Fléau en Fusion et mettez-le immédiatement en vedette."
       }
     ]
   },
@@ -782,12 +782,12 @@
     "name": "Volcanic Dragon: Molten Scourge",
     "tier": 4,
     "type": "Solo",
-    "description": "Enraged by their wounds, the dragon bursts into molten lava.",
+    "description": "Enragé par ses blessures, le dragon éclate en lave en fusion.",
     "motives": [
-      "Douse with lava",
-      "Incinerate",
-      "Repel invaders",
-      "Reposition"
+      "Arroser de lave",
+      "Incinérer",
+      "Repousser les envahisseurs",
+      "Se repositionner"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -813,39 +813,39 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Molten Scourge can be spotlighted up to three times per GM turn."
+        "description": "Le Fléau en Fusion peut être mis en vedette jusqu’à trois fois par tour du MJ."
       },
       {
         "name": "Cracked Scales",
         "type": "passive",
-        "description": "When the Molten Scourge takes damage, roll a number of d6s equal to HP marked. For each result of 4 or higher, you gain a Fear."
+        "description": "Quand le Fléau en Fusion subit des dégâts, lancez un nombre de d6 égal aux PV cochés. Pour chaque résultat de 4 ou plus, vous gagnez une Peur."
       },
       {
         "name": "Shattering Might",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Very Close range. On a success, the target takes 4d8+1 physical damage, loses a Hope, and is knocked back to Close range."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, la cible subit 4d8+1 dégâts physiques, perd un Espoir et est repoussée à Portée Proche."
       },
       {
         "name": "Eruption",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Erupt lava from beneath the Scourge's scales, filling the area within Very Close range with molten lava. All targets must succeed on an Agility Reaction Roll or take 4d6+6 physical damage and be knocked back. The area remains lava. Creatures who enter or act in it must mark 6 HP."
+        "cost": "Dépensez une Peur",
+        "description": "Faites érupter de la lave sous les écailles du Fléau, remplissant la zone à Portée Très Proche de lave en fusion. Toutes les cibles doivent réussir un jet de Réaction d’Agilité ou subir 4d6+6 dégâts physiques et être repoussées. La zone reste de la lave. Les créatures qui y entrent ou agissent dedans doivent cocher 6 PV."
       },
       {
         "name": "Volcanic Breath",
         "type": "reaction",
-        "description": "When the Molten Scourge takes Major damage, roll a d10. On 8 or higher, breathe lava in front within Far range. All targets must make an Agility Reaction Roll. Failure: 2d10+4 physical damage, mark 1d4 Stress, and Vulnerable. Success: half damage and mark a Stress."
+        "description": "Quand le Fléau en Fusion subit des dégâts Majeurs, lancez un d10. Sur 8 ou plus, crachez de la lave devant à Portée Loin. Toutes les cibles doivent faire un jet de Réaction d’Agilité. Échec : 2d10+4 dégâts physiques, cochez 1d4 Stress et Vulnérable. Réussite : moitié des dégâts et cochez un Stress."
       },
       {
         "name": "Lava Splash",
         "type": "reaction",
-        "description": "When the Molten Scourge takes Severe damage from within Very Close range, deal 2d10+4 direct physical damage to the attacker."
+        "description": "Quand le Fléau en Fusion subit des dégâts Sévères depuis Portée Très Proche, infligez 2d10+4 dégâts physiques directs à l’attaquant."
       },
       {
         "name": "Ashen Vengeance (Phase Change)",
         "type": "reaction",
-        "description": "When the Molten Scourge marks their last HP, replace them with the Ashen Tyrant and immediately spotlight them."
+        "description": "Quand le Fléau en Fusion coche son dernier PV, remplacez-le par le Tyran de Cendres et mettez-le immédiatement en vedette."
       }
     ]
   },
@@ -854,12 +854,12 @@
     "name": "Volcanic Dragon: Ashen Tyrant",
     "tier": 4,
     "type": "Solo",
-    "description": "No enemy has ever had the insolence to wound the dragon so. As the lava settles, it's ground to ash.",
+    "description": "Aucun ennemi n’avait jamais eu l’insolence de blesser le dragon à ce point. Tandis que la lave se dépose, elle se réduit en cendres.",
     "motives": [
-      "Choke",
-      "Fly",
-      "Intimidate",
-      "Kill or be killed"
+      "Étouffer",
+      "Voler",
+      "Intimider",
+      "Tuer ou mourir"
     ],
     "difficulty": 18,
     "thresholds": {
@@ -885,39 +885,39 @@
       {
         "name": "Relentless (4)",
         "type": "passive",
-        "description": "The Ashen Tyrant can be spotlighted up to four times per GM turn."
+        "description": "Le Tyran de Cendres peut être mis en vedette jusqu’à quatre fois par tour du MJ."
       },
       {
         "name": "Cornered",
         "type": "passive",
-        "description": "Mark a Stress instead of spending a Fear to spotlight the Ashen Tyrant."
+        "description": "Cochez un Stress au lieu de dépenser une Peur pour mettre le Tyran de Cendres en vedette."
       },
       {
         "name": "Injured Wings",
         "type": "passive",
-        "description": "While flying, the Ashen Tyrant gains a +1 bonus to their Difficulty."
+        "description": "En vol, le Tyran de Cendres gagne un bonus de +1 à sa Difficulté."
       },
       {
         "name": "Ashes to Ashes",
         "type": "passive",
-        "description": "When a PC rolls a failure while within Close range of the Ashen Tyrant, they lose a Hope and you gain a Fear. If the PC can't lose a Hope, they must mark a HP."
+        "description": "Quand un PJ obtient un échec à Portée Proche du Tyran de Cendres, il perd un Espoir et vous gagnez une Peur. Si le PJ ne peut pas perdre d’Espoir, il doit cocher un PV."
       },
       {
         "name": "Desperate Rampage",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against all targets within Close range. Targets the Tyrant succeeds against take 2d20+2 physical damage, are knocked back, and must mark a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre toutes les cibles à Portée Proche. Les cibles touchées subissent 2d20+2 dégâts physiques, sont repoussées et doivent cocher un Stress."
       },
       {
         "name": "Ashen Cloud",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Smash the ground and kick up ash within Far range. While within the ash cloud, a target has disadvantage on action rolls. Clears the next time an adversary is spotlighted."
+        "cost": "Dépensez une Peur",
+        "description": "Fracassez le sol et soulevez de la cendre à Portée Loin. Tant qu’elle est dans le nuage de cendres, une cible a un désavantage sur les jets d’action. Se dissipe la prochaine fois qu’un adversaire est mis en vedette."
       },
       {
         "name": "Apocalyptic Thrashing",
         "type": "action",
-        "description": "Countdown (1d12). Spend a Fear to activate. Ticks down on Fear rolls. When it triggers, the Ashen Tyrant causes environmental damage. All targets within Far range must make a Strength Reaction Roll. Failure: 2d10+10 physical damage and Restrained by rubble. Success: half damage."
+        "description": "Compte à rebours (1d12). Dépensez une Peur pour l’activer. Décompte sur les jets de Peur. Quand il se déclenche, le Tyran de Cendres cause des dégâts environnementaux. Toutes les cibles à Portée Loin doivent faire un jet de Réaction de Force. Échec : 2d10+10 dégâts physiques et Entravé par les décombres. Réussite : moitié des dégâts."
       }
     ]
   },
@@ -926,11 +926,11 @@
     "name": "Perfected Zombie",
     "tier": 4,
     "type": "Standard",
-    "description": "A flawlessly preserved undead warrior, peak of necromantic art.",
+    "description": "Un guerrier mort-vivant parfaitement conservé, summum de l’art nécromantique.",
     "motives": [
-      "Destroy",
-      "Hunt",
-      "Obey"
+      "Détruire",
+      "Chasser",
+      "Obéir"
     ],
     "difficulty": 20,
     "thresholds": {
@@ -961,11 +961,11 @@
     "tier": 4,
     "type": "Horde",
     "hordeRatio": "20/HP",
-    "description": "An unstoppable wall of reanimated corpses.",
+    "description": "Un mur implacable de cadavres réanimés.",
     "motives": [
-      "Consume",
-      "Overwhelm",
-      "Swarm"
+      "Consumer",
+      "Submerger",
+      "Essaimer"
     ],
     "difficulty": 17,
     "thresholds": {
@@ -986,7 +986,7 @@
       {
         "name": "Horde (4d6+4)",
         "type": "passive",
-        "description": "When the Legion has marked half or more of their HP, their standard attack deals 4d6+4 physical damage instead."
+        "description": "Quand la Légion a coché la moitié ou plus de ses PV, son attaque standard inflige 4d6+4 dégâts physiques à la place."
       }
     ]
   }
