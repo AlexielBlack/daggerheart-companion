@@ -531,6 +531,12 @@ export const useCharacterStore = defineStore('characters', () => {
               ancestry1Feature: '',
               ancestry2Feature: ''
             }
+            // Auto-remplir le champ héritage avec le nom de l'ascendance
+            const ancestry = value ? getAncestryById(value) : null
+            char.heritage = ancestry ? ancestry.name : ''
+          } else {
+            // Mixed Ancestry : vider l'héritage (sera rempli via updateMixedAncestry)
+            char.heritage = ''
           }
           _syncDerivedStats(char)
           break
@@ -576,6 +582,19 @@ export const useCharacterStore = defineStore('characters', () => {
       config.ancestry2Feature = ''
     } else if (field === 'ancestry1Feature' || field === 'ancestry2Feature') {
       config[field] = value
+    }
+
+    // Auto-remplir l'héritage avec la combinaison des deux ascendances parentes
+    const a1 = config.ancestry1Id ? getAncestryById(config.ancestry1Id) : null
+    const a2 = config.ancestry2Id ? getAncestryById(config.ancestry2Id) : null
+    if (a1 && a2) {
+      char.heritage = `${a1.name}-${a2.name}`
+    } else if (a1) {
+      char.heritage = a1.name
+    } else if (a2) {
+      char.heritage = a2.name
+    } else {
+      char.heritage = ''
     }
 
     char.updatedAt = new Date().toISOString()
