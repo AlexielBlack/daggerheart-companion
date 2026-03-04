@@ -285,6 +285,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
+  overflow: hidden;
 }
 
 @media (max-width: 700px) {
@@ -297,6 +298,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .selector-label {
@@ -315,7 +317,11 @@ export default {
   color: var(--text-primary);
   font-size: 0.85rem;
   cursor: pointer;
+  width: 100%;
   max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }
 
 .selector-select:focus {

@@ -688,6 +688,7 @@ export default {
   background: var(--bg-secondary, #1f1f3a);
   border: 1px solid var(--border-color, #3a3a5a);
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .section-heading {
