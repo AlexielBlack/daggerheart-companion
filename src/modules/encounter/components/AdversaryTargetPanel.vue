@@ -92,10 +92,18 @@
           >{{ cond }}</span>
         </div>
 
-        <!-- Barres HP et Stress -->
+        <!-- Barres HP et Stress avec contrôles -->
         <div class="adv-panel__bars">
           <div class="adv-panel__bar-row">
             <span class="adv-panel__bar-label">HP</span>
+            <button
+              class="adv-panel__bar-btn"
+              :disabled="inst.markedHP <= 0"
+              aria-label="Retirer 1 HP"
+              @click.stop="clearHP(inst.instanceId)"
+            >
+              −
+            </button>
             <div class="adv-panel__bar">
               <div
                 class="adv-panel__bar-fill adv-panel__bar-fill--hp"
@@ -103,9 +111,25 @@
               ></div>
             </div>
             <span class="adv-panel__bar-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+            <button
+              class="adv-panel__bar-btn"
+              :disabled="inst.markedHP >= inst.maxHP || inst.isDefeated"
+              aria-label="Marquer 1 HP"
+              @click.stop="markHP(inst.instanceId)"
+            >
+              +
+            </button>
           </div>
           <div class="adv-panel__bar-row">
             <span class="adv-panel__bar-label">ST</span>
+            <button
+              class="adv-panel__bar-btn"
+              :disabled="inst.markedStress <= 0"
+              aria-label="Retirer 1 Stress"
+              @click.stop="clearStress(inst.instanceId)"
+            >
+              −
+            </button>
             <div class="adv-panel__bar">
               <div
                 class="adv-panel__bar-fill adv-panel__bar-fill--stress"
@@ -113,8 +137,32 @@
               ></div>
             </div>
             <span class="adv-panel__bar-val">{{ inst.markedStress }}/{{ inst.maxStress }}</span>
+            <button
+              class="adv-panel__bar-btn"
+              :disabled="inst.markedStress >= inst.maxStress || inst.isDefeated"
+              aria-label="Marquer 1 Stress"
+              @click.stop="markStress(inst.instanceId)"
+            >
+              +
+            </button>
           </div>
         </div>
+
+        <!-- Bouton défaite / réanimer -->
+        <button
+          v-if="!inst.isDefeated"
+          class="adv-panel__defeat-btn"
+          @click.stop="defeat(inst.instanceId)"
+        >
+          💀 Vaincre
+        </button>
+        <button
+          v-else
+          class="adv-panel__revive-btn"
+          @click.stop="revive(inst.instanceId)"
+        >
+          ↩ Réanimer
+        </button>
       </div>
     </div>
 
@@ -251,9 +299,39 @@ export default {
       store.setActiveAdversary(instanceId)
     }
 
+    function markHP(instanceId) {
+      store.markAdversaryHP(instanceId, 1)
+    }
+
+    function clearHP(instanceId) {
+      store.clearAdversaryHP(instanceId, 1)
+    }
+
+    function markStress(instanceId) {
+      store.markAdversaryStress(instanceId, 1)
+    }
+
+    function clearStress(instanceId) {
+      store.clearAdversaryStress(instanceId, 1)
+    }
+
+    function defeat(instanceId) {
+      store.defeatAdversary(instanceId)
+    }
+
+    function revive(instanceId) {
+      store.reviveAdversary(instanceId)
+    }
+
     return {
       rawFocusResults,
-      selectInstance
+      selectInstance,
+      markHP,
+      clearHP,
+      markStress,
+      clearStress,
+      defeat,
+      revive
     }
   },
   computed: {
@@ -507,6 +585,72 @@ export default {
   font-variant-numeric: tabular-nums;
   min-width: 36px;
   text-align: right;
+}
+
+/* ── Boutons +/− barres ── */
+
+.adv-panel__bar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+  padding: 0;
+}
+
+.adv-panel__bar-btn:hover:not(:disabled) {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
+}
+
+.adv-panel__bar-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* ── Boutons défaite / réanimer ── */
+
+.adv-panel__defeat-btn {
+  align-self: flex-end;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-accent-danger);
+  background: transparent;
+  color: var(--color-accent-danger);
+  font-size: 0.65rem;
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.adv-panel__defeat-btn:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.adv-panel__revive-btn {
+  align-self: flex-end;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-accent-success);
+  background: transparent;
+  color: var(--color-accent-success);
+  font-size: 0.65rem;
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.adv-panel__revive-btn:hover {
+  background: rgba(76, 175, 80, 0.1);
 }
 
 /* ── Attack ── */
