@@ -22,6 +22,9 @@ export { default as FearHopeTracker } from './components/FearHopeTracker.vue'
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
 export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 export { default as AdversaryLiveCard } from './components/AdversaryLiveCard.vue'
+export { default as FeatureCard } from './components/FeatureCard.vue'
+export { default as PcLivePanel } from './components/PcLivePanel.vue'
+export { default as AdversaryTargetPanel } from './components/AdversaryTargetPanel.vue'
 
 // Composables
 export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'

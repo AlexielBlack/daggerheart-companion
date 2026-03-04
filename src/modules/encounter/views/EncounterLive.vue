@@ -42,7 +42,7 @@
 
     <!-- Mode de scène -->
     <SceneModeSelector
-      v-model="store.sceneMode"
+      :model-value="store.sceneMode"
       @update:model-value="store.setSceneMode($event)"
     />
 
@@ -65,73 +65,75 @@
       {{ showHistory ? 'Masquer' : 'Afficher' }} l'historique
     </button>
 
-    <!-- Panels PJs et Adversaires -->
-    <div class="enc-live__battlefield">
-      <!-- Panel PJs -->
-      <section
-        class="enc-live__section"
-        aria-label="Joueurs"
-      >
-        <h2 class="enc-live__section-title">
-          <span class="enc-live__section-emoji">🎭</span> PJs
-        </h2>
-        <div
-          v-if="store.participantPcs.length === 0"
-          class="enc-live__empty"
-        >
-          Aucun PJ dans cette rencontre.
-        </div>
-        <div
-          v-else
-          class="enc-live__pc-list"
-        >
+    <!-- Sélecteurs PJ/Adversaire actifs -->
+    <div class="enc-live__selectors">
+      <div class="enc-live__selector">
+        <span class="enc-live__selector-label">PJ actif</span>
+        <div class="enc-live__chip-row">
           <button
             v-for="pc in store.participantPcs"
             :key="pc.id"
-            class="enc-live__pc-chip"
-            :class="{ 'enc-live__pc-chip--active': store.activePcId === pc.id }"
+            class="enc-live__chip"
+            :class="{ 'enc-live__chip--active': store.activePcId === pc.id }"
             @click="store.setActivePc(pc.id)"
           >
-            <span class="enc-live__pc-name">{{ pc.name }}</span>
-            <span class="enc-live__pc-class">{{ pc.className }}</span>
-            <span class="enc-live__pc-level">Nv.{{ pc.level }}</span>
+            <span class="enc-live__chip-name">{{ pc.name }}</span>
+            <span class="enc-live__chip-sub">{{ pc.className }}</span>
           </button>
         </div>
-      </section>
+      </div>
 
-      <!-- Panel Adversaires -->
-      <section
-        class="enc-live__section"
-        aria-label="Adversaires"
-      >
-        <h2 class="enc-live__section-title">
-          <span class="enc-live__section-emoji">💀</span>
-          Adversaires
-          <span class="enc-live__count">({{ store.activeAdversaries.length }} actifs)</span>
-        </h2>
-        <div
-          v-if="store.liveAdversaries.length === 0"
-          class="enc-live__empty"
-        >
-          Aucun adversaire dans cette rencontre.
-        </div>
-        <div
-          v-else
-          class="enc-live__adversary-grid"
-        >
-          <AdversaryLiveCard
+      <div class="enc-live__selector">
+        <span class="enc-live__selector-label">
+          Adversaire cible
+          <span class="enc-live__active-count">({{ store.activeAdversaries.length }} actifs)</span>
+        </span>
+        <div class="enc-live__chip-row">
+          <button
             v-for="adv in store.liveAdversaries"
             :key="adv.instanceId"
-            :adversary="adv"
-            :is-active="store.activeAdversaryId === adv.instanceId"
-            @select="store.setActiveAdversary($event)"
-            @mark-hp="store.markAdversaryHP($event)"
-            @clear-hp="store.clearAdversaryHP($event)"
-            @mark-stress="store.markAdversaryStress($event)"
-            @clear-stress="store.clearAdversaryStress($event)"
-          />
+            class="enc-live__chip"
+            :class="{
+              'enc-live__chip--active': store.activeAdversaryId === adv.instanceId,
+              'enc-live__chip--defeated': adv.isDefeated
+            }"
+            @click="store.setActiveAdversary(adv.instanceId)"
+          >
+            <span class="enc-live__chip-name">{{ adv.name }}</span>
+            <span class="enc-live__chip-sub">{{ adv.type }}</span>
+            <span
+              v-if="adv.isDefeated"
+              class="enc-live__chip-defeated"
+            >💀</span>
+          </button>
         </div>
-      </section>
+      </div>
+    </div>
+
+    <!-- Panels contextuels — ordre piloté par le mode de scène -->
+    <div
+      class="enc-live__battlefield"
+      :class="'enc-live__battlefield--' + store.sceneMode"
+    >
+      <PcLivePanel
+        v-if="store.activePc"
+        :pc="store.activePc"
+        :is-actor="isPcActor"
+        :scene-mode="store.sceneMode"
+        :primary-features="pcPrimary"
+        :secondary-features="pcSecondary"
+        :passive-features="pcPassive"
+        :reaction-features="pcReaction"
+        :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
+      />
+
+      <AdversaryTargetPanel
+        v-if="store.activeAdversary"
+        :adversary="store.activeAdversary"
+        :scene-mode="store.sceneMode"
+        :is-actor="!isPcActor"
+        :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
+      />
     </div>
 
     <!-- Résumé combat -->
@@ -165,31 +167,72 @@
         {{ store.activeEnvironment.description }}
       </p>
     </section>
+
+    <!-- Message si aucune rencontre active -->
+    <div
+      v-if="!store.isActive"
+      class="enc-live__inactive"
+    >
+      <p>Aucune rencontre en cours.</p>
+      <button
+        class="enc-live__go-builder"
+        @click="$router.push('/encounters')"
+      >
+        Retour au builder de rencontres
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { computed, ref, onMounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { useEncounterFeatures } from '../composables/useEncounterFeatures'
+import { SCENE_MODE_META } from '@data/encounters/liveConstants'
 import FearHopeTracker from '../components/FearHopeTracker.vue'
 import SceneModeSelector from '../components/SceneModeSelector.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
-import AdversaryLiveCard from '../components/AdversaryLiveCard.vue'
+import PcLivePanel from '../components/PcLivePanel.vue'
+import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
 
 export default {
   name: 'EncounterLive',
-  components: { FearHopeTracker, SceneModeSelector, SpotlightToggle, AdversaryLiveCard },
-  data() {
+  components: {
+    FearHopeTracker,
+    SceneModeSelector,
+    SpotlightToggle,
+    PcLivePanel,
+    AdversaryTargetPanel
+  },
+  setup() {
+    const store = useEncounterLiveStore()
+    const showHistory = ref(false)
+
+    // Features contextuelles du PJ actif
+    const activePcRef = computed(() => store.activePc)
+    const sceneModeRef = computed(() => store.sceneMode)
+    const pcFeatures = useEncounterFeatures(activePcRef, sceneModeRef)
+
+    // Rôle PJ : acteur si le mode indique actorRole === 'pc'
+    const isPcActor = computed(() => {
+      const meta = SCENE_MODE_META[store.sceneMode]
+      return meta ? meta.actorRole === 'pc' : true
+    })
+
+    onMounted(() => {
+      if (!store.isActive) {
+        store.restoreState()
+      }
+    })
+
     return {
-      showHistory: false
-    }
-  },
-  computed: {
-    store() { return useEncounterLiveStore() }
-  },
-  mounted() {
-    // Tenter de restaurer un état persisté
-    if (!this.store.isActive) {
-      this.store.restoreState()
+      store,
+      showHistory,
+      isPcActor,
+      pcPrimary: pcFeatures.primaryFeatures,
+      pcSecondary: pcFeatures.secondaryFeatures,
+      pcPassive: pcFeatures.passiveFeatures,
+      pcReaction: pcFeatures.reactionFeatures
     }
   },
   methods: {
@@ -208,7 +251,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding: var(--space-md);
 }
@@ -322,7 +365,81 @@ export default {
   color: var(--color-text-secondary);
 }
 
-/* ── Battlefield ── */
+/* ── Selectors ── */
+
+.enc-live__selectors {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.enc-live__selector {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.enc-live__selector-label {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.enc-live__active-count {
+  font-weight: normal;
+  color: var(--color-text-muted);
+}
+
+.enc-live__chip-row {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.enc-live__chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  cursor: pointer;
+  transition: border-color 0.15s;
+  font-size: var(--font-xs);
+}
+
+.enc-live__chip:hover {
+  border-color: var(--color-border-active);
+}
+
+.enc-live__chip--active {
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 1px var(--color-accent-hope);
+}
+
+.enc-live__chip--defeated {
+  opacity: 0.5;
+}
+
+.enc-live__chip-name {
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+}
+
+.enc-live__chip-sub {
+  color: var(--color-text-muted);
+}
+
+.enc-live__chip-defeated {
+  font-size: 0.8rem;
+}
+
+/* ── Battlefield — panels contextuels ── */
 
 .enc-live__battlefield {
   display: grid;
@@ -330,10 +447,31 @@ export default {
   gap: var(--space-md);
 }
 
-@media (max-width: 600px) {
+.enc-live__panel--first  { order: 1; }
+.enc-live__panel--second { order: 2; }
+
+@media (max-width: 700px) {
   .enc-live__battlefield {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Summary ── */
+
+.enc-live__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  flex-wrap: wrap;
+}
+
+.enc-live__summary-sep {
+  color: var(--color-text-muted);
 }
 
 /* ── Sections ── */
@@ -366,95 +504,6 @@ export default {
   line-height: 1;
 }
 
-.enc-live__count {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  font-weight: normal;
-}
-
-.enc-live__empty {
-  font-size: var(--font-sm);
-  color: var(--color-text-muted);
-  font-style: italic;
-  padding: var(--space-sm);
-}
-
-/* ── PJ list ── */
-
-.enc-live__pc-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.enc-live__pc-chip {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-primary);
-  cursor: pointer;
-  transition: border-color 0.15s;
-  text-align: left;
-}
-
-.enc-live__pc-chip:hover {
-  border-color: var(--color-border-active);
-}
-
-.enc-live__pc-chip--active {
-  border-color: var(--color-accent-hope);
-  box-shadow: 0 0 0 1px var(--color-accent-hope);
-}
-
-.enc-live__pc-name {
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-  flex: 1;
-}
-
-.enc-live__pc-class {
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-}
-
-.enc-live__pc-level {
-  font-size: var(--font-xs);
-  color: var(--color-accent-gold);
-  font-weight: var(--font-semibold);
-}
-
-/* ── Adversary grid ── */
-
-.enc-live__adversary-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-/* ── Summary ── */
-
-.enc-live__summary {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-  flex-wrap: wrap;
-}
-
-.enc-live__summary-sep {
-  color: var(--color-text-muted);
-}
-
-/* ── Environnement ── */
-
 .enc-live__env-tier {
   font-size: var(--font-xs);
   color: var(--color-accent-gold);
@@ -466,5 +515,36 @@ export default {
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0;
+}
+
+/* ── Inactive state ── */
+
+.enc-live__inactive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl, 2rem);
+  text-align: center;
+}
+
+.enc-live__inactive p {
+  color: var(--color-text-muted);
+  font-size: var(--font-md, 1rem);
+}
+
+.enc-live__go-builder {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-hope);
+  background: transparent;
+  color: var(--color-accent-hope);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.enc-live__go-builder:hover {
+  background: rgba(83, 168, 182, 0.1);
 }
 </style>
