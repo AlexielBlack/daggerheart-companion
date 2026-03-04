@@ -100,6 +100,16 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   /** Nombre de fois que chaque PJ a eu le projecteur ce round { pcId: count } */
   const spotlightTokens = ref({})
 
+  // ── Spotlight tracking ce round { [id]: true } ────────
+  /** PJs qui ont eu le projecteur ce round */
+  const pcSpotlights = ref({})
+  /** Adversaires (par adversaryId) qui ont eu le projecteur ce round */
+  const advSpotlights = ref({})
+
+  // ── Historique de combat ───────────────────────────────
+  /** Journal des dégâts infligés : [{ pcId, pcName, instanceId, advName, type, amount, round, timestamp }] */
+  const combatLog = ref([])
+
   // ═══════════════════════════════════════════════════════
   //  Getters
   // ═══════════════════════════════════════════════════════
@@ -559,7 +569,23 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   function markAdversaryHP(instanceId, amount = 1) {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
+    const prev = adv.markedHP
     adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
+    const actual = adv.markedHP - prev
+    // Logger le PJ source
+    if (actual > 0 && activePcId.value) {
+      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+      combatLog.value.push({
+        pcId: activePcId.value,
+        pcName: pc ? pc.name : '?',
+        instanceId,
+        advName: adv.name,
+        type: 'hp',
+        amount: actual,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
     // Vérifier défaite : Minions n'ont pas de seuils
     if (adv.type === 'Minion' && adv.markedHP > 0) {
       adv.isDefeated = true
@@ -591,7 +617,22 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   function markAdversaryStress(instanceId, amount = 1) {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
+    const prev = adv.markedStress
     adv.markedStress = Math.min(adv.maxStress, adv.markedStress + amount)
+    const actual = adv.markedStress - prev
+    if (actual > 0 && activePcId.value) {
+      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+      combatLog.value.push({
+        pcId: activePcId.value,
+        pcName: pc ? pc.name : '?',
+        instanceId,
+        advName: adv.name,
+        type: 'stress',
+        amount: actual,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
     persistState()
   }
 
@@ -696,6 +737,37 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    */
   function resetSpotlightTokens() {
     spotlightTokens.value = {}
+    pcSpotlights.value = {}
+    advSpotlights.value = {}
+    persistState()
+  }
+
+  /**
+   * Tague/détague un PJ comme ayant eu le projecteur ce round.
+   * @param {string} pcId
+   */
+  function togglePcSpotlight(pcId) {
+    if (pcSpotlights.value[pcId]) {
+      delete pcSpotlights.value[pcId]
+    } else {
+      pcSpotlights.value[pcId] = true
+    }
+    // Forcer la réactivité
+    pcSpotlights.value = { ...pcSpotlights.value }
+    persistState()
+  }
+
+  /**
+   * Tague/détague un adversaire comme ayant eu le projecteur ce round.
+   * @param {string} adversaryId
+   */
+  function toggleAdvSpotlight(adversaryId) {
+    if (advSpotlights.value[adversaryId]) {
+      delete advSpotlights.value[adversaryId]
+    } else {
+      advSpotlights.value[adversaryId] = true
+    }
+    advSpotlights.value = { ...advSpotlights.value }
     persistState()
   }
 
@@ -757,7 +829,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       environmentId: environmentId.value,
       round: round.value,
       spotlightTokens: { ...spotlightTokens.value },
-      lastClickCategory: lastClickCategory.value
+      lastClickCategory: lastClickCategory.value,
+      pcSpotlights: { ...pcSpotlights.value },
+      advSpotlights: { ...advSpotlights.value },
+      combatLog: [...combatLog.value]
     }
   }
 
@@ -795,6 +870,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       ? { ...data.spotlightTokens }
       : {}
     lastClickCategory.value = data.lastClickCategory || 'pc'
+    pcSpotlights.value = data.pcSpotlights && typeof data.pcSpotlights === 'object'
+      ? { ...data.pcSpotlights }
+      : {}
+    advSpotlights.value = data.advSpotlights && typeof data.advSpotlights === 'object'
+      ? { ...data.advSpotlights }
+      : {}
+    combatLog.value = Array.isArray(data.combatLog) ? [...data.combatLog] : []
 
     return true
   }
@@ -819,6 +901,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     round.value = 1
     spotlightTokens.value = {}
     lastClickCategory.value = 'pc'
+    pcSpotlights.value = {}
+    advSpotlights.value = {}
+    combatLog.value = []
     liveStorage.remove()
   }
 
@@ -851,6 +936,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     round,
     spotlightTokens,
     lastClickCategory,
+    pcSpotlights,
+    advSpotlights,
+    combatLog,
 
     // Getters
     currentSceneModeMeta,
@@ -904,6 +992,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     giveSpotlight,
     removeSpotlightToken,
     resetSpotlightTokens,
+    togglePcSpotlight,
+    toggleAdvSpotlight,
 
     // Actions — Persistence
     serializeLiveState,

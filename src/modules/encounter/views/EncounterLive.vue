@@ -67,8 +67,22 @@
             }"
             @click="store.selectPc(pc.id)"
           >
+            <span
+              v-if="store.pcSpotlights[pc.id]"
+              class="enc-live__spot-dot"
+              title="A joué ce round"
+            >✦</span>
             <span class="enc-live__chip-name">{{ pc.name }}</span>
             <span class="enc-live__chip-sub">{{ pc.className }}</span>
+            <button
+              class="enc-live__spot-btn"
+              :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] }"
+              :aria-label="(store.pcSpotlights[pc.id] ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
+              :title="store.pcSpotlights[pc.id] ? 'Spotlight ✓' : 'Marquer spotlight'"
+              @click.stop="store.togglePcSpotlight(pc.id)"
+            >
+              ✦
+            </button>
           </button>
         </div>
 
@@ -101,6 +115,11 @@
             }"
             @click="store.selectAdversaryGroup(group.adversaryId)"
           >
+            <span
+              v-if="store.advSpotlights[group.adversaryId]"
+              class="enc-live__spot-dot"
+              title="A joué ce round"
+            >✦</span>
             <span class="enc-live__chip-name">{{ group.name }}</span>
             <span
               v-if="group.instances.length > 1"
@@ -110,6 +129,15 @@
               v-if="group.defeatedCount > 0"
               class="enc-live__chip-dead"
             >{{ group.defeatedCount }}💀</span>
+            <button
+              class="enc-live__spot-btn"
+              :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] }"
+              :aria-label="(store.advSpotlights[group.adversaryId] ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
+              :title="store.advSpotlights[group.adversaryId] ? 'Spotlight ✓' : 'Marquer spotlight'"
+              @click.stop="store.toggleAdvSpotlight(group.adversaryId)"
+            >
+              ✦
+            </button>
           </button>
         </div>
       </div>
@@ -399,6 +427,45 @@ export default {
 
 .enc-live__chip-dead {
   font-size: 0.75rem;
+}
+
+/* ── Spotlight indicators ── */
+
+.enc-live__spot-dot {
+  color: var(--color-accent-gold);
+  font-size: 0.7rem;
+  line-height: 1;
+  text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
+}
+
+.enc-live__spot-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.6rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 2px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.enc-live__spot-btn:hover {
+  border-color: var(--color-accent-gold);
+  color: var(--color-accent-gold);
+}
+
+.enc-live__spot-btn--on {
+  background: rgba(224, 165, 38, 0.2);
+  border-color: var(--color-accent-gold);
+  color: var(--color-accent-gold);
+  text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
 }
 
 /* ── Flèche directionnelle ── */

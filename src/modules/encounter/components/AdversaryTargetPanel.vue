@@ -163,6 +163,20 @@
         >
           ↩ Réanimer
         </button>
+
+        <!-- Log de dégâts pour cette instance -->
+        <div
+          v-if="instanceLogs[inst.instanceId] && instanceLogs[inst.instanceId].length > 0"
+          class="adv-panel__log"
+        >
+          <span
+            v-for="(entry, logIdx) in instanceLogs[inst.instanceId]"
+            :key="logIdx"
+            class="adv-panel__log-entry"
+            :class="'adv-panel__log-entry--' + entry.type"
+            :title="'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST')"
+          >{{ entry.pcName }} {{ entry.type === 'hp' ? '❤️' : '💢' }}{{ entry.amount }}</span>
+        </div>
       </div>
     </div>
 
@@ -323,6 +337,21 @@ export default {
       store.reviveAdversary(instanceId)
     }
 
+    /** Log de combat filtré par les instances siblings */
+    const siblingIds = computed(() =>
+      props.siblings.map((s) => s.instanceId)
+    )
+    const instanceLogs = computed(() => {
+      const logs = {}
+      for (const entry of store.combatLog) {
+        if (siblingIds.value.includes(entry.instanceId)) {
+          if (!logs[entry.instanceId]) logs[entry.instanceId] = []
+          logs[entry.instanceId].push(entry)
+        }
+      }
+      return logs
+    })
+
     return {
       rawFocusResults,
       selectInstance,
@@ -331,7 +360,8 @@ export default {
       markStress,
       clearStress,
       defeat,
-      revive
+      revive,
+      instanceLogs
     }
   },
   computed: {
@@ -651,6 +681,36 @@ export default {
 
 .adv-panel__revive-btn:hover {
   background: rgba(76, 175, 80, 0.1);
+}
+
+/* ── Combat log par instance ── */
+
+.adv-panel__log {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding-top: 2px;
+}
+
+.adv-panel__log-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: var(--font-semibold);
+  line-height: 1.3;
+}
+
+.adv-panel__log-entry--hp {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--color-accent-danger);
+}
+
+.adv-panel__log-entry--stress {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
 }
 
 /* ── Attack ── */
