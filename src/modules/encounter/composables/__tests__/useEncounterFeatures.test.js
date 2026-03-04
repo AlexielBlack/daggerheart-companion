@@ -394,6 +394,28 @@ describe('useEncounterFeatures', () => {
     expect(allFeatures.value.length).toBeGreaterThan(0)
     expect(allFeatures.value.some((f) => f.source === 'domain')).toBe(false)
   })
+
+  it('masque les actions PJ en mode adversaryAttack (tour MJ)', () => {
+    const pcRef = ref(GUARDIAN_PC)
+    const modeRef = ref(SCENE_MODE_ADVERSARY_ATTACK)
+    const { primaryFeatures, secondaryFeatures } = useEncounterFeatures(pcRef, modeRef)
+    // Aucune action ne doit apparaître dans primary ou secondary
+    for (const f of primaryFeatures.value) {
+      expect(f.activationType).not.toBe('action')
+    }
+    for (const f of secondaryFeatures.value) {
+      expect(f.activationType).not.toBe('action')
+    }
+  })
+
+  it('affiche les actions PJ en mode pcAttack (tour PJ)', () => {
+    const pcRef = ref(GUARDIAN_PC)
+    const modeRef = ref(SCENE_MODE_PC_ATTACK)
+    const { primaryFeatures, secondaryFeatures } = useEncounterFeatures(pcRef, modeRef)
+    const allActive = [...primaryFeatures.value, ...secondaryFeatures.value]
+    const actions = allActive.filter((f) => f.activationType === 'action')
+    expect(actions.length).toBeGreaterThan(0)
+  })
 })
 
 // ═══════════════════════════════════════════════════════════

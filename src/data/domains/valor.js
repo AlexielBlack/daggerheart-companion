@@ -26,7 +26,7 @@ export const valor = {
       tags: ['défensif'],
       feature:
         'Quand vous choisissez de ne pas équiper d\'armure, vous avez un Score d\'Armure de base de 3 + votre Force et utilisez les seuils de dégâts de base suivants : Rang 1 : 9/19 ; Rang 2 : 11/24 ; Rang 3 : 13/31 ; Rang 4 : 15/38.',
-      activationType: 'action', cost: { type: 'free', amount: 0 }, frequency: 'atWill'
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     {
       id: 'valor-forceful-push',

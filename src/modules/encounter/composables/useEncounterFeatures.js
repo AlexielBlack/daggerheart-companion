@@ -275,13 +275,21 @@ export function useEncounterFeatures(pcRef, sceneModeRef, characterRef = null) {
   })
 
   /**
+   * Les PJs ne peuvent pas effectuer d'actions quand le MJ a le projecteur.
+   * En mode adversaryAttack, seules réactions et passives sont disponibles.
+   */
+  const isPlayerTurn = computed(() => sceneModeRef.value !== 'adversaryAttack')
+
+  /**
    * Features principales : actions prioritaires pour ce mode.
    * Critère : score > 0 ET (action ou reaction) ET au moins un tag primaire.
+   * Filtrées par le projecteur : pas d'actions au tour MJ.
    */
   const primaryFeatures = computed(() => {
     const meta = modeMeta.value
     return scoredFeatures.value.filter((f) => {
       if (f.activationType === 'passive') return false
+      if (f.activationType === 'action' && !isPlayerTurn.value) return false
       return f.tags.some((t) => meta.primaryTags.includes(t))
     })
   })
@@ -289,12 +297,14 @@ export function useEncounterFeatures(pcRef, sceneModeRef, characterRef = null) {
   /**
    * Features secondaires : utiles mais pas prioritaires.
    * Critère : non passives, score > 0, pas déjà dans primary.
+   * Filtrées par le projecteur : pas d'actions au tour MJ.
    */
   const secondaryFeatures = computed(() => {
     const meta = modeMeta.value
     const primarySet = new Set(primaryFeatures.value.map((f) => f.name + f.source))
     return scoredFeatures.value.filter((f) => {
       if (f.activationType === 'passive') return false
+      if (f.activationType === 'action' && !isPlayerTurn.value) return false
       const key = f.name + f.source
       if (primarySet.has(key)) return false
       return f.tags.some((t) =>
