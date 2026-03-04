@@ -6,53 +6,50 @@
       { 'feat-card--dimmed': dimmed }
     ]"
   >
-    <!-- En-tête : nom + badges -->
-    <div class="feat-card__header">
+    <!-- Ligne unique : nom + badges justifiés à droite -->
+    <div class="feat-card__row">
       <span class="feat-card__name">{{ feature.name }}</span>
-      <span
-        v-if="feature.isHopeFeature"
-        class="feat-card__badge feat-card__badge--hope"
-        title="Hope Feature"
-      >✨</span>
-    </div>
-
-    <!-- Badges compacts -->
-    <div class="feat-card__badges">
-      <!-- Activation -->
-      <span
-        class="feat-card__badge"
-        :class="'feat-card__badge--' + feature.activationType"
-        :title="activationLabel"
-      >{{ activationEmoji }}</span>
-
-      <!-- Coût -->
-      <span
-        v-if="feature.cost && feature.cost.type !== 'free'"
-        class="feat-card__badge feat-card__badge--cost"
-        :title="costLabel"
-      >{{ costEmoji }} {{ feature.cost.amount }}</span>
-
-      <!-- Tags -->
-      <span
-        v-for="tag in feature.tags"
-        :key="tag"
-        class="feat-card__tag"
-        :class="'feat-card__tag--' + tag"
-      >{{ tagEmoji(tag) }}</span>
-
-      <!-- Portée -->
-      <span
-        v-if="feature.range"
-        class="feat-card__badge feat-card__badge--range"
-        :title="'Portée : ' + feature.range"
-      >📏 {{ rangeLabel }}</span>
-
-      <!-- Fréquence -->
-      <span
-        v-if="feature.frequency && feature.frequency !== 'atWill'"
-        class="feat-card__badge feat-card__badge--freq"
-        :title="frequencyLabel"
-      >{{ frequencyLabel }}</span>
+      <span class="feat-card__badges">
+        <span
+          v-if="feature.isHopeFeature"
+          class="feat-card__badge feat-card__badge--hope"
+          title="Hope Feature"
+        >✨</span>
+        <span
+          class="feat-card__badge"
+          :class="'feat-card__badge--' + feature.activationType"
+          :title="activationLabel"
+        >{{ activationEmoji }}</span>
+        <span
+          v-if="feature.cost && feature.cost.type !== 'free'"
+          class="feat-card__badge feat-card__badge--cost"
+          :title="costLabel"
+        >{{ costEmoji }} {{ feature.cost.amount }}</span>
+        <span
+          v-for="tag in feature.tags"
+          :key="tag"
+          class="feat-card__tag"
+          :class="'feat-card__tag--' + tag"
+        >{{ tagEmoji(tag) }}</span>
+        <span
+          v-if="feature.range"
+          class="feat-card__badge feat-card__badge--range"
+          :title="'Portée : ' + feature.range"
+        >📏 {{ rangeLabel }}</span>
+        <span
+          v-if="feature.frequency && feature.frequency !== 'atWill'"
+          class="feat-card__badge feat-card__badge--freq"
+          :title="frequencyLabel"
+        >{{ frequencyLabel }}</span>
+        <button
+          class="feat-card__expand"
+          :aria-expanded="expanded"
+          :aria-label="expanded ? 'Réduire' : 'Détails'"
+          @click.stop="expanded = !expanded"
+        >
+          {{ expanded ? '▲' : '▼' }}
+        </button>
+      </span>
     </div>
 
     <!-- Source -->
@@ -77,15 +74,6 @@
         <strong>Déclencheur :</strong> {{ feature.trigger }}
       </div>
     </div>
-
-    <button
-      class="feat-card__expand"
-      :aria-expanded="expanded"
-      :aria-label="expanded ? 'Réduire' : 'Détails'"
-      @click.stop="expanded = !expanded"
-    >
-      {{ expanded ? '▲' : '▼' }}
-    </button>
   </div>
 </template>
 
@@ -154,7 +142,7 @@ export default {
 .feat-card--passive  { border-left-color: #3b82f6; }
 .feat-card--dimmed  { opacity: 0.55; }
 
-.feat-card__header {
+.feat-card__row {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -164,7 +152,7 @@ export default {
   font-size: var(--font-sm);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
-  flex: 1;
+  white-space: nowrap;
 }
 
 .feat-card__badges {
@@ -172,6 +160,7 @@ export default {
   flex-wrap: wrap;
   gap: 3px;
   align-items: center;
+  margin-left: auto;
 }
 
 .feat-card__badge {
@@ -231,17 +220,18 @@ export default {
 }
 
 .feat-card__expand {
-  align-self: flex-end;
   background: none;
   border: none;
   color: var(--color-text-muted);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   cursor: pointer;
-  padding: 0 2px;
+  padding: 1px 3px;
   line-height: 1;
+  border-radius: var(--radius-sm);
 }
 
 .feat-card__expand:hover {
   color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
 }
 </style>

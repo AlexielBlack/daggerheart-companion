@@ -113,6 +113,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const encounterLog = ref([])
   /** PJs à terre { pcId: true } */
   const pcDownStatus = ref({})
+  /** Conditions actives des PJs { pcId: ['hidden', 'vulnerable', ...] } */
+  const pcConditions = ref({})
 
   // ═══════════════════════════════════════════════════════
   //  Getters
@@ -562,7 +564,81 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
-  //  Actions — Adversaire live (HP / Stress / Conditions)
+  //  Actions — Conditions (PJ et Adversaire)
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Toggle une condition sur un PJ.
+   * @param {string} pcId
+   * @param {string} condition
+   */
+  function togglePcCondition(pcId, condition) {
+    if (!pcConditions.value[pcId]) {
+      pcConditions.value[pcId] = []
+    }
+    const idx = pcConditions.value[pcId].indexOf(condition)
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    if (idx >= 0) {
+      pcConditions.value[pcId].splice(idx, 1)
+      encounterLog.value.push({
+        action: 'condition_removed',
+        entityType: 'pc',
+        entityId: pcId,
+        entityName: pc ? pc.name : '?',
+        condition,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    } else {
+      pcConditions.value[pcId].push(condition)
+      encounterLog.value.push({
+        action: 'condition_added',
+        entityType: 'pc',
+        entityId: pcId,
+        entityName: pc ? pc.name : '?',
+        condition,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
+    pcConditions.value = { ...pcConditions.value }
+    persistState()
+  }
+
+  /**
+   * Toggle une condition sur un adversaire.
+   * @param {string} instanceId
+   * @param {string} condition
+   */
+  function toggleAdversaryCondition(instanceId, condition) {
+    const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
+    if (!adv) return
+    const idx = adv.conditions.indexOf(condition)
+    if (idx >= 0) {
+      adv.conditions.splice(idx, 1)
+      encounterLog.value.push({
+        action: 'condition_removed',
+        entityType: 'adversary',
+        entityId: instanceId,
+        entityName: adv.name,
+        condition,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    } else {
+      adv.conditions.push(condition)
+      encounterLog.value.push({
+        action: 'condition_added',
+        entityType: 'adversary',
+        entityId: instanceId,
+        entityName: adv.name,
+        condition,
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
+    persistState()
+  }
   // ═══════════════════════════════════════════════════════
 
   /**
@@ -1080,7 +1156,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       advSpotlights: { ...advSpotlights.value },
       combatLog: [...combatLog.value],
       encounterLog: [...encounterLog.value],
-      pcDownStatus: { ...pcDownStatus.value }
+      pcDownStatus: { ...pcDownStatus.value },
+      pcConditions: JSON.parse(JSON.stringify(pcConditions.value))
     }
   }
 
@@ -1129,6 +1206,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pcDownStatus.value = data.pcDownStatus && typeof data.pcDownStatus === 'object'
       ? { ...data.pcDownStatus }
       : {}
+    pcConditions.value = data.pcConditions && typeof data.pcConditions === 'object'
+      ? JSON.parse(JSON.stringify(data.pcConditions))
+      : {}
 
     return true
   }
@@ -1158,6 +1238,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     combatLog.value = []
     encounterLog.value = []
     pcDownStatus.value = {}
+    pcConditions.value = {}
     liveStorage.remove()
   }
 
@@ -1195,6 +1276,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     combatLog,
     encounterLog,
     pcDownStatus,
+    pcConditions,
 
     // Getters
     currentSceneModeMeta,
@@ -1244,6 +1326,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     logPcDown,
     logPcRevive,
     logMiss,
+    togglePcCondition,
+    toggleAdversaryCondition,
     defeatAdversary,
     reviveAdversary,
 

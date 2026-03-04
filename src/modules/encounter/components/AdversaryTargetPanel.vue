@@ -74,7 +74,7 @@
         @keydown.enter="selectInstance(inst.instanceId)"
         @keydown.space.prevent="selectInstance(inst.instanceId)"
       >
-        <!-- Label #N (affiché uniquement si plusieurs) -->
+        <!-- Label #N + conditions toggleables -->
         <div class="adv-panel__inst-header">
           <span
             v-if="hasSiblings"
@@ -84,12 +84,18 @@
             v-if="inst.isDefeated"
             class="adv-panel__inst-defeated"
           >💀 Vaincu</span>
-          <!-- Conditions de cette instance -->
-          <span
-            v-for="cond in inst.conditions"
-            :key="cond"
-            class="adv-panel__inst-cond"
-          >{{ cond }}</span>
+          <div class="adv-panel__inst-conds">
+            <button
+              v-for="cond in advConditions"
+              :key="cond.id"
+              class="adv-panel__cond-btn"
+              :class="{ 'adv-panel__cond-btn--on': inst.conditions.includes(cond.id) }"
+              :title="cond.label"
+              @click.stop="toggleAdvCond(inst.instanceId, cond.id)"
+            >
+              {{ cond.emoji }}
+            </button>
+          </div>
         </div>
 
         <!-- Barres HP et Stress avec contrôles -->
@@ -374,6 +380,17 @@ export default {
       store.logMiss('pc')
     }
 
+    const advConditions = [
+      { id: 'hidden', emoji: '👁️‍🗨️', label: 'Hidden' },
+      { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable' },
+      { id: 'restrained', emoji: '⛓️', label: 'Restrained' },
+      { id: 'poisoned', emoji: '☠️', label: 'Poisoned' }
+    ]
+
+    function toggleAdvCond(instanceId, condId) {
+      store.toggleAdversaryCondition(instanceId, condId)
+    }
+
     return {
       rawFocusResults,
       selectInstance,
@@ -385,7 +402,9 @@ export default {
       revive,
       instanceLogs,
       removeLogEntry,
-      logPcMiss
+      logPcMiss,
+      advConditions,
+      toggleAdvCond
     }
   },
   computed: {
@@ -585,13 +604,37 @@ export default {
   font-weight: var(--font-semibold);
 }
 
-.adv-panel__inst-cond {
-  font-size: 0.65rem;
-  padding: 1px var(--space-xs);
-  background: rgba(244, 67, 54, 0.15);
-  color: var(--color-accent-danger);
+.adv-panel__inst-conds {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.adv-panel__cond-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-sm);
-  font-weight: var(--font-semibold);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+  opacity: 0.35;
+}
+
+.adv-panel__cond-btn:hover {
+  opacity: 0.7;
+  border-color: var(--color-border-active);
+}
+
+.adv-panel__cond-btn--on {
+  opacity: 1;
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.12);
 }
 
 /* ── Bars ── */

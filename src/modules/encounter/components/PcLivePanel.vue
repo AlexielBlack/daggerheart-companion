@@ -76,23 +76,37 @@
       </div>
     </div>
 
-    <!-- Arme (affichée en mode acteur/attaque) -->
+    <!-- Conditions -->
+    <div class="pc-panel__conditions">
+      <button
+        v-for="cond in allConditions"
+        :key="cond.id"
+        class="pc-panel__cond-btn"
+        :class="{ 'pc-panel__cond-btn--on': hasCond(cond.id) }"
+        :title="cond.label"
+        @click="toggleCond(cond.id)"
+      >
+        {{ cond.emoji }}
+      </button>
+    </div>
+
+    <!-- Arme (affichée en mode acteur/attaque) — layout compact -->
     <div
       v-if="isActor && weapon"
       class="pc-panel__weapon"
     >
-      <div class="pc-panel__weapon-header">
+      <div class="pc-panel__weapon-row">
         <span class="pc-panel__weapon-name">{{ weapon.name }}</span>
-        <span class="pc-panel__weapon-type">{{ weapon.damageType === 'mag' ? '✨ Mag' : '🗡️ Phy' }}</span>
-      </div>
-      <div class="pc-panel__weapon-stats">
-        <span title="Dés de dégâts">🎲 {{ weapon.damage }}+{{ pc.proficiency || 0 }}</span>
-        <span title="Trait d'attaque">{{ weapon.trait }}</span>
-        <span title="Portée">📏 {{ weapon.range }}</span>
-        <span
-          v-if="weapon.burden"
-          title="Prise"
-        >✋ {{ weapon.burden }}</span>
+        <span class="pc-panel__weapon-badges">
+          <span class="pc-panel__weapon-type">{{ weapon.damageType === 'mag' ? '✨' : '🗡️' }}</span>
+          <span title="Dés de dégâts">🎲 {{ weapon.damage }}+{{ pc.proficiency || 0 }}</span>
+          <span title="Trait">{{ weapon.trait }}</span>
+          <span title="Portée">📏 {{ weapon.range }}</span>
+          <span
+            v-if="weapon.burden"
+            title="Prise"
+          >✋ {{ weapon.burden }}</span>
+        </span>
       </div>
       <div
         v-if="weapon.feature"
@@ -303,6 +317,22 @@ export default {
 
     const isDown = computed(() => !!store.pcDownStatus[props.pc.id])
 
+    const allConditions = [
+      { id: 'hidden', emoji: '👁️‍🗨️', label: 'Hidden' },
+      { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable' },
+      { id: 'restrained', emoji: '⛓️', label: 'Restrained' },
+      { id: 'poisoned', emoji: '☠️', label: 'Poisoned' }
+    ]
+
+    function hasCond(condId) {
+      const conds = store.pcConditions[props.pc.id]
+      return Array.isArray(conds) && conds.includes(condId)
+    }
+
+    function toggleCond(condId) {
+      store.togglePcCondition(props.pc.id, condId)
+    }
+
     function logHit(hpAmount) {
       store.logPcHit(props.pc.id, hpAmount)
     }
@@ -326,6 +356,9 @@ export default {
     return {
       pcHitLog,
       isDown,
+      allConditions,
+      hasCond,
+      toggleCond,
       logHit,
       logDown,
       logRevive,
@@ -469,7 +502,41 @@ export default {
   color: var(--color-text-muted);
 }
 
-/* ── Arme ── */
+/* ── Conditions ── */
+
+.pc-panel__conditions {
+  display: flex;
+  gap: 3px;
+}
+
+.pc-panel__cond-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+  opacity: 0.4;
+}
+
+.pc-panel__cond-btn:hover {
+  opacity: 0.7;
+  border-color: var(--color-border-active);
+}
+
+.pc-panel__cond-btn--on {
+  opacity: 1;
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.12);
+}
+
+/* ── Arme (compact) ── */
 
 .pc-panel__weapon {
   display: flex;
@@ -482,7 +549,7 @@ export default {
   border-left: 3px solid #dc2626;
 }
 
-.pc-panel__weapon-header {
+.pc-panel__weapon-row {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -494,17 +561,17 @@ export default {
   color: var(--color-text-primary);
 }
 
-.pc-panel__weapon-type {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-}
-
-.pc-panel__weapon-stats {
+.pc-panel__weapon-badges {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
+  margin-left: auto;
   font-size: var(--font-xs);
   color: var(--color-text-secondary);
+}
+
+.pc-panel__weapon-type {
+  font-size: 0.9rem;
 }
 
 .pc-panel__weapon-feat {
