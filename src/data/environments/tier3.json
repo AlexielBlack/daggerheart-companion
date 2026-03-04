@@ -36,38 +36,57 @@
     "features": [
       {
         "name": "Chaos Magic Locus",
-        "type": "passive",
-        "fearCost": null,
         "description": "Quand un PJ fait un Spellcast Roll, il doit lancer deux Dés de Peur et prendre le résultat le plus élevé.",
-        "questions": "Que ressent-on en utilisant la magie dans ce lieu touché par le chaos ? Que craignez-vous qu’il arrive si vous perdez le contrôle du sort ?"
+        "questions": "Que ressent-on en utilisant la magie dans ce lieu touché par le chaos ? Que craignez-vous qu’il arrive si vous perdez le contrôle du sort ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "The Indigo Flame",
-        "type": "passive",
-        "fearCost": null,
         "description": "Les PJ qui approchent l’arbre central peuvent faire un jet de Savoir pour tenter d’identifier la magie qui a consumé cet environnement.\n• Sur un succès : Ils apprennent trois des détails ci-dessous. Sur un succès avec Peur, ils en apprennent deux.\n• Sur un échec : Ils peuvent cocher un Stress pour en apprendre un et gagner l’avantage sur le prochain jet d’action pour enquêter sur cet environnement.\n• Détails : C’est le résultat de magie des Déchus. La corruption se propage par la mousse cendrée. Elle ne peut être purifiée que par un rituel de magie naturelle avec un Progress Countdown (8).",
-        "questions": "Quel culte des Déchus a corrompu ces bois ? Qu’ont-ils déjà fait avec le bois maudit et la sève de cet arbre ?"
+        "questions": "Quel culte des Déchus a corrompu ces bois ? Qu’ont-ils déjà fait avec le bois maudit et la sève de cet arbre ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Grasping Vines",
-        "type": "action",
-        "fearCost": null,
         "description": "Des lianes animées hérissées d’épines fouettent depuis les sous-bois pour enlacer les PJ. La cible doit réussir un jet de Réaction d’Agilité ou devenir Entravée et Vulnérable jusqu’à se libérer, annulant les deux conditions, avec un jet réussi de Finesse ou de Force ou en infligeant 10 dégâts aux lianes. Quand la cible fait un jet pour s’échapper, elle subit 1d8+4 dégâts physiques et perd un Espoir.",
-        "questions": "Quels souvenirs douloureux les lianes font-elles remonter à la surface en perçant la chair ?"
+        "questions": "Quels souvenirs douloureux les lianes font-elles remonter à la surface en perçant la chair ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Charcoal Constructs",
-        "type": "action",
-        "fearCost": null,
         "description": "Des animaux déformés enveloppés de flammes indigo piétinent un point de votre choix. Toutes les cibles à Portée Proche de ce point doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 3d12+3 dégâts physiques. Les cibles qui réussissent subissent la moitié des dégâts.",
-        "questions": "Ces animaux sont-ils de vrais animaux consumés par la flamme ou simplement des constructions de la magie corruptrice ?"
+        "questions": "Ces animaux sont-ils de vrais animaux consumés par la flamme ou simplement des constructions de la magie corruptrice ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Choking Ash",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Countdown (Boucle). Quand les PJ entrent dans le Cœur Brûlant des Bois, activez le countdown. Quand il se déclenche, tous les personnages doivent faire un jet de Réaction de Force ou d’Instinct. Les cibles qui échouent subissent 4d6+5 dégâts physiques directs. Les cibles qui réussissent subissent la moitié des dégâts. Des masques ou vêtements de protection donnent l’avantage sur le jet de réaction.",
-        "questions": "Quelles hallucinations la cendre provoque-t-elle ? Quel goût incongru possède-t-elle ?"
+        "questions": "Quelles hallucinations la cendre provoque-t-elle ? Quel goût incongru possède-t-elle ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       }
     ]
   },
@@ -106,31 +125,48 @@
     "features": [
       {
         "name": "Secret Entrance",
-        "type": "passive",
-        "fearCost": null,
         "description": "Un PJ peut trouver ou se rappeler un passage secret dans le château avec un jet réussi d’Instinct ou de Savoir.",
-        "questions": "Comment entrent-ils sans révéler le passage aux attaquants ? Des défenseurs surveillent-ils ce chemin ?"
+        "questions": "Comment entrent-ils sans révéler le passage aux attaquants ? Des défenseurs surveillent-ils ce chemin ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Siege Weapons (Environment Change)",
-        "type": "action",
-        "fearCost": null,
         "description": "Consequence Countdown (6). La force assiégeante déploie des armes de siège pour tenter de raser les fortifications des défenseurs. Activez le countdown quand le siège commence (pour un siège prolongé, utilisez un countdown à long terme). Quand il se déclenche, les fortifications des défenseurs ont été percées et les attaquants déferlent à l’intérieur. Vous gagnez 2 Peur, puis passez à l’environnement Pitched Battle et donnez-lui le projecteur.",
-        "questions": "Quelles armes de siège sont déployées ? Sont-elles magiques, ordinaires, ou un mélange des deux ? Quelles défenses les personnages doivent-ils surmonter pour prendre d’assaut le château ?"
+        "questions": "Quelles armes de siège sont déployées ? Sont-elles magiques, ordinaires, ou un mélange des deux ? Quelles défenses les personnages doivent-ils surmonter pour prendre d’assaut le château ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Reinforcements!",
-        "type": "action",
-        "fearCost": null,
         "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm passe immédiatement sous le projecteur.",
-        "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?"
+        "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Collateral Damage",
-        "type": "reaction",
-        "fearCost": 1,
         "description": "Quand un adversaire est vaincu, vous pouvez dépenser une Peur pour qu’une attaque perdue d’une arme de siège frappe un point sur le champ de bataille. Toutes les cibles à Portée Très Proche de ce point doivent faire un jet de Réaction d’Agilité.\n• Les cibles qui échouent subissent 3d8+3 dégâts physiques ou magiques et doivent cocher un Stress.\n• Les cibles qui réussissent doivent cocher un Stress.",
-        "questions": "Quels débris sont dispersés par l’attaque ? Qu’est-ce qui est brisé par le coup et ne peut être facilement réparé ?"
+        "questions": "Quels débris sont dispersés par l’attaque ? Qu’est-ce qui est brisé par le coup et ne peut être facilement réparé ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       }
     ]
   },
@@ -168,31 +204,49 @@
     "features": [
       {
         "name": "Adrift on a Sea of Steel",
-        "type": "passive",
-        "fearCost": null,
         "description": "Traverser un champ de bataille pendant un combat actif est extrêmement dangereux. Un PJ doit réussir un jet d’Agilité pour se déplacer, et ne peut aller qu’à Portée Proche sur un succès. Si un adversaire est à Portée de Mêlée de lui, il doit cocher un Stress pour faire un jet d’Agilité pour se déplacer.",
-        "questions": "Les combattants vous prennent-ils pour l’ennemi ou vous considèrent-ils comme des intrus ? Pouvez-vous distinguer ami et ennemi dans la mêlée ?"
+        "questions": "Les combattants vous prennent-ils pour l’ennemi ou vous considèrent-ils comme des intrus ? Pouvez-vous distinguer ami et ennemi dans la mêlée ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "close"
       },
       {
         "name": "Raze and Pillage",
-        "type": "action",
-        "fearCost": null,
         "description": "La force attaquante fait monter les enjeux en allumant un incendie, volant un bien précieux, kidnappant une personne importante, ou tuant la population.",
-        "questions": "Qu’est-ce qui a de la valeur ici ? Qui est le plus vulnérable ?"
+        "questions": "Qu’est-ce qui a de la valeur ici ? Qui est le plus vulnérable ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "War Magic",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur quand un mage d’un camp utilise de la magie destructrice à grande échelle. Choisissez un point sur le champ de bataille à Portée Très Lointaine du mage. Toutes les cibles à Portée Proche de ce point doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 3d12+8 dégâts magiques et doivent cocher un Stress.",
-        "questions": "Quelle forme prend l’attaque — boule de feu, pluie d’acide, tempête de lames ? Quel objectif tactique cette attaque vise-t-elle, et que se passe-t-il ensuite ?"
+        "questions": "Quelle forme prend l’attaque — boule de feu, pluie d’acide, tempête de lames ? Quel objectif tactique cette attaque vise-t-elle, et que se passe-t-il ensuite ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryFar"
       },
       {
         "name": "Reinforcements!",
-        "type": "action",
-        "fearCost": null,
         "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm passe immédiatement sous le projecteur.",
-        "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?"
+        "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far"
       }
     ]
   }

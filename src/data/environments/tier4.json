@@ -24,38 +24,58 @@
     "features": [
       {
         "name": "Impossible Architecture",
-        "type": "passive",
-        "fearCost": null,
         "description": "Le haut est le bas, le bas est la droite, la droite mène aux étoiles. La gravité et la directionnalité elles-mêmes sont en flux, et toute tentative de se déplacer dans ce royaume est une odyssée en soi, nécessitant un Progress Countdown (8). Sur un échec, un PJ doit cocher un Stress en plus des autres conséquences du jet.",
-        "questions": "Que ressent-on en se déplaçant dans un espace si étranger au Plan Mortel ? Sur quel point de repère vous fixez-vous pour maintenir votre équilibre ? Quels repères bizarres traversez-vous dans votre voyage ?"
+        "questions": "Que ressent-on en se déplaçant dans un espace si étranger au Plan Mortel ? Sur quel point de repère vous fixez-vous pour maintenir votre équilibre ? Quels repères bizarres traversez-vous dans votre voyage ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Everything You Are This Place Will Take from You",
-        "type": "action",
-        "fearCost": null,
         "description": "Countdown (Boucle 1d4). Activez le countdown. Quand il se déclenche, tous les PJ doivent réussir un jet de Réaction de Présence ou leur trait le plus élevé est temporairement réduit de 1d4 à moins qu’ils ne cochent un nombre de Stress égal à sa valeur. Tout point de trait perdu est regagné si le PJ réussit un succès critique ou s’échappe du Royaume du Chaos.",
-        "questions": "Comment ce lieu tente-t-il de vous voler ce qui fait de vous une légende ? Que ressent-on quand ce pouvoir vous est arraché ?"
+        "questions": "Comment ce lieu tente-t-il de vous voler ce qui fait de vous une légende ? Que ressent-on quand ce pouvoir vous est arraché ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Unmaking",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour forcer un PJ à faire un jet de Réaction de Force. Sur un échec, il subit 4d10 dégâts magiques directs. Sur un succès, il doit cocher un Stress.",
-        "questions": "Quel aperçu d’autres mondes entrevoyez-vous tandis que ce lieu tente de vous défaire ? Quelle facette fondamentale de votre personnalité la défaisance tente-t-elle d’effacer ?"
+        "questions": "Quel aperçu d’autres mondes entrevoyez-vous tandis que ce lieu tente de vous défaire ? Quelle facette fondamentale de votre personnalité la défaisance tente-t-elle d’effacer ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Outer Realms Predators",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour invoquer un Outer Realms Abomination, un Outer Realms Corruptor, et 2d6 Outer Realms Thralls, qui apparaissent à Portée Proche d’un PJ choisi en défiance de toute logique et causalité. Donnez immédiatement le projecteur à l’un de ces adversaires, et vous pouvez dépenser une Peur supplémentaire pour réussir automatiquement l’attaque standard de cet adversaire.",
-        "questions": "Quels restes à demi-consumés du monde brisé ces monstruosités rejettent-elles en pourchassant la chair vivante ? Quels reflets déchiquetés d’une ancienne identité humaine entrevoyez-vous entre les moments de malveillance aveugle ?"
+        "questions": "Quels restes à demi-consumés du monde brisé ces monstruosités rejettent-elles en pourchassant la chair vivante ? Quels reflets déchiquetés d’une ancienne identité humaine entrevoyez-vous entre les moments de malveillance aveugle ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Disorienting Reality",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Sur un résultat avec Peur, vous pouvez demander au PJ de décrire laquelle de ses peurs le Royaume du Chaos évoque tandis qu’une vision de la réalité se défait et se reconstitue devant lui. Le PJ perd un Espoir. Si c’est son dernier Espoir, vous gagnez une Peur.",
-        "questions": "Quel moment voient-ils ? Si c’est un souvenir, comment est-il déformé par ce lieu ? Sera-t-il difficile de s’accrocher au vrai souvenir ?"
+        "questions": "Quel moment voient-ils ? Si c’est un souvenir, comment est-il déformé par ce lieu ? Sera-t-il difficile de s’accrocher au vrai souvenir ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       }
     ]
   },
@@ -86,45 +106,68 @@
     "features": [
       {
         "name": "Final Preparations",
-        "type": "passive",
-        "fearCost": null,
         "description": "Quand l’environnement passe sous le projecteur pour la première fois, désignez un adversaire comme l’Usurpateur cherchant à renverser les dieux. Activez un Long-Term Countdown (8) tandis que l’Usurpateur assemble ce dont il a besoin pour mener le rituel. Quand il se déclenche, donnez le projecteur à cet environnement pour utiliser la feature « Beginning of the End ». Tant que cet environnement reste en jeu, vous pouvez détenir jusqu’à 15 Peur.",
-        "questions": "De quoi l’Usurpateur a-t-il encore besoin : le cœur d’un High Seraph ? La pierre angulaire d’un ancien portail ? La loyauté de deux ennemis jurés ? Les larmes de chagrin d’une âme pure ?"
+        "questions": "De quoi l’Usurpateur a-t-il encore besoin : le cœur d’un High Seraph ? La pierre angulaire d’un ancien portail ? La loyauté de deux ennemis jurés ? Les larmes de chagrin d’une âme pure ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Divine Blessing",
-        "type": "passive",
-        "fearCost": null,
         "description": "Quand un PJ réussit un succès critique, il peut dépenser 2 Espoir pour rafraîchir une capacité normalement limitée par son nombre d’utilisations (comme une fois par repos, une fois par session).",
-        "questions": "Quel dieu vous favorise dans votre combat contre cette usurpation ? Comment votre pouvoir renouvelé reflète-t-il son influence ?"
+        "questions": "Quel dieu vous favorise dans votre combat contre cette usurpation ? Comment votre pouvoir renouvelé reflète-t-il son influence ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Defilers Abound",
-        "type": "action",
-        "fearCost": 2,
         "description": "Dépensez 2 Peur pour invoquer 1d4+2 Fallen Shock Troops qui apparaissent à Portée Proche de l’Usurpateur pour assister son siège divin. Donnez immédiatement le projecteur aux Shock Troops pour utiliser une action « Group Attack ».",
-        "questions": "Quel High Fallen ces troupes servent-elles ? La chair de quel dieu souhaitent-elles festoyer ?"
+        "questions": "Quel High Fallen ces troupes servent-elles ? La chair de quel dieu souhaitent-elles festoyer ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 2
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Godslayer",
-        "type": "action",
-        "fearCost": 3,
         "description": "Si le Divine Siege Countdown (voir « Beginning of the End ») s’est déclenché, vous pouvez dépenser 3 Peur pour décrire l’Usurpateur tuant l’un des dieux des Hallows Above, se repaissant de leur pouvoir et devenant plus fort. L’Usurpateur efface 2 PV. Augmentez sa Difficulté, ses dégâts, son modificateur d’attaque, ou donnez-lui une nouvelle feature du dieu tué.",
-        "questions": "Quel dieu rencontre sa fin ? Quels sont ses derniers mots ? Comment le nouveau pouvoir volé de l’Usurpateur se manifeste-t-il ?"
+        "questions": "Quel dieu rencontre sa fin ? Quels sont ses derniers mots ? Comment le nouveau pouvoir volé de l’Usurpateur se manifeste-t-il ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 3
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Beginning of the End",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Quand le countdown « Final Preparations » se déclenche, l’Usurpateur commence à marteler les portes des Hallows eux-mêmes. Activez un Divine Siege Countdown (10). Donnez le projecteur à l’Usurpateur pour décrire son assaut et décrémenter ce countdown de 1. Si l’Usurpateur subit des dégâts Majeurs ou supérieurs, incrémentez le countdown de 1. Quand il se déclenche, l’Usurpateur brise la barrière entre le Plan Mortel et les Hallows Above pour tuer les dieux et prendre leur place. Vous gagnez une Peur pour chaque PV non marqué de l’Usurpateur. Vous pouvez immédiatement utiliser la feature « Godslayer » sans dépenser de Peur pour faire un mouvement de MJ supplémentaire.",
-        "questions": "Comment le Plan Mortel se tord-il tandis que l’ordre naturel est violé ? Quels mortels sont témoins de ce blasphème de loin ?"
+        "questions": "Comment le Plan Mortel se tord-il tandis que l’ordre naturel est violé ? Quels mortels sont témoins de ce blasphème de loin ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Ritual Nexus",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Sur tout échec avec Peur contre l’Usurpateur, le PJ doit cocher 1d4 Stress à cause du contrecoup de la puissance magique.",
-        "questions": "Quelles visions d’échecs passés vous tourmentent quand vos efforts échouent ? Comment ces souvenirs sont-ils déformés par l’Usurpateur ?"
+        "questions": "Quelles visions d’échecs passés vous tourmentent quand vos efforts échouent ? Comment ces souvenirs sont-ils déformés par l’Usurpateur ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       }
     ]
   },
@@ -154,38 +197,56 @@
     "features": [
       {
         "name": "All Roads Lead Here",
-        "type": "passive",
-        "fearCost": null,
         "description": "Tant que les PJ sont à la Cour Impériale, un PJ a un désavantage sur les jets de Présence pour entreprendre des actions qui ne correspondent pas au mode de vie impérial ou ne soutiennent pas la domination de l’empire.",
-        "questions": "Comment l’utilisation du langage rend-elle difficile même de discuter de modes de vie alternatifs ? Quels avantages évidents de la loyauté créent des frictions quand vous essayez de proposer des alternatives ?"
+        "questions": "Comment l’utilisation du langage rend-elle difficile même de discuter de modes de vie alternatifs ? Quels avantages évidents de la loyauté créent des frictions quand vous essayez de proposer des alternatives ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Rival Vassals",
-        "type": "passive",
-        "fearCost": null,
         "description": "Les PJ peuvent trouver à la cour des sujets impériaux, des vassaux et des suppliants, chacun rivalisant pour les faveurs, cherchant la proximité du pouvoir, échangeant des services contre la loyauté, et élevant leur statut au-dessus des autres. Certains pourraient être désespérés de saper leurs rivaux, tandis que d’autres pourraient même être ouverts à des discussions qui frôlent la sédition.",
-        "questions": "Comment bénéficient-ils de la vassalité, et qu’est-ce que cela leur a coûté ? Quelle exploitation les pousse à envisager de s’opposer à l’imparable ?"
+        "questions": "Comment bénéficient-ils de la vassalité, et qu’est-ce que cela leur a coûté ? Quelle exploitation les pousse à envisager de s’opposer à l’imparable ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "The Gravity of Empire",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour présenter à un PJ une opportunité en or ou une offre de satisfaire un objectif majeur en échange de l’obéissance ou du soutien à l’empire. La cible doit faire un jet de Réaction de Présence. Sur un échec, elle doit cocher tout son Stress ou accepter l’offre. Si elle a déjà coché tout son Stress, elle doit accepter l’offre ou s’exiler de l’empire. Sur un succès, elle doit cocher 1d4 Stress car elle est mise à l’épreuve par la tentation.",
-        "questions": "Que désirent les PJ si désespérément qu’ils pourraient envisager de se rallier à ce pouvoir impitoyable ? Comment les agents impériaux ont-ils appris les désirs les plus profonds du PJ ?"
+        "questions": "Que désirent les PJ si désespérément qu’ils pourraient envisager de se rallier à ce pouvoir impitoyable ? Comment les agents impériaux ont-ils appris les désirs les plus profonds du PJ ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Imperial Decree",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour décrémenter de 1d4 un countdown à long terme lié à l’agenda de l’empire. Si cela déclenche le countdown, une proclamation liée à l’agenda est annoncée à la cour tandis que le plan est exécuté.",
-        "questions": "Quelle démonstration de pouvoir ou transfert de richesse a été nécessaire pour accélérer ce plan ? Quelles vies ont été perturbées ou bouleversées pour que cela se produise ?"
+        "questions": "Quelle démonstration de pouvoir ou transfert de richesse a été nécessaire pour accélérer ce plan ? Quelles vies ont été perturbées ou bouleversées pour que cela se produise ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Eyes Everywhere",
-        "type": "reaction",
-        "fearCost": 1,
         "description": "Sur un résultat avec Peur, vous pouvez dépenser une Peur pour que quelqu’un de loyal à l’empire surprenne des propos séditieux à la cour. Un PJ doit réussir un jet de Réaction d’Instinct pour remarquer que le groupe a été entendu afin de tenter d’intercepter le témoin avant que les PJ ne soient démasqués.",
-        "questions": "Comment l’empire a-t-il compromis ce témoin ? Pourquoi son premier réflexe est-il de protéger l’empire, même s’il ne le traite pas bien ?"
+        "questions": "Comment l’empire a-t-il compromis ce témoin ? Pourquoi son premier réflexe est-il de protéger l’empire, même s’il ne le traite pas bien ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       }
     ]
   },
@@ -214,38 +275,59 @@
     "features": [
       {
         "name": "No Place for the Living",
-        "type": "passive",
-        "fearCost": null,
         "description": "Une feature ou action qui efface des PV nécessite de dépenser un Espoir pour être utilisée. Si elle coûte déjà de l’Espoir, un PJ doit dépenser un Espoir supplémentaire.",
-        "questions": "Que ressent-on en essayant de guérir dans un lieu si antithétique à la vie ?"
+        "questions": "Que ressent-on en essayant de guérir dans un lieu si antithétique à la vie ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Centuries of Knowledge",
-        "type": "passive",
-        "fearCost": null,
         "description": "Un PJ peut enquêter dans la bibliothèque et le laboratoire et faire un jet de Savoir pour apprendre des informations liées à l’arcane, l’histoire locale, et les plans du Nécromancien.",
-        "questions": "Quels sont les noms des tomes ? Sur quel projet le nécromancien travaille-t-il et que communique-t-il sur ses plans ?"
+        "questions": "Quels sont les noms des tomes ? Sur quel projet le nécromancien travaille-t-il et que communique-t-il sur ses plans ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Skeletal Burst",
-        "type": "action",
-        "fearCost": null,
         "description": "Toutes les cibles à Portée Proche d’un point de votre choix dans cet environnement doivent réussir un jet de Réaction d’Agilité ou subir 4d8+8 dégâts physiques des éclats de squelette tandis qu’une partie de l’ossuaire détone autour d’elles.",
-        "questions": "Quelle ancienne architecture osseuse est détruite ? Quels os se plantent dans votre armure ?"
+        "questions": "Quelle ancienne architecture osseuse est détruite ? Quels os se plantent dans votre armure ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Aura of Death",
-        "type": "action",
-        "fearCost": null,
         "description": "Une fois par scène, lancez un d4. Chaque mort-vivant à Portée Lointaine du Nécromancien peut effacer des PV et du Stress égaux au résultat lancé. Le mort-vivant peut choisir comment ce nombre est réparti entre PV et Stress.",
-        "questions": "Comment leur vigueur renouvelée se manifeste-t-elle ? Ont-ils l’air plus vivants ou, paradoxalement, plus décomposés mais vigoureux ?"
+        "questions": "Comment leur vigueur renouvelée se manifeste-t-elle ? Ont-ils l’air plus vivants ou, paradoxalement, plus décomposés mais vigoureux ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "They Just Keep Coming!",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour invoquer 1d6 Rotted Zombies, deux Perfected Zombies, ou une Zombie Legion, qui apparaissent à Portée Proche d’un PJ choisi.",
-        "questions": "Qui étaient ces personnes avant de devenir les pions du nécromancien ? Quels vestiges de ces vies restent visibles pour les héros ?"
+        "questions": "Qui étaient ces personnes avant de devenir les pions du nécromancien ? Quels vestiges de ces vies restent visibles pour les héros ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ]
   }

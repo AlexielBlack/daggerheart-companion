@@ -48,7 +48,7 @@ describe('Environnements — intégrité structurelle', () => {
       e.features.forEach((f) => {
         expect(typeof f.name, `${e.id} feature name`).toBe('string')
         expect(typeof f.description, `${e.id} feature description`).toBe('string')
-        expect(FEATURE_TYPES, `${e.id} feature type "${f.type}"`).toContain(f.type)
+        expect(FEATURE_TYPES, `${e.id} feature type "${f.activationType}"`).toContain(f.activationType)
       })
     })
   })
@@ -69,16 +69,16 @@ describe('Environnements — logique', () => {
 
   it('chaque environnement a au moins une feature passive', () => {
     allEnvironments.forEach((e) => {
-      const passives = e.features.filter((f) => f.type === 'passive')
+      const passives = e.features.filter((f) => f.activationType === 'passive')
       expect(passives.length, `${e.name} doit avoir >= 1 passive`).toBeGreaterThanOrEqual(1)
     })
   })
 
-  it('les features avec fearCost ont un coût positif', () => {
+  it('les features avec cost fear ont un montant positif', () => {
     allEnvironments.forEach((e) => {
       e.features.forEach((f) => {
-        if (f.fearCost !== null && f.fearCost !== undefined) {
-          expect(f.fearCost, `${e.name} > ${f.name} fearCost > 0`).toBeGreaterThan(0)
+        if (f.cost && f.cost.type === 'fear') {
+          expect(f.cost.amount, `${e.name} > ${f.name} fear cost > 0`).toBeGreaterThan(0)
         }
       })
     })

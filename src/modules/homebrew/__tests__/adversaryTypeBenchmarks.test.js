@@ -69,7 +69,7 @@ describe('adversaryTypeBenchmarks — structure', () => {
       expect(typeData.suggestedFeatures.length).toBeGreaterThan(0)
       typeData.suggestedFeatures.forEach((f) => {
         expect(f.name).toBeTruthy()
-        expect(['Passive', 'Action', 'Reaction']).toContain(f.type)
+        expect(['Passive', 'Action', 'Reaction']).toContain(f.activationType)
         expect(f.description).toBeTruthy()
       })
     })

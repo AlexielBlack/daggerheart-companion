@@ -30,9 +30,9 @@ const fullAdversary = {
     { name: 'Vol', modifier: 3 }
   ],
   features: [
-    { type: 'passive', name: 'Résistance au froid', description: 'Immunité aux dégâts de givre.' },
-    { type: 'action', name: 'Souffle dévastateur', cost: '2 stress', description: 'Inflige 5d10 dans un cône.' },
-    { type: 'reaction', name: 'Queue balayante', description: 'Repousse les ennemis proches.' }
+    { activationType: 'passive', name: 'Résistance au froid', description: 'Immunité aux dégâts de givre.' },
+    { activationType: 'action', name: 'Souffle dévastateur', cost: '2 stress', description: 'Inflige 5d10 dans un cône.' },
+    { activationType: 'reaction', name: 'Queue balayante', description: 'Repousse les ennemis proches.' }
   ]
 }
 

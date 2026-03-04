@@ -92,7 +92,7 @@ describe('EnvironmentPreview', () => {
     const w = factory({
       name: 'Test',
       features: [
-        { name: 'Piège à ours', type: 'action', description: 'Un piège dangereux.' }
+        { name: 'Piège à ours', activationType: 'action', description: 'Un piège dangereux.' }
       ]
     })
     expect(w.text()).toContain('Piège à ours')
@@ -103,9 +103,9 @@ describe('EnvironmentPreview', () => {
     const w = factory({
       name: 'Test',
       features: [
-        { name: 'F1', type: 'action', description: 'desc' },
-        { name: 'F2', type: 'reaction', description: 'desc' },
-        { name: 'F3', type: 'passive', description: 'desc' }
+        { name: 'F1', activationType: 'action', description: 'desc' },
+        { name: 'F2', activationType: 'reaction', description: 'desc' },
+        { name: 'F3', activationType: 'passive', description: 'desc' }
       ]
     })
     expect(w.find('.env-preview__feature--action').exists()).toBe(true)
@@ -116,7 +116,7 @@ describe('EnvironmentPreview', () => {
   it('affiche le coût en Fear d\'une feature', () => {
     const w = factory({
       name: 'Test',
-      features: [{ name: 'Pouvoir', type: 'action', fearCost: 2, description: 'desc' }]
+      features: [{ name: 'Pouvoir', activationType: 'action', cost: { type: 'fear', amount: 2 }, description: 'desc' }]
     })
     expect(w.text()).toContain('🔴')
     expect(w.text()).toContain('2')
@@ -125,7 +125,7 @@ describe('EnvironmentPreview', () => {
   it('affiche les questions narratives d\'une feature', () => {
     const w = factory({
       name: 'Test',
-      features: [{ name: 'F1', type: 'passive', description: 'desc', questions: 'Pourquoi ?' }]
+      features: [{ name: 'F1', activationType: 'passive', description: 'desc', questions: 'Pourquoi ?' }]
     })
     expect(w.text()).toContain('Pourquoi ?')
   })

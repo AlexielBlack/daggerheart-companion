@@ -31,10 +31,10 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Features possibles : Restrain, dégâts supplémentaires, attaque multi-cibles'
     ],
     suggestedFeatures: [
-      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
-      { name: 'Ramp Up', type: 'Passive', description: 'Dépenser 1 Fear pour spotlight. Attaque standard contre toutes les cibles à portée.' },
-      { name: 'Haymaker', type: 'Action', description: 'Attaque à Very Close. Succès = dégâts directs physiques.' },
-      { name: 'Shredding Strike', type: 'Action', description: 'Attaque à Very Close. Succès = dégâts + marquer un Armor Slot sans bénéfice.' }
+      { name: 'Momentum', activationType: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Ramp Up', activationType: 'Passive', description: 'Dépenser 1 Fear pour spotlight. Attaque standard contre toutes les cibles à portée.' },
+      { name: 'Haymaker', activationType: 'Action', description: 'Attaque à Very Close. Succès = dégâts directs physiques.' },
+      { name: 'Shredding Strike', activationType: 'Action', description: 'Attaque à Very Close. Succès = dégâts + marquer un Armor Slot sans bénéfice.' }
     ],
     tiers: {
       1: {
@@ -83,9 +83,9 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Stress bas — le Horde ne devrait pas durer longtemps individuellement'
     ],
     suggestedFeatures: [
-      { name: 'Horde (X)', type: 'Passive', description: 'Quand le Horde a marqué la moitié+ de ses HP, attaque standard fait X dégâts.' },
-      { name: 'Group Attack', type: 'Action', description: 'Dépenser 1 Fear pour spotlight tous les Hordes à Close. Attaque partagée.' },
-      { name: 'Overwhelm', type: 'Reaction', description: 'Quand un allié à Very Close inflige des dégâts, attaque la même cible.' }
+      { name: 'Horde (X)', activationType: 'Passive', description: 'Quand le Horde a marqué la moitié+ de ses HP, attaque standard fait X dégâts.' },
+      { name: 'Group Attack', activationType: 'Action', description: 'Dépenser 1 Fear pour spotlight tous les Hordes à Close. Attaque partagée.' },
+      { name: 'Overwhelm', activationType: 'Reaction', description: 'Quand un allié à Very Close inflige des dégâts, attaque la même cible.' }
     ],
     tiers: {
       1: {
@@ -134,11 +134,11 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Considérer Tactician, Reinforcements, Move as Unit, For the Realm!'
     ],
     suggestedFeatures: [
-      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
-      { name: 'Tactician', type: 'Action', description: 'Marquer 1 Stress pour spotlight 2 alliés à Close.' },
-      { name: 'Reinforcements', type: 'Action', description: '1x/scène, marquer 1 Stress pour invoquer 2d4 adversaires à Far.' },
-      { name: 'Move as Unit', type: 'Action', description: 'Dépenser 2 Fear pour spotlight jusqu\'à 5 alliés à Far.' },
-      { name: 'For the Realm!', type: 'Action', description: 'Marquer 1 Stress pour spotlight 1d4+1 alliés. Dégâts réduits de moitié.' }
+      { name: 'Momentum', activationType: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Tactician', activationType: 'Action', description: 'Marquer 1 Stress pour spotlight 2 alliés à Close.' },
+      { name: 'Reinforcements', activationType: 'Action', description: '1x/scène, marquer 1 Stress pour invoquer 2d4 adversaires à Far.' },
+      { name: 'Move as Unit', activationType: 'Action', description: 'Dépenser 2 Fear pour spotlight jusqu\'à 5 alliés à Far.' },
+      { name: 'For the Realm!', activationType: 'Action', description: 'Marquer 1 Stress pour spotlight 1d4+1 alliés. Dégâts réduits de moitié.' }
     ],
     tiers: {
       1: {
@@ -188,8 +188,8 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Peu de features supplémentaires — simplicité maximale'
     ],
     suggestedFeatures: [
-      { name: 'Minion (X)', type: 'Passive', description: 'Vaincu par tout dégât. Pour chaque X dégâts, vaincre un Minion supplémentaire à portée.' },
-      { name: 'Group Attack', type: 'Action', description: 'Dépenser 1 Fear, spotlight tous les Minions du même nom à Close. Attaque partagée.' }
+      { name: 'Minion (X)', activationType: 'Passive', description: 'Vaincu par tout dégât. Pour chaque X dégâts, vaincre un Minion supplémentaire à portée.' },
+      { name: 'Group Attack', activationType: 'Action', description: 'Dépenser 1 Fear, spotlight tous les Minions du même nom à Close. Attaque partagée.' }
     ],
     tiers: {
       1: {
@@ -243,9 +243,9 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Features possibles : attaque multi-cibles via Fear, bonus conditionnel aux dégâts'
     ],
     suggestedFeatures: [
-      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
-      { name: 'Deadly Shot', type: 'Action', description: 'Attaque contre cible Vulnerable à Far. Succès + marquer Stress = dégâts amplifiés.' },
-      { name: 'Suppressing Fire', type: 'Action', description: 'Dépenser Fear pour attaquer toutes les cibles dans une zone.' }
+      { name: 'Momentum', activationType: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Deadly Shot', activationType: 'Action', description: 'Attaque contre cible Vulnerable à Far. Succès + marquer Stress = dégâts amplifiés.' },
+      { name: 'Suppressing Fire', activationType: 'Action', description: 'Dépenser Fear pour attaquer toutes les cibles dans une zone.' }
     ],
     tiers: {
       1: {
@@ -294,10 +294,10 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Considérer une feature de gain de Fear'
     ],
     suggestedFeatures: [
-      { name: 'Backstab', type: 'Passive', description: 'Dégâts doublés contre cibles Vulnerable ou attaquées par un allié.' },
-      { name: 'Cloaked', type: 'Action', description: 'Marquer 1 Stress pour devenir Hidden.' },
-      { name: 'Out of Nowhere', type: 'Passive', description: 'Premier tour, attaque depuis Hidden avec dégâts bonus.' },
-      { name: 'Pack Tactics', type: 'Passive', description: 'Si un allié du même nom est à Melee de la cible, dégâts augmentés + gain Fear.' }
+      { name: 'Backstab', activationType: 'Passive', description: 'Dégâts doublés contre cibles Vulnerable ou attaquées par un allié.' },
+      { name: 'Cloaked', activationType: 'Action', description: 'Marquer 1 Stress pour devenir Hidden.' },
+      { name: 'Out of Nowhere', activationType: 'Passive', description: 'Premier tour, attaque depuis Hidden avec dégâts bonus.' },
+      { name: 'Pack Tactics', activationType: 'Passive', description: 'Si un allié du même nom est à Melee de la cible, dégâts augmentés + gain Fear.' }
     ],
     tiers: {
       1: {
@@ -346,10 +346,10 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Peut influencer la disposition d\'autres NPCs'
     ],
     suggestedFeatures: [
-      { name: 'Mockery', type: 'Action', description: 'Cible doit réussir un jet de Présence ou marquer 1 Stress.' },
-      { name: 'Scapegoat', type: 'Action', description: 'Dépenser Fear pour rediriger l\'attention vers un allié ou un PJ.' },
-      { name: 'Guards, Seize Them!', type: 'Action', description: 'Invoquer des gardes/alliés pour combattre à sa place.' },
-      { name: 'Exile', type: 'Action', description: 'Dépenser Fear pour bannir un PJ de la zone sociale.' }
+      { name: 'Mockery', activationType: 'Action', description: 'Cible doit réussir un jet de Présence ou marquer 1 Stress.' },
+      { name: 'Scapegoat', activationType: 'Action', description: 'Dépenser Fear pour rediriger l\'attention vers un allié ou un PJ.' },
+      { name: 'Guards, Seize Them!', activationType: 'Action', description: 'Invoquer des gardes/alliés pour combattre à sa place.' },
+      { name: 'Exile', activationType: 'Action', description: 'Dépenser Fear pour bannir un PJ de la zone sociale.' }
     ],
     tiers: {
       1: {
@@ -399,10 +399,10 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Dégâts élevés pour menacer les PJs individuellement'
     ],
     suggestedFeatures: [
-      { name: 'Relentless (X)', type: 'Passive', description: 'Peut être spotlight X fois par tour MJ. Dépenser Fear normalement.' },
-      { name: 'Momentum', type: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
-      { name: 'Terrifying', type: 'Passive', description: 'Attaque réussie = tous les PJs à Far perdent 1 Hope, MJ gagne 1 Fear.' },
-      { name: 'Phase Change', type: 'Reaction', description: 'Quand HP atteint un seuil, change de stat block ou de phase.' }
+      { name: 'Relentless (X)', activationType: 'Passive', description: 'Peut être spotlight X fois par tour MJ. Dépenser Fear normalement.' },
+      { name: 'Momentum', activationType: 'Reaction', description: 'Quand l\'adversaire réussit une attaque, le MJ gagne 1 Fear.' },
+      { name: 'Terrifying', activationType: 'Passive', description: 'Attaque réussie = tous les PJs à Far perdent 1 Hope, MJ gagne 1 Fear.' },
+      { name: 'Phase Change', activationType: 'Reaction', description: 'Quand HP atteint un seuil, change de stat block ou de phase.' }
     ],
     tiers: {
       1: {
@@ -450,9 +450,9 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Bon point de départ pour créer un adversaire'
     ],
     suggestedFeatures: [
-      { name: 'Shield Wall', type: 'Passive', description: 'Quand un allié du même nom est adjacent, +X aux seuils.' },
-      { name: 'Reform', type: 'Reaction', description: 'Quand vaincu, lancer 1d6. Sur 6, se reforme si d\'autres adversaires existent.' },
-      { name: 'Reinforce', type: 'Action', description: 'Marquer 1 Stress pour donner avantage à un allié pour son prochain jet.' }
+      { name: 'Shield Wall', activationType: 'Passive', description: 'Quand un allié du même nom est adjacent, +X aux seuils.' },
+      { name: 'Reform', activationType: 'Reaction', description: 'Quand vaincu, lancer 1d6. Sur 6, se reforme si d\'autres adversaires existent.' },
+      { name: 'Reinforce', activationType: 'Action', description: 'Marquer 1 Stress pour donner avantage à un allié pour son prochain jet.' }
     ],
     tiers: {
       1: {
@@ -501,10 +501,10 @@ export const ADVERSARY_TYPE_BENCHMARKS = {
       'Considérer des features qui gênent les PJs (conditions, désavantage)'
     ],
     suggestedFeatures: [
-      { name: 'Curse', type: 'Action', description: 'Appliquer une condition (Cursed, Vulnerable) à un PJ.' },
-      { name: 'Chaotic Flux', type: 'Action', description: 'Marquer 1 Stress pour donner avantage ou imposer désavantage.' },
-      { name: 'Shroud of the Fallen', type: 'Action', description: 'Protéger un allié — réduit les dégâts ou impose condition.' },
-      { name: 'Enervating Blast', type: 'Action', description: 'Dépenser Fear pour attaquer et forcer Stress.' }
+      { name: 'Curse', activationType: 'Action', description: 'Appliquer une condition (Cursed, Vulnerable) à un PJ.' },
+      { name: 'Chaotic Flux', activationType: 'Action', description: 'Marquer 1 Stress pour donner avantage ou imposer désavantage.' },
+      { name: 'Shroud of the Fallen', activationType: 'Action', description: 'Protéger un allié — réduit les dégâts ou impose condition.' },
+      { name: 'Enervating Blast', activationType: 'Action', description: 'Dépenser Fear pour attaquer et forcer Stress.' }
     ],
     tiers: {
       1: {

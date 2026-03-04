@@ -93,17 +93,17 @@
         v-for="(feat, idx) in data.features"
         :key="idx"
         class="env-preview__feature"
-        :class="`env-preview__feature--${feat.type || 'passive'}`"
+        :class="`env-preview__feature--${feat.activationType || 'passive'}`"
       >
         <div class="env-preview__feature-header">
           <span class="env-preview__feature-name">{{ feat.name || 'Feature sans nom' }}</span>
-          <span class="env-preview__feature-type">{{ featureTypeLabel(feat.type) }}</span>
+          <span class="env-preview__feature-type">{{ featureTypeLabel(feat.activationType) }}</span>
           <span
-            v-if="feat.fearCost"
+            v-if="feat.cost && feat.cost.type === 'fear'"
             class="env-preview__fear-cost"
             aria-label="Coût en Fear"
           >
-            🔴 {{ feat.fearCost }}
+            🔴 {{ feat.cost.amount }}
           </span>
         </div>
         <p

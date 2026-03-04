@@ -38,48 +38,74 @@
     "features": [
       {
         "name": "Dance of Death",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Placez sous le projecteur 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts, ou la totalité si vous dépensez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Beam of Decay",
-        "type": "action",
-        "cost": "Cochez 2 Stress",
         "description": "Forcez toutes les cibles à Portée Loin à faire un jet de Réaction de Force. Les cibles qui échouent subissent 2d20+12 dégâts magiques et vous gagnez une Peur. Les cibles qui réussissent subissent la moitié des dégâts. Une cible qui coche 2 PV ou plus doit aussi cocher 2 Stress et devient Vulnérable jusqu’à ce qu’elle obtienne Espoir.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 2
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Open the Gates of Death",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Invoquez une Légion de Zombies, qui apparaît à Portée Proche et passe immédiatement sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Not Today, My Dears",
-        "type": "reaction",
-        "cost": "Dépensez une Peur",
         "description": "Quand le Nécromancien a coché 7 PV ou plus, téléportez-le dans un lieu sûr. Un PJ qui réussit un jet d’Instinct peut remonter la trace de la magie de téléportation jusqu’à sa destination.",
         "tags": [
           "utilitaire",
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le nécromancien a coché 7 pv ou plus, téléportez-le dans un lieu sûr"
       },
       {
         "name": "Your Life Is Mine",
-        "type": "reaction",
         "description": "Compte à rebours (Boucle 2d6). Quand le Nécromancien a coché 6 PV ou plus, activez le compte à rebours. Quand il se déclenche, infligez 2d10+6 dégâts magiques directs à une cible à Portée Proche. Le Nécromancien retire alors des PV ou du Stress égal au nombre de PV cochés par la cible.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand le nécromancien a coché 6 pv ou plus, activez le compte à rebours"
       }
     ],
     "focusProfile": {
@@ -122,29 +148,42 @@
     "features": [
       {
         "name": "Minion (12)",
-        "type": "passive",
         "description": "La Troupe de Choc est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 12 dégâts qu’un PJ inflige à la Troupe de Choc, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Aura of Doom",
-        "type": "passive",
         "description": "Quand un PJ coche des PV suite à une attaque de la Troupe de Choc, il perd un Espoir.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Group Attack",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Choisissez une cible et placez sous le projecteur toutes les Troupes de Choc Déchues à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 12 dégâts physiques chacun. Combinez ces dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -192,39 +231,63 @@
     "features": [
       {
         "name": "Conflagration",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Déchaînez une tempête de feu dévorante et attaquez toutes les cibles à Portée Proche. Les cibles touchées subissent 2d10+6 dégâts magiques directs.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Nightmare Tableau",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Piégez une cible à Portée Loin dans une puissante illusion de ses pires peurs. La cible est Entravée et Vulnérable jusqu’à ce qu’elle se libère avec un jet d’Instinct réussi.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Slippery",
-        "type": "reaction",
         "description": "Quand le Sorcier subit des dégâts d’une attaque, il peut se téléporter jusqu’à Portée Loin.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand le sorcier subit des dégâts d’une attaque"
       },
       {
         "name": "Shackles of Guilt",
-        "type": "reaction",
         "description": "Compte à rebours (Boucle 2d6). Quand le Sorcier est sous le projecteur pour la première fois, activez le compte à rebours. Quand il se déclenche, toutes les cibles à Portée Loin deviennent Vulnérables et doivent cocher un Stress. Une cible peut se libérer avec un jet de Présence ou de Force réussi.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand le sorcier est sous le projecteur pour la première fois"
       }
     ],
     "focusProfile": {
@@ -276,19 +339,28 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Briseur de Royaumes peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Terrifying",
-        "type": "passive",
         "description": "Quand le Seigneur de Guerre réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       }
     ],
     "focusProfile": {
@@ -343,62 +415,100 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Champion Invaincu peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Faltering Armor",
-        "type": "passive",
         "description": "Quand le Champion Invaincu subit des dégâts, réduisez-les de 1d10.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Shattering Strike",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque standard contre toutes les cibles à Portée Très Proche. Les PJ touchés perdent un nombre d’Espoirs égal aux PV cochés suite à cette attaque.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Endless Legions",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Invoquez un nombre de Troupes de Choc Déchues égal au double du nombre de PJ. Les Troupes de Choc apparaissent à Portée Loin.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Circle of Defilement",
-        "type": "reaction",
         "description": "Compte à rebours (1d8). Quand mis sous le projecteur pour la première fois, activez le compte à rebours. Quand il se déclenche, activez un cercle magique à Portée Loin. Les cibles dans cette zone sont Vulnérables jusqu’à ce qu’elles la quittent. Le cercle peut être retiré en infligeant des dégâts Sévères au Champion Invaincu.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand mis sous le projecteur pour la première fois, activez le compte à rebours"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand le Champion Invaincu réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le champion invaincu réussit une attaque contre un pj, vous gagnez une peur"
       },
       {
         "name": "Doombringer",
-        "type": "reaction",
         "description": "Quand une cible coche des PV suite à une attaque du Champion Invaincu, tous les PJ à Portée Loin de la cible perdent un Espoir.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand une cible coche des pv suite à une attaque du champion invaincu"
       }
     ],
     "focusProfile": {
@@ -441,20 +551,28 @@
     "features": [
       {
         "name": "Punish the Guilty",
-        "type": "passive",
         "description": "L’Archer inflige le double de dégâts aux cibles marquées Coupables par un Haut Séraphin.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Divine Volley",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque standard contre jusqu’à trois cibles.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill"
       }
     ],
     "focusProfile": {
@@ -497,28 +615,42 @@
     "features": [
       {
         "name": "Minion (13)",
-        "type": "passive",
         "description": "Le Soldat est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 13 dégâts qu’un PJ inflige au Soldat, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Divine Flight",
-        "type": "passive",
         "description": "Tant que le Soldat vole, dépensez une Peur pour se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Group Attack",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Choisissez une cible et placez sous le projecteur tous les Soldats Sanctifiés à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 10 dégâts physiques chacun. Combinez ces dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -566,47 +698,71 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Séraphin peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Divine Flight",
-        "type": "passive",
         "description": "Tant que le Séraphin vole, dépensez une Peur pour se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Judgment",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Rendez une cible à Portée Loin Coupable aux yeux du dieu du Séraphin jusqu’à ce que le Séraphin soit vaincu. Tant que Coupable, la cible ne gagne pas d’Espoir sur un résultat avec Espoir. Le Séraphin inflige des dégâts Sévères aux cibles Coupables sur une attaque standard réussie. Une seule cible à la fois.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "God Rays",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Reflétez un éclat de divinité sous forme d’un rayon de lumière brûlant frappant jusqu’à vingt cibles à Portée Très Loin. Les cibles doivent faire un jet de Réaction de Présence (avec désavantage si Coupables). Les cibles qui échouent subissent 4d6+12 dégâts magiques. Les cibles qui réussissent subissent la moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryFar"
       },
       {
         "name": "We Are One",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Une fois par scène, placez sous le projecteur tous les autres adversaires à Portée Loin. Les attaques qu’ils effectuent infligent la moitié des dégâts.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       }
     ],
     "focusProfile": {
@@ -654,45 +810,69 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Kraken peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Many Tentacles",
-        "type": "passive",
         "description": "Tant que le Kraken a 7 PV cochés ou moins, il peut faire son attaque standard contre deux cibles à portée.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Grapple and Drown",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites un jet d’attaque contre une cible à Portée Proche. En cas de réussite, agrippez-la avec un tentacule et entraînez-la sous l’eau. La cible est Entravée et Vulnérable jusqu’à ce qu’elle se libère avec un jet de Force réussi ou que le Kraken subisse des dégâts Majeurs ou supérieurs. Tant qu’Entravée, la cible doit cocher un Stress quand elle fait un jet d’action.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Boiling Blast",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Crachez une ligne d’eau bouillante sur un nombre quelconque de cibles en ligne jusqu’à Portée Loin. Toutes les cibles doivent réussir un jet de Réaction d’Agilité ou subir 4d6+9 dégâts physiques. Si une cible coche un Emplacement d’armure pour réduire les dégâts, elle doit aussi cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand le Kraken réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le kraken réussit une attaque contre un pj, vous gagnez une peur"
       }
     ],
     "focusProfile": {
@@ -740,56 +920,88 @@
     "features": [
       {
         "name": "Terrifying",
-        "type": "passive",
         "description": "Quand l’Oracle réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Walls Closing In",
-        "type": "passive",
         "description": "Quand une créature obtient un échec à Portée Très Loin de l’Oracle, elle doit cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "veryFar"
       },
       {
         "name": "Pronounce Fate",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Présentez à une cible à Portée Loin une vision de son cauchemar personnel. La cible doit faire un jet de Réaction de Savoir. En cas d’échec, elle perd tout son Espoir et subit 2d20+4 dégâts magiques directs. En cas de réussite, elle subit la moitié des dégâts et perd un Espoir.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Summon Tormentors",
-        "type": "action",
-        "cost": "Dépensez 2 Peurs",
         "description": "Une fois par jour, invoquez 2d4 Minions de Tier 2 ou inférieur en rapport avec le cauchemar personnel d’un des PJ. Ils apparaissent à Portée Proche de ce PJ.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 2
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Ominous Knowledge",
-        "type": "reaction",
         "description": "Quand l’Oracle voit une créature mortelle, il connaît instantanément l’un de ses cauchemars personnels.",
         "tags": [
           "social",
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand l’oracle voit une créature mortelle"
       },
       {
         "name": "Vengeful Fate",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand l’Oracle coche des PV suite à une attaque à Portée Très Proche, repoussez l’attaquant à Portée Loin et infligez 2d10+4 dégâts physiques.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand l’oracle coche des pv suite à une attaque à portée très proche"
       }
     ],
     "focusProfile": {
@@ -831,37 +1043,56 @@
     "features": [
       {
         "name": "Chaotic Form",
-        "type": "passive",
         "description": "Quand l’Abomination attaque, lancez 2d4 et utilisez le résultat comme modificateur d’attaque.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Disorienting Presence",
-        "type": "passive",
         "description": "Quand une cible subit des dégâts de l’Abomination, elle doit faire un jet de Réaction d’Instinct. En cas d’échec, elle gagne un désavantage sur son prochain jet d’action et vous gagnez une Peur.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Reality Quake",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Ébranlez les limites de la réalité à Portée Loin. Toutes les cibles dans cette zone doivent réussir un jet de Réaction de Savoir ou devenir Déphasées de la réalité jusqu’à la fin de la scène. Quand une cible Déphasée dépense de l’Espoir ou coche des Emplacements d’armure, PV ou Stress, elle doit doubler le montant dépensé ou coché.",
         "tags": [
           "offensif",
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Unravel Form",
-        "type": "reaction",
         "description": "Quand l’Abomination subit des dégâts, réduisez-les de 1d20. Si l’Abomination coche 1 PV ou moins suite à une attaque réussie contre elle, vous gagnez une Peur.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand l’abomination subit des dégâts, réduisez-les de 1d20"
       }
     ],
     "focusProfile": {
@@ -903,21 +1134,30 @@
     "features": [
       {
         "name": "Will-Shattering Touch",
-        "type": "passive",
         "description": "Quand un PJ subit des dégâts du Corrupteur, il perd un Espoir.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Disgorge Reality Ribbons",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Recrachez des fragments partiellement digérés de réalités consommées sur toutes les cibles à Portée Proche. Les cibles doivent réussir un jet de Réaction de Savoir ou cocher 2 Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -960,20 +1200,29 @@
     "features": [
       {
         "name": "Minion (13)",
-        "type": "passive",
         "description": "L’Esclave est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 13 dégâts qu’un PJ inflige à l’Esclave, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Group Attack",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Choisissez une cible et placez sous le projecteur tous les Esclaves des Royaumes Extérieurs à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 11 dégâts physiques chacun. Combinez ces dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -1022,53 +1271,81 @@
     "features": [
       {
         "name": "Relentless (2)",
-        "type": "passive",
         "description": "Le Prédateur d’Obsidienne peut être mis sous le projecteur jusqu’à deux fois par tour du MJ.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Flying",
-        "type": "passive",
         "description": "En vol, le Prédateur d’Obsidienne gagne un bonus de +3 à sa Difficulté.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Obsidian Scales",
-        "type": "passive",
         "description": "Le Prédateur d’Obsidienne est résistant aux dégâts physiques.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Avalanche Tail",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque contre toutes les cibles à Portée Proche. Les cibles touchées subissent 4d6+4 dégâts physiques et sont repoussées à Portée Loin et Vulnérables jusqu’à leur prochain jet avec Espoir.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Dive-Bomb",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Si en vol, choisissez un point à Portée Loin. Déplacez-vous là et attaquez toutes les cibles à Portée Très Proche. Les cibles touchées subissent 2d10+6 dégâts physiques et doivent cocher un Stress et perdre un Espoir.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Erupting Rage (Phase Change)",
-        "type": "reaction",
         "description": "Quand le Prédateur d’Obsidienne coche son dernier PV, remplacez-le par le Fléau en Fusion et placez-le immédiatement sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le prédateur d’obsidienne coche son dernier pv"
       }
     ],
     "focusProfile": {
@@ -1116,61 +1393,99 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Fléau en Fusion peut être mis sous le projecteur jusqu’à trois fois par tour du MJ.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Cracked Scales",
-        "type": "passive",
         "description": "Quand le Fléau en Fusion subit des dégâts, lancez un nombre de d6 égal aux PV cochés. Pour chaque résultat de 4 ou plus, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Shattering Might",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, la cible subit 4d8+1 dégâts physiques, perd un Espoir et est repoussée à Portée Proche.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Eruption",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Faites érupter de la lave sous les écailles du Fléau, remplissant la zone à Portée Très Proche de lave en fusion. Toutes les cibles doivent réussir un jet de Réaction d’Agilité ou subir 4d6+6 dégâts physiques et être repoussées. La zone reste de la lave. Les créatures qui y entrent ou agissent dedans doivent cocher 6 PV.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Volcanic Breath",
-        "type": "reaction",
         "description": "Quand le Fléau en Fusion subit des dégâts Majeurs, lancez un d10. Sur 8 ou plus, crachez de la lave devant à Portée Loin. Toutes les cibles doivent faire un jet de Réaction d’Agilité. Échec : 2d10+4 dégâts physiques, cochez 1d4 Stress et Vulnérable. Réussite : moitié des dégâts et cochez un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand le fléau en fusion subit des dégâts majeurs, lancez un d10"
       },
       {
         "name": "Lava Splash",
-        "type": "reaction",
         "description": "Quand le Fléau en Fusion subit des dégâts Sévères depuis Portée Très Proche, infligez 2d10+4 dégâts physiques directs à l’attaquant.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryClose",
+        "trigger": "Quand le fléau en fusion subit des dégâts sévères depuis portée très proche"
       },
       {
         "name": "Ashen Vengeance (Phase Change)",
-        "type": "reaction",
         "description": "Quand le Fléau en Fusion coche son dernier PV, remplacez-le par le Tyran de Cendres et placez-le immédiatement sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le fléau en fusion coche son dernier pv"
       }
     ],
     "focusProfile": {
@@ -1218,63 +1533,96 @@
     "features": [
       {
         "name": "Relentless (4)",
-        "type": "passive",
         "description": "Le Tyran de Cendres peut être mis sous le projecteur jusqu’à quatre fois par tour du MJ.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Cornered",
-        "type": "passive",
         "description": "Cochez un Stress au lieu de dépenser une Peur pour placer le Tyran de Cendres sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Injured Wings",
-        "type": "passive",
         "description": "En vol, le Tyran de Cendres gagne un bonus de +1 à sa Difficulté.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Ashes to Ashes",
-        "type": "passive",
         "description": "Quand un PJ obtient un échec à Portée Proche du Tyran de Cendres, il perd un Espoir et vous gagnez une Peur. Si le PJ ne peut pas perdre d’Espoir, il doit cocher un PV.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "close"
       },
       {
         "name": "Desperate Rampage",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque contre toutes les cibles à Portée Proche. Les cibles touchées subissent 2d20+2 dégâts physiques, sont repoussées et doivent cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Ashen Cloud",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Fracassez le sol et soulevez de la cendre à Portée Loin. Tant qu’elle est dans le nuage de cendres, une cible a un désavantage sur les jets d’action. Se dissipe la prochaine fois qu’un adversaire est mis sous le projecteur.",
         "tags": [
           "offensif",
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Apocalyptic Thrashing",
-        "type": "action",
         "description": "Compte à rebours (1d12). Dépensez une Peur pour l’activer. Décompte sur les jets de Peur. Quand il se déclenche, le Tyran de Cendres cause des dégâts environnementaux. Toutes les cibles à Portée Loin doivent faire un jet de Réaction de Force. Échec : 2d10+10 dégâts physiques et Entravé par les décombres. Réussite : moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far"
       }
     ],
     "focusProfile": {
@@ -1360,11 +1708,15 @@
     "features": [
       {
         "name": "Horde (4d6+4)",
-        "type": "passive",
         "description": "Quand la Légion a coché la moitié ou plus de ses PV, son attaque standard inflige 4d6+4 dégâts physiques à la place.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       }
     ],
     "focusProfile": {

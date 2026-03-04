@@ -72,7 +72,7 @@ describe('adversarySchema', () => {
       },
       experiences: [{ name: 'Stealth', modifier: 2 }],
       features: [
-        { name: 'Embuscade', type: 'passive', description: 'Avantage si cache.' }
+        { name: 'Embuscade', activationType: 'passive', description: 'Avantage si cache.' }
       ]
     }
 

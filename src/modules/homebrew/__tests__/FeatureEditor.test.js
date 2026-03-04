@@ -25,8 +25,8 @@ describe('FeatureEditor', () => {
 
     it('affiche les features existantes', () => {
       const features = [
-        { name: 'Charge', type: 'action', description: 'Charge en avant.', cost: '' },
-        { name: 'Armure', type: 'passive', description: 'Reduit les degats.', cost: '' }
+        { name: 'Charge', activationType: 'action', description: 'Charge en avant.', cost: '' },
+        { name: 'Armure', activationType: 'passive', description: 'Reduit les degats.', cost: '' }
       ]
       const wrapper = mountEditor(features)
       const items = wrapper.findAll('.feature-editor__item')
@@ -47,14 +47,14 @@ describe('FeatureEditor', () => {
       const emitted = wrapper.emitted('update:modelValue')
       expect(emitted).toBeTruthy()
       expect(emitted[0][0].length).toBe(1)
-      expect(emitted[0][0][0].type).toBe('action')
+      expect(emitted[0][0][0].activationType).toBe('action')
       expect(emitted[0][0][0].name).toBe('')
     })
 
     it('desactive le bouton au maxItems', () => {
       const features = [
-        { name: 'A', type: 'action', description: 'Desc', cost: '' },
-        { name: 'B', type: 'passive', description: 'Desc', cost: '' }
+        { name: 'A', activationType: 'action', description: 'Desc', cost: '' },
+        { name: 'B', activationType: 'passive', description: 'Desc', cost: '' }
       ]
       const wrapper = mountEditor(features, { maxItems: 2 })
       const addBtn = wrapper.find('.feature-editor__header .btn')
@@ -65,8 +65,8 @@ describe('FeatureEditor', () => {
   describe('suppression', () => {
     it('supprime une feature', async () => {
       const features = [
-        { name: 'A', type: 'action', description: 'Desc A', cost: '' },
-        { name: 'B', type: 'passive', description: 'Desc B', cost: '' }
+        { name: 'A', activationType: 'action', description: 'Desc A', cost: '' },
+        { name: 'B', activationType: 'passive', description: 'Desc B', cost: '' }
       ]
       const wrapper = mountEditor(features)
       const removeButtons = wrapper.findAll('.feature-editor__remove-btn')
@@ -81,7 +81,7 @@ describe('FeatureEditor', () => {
   describe('edition', () => {
     it('met a jour le nom d une feature', async () => {
       const features = [
-        { name: 'Original', type: 'action', description: 'Desc', cost: '' }
+        { name: 'Original', activationType: 'action', description: 'Desc', cost: '' }
       ]
       const wrapper = mountEditor(features)
       const nameInput = wrapper.find('input[placeholder="Ex: Charge furieuse"]')
@@ -93,22 +93,22 @@ describe('FeatureEditor', () => {
 
     it('met a jour le type d une feature', async () => {
       const features = [
-        { name: 'Test', type: 'action', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'action', description: 'Desc', cost: '' }
       ]
       const wrapper = mountEditor(features)
       const select = wrapper.find('.feature-editor__select')
       await select.setValue('reaction')
 
       const emitted = wrapper.emitted('update:modelValue')
-      expect(emitted[0][0][0].type).toBe('reaction')
+      expect(emitted[0][0][0].activationType).toBe('reaction')
     })
   })
 
   describe('reordonnement', () => {
     it('deplace une feature vers le bas', async () => {
       const features = [
-        { name: 'First', type: 'action', description: 'D1', cost: '' },
-        { name: 'Second', type: 'passive', description: 'D2', cost: '' }
+        { name: 'First', activationType: 'action', description: 'D1', cost: '' },
+        { name: 'Second', activationType: 'passive', description: 'D2', cost: '' }
       ]
       const wrapper = mountEditor(features)
       // Le bouton ↓ du premier item
@@ -124,21 +124,21 @@ describe('FeatureEditor', () => {
   describe('bordure couleur par type', () => {
     it('applique la classe action', () => {
       const wrapper = mountEditor([
-        { name: 'Test', type: 'action', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'action', description: 'Desc', cost: '' }
       ])
       expect(wrapper.find('.feature-editor__item--action').exists()).toBe(true)
     })
 
     it('applique la classe reaction', () => {
       const wrapper = mountEditor([
-        { name: 'Test', type: 'reaction', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'reaction', description: 'Desc', cost: '' }
       ])
       expect(wrapper.find('.feature-editor__item--reaction').exists()).toBe(true)
     })
 
     it('applique la classe passive', () => {
       const wrapper = mountEditor([
-        { name: 'Test', type: 'passive', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'passive', description: 'Desc', cost: '' }
       ])
       expect(wrapper.find('.feature-editor__item--passive').exists()).toBe(true)
     })
@@ -147,7 +147,7 @@ describe('FeatureEditor', () => {
   describe('erreurs', () => {
     it('affiche les erreurs d une feature', () => {
       const features = [
-        { name: '', type: 'action', description: '', cost: '' }
+        { name: '', activationType: 'action', description: '', cost: '' }
       ]
       const errors = [
         { field: 'features[0].name', message: 'Le nom est requis.' }
@@ -158,7 +158,7 @@ describe('FeatureEditor', () => {
 
     it('marque le champ en erreur avec aria-invalid', () => {
       const features = [
-        { name: '', type: 'action', description: 'Desc', cost: '' }
+        { name: '', activationType: 'action', description: 'Desc', cost: '' }
       ]
       const errors = [
         { field: 'features[0].name', message: 'Requis' }
@@ -177,7 +177,7 @@ describe('FeatureEditor', () => {
 
     it('les items ont role listitem', () => {
       const features = [
-        { name: 'Test', type: 'action', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'action', description: 'Desc', cost: '' }
       ]
       const wrapper = mountEditor(features)
       expect(wrapper.find('[role="listitem"]').exists()).toBe(true)
@@ -185,7 +185,7 @@ describe('FeatureEditor', () => {
 
     it('les boutons ont des aria-labels', () => {
       const features = [
-        { name: 'Test', type: 'action', description: 'Desc', cost: '' }
+        { name: 'Test', activationType: 'action', description: 'Desc', cost: '' }
       ]
       const wrapper = mountEditor(features)
       expect(wrapper.find('.feature-editor__remove-btn').attributes('aria-label')).toContain('Supprimer')

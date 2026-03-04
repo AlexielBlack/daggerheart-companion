@@ -208,7 +208,7 @@ describe('validateHomebrewData', () => {
           tags: ['a'],
           items: [],
           features: [
-            { name: 'Charge', type: 'action', description: 'Charge en avant.' }
+            { name: 'Charge', activationType: 'action', description: 'Charge en avant.' }
           ]
         },
         nestedSchema
@@ -224,7 +224,7 @@ describe('validateHomebrewData', () => {
           tags: ['a'],
           items: [],
           features: [
-            { name: '', type: 'action', description: 'Desc' }
+            { name: '', activationType: 'action', description: 'Desc' }
           ]
         },
         nestedSchema
@@ -247,7 +247,7 @@ describe('validateHomebrewData', () => {
         nestedSchema
       )
       expect(result.valid).toBe(false)
-      expect(result.errors.some((e) => e.field === 'features[0].type')).toBe(true)
+      expect(result.errors.some((e) => e.field === 'features[0].activationType')).toBe(true)
     })
   })
 
@@ -286,7 +286,7 @@ describe('getFieldErrors', () => {
   it('inclut les erreurs des items de tableau', () => {
     const errors = [
       { field: 'features[0].name', message: 'requis' },
-      { field: 'features[1].type', message: 'invalide' },
+      { field: 'features[1].activationType', message: 'invalide' },
       { field: 'name', message: 'requis' }
     ]
     expect(getFieldErrors(errors, 'features')).toHaveLength(2)

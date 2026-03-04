@@ -28,63 +28,99 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "La Luciole peut être mise sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Never Misses",
-        "type": "passive",
         "description": "Quand la Luciole fait une attaque, l’Évasion de la cible est divisée par deux contre cette attaque.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Deadly Flight",
-        "type": "passive",
         "description": "En vol, la Luciole peut se déplacer jusqu’à Portée Loin au lieu de Portée Proche avant d’agir.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Whirlwind",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Tourbillonnez, faisant une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent 3d8 dégâts physiques directs.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Mind Dance",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Créez un spectacle magiquement éblouissant qui emprisonne l’esprit des ennemis proches. Toutes les cibles à Portée Proche doivent faire un jet de Réaction d’Instinct. Pour chaque cible qui échoue, vous gagnez une Peur et la Luciole apprend une des peurs de la cible.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Hallucinatory Breath",
-        "type": "reaction",
         "description": "Compte à rebours (Boucle 1d6). Quand la Luciole subit des dégâts pour la première fois, activez le compte à rebours. Quand il se déclenche, la Luciole souffle un gaz hallucinatoire sur toutes les cibles devant elle jusqu’à Portée Loin. Les cibles doivent faire un jet de Réaction d’Instinct ou être tourmentées par des hallucinations terrifiantes. Les cibles dont les peurs sont connues de la Luciole ont un désavantage. Les cibles qui échouent perdent 2 Espoirs et subissent 3d8+3 dégâts magiques directs.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand la luciole subit des dégâts pour la première fois, activez le compte à rebours"
       },
       {
         "name": "Uncanny Reflexes",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand la Luciole subit des dégâts d’une attaque à Portée Proche, subissez la moitié des dégâts.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand la luciole subit des dégâts d’une attaque à portée proche"
       }
     ],
     "atk_mod": 3,
@@ -132,27 +168,40 @@
     "features": [
       {
         "name": "Money Talks",
-        "type": "passive",
         "description": "Les attaques contre le Démon sont faites avec désavantage à moins que l’attaquant ne dépense une poignée d’or. Ce Démon commence avec un nombre de poignées égal au nombre de PJ. Quand une cible coche des PV suite à l’attaque standard du Démon, elle peut dépenser une poignée d’or au lieu de cocher des PV. Ajoutez une poignée d’or au Démon pour chaque poignée dépensée par les PJ.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Numbers Must Go Up",
-        "type": "passive",
         "description": "Ajoutez un bonus aux jets d’attaque du Démon égal au nombre de poignées d’or qu’il possède.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Money Is Time",
-        "type": "action",
         "description": "Dépensez 3 poignées d’or (ou une Peur) pour placer sous le projecteur 1d4+1 alliés.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       }
     ],
     "focusProfile": {
@@ -199,39 +248,60 @@
     "features": [
       {
         "name": "Depths of Despair",
-        "type": "passive",
         "description": "Le Démon inflige le double de dégâts aux PJ avec 0 Espoir.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Your Struggle Is Pointless",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Accablez l’esprit de tous les PJ à Portée Loin. Toutes les cibles affectées remplacent leur Dé d’Espoir par un d8 jusqu’à ce qu’elles obtiennent un succès avec Espoir ou leur prochain repos.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Your Friends Will Fail You",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand un PJ échoue avec Peur, faites perdre un Espoir à tous les autres PJ à Portée Proche.",
         "tags": [
           "offensif",
           "social"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand un pj échoue avec peur"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand le Démon réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le démon réussit une attaque contre un pj, vous gagnez une peur"
       }
     ],
     "focusProfile": {
@@ -278,45 +348,72 @@
     "features": [
       {
         "name": "Terrifying",
-        "type": "passive",
         "description": "Quand le Démon réussit une attaque, tous les PJ à Portée Loin doivent perdre un Espoir et vous gagnez une Peur.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Double or Nothing",
-        "type": "passive",
         "description": "Quand un PJ à Portée Loin rate un jet, il peut choisir de relancer son Dé de Peur et prendre le nouveau résultat. S’il échoue encore, il coche 2 Stress et le Démon retire un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Unparalleled Skill",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Infligez les dégâts d’attaque standard du Démon à une cible à Portée Proche.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "The Root of Villainy",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Placez sous le projecteur deux autres Démons à Portée Loin.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "You Pale in Comparison",
-        "type": "reaction",
         "description": "Quand un PJ rate un jet à Portée Proche du Démon, il doit cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand un pj rate un jet à portée proche du démon, il doit cocher un stress"
       }
     ],
     "focusProfile": {
@@ -363,37 +460,59 @@
     "features": [
       {
         "name": "Unprotected Mind",
-        "type": "passive",
         "description": "L’attaque standard du Démon inflige des dégâts directs.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "My Turn",
-        "type": "reaction",
         "description": "Quand le Démon coche des PV suite à une attaque, dépensez un nombre de Peurs égal aux PV cochés par le Démon pour faire cocher le même nombre de PV à l’attaquant.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le démon coche des pv suite à une attaque"
       },
       {
         "name": "Rivalry",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand une créature à Portée Proche subit des dégâts d’un autre adversaire, ajoutez un d4 au jet de dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand une créature à portée proche subit des dégâts d’un autre adversaire"
       },
       {
         "name": "What's Yours Is Mine",
-        "type": "reaction",
-        "cost": "Dépensez une Peur",
         "description": "Quand un PJ subit des dégâts Sévères à Portée Très Proche du Démon, forcez la cible à faire un jet de Réaction de Finesse. En cas d’échec, le Démon s’empare d’un objet ou consommable de son choix dans l’inventaire de la cible.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose",
+        "trigger": "Quand un pj subit des dégâts sévères à portée très proche du démon"
       }
     ],
     "atk_mod": 4,
@@ -441,37 +560,59 @@
     "features": [
       {
         "name": "Anger Unrelenting",
-        "type": "passive",
         "description": "Les attaques du Démon infligent des dégâts directs.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Battle Lust",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Faites bouillir le sang de tous les PJ à Portée Loin. Ils utilisent un d20 comme Dé de Peur jusqu’à la fin de la scène.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Retaliation",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand le Démon subit des dégâts d’une attaque à Portée Proche, faites une attaque standard contre l’attaquant.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand le démon subit des dégâts d’une attaque à portée proche"
       },
       {
         "name": "Blood and Souls",
-        "type": "reaction",
         "description": "Compte à rebours (Boucle 6). Activez la première fois qu’une attaque est effectuée à vue du Démon. Il décompte quand un PJ effectue une action violente. Quand il se déclenche, invoquez 1d4 Démons Mineurs, qui apparaissent à Portée Proche.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand un pj effectue une action violente"
       }
     ],
     "focusProfile": {
@@ -518,30 +659,45 @@
     "features": [
       {
         "name": "Flying",
-        "type": "passive",
         "description": "En vol, la Chauve-souris gagne un bonus de +3 à sa Difficulté.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Screech",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Envoyez un cri strident vers toutes les cibles devant la Chauve-souris à Portée Loin. Ces cibles doivent cocher 1d4 Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Guardian",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand un Vampire allié coche des PV, volez à Portée de Mêlée de l’attaquant et faites une attaque avec avantage contre lui. En cas de réussite, infligez 2d6+2 dégâts physiques.",
         "tags": [
           "offensif",
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "melee",
+        "trigger": "Quand un vampire allié coche des pv"
       }
     ],
     "focusProfile": {
@@ -589,31 +745,47 @@
     "features": [
       {
         "name": "Bramble Patch",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Ciblez un point à Portée Loin. Créez un parterre d’épines couvrant une zone à Portée Proche. Toutes les cibles dans cette zone subissent 2d6+2 dégâts physiques quand elles agissent. Une cible doit réussir un jet de Finesse ou infliger plus de 20 dégâts à la Dryade pour quitter la zone.",
         "tags": [
           "offensif",
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Grow Saplings",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Faites pousser trois Minions Arbrisseau Tréant, qui apparaissent à Portée Proche et passent immédiatement sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "We Are All One",
-        "type": "reaction",
-        "cost": "Dépensez une Peur",
         "description": "Quand un allié meurt à Portée Proche, retirez 2 PV et 2 Stress car la force vitale de l’allié déchu retourne à la forêt.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand un allié meurt à portée proche"
       }
     ],
     "focusProfile": {
@@ -655,20 +827,29 @@
     "features": [
       {
         "name": "Minion (9)",
-        "type": "passive",
         "description": "L’Élémentaire est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 9 dégâts qu’un PJ inflige à l’Élémentaire, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Group Attack",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Choisissez une cible et placez sous le projecteur toutes les Étincelles Élémentaires à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -710,44 +891,67 @@
     "features": [
       {
         "name": "Slow",
-        "type": "passive",
         "description": "Quand vous placez l’Élémentaire sous le projecteur et qu’il n’a pas de jeton sur sa fiche, il ne peut pas encore agir. Placez un jeton. Quand il est mis sous le projecteur avec un jeton, retirez-le et il peut agir.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Crushing Blows",
-        "type": "passive",
         "description": "Quand l’Élémentaire réussit une attaque, la cible doit cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elle ne peut pas, elle doit cocher un PV supplémentaire.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Immovable Object",
-        "type": "passive",
         "description": "Une attaque qui déplacerait l’Élémentaire le déplace de deux portées de moins. Quand l’Élémentaire subit des dégâts physiques, réduisez-les de 7.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Rockslide",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Créez un éboulement devant l’Élémentaire à Portée Proche. Toutes les cibles doivent faire un jet de Réaction d’Agilité (19). Les cibles qui échouent subissent 2d12+5 dégâts physiques et deviennent Vulnérables jusqu’à leur prochain jet avec Espoir. Les cibles qui réussissent subissent la moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand l’Élémentaire réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand l’élémentaire réussit une attaque contre un pj, vous gagnez une peur"
       }
     ],
     "focusProfile": {
@@ -789,30 +993,46 @@
     "features": [
       {
         "name": "Water Jet",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Attaquez une cible à Portée Très Proche. En cas de réussite, infligez 2d4+7 dégâts physiques et la prochaine action de la cible a un désavantage. En cas d’échec, la cible doit cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Drowning Embrace",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Attaquez toutes les cibles à Portée Très Proche. Les cibles touchées deviennent Entravées et Vulnérables car elles commencent à se noyer. Une cible peut se libérer avec un jet de Force ou d’Instinct réussi.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "High Tide",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand l’Élémentaire réussit une attaque standard, repoussez la cible à Portée Proche.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand l’élémentaire réussit une attaque standard, repoussez la cible à portée proche"
       }
     ],
     "focusProfile": {
@@ -860,36 +1080,55 @@
     "features": [
       {
         "name": "Slow",
-        "type": "passive",
         "description": "Quand vous placez la Gelée sous le projecteur et qu’elle n’a pas de jeton sur sa fiche, elle ne peut pas encore agir. Placez un jeton. Quand elle est mise sous le projecteur avec un jeton, retirez-le et elle peut agir.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Acidic Form",
-        "type": "passive",
         "description": "Quand la Gelée réussit une attaque, la cible doit cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elle ne peut pas, elle doit cocher un PV supplémentaire.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Envelop",
-        "type": "action",
         "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, la Gelée l’Enveloppe et la cible doit cocher 2 Stress. Tant qu’Enveloppée, la cible doit cocher un Stress supplémentaire chaque fois qu’elle fait un jet d’action. Quand la Gelée subit des dégâts Sévères, toutes les cibles Enveloppées sont libérées.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "melee"
       },
       {
         "name": "Split",
-        "type": "reaction",
-        "cost": "Dépensez une Peur",
         "description": "Quand la Gelée a 4 PV ou plus cochés, divisez-la en deux Gelées Vertes sans PV ni Stress cochés. Placez-les immédiatement toutes les deux sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "trigger": "Quand la gelée a 4 pv ou plus cochés"
       }
     ],
     "focusProfile": {
@@ -931,45 +1170,69 @@
     "features": [
       {
         "name": "Many-Headed Menace",
-        "type": "passive",
         "description": "L’Hydre commence avec trois têtes et peut en avoir jusqu’à cinq. Quand l’Hydre subit des dégâts Majeurs ou supérieurs, elle perd une tête.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Relentless (X)",
-        "type": "passive",
         "description": "L’Hydre peut être mise sous le projecteur X fois par tour du MJ, où X est le nombre de têtes de l’Hydre. Dépensez une Peur comme d’habitude pour la placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Regeneration",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Si l’Hydre a des PV cochés, retirez un PV et faites pousser deux têtes.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Terrifying Chorus",
-        "type": "action",
         "description": "Tous les PJ à Portée Loin perdent 2 Espoirs.",
         "tags": [
           "social",
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Magical Weakness",
-        "type": "reaction",
         "description": "Quand l’Hydre subit des dégâts magiques, elle devient Étourdie jusqu’au prochain jet avec Peur. Tant qu’Étourdie, elle ne peut pas utiliser son action Régénération mais est immunisée contre les dégâts magiques.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand l’hydre subit des dégâts magiques"
       }
     ],
     "focusProfile": {
@@ -1020,30 +1283,45 @@
     "features": [
       {
         "name": "Execute Them!",
-        "type": "action",
-        "cost": "Dépensez une Peur par PJ",
         "description": "Faites condamner le groupe pour des crimes réels ou imaginaires. Un PJ qui réussit un jet de Présence peut exiger un procès par combat ou une autre forme spéciale de procès.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fearPerPC",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Crownsguard",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Une fois par scène, invoquez six Minions de Tier 3, qui apparaissent à Portée Proche pour faire respecter la volonté du Monarque.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Casus Belli",
-        "type": "reaction",
         "description": "Compte à rebours à long terme (8). Dépensez une Peur pour l’activer après que le désir de guerre du Monarque soit révélé pour la première fois. Quand il se déclenche, le Monarque a une raison de rallier la nation à la guerre. Vous gagnez 1d4 Peurs.",
         "tags": [
           "social",
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand il se déclenche, le monarque a une raison de rallier la nation à la guerre"
       }
     ],
     "focusProfile": {
@@ -1091,30 +1369,45 @@
     "features": [
       {
         "name": "From Above",
-        "type": "passive",
         "description": "Quand le Chevalier réussit une attaque standard depuis une position surélevée, il inflige 3d12+3 dégâts physiques au lieu de ses dégâts standard.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Blade of the Forest",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Faites une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent des dégâts physiques égaux à 3d4 + le seuil Majeur de la cible.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Thorny Armor",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand le Chevalier subit des dégâts d’une attaque à Portée de Mêlée, infligez 1d10+5 dégâts physiques à l’attaquant.",
         "tags": [
           "offensif",
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "melee",
+        "trigger": "Quand le chevalier subit des dégâts d’une attaque à portée de mêlée"
       }
     ],
     "focusProfile": {
@@ -1162,29 +1455,42 @@
     "features": [
       {
         "name": "Just a Tree",
-        "type": "passive",
         "description": "Avant sa première attaque ou après être devenu Caché, le Tréant est indiscernable des autres arbres jusqu’à ce qu’il agisse ou qu’un PJ réussisse un jet d’Instinct.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Seed Barrage",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque contre jusqu’à trois cibles à Portée Proche. Les cibles touchées subissent 2d10+5 dégâts physiques.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Take Root",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Enracinez le Tréant sur place. Le Tréant est Entravé tant qu’il est Enraciné, et peut mettre fin à cet effet au lieu de se déplacer. Tant qu’Enraciné, le Tréant a une résistance aux dégâts physiques.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill"
       }
     ],
     "focusProfile": {
@@ -1227,20 +1533,29 @@
     "features": [
       {
         "name": "Minion (6)",
-        "type": "passive",
         "description": "L’Arbrisseau est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 6 dégâts qu’un PJ inflige à l’Arbrisseau, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Group Attack",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Choisissez une cible et placez sous le projecteur tous les Arbrisseaux Tréants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 8 dégâts physiques chacun. Combinez ces dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ],
     "focusProfile": {
@@ -1289,44 +1604,72 @@
     "features": [
       {
         "name": "Terrifying",
-        "type": "passive",
         "description": "Quand le Vampire réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Look into My Eyes",
-        "type": "passive",
         "description": "Une créature qui se déplace à Portée de Mêlée du Vampire doit faire un jet de Réaction d’Instinct. En cas d’échec, vous gagnez 1d4 Peurs.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "melee"
       },
       {
         "name": "Feed on Followers",
-        "type": "action",
         "description": "Quand le Vampire est à Portée de Mêlée d’un allié, faites cocher un PV à l’allié. Le Vampire retire alors un PV.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "melee"
       },
       {
         "name": "The Hunt Is On",
-        "type": "action",
-        "cost": "Dépensez 2 Peurs",
         "description": "Invoquez 1d4 Vampires, qui apparaissent à Portée Loin et passent immédiatement sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 2
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Lifesuck",
-        "type": "reaction",
         "description": "Quand le Vampire est mis sous le projecteur, lancez un d8. Sur un résultat de 6 ou plus, toutes les cibles à Portée Très Proche doivent cocher un PV.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryClose",
+        "trigger": "Quand le vampire est mis sous le projecteur, lancez un d8"
       }
     ],
     "focusProfile": {
@@ -1375,20 +1718,31 @@
     "features": [
       {
         "name": "Draining Bite",
-        "type": "action",
         "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 5d4 dégâts physiques. Une cible qui coche des PV perd un Espoir et doit cocher un Stress. Le Vampire retire alors un PV.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "melee"
       },
       {
         "name": "Mistform",
-        "type": "reaction",
-        "cost": "Dépensez une Peur",
         "description": "Quand le Vampire subit des dégâts physiques, subissez la moitié des dégâts.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le vampire subit des dégâts physiques, subissez la moitié des dégâts"
       }
     ],
     "focusProfile": {
@@ -1431,20 +1785,30 @@
     "features": [
       {
         "name": "Blocking Shield",
-        "type": "passive",
         "description": "Les créatures à Portée de Mêlée du Geôlier ont un désavantage sur les jets d’attaque contre lui. Les créatures piégées à l’intérieur du Geôlier sont immunisées contre cette feature.",
         "tags": [
           "défensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "melee"
       },
       {
         "name": "Lock Up",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, la cible est Entravée à l’intérieur du Geôlier jusqu’à ce qu’elle se libère avec un jet de Force réussi (18). Tant qu’Entravée, la cible ne peut attaquer que le Geôlier.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       }
     ],
     "focusProfile": {
@@ -1486,37 +1850,58 @@
     "features": [
       {
         "name": "Kinetic Slam",
-        "type": "passive",
         "description": "Les cibles qui subissent des dégâts de l’attaque standard de la Sentinelle sont repoussées à Portée Très Proche.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "veryClose"
       },
       {
         "name": "Box In",
-        "type": "action",
-        "cost": "Cochez un Stress",
         "description": "Choisissez une cible à Portée Très Proche sur laquelle vous concentrer. Cette cible a un désavantage sur les jets d’attaque à Portée Très Proche de la Sentinelle. Une seule cible à la fois.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Mana Bolt",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Lancez une salve magique explosive sur un point à Portée Loin. Toutes les cibles à Portée Très Proche doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 2d8+20 dégâts magiques et sont repoussées à Portée Proche. Les cibles qui réussissent subissent la moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand la Sentinelle réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand la sentinelle réussit une attaque contre un pj, vous gagnez une peur"
       }
     ],
     "focusProfile": {
@@ -1559,38 +1944,60 @@
     "features": [
       {
         "name": "Slow Firing",
-        "type": "passive",
         "description": "Quand mise sous le projecteur sans jeton, ne peut pas attaquer. Placez un jeton. Quand mise sous le projecteur avec un jeton, retirez-le et attaquez.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Mark Target",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Marquez une cible à Portée Loin jusqu’à ce que la Tourelle soit détruite ou que la cible Marquée devienne Cachée. Tant que Marquée, l’Évasion de la cible est divisée par deux.",
         "tags": [
           "offensif",
           "utilitaire"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Concentrate Fire",
-        "type": "reaction",
-        "cost": "Cochez un Stress",
         "description": "Quand un autre adversaire inflige des dégâts à une cible à Portée Loin de la Tourelle, ajoutez les dégâts d’attaque standard de la Tourelle au jet de dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far",
+        "trigger": "Quand un autre adversaire inflige des dégâts à une cible à portée loin de la tourelle"
       },
       {
         "name": "Detonation",
-        "type": "reaction",
         "description": "Quand la Tourelle est détruite, elle explose. Toutes les cibles à Portée Proche doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 3d20 dégâts physiques. Les cibles qui réussissent subissent la moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "close",
+        "trigger": "Quand la tourelle est détruite, elle explose"
       }
     ],
     "focusProfile": {
@@ -1639,62 +2046,98 @@
     "features": [
       {
         "name": "Relentless (3)",
-        "type": "passive",
         "description": "Le Dragon peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Rend and Crush",
-        "type": "passive",
         "description": "Si une cible endommagée par le Dragon ne coche pas un Emplacement d’armure pour réduire les dégâts, elle doit cocher un Stress.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "No Hope",
-        "type": "passive",
         "description": "Quand un PJ obtient Peur à Portée Loin du Dragon, il perd un Espoir.",
         "tags": [
           "social"
-        ]
+        ],
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "far"
       },
       {
         "name": "Blizzard Breath",
-        "type": "action",
-        "cost": "Dépensez 2 Peurs",
         "description": "Libérez un tourbillon glacé devant le Dragon à Portée Proche. Toutes les cibles doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 4d6+5 dégâts magiques et sont Entravées par la glace jusqu’à un jet de Force réussi. Les cibles qui réussissent doivent cocher 2 Stress ou subir la moitié des dégâts.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 2
+        },
+        "frequency": "atWill",
+        "range": "close"
       },
       {
         "name": "Avalanche",
-        "type": "action",
-        "cost": "Dépensez une Peur",
         "description": "Déchaînez une immense chute de neige et de glace couvrant toutes les autres créatures à Portée Loin. Toutes les cibles doivent réussir un jet de Réaction d’Instinct ou être ensevelies, devenant Vulnérables jusqu’à ce qu’elles se dégagent. Pour chaque PJ qui échoue, vous gagnez une Peur.",
         "tags": [
           "offensif"
-        ]
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "far"
       },
       {
         "name": "Frozen Scales",
-        "type": "reaction",
         "description": "Quand une créature réussit une attaque contre le Dragon depuis Portée Très Proche, elle doit cocher un Stress et devenir Glacée jusqu’à son prochain repos ou qu’elle retire un Stress. Tant que Glacée, elle a un désavantage sur les jets d’attaque.",
         "tags": [
           "offensif",
           "défensif"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryClose",
+        "trigger": "Quand une créature réussit une attaque contre le dragon depuis portée très proche"
       },
       {
         "name": "Momentum",
-        "type": "reaction",
         "description": "Quand le Dragon réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
           "utilitaire"
-        ]
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "trigger": "Quand le dragon réussit une attaque contre un pj, vous gagnez une peur"
       }
     ],
     "focusProfile": {

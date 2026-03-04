@@ -62,7 +62,7 @@ describe('Flux adversaire homebrew', () => {
         hp: 9,
         stress: 5,
         attack: { modifier: 4, name: 'Épée', range: 'Melee', damage: '4d10+12', damageType: 'phy' },
-        features: [{ type: 'action', name: 'Coup fatal', description: 'Très puissant.' }]
+        features: [{ activationType: 'action', name: 'Coup fatal', description: 'Très puissant.' }]
       })
       expect(isEditMode.value).toBe(true)
       expect(isDirty.value).toBe(false)

@@ -273,10 +273,10 @@ describe('adversaryStore', () => {
       })
     })
 
-    it('les features ont un type valide', () => {
+    it('les features ont un activationType valide', () => {
       allAdversaries.forEach((a) => {
         a.features.forEach((f) => {
-          expect(['passive', 'action', 'reaction']).toContain(f.type)
+          expect(['passive', 'action', 'reaction']).toContain(f.activationType)
           expect(typeof f.name).toBe('string')
           expect(typeof f.description).toBe('string')
         })

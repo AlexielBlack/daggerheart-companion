@@ -37,7 +37,7 @@
         v-for="(feature, idx) in features"
         :key="feature._uid || idx"
         class="feature-editor__item"
-        :class="`feature-editor__item--${feature.type || 'action'}`"
+        :class="`feature-editor__item--${feature.activationType || 'action'}`"
         role="listitem"
       >
         <div class="feature-editor__item-header">
@@ -86,9 +86,9 @@
             <select
               :id="`${fieldId}-${idx}-type`"
               class="feature-editor__input feature-editor__select"
-              :value="feature.type"
-              :aria-invalid="hasFieldError(idx, 'type')"
-              @change="updateFeatureField(idx, 'type', $event.target.value)"
+              :value="feature.activationType"
+              :aria-invalid="hasFieldError(idx, 'activationType')"
+              @change="updateFeatureField(idx, 'activationType', $event.target.value)"
             >
               <option value="passive">
                 🔵 Passif
@@ -286,7 +286,7 @@ export default {
       return {
         _uid: `feat-${featureUidCounter}-${Date.now()}`,
         name: '',
-        type: 'action',
+        activationType: 'action',
         description: '',
         cost: '',
         tags: []

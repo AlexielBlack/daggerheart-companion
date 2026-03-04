@@ -194,9 +194,9 @@
         >
           <span
             class="adv-benchmark__feature-badge"
-            :class="`adv-benchmark__feature-badge--${feat.type.toLowerCase()}`"
+            :class="`adv-benchmark__feature-badge--${feat.activationType.toLowerCase()}`"
           >
-            {{ feat.type }}
+            {{ feat.activationType }}
           </span>
           <strong class="adv-benchmark__feature-name">{{ feat.name }}</strong>
           <span class="adv-benchmark__feature-desc">{{ feat.description }}</span>

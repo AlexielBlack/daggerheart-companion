@@ -277,19 +277,19 @@ describe('environmentStore', () => {
     it('les features ont un type valide', () => {
       allEnvironments.forEach((e) => {
         e.features.forEach((f) => {
-          expect(FEATURE_TYPES).toContain(f.type)
+          expect(FEATURE_TYPES).toContain(f.activationType)
           expect(typeof f.name).toBe('string')
           expect(typeof f.description).toBe('string')
         })
       })
     })
 
-    it('les fearCosts sont null ou un nombre positif', () => {
+    it('les costs fear ont un montant positif', () => {
       allEnvironments.forEach((e) => {
         e.features.forEach((f) => {
-          if (f.fearCost !== null) {
-            expect(typeof f.fearCost).toBe('number')
-            expect(f.fearCost).toBeGreaterThan(0)
+          if (f.cost && f.cost.type === 'fear') {
+            expect(typeof f.cost.amount).toBe('number')
+            expect(f.cost.amount).toBeGreaterThan(0)
           }
         })
       })

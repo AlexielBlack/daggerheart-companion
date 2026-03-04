@@ -24,31 +24,48 @@
     "features": [
       {
         "name": "Desecrated Ground",
-        "type": "passive",
-        "fearCost": null,
         "description": "Les cultistes ont dédié ce lieu aux Dieux Déchus, et leur influence néfaste s’y infiltre. Réduisez le Dé d’Espoir des PJ à un d10 tant qu’ils sont dans cet environnement. La profanation peut être retirée avec un Progress Countdown (6).",
-        "questions": "Comment les PJ remarquent-ils en premier que quelque chose ne va pas dans ce lieu ? Quelles peurs refont surface quand l’espoir est maintenu à distance ?"
+        "questions": "Comment les PJ remarquent-ils en premier que quelque chose ne va pas dans ce lieu ? Quelles peurs refont surface quand l’espoir est maintenu à distance ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Blasphemous Might",
-        "type": "action",
-        "fearCost": null,
         "description": "Une partie du pouvoir du rituel est détournée vers un membre du culte pour repousser les intrus. Choisissez un adversaire pour qu’il devienne Imprégné d’une magie terrible jusqu’à la fin de la scène ou sa défaite. Un adversaire Imprégné passe immédiatement sous le projecteur et gagne l’un des bénéfices suivants, ou les trois si vous dépensez une Peur :\n• Il gagne l’avantage sur toutes ses attaques.\n• Il inflige 1d10 dégâts supplémentaires sur une attaque réussie.\n• Il gagne la feature suivante : Relentless (2) - Passive. Cet adversaire peut recevoir le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour lui donner le projecteur.",
-        "questions": "Comment l’ennemi change-t-il d’apparence ? Quelles peurs leurs coups font-ils remonter à la surface ?"
+        "questions": "Comment l’ennemi change-t-il d’apparence ? Quelles peurs leurs coups font-ils remonter à la surface ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "The Summoning",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Countdown (6). Quand les PJ entrent dans la scène ou que le culte commence le rituel pour invoquer un démon, activez le countdown. Désignez un adversaire pour diriger le rituel. Le countdown se décrémente quand un PJ obtient un résultat avec Peur. Quand il se déclenche, invoquez un Minor Demon à Portée Très Proche du leader du rituel. Si le leader est vaincu, le countdown se termine sans effet car le rituel échoue.",
-        "questions": "Que fera le culte avec ce démon enchaîné s’il réussit ? Qu’essaieront-ils d’invoquer ensuite ?"
+        "questions": "Que fera le culte avec ce démon enchaîné s’il réussit ? Qu’essaieront-ils d’invoquer ensuite ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       },
       {
         "name": "Complete the Ritual",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Si le leader du rituel est ciblé par une attaque ou un sort, un allié à Portée Très Proche de lui peut cocher un Stress pour être ciblé par cette attaque ou ce sort à sa place.",
-        "questions": "Que ressent-on en voyant une telle dévotion tournée vers la poursuite de la peur et de la domination ?"
+        "questions": "Que ressent-on en voyant une telle dévotion tournée vers la poursuite de la peur et de la domination ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryClose"
       }
     ]
   },
@@ -77,31 +94,46 @@
     "features": [
       {
         "name": "A Place of Healing",
-        "type": "passive",
-        "fearCost": null,
         "description": "Un PJ qui prend un repos dans le Temple Sacré efface automatiquement tous ses PV.",
-        "questions": "Quelle est l’odeur de l’encens ? Quel genre de chants les acolytes entonnent-ils ?"
+        "questions": "Quelle est l’odeur de l’encens ? Quel genre de chants les acolytes entonnent-ils ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Divine Guidance",
-        "type": "passive",
-        "fearCost": null,
         "description": "Un PJ qui prie une divinité dans le Temple Sacré peut faire un jet d’Instinct pour recevoir des réponses. Si le dieu qu’il implore n’est pas bienvenu dans ce temple, le jet est fait avec un désavantage.\n• Succès Critique : Le PJ obtient des informations claires. De plus, il gagne 1d4 Espoir, qui peuvent être répartis entre le groupe s’il partage la vision et les conseils reçus.\n• Succès avec Espoir : Le PJ reçoit des informations claires.\n• Succès avec Peur : Le PJ reçoit de brefs éclairs de compréhension et une impression émotionnelle transmettant une réponse.\n• Tout Échec : Le PJ ne reçoit que des éclairs vagues. Il peut cocher un Stress pour recevoir une image claire sans contexte.",
-        "questions": "Que ressentez-vous en étant touché par cette vision ? Quel sentiment persiste après que les images se sont dissipées ?"
+        "questions": "Que ressentez-vous en étant touché par cette vision ? Quel sentiment persiste après que les images se sont dissipées ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Relentless Hope",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Une fois par scène, chaque PJ peut cocher un Stress pour transformer un résultat avec Peur en un résultat avec Espoir.",
-        "questions": "À quelles émotions ou souvenirs vous raccrochez-vous quand la peur vous oppresse ?"
+        "questions": "À quelles émotions ou souvenirs vous raccrochez-vous quand la peur vous oppresse ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Divine Censure",
-        "type": "reaction",
-        "fearCost": 1,
         "description": "Quand les PJ ont transgressé, blasphémé ou offensé le clergé, vous pouvez dépenser une Peur pour invoquer un High Seraph et 1d4 Bladed Guards à Portée Proche du prêtre principal pour faire respecter leur volonté.",
-        "questions": "Quels symboles ou icônes portent-ils signalant qu’ils sont des agents consacrés de la divinité ? Qui dirige le groupe et qu’est-ce qui l’a mené à cette vocation ?"
+        "questions": "Quels symboles ou icônes portent-ils signalant qu’ils sont des agents consacrés de la divinité ? Qui dirige le groupe et qu’est-ce qui l’a mené à cette vocation ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill",
+        "range": "close"
       }
     ]
   },
@@ -135,31 +167,46 @@
     "features": [
       {
         "name": "Buried Knowledge",
-        "type": "passive",
-        "fearCost": null,
         "description": "La ville recèle d’innombrables mystères à découvrir. Un PJ qui cherche des connaissances sur la ville déchue peut faire un jet d’Instinct ou de Savoir pour en apprendre davantage et découvrir du butin (potentiellement hanté).\n• Succès Critique : Obtenez une information précieuse et un objet utile lié.\n• Succès avec Espoir : Obtenez une information précieuse.\n• Succès avec Peur : Découvrez une information vague ou incomplète.\n• Tout Échec : Cochez un Stress pour trouver une piste après une recherche exhaustive.",
-        "questions": "Quels secrets plus profonds la ville contient-elle ? Pourquoi tant de fantômes persistent-ils ici ? Quels aventuriers condamnés ont déjà connu un triste sort ici ?"
+        "questions": "Quels secrets plus profonds la ville contient-elle ? Pourquoi tant de fantômes persistent-ils ici ? Quels aventuriers condamnés ont déjà connu un triste sort ici ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Ghostly Form",
-        "type": "passive",
-        "fearCost": null,
         "description": "Les adversaires qui apparaissent ici sont sous forme spectrale. Ils ont une résistance aux dégâts physiques et peuvent cocher un Stress pour se déplacer à Portée Proche à travers les objets solides.",
-        "questions": "Quelles blessures sur leur forme physique témoignent de leur cause de mort ? Quel but inachevé les retient dans le Plan Mortel ?"
+        "questions": "Quelles blessures sur leur forme physique témoignent de leur cause de mort ? Quel but inachevé les retient dans le Plan Mortel ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "range": "close"
       },
       {
         "name": "Dead Ends",
-        "type": "action",
-        "fearCost": null,
         "description": "Les fantômes d’une époque antérieure manifestent des scènes de leur ère révolue, comme un festival de rue, une révolution ou un cambriolage. Ces hantises modifient la disposition de la ville autour des PJ, bloquant le chemin derrière eux, forçant un détour, ou leur présentant un défi, comme les prendre pour des voleurs rivaux pendant le cambriolage.",
-        "questions": "Que veulent les fantômes de vous ? De quoi avez-vous besoin d’eux ?"
+        "questions": "Que veulent les fantômes de vous ? De quoi avez-vous besoin d’eux ?",
+        "activationType": "action",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Apocalypse Then",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour manifester l’écho d’une catastrophe passée qui a ravagé la ville. Activez un Progress Countdown (5) tandis que la catastrophe se rejoue autour des PJ. Pour compléter le countdown et échapper à la catastrophe, les PJ doivent surmonter des menaces comme des incendies déchaînés, des civils en panique, des bâtiments qui s’effondrent ou des rues qui s’écroulent, tout en se remémorant l’histoire et en trouvant des indices pour échapper à l’inévitable.",
-        "questions": "Est-ce la catastrophe qui a conduit à l’abandon de la ville ? Que sait-on de cette catastrophe, et comment cela pourrait-il aider les PJ à s’échapper ?"
+        "questions": "Est-ce la catastrophe qui a conduit à l’abandon de la ville ? Que sait-on de cette catastrophe, et comment cela pourrait-il aider les PJ à s’échapper ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       }
     ]
   },
@@ -196,31 +243,47 @@
     "features": [
       {
         "name": "Engraved Sigils",
-        "type": "passive",
-        "fearCost": null,
         "description": "De grandes marques et gravures ont été faites dans le flanc de la montagne. Un PJ avec un historique ou une Expérience pertinente les identifie comme de la magie météorologique augmentant la puissance des vents glacials. Un PJ qui réussit un jet de Savoir peut se rappeler des informations sur les sigils, des informations potentielles sur leurs créateurs, et la connaissance de comment les dissiper. Si un PJ réussit un succès critique, il reconnaît que les sigils sont d’un style créé par des enchanteurs ridgeborne et il gagne l’avantage sur un jet pour dissiper les sigils.",
-        "questions": "Qui a posé cet enchantement ? Sont-ils proches ? Pourquoi voulaient-ils rendre le temps plus redoutable ?"
+        "questions": "Qui a posé cet enchantement ? Sont-ils proches ? Pourquoi voulaient-ils rendre le temps plus redoutable ?",
+        "activationType": "passive",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        }
       },
       {
         "name": "Avalanche",
-        "type": "action",
-        "fearCost": 1,
         "description": "Dépensez une Peur pour déclencher une avalanche. Tous les PJ doivent réussir un jet de Réaction d’Agilité ou subir 2d10+2 dégâts physiques et être ensevelis. Un PJ enseveli est Entravé et doit être déterré par ses alliés avec un jet réussi de Force.",
-        "questions": "Qu’est-ce qui a provoqué l’avalanche ? Des prédateurs profitent-ils du chaos pour attaquer ?"
+        "questions": "Qu’est-ce qui a provoqué l’avalanche ? Des prédateurs profitent-ils du chaos pour attaquer ?",
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "atWill"
       },
       {
         "name": "Raptor Nest",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Quand les PJ entrent dans le territoire de chasse des rapaces, deux Giant Eagles apparaissent à Portée Très Lointaine d’un PJ choisi, identifiant les PJ comme une proie probable.",
-        "questions": "Depuis combien de temps les aigles n’ont-ils pas trouvé de proie ? Ont-ils des œufs dans leur nid, ou des jeunes qui ne volent pas encore ?"
+        "questions": "Depuis combien de temps les aigles n’ont-ils pas trouvé de proie ? Ont-ils des œufs dans leur nid, ou des jeunes qui ne volent pas encore ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill",
+        "range": "veryFar"
       },
       {
         "name": "Icy Winds",
-        "type": "reaction",
-        "fearCost": null,
         "description": "Countdown (Boucle 4). Quand les PJ entrent dans le col de montagne, activez le countdown. Quand il se déclenche, tous les personnages traversant le col doivent réussir un jet de Réaction de Force ou cocher un Stress. Un PJ portant des vêtements appropriés pour le froid extrême gagne l’avantage sur ces jets.",
-        "questions": "Quelles parties du corps des PJ s’engourdissent en premier ? Comment essaient-ils de se réchauffer en avançant ?"
+        "questions": "Quelles parties du corps des PJ s’engourdissent en premier ? Comment essaient-ils de se réchauffer en avançant ?",
+        "activationType": "reaction",
+        "cost": {
+          "type": "free",
+          "amount": 0
+        },
+        "frequency": "atWill"
       }
     ]
   }

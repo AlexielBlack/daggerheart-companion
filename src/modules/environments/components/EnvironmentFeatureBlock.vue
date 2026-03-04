@@ -1,12 +1,12 @@
 <template>
   <div
     class="env-feature"
-    :class="`env-feature--${feature.type}`"
+    :class="`env-feature--${feature.activationType}`"
   >
     <div class="env-feature__header">
       <span
         class="env-feature__type-badge"
-        :class="`env-feature__type-badge--${feature.type}`"
+        :class="`env-feature__type-badge--${feature.activationType}`"
         :aria-label="typeLabel"
       >
         {{ typeLabel }}
@@ -15,11 +15,11 @@
         {{ feature.name }}
       </h4>
       <span
-        v-if="feature.fearCost"
+        v-if="fearCostLabel"
         class="env-feature__fear-cost badge badge--fear"
-        :aria-label="`Coût : ${feature.fearCost} Peur`"
+        :aria-label="`Coût : ${fearCostLabel}`"
       >
-        {{ feature.fearCost }} Fear
+        {{ fearCostLabel }}
       </span>
     </div>
 
@@ -60,14 +60,20 @@ export default {
       validator(value) {
         return value &&
           typeof value.name === 'string' &&
-          ['passive', 'action', 'reaction'].includes(value.type) &&
+          ['passive', 'action', 'reaction'].includes(value.activationType) &&
           typeof value.description === 'string'
       }
     }
   },
   computed: {
     typeLabel() {
-      return TYPE_LABELS[this.feature.type] || this.feature.type
+      return TYPE_LABELS[this.feature.activationType] || this.feature.activationType
+    },
+    fearCostLabel() {
+      const cost = this.feature.cost
+      if (!cost || cost.type === 'free') return null
+      if (cost.type === 'fear') return `${cost.amount} Fear`
+      return null
     }
   }
 }

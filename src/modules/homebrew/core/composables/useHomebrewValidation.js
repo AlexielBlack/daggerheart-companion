@@ -246,10 +246,10 @@ function validateFeatures(value, fieldDef, path) {
       errors.push({ field: `${featurePath}.name`, message: `Feature #${index + 1} : le nom est requis.` })
     }
 
-    if (!feature.type || !validFeatureTypes.includes(feature.type)) {
+    if (!feature.activationType || !validFeatureTypes.includes(feature.activationType)) {
       errors.push({
-        field: `${featurePath}.type`,
-        message: `Feature #${index + 1} : type invalide ("${feature.type}"). Attendu : ${validFeatureTypes.join(', ')}.`
+        field: `${featurePath}.activationType`,
+        message: `Feature #${index + 1} : type invalide ("${feature.activationType}"). Attendu : ${validFeatureTypes.join(', ')}.`
       })
     }
 

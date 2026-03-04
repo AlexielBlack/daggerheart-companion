@@ -162,11 +162,11 @@
           v-for="(feature, idx) in data.features"
           :key="idx"
           class="adv-preview__feature"
-          :class="`adv-preview__feature--${feature.type || 'action'}`"
+          :class="`adv-preview__feature--${feature.activationType || 'action'}`"
           role="listitem"
         >
           <div class="adv-preview__feature-header">
-            <span class="adv-preview__feature-icon">{{ featureIcon(feature.type) }}</span>
+            <span class="adv-preview__feature-icon">{{ featureIcon(feature.activationType) }}</span>
             <strong>{{ feature.name || '…' }}</strong>
             <span
               v-if="feature.cost"

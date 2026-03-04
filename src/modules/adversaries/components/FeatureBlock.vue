@@ -1,24 +1,24 @@
 <template>
   <div
     class="feature-block"
-    :class="`feature-block--${feature.type}`"
+    :class="`feature-block--${feature.activationType}`"
     role="listitem"
   >
     <div class="feature-block__header">
       <span
         class="feature-block__type-badge"
-        :class="`feature-block__type-badge--${feature.type}`"
+        :class="`feature-block__type-badge--${feature.activationType}`"
         :aria-label="typeLabel"
       >
         {{ typeIcon }}
       </span>
       <strong class="feature-block__name">{{ feature.name }}</strong>
       <span
-        v-if="feature.cost"
+        v-if="costLabel"
         class="feature-block__cost"
-        :aria-label="`Coût : ${feature.cost}`"
+        :aria-label="`Coût : ${costLabel}`"
       >
-        {{ feature.cost }}
+        {{ costLabel }}
       </span>
     </div>
     <p class="feature-block__description">
@@ -40,6 +40,13 @@ const TYPE_CONFIG = {
   passive: { icon: '🔵', label: 'Passif' }
 }
 
+const COST_LABELS = {
+  stress: (n) => n === 1 ? 'Cochez un Stress' : `Cochez ${n} Stress`,
+  fear: (n) => n === 1 ? 'Dépensez une Peur' : `Dépensez ${n} Peurs`,
+  fearPerPC: () => 'Dépensez une Peur par PJ',
+  hope: (n) => n === 1 ? 'Dépensez un Espoir' : `Dépensez ${n} Espoir`
+}
+
 export default {
   name: 'FeatureBlock',
   components: { GlossaryText },
@@ -48,16 +55,22 @@ export default {
       type: Object,
       required: true,
       validator(value) {
-        return value && typeof value.name === 'string' && typeof value.type === 'string'
+        return value && typeof value.name === 'string' && typeof value.activationType === 'string'
       }
     }
   },
   computed: {
     typeIcon() {
-      return TYPE_CONFIG[this.feature.type]?.icon || '❓'
+      return TYPE_CONFIG[this.feature.activationType]?.icon || '❓'
     },
     typeLabel() {
-      return TYPE_CONFIG[this.feature.type]?.label || this.feature.type
+      return TYPE_CONFIG[this.feature.activationType]?.label || this.feature.activationType
+    },
+    costLabel() {
+      const cost = this.feature.cost
+      if (!cost || cost.type === 'free') return null
+      const formatter = COST_LABELS[cost.type]
+      return formatter ? formatter(cost.amount) : null
     }
   }
 }
