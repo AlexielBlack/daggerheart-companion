@@ -4,11 +4,11 @@
     "name": "Elite Soldier",
     "tier": 2,
     "type": "Standard",
-    "description": "An armored squire or experienced commoner looking to advance.",
+    "description": "Un écuyer en armure ou un roturier expérimenté cherchant à progresser.",
     "motives": [
-      "Gain glory",
-      "Keep order",
-      "Make alliances"
+      "Gagner la gloire",
+      "Maintenir l’ordre",
+      "Nouer des alliances"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -29,14 +29,14 @@
       {
         "name": "Reinforce",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Move into Melee range of an ally and make a standard attack against a target within Very Close range. On a success, deal 2d10+2 physical damage and the ally can clear a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Déplacez-vous à Portée de Mêlée d’un allié et faites une attaque standard contre une cible à Portée Très Proche. En cas de réussite, infligez 2d10+2 dégâts physiques et l’allié peut retirer un Stress."
       },
       {
         "name": "Vassal's Loyalty",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Soldier is within Very Close range of a knight or other noble who would take damage, move into Melee range of them and take the damage instead."
+        "cost": "Cochez un Stress",
+        "description": "Quand le Soldat est à Portée Très Proche d’un chevalier ou autre noble qui subirait des dégâts, déplacez-vous à Portée de Mêlée de celui-ci et subissez les dégâts à sa place."
       }
     ]
   },
@@ -45,11 +45,11 @@
     "name": "Failed Experiment",
     "tier": 2,
     "type": "Standard",
-    "description": "A magical necromantic experiment gone wrong, leaving them warped and ungainly.",
+    "description": "Une expérience nécromantique magique qui a mal tourné, le laissant déformé et maladroit.",
     "motives": [
-      "Devour",
-      "Hunt",
-      "Track"
+      "Dévorer",
+      "Chasser",
+      "Pister"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -75,18 +75,18 @@
       {
         "name": "Warped Fortitude",
         "type": "passive",
-        "description": "The Experiment is resistant to physical damage."
+        "description": "L’Expérience est résistante aux dégâts physiques."
       },
       {
         "name": "Overwhelm",
         "type": "passive",
-        "description": "When a target the Experiment attacks has other adversaries within Very Close range, the Experiment deals double damage."
+        "description": "Quand une cible attaquée par l’Expérience a d’autres adversaires à Portée Très Proche, l’Expérience inflige le double de dégâts."
       },
       {
         "name": "Lurching Lunge",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spotlight the Experiment as an additional GM move instead of spending Fear."
+        "cost": "Cochez un Stress",
+        "description": "Mettez l’Expérience en vedette comme action MJ supplémentaire au lieu de dépenser une Peur."
       }
     ]
   },
@@ -95,13 +95,13 @@
     "name": "Giant Beastmaster",
     "tier": 2,
     "type": "Leader",
-    "description": "A leather-clad warrior bearing a whip and massive bow.",
+    "description": "Un guerrier vêtu de cuir portant un fouet et un arc massif.",
     "motives": [
-      "Command",
-      "Make a living",
-      "Maneuver",
-      "Pin down",
-      "Protect companion animals"
+      "Commander",
+      "Gagner sa vie",
+      "Manœuvrer",
+      "Immobiliser",
+      "Protéger les animaux compagnons"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -127,18 +127,18 @@
       {
         "name": "Two as One",
         "type": "passive",
-        "description": "When the Beastmaster is spotlighted, you can also spotlight a Tier 1 animal adversary currently under their control."
+        "description": "Quand le Maître des Bêtes est mis en vedette, vous pouvez aussi mettre en vedette un adversaire animal de Tier 1 actuellement sous son contrôle."
       },
       {
         "name": "Pinning Strike",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make a standard attack against a target. On a success, pin them to a nearby surface. The pinned target is Restrained until they break free with a successful Finesse or Strength Roll."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque standard contre une cible. En cas de réussite, clouez-la à une surface proche. La cible clouée est Entravée jusqu’à ce qu’elle se libère avec un jet de Finesse ou de Force réussi."
       },
       {
         "name": "Deadly Companion",
         "type": "action",
-        "description": "Twice per scene, summon a Bear, Dire Wolf, or similar Tier 1 animal adversary under the Beastmaster's control. The adversary appears at Close range and is immediately spotlighted."
+        "description": "Deux fois par scène, invoquez un Ours, un Loup Sinistre ou un adversaire animal de Tier 1 similaire sous le contrôle du Maître des Bêtes. L’adversaire apparaît à Portée Proche et est immédiatement mis en vedette."
       }
     ]
   },
@@ -147,12 +147,12 @@
     "name": "Giant Brawler",
     "tier": 2,
     "type": "Bruiser",
-    "description": "An especially muscular giant wielding a warhammer larger than a human.",
+    "description": "Un géant particulièrement musclé brandissant un marteau de guerre plus grand qu’un humain.",
     "motives": [
-      "Make a living",
-      "Overwhelm",
-      "Slam",
-      "Topple"
+      "Gagner sa vie",
+      "Submerger",
+      "Fracasser",
+      "Renverser"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -178,18 +178,18 @@
       {
         "name": "Battering Ram",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Charge at an inanimate object within Close range and destroy it. All targets within Very Close range of the object must succeed on an Agility Reaction Roll or take 2d4+3 physical damage from the shrapnel."
+        "cost": "Cochez un Stress",
+        "description": "Chargez un objet inanimé à Portée Proche et détruisez-le. Toutes les cibles à Portée Très Proche de l’objet doivent réussir un jet de Réaction d’Agilité ou subir 2d4+3 dégâts physiques des éclats."
       },
       {
         "name": "Bloody Reprisal",
         "type": "reaction",
-        "description": "When the Brawler marks 2 or more HP from an attack within Very Close range, make a standard attack against the attacker. On a success, deal 2d6+15 physical damage instead of standard damage."
+        "description": "Quand le Bagarreur coche 2 PV ou plus suite à une attaque à Portée Très Proche, faites une attaque standard contre l’attaquant. En cas de réussite, infligez 2d6+15 dégâts physiques au lieu des dégâts standard."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Brawler makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Bagarreur réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -198,12 +198,12 @@
     "name": "Giant Recruit",
     "tier": 2,
     "type": "Minion",
-    "description": "A giant fighter wearing borrowed armor.",
+    "description": "Un combattant géant portant une armure empruntée.",
     "motives": [
-      "Batter",
-      "Make a living",
-      "Overwhelm",
-      "Terrify"
+      "Frapper",
+      "Gagner sa vie",
+      "Submerger",
+      "Terrifier"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -224,13 +224,13 @@
       {
         "name": "Minion (7)",
         "type": "passive",
-        "description": "The Recruit is defeated when they take any damage. For every 7 damage a PC deals to the Recruit, defeat an additional Minion within range the attack would succeed against."
+        "description": "La Recrue est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 7 dégâts qu’un PJ inflige à la Recrue, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Giant Recruits within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette toutes les Recrues Géantes à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -240,11 +240,11 @@
     "tier": 2,
     "type": "Horde",
     "hordeRatio": "3/HP",
-    "description": "A swarm of shocking aquatic predators.",
+    "description": "Un essaim de prédateurs aquatiques électriques.",
     "motives": [
-      "Avoid larger predators",
-      "Shock prey",
-      "Tear apart"
+      "Éviter les gros prédateurs",
+      "Électrocuter les proies",
+      "Déchiqueter"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -265,13 +265,13 @@
       {
         "name": "Horde (2d4+1)",
         "type": "passive",
-        "description": "When the Eels have marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead."
+        "description": "Quand les Anguilles ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 2d4+1 dégâts physiques à la place."
       },
       {
         "name": "Paralyzing Shock",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make a standard attack against all targets within Very Close range. You gain a Fear for each target that marks HP."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque standard contre toutes les cibles à Portée Très Proche. Vous gagnez une Peur pour chaque cible qui coche des PV."
       }
     ]
   },
@@ -280,13 +280,13 @@
     "name": "Minotaur Wrecker",
     "tier": 2,
     "type": "Bruiser",
-    "description": "A massive bull-headed firbolg with a quick temper.",
+    "description": "Un firbolg massif à tête de taureau avec un tempérament explosif.",
     "motives": [
-      "Consume",
-      "Gore",
-      "Navigate",
-      "Overpower",
-      "Pursue"
+      "Consumer",
+      "Encorner",
+      "Naviguer",
+      "Dominer",
+      "Poursuivre"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -312,18 +312,18 @@
       {
         "name": "Ramp Up",
         "type": "passive",
-        "description": "You must spend a Fear to spotlight the Minotaur. While spotlighted, they can make their standard attack against all targets within range."
+        "description": "Vous devez dépenser une Peur pour mettre le Minotaure en vedette. Tant qu’il est en vedette, il peut faire son attaque standard contre toutes les cibles à portée."
       },
       {
         "name": "Charging Bull",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Charge through a group within Close range and make an attack against all targets in the Minotaur's path. Targets the Minotaur succeeds against take 2d6+8 physical damage and are knocked back to Very Far range. If a target is knocked into a solid object or another creature, they take an extra 1d6 damage (combine the damage)."
+        "cost": "Cochez un Stress",
+        "description": "Chargez à travers un groupe à Portée Proche et faites une attaque contre toutes les cibles sur le passage du Minotaure. Les cibles touchées subissent 2d6+8 dégâts physiques et sont repoussées à Portée Très Loin. Si une cible est projetée contre un objet solide ou une autre créature, elle subit 1d6 dégâts supplémentaires (combinez les dégâts)."
       },
       {
         "name": "Gore",
         "type": "action",
-        "description": "Make an attack against a target within Very Close range, moving the Minotaur into Melee range of them. On a success, deal 2d8 direct physical damage."
+        "description": "Faites une attaque contre une cible à Portée Très Proche, en déplaçant le Minotaure à Portée de Mêlée d’elle. En cas de réussite, infligez 2d8 dégâts physiques directs."
       }
     ]
   },
@@ -332,11 +332,11 @@
     "name": "Giant Eagle",
     "tier": 2,
     "type": "Skulk",
-    "description": "A giant bird of prey with blood-stained talons.",
+    "description": "Un oiseau de proie géant aux serres tachées de sang.",
     "motives": [
-      "Hunt prey",
-      "Stay mobile",
-      "Strike decisively"
+      "Chasser une proie",
+      "Rester mobile",
+      "Frapper de manière décisive"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -357,18 +357,18 @@
       {
         "name": "Flight",
         "type": "passive",
-        "description": "While flying, the Eagle gains a +3 bonus to their Difficulty."
+        "description": "En vol, l’Aigle gagne un bonus de +3 à sa Difficulté."
       },
       {
         "name": "Deadly Dive",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Attack a target within Far range. On a success, deal 2d10+2 physical damage and knock the target over, making them Vulnerable until they next act."
+        "cost": "Cochez un Stress",
+        "description": "Attaquez une cible à Portée Loin. En cas de réussite, infligez 2d10+2 dégâts physiques et renversez la cible, la rendant Vulnérable jusqu’à sa prochaine action."
       },
       {
         "name": "Take Off",
         "type": "action",
-        "description": "Make an attack against a target within Very Close range. On a success, deal 2d4+3 physical damage and the target must succeed on an Agility Reaction Roll or become temporarily Restrained within the Eagle's massive talons."
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, infligez 2d4+3 dégâts physiques et la cible doit réussir un jet de Réaction d’Agilité ou être temporairement Entravée dans les serres massives de l’Aigle."
       }
     ]
   },
@@ -377,12 +377,12 @@
     "name": "Gorgon",
     "tier": 2,
     "type": "Solo",
-    "description": "A snake-headed, scaled humanoid with a gilded bow, enraged that their peace has been disturbed.",
+    "description": "Un humanoïde écailleux à tête de serpents avec un arc doré, enragé que sa paix ait été troublée.",
     "motives": [
-      "Corner",
-      "Hit-and-run",
-      "Petrify",
-      "Seek vengeance"
+      "Acculer",
+      "Frapper et fuir",
+      "Pétrifier",
+      "Chercher la vengeance"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -408,29 +408,29 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "The Gorgon can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "La Gorgone peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       },
       {
         "name": "Sunsear Arrows",
         "type": "passive",
-        "description": "When the Gorgon makes a successful standard attack, the target Glows until the end of the scene and can't become Hidden. Attack rolls made against a Glowing target have advantage."
+        "description": "Quand la Gorgone réussit une attaque standard, la cible Brille jusqu’à la fin de la scène et ne peut pas devenir Cachée. Les jets d’attaque contre une cible Brillante ont l’avantage."
       },
       {
         "name": "Crown of Serpents",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack roll against a target within Melee range using the Gorgon's protective snakes. On a success, deal 2d10+4 physical damage and the target must mark a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Faites un jet d’attaque contre une cible à Portée de Mêlée en utilisant les serpents protecteurs de la Gorgone. En cas de réussite, infligez 2d10+4 dégâts physiques et la cible doit cocher un Stress."
       },
       {
         "name": "Petrifying Gaze",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When the Gorgon takes damage from an attack within Close range, force the attacker to make an Instinct Reaction Roll. On a failure, they begin to turn to stone, marking a HP and starting a Petrification Countdown (4). This countdown ticks down when the Gorgon is attacked. When it triggers, the target must make a death move. If the Gorgon is defeated, all petrification countdowns end."
+        "cost": "Dépensez une Peur",
+        "description": "Quand la Gorgone subit des dégâts d’une attaque à Portée Proche, forcez l’attaquant à faire un jet de Réaction d’Instinct. En cas d’échec, il commence à se transformer en pierre, cochant un PV et démarrant un Compte à rebours de Pétrification (4). Ce compte à rebours décompte quand la Gorgone est attaquée. Quand il se déclenche, la cible doit faire un mouvement de mort. Si la Gorgone est vaincue, tous les comptes à rebours de pétrification prennent fin."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Gorgon makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand la Gorgone réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -439,11 +439,11 @@
     "name": "Merchant Baron",
     "tier": 2,
     "type": "Social",
-    "description": "An accomplished merchant with a large operation under their command.",
+    "description": "Un marchand accompli dirigeant une vaste opération commerciale.",
     "motives": [
-      "Abuse power",
-      "Gather resources",
-      "Mobilize minions"
+      "Abuser du pouvoir",
+      "Rassembler des ressources",
+      "Mobiliser des sbires"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -473,14 +473,14 @@
       {
         "name": "Everyone Has a Price",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Offer a target a dangerous bargain for something they want or need. If used on a PC, they must make a Presence Reaction Roll (17). On a failure, they must mark 2 Stress or take the deal."
+        "cost": "Dépensez une Peur",
+        "description": "Offrez à une cible un marché dangereux pour quelque chose qu’elle veut ou dont elle a besoin. Si utilisé sur un PJ, celui-ci doit faire un jet de Réaction de Présence (17). En cas d’échec, il doit cocher 2 Stress ou accepter le marché."
       },
       {
         "name": "The Best Muscle Money Can Buy",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Once per scene, summon 1d4+1 Tier 1 adversaries, who appear at Far range, to enforce the Baron's will."
+        "cost": "Cochez un Stress",
+        "description": "Une fois par scène, invoquez 1d4+1 adversaires de Tier 1, qui apparaissent à Portée Loin, pour faire respecter la volonté du Baron."
       }
     ]
   },
@@ -490,11 +490,11 @@
     "tier": 2,
     "type": "Horde",
     "hordeRatio": "2/HP",
-    "description": "A group of trained archers bearing massive bows.",
+    "description": "Un groupe d’archers entraînés portant des arcs massifs.",
     "motives": [
-      "Stick together",
-      "survive",
-      "volley fire"
+      "Rester groupés",
+      "Survivre",
+      "Tir de barrage"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -515,19 +515,19 @@
       {
         "name": "Horde (1d6+3)",
         "type": "passive",
-        "description": "When the Squadron has marked half or more of their HP, their standard attack deals 1d6+3 physical damage instead."
+        "description": "Quand l’Escouade a coché la moitié ou plus de ses PV, son attaque standard inflige 1d6+3 dégâts physiques à la place."
       },
       {
         "name": "Focused Volley",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Target a point within Far range. Make an attack with advantage against all targets within Close range of that point. Targets the Squadron succeeds against take 1d10+4 physical damage."
+        "cost": "Dépensez une Peur",
+        "description": "Ciblez un point à Portée Loin. Faites une attaque avec avantage contre toutes les cibles à Portée Proche de ce point. Les cibles touchées subissent 1d10+4 dégâts physiques."
       },
       {
         "name": "Suppressing Fire",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Target a point within Far range. Until the next roll with Fear, a creature who moves within Close range of that point must make an Agility Reaction Roll. On a failure, they take 2d6+3 physical damage. On a success, they take half damage."
+        "cost": "Cochez un Stress",
+        "description": "Ciblez un point à Portée Loin. Jusqu’au prochain jet avec Peur, une créature qui se déplace à Portée Proche de ce point doit faire un jet de Réaction d’Agilité. En cas d’échec, elle subit 2d6+3 dégâts physiques. En cas de réussite, elle subit la moitié des dégâts."
       }
     ]
   },
@@ -536,12 +536,12 @@
     "name": "Apprentice Assassin",
     "tier": 2,
     "type": "Minion",
-    "description": "A young trainee eager to prove themselves.",
+    "description": "Un jeune apprenti désireux de faire ses preuves.",
     "motives": [
-      "Act reckless",
-      "kill",
-      "prove their worth",
-      "show off"
+      "Agir imprudemment",
+      "Tuer",
+      "Prouver sa valeur",
+      "Frimer"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -567,13 +567,13 @@
       {
         "name": "Minion (6)",
         "type": "passive",
-        "description": "The Assassin is defeated when they take any damage. For every 6 damage a PC deals to the Assassin, defeat an additional Minion within range the attack would succeed against."
+        "description": "L’Assassin est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 6 dégâts qu’un PJ inflige à l’Assassin, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Apprentice Assassins within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 4 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Apprentis Assassins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 4 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -582,12 +582,12 @@
     "name": "Assassin Poisoner",
     "tier": 2,
     "type": "Skulk",
-    "description": "A cunning scoundrel skilled in both poisons and ambushing.",
+    "description": "Un vaurien rusé spécialisé dans les poisons et les embuscades.",
     "motives": [
-      "Anticipate",
-      "get paid",
-      "kill",
-      "taint food and water"
+      "Anticiper",
+      "Se faire payer",
+      "Tuer",
+      "Empoisonner nourriture et eau"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -613,17 +613,17 @@
       {
         "name": "Grindletooth Venom",
         "type": "passive",
-        "description": "Targets who mark HP from the Assassin's attacks are Vulnerable until they clear a HP."
+        "description": "Les cibles qui cochent des PV suite aux attaques de l’Assassin sont Vulnérables jusqu’à ce qu’elles libèrent un PV."
       },
       {
         "name": "Out of Nowhere",
         "type": "passive",
-        "description": "The Assassin has advantage on attacks if they are Hidden."
+        "description": "L’Assassin a l’avantage sur ses attaques s’il est Caché."
       },
       {
         "name": "Fumigation",
         "type": "action",
-        "description": "Drop a smoke bomb that fills the air within Close range with smoke, Dizzying all targets in this area. Dizzied targets have disadvantage on their next action roll, then clear the condition."
+        "description": "Lancez une bombe fumigène qui remplit l’air à Portée Proche de fumée, Étourdissant toutes les cibles dans cette zone. Les cibles Étourdies ont un désavantage sur leur prochain jet d’action, puis retirent la condition."
       }
     ]
   },
@@ -632,12 +632,12 @@
     "name": "Master Assassin",
     "tier": 2,
     "type": "Leader",
-    "description": "A seasoned killer with a threatening voice and a deadly blade.",
+    "description": "Un tueur aguerri à la voix menaçante et à la lame mortelle.",
     "motives": [
-      "Ambush",
-      "get out alive",
-      "kill",
-      "prepare for all scenarios"
+      "Embusquer",
+      "S’en sortir vivant",
+      "Tuer",
+      "Se préparer à tout"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -667,24 +667,24 @@
       {
         "name": "Won't See It Coming",
         "type": "passive",
-        "description": "The Assassin deals direct damage while they're Hidden."
+        "description": "L’Assassin inflige des dégâts directs tant qu’il est Caché."
       },
       {
         "name": "Strike as One",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spotlight a number of other Assassins equal to the Assassin's unmarked Stress."
+        "cost": "Cochez un Stress",
+        "description": "Mettez en vedette un nombre d’autres Assassins égal aux Stress non cochés de l’Assassin."
       },
       {
         "name": "The Subtle Blade",
         "type": "reaction",
-        "cost": "Spend a Fear",
-        "description": "When the Assassin successfully makes a standard attack against a Vulnerable target, deal Severe damage instead of their standard damage."
+        "cost": "Dépensez une Peur",
+        "description": "Quand l’Assassin réussit une attaque standard contre une cible Vulnérable, infligez des dégâts Sévères au lieu des dégâts standard."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Assassin makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand l’Assassin réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -693,11 +693,11 @@
     "name": "Battle Box",
     "tier": 2,
     "type": "Solo",
-    "description": "A cube-shaped construct with a different rune on each of their six sides.",
+    "description": "Un constructe en forme de cube avec une rune différente sur chacune de ses six faces.",
     "motives": [
-      "Change tactics",
-      "trample foes",
-      "wait in disguise"
+      "Changer de tactique",
+      "Piétiner les ennemis",
+      "Attendre déguisé"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -723,24 +723,24 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "The Box can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "La Boîte peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       },
       {
         "name": "Randomized Tactics",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Roll a d6. 1: Mana Beam — attack Far, 2d10+2 mag. 2: Fire Jets — attack all Close, 2d8 phy. 3: Trample — attack all Close, 1d6+5 phy + Vulnerable. 4: Shocking Gas — Finesse Reaction or mark 3 Stress. 5: Stunning Clap — Strength Reaction or Vulnerable. 6: Psionic Whine — Presence Reaction or 2d4+9 direct mag."
+        "cost": "Cochez un Stress",
+        "description": "Lancez un d6. 1 : Rayon de Mana — attaque Loin, 2d10+2 mag. 2 : Jets de Feu — attaque tous Proche, 2d8 phy. 3 : Piétinement — attaque tous Proche, 1d6+5 phy + Vulnérable. 4 : Gaz Étourdissant — jet de Réaction de Finesse ou cochez 3 Stress. 5 : Claque Étourdissante — jet de Réaction de Force ou Vulnérable. 6 : Gémissement Psionique — jet de Réaction de Présence ou 2d4+9 dégâts mag. directs."
       },
       {
         "name": "Overcharge",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "Before rolling damage for the Box's attack, add a d6 to the damage roll. Additionally, you gain a Fear."
+        "cost": "Cochez un Stress",
+        "description": "Avant de lancer les dégâts de l’attaque de la Boîte, ajoutez un d6 au jet de dégâts. De plus, vous gagnez une Peur."
       },
       {
         "name": "Death Quake",
         "type": "reaction",
-        "description": "When the Box marks their last HP, the magic powering them ruptures in an explosion. All targets within Close range must succeed on an Instinct Reaction Roll or take 2d8+1 magic damage."
+        "description": "Quand la Boîte coche son dernier PV, la magie qui l’anime se rompt en une explosion. Toutes les cibles à Portée Proche doivent réussir un jet de Réaction d’Instinct ou subir 2d8+1 dégâts magiques."
       }
     ]
   },
@@ -749,11 +749,11 @@
     "name": "Chaos Skull",
     "tier": 2,
     "type": "Ranged",
-    "description": "A floating humanoid skull animated by scintillating magic.",
+    "description": "Un crâne humanoïde flottant animé par une magie scintillante.",
     "motives": [
-      "Cackle",
-      "consume magic",
-      "serve creator"
+      "Ricaner",
+      "Consumer de la magie",
+      "Servir son créateur"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -774,24 +774,24 @@
       {
         "name": "Levitation",
         "type": "passive",
-        "description": "The Skull levitates several feet off the ground and can't be Restrained."
+        "description": "Le Crâne lévite à quelques pieds du sol et ne peut pas être Entravé."
       },
       {
         "name": "Wards",
         "type": "passive",
-        "description": "The Skull is resistant to magic damage."
+        "description": "Le Crâne est résistant aux dégâts magiques."
       },
       {
         "name": "Magic Burst",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against all targets within Close range. Targets the Skull succeeds against take 2d6+4 magic damage."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre toutes les cibles à Portée Proche. Les cibles touchées subissent 2d6+4 dégâts magiques."
       },
       {
         "name": "Siphon Magic",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against a PC with a Spellcast trait within Very Close range. On a success, the target marks 1d4 Stress and the Skull clears that many Stress. On a success, the Skull can immediately be spotlighted again."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre un PJ avec un trait de Spellcast à Portée Très Proche. En cas de réussite, la cible coche 1d4 Stress et le Crâne retire autant de Stress. En cas de réussite, le Crâne peut immédiatement être remis en vedette."
       }
     ]
   },
@@ -800,11 +800,11 @@
     "name": "Conscript",
     "tier": 2,
     "type": "Minion",
-    "description": "A poorly trained civilian pressed into war.",
+    "description": "Un civil mal entraîné enrôlé de force pour la guerre.",
     "motives": [
-      "Follow orders",
-      "gang up",
-      "survive"
+      "Obéir aux ordres",
+      "Attaquer en groupe",
+      "Survivre"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -825,13 +825,13 @@
       {
         "name": "Minion (6)",
         "type": "passive",
-        "description": "The Conscript is defeated when they take any damage. For every 6 damage a PC deals to the Conscript, defeat an additional Minion within range the attack would succeed against."
+        "description": "Le Conscrit est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 6 dégâts qu’un PJ inflige au Conscrit, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Conscripts within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 6 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Conscrits à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 6 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -840,11 +840,11 @@
     "name": "Courtesan",
     "tier": 2,
     "type": "Social",
-    "description": "An accomplished manipulator and master of the social arts.",
+    "description": "Un manipulateur accompli et maître des arts sociaux.",
     "motives": [
-      "Entice",
-      "maneuver",
-      "secure patrons"
+      "Séduire",
+      "Manœuvrer",
+      "S’assurer des mécènes"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -874,8 +874,8 @@
       {
         "name": "Searing Glance",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a PC within Close range makes a Presence Roll, cast a gaze toward the aftermath. On the target's failure, they must mark 2 Stress and are Vulnerable until the scene ends or they succeed on a social action against the Courtesan. On the target's success, they must mark a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Quand un PJ à Portée Proche fait un jet de Présence, lancez un regard vers l’issue. En cas d’échec de la cible, elle doit cocher 2 Stress et est Vulnérable jusqu’à la fin de la scène ou jusqu’à ce qu’elle réussisse une action sociale contre le Courtisan. En cas de réussite de la cible, elle doit cocher un Stress."
       }
     ]
   },
@@ -884,11 +884,11 @@
     "name": "Cult Adept",
     "tier": 2,
     "type": "Support",
-    "description": "An experienced mage wielding shadow and fear.",
+    "description": "Un mage expérimenté maniant l’ombre et la peur.",
     "motives": [
-      "Curry favor",
-      "hinder foes",
-      "uncover knowledge"
+      "Courtiser les faveurs",
+      "Entraver les ennemis",
+      "Découvrir des savoirs"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -918,25 +918,25 @@
       {
         "name": "Enervating Blast",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make a standard attack against a target within range. On a success, the target must mark a Stress."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque standard contre une cible à portée. En cas de réussite, la cible doit cocher un Stress."
       },
       {
         "name": "Shroud of the Fallen",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Wrap an ally within Close range in a shroud of Protection until the Adept marks their last HP. While Protected, the target has resistance to all damage."
+        "cost": "Cochez un Stress",
+        "description": "Enveloppez un allié à Portée Proche d’un linceul de Protection jusqu’à ce que l’Adepte coche son dernier PV. Tant que Protégée, la cible a une résistance à tous les dégâts."
       },
       {
         "name": "Shadow Shackles",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a point within Far range. All targets within Close range of that point are Restrained in smoky chains until they break free with a successful Strength or Instinct Roll. A target Restrained by this feature must spend a Hope to make an action roll."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez un point à Portée Loin. Toutes les cibles à Portée Proche de ce point sont Entravées par des chaînes de fumée jusqu’à ce qu’elles se libèrent avec un jet de Force ou d’Instinct réussi. Une cible Entravée par cette feature doit dépenser un Espoir pour faire un jet d’action."
       },
       {
         "name": "Fear Is Fuel",
         "type": "reaction",
-        "description": "Twice per scene, when a PC rolls a failure with Fear, clear a Stress."
+        "description": "Deux fois par scène, quand un PJ obtient un échec avec Peur, retirez un Stress."
       }
     ]
   },
@@ -945,11 +945,11 @@
     "name": "Cult Fang",
     "tier": 2,
     "type": "Skulk",
-    "description": "A professional killer-turned-cultist.",
+    "description": "Un tueur professionnel devenu cultiste.",
     "motives": [
-      "Capture sacrifices",
-      "isolate prey",
-      "rise in the ranks"
+      "Capturer des sacrifices",
+      "Isoler la proie",
+      "Gravir les échelons"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -970,13 +970,13 @@
       {
         "name": "Shadow's Embrace",
         "type": "passive",
-        "description": "The Fang can climb and walk on vertical surfaces. Mark a Stress to move from one shadow to another within Far range."
+        "description": "Le Croc peut grimper et marcher sur les surfaces verticales. Cochez un Stress pour se déplacer d’une ombre à une autre à Portée Loin."
       },
       {
         "name": "Pick Off the Straggler",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Cause a target within Melee range to make an Instinct Reaction Roll. On a failure, the target must mark 2 Stress and is teleported with the Fang to a shadow within Far range, making them temporarily Vulnerable. On a success, the target must mark a Stress."
+        "cost": "Cochez un Stress",
+        "description": "Forcez une cible à Portée de Mêlée à faire un jet de Réaction d’Instinct. En cas d’échec, la cible doit cocher 2 Stress et est téléportée avec le Croc vers une ombre à Portée Loin, la rendant temporairement Vulnérable. En cas de réussite, la cible doit cocher un Stress."
       }
     ]
   },
@@ -985,11 +985,11 @@
     "name": "Cult Initiate",
     "tier": 2,
     "type": "Minion",
-    "description": "A low-ranking cultist in simple robes, eager to gain power.",
+    "description": "Un cultiste de bas rang en robes simples, avide de pouvoir.",
     "motives": [
-      "Follow orders",
-      "gain power",
-      "seek forbidden knowledge"
+      "Obéir aux ordres",
+      "Gagner du pouvoir",
+      "Chercher le savoir interdit"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1010,13 +1010,13 @@
       {
         "name": "Minion (6)",
         "type": "passive",
-        "description": "The Initiate is defeated when they take any damage. For every 6 damage a PC deals to the Initiate, defeat an additional Minion within range the attack would succeed against."
+        "description": "L’Initié est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 6 dégâts qu’un PJ inflige à l’Initié, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Cult Initiates within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 5 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Initiés du Culte à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -1026,11 +1026,11 @@
     "tier": 2,
     "type": "Horde",
     "hordeRatio": "1/HP",
-    "description": "Unnatural hounds lit from within by hellfire.",
+    "description": "Des chiens surnaturels éclairés de l’intérieur par le feu infernal.",
     "motives": [
-      "Cause fear",
-      "consume flesh",
-      "please masters"
+      "Semer la peur",
+      "Consumer de la chair",
+      "Plaire aux maîtres"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -1056,18 +1056,18 @@
       {
         "name": "Horde (2d4+1)",
         "type": "passive",
-        "description": "When the Pack has marked half or more of their HP, their standard attack deals 2d4+1 physical damage instead."
+        "description": "Quand la Meute a coché la moitié ou plus de ses PV, son attaque standard inflige 2d4+1 dégâts physiques à la place."
       },
       {
         "name": "Dreadhowl",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make all targets within Very Close range lose a Hope. If a target is not able to lose a Hope, they must instead mark 2 Stress."
+        "cost": "Cochez un Stress",
+        "description": "Faites perdre un Espoir à toutes les cibles à Portée Très Proche. Si une cible ne peut pas perdre d’Espoir, elle doit cocher 2 Stress à la place."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Pack makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand la Meute réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -1076,11 +1076,11 @@
     "name": "Juvenile Flickerfly",
     "tier": 2,
     "type": "Solo",
-    "description": "A horse-sized insect with iridescent scales and crystalline wings moving faster than the eye can see.",
+    "description": "Un insecte de la taille d’un cheval aux écailles iridescentes et aux ailes cristallines se déplaçant plus vite que l’œil ne peut suivre.",
     "motives": [
-      "Collect shiny things",
-      "hunt",
-      "swoop"
+      "Collecter des objets brillants",
+      "Chasser",
+      "Fondre en piqué"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1101,23 +1101,23 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Flickerfly can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "La Luciole peut être mise en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       },
       {
         "name": "Peerless Accuracy",
         "type": "passive",
-        "description": "Before the Flickerfly makes an attack, roll a d6. On a result of 4 or higher, the target's Evasion is halved against this attack."
+        "description": "Avant que la Luciole ne fasse une attaque, lancez un d6. Sur un résultat de 4 ou plus, l’Évasion de la cible est divisée par deux contre cette attaque."
       },
       {
         "name": "Mind Dance",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Create a magically dazzling display that grapples the minds of nearby foes. All targets within Close range must make an Instinct Reaction Roll. For each target who failed, you gain a Fear and the Flickerfly learns one of the target's fears."
+        "cost": "Cochez un Stress",
+        "description": "Créez un spectacle magiquement éblouissant qui emprisonne l’esprit des ennemis proches. Toutes les cibles à Portée Proche doivent faire un jet de Réaction d’Instinct. Pour chaque cible qui échoue, vous gagnez une Peur et la Luciole apprend une des peurs de la cible."
       },
       {
         "name": "Hallucinatory Breath",
         "type": "reaction",
-        "description": "Countdown (Loop 1d6). When the Flickerfly takes damage for the first time, activate the countdown. When it triggers, breathe hallucinatory gas on all targets in front of them up to Far range. Targets must succeed on an Instinct Reaction Roll or be tormented by fearful hallucinations. Targets whose fears are known have disadvantage. Targets who fail must mark a Stress and lose a Hope."
+        "description": "Compte à rebours (Boucle 1d6). Quand la Luciole subit des dégâts pour la première fois, activez le compte à rebours. Quand il se déclenche, soufflez un gaz hallucinatoire sur toutes les cibles devant elle jusqu’à Portée Loin. Les cibles doivent réussir un jet de Réaction d’Instinct ou être tourmentées par des hallucinations terrifiantes. Les cibles dont les peurs sont connues ont un désavantage. Les cibles qui échouent doivent cocher un Stress et perdre un Espoir."
       }
     ]
   },
@@ -1126,11 +1126,11 @@
     "name": "Knight of the Realm",
     "tier": 2,
     "type": "Leader",
-    "description": "A decorated soldier with heavy armor and a powerful steed.",
+    "description": "Un soldat décoré en armure lourde avec une monture puissante.",
     "motives": [
-      "Run down",
-      "seek glory",
-      "show dominance"
+      "Écraser au passage",
+      "Chercher la gloire",
+      "Montrer sa dominance"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -1164,23 +1164,23 @@
       {
         "name": "Chevalier",
         "type": "passive",
-        "description": "While the Knight is on a mount, they gain a +2 bonus to their Difficulty. When they take Severe damage, they're knocked from their mount and lose this benefit until they're next spotlighted."
+        "description": "Tant que le Chevalier est monté, il gagne un bonus de +2 à sa Difficulté. Quand il subit des dégâts Sévères, il est désarçonné et perd ce bonus jusqu’à sa prochaine mise en vedette."
       },
       {
         "name": "Heavily Armored",
         "type": "passive",
-        "description": "When the Knight takes physical damage, reduce it by 3."
+        "description": "Quand le Chevalier subit des dégâts physiques, réduisez-les de 3."
       },
       {
         "name": "Cavalry Charge",
         "type": "action",
-        "description": "If the Knight is mounted, move up to Far range and make a standard attack against a target. On a success, deal 2d8+4 physical damage and the target must mark a Stress."
+        "description": "Si le Chevalier est monté, déplacez-vous jusqu’à Portée Loin et faites une attaque standard contre une cible. En cas de réussite, infligez 2d8+4 dégâts physiques et la cible doit cocher un Stress."
       },
       {
         "name": "For the Realm!",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spotlight 1d4+1 allies. Attacks they make while spotlighted in this way deal half damage."
+        "cost": "Cochez un Stress",
+        "description": "Mettez en vedette 1d4+1 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       }
     ]
   },
@@ -1189,12 +1189,12 @@
     "name": "Masked Thief",
     "tier": 2,
     "type": "Skulk",
-    "description": "A cunning thief with acrobatic skill and a flair for the dramatic.",
+    "description": "Un voleur rusé doté de talents acrobatiques et d’un goût pour le spectaculaire.",
     "motives": [
-      "Evade",
-      "hide",
-      "pilfer",
-      "profit"
+      "Esquiver",
+      "Se cacher",
+      "Chaparder",
+      "Profiter"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1220,13 +1220,13 @@
       {
         "name": "Quick Hands",
         "type": "action",
-        "description": "Make an attack against a target within Melee range. On a success, deal 1d8+2 physical damage and the Thief steals one item or consumable from the target's inventory."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 1d8+2 dégâts physiques et le Voleur dérobe un objet ou consommable de l’inventaire de la cible."
       },
       {
         "name": "Escape Plan",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Reveal a snare trap set anywhere on the battlefield. All targets within Very Close range must succeed on an Agility Reaction Roll (13) or be pulled off their feet and suspended upside down. A target is Restrained and Vulnerable until they break free with a successful Finesse or Strength Roll (13)."
+        "cost": "Cochez un Stress",
+        "description": "Révélez un piège à collet placé n’importe où sur le champ de bataille. Toutes les cibles à Portée Très Proche doivent réussir un jet de Réaction d’Agilité (13) ou être soulevées et suspendues la tête en bas. La cible est Entravée et Vulnérable jusqu’à ce qu’elle se libère avec un jet de Finesse ou de Force réussi (13)."
       }
     ]
   },
@@ -1235,11 +1235,11 @@
     "name": "Mortal Hunter",
     "tier": 2,
     "type": "Leader",
-    "description": "An undead figure wearing a heavy leather coat, with searching eyes and a casually cruel demeanor.",
+    "description": "Une silhouette mort-vivante portant un long manteau de cuir, au regard scrutateur et à la cruauté désinvolte.",
     "motives": [
-      "Devour",
-      "hunt",
-      "track"
+      "Dévorer",
+      "Chasser",
+      "Pister"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1265,24 +1265,24 @@
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Hunter makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+        "description": "Quand le Chasseur réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur."
       },
       {
         "name": "Deathlock",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Curse a target within Very Close range with a necrotic Deathlock until the end of the scene. Attacks made by the Hunter against a Deathlocked target deal direct damage. The Hunter can only maintain one Deathlock at a time."
+        "cost": "Dépensez une Peur",
+        "description": "Maudissez une cible à Portée Très Proche d’un Verrou Mortel nécrotique jusqu’à la fin de la scène. Les attaques du Chasseur contre une cible sous Verrou Mortel infligent des dégâts directs. Le Chasseur ne peut maintenir qu’un seul Verrou Mortel à la fois."
       },
       {
         "name": "Inevitable Death",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Spotlight 1d4 allies. Attacks they make while spotlighted in this way deal half damage."
+        "cost": "Cochez un Stress",
+        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       },
       {
         "name": "Rampage",
         "type": "reaction",
-        "description": "Countdown (Loop 1d6). When the Hunter is in the spotlight for the first time, activate the countdown. When it triggers, move the Hunter in a straight line to a point within Far range and make an attack against all targets in their path. Targets the Hunter succeeds against take 2d8+2 physical damage."
+        "description": "Compte à rebours (Boucle 1d6). Quand le Chasseur est en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, déplacez le Chasseur en ligne droite vers un point à Portée Loin et faites une attaque contre toutes les cibles sur son passage. Les cibles touchées subissent 2d8+2 dégâts physiques."
       }
     ]
   },
@@ -1291,11 +1291,11 @@
     "name": "Royal Advisor",
     "tier": 2,
     "type": "Social",
-    "description": "A high-ranking courtier with the ear of the local nobility.",
+    "description": "Un courtisan de haut rang ayant l’oreille de la noblesse locale.",
     "motives": [
-      "Curry favor",
-      "manufacture evidence",
-      "scheme"
+      "Courtiser les faveurs",
+      "Fabriquer des preuves",
+      "Comploter"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1325,19 +1325,19 @@
       {
         "name": "Devastating Retort",
         "type": "passive",
-        "description": "A PC who rolls less than 17 on an action roll targeting the Advisor must mark a Stress."
+        "description": "Un PJ qui obtient moins de 17 sur un jet d’action ciblant le Conseiller doit cocher un Stress."
       },
       {
         "name": "Bend Ears",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Influence an NPC within Melee range with whispered words. That target's opinion on one matter shifts toward the Advisor's preference unless it is in direct opposition to the target's motives."
+        "cost": "Cochez un Stress",
+        "description": "Influencez un PNJ à Portée de Mêlée par des mots chuchotés. L’opinion de la cible sur un sujet se rapproche de la préférence du Conseiller, sauf si cela s’oppose directement aux motivations de la cible."
       },
       {
         "name": "Scapegoat",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Convince a crowd or notable individual that one person or group is responsible for some problem facing the target. The target becomes hostile to the scapegoat until convinced of their innocence with a successful Presence Roll (17)."
+        "cost": "Dépensez une Peur",
+        "description": "Convainquez une foule ou un individu notable qu’une personne ou un groupe est responsable d’un problème affectant la cible. La cible devient hostile envers le bouc émissaire jusqu’à être convaincue de son innocence par un jet de Présence réussi (17)."
       }
     ]
   },
@@ -1346,11 +1346,11 @@
     "name": "Secret-Keeper",
     "tier": 2,
     "type": "Leader",
-    "description": "A clandestine leader with a direct channel to the Fallen Gods.",
+    "description": "Un chef clandestin en contact direct avec les Dieux Déchus.",
     "motives": [
-      "Amass great power",
-      "plot",
-      "take command"
+      "Amasser un grand pouvoir",
+      "Comploter",
+      "Prendre le commandement"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1380,25 +1380,25 @@
       {
         "name": "Seize Your Moment",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Spotlight 1d4 allies. Attacks they make while spotlighted in this way deal half damage."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       },
       {
         "name": "Our Master's Will",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When you spotlight an ally within Far range, gain a Fear."
+        "cost": "Cochez un Stress",
+        "description": "Quand vous mettez en vedette un allié à Portée Loin, gagnez une Peur."
       },
       {
         "name": "Summoning Ritual",
         "type": "reaction",
-        "description": "Countdown (6). When the Secret-Keeper is in the spotlight for the first time, activate the countdown. When they mark HP, tick down this countdown by the number of HP marked. When it triggers, summon a Minor Demon who appears at Close range."
+        "description": "Compte à rebours (6). Quand le Gardien des Secrets est en vedette pour la première fois, activez le compte à rebours. Quand il coche des PV, décomptez ce compte à rebours du nombre de PV cochés. Quand il se déclenche, invoquez un Démon Mineur qui apparaît à Portée Proche."
       },
       {
         "name": "Fallen Hounds",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "Once per scene, when the Secret-Keeper marks 2 or more HP, summon a Demonic Hound Pack, which appears at Close range and is immediately spotlighted."
+        "cost": "Cochez un Stress",
+        "description": "Une fois par scène, quand le Gardien des Secrets coche 2 PV ou plus, invoquez une Meute de Chiens Démoniaques, qui apparaît à Portée Proche et est immédiatement mise en vedette."
       }
     ]
   },
@@ -1407,11 +1407,11 @@
     "name": "Shark",
     "tier": 2,
     "type": "Bruiser",
-    "description": "A large aquatic predator, always on the move.",
+    "description": "Un grand prédateur aquatique, toujours en mouvement.",
     "motives": [
-      "Find the blood",
-      "isolate prey",
-      "target the weak"
+      "Trouver le sang",
+      "Isoler la proie",
+      "Cibler les faibles"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1437,18 +1437,18 @@
       {
         "name": "Terrifying",
         "type": "passive",
-        "description": "When the Shark makes a successful attack, all PCs within Far range lose a Hope and you gain a Fear."
+        "description": "Quand le Requin réussit une attaque, tous les PJ à Portée Loin perdent un Espoir et vous gagnez une Peur."
       },
       {
         "name": "Rending Bite",
         "type": "passive",
-        "description": "When the Shark makes a successful attack, the target must mark an Armor Slot without receiving its benefits. If they can't mark an Armor Slot, they must mark an additional HP."
+        "description": "Quand le Requin réussit une attaque, la cible doit cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elle ne peut pas cocher d’Emplacement d’armure, elle doit cocher un PV supplémentaire."
       },
       {
         "name": "Blood in the Water",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a creature within Close range of the Shark marks HP from another creature's attack, immediately spotlight the Shark, moving them into Melee range of the target and making a standard attack."
+        "cost": "Cochez un Stress",
+        "description": "Quand une créature à Portée Proche du Requin coche des PV suite à l’attaque d’une autre créature, mettez immédiatement le Requin en vedette, en le déplaçant à Portée de Mêlée de la cible et en faisant une attaque standard."
       }
     ]
   },
@@ -1457,11 +1457,11 @@
     "name": "Siren",
     "tier": 2,
     "type": "Skulk",
-    "description": "A half-fish person with shimmering scales and an irresistible voice.",
+    "description": "Une personne mi-poisson aux écailles chatoyantes et à la voix irrésistible.",
     "motives": [
-      "Consume",
-      "lure prey",
-      "subdue with song"
+      "Consumer",
+      "Attirer la proie",
+      "Soumettre par le chant"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1487,13 +1487,13 @@
       {
         "name": "Captive Audience",
         "type": "passive",
-        "description": "If the Siren makes a standard attack against a target Entranced by their song, the attack deals 2d10+1 damage instead of their standard damage."
+        "description": "Si la Sirène fait une attaque standard contre une cible Envoûtée par son chant, l’attaque inflige 2d10+1 dégâts au lieu des dégâts standard."
       },
       {
         "name": "Enchanting Song",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Sing a song that affects all targets within Close range. Targets must succeed on an Instinct Reaction Roll or become Entranced until they mark 2 Stress. Other Sirens within Close range of the target can mark a Stress to each add a +1 bonus to the Difficulty of the reaction roll. While Entranced, a target can't act and is Vulnerable."
+        "cost": "Dépensez une Peur",
+        "description": "Chantez un chant qui affecte toutes les cibles à Portée Proche. Les cibles doivent réussir un jet de Réaction d’Instinct ou devenir Envoûtées jusqu’à ce qu’elles cochent 2 Stress. D’autres Sirènes à Portée Proche de la cible peuvent cocher un Stress pour ajouter chacune un bonus de +1 à la Difficulté du jet de réaction. Tant qu’Envoûtée, une cible ne peut pas agir et est Vulnérable."
       }
     ]
   },
@@ -1502,11 +1502,11 @@
     "name": "Spectral Archer",
     "tier": 2,
     "type": "Ranged",
-    "description": "A ghostly fighter with an ethereal bow, unable to move on while their charge is vulnerable.",
+    "description": "Un combattant fantomatique avec un arc éthéré, incapable de trouver le repos tant que sa charge est vulnérable.",
     "motives": [
-      "Move through solid objects",
-      "stay out of the fray",
-      "rehash old battles"
+      "Traverser les objets solides",
+      "Rester à l’écart de la mêlée",
+      "Rejouer de vieilles batailles"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1532,13 +1532,13 @@
       {
         "name": "Ghost",
         "type": "passive",
-        "description": "The Archer has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+        "description": "L’Archer a une résistance aux dégâts physiques. Cochez un Stress pour se déplacer jusqu’à Portée Proche à travers les objets solides."
       },
       {
         "name": "Pick Your Target",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack within Far range against a PC who is within Very Close range of at least two other PCs. On a success, the target takes 2d8+12 physical damage."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque à Portée Loin contre un PJ qui est à Portée Très Proche d’au moins deux autres PJ. En cas de réussite, la cible subit 2d8+12 dégâts physiques."
       }
     ]
   },
@@ -1547,11 +1547,11 @@
     "name": "Spectral Captain",
     "tier": 2,
     "type": "Leader",
-    "description": "A ghostly commander leading their troops beyond death.",
+    "description": "Un commandant fantomatique menant ses troupes par-delà la mort.",
     "motives": [
-      "Move through solid objects",
-      "rally troops",
-      "rehash old battles"
+      "Traverser les objets solides",
+      "Rallier les troupes",
+      "Rejouer de vieilles batailles"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1577,24 +1577,24 @@
       {
         "name": "Ghost",
         "type": "passive",
-        "description": "The Captain has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+        "description": "Le Capitaine a une résistance aux dégâts physiques. Cochez un Stress pour se déplacer jusqu’à Portée Proche à travers les objets solides."
       },
       {
         "name": "Unending Battle",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Return up to 1d4+1 defeated Spectral allies to the battle at the points where they first appeared (with no marked HP or Stress)."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Ramenez jusqu’à 1d4+1 alliés Spectraux vaincus au combat aux points où ils sont apparus initialement (sans PV ni Stress cochés)."
       },
       {
         "name": "Hold Fast",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Captain's Spectral allies are forced to make a reaction roll, give those allies a +2 bonus to the roll."
+        "cost": "Cochez un Stress",
+        "description": "Quand les alliés Spectraux du Capitaine sont forcés de faire un jet de réaction, donnez à ces alliés un bonus de +2 au jet."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Captain makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Capitaine réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -1603,11 +1603,11 @@
     "name": "Spectral Guardian",
     "tier": 2,
     "type": "Standard",
-    "description": "A ghostly fighter with spears and swords, anchored by duty.",
+    "description": "Un combattant fantomatique avec lances et épées, ancré par le devoir.",
     "motives": [
-      "Move through solid objects",
-      "protect treasure",
-      "rehash old battles"
+      "Traverser les objets solides",
+      "Protéger le trésor",
+      "Rejouer de vieilles batailles"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -1633,13 +1633,13 @@
       {
         "name": "Ghost",
         "type": "passive",
-        "description": "The Guardian has resistance to physical damage. Mark a Stress to move up to Close range through solid objects."
+        "description": "Le Gardien a une résistance aux dégâts physiques. Cochez un Stress pour se déplacer jusqu’à Portée Proche à travers les objets solides."
       },
       {
         "name": "Grave Blade",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against a target within Very Close range. On a success, deal 2d10+6 physical damage and the target must mark a Stress."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, infligez 2d10+6 dégâts physiques et la cible doit cocher un Stress."
       }
     ]
   },
@@ -1648,11 +1648,11 @@
     "name": "Spy",
     "tier": 2,
     "type": "Social",
-    "description": "A skilled espionage agent with a knack for being in the right place to overhear secrets.",
+    "description": "Un agent d’espionnage compétent avec le don d’être au bon endroit pour surprendre des secrets.",
     "motives": [
-      "Cut and run",
-      "disguise appearance",
-      "eavesdrop"
+      "Fuir rapidement",
+      "Déguiser son apparence",
+      "Espionner"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -1678,14 +1678,14 @@
       {
         "name": "Gathering Secrets",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Describe how the Spy knows a secret about a PC in the scene."
+        "cost": "Dépensez une Peur",
+        "description": "Décrivez comment l’Espion connaît un secret concernant un PJ dans la scène."
       },
       {
         "name": "Fly on the Wall",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a PC or group is discussing something sensitive, reveal that the Spy is present in the scene, observing them. If the Spy escapes the scene to report their findings, you gain 1d4 Fear."
+        "cost": "Cochez un Stress",
+        "description": "Quand un PJ ou un groupe discute de quelque chose de sensible, révélez que l’Espion est présent dans la scène et les observe. Si l’Espion s’échappe de la scène pour rapporter ses découvertes, vous gagnez 1d4 Peurs."
       }
     ]
   },
@@ -1694,11 +1694,11 @@
     "name": "Stonewraith",
     "tier": 2,
     "type": "Skulk",
-    "description": "A prowling hunter, like a slinking mountain lion, with a slate-gray stone body.",
+    "description": "Un chasseur rôdeur, semblable à un puma de montagne, au corps de pierre gris ardoise.",
     "motives": [
-      "Defend territory",
-      "isolate prey",
-      "stalk"
+      "Défendre son territoire",
+      "Isoler la proie",
+      "Traquer"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1724,24 +1724,24 @@
       {
         "name": "Stonestrider",
         "type": "passive",
-        "description": "The Stonewraith can move through stone and earth as easily as air. While within stone or earth, they are Hidden and immune to all damage."
+        "description": "Le Spectre de Pierre peut se déplacer à travers la pierre et la terre aussi facilement que dans l’air. Tant qu’il est dans la pierre ou la terre, il est Caché et immunisé contre tous les dégâts."
       },
       {
         "name": "Rocky Ambush",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "While Hidden, leap into Melee range with a target within Very Close range. The target must succeed on an Agility or Instinct Reaction Roll (15) or take 2d8 physical damage and become temporarily Restrained."
+        "cost": "Cochez un Stress",
+        "description": "Tant que Caché, bondissez à Portée de Mêlée d’une cible à Portée Très Proche. La cible doit réussir un jet de Réaction d’Agilité ou d’Instinct (15) ou subir 2d8 dégâts physiques et devenir temporairement Entravée."
       },
       {
         "name": "Avalanche Roar",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Roar while within a cave and cause a cave-in. All targets within Close range must succeed on an Agility Reaction Roll (14) or take 2d10 physical damage. The rubble can be cleared with a Progress Countdown (8)."
+        "cost": "Dépensez une Peur",
+        "description": "Rugissez dans une grotte et provoquez un éboulement. Toutes les cibles à Portée Proche doivent réussir un jet de Réaction d’Agilité (14) ou subir 2d10 dégâts physiques. Les décombres peuvent être dégagés avec un Compte à rebours de Progression (8)."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Stonewraith makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Spectre de Pierre réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -1750,11 +1750,11 @@
     "name": "War Wizard",
     "tier": 2,
     "type": "Ranged",
-    "description": "A battle-hardened mage trained in destructive magic.",
+    "description": "Un mage endurci au combat, formé à la magie destructrice.",
     "motives": [
-      "Develop new spells",
-      "seek power",
-      "shatter formations"
+      "Développer de nouveaux sorts",
+      "Chercher le pouvoir",
+      "Briser les formations"
     ],
     "difficulty": 16,
     "thresholds": {
@@ -1784,30 +1784,30 @@
       {
         "name": "Battle Teleport",
         "type": "passive",
-        "description": "Before or after making a standard attack, you can mark a Stress to teleport to a location within Far range."
+        "description": "Avant ou après une attaque standard, vous pouvez cocher un Stress pour vous téléporter à un endroit à Portée Loin."
       },
       {
         "name": "Refresh Warding Sphere",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Refresh the Wizard's Warding Sphere reaction."
+        "cost": "Cochez un Stress",
+        "description": "Rafraîchissez la réaction Sphère de Protection du Mage."
       },
       {
         "name": "Eruption",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a point within Far range. A Very Close area around that point erupts into impassable terrain. All targets within that area must make an Agility Reaction Roll (14). Targets who fail take 2d10 physical damage and are thrown out of the area. Targets who succeed take half damage and aren't moved."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez un point à Portée Loin. Une zone Très Proche autour de ce point érupte en terrain infranchissable. Toutes les cibles dans cette zone doivent faire un jet de Réaction d’Agilité (14). Les cibles qui échouent subissent 2d10 dégâts physiques et sont projetées hors de la zone. Les cibles qui réussissent subissent la moitié des dégâts et ne sont pas déplacées."
       },
       {
         "name": "Arcane Artillery",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Unleash a precise hail of magical blasts. All targets in the scene must make an Agility Reaction Roll. Targets who fail take 2d12 magic damage. Targets who succeed take half damage."
+        "cost": "Dépensez une Peur",
+        "description": "Déchaînez une pluie précise de salves magiques. Toutes les cibles dans la scène doivent faire un jet de Réaction d’Agilité. Les cibles qui échouent subissent 2d12 dégâts magiques. Les cibles qui réussissent subissent la moitié des dégâts."
       },
       {
         "name": "Warding Sphere",
         "type": "reaction",
-        "description": "When the Wizard takes damage from an attack within Close range, deal 2d6 magic damage to the attacker. This reaction can't be used again until refreshed."
+        "description": "Quand le Mage subit des dégâts d’une attaque à Portée Proche, infligez 2d6 dégâts magiques à l’attaquant. Cette réaction ne peut pas être réutilisée avant d’être rafraîchie."
       }
     ]
   }
