@@ -114,6 +114,7 @@
               :is-valid="store.isValid"
               @save="handleSave"
               @reset="handleReset"
+              @launch="handleLaunch"
             />
           </div>
 
@@ -151,8 +152,10 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useEncounterStore } from '../stores/encounterStore'
+import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import EncounterConfig from '../components/EncounterConfig.vue'
 import BattlePointsBar from '../components/BattlePointsBar.vue'
 import EncounterSlotList from '../components/EncounterSlotList.vue'
@@ -175,6 +178,8 @@ export default {
   },
   setup() {
     const store = useEncounterStore()
+    const liveStore = useEncounterLiveStore()
+    const router = useRouter()
     const pickerAdversaryOpen = ref(false)
     const notification = ref(null)
     let notificationTimer = null
@@ -216,6 +221,12 @@ export default {
       showNotification('Rencontre supprimée.', 'info')
     }
 
+    function handleLaunch() {
+      const data = store.serializeEncounter()
+      liveStore.startEncounter(data)
+      router.push('/encounters/live')
+    }
+
     return {
       store,
       pickerAdversaryOpen,
@@ -224,7 +235,8 @@ export default {
       handleSave,
       handleReset,
       handleLoad,
-      handleDelete
+      handleDelete,
+      handleLaunch
     }
   }
 }

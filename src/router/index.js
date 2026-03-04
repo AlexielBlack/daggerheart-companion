@@ -24,6 +24,12 @@ const routes = [
     meta: { title: 'Rencontres', module: 'encounter' }
   },
   {
+    path: '/encounters/live',
+    name: 'encounters-live',
+    component: () => import('@modules/encounter/views/EncounterLive.vue'),
+    meta: { title: 'Rencontre en cours', module: 'encounter', parent: 'encounters' }
+  },
+  {
     path: '/characters',
     name: 'characters',
     component: () => import('@modules/characters/views/CharacterBuilder.vue'),

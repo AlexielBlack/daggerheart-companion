@@ -73,6 +73,13 @@
 
     <div class="summary-actions">
       <button
+        class="btn btn--launch"
+        :disabled="!isValid"
+        @click="$emit('launch')"
+      >
+        ▶️ Lancer
+      </button>
+      <button
         class="btn btn--primary"
         :disabled="!isValid"
         @click="$emit('save')"
@@ -103,7 +110,7 @@ export default {
     warnings: { type: Array, default: () => [] },
     isValid: { type: Boolean, default: false }
   },
-  emits: ['save', 'reset'],
+  emits: ['save', 'reset', 'launch'],
   computed: {
     environmentIcon() {
       if (!this.environment) return '🌍'
@@ -273,6 +280,21 @@ export default {
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
   border: 1px solid transparent;
+}
+
+.btn--launch {
+  background: var(--color-accent-success, #4caf50);
+  color: var(--color-bg-primary, #1a1a2e);
+  border-color: var(--color-accent-success, #4caf50);
+}
+
+.btn--launch:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btn--launch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .btn--primary {
