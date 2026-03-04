@@ -99,7 +99,7 @@
           @gm-spotlight="store.setGmSpotlight()"
         />
 
-        <!-- Adversaire cible -->
+        <!-- Adversaire cible (groupé par type) -->
         <div class="enc-live__adv-bar">
           <span class="enc-live__adv-label">
             Cible
@@ -107,20 +107,24 @@
           </span>
           <div class="enc-live__adv-chips">
             <button
-              v-for="adv in store.liveAdversaries"
-              :key="adv.instanceId"
+              v-for="group in store.groupedAdversaries"
+              :key="group.adversaryId"
               class="enc-live__adv-chip"
               :class="{
-                'enc-live__adv-chip--active': store.activeAdversaryId === adv.instanceId,
-                'enc-live__adv-chip--defeated': adv.isDefeated
+                'enc-live__adv-chip--active': store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
+                'enc-live__adv-chip--all-defeated': group.activeCount === 0
               }"
-              @click="store.setActiveAdversary(adv.instanceId)"
+              @click="store.setActiveAdversaryGroup(group.adversaryId)"
             >
-              <span class="enc-live__adv-name">{{ adv.name }}</span>
+              <span class="enc-live__adv-name">{{ group.name }}</span>
               <span
-                v-if="adv.isDefeated"
+                v-if="group.instances.length > 1"
+                class="enc-live__adv-qty"
+              >×{{ group.instances.length }}</span>
+              <span
+                v-if="group.defeatedCount > 0"
                 class="enc-live__adv-defeated"
-              >💀</span>
+              >{{ group.defeatedCount }}💀</span>
             </button>
           </div>
         </div>
@@ -146,6 +150,7 @@
         <AdversaryTargetPanel
           v-if="store.activeAdversary && !isTraversalMode"
           :adversary="store.activeAdversary"
+          :siblings="store.activeAdversarySiblings"
           :scene-mode="store.sceneMode"
           :is-actor="!isPcActor"
           :pcs="store.participantPcs"
@@ -445,9 +450,23 @@ export default {
   opacity: 0.4;
 }
 
+.enc-live__adv-chip--all-defeated {
+  opacity: 0.4;
+}
+
 .enc-live__adv-name {
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
+}
+
+.enc-live__adv-qty {
+  font-size: 0.65rem;
+  font-weight: var(--font-bold);
+  color: var(--color-accent-gold);
+  padding: 0 3px;
+  background: rgba(224, 165, 38, 0.15);
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
 }
 
 .enc-live__adv-defeated {

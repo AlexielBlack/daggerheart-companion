@@ -4,13 +4,17 @@
     :class="{ 'adv-panel--actor': isActor }"
     aria-label="Panel adversaire"
   >
-    <!-- En-tête -->
+    <!-- En-tête (partagé) -->
     <div class="adv-panel__header">
       <div class="adv-panel__identity">
         <h3 class="adv-panel__name">
           {{ adversary.name }}
         </h3>
         <span class="adv-panel__type">{{ adversary.type }}</span>
+        <span
+          v-if="hasSiblings"
+          class="adv-panel__group-count"
+        >×{{ siblings.length }}</span>
       </div>
       <div
         v-if="isActor"
@@ -26,7 +30,7 @@
       </div>
     </div>
 
-    <!-- Stats principales -->
+    <!-- Stats principales (partagées) -->
     <div class="adv-panel__stats">
       <div
         class="adv-panel__stat adv-panel__stat--big"
@@ -53,31 +57,68 @@
       </div>
     </div>
 
-    <!-- HP / Stress live -->
-    <div class="adv-panel__bars">
-      <div class="adv-panel__bar-row">
-        <span class="adv-panel__bar-label">HP</span>
-        <div class="adv-panel__bar">
-          <div
-            class="adv-panel__bar-fill adv-panel__bar-fill--hp"
-            :style="{ width: hpPercent + '%' }"
-          ></div>
+    <!-- HP / Stress — barres individuelles par instance -->
+    <div class="adv-panel__instances">
+      <div
+        v-for="(inst, idx) in siblings"
+        :key="inst.instanceId"
+        class="adv-panel__instance"
+        :class="{
+          'adv-panel__instance--selected': inst.instanceId === adversary.instanceId,
+          'adv-panel__instance--defeated': inst.isDefeated
+        }"
+        role="button"
+        tabindex="0"
+        :aria-label="'Sélectionner instance #' + (idx + 1)"
+        @click="selectInstance(inst.instanceId)"
+        @keydown.enter="selectInstance(inst.instanceId)"
+        @keydown.space.prevent="selectInstance(inst.instanceId)"
+      >
+        <!-- Label #N (affiché uniquement si plusieurs) -->
+        <div class="adv-panel__inst-header">
+          <span
+            v-if="hasSiblings"
+            class="adv-panel__inst-id"
+          >#{{ idx + 1 }}</span>
+          <span
+            v-if="inst.isDefeated"
+            class="adv-panel__inst-defeated"
+          >💀 Vaincu</span>
+          <!-- Conditions de cette instance -->
+          <span
+            v-for="cond in inst.conditions"
+            :key="cond"
+            class="adv-panel__inst-cond"
+          >{{ cond }}</span>
         </div>
-        <span class="adv-panel__bar-val">{{ adversary.markedHP }}/{{ adversary.maxHP }}</span>
-      </div>
-      <div class="adv-panel__bar-row">
-        <span class="adv-panel__bar-label">ST</span>
-        <div class="adv-panel__bar">
-          <div
-            class="adv-panel__bar-fill adv-panel__bar-fill--stress"
-            :style="{ width: stressPercent + '%' }"
-          ></div>
+
+        <!-- Barres HP et Stress -->
+        <div class="adv-panel__bars">
+          <div class="adv-panel__bar-row">
+            <span class="adv-panel__bar-label">HP</span>
+            <div class="adv-panel__bar">
+              <div
+                class="adv-panel__bar-fill adv-panel__bar-fill--hp"
+                :style="{ width: hpPercent(inst) + '%' }"
+              ></div>
+            </div>
+            <span class="adv-panel__bar-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+          </div>
+          <div class="adv-panel__bar-row">
+            <span class="adv-panel__bar-label">ST</span>
+            <div class="adv-panel__bar">
+              <div
+                class="adv-panel__bar-fill adv-panel__bar-fill--stress"
+                :style="{ width: stressPercent(inst) + '%' }"
+              ></div>
+            </div>
+            <span class="adv-panel__bar-val">{{ inst.markedStress }}/{{ inst.maxStress }}</span>
+          </div>
         </div>
-        <span class="adv-panel__bar-val">{{ adversary.markedStress }}/{{ adversary.maxStress }}</span>
       </div>
     </div>
 
-    <!-- Attaque (si mode acteur) -->
+    <!-- Attaque (si mode acteur) — partagée -->
     <div
       v-if="isActor && adversary.attack"
       class="adv-panel__attack"
@@ -93,7 +134,7 @@
       </div>
     </div>
 
-    <!-- Motives -->
+    <!-- Motives (partagées) -->
     <div
       v-if="adversary.motives && adversary.motives.length > 0"
       class="adv-panel__motives"
@@ -102,19 +143,7 @@
       <span class="adv-panel__motives-list">{{ adversary.motives.join(', ') }}</span>
     </div>
 
-    <!-- Conditions -->
-    <div
-      v-if="adversary.conditions && adversary.conditions.length > 0"
-      class="adv-panel__conditions"
-    >
-      <span
-        v-for="cond in adversary.conditions"
-        :key="cond"
-        class="adv-panel__condition"
-      >{{ cond }}</span>
-    </div>
-
-    <!-- Features classifiées -->
+    <!-- Features classifiées (partagées) -->
     <div
       v-if="hasFeatures"
       class="adv-panel__features"
@@ -166,7 +195,7 @@
       </div>
     </div>
 
-    <!-- Focus préférentiel (quand des PJs sont fournis et que l'adversaire a un profil) -->
+    <!-- Focus préférentiel -->
     <div
       v-if="focusResults.length > 0"
       class="adv-panel__focus"
@@ -198,34 +227,38 @@ import { computed } from 'vue'
 import FeatureCard from './FeatureCard.vue'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
 import { useAdversaryFocus } from '@modules/adversaries/composables/useAdversaryFocus'
+import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 
 export default {
   name: 'AdversaryTargetPanel',
   components: { FeatureCard },
   props: {
     adversary: { type: Object, required: true },
+    siblings: { type: Array, default: () => [] },
     sceneMode: { type: String, required: true },
     isActor: { type: Boolean, default: false },
     pcs: { type: Array, default: () => [] }
   },
   setup(props) {
+    const store = useEncounterLiveStore()
+
     // Refs réactives pour le composable focus
     const advRef = computed(() => props.adversary)
     const pcsRef = computed(() => props.pcs)
     const { focusResults: rawFocusResults } = useAdversaryFocus(advRef, pcsRef)
 
+    function selectInstance(instanceId) {
+      store.setActiveAdversary(instanceId)
+    }
+
     return {
-      rawFocusResults
+      rawFocusResults,
+      selectInstance
     }
   },
   computed: {
-    hpPercent() {
-      if (this.adversary.maxHP <= 0) return 0
-      return Math.round((this.adversary.markedHP / this.adversary.maxHP) * 100)
-    },
-    stressPercent() {
-      if (this.adversary.maxStress <= 0) return 0
-      return Math.round((this.adversary.markedStress / this.adversary.maxStress) * 100)
+    hasSiblings() {
+      return this.siblings.length > 1
     },
     classified() {
       return classifyAdversaryFeatures(this.adversary, this.sceneMode)
@@ -235,12 +268,19 @@ export default {
       return c.primaryFeatures.length > 0 || c.passiveFeatures.length > 0 || c.reactionFeatures.length > 0
     },
     focusResults() {
-      // N'afficher que si des PJs sont fournis et l'adversaire a un profil
       if (!this.pcs.length || !this.adversary.focusProfile) return []
       return this.rawFocusResults || []
     }
   },
   methods: {
+    hpPercent(inst) {
+      if (inst.maxHP <= 0) return 0
+      return Math.round((inst.markedHP / inst.maxHP) * 100)
+    },
+    stressPercent(inst) {
+      if (inst.maxStress <= 0) return 0
+      return Math.round((inst.markedStress / inst.maxStress) * 100)
+    },
     focusColorClass(score) {
       if (score >= 70) return 'adv-panel__focus-fill--high'
       if (score >= 40) return 'adv-panel__focus-fill--mid'
@@ -294,6 +334,15 @@ export default {
   color: var(--color-text-muted);
   padding: 1px var(--space-xs);
   background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
+}
+
+.adv-panel__group-count {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-gold);
+  padding: 1px var(--space-xs);
+  background: rgba(224, 165, 38, 0.15);
   border-radius: var(--radius-sm);
 }
 
@@ -352,12 +401,73 @@ export default {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Instances (barres HP/Stress individuelles) ── */
+
+.adv-panel__instances {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.adv-panel__instance {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.adv-panel__instance:hover {
+  border-color: var(--color-border-active);
+}
+
+.adv-panel__instance--selected {
+  border-color: var(--color-accent-fear);
+  box-shadow: 0 0 0 1px var(--color-accent-fear);
+}
+
+.adv-panel__instance--defeated {
+  opacity: 0.4;
+}
+
+.adv-panel__inst-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.adv-panel__inst-id {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-gold);
+  min-width: 20px;
+}
+
+.adv-panel__inst-defeated {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-semibold);
+}
+
+.adv-panel__inst-cond {
+  font-size: 0.65rem;
+  padding: 1px var(--space-xs);
+  background: rgba(244, 67, 54, 0.15);
+  color: var(--color-accent-danger);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-semibold);
+}
+
 /* ── Bars ── */
 
 .adv-panel__bars {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .adv-panel__bar-row {
@@ -377,7 +487,7 @@ export default {
 .adv-panel__bar {
   flex: 1;
   height: 10px;
-  background: var(--color-bg-primary);
+  background: var(--color-bg-secondary);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -435,7 +545,7 @@ export default {
   color: var(--color-text-secondary);
 }
 
-/* ── Motives & Conditions ── */
+/* ── Motives ── */
 
 .adv-panel__motives {
   font-size: var(--font-xs);
@@ -445,21 +555,6 @@ export default {
 .adv-panel__motives-label {
   font-weight: var(--font-semibold);
   color: var(--color-text-secondary);
-}
-
-.adv-panel__conditions {
-  display: flex;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-}
-
-.adv-panel__condition {
-  font-size: var(--font-xs);
-  padding: 1px var(--space-xs);
-  background: rgba(244, 67, 54, 0.15);
-  color: var(--color-accent-danger);
-  border-radius: var(--radius-sm);
-  font-weight: var(--font-semibold);
 }
 
 /* ── Features ── */

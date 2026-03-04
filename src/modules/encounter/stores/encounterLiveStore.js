@@ -176,6 +176,39 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return liveAdversaries.value.find((a) => a.instanceId === activeAdversaryId.value) || null
   })
 
+  /** Adversaires groupés par type (adversaryId) pour affichage compact */
+  const groupedAdversaries = computed(() => {
+    const groups = {}
+    for (const adv of liveAdversaries.value) {
+      if (!groups[adv.adversaryId]) {
+        groups[adv.adversaryId] = {
+          adversaryId: adv.adversaryId,
+          name: adv.name,
+          type: adv.type,
+          instances: [],
+          activeCount: 0,
+          defeatedCount: 0
+        }
+      }
+      const g = groups[adv.adversaryId]
+      g.instances.push(adv)
+      if (adv.isDefeated) {
+        g.defeatedCount++
+      } else {
+        g.activeCount++
+      }
+    }
+    return Object.values(groups)
+  })
+
+  /** Toutes les instances du même type que l'adversaire actif */
+  const activeAdversarySiblings = computed(() => {
+    if (!activeAdversary.value) return []
+    return liveAdversaries.value.filter(
+      (a) => a.adversaryId === activeAdversary.value.adversaryId
+    )
+  })
+
   /** Environnement complet */
   const activeEnvironment = computed(() => {
     if (!environmentId.value) return null
@@ -407,6 +440,25 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const exists = liveAdversaries.value.some((a) => a.instanceId === instanceId)
     if (exists) {
       activeAdversaryId.value = instanceId
+      persistState()
+    }
+  }
+
+  /**
+   * Sélectionne un groupe d'adversaires (par adversaryId).
+   * Sélectionne la première instance non vaincue du groupe.
+   * @param {string} adversaryId
+   */
+  function setActiveAdversaryGroup(adversaryId) {
+    const firstActive = liveAdversaries.value.find(
+      (a) => a.adversaryId === adversaryId && !a.isDefeated
+    )
+    const fallback = liveAdversaries.value.find(
+      (a) => a.adversaryId === adversaryId
+    )
+    const target = firstActive || fallback
+    if (target) {
+      activeAdversaryId.value = target.instanceId
       persistState()
     }
   }
@@ -719,6 +771,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaries,
     defeatedAdversaries,
     activeAdversary,
+    groupedAdversaries,
+    activeAdversarySiblings,
     activeEnvironment,
     adversaryCombatSummary,
     isPlayerSpotlight,
@@ -741,6 +795,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     toggleSpotlight,
     setActivePc,
     setActiveAdversary,
+    setActiveAdversaryGroup,
 
     // Actions — Adversaire live
     markAdversaryHP,
