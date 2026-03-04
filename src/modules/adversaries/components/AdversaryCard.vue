@@ -2,7 +2,7 @@
   <button
     class="adversary-card card"
     :class="{ 'adversary-card--selected': selected }"
-    :aria-label="`${adversary.name} — Tier ${adversary.tier} ${adversary.type}`"
+    :aria-label="`${adversary.name} — Tier ${adversary.tier} ${typeLabel}`"
     :aria-pressed="selected"
     @click="$emit('select', adversary.id)"
   >
@@ -13,7 +13,7 @@
       >
         T{{ adversary.tier }}
       </span>
-      <span class="adversary-card__type">{{ adversary.type }}</span>
+      <span class="adversary-card__type">{{ typeLabel }}</span>
     </div>
 
     <h3 class="adversary-card__name">
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { ADVERSARY_TYPE_LABELS } from '@data/adversaries'
+
 /**
  * @component AdversaryCard
  * @description Carte compacte affichant un aperçu d'adversaire pour la liste.
@@ -89,7 +91,12 @@ export default {
       default: false
     }
   },
-  emits: ['select']
+  emits: ['select'],
+  computed: {
+    typeLabel() {
+      return ADVERSARY_TYPE_LABELS[this.adversary.type] || this.adversary.type
+    }
+  }
 }
 </script>
 

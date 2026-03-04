@@ -59,7 +59,7 @@
           :aria-pressed="selectedTypes.includes(type)"
           @click="$emit('toggle-type', type)"
         >
-          {{ type }}
+          {{ typeLabels[type] || type }}
         </button>
       </div>
     </fieldset>
@@ -130,6 +130,8 @@
 </template>
 
 <script>
+import { ADVERSARY_TYPE_LABELS } from '@data/adversaries'
+
 /**
  * @component AdversaryFilters
  * @description Barre de filtres pour la bibliothèque d'adversaires.
@@ -155,7 +157,12 @@ export default {
     'toggle-type',
     'toggle-sort-direction',
     'clear-filters'
-  ]
+  ],
+  computed: {
+    typeLabels() {
+      return ADVERSARY_TYPE_LABELS
+    }
+  }
 }
 </script>
 

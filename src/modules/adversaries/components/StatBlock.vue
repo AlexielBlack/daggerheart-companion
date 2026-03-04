@@ -25,7 +25,7 @@
         >
           Tier {{ adversary.tier }}
         </span>
-        <span class="stat-block__type">{{ adversary.type }}</span>
+        <span class="stat-block__type">{{ typeLabel }}</span>
         <span
           v-if="adversary.hordeRatio"
           class="stat-block__horde-ratio"
@@ -119,7 +119,7 @@
           class="stat-block__attack-separator"
           aria-hidden="true"
         >:</span>
-        <span class="stat-block__attack-range">{{ adversary.attack.range }}</span>
+        <span class="stat-block__attack-range">{{ rangeLabel }}</span>
         <span
           class="stat-block__attack-separator"
           aria-hidden="true"
@@ -176,7 +176,7 @@
 
 <script>
 import FeatureBlock from './FeatureBlock.vue'
-import { DAMAGE_TYPE_LABELS } from '@data/adversaries'
+import { DAMAGE_TYPE_LABELS, ADVERSARY_TYPE_LABELS, RANGE_LABELS } from '@data/adversaries'
 
 /**
  * @component StatBlock
@@ -202,6 +202,12 @@ export default {
   computed: {
     damageTypeLabel() {
       return DAMAGE_TYPE_LABELS[this.adversary.attack?.damageType] || this.adversary.attack?.damageType || ''
+    },
+    typeLabel() {
+      return ADVERSARY_TYPE_LABELS[this.adversary.type] || this.adversary.type
+    },
+    rangeLabel() {
+      return RANGE_LABELS[this.adversary.attack?.range] || this.adversary.attack?.range || ''
     }
   },
   methods: {

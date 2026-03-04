@@ -4,12 +4,12 @@
     "name": "Acid Burrower",
     "tier": 1,
     "type": "Solo",
-    "description": "A horse-sized insect with digging claws and acidic blood.",
+    "description": "Un insecte de la taille d’un cheval avec des griffes fouisseuses et du sang acide.",
     "motives": [
-      "Burrow",
-      "Drag away",
-      "Feed",
-      "Reposition"
+      "Creuser",
+      "Traîner au loin",
+      "Se nourrir",
+      "Se repositionner"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -35,23 +35,23 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "The Burrower can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Fouisseur peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Earth Eruption",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Have the Burrower burst out of the ground. All creatures within Very Close range must succeed on an Agility Reaction Roll or be knocked over, making them Vulnerable until they next act."
+        "cost": "Cochez un Stress",
+        "description": "Faites jaillir le Fouisseur du sol. Toutes les créatures à Portée Très Proche doivent réussir un jet de Réaction d’Agilité ou être renversées, les rendant Vulnérables jusqu’à leur prochaine action."
       },
       {
         "name": "Spit Acid",
         "type": "action",
-        "description": "Make an attack against all targets in front of the Burrower within Close range. Targets the Burrower succeeds against take 2d6 physical damage and must mark an Armor Slot without receiving its benefits. If they can't mark an Armor Slot, they must mark an additional HP and you gain a Fear."
+        "description": "Faites une attaque contre toutes les cibles devant le Fouisseur à Portée Proche. Les cibles touchées subissent 2d6 dégâts physiques et doivent cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elles ne peuvent pas cocher d’Emplacement d’armure, elles doivent cocher un PV supplémentaire et vous gagnez une Peur."
       },
       {
         "name": "Acid Bath",
         "type": "reaction",
-        "description": "When the Burrower takes Severe damage, all creatures within Close range are bathed in their acidic blood, taking 1d10 physical damage. This splash covers the ground within Very Close range with blood, and all creatures other than the Burrower who move through it take 1d6 physical damage."
+        "description": "Quand le Fouisseur subit des dégâts Sévères, toutes les créatures à Portée Proche sont aspergées de son sang acide, subissant 1d10 dégâts physiques. Cette éclaboussure couvre le sol à Portée Très Proche de sang, et toutes les créatures autres que le Fouisseur qui le traversent subissent 1d6 dégâts physiques."
       }
     ]
   },
@@ -60,12 +60,12 @@
     "name": "Bear",
     "tier": 1,
     "type": "Bruiser",
-    "description": "A large bear with thick fur and powerful claws.",
+    "description": "Un grand ours au pelage épais et aux griffes puissantes.",
     "motives": [
-      "Climb",
-      "Defend territory",
-      "Pummel",
-      "Track"
+      "Grimper",
+      "Défendre son territoire",
+      "Marteler",
+      "Pister"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -95,18 +95,18 @@
       {
         "name": "Overwhelming Force",
         "type": "passive",
-        "description": "Targets who mark HP from the Bear's standard attack are knocked back to Very Close range."
+        "description": "Les cibles qui cochent des PV suite à l’attaque standard de l’Ours sont repoussées à Portée Très Proche."
       },
       {
         "name": "Bite",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Melee range. On a success, deal 3d4+10 physical damage and the target is Restrained until they break free with a successful Strength Roll."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques et la cible est Entravée jusqu’à ce qu’elle se libère avec un jet de Force réussi."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Bear makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand l’Ours réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -115,13 +115,13 @@
     "name": "Cave Ogre",
     "tier": 1,
     "type": "Solo",
-    "description": "A massive humanoid who sees all sapient life as food.",
+    "description": "Un humanoïde massif qui considère toute vie intelligente comme de la nourriture.",
     "motives": [
-      "Bite off heads",
-      "Feast",
-      "Rip limbs",
-      "Stomp",
-      "Throw enemies"
+      "Arracher des têtes",
+      "Festoyer",
+      "Arracher des membres",
+      "Piétiner",
+      "Projeter les ennemis"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -147,23 +147,23 @@
       {
         "name": "Ramp Up",
         "type": "passive",
-        "description": "You must spend a Fear to spotlight the Ogre. While spotlighted, they can make their standard attack against all targets within range."
+        "description": "Vous devez dépenser une Peur pour mettre l’Ogre en vedette. Tant qu’il est en vedette, il peut faire son attaque standard contre toutes les cibles à portée."
       },
       {
         "name": "Bone Breaker",
         "type": "passive",
-        "description": "The Ogre's attacks deal direct damage."
+        "description": "Les attaques de l’Ogre infligent des dégâts directs."
       },
       {
         "name": "Hail of Boulders",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Pick up heavy objects and throw them at all targets in front of the Ogre within Far range. Make an attack against these targets. Targets the Ogre succeeds against take 1d10+2 physical damage. If they succeed against more than one target, you gain a Fear."
+        "cost": "Cochez un Stress",
+        "description": "Ramassez des objets lourds et lancez-les sur toutes les cibles devant l’Ogre à Portée Loin. Faites une attaque contre ces cibles. Les cibles touchées subissent 1d10+2 dégâts physiques. Si l’Ogre touche plus d’une cible, vous gagnez une Peur."
       },
       {
         "name": "Rampaging Fury",
         "type": "reaction",
-        "description": "When the Ogre marks 2 or more HP, they can rampage. Move the Ogre to a point within Close range and deal 2d6+3 direct physical damage to all targets in their path."
+        "description": "Quand l’Ogre coche 2 PV ou plus, il peut se déchaîner. Déplacez l’Ogre vers un point à Portée Proche et infligez 2d6+3 dégâts physiques directs à toutes les cibles sur son passage."
       }
     ]
   },
@@ -172,12 +172,12 @@
     "name": "Construct",
     "tier": 1,
     "type": "Solo",
-    "description": "A roughly humanoid being of stone and steel, assembled and animated by magic.",
+    "description": "Un être grossièrement humanoïde de pierre et d’acier, assemblé et animé par la magie.",
     "motives": [
-      "Destroy environment",
-      "Serve creator",
-      "Smash target",
-      "Trample groups"
+      "Détruire l’environnement",
+      "Servir son créateur",
+      "Fracasser la cible",
+      "Piétiner les groupes"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -198,29 +198,29 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "The Construct can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "Le Constructe peut être mis en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
       },
       {
         "name": "Weak Structure",
         "type": "passive",
-        "description": "When the Construct marks HP from physical damage, they must mark an additional HP."
+        "description": "Quand le Constructe coche des PV suite à des dégâts physiques, il doit cocher un PV supplémentaire."
       },
       {
         "name": "Trample",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against all targets in the Construct's path when they move. Targets the Construct succeeds against take 1d8 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre toutes les cibles sur le passage du Constructe quand il se déplace. Les cibles touchées subissent 1d8 dégâts physiques."
       },
       {
         "name": "Overload",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "Before rolling damage for the Construct's attack, gain a +10 bonus to the damage roll. The Construct can then take the spotlight again."
+        "cost": "Cochez un Stress",
+        "description": "Avant de lancer les dégâts de l’attaque du Constructe, gagnez un bonus de +10 au jet de dégâts. Le Constructe peut ensuite reprendre la vedette."
       },
       {
         "name": "Death Quake",
         "type": "reaction",
-        "description": "When the Construct marks their last HP, the magic powering them ruptures in an explosion of force. Make an attack with advantage against all targets within Very Close range."
+        "description": "Quand le Constructe coche son dernier PV, la magie qui l’anime se rompt en une explosion de force. Faites une attaque avec avantage contre toutes les cibles à Portée Très Proche."
       }
     ]
   },
@@ -229,12 +229,12 @@
     "name": "Courtier",
     "tier": 1,
     "type": "Social",
-    "description": "An ambitious and ostentatiously dressed socialite.",
+    "description": "Un mondain ambitieux et ostensiblement vêtu.",
     "motives": [
-      "Discredit",
-      "Gain favor",
-      "Maneuver",
-      "Scheme"
+      "Discréditer",
+      "Gagner des faveurs",
+      "Manœuvrer",
+      "Comploter"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -260,14 +260,14 @@
       {
         "name": "Mockery",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Say something mocking and force a target within Close range to make a Presence Reaction Roll (14). On a failure, the target must mark 2 Stress and is Vulnerable until the scene ends."
+        "cost": "Cochez un Stress",
+        "description": "Dites quelque chose de moqueur et forcez une cible à Portée Proche à faire un jet de Réaction de Présence (14). En cas d’échec, la cible doit cocher 2 Stress et est Vulnérable jusqu’à la fin de la scène."
       },
       {
         "name": "Scapegoat",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Target a PC. The Courtier convinces a crowd or prominent individual that the target is the cause of their current conflict or misfortune."
+        "cost": "Dépensez une Peur",
+        "description": "Ciblez un PJ. Le Courtisan convainc une foule ou un individu éminent que la cible est la cause de leur conflit ou malheur actuel."
       }
     ]
   },
@@ -276,12 +276,12 @@
     "name": "Deeproot Defender",
     "tier": 1,
     "type": "Bruiser",
-    "description": "A burly vegetable-person with grasping vines.",
+    "description": "Une personne-végétale robuste aux lianes agrippantes.",
     "motives": [
-      "Ambush",
-      "Grab",
-      "Protect",
-      "Pummel"
+      "Embusquer",
+      "Agripper",
+      "Protéger",
+      "Marteler"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -307,13 +307,13 @@
       {
         "name": "Ground Slam",
         "type": "action",
-        "description": "Slam the ground, knocking all targets within Very Close range back to Far range. Each target knocked back this way must mark a Stress."
+        "description": "Frappez le sol, repoussant toutes les cibles à Portée Très Proche jusqu’à Portée Loin. Chaque cible repoussée doit cocher un Stress."
       },
       {
         "name": "Grab and Drag",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against a target within Close range. On a success, pull them into Melee range, deal 1d6+2 physical damage, and Restrain them until the Defender takes Severe damage."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre une cible à Portée Proche. En cas de réussite, tirez-la à Portée de Mêlée, infligez 1d6+2 dégâts physiques et Entravez-la jusqu’à ce que le Défenseur subisse des dégâts Sévères."
       }
     ]
   },
@@ -322,13 +322,13 @@
     "name": "Dire Wolf",
     "tier": 1,
     "type": "Skulk",
-    "description": "A large wolf with menacing teeth, seldom encountered alone.",
+    "description": "Un grand loup aux crocs menaçants, rarement rencontré seul.",
     "motives": [
-      "Defend territory",
-      "Harry",
-      "Protect pack",
-      "Surround",
-      "Trail"
+      "Défendre son territoire",
+      "Harceler",
+      "Protéger la meute",
+      "Encercler",
+      "Traquer"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -354,13 +354,13 @@
       {
         "name": "Pack Tactics",
         "type": "passive",
-        "description": "If the Wolf makes a successful standard attack and another Dire Wolf is within Melee range of the target, deal 1d6+5 physical damage instead of their standard damage and you gain a Fear."
+        "description": "Si le Loup réussit une attaque standard et qu’un autre Loup Sinistre est à Portée de Mêlée de la cible, infligez 1d6+5 dégâts physiques au lieu des dégâts standard et vous gagnez une Peur."
       },
       {
         "name": "Hobbling Strike",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Melee range. On a success, deal 3d4+10 direct physical damage and make them Vulnerable until they clear at least 1 HP."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques directs et rendez-la Vulnérable jusqu’à ce qu’elle libère au moins 1 PV."
       }
     ]
   },
@@ -370,11 +370,11 @@
     "tier": 1,
     "type": "Horde",
     "hordeRatio": "5/HP",
-    "description": "Dozens of fist-sized mosquitoes, flying together for protection.",
+    "description": "Des dizaines de moustiques gros comme le poing, volant ensemble pour se protéger.",
     "motives": [
-      "Fly away",
-      "Harass",
-      "Steal blood"
+      "S’envoler",
+      "Harceler",
+      "Voler du sang"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -400,18 +400,18 @@
       {
         "name": "Horde (1d4+1)",
         "type": "passive",
-        "description": "When the Mosquitoes have marked half or more of their HP, their standard attack deals 1d4+1 physical damage instead."
+        "description": "Quand les Moustiques ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place."
       },
       {
         "name": "Flying",
         "type": "passive",
-        "description": "While flying, the Mosquitoes have a +2 bonus to their Difficulty."
+        "description": "En vol, les Moustiques ont un bonus de +2 à leur Difficulté."
       },
       {
         "name": "Bloodsucker",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When the Mosquitoes' attack causes a target to mark HP, force the target to mark an additional HP."
+        "cost": "Cochez un Stress",
+        "description": "Quand l’attaque des Moustiques fait cocher des PV à une cible, forcez la cible à cocher un PV supplémentaire."
       }
     ]
   },
@@ -420,12 +420,12 @@
     "name": "Giant Rat",
     "tier": 1,
     "type": "Minion",
-    "description": "A cat-sized rodent skilled at scavenging and survival.",
+    "description": "Un rongeur de la taille d’un chat, doué pour fouiller et survivre.",
     "motives": [
-      "Burrow",
-      "Hunger",
-      "Scavenge",
-      "Wear down"
+      "Creuser",
+      "Avoir faim",
+      "Fouiller",
+      "Épuiser"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -451,13 +451,13 @@
       {
         "name": "Minion (3)",
         "type": "passive",
-        "description": "The Rat is defeated when they take any damage. For every 3 damage a PC deals to the Rat, defeat an additional Minion within range the attack would succeed against."
+        "description": "Le Rat est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Rat, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Giant Rats within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 1 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Rats Géants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 1 dégât physique chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -466,12 +466,12 @@
     "name": "Giant Scorpion",
     "tier": 1,
     "type": "Bruiser",
-    "description": "A human-sized arachnid with tearing claws and a stinging tail.",
+    "description": "Un arachnide de taille humaine avec des pinces déchirantes et une queue venimeuse.",
     "motives": [
-      "Ambush",
-      "Feed",
-      "Grapple",
-      "Poison"
+      "Embusquer",
+      "Se nourrir",
+      "Lutter",
+      "Empoisonner"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -497,19 +497,19 @@
       {
         "name": "Double Strike",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make a standard attack against two targets within Melee range."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque standard contre deux cibles à Portée de Mêlée."
       },
       {
         "name": "Venomous Stinger",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against a target within Very Close range. On a success, deal 1d4+4 physical damage and Poison them until their next rest or they succeed on a Knowledge Roll (16). While Poisoned, the target must roll a d6 before they make an action roll. On a result of 4 or lower, they must mark a Stress."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, infligez 1d4+4 dégâts physiques et Empoisonnez-la jusqu’à son prochain repos ou un jet de Savoir réussi (16). Tant qu’Empoisonnée, la cible doit lancer un d6 avant chaque jet d’action. Sur un résultat de 4 ou moins, elle doit cocher un Stress."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Scorpion makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Scorpion réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -518,12 +518,12 @@
     "name": "Glass Snake",
     "tier": 1,
     "type": "Standard",
-    "description": "A clear serpent with a massive head that leaves behind a glass shard trail wherever they go.",
+    "description": "Un serpent transparent à la tête massive qui laisse une traînée d’éclats de verre partout où il passe.",
     "motives": [
-      "Climb",
-      "Feed",
-      "Keep distance",
-      "Scare"
+      "Grimper",
+      "Se nourrir",
+      "Garder ses distances",
+      "Effrayer"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -544,19 +544,19 @@
       {
         "name": "Armor-Shredding Shards",
         "type": "passive",
-        "description": "After a successful attack against the Snake within Melee range, the attacker must mark an Armor Slot. If they can't mark an Armor Slot, they must mark an HP."
+        "description": "Après une attaque réussie contre le Serpent à Portée de Mêlée, l’attaquant doit cocher un Emplacement d’armure. S’il ne peut pas, il doit cocher un PV."
       },
       {
         "name": "Spinning Serpent",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against all targets within Very Close range. Targets the Snake succeeds against take 1d6+1 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent 1d6+1 dégâts physiques."
       },
       {
         "name": "Spitter",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Introduce a d6 Spitter Die. When the Snake is in the spotlight, roll this die. On a result of 5 or higher, all targets in front of the Snake within Far range must succeed on an Agility Reaction Roll or take 1d4 physical damage. The Snake can take the spotlight a second time this GM turn."
+        "cost": "Dépensez une Peur",
+        "description": "Introduisez un d6 Dé de Crachat. Quand le Serpent est en vedette, lancez ce dé. Sur un résultat de 5 ou plus, toutes les cibles devant le Serpent à Portée Loin doivent réussir un jet de Réaction d’Agilité ou subir 1d4 dégâts physiques. Le Serpent peut reprendre la vedette ce tour."
       }
     ]
   },
@@ -565,12 +565,12 @@
     "name": "Harrier",
     "tier": 1,
     "type": "Standard",
-    "description": "A nimble fighter armed with javelins.",
+    "description": "Un combattant agile armé de javelots.",
     "motives": [
-      "Flank",
-      "Harry",
-      "Kite",
-      "Profit"
+      "Flanquer",
+      "Harceler",
+      "Harceler à distance",
+      "Profiter"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -596,13 +596,13 @@
       {
         "name": "Maintain Distance",
         "type": "passive",
-        "description": "After making a standard attack, the Harrier can move anywhere within Far range."
+        "description": "Après une attaque standard, le Harceleur peut se déplacer n’importe où à Portée Loin."
       },
       {
         "name": "Fall Back",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a creature moves into Melee range to make an attack, before the attack roll, move anywhere within Close range and make an attack against that creature. On a success, deal 1d10+2 physical damage."
+        "cost": "Cochez un Stress",
+        "description": "Quand une créature se déplace à Portée de Mêlée pour attaquer, avant le jet d’attaque, déplacez-vous n’importe où à Portée Proche et faites une attaque contre cette créature. En cas de réussite, infligez 1d10+2 dégâts physiques."
       }
     ]
   },
@@ -611,12 +611,12 @@
     "name": "Archer Guard",
     "tier": 1,
     "type": "Ranged",
-    "description": "A tall guard bearing a longbow and quiver with arrows fletched in the settlement's colors.",
+    "description": "Un grand garde portant un arc long et un carquois aux flèches empennées aux couleurs de la colonie.",
     "motives": [
-      "Arrest",
-      "Close gates",
-      "Make it through the day",
-      "Pin down"
+      "Arrêter",
+      "Fermer les portes",
+      "Survivre la journée",
+      "Immobiliser"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -642,8 +642,8 @@
       {
         "name": "Hobbling Shot",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Far range. On a success, deal 1d12+3 physical damage. If the target marks HP from this attack, they have disadvantage on Agility Rolls until they clear at least 1 HP."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée Loin. En cas de réussite, infligez 1d12+3 dégâts physiques. Si la cible coche des PV suite à cette attaque, elle a un désavantage sur les jets d’Agilité jusqu’à ce qu’elle libère au moins 1 PV."
       }
     ]
   },
@@ -652,12 +652,12 @@
     "name": "Bladed Guard",
     "tier": 1,
     "type": "Standard",
-    "description": "An armored guard bearing a sword and shield painted in the settlement's colors.",
+    "description": "Un garde en armure portant une épée et un bouclier peint aux couleurs de la colonie.",
     "motives": [
-      "Arrest",
-      "Close gates",
-      "Make it through the day",
-      "Pin down"
+      "Arrêter",
+      "Fermer les portes",
+      "Survivre la journée",
+      "Immobiliser"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -683,13 +683,13 @@
       {
         "name": "Shield Wall",
         "type": "passive",
-        "description": "A creature who tries to move within Very Close range of the Guard must succeed on an Agility Roll. If additional Bladed Guards are standing in a line alongside the first, and each is within Melee range of another guard in the line, the Difficulty increases by the total number of guards in that line."
+        "description": "Une créature qui tente de se déplacer à Portée Très Proche du Garde doit réussir un jet d’Agilité. Si d’autres Gardes à l’Épée se tiennent en ligne à ses côtés, chacun à Portée de Mêlée d’un autre garde de la ligne, la Difficulté augmente du nombre total de gardes dans cette ligne."
       },
       {
         "name": "Detain",
         "type": "action",
-        "cost": "Mark a Stress",
-        "description": "Make an attack against a target within Very Close range. On a success, Restrain the target until they break free with a successful attack, Finesse Roll, or Strength Roll."
+        "cost": "Cochez un Stress",
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, Entravez la cible jusqu’à ce qu’elle se libère avec une attaque réussie, un jet de Finesse ou un jet de Force."
       }
     ]
   },
@@ -698,12 +698,12 @@
     "name": "Head Guard",
     "tier": 1,
     "type": "Leader",
-    "description": "A seasoned guard with a mace, a whistle, and a bellowing voice.",
+    "description": "Un garde expérimenté avec une masse, un sifflet et une voix tonitruante.",
     "motives": [
-      "Arrest",
-      "Close gates",
-      "Pin down",
-      "Seek glory"
+      "Arrêter",
+      "Fermer les portes",
+      "Immobiliser",
+      "Chercher la gloire"
     ],
     "difficulty": 15,
     "thresholds": {
@@ -733,18 +733,18 @@
       {
         "name": "Rally Guards",
         "type": "action",
-        "cost": "Spend 2 Fear",
-        "description": "Spotlight the Head Guard and up to 2d4 allies within Far range."
+        "cost": "Dépensez 2 Peurs",
+        "description": "Mettez en vedette le Chef des Gardes et jusqu’à 2d4 alliés à Portée Loin."
       },
       {
         "name": "On My Signal",
         "type": "reaction",
-        "description": "Countdown (5). When the Head Guard is in the spotlight for the first time, activate the countdown. It ticks down when a PC makes an attack roll. When it triggers, all Archer Guards within Far range make a standard attack with advantage against the nearest target within their range. If any attacks succeed on the same target, combine their damage."
+        "description": "Compte à rebours (5). Quand le Chef des Gardes est en vedette pour la première fois, activez le compte à rebours. Il décompte quand un PJ fait un jet d’attaque. Quand il se déclenche, tous les Gardes Archers à Portée Loin font une attaque standard avec avantage contre la cible la plus proche à leur portée. Si des attaques touchent la même cible, combinez leurs dégâts."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Head Guard makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Chef des Gardes réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -753,12 +753,12 @@
     "name": "Jagged Knife Bandit",
     "tier": 1,
     "type": "Standard",
-    "description": "A cunning criminal in a cloak bearing one of the gang's iconic knives.",
+    "description": "Un criminel rusé en cape portant l’un des couteaux emblématiques du gang.",
     "motives": [
-      "Escape",
-      "Profit",
-      "Steal",
-      "Throw smoke"
+      "Fuir",
+      "Profiter",
+      "Voler",
+      "Lancer de la fumée"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -784,12 +784,12 @@
       {
         "name": "Climber",
         "type": "passive",
-        "description": "The Bandit climbs just as easily as they run."
+        "description": "Le Bandit grimpe aussi facilement qu’il court."
       },
       {
         "name": "From Above",
         "type": "passive",
-        "description": "When the Bandit succeeds on a standard attack from above a target, they deal 1d10+1 physical damage instead of their standard damage."
+        "description": "Quand le Bandit réussit une attaque standard depuis une position surélevée, il inflige 1d10+1 dégâts physiques au lieu de ses dégâts standard."
       }
     ]
   },
@@ -798,11 +798,11 @@
     "name": "Merchant",
     "tier": 1,
     "type": "Social",
-    "description": "A traveling merchant with wares from distant lands.",
+    "description": "Un marchand itinérant avec des marchandises de contrées lointaines.",
     "motives": [
-      "Barter",
-      "Profit",
-      "Travel"
+      "Marchander",
+      "Profiter",
+      "Voyager"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -831,11 +831,11 @@
     "name": "Sellsword",
     "tier": 1,
     "type": "Minion",
-    "description": "A battle-hardened mercenary for hire.",
+    "description": "Un mercenaire endurci par les batailles, disponible au plus offrant.",
     "motives": [
-      "Earn gold",
-      "Fight",
-      "Survive"
+      "Gagner de l’or",
+      "Combattre",
+      "Survivre"
     ],
     "difficulty": 10,
     "thresholds": null,
@@ -862,11 +862,11 @@
     "name": "Spellblade",
     "tier": 1,
     "type": "Standard",
-    "description": "A warrior who channels magic through their blade.",
+    "description": "Un guerrier qui canalise la magie à travers sa lame.",
     "motives": [
-      "Duel",
-      "Prove superiority",
-      "Seek challenge"
+      "Combattre en duel",
+      "Prouver sa supériorité",
+      "Chercher le défi"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -896,11 +896,11 @@
     "name": "Weaponmaster",
     "tier": 1,
     "type": "Standard",
-    "description": "A skilled fighter proficient with many weapons.",
+    "description": "Un combattant compétent maîtrisant de nombreuses armes.",
     "motives": [
-      "Challenge",
-      "Duel",
-      "Train"
+      "Défier",
+      "Combattre en duel",
+      "Entraîner"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -930,11 +930,11 @@
     "name": "Skeleton Warrior",
     "tier": 1,
     "type": "Standard",
-    "description": "An animated skeleton wielding a rusted blade.",
+    "description": "Un squelette animé brandissant une lame rouillée.",
     "motives": [
-      "Destroy",
-      "Guard",
-      "Obey"
+      "Détruire",
+      "Garder",
+      "Obéir"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -959,11 +959,11 @@
     "name": "Skeleton Archer",
     "tier": 1,
     "type": "Ranged",
-    "description": "An animated skeleton wielding a bow with eerie precision.",
+    "description": "Un squelette animé maniant un arc avec une précision sinistre.",
     "motives": [
-      "Destroy",
-      "Guard",
-      "Obey"
+      "Détruire",
+      "Garder",
+      "Obéir"
     ],
     "difficulty": 9,
     "thresholds": {
@@ -987,11 +987,11 @@
     "name": "Skeleton Knight",
     "tier": 1,
     "type": "Bruiser",
-    "description": "An armored skeleton wielding a heavy weapon.",
+    "description": "Un squelette en armure brandissant une arme lourde.",
     "motives": [
-      "Destroy",
-      "Guard",
-      "Obey"
+      "Détruire",
+      "Garder",
+      "Obéir"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1016,11 +1016,11 @@
     "name": "Skeleton Dredge",
     "tier": 1,
     "type": "Minion",
-    "description": "A barely-held-together skeleton clawing at the living.",
+    "description": "Un squelette à peine assemblé griffant les vivants.",
     "motives": [
-      "Destroy",
-      "Obey",
-      "Swarm"
+      "Détruire",
+      "Obéir",
+      "Essaimer"
     ],
     "difficulty": 8,
     "thresholds": {
@@ -1041,7 +1041,7 @@
       {
         "name": "Minion (5)",
         "type": "passive",
-        "description": "The Dredge is defeated when they take any damage. For every 5 damage a PC deals to the Dredge, defeat an additional Minion within range the attack would succeed against."
+        "description": "La Drague est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Drague, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       }
     ]
   },
@@ -1050,11 +1050,11 @@
     "name": "Shambling Zombie",
     "tier": 1,
     "type": "Standard",
-    "description": "A slow, rotting corpse animated by dark magic.",
+    "description": "Un cadavre lent et putréfié animé par la magie noire.",
     "motives": [
-      "Devour",
-      "Obey",
-      "Shamble"
+      "Dévorer",
+      "Obéir",
+      "Traîner les pieds"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -1079,11 +1079,11 @@
     "name": "Brawny Zombie",
     "tier": 1,
     "type": "Bruiser",
-    "description": "A hulking zombie with unnatural strength.",
+    "description": "Un zombie imposant doté d’une force surnaturelle.",
     "motives": [
-      "Crush",
-      "Devour",
-      "Obey"
+      "Écraser",
+      "Dévorer",
+      "Obéir"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -1108,11 +1108,11 @@
     "name": "Rotted Zombie",
     "tier": 1,
     "type": "Minion",
-    "description": "A decayed zombie barely holding together.",
+    "description": "Un zombie décomposé tenant à peine debout.",
     "motives": [
-      "Devour",
-      "Obey",
-      "Swarm"
+      "Dévorer",
+      "Obéir",
+      "Essaimer"
     ],
     "difficulty": 8,
     "thresholds": {
@@ -1133,7 +1133,7 @@
       {
         "name": "Minion (4)",
         "type": "passive",
-        "description": "The Zombie is defeated when they take any damage. For every 4 damage a PC deals to the Zombie, defeat an additional Minion within range the attack would succeed against."
+        "description": "Le Zombie est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige au Zombie, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       }
     ]
   },
@@ -1143,11 +1143,11 @@
     "tier": 1,
     "type": "Horde",
     "hordeRatio": "3/HP",
-    "description": "A shambling group of undead, dangerous in numbers.",
+    "description": "Un groupe titubant de morts-vivants, dangereux en nombre.",
     "motives": [
-      "Devour",
-      "Overwhelm",
-      "Shamble"
+      "Dévorer",
+      "Submerger",
+      "Traîner les pieds"
     ],
     "difficulty": 8,
     "thresholds": {
@@ -1168,13 +1168,13 @@
       {
         "name": "Horde (1d6+1)",
         "type": "passive",
-        "description": "When the Zombie Pack has marked half or more of their HP, their standard attack deals 1d6+1 physical damage instead."
+        "description": "Quand la Horde de Zombies a coché la moitié ou plus de ses PV, son attaque standard inflige 1d6+1 dégâts physiques à la place."
       },
       {
         "name": "Overwhelm",
         "type": "reaction",
-        "cost": "Mark a Stress",
-        "description": "When a creature deals damage to the Zombie Pack, make a standard attack against that creature."
+        "cost": "Cochez un Stress",
+        "description": "Quand une créature inflige des dégâts à la Horde de Zombies, faites une attaque standard contre cette créature."
       }
     ]
   },
@@ -1183,11 +1183,11 @@
     "name": "Patchwork Zombie Hulk",
     "tier": 1,
     "type": "Solo",
-    "description": "A massive zombie stitched together from multiple corpses.",
+    "description": "Un zombie massif cousu à partir de multiples cadavres.",
     "motives": [
-      "Crush",
-      "Destroy",
-      "Obey"
+      "Écraser",
+      "Détruire",
+      "Obéir"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1208,7 +1208,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "The Hulk can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them."
+        "description": "La Masse peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
       }
     ],
     "atk_mod": 4
@@ -1219,11 +1219,11 @@
     "tier": 1,
     "type": "Horde",
     "hordeRatio": "10/HP",
-    "description": "A writhing mass of rats driven by hunger.",
+    "description": "Une masse grouillante de rats poussés par la faim.",
     "motives": [
-      "Devour",
-      "Scatter",
-      "Swarm"
+      "Dévorer",
+      "Disperser",
+      "Essaimer"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -1244,7 +1244,7 @@
       {
         "name": "Horde (1d4)",
         "type": "passive",
-        "description": "When the Swarm has marked half or more of their HP, their standard attack deals 1d4 physical damage instead."
+        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place."
       }
     ]
   },
@@ -1253,11 +1253,11 @@
     "name": "Minor Demon",
     "tier": 1,
     "type": "Standard",
-    "description": "A small demonic entity from the Outer Realms.",
+    "description": "Une petite entité démoniaque des Royaumes Extérieurs.",
     "motives": [
-      "Corrupt",
-      "Destroy",
-      "Spread chaos"
+      "Corrompre",
+      "Détruire",
+      "Semer le chaos"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1282,11 +1282,11 @@
     "name": "Minor Fire Elemental",
     "tier": 1,
     "type": "Standard",
-    "description": "A small being of living flame.",
+    "description": "Un petit être de flamme vivante.",
     "motives": [
-      "Burn",
-      "Consume",
-      "Spread"
+      "Brûler",
+      "Consumer",
+      "Se répandre"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1311,11 +1311,11 @@
     "name": "Minor Chaos Elemental",
     "tier": 1,
     "type": "Standard",
-    "description": "An unstable entity of pure chaotic energy.",
+    "description": "Une entité instable d’énergie chaotique pure.",
     "motives": [
-      "Create disorder",
-      "Distort",
-      "Warp"
+      "Semer le désordre",
+      "Déformer",
+      "Distordre"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1340,11 +1340,11 @@
     "name": "Minor Treant",
     "tier": 1,
     "type": "Standard",
-    "description": "A small animated tree, guardian of the forest.",
+    "description": "Un petit arbre animé, gardien de la forêt.",
     "motives": [
-      "Defend forest",
-      "Grow",
-      "Protect"
+      "Défendre la forêt",
+      "Croître",
+      "Protéger"
     ],
     "difficulty": 11,
     "thresholds": {
@@ -1373,11 +1373,11 @@
     "name": "Young Dryad",
     "tier": 1,
     "type": "Support",
-    "description": "A young nature spirit in humanoid form.",
+    "description": "Un jeune esprit de la nature sous forme humanoïde.",
     "motives": [
-      "Cultivate",
-      "Protect the forest",
-      "Nurture"
+      "Cultiver",
+      "Protéger la forêt",
+      "Nourrir"
     ],
     "difficulty": 11,
     "thresholds": {
@@ -1407,11 +1407,11 @@
     "name": "Sylvan Soldier",
     "tier": 1,
     "type": "Standard",
-    "description": "An elven warrior defending the woodlands.",
+    "description": "Un guerrier elfique défendant les bois.",
     "motives": [
-      "Defend",
-      "Patrol",
-      "Protect"
+      "Défendre",
+      "Patrouiller",
+      "Protéger"
     ],
     "difficulty": 11,
     "thresholds": {
@@ -1441,11 +1441,11 @@
     "name": "Petty Noble",
     "tier": 1,
     "type": "Social",
-    "description": "A minor noble with inflated self-importance.",
+    "description": "Un noble mineur à l’importance de soi démesurée.",
     "motives": [
-      "Command",
-      "Gain power",
-      "Scheme"
+      "Commander",
+      "Gagner du pouvoir",
+      "Comploter"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1475,11 +1475,11 @@
     "name": "Pirate Captain",
     "tier": 1,
     "type": "Leader",
-    "description": "A charismatic leader of a pirate crew.",
+    "description": "Un chef charismatique d’équipage pirate.",
     "motives": [
-      "Command",
-      "Plunder",
-      "Sail"
+      "Commander",
+      "Piller",
+      "Naviguer"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1514,11 +1514,11 @@
     "tier": 1,
     "type": "Horde",
     "hordeRatio": "3/HP",
-    "description": "A rowdy group of pirates attacking together.",
+    "description": "Un groupe turbulent de pirates attaquant ensemble.",
     "motives": [
-      "Loot",
-      "Overwhelm",
-      "Plunder"
+      "Piller",
+      "Submerger",
+      "Piller"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -1539,7 +1539,7 @@
       {
         "name": "Horde (1d4+1)",
         "type": "passive",
-        "description": "When the Raiders have marked half or more of their HP, their standard attack deals 1d4+1 physical damage instead."
+        "description": "Quand les Pillards ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place."
       }
     ],
     "atk_mod": 1
@@ -1549,11 +1549,11 @@
     "name": "Pirate Tough",
     "tier": 1,
     "type": "Bruiser",
-    "description": "A large, intimidating pirate enforcer.",
+    "description": "Un pirate costaud et intimidant faisant office de gros bras.",
     "motives": [
-      "Brawl",
-      "Intimidate",
-      "Protect captain"
+      "Se bagarrer",
+      "Intimider",
+      "Protéger le capitaine"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1582,12 +1582,12 @@
     "name": "Green Ooze",
     "tier": 1,
     "type": "Skulk",
-    "description": "A translucent green blob of acid.",
+    "description": "Un blob vert translucide d’acide.",
     "motives": [
-      "Camouflage",
-      "Creep up",
-      "Dissolve",
-      "Envelop"
+      "Se camoufler",
+      "Ramper",
+      "Dissoudre",
+      "Envelopper"
     ],
     "difficulty": 8,
     "thresholds": {
@@ -1617,11 +1617,11 @@
     "name": "Red Ooze",
     "tier": 1,
     "type": "Skulk",
-    "description": "A reddish, aggressive blob of corrosive slime.",
+    "description": "Un blob rougeâtre et agressif de vase corrosive.",
     "motives": [
-      "Consume",
-      "Dissolve",
-      "Hunt"
+      "Consumer",
+      "Dissoudre",
+      "Chasser"
     ],
     "difficulty": 10,
     "thresholds": {
@@ -1645,11 +1645,11 @@
     "name": "Tiny Green Ooze",
     "tier": 1,
     "type": "Minion",
-    "description": "A small green blob spawned from a larger ooze.",
+    "description": "Un petit blob vert engendré par une gelée plus grande.",
     "motives": [
-      "Dissolve",
-      "Merge",
-      "Spread"
+      "Dissoudre",
+      "Fusionner",
+      "Se répandre"
     ],
     "difficulty": 14,
     "thresholds": {
@@ -1670,7 +1670,7 @@
       {
         "name": "Minion (4)",
         "type": "passive",
-        "description": "The Ooze is defeated when they take any damage. For every 4 damage a PC deals to the Ooze, defeat an additional Minion within range the attack would succeed against."
+        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       }
     ],
     "atk_mod": -1
@@ -1680,11 +1680,11 @@
     "name": "Tiny Red Ooze",
     "tier": 1,
     "type": "Minion",
-    "description": "A small red blob spawned from a larger ooze.",
+    "description": "Un petit blob rouge engendré par une gelée plus grande.",
     "motives": [
-      "Dissolve",
-      "Merge",
-      "Spread"
+      "Dissoudre",
+      "Fusionner",
+      "Se répandre"
     ],
     "difficulty": 11,
     "thresholds": {
@@ -1705,7 +1705,7 @@
       {
         "name": "Minion (5)",
         "type": "passive",
-        "description": "The Ooze is defeated when they take any damage. For every 5 damage a PC deals to the Ooze, defeat an additional Minion within range the attack would succeed against."
+        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       }
     ]
   },
@@ -1714,11 +1714,11 @@
     "name": "Tangle Bramble",
     "tier": 1,
     "type": "Minion",
-    "description": "An animated thorny plant that lashes at intruders.",
+    "description": "Une plante épineuse animée qui fouette les intrus.",
     "motives": [
-      "Defend territory",
-      "Entangle",
-      "Feed"
+      "Défendre son territoire",
+      "Enchevêtrer",
+      "Se nourrir"
     ],
     "difficulty": 11,
     "thresholds": null,
@@ -1741,11 +1741,11 @@
     "tier": 1,
     "type": "Horde",
     "hordeRatio": "3/HP",
-    "description": "A writhing mass of thorny vines.",
+    "description": "Une masse grouillante de lianes épineuses.",
     "motives": [
-      "Consume",
-      "Entangle",
-      "Spread"
+      "Consumer",
+      "Enchevêtrer",
+      "Se répandre"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -1766,7 +1766,7 @@
       {
         "name": "Horde (1d4)",
         "type": "passive",
-        "description": "When the Swarm has marked half or more of their HP, their standard attack deals 1d4 physical damage instead."
+        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place."
       }
     ],
     "atk_mod": null
@@ -1776,11 +1776,11 @@
     "name": "Jagged Knife Hexer",
     "tier": 1,
     "type": "Support",
-    "description": "A staff-wielding bandit in a cloak adorned with magical paraphernalia, using curses to vex their foes.",
+    "description": "Un bandit portant un bâton et une cape ornée d’accessoires magiques, utilisant des malédictions pour tourmenter ses ennemis.",
     "motives": [
-      "Command",
-      "hex",
-      "profit"
+      "Commander",
+      "Ensorceler",
+      "Profiter"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1806,12 +1806,12 @@
       {
         "name": "Curse",
         "type": "action",
-        "description": "Choose a target within Far range and temporarily Curse them. While the target is Cursed, you can mark a Stress when that target rolls with Hope to make the roll be with Fear instead."
+        "description": "Choisissez une cible à Portée Loin et Maudissez-la temporairement. Tant que la cible est Maudite, vous pouvez cocher un Stress quand cette cible obtient Espoir pour transformer le jet en jet avec Peur à la place."
       },
       {
         "name": "Chaotic Flux",
         "type": "action",
-        "description": "Make an attack against up to three targets within Very Close range. Mark a Stress to deal 2d6+3 magic damage to targets the Hexer succeeded against."
+        "description": "Faites une attaque contre jusqu’à trois cibles à Portée Très Proche. Cochez un Stress pour infliger 2d6+3 dégâts magiques aux cibles touchées."
       }
     ]
   },
@@ -1820,12 +1820,12 @@
     "name": "Jagged Knife Kneebreaker",
     "tier": 1,
     "type": "Bruiser",
-    "description": "An imposing brawler carrying a large club.",
+    "description": "Un bagarreur imposant portant un gros gourdin.",
     "motives": [
-      "Grapple",
-      "intimidate",
-      "profit",
-      "steal"
+      "Lutter",
+      "Intimider",
+      "Profiter",
+      "Voler"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -1855,12 +1855,12 @@
       {
         "name": "I've Got 'Em",
         "type": "passive",
-        "description": "Creatures Restrained by the Kneebreaker take double damage from attacks by other adversaries."
+        "description": "Les créatures Entravées par le Briseur de Genoux subissent le double de dégâts des attaques des autres adversaires."
       },
       {
         "name": "Hold Them Down",
         "type": "action",
-        "description": "Make an attack against a target within Melee range. On a success, the target takes no damage but is Restrained and Vulnerable. The target can break free, clearing both conditions, with a successful Strength Roll or is freed automatically if the Kneebreaker takes Major or greater damage."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, la cible ne subit pas de dégâts mais est Entravée et Vulnérable. La cible peut se libérer, retirant les deux conditions, avec un jet de Force réussi, ou est libérée automatiquement si le Briseur de Genoux subit des dégâts Majeurs ou supérieurs."
       }
     ]
   },
@@ -1869,11 +1869,11 @@
     "name": "Jagged Knife Lackey",
     "tier": 1,
     "type": "Minion",
-    "description": "A thief with simple clothes and small daggers, eager to prove themselves.",
+    "description": "Un voleur en vêtements simples avec de petites dagues, désireux de faire ses preuves.",
     "motives": [
-      "Escape",
-      "profit",
-      "throw smoke"
+      "Fuir",
+      "Profiter",
+      "Lancer de la fumée"
     ],
     "difficulty": 9,
     "thresholds": {
@@ -1899,13 +1899,13 @@
       {
         "name": "Minion (3)",
         "type": "passive",
-        "description": "The Lackey is defeated when they take any damage. For every 3 damage a PC deals to the Lackey, defeat an additional Minion within range the attack would succeed against."
+        "description": "Le Larbin est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Larbin, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
       },
       {
         "name": "Group Attack",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Choose a target and spotlight all Jagged Knife Lackeys within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 2 physical damage each. Combine this damage."
+        "cost": "Dépensez une Peur",
+        "description": "Choisissez une cible et mettez en vedette tous les Larbins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 2 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -1914,12 +1914,12 @@
     "name": "Jagged Knife Lieutenant",
     "tier": 1,
     "type": "Leader",
-    "description": "A seasoned bandit in quality leathers with a strong voice and cunning eyes.",
+    "description": "Un bandit aguerri en cuir de qualité, à la voix forte et au regard rusé.",
     "motives": [
-      "Bully",
-      "command",
-      "profit",
-      "reinforce"
+      "Intimider",
+      "Commander",
+      "Profiter",
+      "Renforcer"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -1945,23 +1945,23 @@
       {
         "name": "Tactician",
         "type": "action",
-        "description": "When you spotlight the Lieutenant, mark a Stress to also spotlight two allies within Close range."
+        "description": "Quand vous mettez le Lieutenant en vedette, cochez un Stress pour aussi mettre en vedette deux alliés à Portée Proche."
       },
       {
         "name": "More Where That Came From",
         "type": "action",
-        "description": "Summon three Jagged Knife Lackeys, who appear at Far range."
+        "description": "Invoquez trois Larbins du Couteau Dentelé, qui apparaissent à Portée Loin."
       },
       {
         "name": "Coup de Grace",
         "type": "action",
-        "cost": "Spend a Fear",
-        "description": "Make an attack against a Vulnerable target within Close range. On a success, deal 2d6+12 physical damage and the target must mark a Stress."
+        "cost": "Dépensez une Peur",
+        "description": "Faites une attaque contre une cible Vulnérable à Portée Proche. En cas de réussite, infligez 2d6+12 dégâts physiques et la cible doit cocher un Stress."
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "When the Lieutenant makes a successful attack against a PC, you gain a Fear."
+        "description": "Quand le Lieutenant réussit une attaque contre un PJ, vous gagnez une Peur."
       }
     ]
   },
@@ -1970,12 +1970,12 @@
     "name": "Jagged Knife Shadow",
     "tier": 1,
     "type": "Skulk",
-    "description": "A nimble scoundrel bearing a wicked knife and utilizing shadow magic to isolate targets.",
+    "description": "Un vaurien agile portant un couteau vicieux et utilisant la magie des ombres pour isoler ses cibles.",
     "motives": [
-      "Ambush",
-      "conceal",
-      "divide",
-      "profit"
+      "Embusquer",
+      "Dissimuler",
+      "Diviser",
+      "Profiter"
     ],
     "difficulty": 12,
     "thresholds": {
@@ -2001,12 +2001,12 @@
       {
         "name": "Backstab",
         "type": "passive",
-        "description": "When the Shadow succeeds on a standard attack that has advantage, they deal 1d6+6 physical damage instead of their standard damage."
+        "description": "Quand l’Ombre réussit une attaque standard avec avantage, elle inflige 1d6+6 dégâts physiques au lieu de ses dégâts standard."
       },
       {
         "name": "Cloaked",
         "type": "action",
-        "description": "Become Hidden until after the Shadow's next attack. Attacks made while Hidden from this feature have advantage."
+        "description": "Devenez Caché jusqu’après la prochaine attaque de l’Ombre. Les attaques effectuées en étant Caché grâce à cette feature ont l’avantage."
       }
     ]
   },
@@ -2015,12 +2015,12 @@
     "name": "Jagged Knife Sniper",
     "tier": 1,
     "type": "Ranged",
-    "description": "A lanky bandit striking from cover with a shortbow.",
+    "description": "Un bandit dégingandé frappant depuis une position dissimulée avec un arc court.",
     "motives": [
-      "Ambush",
-      "hide",
-      "profit",
-      "reposition"
+      "Embusquer",
+      "Se cacher",
+      "Profiter",
+      "Se repositionner"
     ],
     "difficulty": 13,
     "thresholds": {
@@ -2046,7 +2046,7 @@
       {
         "name": "Unseen Strike",
         "type": "passive",
-        "description": "If the Sniper is Hidden when they make a successful standard attack against a target, they deal 1d10+4 physical damage instead of their standard damage."
+        "description": "Si le Tireur est Caché quand il réussit une attaque standard contre une cible, il inflige 1d10+4 dégâts physiques au lieu de ses dégâts standard."
       }
     ]
   }

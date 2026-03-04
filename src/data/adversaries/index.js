@@ -1,6 +1,6 @@
 /**
  * @module adversaries/data
- * @description Adversary data index — aggregates all tier data and provides constants.
+ * @description Index des données d'adversaires — agrège tous les tiers et fournit les constantes.
  */
 
 import tier1 from './tier1.json'
@@ -8,10 +8,10 @@ import tier2 from './tier2.json'
 import tier3 from './tier3.json'
 import tier4 from './tier4.json'
 
-/** All adversaries from all tiers */
+/** Tous les adversaires de tous les tiers */
 export const allAdversaries = [...tier1, ...tier2, ...tier3, ...tier4]
 
-/** Adversary type constants */
+/** Constantes de type d'adversaire */
 export const ADVERSARY_TYPES = [
   'Bruiser',
   'Horde',
@@ -25,7 +25,21 @@ export const ADVERSARY_TYPES = [
   'Support'
 ]
 
-/** Tier definitions with level ranges */
+/** Labels français pour les types d'adversaire */
+export const ADVERSARY_TYPE_LABELS = {
+  Bruiser: 'Brute',
+  Horde: 'Horde',
+  Leader: 'Meneur',
+  Minion: 'Sbire',
+  Ranged: 'À distance',
+  Skulk: 'Rôdeur',
+  Social: 'Social',
+  Solo: 'Solo',
+  Standard: 'Standard',
+  Support: 'Soutien'
+}
+
+/** Définitions des tiers avec plages de niveaux */
 export const TIERS = [
   { value: 1, label: 'Tier 1', levels: '1' },
   { value: 2, label: 'Tier 2', levels: '2–4' },
@@ -33,20 +47,29 @@ export const TIERS = [
   { value: 4, label: 'Tier 4', levels: '8–10' }
 ]
 
-/** Feature type constants */
+/** Constantes de type de feature */
 export const FEATURE_TYPES = ['passive', 'action', 'reaction']
 
-/** Range constants */
+/** Constantes de portée */
 export const RANGES = ['Melee', 'Very Close', 'Close', 'Far', 'Very Far']
 
-/** Damage type labels (FR) */
+/** Labels français pour les portées */
+export const RANGE_LABELS = {
+  Melee: 'Mêlée',
+  'Very Close': 'Très Proche',
+  Close: 'Proche',
+  Far: 'Loin',
+  'Very Far': 'Très Loin'
+}
+
+/** Labels des types de dégâts (FR) */
 export const DAMAGE_TYPE_LABELS = {
   phy: 'Physique',
   mag: 'Magique',
   'phy/mag': 'Physique/Magique'
 }
 
-/** Benchmark stats by tier — for improvisation reference */
+/** Statistiques par tier — référence pour l'improvisation */
 export const TIER_BENCHMARKS = {
   1: { atkMod: '+1', damage: '1d6+2 à 1d12+4', difficulty: 11, thresholds: '7/12' },
   2: { atkMod: '+2', damage: '2d6+3 à 2d12+4', difficulty: 14, thresholds: '10/20' },
