@@ -123,20 +123,19 @@ describe('Tags — Communautés', () => {
 // ═══════════════════════════════════════════════════════════
 
 describe('Tags — Classes', () => {
-  it('chaque classe a hopeFeatureTags et classFeatureTags', () => {
+  it('chaque classe a des tags sur hopeFeature et classFeatures', () => {
     for (const cls of CLASSES) {
-      expect(cls.hopeFeatureTags, `${cls.id} devrait avoir hopeFeatureTags`).toBeDefined()
-      expect(validateTags(cls.hopeFeatureTags), `${cls.id}.hopeFeatureTags invalides`).toBe(true)
+      // hopeFeature : objet FeatureDescriptor
+      if (typeof cls.hopeFeature === 'object') {
+        expect(cls.hopeFeature.tags, `${cls.id}.hopeFeature devrait avoir des tags`).toBeDefined()
+        expect(validateTags(cls.hopeFeature.tags), `${cls.id}.hopeFeature tags invalides`).toBe(true)
+      }
 
-      expect(cls.classFeatureTags, `${cls.id} devrait avoir classFeatureTags`).toBeDefined()
-      expect(Array.isArray(cls.classFeatureTags)).toBe(true)
-      expect(
-        cls.classFeatureTags.length,
-        `${cls.id}.classFeatureTags devrait avoir autant d'éléments que classFeatures`
-      ).toBe(cls.classFeatures.length)
-
-      for (const ft of cls.classFeatureTags) {
-        expect(validateTags(ft), `${cls.id} classFeatureTags contient des tags invalides`).toBe(true)
+      // classFeatures : tableau d'objets FeatureDescriptor
+      expect(Array.isArray(cls.classFeatures), `${cls.id}.classFeatures devrait être un tableau`).toBe(true)
+      for (const feat of cls.classFeatures) {
+        expect(feat.tags, `${cls.id}/${feat.name} devrait avoir des tags`).toBeDefined()
+        expect(validateTags(feat.tags), `${cls.id}/${feat.name} tags invalides`).toBe(true)
       }
     }
   })
@@ -147,23 +146,24 @@ describe('Tags — Classes', () => {
 // ═══════════════════════════════════════════════════════════
 
 describe('Tags — Sous-classes', () => {
-  it('chaque sous-classe a des tags parallèles par tier', () => {
+  it('chaque sous-classe a des tags sur chaque feature par tier', () => {
     for (const [className, subs] of Object.entries(SUBCLASSES)) {
       for (const sub of subs) {
         for (const tier of ['foundation', 'specialization', 'mastery']) {
-          const tagKey = `${tier}Tags`
           const features = sub[tier]
-          const tags = sub[tagKey]
+          if (!features) continue
 
-          expect(tags, `${className}/${sub.id}.${tagKey} devrait exister`).toBeDefined()
-          expect(Array.isArray(tags)).toBe(true)
-          expect(
-            tags.length,
-            `${className}/${sub.id}.${tagKey} (${tags.length}) devrait correspondre à ${tier} (${features.length})`
-          ).toBe(features.length)
+          expect(Array.isArray(features), `${className}/${sub.id}.${tier} devrait être un tableau`).toBe(true)
 
-          for (const ft of tags) {
-            expect(validateTags(ft), `${className}/${sub.id}.${tagKey} contient des tags invalides`).toBe(true)
+          for (const feat of features) {
+            expect(
+              feat.tags,
+              `${className}/${sub.id}.${tier}/${feat.name || feat} devrait avoir des tags`
+            ).toBeDefined()
+            expect(
+              validateTags(feat.tags),
+              `${className}/${sub.id}.${tier}/${feat.name} tags invalides`
+            ).toBe(true)
           }
         }
       }

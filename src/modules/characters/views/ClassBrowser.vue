@@ -112,7 +112,7 @@
               ✨ Feature d'Espoir
             </h3>
             <p class="class-section__text">
-              {{ cls.hopeFeature }}
+              {{ typeof cls.hopeFeature === 'object' ? `${cls.hopeFeature.name} : ${cls.hopeFeature.description}` : cls.hopeFeature }}
             </p>
           </section>
 
@@ -127,7 +127,7 @@
                 :key="i"
                 class="feature-list__item"
               >
-                {{ feature }}
+                {{ typeof feature === 'object' ? `${feature.name} : ${feature.description}` : feature }}
               </li>
             </ul>
           </section>
@@ -167,7 +167,7 @@
                         v-for="(f, i) in sub.foundation"
                         :key="i"
                       >
-                        {{ f }}
+                        {{ typeof f === 'object' ? `${f.name} : ${f.description}` : f }}
                       </li>
                     </ul>
                   </div>
@@ -178,7 +178,7 @@
                         v-for="(s, si) in sub.specialization"
                         :key="si"
                       >
-                        {{ s }}
+                        {{ typeof s === 'object' ? `${s.name} : ${s.description}` : s }}
                       </li>
                     </ul>
                   </div>
@@ -189,7 +189,7 @@
                         v-for="(m, mi) in sub.mastery"
                         :key="mi"
                       >
-                        {{ m }}
+                        {{ typeof m === 'object' ? `${m.name} : ${m.description}` : m }}
                       </li>
                     </ul>
                   </div>
@@ -298,9 +298,12 @@ export default {
     function duplicateToHomebrew(cls) {
       const homebrewStore = useClassHomebrewStore()
 
-      // Convertir classFeatures (string[]) → objets {name, description}
+      // Convertir classFeatures : accepter objets FeatureDescriptor ou strings
       const formattedFeatures = Array.isArray(cls.classFeatures)
         ? cls.classFeatures.map((f) => {
+          if (typeof f === 'object' && f.name) {
+            return { name: f.name, description: f.description || '' }
+          }
           if (typeof f === 'string') {
             const colonIdx = f.indexOf(':')
             return colonIdx > 0
@@ -312,13 +315,15 @@ export default {
         : []
 
       // Recuperer les sous-classes associees
+      // Convertir les features objets en strings pour compatibilité homebrew
+      const featToString = (f) => (typeof f === 'object' && f.name ? `${f.name} : ${f.description}` : f)
       const subs = getSubclasses(cls.id).map((s) => ({
         name: s.name,
         spellcastTrait: s.spellcastTrait || null,
         description: s.description || '',
-        foundation: Array.isArray(s.foundation) ? [...s.foundation] : [],
-        specialization: Array.isArray(s.specialization) ? [...s.specialization] : [],
-        mastery: Array.isArray(s.mastery) ? [...s.mastery] : []
+        foundation: Array.isArray(s.foundation) ? s.foundation.map(featToString) : [],
+        specialization: Array.isArray(s.specialization) ? s.specialization.map(featToString) : [],
+        mastery: Array.isArray(s.mastery) ? s.mastery.map(featToString) : []
       }))
 
       const data = {

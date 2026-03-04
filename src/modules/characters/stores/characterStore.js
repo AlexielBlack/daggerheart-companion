@@ -64,7 +64,9 @@ export const useCharacterStore = defineStore('characters', () => {
       baseEvasion: item.baseEvasion || 10,
       baseHP: item.baseHP || 6,
       baseStress: item.baseStress || 6,
-      hopeFeature: item.hopeFeature || '',
+      hopeFeature: typeof item.hopeFeature === 'object' && item.hopeFeature
+        ? `${item.hopeFeature.name} : ${item.hopeFeature.description}`
+        : (item.hopeFeature || ''),
       classFeatures: (item.classFeatures || []).map(
         (f) => (typeof f === 'string' ? f : `${f.name} : ${f.description}`)
       ),

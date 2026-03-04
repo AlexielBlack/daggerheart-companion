@@ -714,14 +714,15 @@
       </h3>
       <div class="class-features">
         <p class="hope-feature">
-          <strong>Hope Feature:</strong> {{ classData.hopeFeature }}
+          <strong>Hope Feature:</strong>
+          {{ typeof classData.hopeFeature === 'object' ? `${classData.hopeFeature.name} : ${classData.hopeFeature.description}` : classData.hopeFeature }}
         </p>
         <p
           v-for="(feat, i) in classData.classFeatures"
           :key="i"
           class="class-feature-text"
         >
-          {{ feat }}
+          {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
         </p>
         <p
           v-if="classData.classItems"
@@ -777,7 +778,7 @@
             :key="'f'+i"
             class="class-feature-text"
           >
-            {{ feat }}
+            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
           </p>
         </div>
         <!-- Spécialisation (si niveau 5+) -->
@@ -791,7 +792,7 @@
             :key="'s'+i"
             class="class-feature-text"
           >
-            {{ feat }}
+            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
           </p>
         </div>
         <!-- Maîtrise (si niveau 8+) -->
@@ -805,7 +806,7 @@
             :key="'m'+i"
             class="class-feature-text"
           >
-            {{ feat }}
+            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
           </p>
         </div>
       </div>
