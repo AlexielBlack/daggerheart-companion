@@ -66,25 +66,6 @@
         </div>
       </header>
 
-      <!-- ── Fear / Hope Tracker ── -->
-      <FearHopeTracker
-        :fear="store.fear"
-        :hope="store.hope"
-        :round="store.round"
-        :history="store.fearHopeHistory"
-        :show-history="showHistory"
-        @add-fear="store.addFear($event)"
-        @spend-fear="store.spendFear($event)"
-        @add-hope="store.addHope($event)"
-        @spend-hope="store.spendHope($event)"
-      />
-      <button
-        class="enc-live__toggle-history"
-        @click="showHistory = !showHistory"
-      >
-        {{ showHistory ? 'Masquer' : 'Afficher' }} l'historique
-      </button>
-
       <!-- ── Sélecteurs fusionnés ── -->
       <div class="enc-live__selectors">
         <!-- PJ + Projecteur (fusionné) -->
@@ -189,11 +170,10 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
-import FearHopeTracker from '../components/FearHopeTracker.vue'
 import SceneModeSelector from '../components/SceneModeSelector.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import PcLivePanel from '../components/PcLivePanel.vue'
@@ -204,7 +184,6 @@ import EnvironmentPanel from '../components/EnvironmentPanel.vue'
 export default {
   name: 'EncounterLive',
   components: {
-    FearHopeTracker,
     SceneModeSelector,
     SpotlightToggle,
     PcLivePanel,
@@ -214,7 +193,6 @@ export default {
   },
   setup() {
     const store = useEncounterLiveStore()
-    const showHistory = ref(false)
 
     // Features contextuelles du PJ actif
     const activePcRef = computed(() => store.activePc)
@@ -237,7 +215,6 @@ export default {
 
     return {
       store,
-      showHistory,
       isPcActor,
       isTraversalMode,
       pcPrimary: pcFeatures.primaryFeatures,
@@ -363,23 +340,6 @@ export default {
 
 .enc-live__end-btn:hover {
   background: rgba(244, 67, 54, 0.1);
-}
-
-/* ── Toggle historique ── */
-
-.enc-live__toggle-history {
-  align-self: flex-start;
-  padding: 2px var(--space-sm);
-  border: none;
-  background: none;
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.enc-live__toggle-history:hover {
-  color: var(--color-text-secondary);
 }
 
 /* ── Sélecteurs (PJ+Spot + Adversaire) ── */
