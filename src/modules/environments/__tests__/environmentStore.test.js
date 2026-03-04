@@ -68,7 +68,7 @@ describe('environmentStore', () => {
     })
 
     it('filtre par impulsions', () => {
-      store.setSearch('corrupt')
+      store.setSearch('Convertir')
       const results = store.filteredEnvironments
       expect(results.length).toBeGreaterThan(0)
     })

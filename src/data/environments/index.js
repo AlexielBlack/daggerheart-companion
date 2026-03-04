@@ -1,6 +1,6 @@
 /**
  * @module environments/data
- * @description Environment data index — aggregates all tier data and provides constants.
+ * @description Index des données d'environnements — agrège tous les tiers et fournit les constantes.
  */
 
 import tier1 from './tier1.json'
@@ -8,10 +8,10 @@ import tier2 from './tier2.json'
 import tier3 from './tier3.json'
 import tier4 from './tier4.json'
 
-/** All environments from all tiers */
+/** Tous les environnements de tous les tiers */
 export const allEnvironments = [...tier1, ...tier2, ...tier3, ...tier4]
 
-/** Environment type constants */
+/** Constantes de type d'environnement */
 export const ENVIRONMENT_TYPES = [
   'Exploration',
   'Event',
@@ -19,10 +19,10 @@ export const ENVIRONMENT_TYPES = [
   'Traversal'
 ]
 
-/** Environment feature type constants */
+/** Constantes de type de feature d'environnement */
 export const FEATURE_TYPES = ['passive', 'action', 'reaction']
 
-/** Tier definitions with level ranges */
+/** Définitions des tiers avec plages de niveaux */
 export const TIERS = [
   { value: 1, label: 'Tier 1', levels: '1' },
   { value: 2, label: 'Tier 2', levels: '2–4' },
@@ -30,7 +30,7 @@ export const TIERS = [
   { value: 4, label: 'Tier 4', levels: '8–10' }
 ]
 
-/** Environment type emoji mapping */
+/** Emojis par type d'environnement */
 export const ENVIRONMENT_TYPE_ICONS = {
   Exploration: '🔍',
   Event: '⚡',
@@ -38,7 +38,15 @@ export const ENVIRONMENT_TYPE_ICONS = {
   Traversal: '🥾'
 }
 
-/** Environment statistics by tier — for scaling reference */
+/** Labels français pour les types d'environnement */
+export const ENVIRONMENT_TYPE_LABELS = {
+  Exploration: 'Exploration',
+  Event: 'Événement',
+  Social: 'Social',
+  Traversal: 'Traversée'
+}
+
+/** Statistiques par tier — référence pour le calibrage */
 export const TIER_BENCHMARKS = {
   1: { damageDice: '1d6+1 to 1d8+3', difficulty: 11 },
   2: { damageDice: '2d6+3 to 2d10+2', difficulty: 14 },

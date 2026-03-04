@@ -59,7 +59,7 @@
           :aria-pressed="selectedTypes.includes(type)"
           @click="$emit('toggle-type', type)"
         >
-          {{ typeIcons[type] }} {{ type }}
+          {{ typeIcons[type] }} {{ typeLabels[type] || type }}
         </button>
       </div>
     </fieldset>
@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { ENVIRONMENT_TYPE_ICONS } from '@data/environments'
+import { ENVIRONMENT_TYPE_ICONS, ENVIRONMENT_TYPE_LABELS } from '@data/environments'
 
 /**
  * @component EnvironmentFilters
@@ -158,6 +158,9 @@ export default {
   computed: {
     typeIcons() {
       return ENVIRONMENT_TYPE_ICONS
+    },
+    typeLabels() {
+      return ENVIRONMENT_TYPE_LABELS
     }
   }
 }

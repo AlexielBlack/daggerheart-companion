@@ -4,41 +4,58 @@
     "name": "Abandoned Grove",
     "tier": 1,
     "type": "Exploration",
-    "description": "A former druidic grove lying fallow and fully reclaimed by nature.",
-    "impulses": ["Draw in the curious", "Echo the past"],
+    "description": "Un ancien bosquet druidique laissé en jachère et entièrement reconquis par la nature.",
+    "impulses": [
+      "Attirer les curieux",
+      "Faire écho au passé"
+    ],
     "difficulty": 11,
     "potentialAdversaries": [
-      { "group": "Beasts", "names": ["Bear", "Dire Wolf", "Glass Snake"] },
-      { "group": "Grove Guardians", "names": ["Minor Treant", "Sylvan Soldier", "Young Dryad"] }
+      {
+        "group": "Beasts",
+        "names": [
+          "Bear",
+          "Dire Wolf",
+          "Glass Snake"
+        ]
+      },
+      {
+        "group": "Grove Guardians",
+        "names": [
+          "Minor Treant",
+          "Sylvan Soldier",
+          "Young Dryad"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Overgrown Battlefield",
         "type": "passive",
         "fearCost": null,
-        "description": "There has been a battle here. A PC can make an Instinct Roll to identify evidence of that fight. On a success with Hope, learn all three pieces of information below. On a success with Fear, learn two. On a failure, a PC can mark a Stress to learn one and gain advantage on the next action roll to investigate this environment. A PC with an appropriate background or Experience can learn an additional detail and ask a follow-up question about the scene and get a truthful (if not always complete) answer.\n• Traces of a battle (broken weapons and branches, gouges in the ground) litter the ground.\n• A moss-covered tree trunk is actually the corpse of a treant.\n• Still-standing trees are twisted in strange ways, as if by powerful magic.",
-        "questions": "Why did these groups come to blows? Why is the grove unused now?"
+        "description": "Une bataille a eu lieu ici. Un PJ peut faire un jet d’Instinct pour identifier des preuves de ce combat. Sur un succès avec Espoir, apprenez les trois informations ci-dessous. Sur un succès avec Peur, apprenez-en deux. Sur un échec, un PJ peut cocher un Stress pour en apprendre une et gagner l’avantage sur le prochain jet d’action pour enquêter sur cet environnement. Un PJ avec un historique ou une Expérience appropriée peut apprendre un détail supplémentaire et poser une question de suivi sur la scène et obtenir une réponse véridique (même si pas toujours complète).\n• Des traces de bataille (armes et branches brisées, entailles dans le sol) jonchent le terrain.\n• Un tronc d’arbre couvert de mousse est en réalité le cadavre d’un tréant.\n• Les arbres encore debout sont tordus de manière étrange, comme par une magie puissante.",
+        "questions": "Pourquoi ces groupes en sont-ils venus aux mains ? Pourquoi le bosquet est-il inutilisé maintenant ?"
       },
       {
         "name": "Barbed Vines",
         "type": "action",
         "fearCost": null,
-        "description": "Pick a point within the grove. All targets within Very Close range of that point must succeed on an Agility Reaction Roll or take 1d8+3 physical damage and become Restrained by barbed vines. Restrained lasts until they're freed with a successful Finesse or Strength roll or by dealing at least 6 damage to the vines.",
-        "questions": "How many vines are there? Where do they grab you? Do they pull you down or lift you off the ground?"
+        "description": "Choisissez un point dans le bosquet. Toutes les cibles à Portée Très Proche de ce point doivent réussir un jet de Réaction d’Agilité ou subir 1d8+3 dégâts physiques et devenir Entravées par des lianes barbelées. L’Entrave dure jusqu’à ce qu’elles soient libérées par un jet réussi de Finesse ou de Force ou en infligeant au moins 6 dégâts aux lianes.",
+        "questions": "Combien y a-t-il de lianes ? Où vous attrapent-elles ? Vous tirent-elles vers le bas ou vous soulèvent-elles du sol ?"
       },
       {
         "name": "You Are Not Welcome Here",
         "type": "action",
         "fearCost": null,
-        "description": "A Young Dryad, two Sylvan Soldiers, and a number of Minor Treants equal to the number of PCs appear to confront the party for their intrusion.",
-        "questions": "What are the grove guardians concealing? What threat to the forest could the PCs confront to appease the Dryad?"
+        "description": "Une Jeune Dryade, deux Sylvan Soldiers, et un nombre de Minor Treants égal au nombre de PJ apparaissent pour confronter le groupe pour leur intrusion.",
+        "questions": "Que dissimulent les gardiens du bosquet ? Quelle menace pour la forêt les PJ pourraient-ils affronter pour apaiser la Dryade ?"
       },
       {
         "name": "Defiler",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to summon a Minor Chaos Elemental drawn to the echoes of violence and discord. They appear within Far range of a chosen PC and immediately take the spotlight.",
-        "questions": "What color does the grass turn as the elemental appears? How does the chaos warp insects and small wildlife within the grove?"
+        "description": "Dépensez une Peur pour invoquer un Minor Chaos Elemental attiré par les échos de violence et de discorde. Il apparaît à Portée Lointaine d’un PJ choisi et prend immédiatement la vedette.",
+        "questions": "De quelle couleur l’herbe devient-elle quand l’élémentaire apparaît ? Comment le chaos déforme-t-il les insectes et la petite faune dans le bosquet ?"
       }
     ]
   },
@@ -47,27 +64,36 @@
     "name": "Ambushed",
     "tier": 1,
     "type": "Event",
-    "description": "An ambush is set to catch an unsuspecting party off-guard.",
-    "impulses": ["Overwhelm", "Scatter", "Surround"],
+    "description": "Une embuscade est tendue pour prendre un groupe imprudent au dépourvu.",
+    "impulses": [
+      "Submerger",
+      "Disperser",
+      "Encercler"
+    ],
     "difficulty": null,
-    "difficultySpecial": "Equals that of the adversary with the highest Difficulty (see Relative Strength).",
+    "difficultySpecial": "Égale celle de l’adversaire avec la Difficulté la plus élevée (voir Relative Strength).",
     "potentialAdversaries": [
-      { "group": null, "names": ["Any"] }
+      {
+        "group": null,
+        "names": [
+          "Any"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Relative Strength",
         "type": "passive",
         "fearCost": null,
-        "description": "The Difficulty of this environment equals that of the adversary with the highest Difficulty.",
-        "questions": "Who cues the ambush? What makes it clear they're in charge?"
+        "description": "La Difficulté de cet environnement est égale à celle de l’adversaire avec la Difficulté la plus élevée.",
+        "questions": "Qui donne le signal de l’embuscade ? Qu’est-ce qui rend évident qu’il est aux commandes ?"
       },
       {
         "name": "Surprise!",
         "type": "action",
         "fearCost": null,
-        "description": "The ambushers reveal themselves to the party, you gain 2 Fear, and the spotlight immediately shifts to one of the ambushing adversaries.",
-        "questions": "What do the ambushers want from the party? How do their tactics in the ambush reflect that?"
+        "description": "Les embusqués se révèlent au groupe, vous gagnez 2 Peur, et la vedette passe immédiatement à l’un des adversaires embusqués.",
+        "questions": "Que veulent les embusqués du groupe ? Comment leurs tactiques dans l’embuscade reflètent-elles cela ?"
       }
     ]
   },
@@ -76,27 +102,36 @@
     "name": "Ambushers",
     "tier": 1,
     "type": "Event",
-    "description": "An ambush is set by the PCs to catch unsuspecting adversaries off-guard.",
-    "impulses": ["Escape", "Group up", "Protect the most vulnerable"],
+    "description": "Une embuscade est tendue par les PJ pour prendre des adversaires imprudents au dépourvu.",
+    "impulses": [
+      "S’échapper",
+      "Se regrouper",
+      "Protéger le plus vulnérable"
+    ],
     "difficulty": null,
-    "difficultySpecial": "Equals that of the adversary with the highest Difficulty (see Relative Strength).",
+    "difficultySpecial": "Égale celle de l’adversaire avec la Difficulté la plus élevée (voir Relative Strength).",
     "potentialAdversaries": [
-      { "group": null, "names": ["Any"] }
+      {
+        "group": null,
+        "names": [
+          "Any"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Relative Strength",
         "type": "passive",
         "fearCost": null,
-        "description": "The Difficulty of this environment equals that of the adversary with the highest Difficulty.",
-        "questions": "Which adversary is the least prepared? Which one is the most?"
+        "description": "La Difficulté de cet environnement est égale à celle de l’adversaire avec la Difficulté la plus élevée.",
+        "questions": "Quel adversaire est le moins préparé ? Lequel l’est le plus ?"
       },
       {
         "name": "Where Did They Come From?",
         "type": "reaction",
         "fearCost": null,
-        "description": "When a PC starts the ambush on unsuspecting adversaries, you lose 2 Fear and the first attack roll a PC makes has advantage.",
-        "questions": "What are the adversaries in the middle of doing when the ambush starts? How does this impact their approach to the fight?"
+        "description": "Quand un PJ lance l’embuscade sur des adversaires sans méfiance, vous perdez 2 Peur et le premier jet d’attaque d’un PJ a l’avantage.",
+        "questions": "Que faisaient les adversaires quand l’embuscade a commencé ? Comment cela influence-t-il leur approche du combat ?"
       }
     ]
   },
@@ -105,41 +140,56 @@
     "name": "Bustling Marketplace",
     "tier": 1,
     "type": "Social",
-    "description": "The economic heart of the settlement, with local artisans, traveling merchants, and patrons across social classes.",
-    "impulses": ["Buy low and sell high", "Tempt and tantalize with wares from near and far"],
+    "description": "Le cœur économique de la colonie, avec des artisans locaux, des marchands itinérants et des clients de toutes classes sociales.",
+    "impulses": [
+      "Acheter bas et vendre haut",
+      "Tenter et séduire avec des marchandises de près et de loin"
+    ],
     "difficulty": 10,
     "potentialAdversaries": [
-      { "group": "Guards", "names": ["Bladed Guard", "Head Guard"] },
-      { "group": null, "names": ["Masked Thief", "Merchant"] }
+      {
+        "group": "Guards",
+        "names": [
+          "Bladed Guard",
+          "Head Guard"
+        ]
+      },
+      {
+        "group": null,
+        "names": [
+          "Masked Thief",
+          "Merchant"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Tip the Scales",
         "type": "passive",
         "fearCost": null,
-        "description": "PCs can gain advantage on a Presence Roll by offering a handful of gold as part of the interaction.",
-        "questions": "Will any coin be accepted, or only local currency? How overt are the PCs in offering this bribe?"
+        "description": "Les PJ peuvent gagner l’avantage sur un jet de Présence en offrant une poignée d’or dans le cadre de l’interaction.",
+        "questions": "N’importe quelle monnaie sera-t-elle acceptée, ou seulement la devise locale ? À quel point les PJ sont-ils ostensibles en offrant ce pot-de-vin ?"
       },
       {
         "name": "Unexpected Find",
         "type": "action",
         "fearCost": null,
-        "description": "Reveal to the PCs that one of the merchants has something they want or need, such as food from their home, a rare book, magical components, a dubious treasure map, or a magical key.",
-        "questions": "What cost beyond gold will the merchant ask for in exchange for this rarity?"
+        "description": "Révélez aux PJ que l’un des marchands possède quelque chose qu’ils veulent ou dont ils ont besoin, comme de la nourriture de chez eux, un livre rare, des composants magiques, une carte au trésor douteuse, ou une clé magique.",
+        "questions": "Quel prix au-delà de l’or le marchand demandera-t-il en échange de cette rareté ?"
       },
       {
         "name": "Sticky Fingers",
         "type": "action",
         "fearCost": null,
-        "description": "A thief tries to steal something from a PC. The PC must succeed on an Instinct Roll to notice the thief or lose an item of the GM's choice as the thief escapes to a Close distance. To retrieve the stolen item, the PCs must complete a Progress Countdown (6) to chase down the thief before the thief completes a Consequence Countdown (4) and escapes to their hideout.",
-        "questions": "What drove this person to pickpocketing? Where is the thief's hideout and how has it avoided notice?"
+        "description": "Un voleur essaie de dérober quelque chose à un PJ. Le PJ doit réussir un jet d’Instinct pour remarquer le voleur ou perdre un objet au choix du MJ tandis que le voleur s’échappe à Portée Proche. Pour récupérer l’objet volé, les PJ doivent compléter un Progress Countdown (6) pour rattraper le voleur avant qu’il ne complète un Consequence Countdown (4) et ne s’échappe vers sa cachette.",
+        "questions": "Qu’est-ce qui a poussé cette personne au vol à la tire ? Où se trouve la cachette du voleur et comment a-t-elle échappé aux regards ?"
       },
       {
         "name": "Crowd Closes In",
         "type": "reaction",
         "fearCost": null,
-        "description": "When one of the PCs splits from the group, the crowds shift and cut them off from the party.",
-        "questions": "Where does the crowd's movement carry them? How do they feel about being alone but surrounded?"
+        "description": "Quand l’un des PJ se sépare du groupe, la foule se déplace et le coupe du reste du groupe.",
+        "questions": "Où le mouvement de la foule l’emporte-t-il ? Que ressent-il à être seul mais entouré ?"
       }
     ]
   },
@@ -148,33 +198,44 @@
     "name": "Cliffside Ascent",
     "tier": 1,
     "type": "Traversal",
-    "description": "A steep, rocky cliffside tall enough to make traversal dangerous.",
-    "impulses": ["Cast the unready down to a rocky doom", "Draw people in with promise of what lies at the top"],
+    "description": "Une falaise escarpée et rocheuse suffisamment haute pour rendre la traversée dangereuse.",
+    "impulses": [
+      "Précipiter les imprudents vers une mort rocheuse",
+      "Attirer les gens avec la promesse de ce qui se trouve au sommet"
+    ],
     "difficulty": 12,
     "potentialAdversaries": [
-      { "group": null, "names": ["Construct", "Deeproot Defender", "Giant Scorpion", "Glass Snake"] }
+      {
+        "group": null,
+        "names": [
+          "Construct",
+          "Deeproot Defender",
+          "Giant Scorpion",
+          "Glass Snake"
+        ]
+      }
     ],
     "features": [
       {
         "name": "The Climb",
         "type": "passive",
         "fearCost": null,
-        "description": "Climbing up the cliffside uses a Progress Countdown (12). It ticks down according to the following criteria when the PCs make an action roll to climb:\n• Critical Success: Tick down 3\n• Success with Hope: Tick down 2\n• Success with Fear: Tick down 1\n• Failure with Hope: No advancement\n• Failure with Fear: Tick up 1\nWhen the countdown triggers, the party has made it to the top of the cliff.",
-        "questions": "What strange formations are the stones arranged in? What ominous warnings did previous adventurers leave?"
+        "description": "L’escalade de la falaise utilise un Progress Countdown (12). Il décrémente selon les critères suivants quand les PJ font un jet d’action pour grimper :\n• Succès Critique : Décrémente de 3\n• Succès avec Espoir : Décrémente de 2\n• Succès avec Peur : Décrémente de 1\n• Échec avec Espoir : Pas de progression\n• Échec avec Peur : Incrémente de 1\nQuand le countdown se déclenche, le groupe a atteint le sommet de la falaise.",
+        "questions": "En quelles formations étranges les pierres sont-elles disposées ? Quels avertissements sinistres les aventuriers précédents ont-ils laissés ?"
       },
       {
         "name": "Pitons Left Behind",
         "type": "passive",
         "fearCost": null,
-        "description": "Previous climbers left behind large metal rods that climbers can use to aid their ascent. If a PC using the pitons fails an action roll to climb, they can mark a Stress instead of ticking the countdown up.",
-        "questions": "What do the shape and material of these pitons tell you about the previous climbers? How far apart are they from one another?"
+        "description": "Des grimpeurs précédents ont laissé de grandes tiges métalliques que les grimpeurs peuvent utiliser pour faciliter leur ascension. Si un PJ utilisant les pitons échoue un jet d’action pour grimper, il peut cocher un Stress au lieu d’incrémenter le countdown.",
+        "questions": "Que vous disent la forme et le matériau de ces pitons sur les grimpeurs précédents ? À quelle distance les uns des autres se trouvent-ils ?"
       },
       {
         "name": "Fall",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to have a PC's handhold fail, plummeting them toward the ground. If they aren't saved on the next action, they hit the ground and tick up the countdown by 2. The PC takes 1d12 physical damage if the countdown is between 8 and 12, 2d12 between 4 and 7, and 3d12 at 3 or lower.",
-        "questions": "How can you tell many others have fallen here before? What lives in these walls that might try to scare adventurers into falling for an easy meal?"
+        "description": "Dépensez une Peur pour faire lâcher la prise d’un PJ, le précipitant vers le sol. S’il n’est pas sauvé lors de la prochaine action, il touche le sol et incrémente le countdown de 2. Le PJ subit 1d12 dégâts physiques si le countdown est entre 8 et 12, 2d12 entre 4 et 7, et 3d12 à 3 ou moins.",
+        "questions": "Comment peut-on voir que beaucoup d’autres sont tombés ici avant ? Qu’est-ce qui vit dans ces parois et pourrait effrayer les aventuriers pour un repas facile ?"
       }
     ]
   },
@@ -183,49 +244,71 @@
     "name": "Local Tavern",
     "tier": 1,
     "type": "Social",
-    "description": "A lively tavern that serves as the social hub for its town.",
-    "impulses": ["Provide opportunities for adventurers", "Nurture community"],
+    "description": "Une taverne animée qui sert de centre social pour sa ville.",
+    "impulses": [
+      "Offrir des opportunités aux aventuriers",
+      "Nourrir la communauté"
+    ],
     "difficulty": 10,
     "potentialAdversaries": [
-      { "group": "Guards", "names": ["Bladed Guard", "Head Guard"] },
-      { "group": "Mercenaries", "names": ["Harrier", "Sellsword", "Spellblade", "Weaponmaster"] },
-      { "group": null, "names": ["Merchant"] }
+      {
+        "group": "Guards",
+        "names": [
+          "Bladed Guard",
+          "Head Guard"
+        ]
+      },
+      {
+        "group": "Mercenaries",
+        "names": [
+          "Harrier",
+          "Sellsword",
+          "Spellblade",
+          "Weaponmaster"
+        ]
+      },
+      {
+        "group": null,
+        "names": [
+          "Merchant"
+        ]
+      }
     ],
     "features": [
       {
         "name": "What's the Talk of the Town?",
         "type": "passive",
         "fearCost": null,
-        "description": "A PC can ask the bartender, staff, or patrons about local events, rumors, and potential work with a Presence Roll. On a success, they can pick two of the below details to learn—or three if they critically succeed. On a failure, they can pick one and mark a Stress as the local carries on about something irrelevant.\n• A fascinating rumor with a connection to a PC's background\n• A promising job for the party involving a nearby threat or situation\n• Local folklore that relates to something they've seen\n• Town gossip that hints at a community problem",
-        "questions": "Who has what kind of information? What gossip do the locals start spreading about the PCs?"
+        "description": "Un PJ peut interroger le barman, le personnel ou les clients sur les événements locaux, les rumeurs et le travail potentiel avec un jet de Présence. Sur un succès, il peut choisir deux des détails ci-dessous — ou trois en cas de succès critique. Sur un échec, il peut en choisir un et cocher un Stress tandis que le local bavarde sur quelque chose de non pertinent.\n• Une rumeur fascinante en lien avec l’historique d’un PJ\n• Un travail prometteur pour le groupe impliquant une menace ou situation proche\n• Du folklore local en rapport avec quelque chose qu’ils ont vu\n• Des ragots de ville qui suggèrent un problème communautaire",
+        "questions": "Qui détient quel type d’information ? Quels ragots les locaux commencent-ils à répandre sur les PJ ?"
       },
       {
         "name": "Sing For Your Supper",
         "type": "passive",
         "fearCost": null,
-        "description": "A PC can perform one time for the guests by making a Presence Roll. On a success, they earn 1d4 handfuls of gold (2d4 if they critically succeed). On a failure, they mark a Stress.",
-        "questions": "What piece do you perform? What does that piece mean to you? When's the last time you performed it for a crowd?"
+        "description": "Un PJ peut se produire une fois devant les convives en faisant un jet de Présence. Sur un succès, il gagne 1d4 poignées d’or (2d4 en cas de succès critique). Sur un échec, il coche un Stress.",
+        "questions": "Quel morceau interprétez-vous ? Que signifie ce morceau pour vous ? Quand l’avez-vous interprété pour la dernière fois devant un public ?"
       },
       {
         "name": "Mysterious Stranger",
         "type": "action",
         "fearCost": null,
-        "description": "Reveal a stranger concealing their identity, lurking in a shaded booth.",
-        "questions": "What do they want? What's their impression of the PCs? What mannerisms or accessories do they have?"
+        "description": "Révélez un étranger dissimulant son identité, tapi dans un box ombragé.",
+        "questions": "Que veut-il ? Quelle est son impression des PJ ? Quels manières ou accessoires a-t-il ?"
       },
       {
         "name": "Someone Comes to Town",
         "type": "action",
         "fearCost": null,
-        "description": "Introduce a significant NPC who wants to hire the party for something or who relates to a PC's background.",
-        "questions": "Did they know the PCs were here? What do they want in this town?"
+        "description": "Introduisez un PNJ important qui veut engager le groupe pour quelque chose ou qui a un lien avec l’historique d’un PJ.",
+        "questions": "Savait-il que les PJ étaient ici ? Que veut-il dans cette ville ?"
       },
       {
         "name": "Bar Fight!",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to have a bar fight erupt in the tavern. When a PC tries to move through the tavern while the fight persists, they must succeed on an Agility or Presence Roll or take 1d6+2 physical damage from a wild swing or thrown object. A PC can try to activate this feature by succeeding on an action roll that would provoke tavern patrons.",
-        "questions": "Who started the fight? What will it take to stop it?"
+        "description": "Dépensez une Peur pour déclencher une bagarre dans la taverne. Quand un PJ essaie de traverser la taverne pendant que la bagarre persiste, il doit réussir un jet d’Agilité ou de Présence ou subir 1d6+2 dégâts physiques d’un coup sauvage ou d’un objet lancé. Un PJ peut essayer de déclencher cette feature en réussissant un jet d’action qui provoquerait les habitués de la taverne.",
+        "questions": "Qui a commencé la bagarre ? Que faudra-t-il pour l’arrêter ?"
       }
     ]
   },
@@ -234,48 +317,67 @@
     "name": "Outpost Town",
     "tier": 1,
     "type": "Social",
-    "description": "A small town on the outskirts of a nation or region, close to a dungeon, tombs, or other adventuring destinations.",
-    "impulses": ["Drive the desperate to certain doom", "Profit off of ragged hope"],
+    "description": "Une petite ville aux confins d’une nation ou région, proche d’un donjon, de tombeaux ou d’autres destinations d’aventure.",
+    "impulses": [
+      "Pousser les désespérés vers une mort certaine",
+      "Profiter d’un espoir en lambeaux"
+    ],
     "difficulty": 12,
     "potentialAdversaries": [
-      { "group": "Jagged Knife Bandits", "names": ["Hexer", "Kneebreaker", "Lackey", "Lieutenant", "Shadow", "Sniper"] },
-      { "group": null, "names": ["Masked Thief", "Merchant"] }
+      {
+        "group": "Jagged Knife Bandits",
+        "names": [
+          "Hexer",
+          "Kneebreaker",
+          "Lackey",
+          "Lieutenant",
+          "Shadow",
+          "Sniper"
+        ]
+      },
+      {
+        "group": null,
+        "names": [
+          "Masked Thief",
+          "Merchant"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Rumors Abound",
         "type": "passive",
         "fearCost": null,
-        "description": "Gossip is the fastest-traveling currency in the realm. A PC can inquire about major events by making a Presence Roll. What they learn depends on the outcome of their roll:\n• Critical Success: Learn about two major events. The PC can ask one follow-up question about one of the rumors and get a truthful (if not always complete) answer.\n• Success with Hope: Learn about two events, at least one of which is relevant to the character's background.\n• Success with Fear: Learn an alarming rumor related to the character's background.\n• Any Failure: The locals respond poorly to their inquiries. The PC must mark a Stress to learn one relevant rumor.",
-        "questions": "What news do the PCs have that they could pass along to curious travelers? What do the locals think about these events?"
+        "description": "Les ragots sont la monnaie qui circule le plus vite dans le royaume. Un PJ peut se renseigner sur les événements majeurs en faisant un jet de Présence. Ce qu’il apprend dépend du résultat de son jet :\n• Succès Critique : Apprenez deux événements majeurs. Le PJ peut poser une question de suivi sur l’une des rumeurs et obtenir une réponse véridique (même si pas toujours complète).\n• Succès avec Espoir : Apprenez deux événements, dont au moins un en rapport avec l’historique du personnage.\n• Succès avec Peur : Apprenez une rumeur alarmante en lien avec l’historique du personnage.\n• Tout Échec : Les locaux réagissent mal à ses questions. Le PJ doit cocher un Stress pour apprendre une rumeur pertinente.",
+        "questions": "Quelles nouvelles les PJ ont-ils qu’ils pourraient transmettre aux voyageurs curieux ? Que pensent les locaux de ces événements ?"
       },
       {
         "name": "Society of the Broken Compass",
         "type": "passive",
         "fearCost": null,
-        "description": "An adventuring society maintains a chapterhouse here, where heroes trade boasts and rumors, drink to their imagined successes, and scheme to undermine their rivals.",
-        "questions": "What boasts do the adventurers here make, and which do you think are true?"
+        "description": "Une société d’aventuriers maintient une maison de chapitre ici, où les héros échangent vantardises et rumeurs, boivent à leurs succès imaginés et complotent pour saper leurs rivaux.",
+        "questions": "Quelles vantardises les aventuriers ici font-ils, et lesquelles pensez-vous être vraies ?"
       },
       {
         "name": "Rival Party",
         "type": "passive",
         "fearCost": null,
-        "description": "Another adventuring party is here, seeking the same treasure or leads as the PCs.",
-        "questions": "Which PC has a connection to one of the rival party members? Do they approach the PC first or do they wait for the PC to move?"
+        "description": "Un autre groupe d’aventuriers est ici, cherchant le même trésor ou les mêmes pistes que les PJ.",
+        "questions": "Quel PJ a un lien avec l’un des membres du groupe rival ? Approchent-ils le PJ en premier ou attendent-ils que le PJ fasse le premier pas ?"
       },
       {
         "name": "It'd Be a Shame If Something Happened to Your Store",
         "type": "action",
         "fearCost": null,
-        "description": "The PCs witness as agents of a local crime boss shake down a general goods store.",
-        "questions": "What trouble does it cause if the PCs intervene?"
+        "description": "Les PJ sont témoins tandis que des agents d’un boss du crime local rackettent un magasin de marchandises générales.",
+        "questions": "Quels ennuis cela cause-t-il si les PJ interviennent ?"
       },
       {
         "name": "Wrong Place, Wrong Time",
         "type": "reaction",
         "fearCost": 1,
-        "description": "At night, or when the party is alone in a back alley, you can spend a Fear to introduce a group of thieves who try to rob them.",
-        "questions": "What are the thieves after? What happens if the PCs hand over what's demanded?"
+        "description": "La nuit, ou quand le groupe est seul dans une ruelle, vous pouvez dépenser une Peur pour introduire un groupe de voleurs qui tente de les détrousser.",
+        "questions": "Que cherchent les voleurs ? Que se passe-t-il si les PJ remettent ce qui est demandé ?"
       }
     ]
   },
@@ -284,34 +386,54 @@
     "name": "Raging River",
     "tier": 1,
     "type": "Traversal",
-    "description": "A swift-moving river without a bridge crossing, deep enough to sweep away most people.",
-    "impulses": ["Bar crossing", "Carry away the unready", "Divide the land"],
+    "description": "Une rivière au courant rapide sans pont, assez profonde pour emporter la plupart des gens.",
+    "impulses": [
+      "Barrer le passage",
+      "Emporter les imprudents",
+      "Diviser la terre"
+    ],
     "difficulty": 10,
     "potentialAdversaries": [
-      { "group": "Beasts", "names": ["Bear", "Glass Snake"] },
-      { "group": "Jagged Knife Bandits", "names": ["Hexer", "Kneebreaker", "Lackey", "Lieutenant", "Shadow", "Sniper"] }
+      {
+        "group": "Beasts",
+        "names": [
+          "Bear",
+          "Glass Snake"
+        ]
+      },
+      {
+        "group": "Jagged Knife Bandits",
+        "names": [
+          "Hexer",
+          "Kneebreaker",
+          "Lackey",
+          "Lieutenant",
+          "Shadow",
+          "Sniper"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Dangerous Crossing",
         "type": "passive",
         "fearCost": null,
-        "description": "Crossing the river requires the party to complete a Progress Countdown (4). A PC who rolls a failure with Fear is immediately targeted by the \"Undertow\" action without requiring a Fear to be spent on the feature.",
-        "questions": "Have any of the PCs forded rivers like this before? Are any of them afraid of drowning?"
+        "description": "Traverser la rivière nécessite que le groupe complète un Progress Countdown (4). Un PJ qui obtient un échec avec Peur est immédiatement ciblé par l’action « Undertow » sans nécessiter de dépenser une Peur pour la feature.",
+        "questions": "Des PJ ont-ils déjà traversé des rivières comme celle-ci ? Certains d’entre eux ont-ils peur de la noyade ?"
       },
       {
         "name": "Undertow",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to catch a PC in the undertow. They must make an Agility Reaction Roll. On a failure, they take 1d6+1 physical damage and are moved a Close distance down the river, becoming Vulnerable until they get out of the river. On a success, they must mark a Stress.",
-        "questions": "What trinkets and baubles lie along the bottom of the riverbed? Do predators swim these rivers?"
+        "description": "Dépensez une Peur pour attraper un PJ dans le courant sous-marin. Il doit faire un jet de Réaction d’Agilité. Sur un échec, il subit 1d6+1 dégâts physiques et est déplacé à Portée Proche en aval de la rivière, devenant Vulnérable jusqu’à ce qu’il sorte de la rivière. Sur un succès, il doit cocher un Stress.",
+        "questions": "Quels bibelots et babioles reposent au fond du lit de la rivière ? Des prédateurs nagent-ils dans ces eaux ?"
       },
       {
         "name": "Patient Hunter",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to summon a Glass Snake within Close range of a chosen PC. The Snake appears in or near the river and immediately takes the spotlight to use their \"Spinning Serpent\" action.",
-        "questions": "What treasures does the beast have in their burrow? What travelers have already fallen victim to this predator?"
+        "description": "Dépensez une Peur pour invoquer un Glass Snake à Portée Proche d’un PJ choisi. Le serpent apparaît dans ou près de la rivière et prend immédiatement la vedette pour utiliser son action « Spinning Serpent ».",
+        "questions": "Quels trésors la bête a-t-elle dans son terrier ? Quels voyageurs ont déjà été victimes de ce prédateur ?"
       }
     ]
   }

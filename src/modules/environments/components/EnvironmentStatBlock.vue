@@ -27,7 +27,7 @@
           Tier {{ environment.tier }}
         </span>
         <span class="env-stat-block__type">
-          {{ typeIcon }} {{ environment.type }}
+          {{ typeIcon }} {{ typeLabel }}
         </span>
       </div>
 
@@ -103,7 +103,7 @@
 
 <script>
 import EnvironmentFeatureBlock from './EnvironmentFeatureBlock.vue'
-import { ENVIRONMENT_TYPE_ICONS } from '@data/environments'
+import { ENVIRONMENT_TYPE_ICONS, ENVIRONMENT_TYPE_LABELS } from '@data/environments'
 
 /**
  * @component EnvironmentStatBlock
@@ -126,6 +126,9 @@ export default {
   computed: {
     typeIcon() {
       return ENVIRONMENT_TYPE_ICONS[this.environment.type] || '📍'
+    },
+    typeLabel() {
+      return ENVIRONMENT_TYPE_LABELS[this.environment.type] || this.environment.type
     }
   }
 }

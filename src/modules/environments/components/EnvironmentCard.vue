@@ -2,7 +2,7 @@
   <button
     class="env-card card"
     :class="{ 'env-card--selected': selected }"
-    :aria-label="`${environment.name} — Tier ${environment.tier} ${environment.type}`"
+    :aria-label="`${environment.name} — Tier ${environment.tier} ${typeLabel}`"
     :aria-pressed="selected"
     @click="$emit('select', environment.id)"
   >
@@ -14,7 +14,7 @@
         T{{ environment.tier }}
       </span>
       <span class="env-card__type">
-        {{ typeIcon }} {{ environment.type }}
+        {{ typeIcon }} {{ typeLabel }}
       </span>
     </div>
 
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { ENVIRONMENT_TYPE_ICONS } from '@data/environments'
+import { ENVIRONMENT_TYPE_ICONS, ENVIRONMENT_TYPE_LABELS } from '@data/environments'
 
 /**
  * @component EnvironmentCard
@@ -75,6 +75,9 @@ export default {
   computed: {
     typeIcon() {
       return ENVIRONMENT_TYPE_ICONS[this.environment.type] || '📍'
+    },
+    typeLabel() {
+      return ENVIRONMENT_TYPE_LABELS[this.environment.type] || this.environment.type
     },
     difficultyLabel() {
       return this.environment.difficulty

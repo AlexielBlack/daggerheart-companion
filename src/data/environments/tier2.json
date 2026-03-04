@@ -4,40 +4,51 @@
     "name": "Cult Ritual",
     "tier": 2,
     "type": "Event",
-    "description": "A Fallen cult assembles around a sigil of the defeated gods and a bonfire that burns a sickly shade of green.",
-    "impulses": ["Profane the land", "Unite the Mortal Realm with the Circles Below"],
+    "description": "Un culte tente de mener à bien un rituel ténébreux. Les PJ doivent intervenir avant que le rituel ne s’achève.",
+    "impulses": [
+      "Compléter le rituel",
+      "Convertir les intrus"
+    ],
     "difficulty": 14,
     "potentialAdversaries": [
-      { "group": "Cult of the Fallen", "names": ["Cult Adept", "Cult Fang", "Cult Initiate", "Secret-Keeper"] }
+      {
+        "group": "Cult of the Fallen",
+        "names": [
+          "Cult Adept",
+          "Cult Fang",
+          "Cult Initiate",
+          "Secret-Keeper"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Desecrated Ground",
         "type": "passive",
         "fearCost": null,
-        "description": "Cultists dedicated this place to the Fallen Gods, and their foul influence seeps into it. Reduce the PCs' Hope Die to a d10 while in this environment. The desecration can be removed with a Progress Countdown (6).",
-        "questions": "How do the PCs first notice that something is wrong about this place? What fears resurface while hope is kept at bay?"
+        "description": "Les cultistes ont dédié ce lieu aux Dieux Déchus, et leur influence néfaste s’y infiltre. Réduisez le Dé d’Espoir des PJ à un d10 tant qu’ils sont dans cet environnement. La profanation peut être retirée avec un Progress Countdown (6).",
+        "questions": "Comment les PJ remarquent-ils en premier que quelque chose ne va pas dans ce lieu ? Quelles peurs refont surface quand l’espoir est maintenu à distance ?"
       },
       {
         "name": "Blasphemous Might",
         "type": "action",
         "fearCost": null,
-        "description": "A portion of the ritual's power is diverted into a cult member to fight off interlopers. Choose one adversary to become Imbued with terrible magic until the scene ends or they're defeated. An Imbued adversary immediately takes the spotlight and gains one of the following benefits, or all three if you spend a Fear:\n• They gain advantage on all attacks.\n• They deal an extra 1d10 damage on a successful attack.\n• They gain the following feature: Relentless (2) - Passive. This adversary can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
-        "questions": "How does the enemy change in appearance? What fears do their blows bring to the surface?"
+        "description": "Une partie du pouvoir du rituel est détournée vers un membre du culte pour repousser les intrus. Choisissez un adversaire pour qu’il devienne Imprégné d’une magie terrible jusqu’à la fin de la scène ou sa défaite. Un adversaire Imprégné prend immédiatement la vedette et gagne l’un des bénéfices suivants, ou les trois si vous dépensez une Peur :\n• Il gagne l’avantage sur toutes ses attaques.\n• Il inflige 1d10 dégâts supplémentaires sur une attaque réussie.\n• Il gagne la feature suivante : Relentless (2) - Passive. Cet adversaire peut recevoir la vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour lui donner la vedette.",
+        "questions": "Comment l’ennemi change-t-il d’apparence ? Quelles peurs leurs coups font-ils remonter à la surface ?"
       },
       {
         "name": "The Summoning",
         "type": "reaction",
         "fearCost": null,
-        "description": "Countdown (6). When the PCs enter the scene or the cult begins the ritual to summon a demon, activate the countdown. Designate one adversary to lead the ritual. The countdown ticks down when a PC rolls with Fear. When it triggers, summon a Minor Demon within Very Close range of the ritual's leader. If the leader is defeated, the countdown ends with no effect as the ritual fails.",
-        "questions": "What will the cult do with this leashed demon if they succeed? What will they try to summon next?"
+        "description": "Countdown (6). Quand les PJ entrent dans la scène ou que le culte commence le rituel pour invoquer un démon, activez le countdown. Désignez un adversaire pour diriger le rituel. Le countdown se décrémente quand un PJ obtient un résultat avec Peur. Quand il se déclenche, invoquez un Minor Demon à Portée Très Proche du leader du rituel. Si le leader est vaincu, le countdown se termine sans effet car le rituel échoue.",
+        "questions": "Que fera le culte avec ce démon enchaîné s’il réussit ? Qu’essaieront-ils d’invoquer ensuite ?"
       },
       {
         "name": "Complete the Ritual",
         "type": "reaction",
         "fearCost": null,
-        "description": "If the ritual's leader is targeted by an attack or spell, an ally within Very Close range of them can mark a Stress to be targeted by that attack or spell instead.",
-        "questions": "What does it feel like to see such devotion turned to the pursuit of fear and domination?"
+        "description": "Si le leader du rituel est ciblé par une attaque ou un sort, un allié à Portée Très Proche de lui peut cocher un Stress pour être ciblé par cette attaque ou ce sort à sa place.",
+        "questions": "Que ressent-on en voyant une telle dévotion tournée vers la poursuite de la peur et de la domination ?"
       }
     ]
   },
@@ -46,40 +57,51 @@
     "name": "Hallowed Temple",
     "tier": 2,
     "type": "Social",
-    "description": "A bustling but well-kept temple that provides healing and hosts regular services, overseen by a priest or seraph.",
-    "impulses": ["Connect the Mortal Realm with the Hallows Above", "Display the power of the divine", "Provide aid and succor to the faithful"],
+    "description": "Un temple sacré dédié à une divinité bienveillante, offrant refuge et guérison à ceux qui le méritent.",
+    "impulses": [
+      "Purifier le souillé",
+      "Protéger le sacré",
+      "Éprouver la valeur des visiteurs"
+    ],
     "difficulty": 13,
     "potentialAdversaries": [
-      { "group": "Guards", "names": ["Archer Guard", "Bladed Guard", "Head Guard"] }
+      {
+        "group": "Guards",
+        "names": [
+          "Archer Guard",
+          "Bladed Guard",
+          "Head Guard"
+        ]
+      }
     ],
     "features": [
       {
         "name": "A Place of Healing",
         "type": "passive",
         "fearCost": null,
-        "description": "A PC who takes a rest in the Hallowed Temple automatically clears all HP.",
-        "questions": "What does the incense smell like? What kinds of songs do the acolytes sing?"
+        "description": "Un PJ qui prend un repos dans le Temple Sacré efface automatiquement tous ses PV.",
+        "questions": "Quelle est l’odeur de l’encens ? Quel genre de chants les acolytes entonnent-ils ?"
       },
       {
         "name": "Divine Guidance",
         "type": "passive",
         "fearCost": null,
-        "description": "A PC who prays to a deity while in the Hallowed Temple can make an Instinct Roll to receive answers. If the god they beseech isn't welcome in this temple, the roll is made with disadvantage.\n• Critical Success: The PC gains clear information. Additionally, they gain 1d4 Hope, which can be distributed between the party if they share the vision and guidance they received.\n• Success with Hope: The PC receives clear information.\n• Success with Fear: The PC receives brief flashes of insight and an emotional impression conveying an answer.\n• Any Failure: The PC receives only vague flashes. They can mark a Stress to receive one clear image without context.",
-        "questions": "What does it feel like as you are touched by this vision? What feeling lingers after the images have passed?"
+        "description": "Un PJ qui prie une divinité dans le Temple Sacré peut faire un jet d’Instinct pour recevoir des réponses. Si le dieu qu’il implore n’est pas bienvenu dans ce temple, le jet est fait avec un désavantage.\n• Succès Critique : Le PJ obtient des informations claires. De plus, il gagne 1d4 Espoir, qui peuvent être répartis entre le groupe s’il partage la vision et les conseils reçus.\n• Succès avec Espoir : Le PJ reçoit des informations claires.\n• Succès avec Peur : Le PJ reçoit de brefs éclairs de compréhension et une impression émotionnelle transmettant une réponse.\n• Tout Échec : Le PJ ne reçoit que des éclairs vagues. Il peut cocher un Stress pour recevoir une image claire sans contexte.",
+        "questions": "Que ressentez-vous en étant touché par cette vision ? Quel sentiment persiste après que les images se sont dissipées ?"
       },
       {
         "name": "Relentless Hope",
         "type": "reaction",
         "fearCost": null,
-        "description": "Once per scene, each PC can mark a Stress to turn a result with Fear into a result with Hope.",
-        "questions": "What emotions or memories do you connect with when fear presses in?"
+        "description": "Une fois par scène, chaque PJ peut cocher un Stress pour transformer un résultat avec Peur en un résultat avec Espoir.",
+        "questions": "À quelles émotions ou souvenirs vous raccrochez-vous quand la peur vous oppresse ?"
       },
       {
         "name": "Divine Censure",
         "type": "reaction",
         "fearCost": 1,
-        "description": "When the PCs have trespassed, blasphemed, or offended the clergy, you can spend a Fear to summon a High Seraph and 1d4 Bladed Guards within Close range of the senior priest to reinforce their will.",
-        "questions": "What symbols or icons do they bear that signal they are anointed agents of the divinity? Who leads the group and what led them to this calling?"
+        "description": "Quand les PJ ont transgressé, blasphémé ou offensé le clergé, vous pouvez dépenser une Peur pour invoquer un High Seraph et 1d4 Bladed Guards à Portée Proche du prêtre principal pour faire respecter leur volonté.",
+        "questions": "Quels symboles ou icônes portent-ils signalant qu’ils sont des agents consacrés de la divinité ? Qui dirige le groupe et qu’est-ce qui l’a mené à cette vocation ?"
       }
     ]
   },
@@ -88,41 +110,56 @@
     "name": "Haunted City",
     "tier": 2,
     "type": "Exploration",
-    "description": "An abandoned city populated by the restless spirits of eras past.",
-    "impulses": ["Misdirect and disorient", "Replay apocalypses both public and personal"],
+    "description": "Une ville en ruines hantée par des esprits et des présences surnaturelles.",
+    "impulses": [
+      "Piéger les vivants",
+      "Rejouer les tragédies du passé"
+    ],
     "difficulty": 14,
     "potentialAdversaries": [
-      { "group": "Ghosts", "names": ["Spectral Archer", "Spectral Captain", "Spectral Guardian"] },
-      { "group": null, "names": ["Ghostly versions of other adversaries (see Ghostly Form)"] }
+      {
+        "group": "Ghosts",
+        "names": [
+          "Spectral Archer",
+          "Spectral Captain",
+          "Spectral Guardian"
+        ]
+      },
+      {
+        "group": null,
+        "names": [
+          "Ghostly versions of other adversaries (see Ghostly Form)"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Buried Knowledge",
         "type": "passive",
         "fearCost": null,
-        "description": "The city has countless mysteries to unfold. A PC who seeks knowledge about the fallen city can make an Instinct or Knowledge Roll to learn about this place and discover (potentially haunted) loot.\n• Critical Success: Gain valuable information and a related useful item.\n• Success with Hope: Gain valuable information.\n• Success with Fear: Uncover vague or incomplete information.\n• Any Failure: Mark a Stress to find a lead after an exhaustive search.",
-        "questions": "What greater secrets does the city contain? Why have so many ghosts lingered here? What doomed adventurers have met a bad fate here already?"
+        "description": "La ville recèle d’innombrables mystères à découvrir. Un PJ qui cherche des connaissances sur la ville déchue peut faire un jet d’Instinct ou de Savoir pour en apprendre davantage et découvrir du butin (potentiellement hanté).\n• Succès Critique : Obtenez une information précieuse et un objet utile lié.\n• Succès avec Espoir : Obtenez une information précieuse.\n• Succès avec Peur : Découvrez une information vague ou incomplète.\n• Tout Échec : Cochez un Stress pour trouver une piste après une recherche exhaustive.",
+        "questions": "Quels secrets plus profonds la ville contient-elle ? Pourquoi tant de fantômes persistent-ils ici ? Quels aventuriers condamnés ont déjà connu un triste sort ici ?"
       },
       {
         "name": "Ghostly Form",
         "type": "passive",
         "fearCost": null,
-        "description": "Adversaries who appear here are of a ghostly form. They have resistance to physical damage and can mark a Stress to move up to Close range through solid objects.",
-        "questions": "What injuries to their physical form speak to their cause of death? What unfulfilled purpose holds them in the Mortal Plane?"
+        "description": "Les adversaires qui apparaissent ici sont sous forme spectrale. Ils ont une résistance aux dégâts physiques et peuvent cocher un Stress pour se déplacer à Portée Proche à travers les objets solides.",
+        "questions": "Quelles blessures sur leur forme physique témoignent de leur cause de mort ? Quel but inachevé les retient dans le Plan Mortel ?"
       },
       {
         "name": "Dead Ends",
         "type": "action",
         "fearCost": null,
-        "description": "The ghosts of an earlier era manifest scenes from their bygone era, such as a street festival, a revolution, or a heist. These hauntings change the layout of the city around the PCs, blocking the way behind them, forcing a detour, or presenting them with a challenge, such as mistaking them for rival thieves during the heist.",
-        "questions": "What do the ghosts want from you? What do you need from them?"
+        "description": "Les fantômes d’une époque antérieure manifestent des scènes de leur ère révolue, comme un festival de rue, une révolution ou un cambriolage. Ces hantises modifient la disposition de la ville autour des PJ, bloquant le chemin derrière eux, forçant un détour, ou leur présentant un défi, comme les prendre pour des voleurs rivaux pendant le cambriolage.",
+        "questions": "Que veulent les fantômes de vous ? De quoi avez-vous besoin d’eux ?"
       },
       {
         "name": "Apocalypse Then",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to manifest the echo of a past disaster that ravaged the city. Activate a Progress Countdown (5) as the disaster replays around the PCs. To complete the countdown and escape the catastrophe, the PCs must overcome threats such as rampaging fires, stampeding civilians, collapsing buildings, or crumbling streets, while recalling history and finding clues to escape the inevitable.",
-        "questions": "Is this the disaster that led the city to be abandoned? What is known about this disaster, and how could that help the PCs escape?"
+        "description": "Dépensez une Peur pour manifester l’écho d’une catastrophe passée qui a ravagé la ville. Activez un Progress Countdown (5) tandis que la catastrophe se rejoue autour des PJ. Pour compléter le countdown et échapper à la catastrophe, les PJ doivent surmonter des menaces comme des incendies déchaînés, des civils en panique, des bâtiments qui s’effondrent ou des rues qui s’écroulent, tout en se remémorant l’histoire et en trouvant des indices pour échapper à l’inévitable.",
+        "questions": "Est-ce la catastrophe qui a conduit à l’abandon de la ville ? Que sait-on de cette catastrophe, et comment cela pourrait-il aider les PJ à s’échapper ?"
       }
     ]
   },
@@ -131,41 +168,59 @@
     "name": "Mountain Pass",
     "tier": 2,
     "type": "Traversal",
-    "description": "Stony peaks that pierce the clouds, with a twisting path winding its way up and over through many switchbacks.",
-    "impulses": ["Exact a chilling toll in supplies and stamina", "Reveal magical tampering", "Slow down travel"],
+    "description": "Un col de montagne étroit et traître, exposé aux éléments et aux prédateurs qui rôdent dans les hauteurs.",
+    "impulses": [
+      "Isoler et diviser",
+      "Punir l’imprudence",
+      "Révéler la majesté de la nature"
+    ],
     "difficulty": 15,
     "potentialAdversaries": [
-      { "group": "Beasts", "names": ["Bear", "Giant Eagle", "Glass Snake"] },
-      { "group": null, "names": ["Chaos Skull", "Minotaur Wrecker", "Mortal Hunter"] }
+      {
+        "group": "Beasts",
+        "names": [
+          "Bear",
+          "Giant Eagle",
+          "Glass Snake"
+        ]
+      },
+      {
+        "group": null,
+        "names": [
+          "Chaos Skull",
+          "Minotaur Wrecker",
+          "Mortal Hunter"
+        ]
+      }
     ],
     "features": [
       {
         "name": "Engraved Sigils",
         "type": "passive",
         "fearCost": null,
-        "description": "Large markings and engravings have been made in the mountainside. A PC with a relevant background or Experience identifies them as weather magic increasing the power of the icy winds. A PC who succeeds on a Knowledge Roll can recall information about the sigils, potential information about their creators, and the knowledge of how to dispel them. If a PC critically succeeds, they recognize that the sigils are of a style created by ridgeborne enchanters and they gain advantage on a roll to dispel the sigils.",
-        "questions": "Who laid this enchantment? Are they nearby? Why did they want the weather to be more daunting?"
+        "description": "De grandes marques et gravures ont été faites dans le flanc de la montagne. Un PJ avec un historique ou une Expérience pertinente les identifie comme de la magie météorologique augmentant la puissance des vents glacials. Un PJ qui réussit un jet de Savoir peut se rappeler des informations sur les sigils, des informations potentielles sur leurs créateurs, et la connaissance de comment les dissiper. Si un PJ réussit un succès critique, il reconnaît que les sigils sont d’un style créé par des enchanteurs ridgeborne et il gagne l’avantage sur un jet pour dissiper les sigils.",
+        "questions": "Qui a posé cet enchantement ? Sont-ils proches ? Pourquoi voulaient-ils rendre le temps plus redoutable ?"
       },
       {
         "name": "Avalanche",
         "type": "action",
         "fearCost": 1,
-        "description": "Spend a Fear to carve the mountain with an icy torrent, causing an avalanche. All PCs in its path must succeed on an Agility or Strength Reaction Roll or be bowled over and carried down the mountain. A PC using rope, pitons, or other climbing gear gains advantage on this roll. Targets who fail are knocked down the mountain to Far range, take 2d20 physical damage, and must mark a Stress. Targets who succeed must mark a Stress.",
-        "questions": "How do the PCs try to weather the avalanche? What approach do the characters take to find one another when their companions go hurtling down the mountainside?"
+        "description": "Dépensez une Peur pour déclencher une avalanche. Tous les PJ doivent réussir un jet de Réaction d’Agilité ou subir 2d10+2 dégâts physiques et être ensevelis. Un PJ enseveli est Entravé et doit être déterré par ses alliés avec un jet réussi de Force.",
+        "questions": "Qu’est-ce qui a provoqué l’avalanche ? Des prédateurs profitent-ils du chaos pour attaquer ?"
       },
       {
         "name": "Raptor Nest",
         "type": "reaction",
         "fearCost": null,
-        "description": "When the PCs enter the raptors' hunting grounds, two Giant Eagles appear at Very Far range of a chosen PC, identifying the PCs as likely prey.",
-        "questions": "How long has it been since the eagles last found prey? Do they have eggs in their nest, or unfledged young?"
+        "description": "Quand les PJ entrent dans le territoire de chasse des rapaces, deux Giant Eagles apparaissent à Portée Très Lointaine d’un PJ choisi, identifiant les PJ comme une proie probable.",
+        "questions": "Depuis combien de temps les aigles n’ont-ils pas trouvé de proie ? Ont-ils des œufs dans leur nid, ou des jeunes qui ne volent pas encore ?"
       },
       {
         "name": "Icy Winds",
         "type": "reaction",
         "fearCost": null,
-        "description": "Countdown (Loop 4). When the PCs enter the mountain pass, activate the countdown. When it triggers, all characters traveling through the pass must succeed on a Strength Reaction Roll or mark a Stress. A PC wearing clothes appropriate for extreme cold gains advantage on these rolls.",
-        "questions": "What parts of the PC's bodies go numb first? How do they try to keep warm as they press forward?"
+        "description": "Countdown (Boucle 4). Quand les PJ entrent dans le col de montagne, activez le countdown. Quand il se déclenche, tous les personnages traversant le col doivent réussir un jet de Réaction de Force ou cocher un Stress. Un PJ portant des vêtements appropriés pour le froid extrême gagne l’avantage sur ces jets.",
+        "questions": "Quelles parties du corps des PJ s’engourdissent en premier ? Comment essaient-ils de se réchauffer en avançant ?"
       }
     ]
   }
