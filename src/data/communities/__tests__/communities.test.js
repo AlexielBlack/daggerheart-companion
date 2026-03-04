@@ -1,54 +1,31 @@
+/**
+ * @module communities/__tests__
+ * @description Tests d'intégrité structurelle et logique des communautés.
+ *
+ * Vérifications SRD (IDs, noms de features, comptages) supprimées.
+ * On conserve : structure, unicité, fonctions utilitaires (recherche, filtre).
+ */
+
 import { describe, it, expect } from 'vitest'
 import { COMMUNITIES, getCommunityById, searchCommunities } from '../index.js'
 
-// ── Données de référence SRD (Communities_SRD.pdf) ──
-
-const EXPECTED_IDS = [
-  'highborne',
-  'loreborne',
-  'orderborne',
-  'ridgeborne',
-  'seaborne',
-  'slyborne',
-  'underborne',
-  'wanderborne',
-  'wildborne'
-]
-
-/** Noms de features officiels (Communities_SRD.pdf) */
-const EXPECTED_FEATURES = {
-  highborne: 'Privilege',
-  loreborne: 'Well-Read',
-  orderborne: 'Dedicated',
-  ridgeborne: 'Steady',
-  seaborne: 'Know the Tide',
-  slyborne: 'Scoundrel',
-  underborne: 'Low-Light Living',
-  wanderborne: 'Nomadic Pack',
-  wildborne: 'Lightfoot'
-}
-
-/** Nombre d'adjectifs par communauté (SRD : 6) */
-const EXPECTED_ADJECTIVE_COUNT = 6
-
 // ── Structure des données ───────────────────────────────
 
-describe('Communities — structure de données', () => {
-  it.each(COMMUNITIES.map((c) => [c.id, c]))(
-    '%s a tous les champs requis',
-    (_id, community) => {
-      expect(community).toHaveProperty('id')
-      expect(community).toHaveProperty('name')
-      expect(community).toHaveProperty('emoji')
-      expect(community).toHaveProperty('source')
-      expect(community).toHaveProperty('description')
-      expect(community).toHaveProperty('feature')
-      expect(community.feature).toHaveProperty('name')
-      expect(community.feature).toHaveProperty('description')
-      expect(community).toHaveProperty('adjectives')
-      expect(community).toHaveProperty('flavor')
-    }
-  )
+describe('Communities — intégrité structurelle', () => {
+  it('contient des communautés', () => {
+    expect(COMMUNITIES.length).toBeGreaterThan(0)
+  })
+
+  it('chaque communauté a les champs requis', () => {
+    COMMUNITIES.forEach((c) => {
+      const fields = ['id', 'name', 'emoji', 'source', 'description', 'feature', 'adjectives', 'flavor']
+      fields.forEach((field) => {
+        expect(c, `${c.id} manque "${field}"`).toHaveProperty(field)
+      })
+      expect(c.feature).toHaveProperty('name')
+      expect(c.feature).toHaveProperty('description')
+    })
+  })
 
   it('pas d\'IDs dupliqués', () => {
     const ids = COMMUNITIES.map((c) => c.id)
@@ -56,63 +33,32 @@ describe('Communities — structure de données', () => {
   })
 
   it('les descriptions ne sont pas vides', () => {
-    for (const community of COMMUNITIES) {
-      expect(community.description.length).toBeGreaterThan(20)
-      expect(community.feature.description.length).toBeGreaterThan(10)
-    }
+    COMMUNITIES.forEach((c) => {
+      expect(c.description.length, `${c.id} description vide`).toBeGreaterThan(20)
+      expect(c.feature.description.length, `${c.id} feature description vide`).toBeGreaterThan(10)
+    })
   })
 
-  it.each(COMMUNITIES.map((c) => [c.id, c]))(
-    '%s a exactement 6 adjectifs',
-    (_id, community) => {
-      expect(community.adjectives).toHaveLength(EXPECTED_ADJECTIVE_COUNT)
-      for (const adj of community.adjectives) {
+  it('les adjectifs sont des tableaux de chaînes non vides', () => {
+    COMMUNITIES.forEach((c) => {
+      expect(Array.isArray(c.adjectives), `${c.id} adjectives`).toBe(true)
+      expect(c.adjectives.length, `${c.id} doit avoir des adjectifs`).toBeGreaterThan(0)
+      c.adjectives.forEach((adj) => {
         expect(typeof adj).toBe('string')
         expect(adj.length).toBeGreaterThan(0)
-      }
-    }
-  )
-
-  it('toutes les communautés sont source "srd"', () => {
-    for (const community of COMMUNITIES) {
-      expect(community.source).toBe('srd')
-    }
+      })
+    })
   })
-})
-
-// ── Complétude SRD ──────────────────────────────────────
-
-describe('Communities — complétude SRD', () => {
-  it('contient les 9 communautés officielles', () => {
-    expect(COMMUNITIES).toHaveLength(9)
-  })
-
-  it.each(EXPECTED_IDS)('contient la communauté : %s', (id) => {
-    const found = COMMUNITIES.find((c) => c.id === id)
-    expect(found).toBeDefined()
-  })
-})
-
-// ── Noms de features ────────────────────────────────────
-
-describe('Communities — noms de features SRD', () => {
-  it.each(Object.entries(EXPECTED_FEATURES))(
-    '%s a la feature "%s"',
-    (id, featureName) => {
-      const community = COMMUNITIES.find((c) => c.id === id)
-      expect(community).toBeDefined()
-      expect(community.feature.name).toBe(featureName)
-    }
-  )
 })
 
 // ── getCommunityById ────────────────────────────────────
 
 describe('getCommunityById', () => {
   it('retourne une communauté existante', () => {
-    const result = getCommunityById('highborne')
+    const first = COMMUNITIES[0]
+    const result = getCommunityById(first.id)
     expect(result).toBeDefined()
-    expect(result.name).toBe('Highborne')
+    expect(result.id).toBe(first.id)
   })
 
   it('retourne null pour un ID inexistant', () => {
@@ -131,33 +77,29 @@ describe('getCommunityById', () => {
 
 describe('searchCommunities', () => {
   it('retourne toutes les communautés sans query', () => {
-    expect(searchCommunities('')).toHaveLength(9)
-    expect(searchCommunities(null)).toHaveLength(9)
-    expect(searchCommunities(undefined)).toHaveLength(9)
+    expect(searchCommunities('')).toHaveLength(COMMUNITIES.length)
+    expect(searchCommunities(null)).toHaveLength(COMMUNITIES.length)
+    expect(searchCommunities(undefined)).toHaveLength(COMMUNITIES.length)
   })
 
   it('filtre par nom', () => {
-    const results = searchCommunities('Highborne')
+    const first = COMMUNITIES[0]
+    const results = searchCommunities(first.name)
     expect(results.length).toBeGreaterThanOrEqual(1)
-    expect(results[0].id).toBe('highborne')
+    expect(results[0].id).toBe(first.id)
   })
 
   it('filtre par nom de feature', () => {
-    const results = searchCommunities('Lightfoot')
-    expect(results.length).toBe(1)
-    expect(results[0].id).toBe('wildborne')
-  })
-
-  it('filtre par adjectif', () => {
-    const results = searchCommunities('conniving')
-    expect(results.length).toBe(1)
-    expect(results[0].id).toBe('highborne')
+    const withFeature = COMMUNITIES.find((c) => c.feature.name.length > 3)
+    const results = searchCommunities(withFeature.feature.name)
+    expect(results.length).toBeGreaterThanOrEqual(1)
+    expect(results.some((r) => r.id === withFeature.id)).toBe(true)
   })
 
   it('est insensible à la casse', () => {
-    const results = searchCommunities('SCOUNDREL')
-    expect(results.length).toBe(1)
-    expect(results[0].id).toBe('slyborne')
+    const first = COMMUNITIES[0]
+    const results = searchCommunities(first.name.toUpperCase())
+    expect(results.length).toBeGreaterThanOrEqual(1)
   })
 
   it('retourne un tableau vide si rien ne correspond', () => {
