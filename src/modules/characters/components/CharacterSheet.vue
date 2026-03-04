@@ -315,6 +315,13 @@
           class="weapon-label"
           for="sheet-armor"
         >Armure</label>
+        <span
+          v-if="classData && classData.suggestedArmor && !recommendedArmors.length"
+          class="equipment-hint"
+          aria-label="Armure suggérée par la classe"
+        >
+          💡 {{ classData.suggestedArmor }}
+        </span>
         <select
           id="sheet-armor"
           class="weapon-select"
@@ -700,6 +707,12 @@
           class="class-feature-text"
         >
           {{ feat }}
+        </p>
+        <p
+          v-if="classData.classItems"
+          class="class-feature-text class-feature-text--items"
+        >
+          🎒 <strong>Objets de classe :</strong> {{ classData.classItems }}
         </p>
       </div>
     </section>
@@ -1389,6 +1402,15 @@ export default {
   text-transform: uppercase;
   color: var(--text-muted, #6b7280);
   margin-bottom: 2px;
+}
+
+.equipment-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: #eab308;
+  font-style: italic;
+  margin-bottom: 4px;
+  line-height: 1.3;
 }
 
 .weapon-select {

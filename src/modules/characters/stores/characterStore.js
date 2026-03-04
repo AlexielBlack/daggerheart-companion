@@ -70,6 +70,7 @@ export const useCharacterStore = defineStore('characters', () => {
       ),
       suggestedTraits: item.suggestedTraits || { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
       suggestedArmor: item.suggestedArmor || '',
+      classItems: item.classItems || '',
       source: 'custom'
     }
   }
@@ -532,7 +533,7 @@ export const useCharacterStore = defineStore('characters', () => {
   const availableDomainCards = computed(() => {
     const char = selectedCharacter.value
     if (!char) return []
-    const domains = getDomainsForClass(char.className)
+    const domains = availableDomains.value
     const results = []
     for (const domain of domains) {
       for (const card of domain.cards) {
@@ -544,17 +545,52 @@ export const useCharacterStore = defineStore('characters', () => {
     return results
   })
 
+  /**
+   * Résout une carte par ID : cherche dans SRD puis dans les domaines disponibles.
+   * @param {string} cardId
+   * @returns {Object|null}
+   */
+  function resolveCardById(cardId) {
+    // SRD d'abord
+    const srd = getCardById(cardId)
+    if (srd) return srd
+    // Homebrew : chercher dans tous les domaines disponibles
+    for (const domain of availableDomains.value) {
+      const card = domain.cards.find((c) => c.id === cardId)
+      if (card) return { ...card, domain: domain.id }
+    }
+    // Dernier recours : chercher dans tous les domaines homebrew
+    for (const hb of domainHomebrewStore.items) {
+      const cards = hb.cards || []
+      const card = cards.find((c) => c.id === cardId)
+      if (card) return { ...card, domain: hb.id }
+    }
+    return null
+  }
+
+  /**
+   * Résout la couleur/nom/emoji d'un domaine pour une carte.
+   */
+  function resolveDomainMeta(domainId) {
+    const domain = availableDomains.value.find((d) => d.id === domainId)
+      || domainHomebrewStore.items.find((d) => d.id === domainId)
+    return {
+      domainColor: domain?.color || '#53a8b6',
+      domainName: domain?.name || '',
+      domainEmoji: domain?.emoji || ''
+    }
+  }
+
   /** Données complètes des cartes du loadout du personnage sélectionné */
   const selectedLoadoutCards = computed(() => {
     const char = selectedCharacter.value
     if (!char || !char.domainCards) return []
     return char.domainCards.loadout
       .map((cardId) => {
-        const data = getCardById(cardId)
+        const data = resolveCardById(cardId)
         if (!data) return null
-        const domains = getDomainsForClass(char.className)
-        const domain = domains.find((d) => d.id === data.domain)
-        return { ...data, domainColor: domain?.color || '#53a8b6', domainName: domain?.name || '', domainEmoji: domain?.emoji || '' }
+        const meta = resolveDomainMeta(data.domain)
+        return { ...data, ...meta }
       })
       .filter(Boolean)
   })
@@ -565,11 +601,10 @@ export const useCharacterStore = defineStore('characters', () => {
     if (!char || !char.domainCards) return []
     return char.domainCards.vault
       .map((cardId) => {
-        const data = getCardById(cardId)
+        const data = resolveCardById(cardId)
         if (!data) return null
-        const domains = getDomainsForClass(char.className)
-        const domain = domains.find((d) => d.id === data.domain)
-        return { ...data, domainColor: domain?.color || '#53a8b6', domainName: domain?.name || '', domainEmoji: domain?.emoji || '' }
+        const meta = resolveDomainMeta(data.domain)
+        return { ...data, ...meta }
       })
       .filter(Boolean)
   })
