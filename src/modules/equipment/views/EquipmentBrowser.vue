@@ -668,6 +668,12 @@ export default {
   letter-spacing: 0.05em;
 }
 .table-header--armor { grid-template-columns: 2.5fr 1fr 0.5fr 1.5fr 0.5fr; }
+/* Alignement centré des colonnes Dégâts (4e), Mains/Feature (5e), Tier (6e) */
+.table-header span:nth-child(4),
+.table-header span:nth-child(6) { text-align: center; }
+.table-header--armor span:nth-child(2),
+.table-header--armor span:nth-child(3),
+.table-header--armor span:nth-child(5) { text-align: center; }
 .table-row {
   display: grid;
   grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 0.5fr;
@@ -692,9 +698,13 @@ export default {
 
 .cell-name { font-weight: var(--font-weight-medium); }
 .cell-trait, .cell-range, .cell-burden, .cell-feature-key { color: var(--color-text-secondary); font-size: var(--font-size-xs); }
-.cell-damage, .cell-score { text-align: center; }
-.cell-thresholds { font-family: monospace; color: var(--color-text-secondary); font-size: var(--font-size-xs); text-align: center; }
-.cell-tier { text-align: center; }
+.cell-damage, .cell-score, .cell-thresholds, .cell-tier {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cell-thresholds { font-family: monospace; color: var(--color-text-secondary); font-size: var(--font-size-xs); }
 
 /* ── Badges ── */
 .tier-badge { font-size: 0.65rem; font-weight: var(--font-weight-bold); padding: 1px 6px; border-radius: var(--radius-sm); background: rgba(83, 168, 182, 0.1); color: var(--color-accent-hope); border: 1px solid rgba(83, 168, 182, 0.3); }
@@ -737,9 +747,15 @@ export default {
 @keyframes slideDown { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 800px) {
-  .table-header, .table-row { grid-template-columns: 2fr 1fr 1fr 1fr; }
-  .table-header span:nth-child(5), .table-row .cell-burden,
-  .table-header span:nth-child(6), .table-row .cell-tier:last-child { display: none; }
+  /* Armes : masquer colonnes 5 (Mains/Feature) et 6 (Tier) → garder 4 colonnes */
+  .table-header:not(.table-header--armor),
+  .table-row:not(.table-row--armor) { grid-template-columns: 2fr 1fr 1fr 1fr; }
+  .table-header:not(.table-header--armor) span:nth-child(5),
+  .table-header:not(.table-header--armor) span:nth-child(6),
+  .table-row:not(.table-row--armor) .cell-burden,
+  .table-row:not(.table-row--armor) .cell-feature-key,
+  .table-row:not(.table-row--armor) .cell-tier { display: none; }
+  /* Armures : masquer Feature (col 4) → garder 4 colonnes */
   .table-header--armor, .table-row--armor { grid-template-columns: 2fr 1fr 0.5fr 0.5fr; }
   .table-header--armor span:nth-child(4), .table-row--armor .cell-feature-key { display: none; }
   .item-card-grid { grid-template-columns: 1fr; }
