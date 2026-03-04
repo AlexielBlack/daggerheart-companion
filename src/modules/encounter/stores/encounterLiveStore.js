@@ -20,6 +20,7 @@ import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
 import {
   SCENE_MODE_PC_ATTACK,
+  SCENE_MODE_ADVERSARY_ATTACK,
   SCENE_MODE_META,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM,
@@ -382,6 +383,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return true
   }
 
+  // ── Dernière catégorie cliquée (pour la logique cross-projecteur) ──
+  /** 'pc' ou 'adversary' — détermine le sens de l'affrontement */
+  const lastClickCategory = ref('pc')
+
   // ═══════════════════════════════════════════════════════
   //  Actions — Mode de scène & Projecteur
   // ═══════════════════════════════════════════════════════
@@ -393,6 +398,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   function setSceneMode(mode) {
     if (isValidSceneMode(mode)) {
       sceneMode.value = mode
+      spotlight.value = mode === SCENE_MODE_PC_ATTACK ? SPOTLIGHT_PC : SPOTLIGHT_GM
       persistState()
     }
   }
@@ -422,7 +428,78 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Sélectionne un PJ comme actif.
+   * Sélectionne un PJ avec logique cross-catégorie.
+   * - Clic PJ quand dernier clic était adversaire → bascule en adversaryAttack (PJ = cible)
+   * - Clic PJ quand dernier clic était PJ → simple swap PJ
+   * - Double-clic sur le PJ déjà actif → swap le mode
+   * @param {string} pcId
+   */
+  function selectPc(pcId) {
+    if (!participantPcIds.value.includes(pcId)) return
+
+    const isSameEntity = activePcId.value === pcId && lastClickCategory.value === 'pc'
+
+    if (isSameEntity) {
+      // Double-clic sur le même PJ : swap le mode
+      swapSpotlight()
+    } else if (lastClickCategory.value === 'adversary') {
+      // Cross-catégorie : adversaire → PJ = l'adversaire attaque ce PJ
+      activePcId.value = pcId
+      sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
+      spotlight.value = SPOTLIGHT_GM
+      lastClickCategory.value = 'pc'
+    } else {
+      // Même catégorie : simple changement de PJ actif
+      activePcId.value = pcId
+      lastClickCategory.value = 'pc'
+    }
+    persistState()
+  }
+
+  /**
+   * Sélectionne un groupe d'adversaires avec logique cross-catégorie.
+   * - Clic adversaire quand dernier clic était PJ → bascule en pcAttack (adversaire = cible)
+   * - Clic adversaire quand dernier clic était adversaire → simple swap cible
+   * - Double-clic sur le même adversaire → swap le mode
+   * @param {string} adversaryId
+   */
+  function selectAdversaryGroup(adversaryId) {
+    const currentAdvId = activeAdversary.value?.adversaryId
+    const isSameEntity = currentAdvId === adversaryId && lastClickCategory.value === 'adversary'
+
+    if (isSameEntity) {
+      // Double-clic sur le même adversaire : swap le mode
+      swapSpotlight()
+    } else if (lastClickCategory.value === 'pc') {
+      // Cross-catégorie : PJ → adversaire = le PJ attaque cet adversaire
+      setActiveAdversaryGroupInternal(adversaryId)
+      sceneMode.value = SCENE_MODE_PC_ATTACK
+      spotlight.value = SPOTLIGHT_PC
+      lastClickCategory.value = 'adversary'
+    } else {
+      // Même catégorie : simple changement d'adversaire cible
+      setActiveAdversaryGroupInternal(adversaryId)
+      lastClickCategory.value = 'adversary'
+    }
+    persistState()
+  }
+
+  /**
+   * Inverse le projecteur sans changer la sélection.
+   */
+  function swapSpotlight() {
+    if (sceneMode.value === SCENE_MODE_PC_ATTACK) {
+      sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
+      spotlight.value = SPOTLIGHT_GM
+    } else {
+      sceneMode.value = SCENE_MODE_PC_ATTACK
+      spotlight.value = SPOTLIGHT_PC
+    }
+    persistState()
+  }
+
+  /**
+   * Sélectionne un PJ comme actif (interne, sans logique cross-catégorie).
    * @param {string} pcId
    */
   function setActivePc(pcId) {
@@ -433,7 +510,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Sélectionne un adversaire comme actif.
+   * Sélectionne un adversaire comme actif (interne).
    * @param {string} instanceId
    */
   function setActiveAdversary(instanceId) {
@@ -445,11 +522,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Sélectionne un groupe d'adversaires (par adversaryId).
-   * Sélectionne la première instance non vaincue du groupe.
+   * Sélectionne un groupe d'adversaires par adversaryId (interne).
    * @param {string} adversaryId
    */
-  function setActiveAdversaryGroup(adversaryId) {
+  function setActiveAdversaryGroupInternal(adversaryId) {
     const firstActive = liveAdversaries.value.find(
       (a) => a.adversaryId === adversaryId && !a.isDefeated
     )
@@ -459,8 +535,16 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const target = firstActive || fallback
     if (target) {
       activeAdversaryId.value = target.instanceId
-      persistState()
     }
+  }
+
+  /**
+   * Sélectionne un groupe d'adversaires (API publique legacy).
+   * @param {string} adversaryId
+   */
+  function setActiveAdversaryGroup(adversaryId) {
+    setActiveAdversaryGroupInternal(adversaryId)
+    persistState()
   }
 
   // ═══════════════════════════════════════════════════════
@@ -672,7 +756,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       activeAdversaryId: activeAdversaryId.value,
       environmentId: environmentId.value,
       round: round.value,
-      spotlightTokens: { ...spotlightTokens.value }
+      spotlightTokens: { ...spotlightTokens.value },
+      lastClickCategory: lastClickCategory.value
     }
   }
 
@@ -709,6 +794,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     spotlightTokens.value = data.spotlightTokens && typeof data.spotlightTokens === 'object'
       ? { ...data.spotlightTokens }
       : {}
+    lastClickCategory.value = data.lastClickCategory || 'pc'
 
     return true
   }
@@ -732,6 +818,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     environmentId.value = null
     round.value = 1
     spotlightTokens.value = {}
+    lastClickCategory.value = 'pc'
     liveStorage.remove()
   }
 
@@ -763,6 +850,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     environmentId,
     round,
     spotlightTokens,
+    lastClickCategory,
 
     // Getters
     currentSceneModeMeta,
@@ -796,6 +884,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     setActivePc,
     setActiveAdversary,
     setActiveAdversaryGroup,
+    selectPc,
+    selectAdversaryGroup,
+    swapSpotlight,
 
     // Actions — Adversaire live
     markAdversaryHP,

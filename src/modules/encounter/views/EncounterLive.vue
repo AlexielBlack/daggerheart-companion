@@ -1,5 +1,8 @@
 <template>
-  <div class="enc-live">
+  <div
+    class="enc-live"
+    :class="'enc-live--' + store.sceneMode"
+  >
     <!-- Message si aucune rencontre active -->
     <div
       v-if="!store.isActive"
@@ -15,107 +18,104 @@
     </div>
 
     <template v-else>
-      <!-- ── Barre supérieure : titre + contrôles de session ── -->
+      <!-- ── Header : titre + round + fin ── -->
       <header class="enc-live__header">
-        <div class="enc-live__title-row">
-          <h1 class="enc-live__title">
-            {{ store.encounterName || 'Rencontre' }}
-          </h1>
-          <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
+        <h1 class="enc-live__title">
+          {{ store.encounterName || 'Rencontre' }}
+        </h1>
+        <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
+
+        <div class="enc-live__round-controls">
+          <button
+            class="enc-live__round-btn"
+            :disabled="store.round <= 1"
+            aria-label="Round précédent"
+            @click="store.previousRound()"
+          >
+            ◀
+          </button>
+          <span class="enc-live__round-label">R{{ store.round }}</span>
+          <button
+            class="enc-live__round-btn"
+            aria-label="Round suivant"
+            @click="store.nextRound()"
+          >
+            ▶
+          </button>
         </div>
 
-        <div class="enc-live__controls">
-          <!-- Mode de scène (intégré dans le header) -->
-          <SceneModeSelector
-            :model-value="store.sceneMode"
-            @update:model-value="store.setSceneMode($event)"
-          />
-
-          <div class="enc-live__session">
-            <SpotlightToggle
-              :spotlight="store.spotlight"
-              @toggle="store.toggleSpotlight()"
-            />
-
-            <div class="enc-live__round-controls">
-              <button
-                class="enc-live__round-btn"
-                :disabled="store.round <= 1"
-                aria-label="Round précédent"
-                @click="store.previousRound()"
-              >
-                ◀
-              </button>
-              <span class="enc-live__round-label">R{{ store.round }}</span>
-              <button
-                class="enc-live__round-btn"
-                aria-label="Round suivant"
-                @click="store.nextRound()"
-              >
-                ▶
-              </button>
-            </div>
-
-            <button
-              class="enc-live__end-btn"
-              @click="confirmEndEncounter"
-            >
-              Fin
-            </button>
-          </div>
-        </div>
+        <button
+          class="enc-live__end-btn"
+          @click="confirmEndEncounter"
+        >
+          Fin
+        </button>
       </header>
 
-      <!-- ── Sélecteurs fusionnés ── -->
+      <!-- ── Barres de sélection PJ / Adversaire ── -->
       <div class="enc-live__selectors">
-        <!-- PJ + Projecteur (fusionné) -->
-        <PcSpotlightBar
-          :pcs="store.participantPcs"
-          :active-pc-id="store.activePcId"
-          :spotlight="store.spotlight"
-          :spotlight-tokens="store.spotlightTokens"
-          :total-tokens="store.totalSpotlightTokens"
-          @give-spotlight="store.giveSpotlight($event)"
-          @remove-token="store.removeSpotlightToken($event)"
-          @gm-spotlight="store.setGmSpotlight()"
-        />
+        <!-- PJ chips -->
+        <div class="enc-live__bar enc-live__bar--pc">
+          <button
+            v-for="pc in store.participantPcs"
+            :key="pc.id"
+            class="enc-live__chip"
+            :class="{
+              'enc-live__chip--active': store.activePcId === pc.id,
+              'enc-live__chip--actor': isPcActor && store.activePcId === pc.id,
+              'enc-live__chip--target': !isPcActor && store.activePcId === pc.id
+            }"
+            @click="store.selectPc(pc.id)"
+          >
+            <span class="enc-live__chip-name">{{ pc.name }}</span>
+            <span class="enc-live__chip-sub">{{ pc.className }}</span>
+          </button>
+        </div>
 
-        <!-- Adversaire cible (groupé par type) -->
-        <div class="enc-live__adv-bar">
-          <span class="enc-live__adv-label">
-            Cible
-            <span class="enc-live__adv-count">({{ store.activeAdversaries.length }})</span>
-          </span>
-          <div class="enc-live__adv-chips">
-            <button
-              v-for="group in store.groupedAdversaries"
-              :key="group.adversaryId"
-              class="enc-live__adv-chip"
-              :class="{
-                'enc-live__adv-chip--active': store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
-                'enc-live__adv-chip--all-defeated': group.activeCount === 0
-              }"
-              @click="store.setActiveAdversaryGroup(group.adversaryId)"
-            >
-              <span class="enc-live__adv-name">{{ group.name }}</span>
-              <span
-                v-if="group.instances.length > 1"
-                class="enc-live__adv-qty"
-              >×{{ group.instances.length }}</span>
-              <span
-                v-if="group.defeatedCount > 0"
-                class="enc-live__adv-defeated"
-              >{{ group.defeatedCount }}💀</span>
-            </button>
-          </div>
+        <!-- Flèche directionnelle -->
+        <div
+          class="enc-live__arrow"
+          :class="'enc-live__arrow--' + store.sceneMode"
+          :title="isPcActor ? 'PJ attaque →' : '← Adversaire attaque'"
+          role="button"
+          tabindex="0"
+          aria-label="Inverser le projecteur"
+          @click="store.swapSpotlight()"
+          @keydown.enter="store.swapSpotlight()"
+          @keydown.space.prevent="store.swapSpotlight()"
+        >
+          <span class="enc-live__arrow-icon">{{ isPcActor ? '⚔️ →' : '← 💀' }}</span>
+        </div>
+
+        <!-- Adversaire chips (groupés) -->
+        <div class="enc-live__bar enc-live__bar--adv">
+          <button
+            v-for="group in store.groupedAdversaries"
+            :key="group.adversaryId"
+            class="enc-live__chip"
+            :class="{
+              'enc-live__chip--active': store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
+              'enc-live__chip--actor': !isPcActor && store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
+              'enc-live__chip--target': isPcActor && store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
+              'enc-live__chip--all-defeated': group.activeCount === 0
+            }"
+            @click="store.selectAdversaryGroup(group.adversaryId)"
+          >
+            <span class="enc-live__chip-name">{{ group.name }}</span>
+            <span
+              v-if="group.instances.length > 1"
+              class="enc-live__chip-qty"
+            >×{{ group.instances.length }}</span>
+            <span
+              v-if="group.defeatedCount > 0"
+              class="enc-live__chip-dead"
+            >{{ group.defeatedCount }}💀</span>
+          </button>
         </div>
       </div>
 
       <!-- ── Battlefield — panels contextuels ── -->
-      <div
-        class="enc-live__battlefield"
-        :class="'enc-live__battlefield--' + store.sceneMode"
-      >
+      <div class="enc-live__battlefield">
         <PcLivePanel
           v-if="store.activePc"
           :pc="store.activePc"
@@ -167,20 +167,14 @@ import { computed, onMounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
-import SceneModeSelector from '../components/SceneModeSelector.vue'
-import SpotlightToggle from '../components/SpotlightToggle.vue'
 import PcLivePanel from '../components/PcLivePanel.vue'
-import PcSpotlightBar from '../components/PcSpotlightBar.vue'
 import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
 import EnvironmentPanel from '../components/EnvironmentPanel.vue'
 
 export default {
   name: 'EncounterLive',
   components: {
-    SceneModeSelector,
-    SpotlightToggle,
     PcLivePanel,
-    PcSpotlightBar,
     AdversaryTargetPanel,
     EnvironmentPanel
   },
@@ -192,7 +186,6 @@ export default {
     const sceneModeRef = computed(() => store.sceneMode)
     const pcFeatures = useEncounterFeatures(activePcRef, sceneModeRef)
 
-    // Rôle PJ : acteur si le mode indique actorRole === 'pc'
     const isPcActor = computed(() => {
       const meta = SCENE_MODE_META[store.sceneMode]
       return meta ? meta.actorRole === 'pc' : true
@@ -225,26 +218,33 @@ export default {
 </script>
 
 <style scoped>
+/* ── Teinte de fond selon le mode ── */
+
 .enc-live {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
   margin: 0 auto;
   padding: var(--space-sm);
+  min-height: 100%;
+  transition: background-color 0.3s;
 }
 
-/* ── Header compact ── */
+.enc-live--pcAttack {
+  background-color: rgba(83, 168, 182, 0.03);
+}
+
+.enc-live--adversaryAttack {
+  background-color: rgba(200, 75, 49, 0.05);
+}
+
+/* ── Header inline ── */
 
 .enc-live__header {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.enc-live__title-row {
-  display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .enc-live__title {
@@ -261,20 +261,7 @@ export default {
   padding: 1px var(--space-xs);
   background: rgba(224, 165, 38, 0.1);
   border-radius: var(--radius-sm);
-}
-
-.enc-live__controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.enc-live__session {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-left: auto;
+  margin-right: auto;
 }
 
 .enc-live__round-controls {
@@ -332,84 +319,75 @@ export default {
   background: rgba(244, 67, 54, 0.1);
 }
 
-/* ── Sélecteurs (PJ+Spot + Adversaire) ── */
+/* ── Sélecteurs PJ ← flèche → Adversaire ── */
 
 .enc-live__selectors {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--space-xs);
 }
 
-/* ── Barre adversaires compacte ── */
-
-.enc-live__adv-bar {
+.enc-live__bar {
   display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  flex: 1;
   padding: var(--space-xs) var(--space-sm);
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
-.enc-live__adv-label {
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  color: var(--color-accent-fear);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+/* ── Chips universels ── */
 
-.enc-live__adv-count {
-  font-weight: normal;
-  color: var(--color-text-muted);
-}
-
-.enc-live__adv-chips {
-  display: flex;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-  flex: 1;
-}
-
-.enc-live__adv-chip {
+.enc-live__chip {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-md);
   border: 2px solid transparent;
   background: var(--color-bg-primary);
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background 0.15s;
   font-size: var(--font-xs);
 }
 
-.enc-live__adv-chip:hover {
+.enc-live__chip:hover {
+  background: var(--color-bg-elevated);
   border-color: var(--color-border-active);
 }
 
-.enc-live__adv-chip--active {
+.enc-live__chip--active {
+  border-color: var(--color-border-active);
+}
+
+.enc-live__chip--actor {
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 1px var(--color-accent-hope);
+  background: rgba(83, 168, 182, 0.08);
+}
+
+.enc-live__chip--target {
   border-color: var(--color-accent-fear);
   box-shadow: 0 0 0 1px var(--color-accent-fear);
+  background: rgba(200, 75, 49, 0.08);
 }
 
-.enc-live__adv-chip--defeated {
+.enc-live__chip--all-defeated {
   opacity: 0.4;
 }
 
-.enc-live__adv-chip--all-defeated {
-  opacity: 0.4;
-}
-
-.enc-live__adv-name {
+.enc-live__chip-name {
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
 }
 
-.enc-live__adv-qty {
+.enc-live__chip-sub {
+  color: var(--color-text-muted);
+}
+
+.enc-live__chip-qty {
   font-size: 0.65rem;
   font-weight: var(--font-bold);
   color: var(--color-accent-gold);
@@ -419,11 +397,48 @@ export default {
   line-height: 1.4;
 }
 
-.enc-live__adv-defeated {
+.enc-live__chip-dead {
   font-size: 0.75rem;
 }
 
-/* ── Battlefield — panels contextuels ── */
+/* ── Flèche directionnelle ── */
+
+.enc-live__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.enc-live__arrow:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
+}
+
+.enc-live__arrow--pcAttack {
+  border-color: var(--color-accent-hope);
+  color: var(--color-accent-hope);
+}
+
+.enc-live__arrow--adversaryAttack {
+  border-color: var(--color-accent-fear);
+  color: var(--color-accent-fear);
+}
+
+.enc-live__arrow-icon {
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  white-space: nowrap;
+}
+
+/* ── Battlefield ── */
 
 .enc-live__battlefield {
   display: grid;
@@ -437,6 +452,14 @@ export default {
 @media (max-width: 700px) {
   .enc-live__battlefield {
     grid-template-columns: 1fr;
+  }
+
+  .enc-live__selectors {
+    flex-direction: column;
+  }
+
+  .enc-live__arrow {
+    transform: rotate(90deg);
   }
 }
 
@@ -458,7 +481,7 @@ export default {
   color: var(--color-text-muted);
 }
 
-/* ── Inactive state ── */
+/* ── Inactive ── */
 
 .enc-live__inactive {
   display: flex;
