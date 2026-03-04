@@ -158,6 +158,16 @@ export const classSchema = {
             placeholder: 'Ex: Stalwart, Vengeance, Divine Wielder'
           },
           {
+            key: 'domainOverride',
+            type: FIELD_TYPES.MULTI_SELECT,
+            label: 'Domaines (remplacement)',
+            required: false,
+            options: AVAILABLE_DOMAINS,
+            minItems: 0,
+            maxItems: 2,
+            helpText: 'Optionnel. Si renseigné, remplace les domaines de la classe pour cette spécialisation.'
+          },
+          {
             key: 'spellcastTrait',
             type: FIELD_TYPES.SELECT,
             label: 'Trait de sort',

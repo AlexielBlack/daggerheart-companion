@@ -266,4 +266,51 @@ describe('ClassPreview', () => {
     const w = factory({ name: 'Test' })
     expect(w.find('.class-preview__subclasses').exists()).toBe(false)
   })
+
+  // ── Domain Override ──────────────────────────────────
+  it('affiche les domaines de remplacement si domainOverride est renseigné', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Shadow', domainOverride: ['Midnight', 'Arcana'], description: 'Desc', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    expect(w.find('.class-preview__domain-override').exists()).toBe(true)
+    const badges = w.findAll('.class-preview__domain-badge--override')
+    expect(badges).toHaveLength(2)
+    expect(w.text()).toContain('Midnight')
+    expect(w.text()).toContain('Arcana')
+  })
+
+  it('masque les domaines de remplacement si domainOverride est vide', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Classic', domainOverride: [], description: 'Desc', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    expect(w.find('.class-preview__domain-override').exists()).toBe(false)
+  })
+
+  it('masque les domaines de remplacement si domainOverride est absent', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'Normal', description: 'Desc', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    expect(w.find('.class-preview__domain-override').exists()).toBe(false)
+  })
+
+  it('affiche domainOverride sur une seule spécialisation sans affecter les autres', () => {
+    const w = factory({
+      name: 'Test',
+      subclasses: [
+        { name: 'WithOverride', domainOverride: ['Sage'], description: 'D', foundation: ['F'], specialization: ['S'], mastery: ['M'] },
+        { name: 'WithoutOverride', description: 'D', foundation: ['F'], specialization: ['S'], mastery: ['M'] }
+      ]
+    })
+    const overrides = w.findAll('.class-preview__domain-override')
+    expect(overrides).toHaveLength(1)
+  })
 })

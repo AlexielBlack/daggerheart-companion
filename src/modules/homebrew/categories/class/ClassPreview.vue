@@ -114,6 +114,17 @@
             class="class-preview__spell-badge"
           >✨ {{ sub.spellcastTrait }}</span>
         </div>
+        <div
+          v-if="sub.domainOverride && sub.domainOverride.length > 0"
+          class="class-preview__domain-override"
+        >
+          <span class="class-preview__domain-override-label">Domaines :</span>
+          <span
+            v-for="d in sub.domainOverride"
+            :key="d"
+            class="class-preview__domain-badge class-preview__domain-badge--override"
+          >{{ d }}</span>
+        </div>
         <p
           v-if="sub.description"
           class="class-preview__subclass-desc"
@@ -249,6 +260,9 @@ export default {
 .class-preview__subclass-header { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
 .class-preview__subclass-name { font-size: var(--font-sm); color: var(--color-text-primary); }
 .class-preview__spell-badge { font-size: var(--font-xs); padding: 1px var(--space-xs); background: rgba(83, 168, 182, 0.15); border: 1px solid rgba(83, 168, 182, 0.3); border-radius: var(--radius-full); color: var(--color-accent-hope); }
+.class-preview__domain-override { display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; }
+.class-preview__domain-override-label { font-size: var(--font-xs); color: var(--color-text-tertiary); }
+.class-preview__domain-badge--override { background-color: rgba(245, 158, 11, 0.12); border-color: var(--color-accent-gold, #f59e0b); color: var(--color-accent-gold, #f59e0b); }
 .class-preview__subclass-desc { font-size: var(--font-xs); color: var(--color-text-secondary); line-height: 1.4; margin: 0; }
 .class-preview__tier-block { padding-left: var(--space-sm); border-left: 2px solid var(--color-border); }
 .class-preview__tier-label { font-size: var(--font-xs); font-weight: var(--font-semibold); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.03em; }
