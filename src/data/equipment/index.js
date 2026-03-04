@@ -48,6 +48,12 @@ export {
   getConsumableById
 } from './consumables.js'
 
+export {
+  CLASS_EQUIPMENT_RECOMMENDATIONS,
+  getRecommendedIds,
+  isRecommended
+} from './classRecommendations.js'
+
 // ─── Agrégats utilitaires ───
 
 import { PRIMARY_WEAPONS } from './primaryWeapons.js'

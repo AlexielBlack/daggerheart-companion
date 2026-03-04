@@ -150,6 +150,18 @@
             — Choisir un loot —
           </option>
           <optgroup
+            v-if="recommendedLoot.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="item in recommendedLoot"
+              :key="'rec-' + item.id"
+              :value="item.id"
+            >
+              ★ {{ item.name }}
+            </option>
+          </optgroup>
+          <optgroup
             v-for="group in lootByRarity"
             :key="group.rarity"
             :label="group.label"
@@ -175,6 +187,18 @@
           <option value="">
             — Choisir un consommable —
           </option>
+          <optgroup
+            v-if="recommendedConsumable.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="item in recommendedConsumable"
+              :key="'rec-' + item.id"
+              :value="item.id"
+            >
+              ★ {{ item.name }}
+            </option>
+          </optgroup>
           <optgroup
             v-for="group in consumablesByRarity"
             :key="group.rarity"
@@ -202,6 +226,18 @@
             — Choisir une arme principale —
           </option>
           <optgroup
+            v-if="recommendedPrimaryWeapon.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="item in recommendedPrimaryWeapon"
+              :key="'rec-' + item.id"
+              :value="item.id"
+            >
+              ★ {{ item.name }} — {{ item.trait }} {{ item.range }} — {{ item.damage }}
+            </option>
+          </optgroup>
+          <optgroup
             v-for="group in primaryWeaponsByTier"
             :key="group.tier"
             :label="group.label"
@@ -228,6 +264,18 @@
             — Choisir une arme secondaire —
           </option>
           <optgroup
+            v-if="recommendedSecondaryWeapon.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="item in recommendedSecondaryWeapon"
+              :key="'rec-' + item.id"
+              :value="item.id"
+            >
+              ★ {{ item.name }} — {{ item.trait }} {{ item.range }} — {{ item.damage }}
+            </option>
+          </optgroup>
+          <optgroup
             v-for="group in secondaryWeaponsByTier"
             :key="group.tier"
             :label="group.label"
@@ -253,6 +301,18 @@
           <option value="">
             — Choisir une armure —
           </option>
+          <optgroup
+            v-if="recommendedArmor.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="item in recommendedArmor"
+              :key="'rec-' + item.id"
+              :value="item.id"
+            >
+              ★ {{ item.name }} — {{ item.thresholds.major }}/{{ item.thresholds.severe }} — Score {{ item.baseScore }}
+            </option>
+          </optgroup>
           <optgroup
             v-for="group in armorByTier"
             :key="group.tier"
@@ -384,6 +444,7 @@ import { PRIMARY_WEAPONS, getPrimaryWeaponById } from '@data/equipment/primaryWe
 import { SECONDARY_WEAPONS, getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
 import { ARMOR, getArmorById } from '@data/equipment/armor.js'
 import { RARITIES } from '@data/equipment/constants.js'
+import { getRecommendedIds } from '@data/equipment/classRecommendations.js'
 
 const RARITY_ORDER = ['common', 'uncommon', 'rare', 'legendary']
 
@@ -449,10 +510,11 @@ export default {
   name: 'InventoryPanel',
   props: {
     inventory: { type: Array, default: () => [] },
-    gold: { type: Object, default: () => ({ handfuls: 0, bags: 0, chests: 0 }) }
+    gold: { type: Object, default: () => ({ handfuls: 0, bags: 0, chests: 0 }) },
+    classId: { type: String, default: '' }
   },
   emits: ['addItem', 'removeItem', 'updateItem', 'updateGold'],
-  setup() {
+  setup(props) {
     const rarityLabels = RARITIES
 
     const lootByRarity = computed(() => groupByRarity(LOOT, RARITIES))
@@ -460,6 +522,33 @@ export default {
     const primaryWeaponsByTier = computed(() => groupByTier(PRIMARY_WEAPONS))
     const secondaryWeaponsByTier = computed(() => groupByTier(SECONDARY_WEAPONS))
     const armorByTier = computed(() => groupByTier(ARMOR))
+
+    // ── Recommandations par classe ──
+    const recommendedLoot = computed(() =>
+      getRecommendedIds(props.classId, 'loot')
+        .map(getLootById)
+        .filter(Boolean)
+    )
+    const recommendedConsumable = computed(() =>
+      getRecommendedIds(props.classId, 'consumable')
+        .map(getConsumableById)
+        .filter(Boolean)
+    )
+    const recommendedPrimaryWeapon = computed(() =>
+      getRecommendedIds(props.classId, 'primaryWeapon')
+        .map(getPrimaryWeaponById)
+        .filter(Boolean)
+    )
+    const recommendedSecondaryWeapon = computed(() =>
+      getRecommendedIds(props.classId, 'secondaryWeapon')
+        .map(getSecondaryWeaponById)
+        .filter(Boolean)
+    )
+    const recommendedArmor = computed(() =>
+      getRecommendedIds(props.classId, 'armor')
+        .map(getArmorById)
+        .filter(Boolean)
+    )
 
     /** Construit la description d'un objet SRD selon son type */
     function getItemDescription(slot) {
@@ -506,6 +595,11 @@ export default {
       secondaryWeaponsByTier,
       armorByTier,
       rarityLabels,
+      recommendedLoot,
+      recommendedConsumable,
+      recommendedPrimaryWeapon,
+      recommendedSecondaryWeapon,
+      recommendedArmor,
       getItemDescription,
       getItemRarity,
       getItemTier

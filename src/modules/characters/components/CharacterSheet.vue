@@ -503,6 +503,7 @@
       <InventoryPanel
         :inventory="char.inventory"
         :gold="char.gold || { handfuls: 0, bags: 0, chests: 0 }"
+        :class-id="char.classId || ''"
         @add-item="(type) => emit('addInventoryItem', type)"
         @remove-item="(i) => emit('removeInventoryItem', i)"
         @update-item="(i, field, val) => emit('updateInventoryItem', i, field, val)"

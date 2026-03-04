@@ -28,6 +28,11 @@ import {
   getLootByRarity,
   getConsumablesByRarity
 } from '@/data/equipment/index.js'
+import {
+  CLASS_EQUIPMENT_RECOMMENDATIONS,
+  getRecommendedIds,
+  isRecommended
+} from '@data/equipment/classRecommendations.js'
 
 // ── Constantes ──────────────────────────────────────────
 
@@ -209,5 +214,64 @@ describe('Equipment Aggregates', () => {
   it('aucun ID dupliqué dans ALL_EQUIPMENT', () => {
     const ids = ALL_EQUIPMENT.map((e) => e.id)
     expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+// ═══ Tests recommandations par classe ═══
+
+describe('classRecommendations', () => {
+
+  it('couvre toutes les 11 classes', () => {
+    const classIds = Object.keys(CLASS_EQUIPMENT_RECOMMENDATIONS)
+    expect(classIds).toHaveLength(11)
+    expect(classIds).toContain('guardian')
+    expect(classIds).toContain('bard')
+    expect(classIds).toContain('assassin')
+    expect(classIds).toContain('duellist')
+  })
+
+  it('chaque classe a une arme primaire recommandée', () => {
+    for (const [classId, rec] of Object.entries(CLASS_EQUIPMENT_RECOMMENDATIONS)) {
+      expect(rec.primaryWeapon.length, `${classId} manque arme primaire`).toBeGreaterThan(0)
+    }
+  })
+
+  it('chaque classe a une armure recommandée', () => {
+    for (const [classId, rec] of Object.entries(CLASS_EQUIPMENT_RECOMMENDATIONS)) {
+      expect(rec.armor.length, `${classId} manque armure`).toBeGreaterThan(0)
+    }
+  })
+
+  it('tous les IDs recommandés existent dans les données', () => {
+    for (const rec of Object.values(CLASS_EQUIPMENT_RECOMMENDATIONS)) {
+      for (const id of rec.primaryWeapon) {
+        expect(getEquipmentById(id), `arme primaire ${id} introuvable`).not.toBeNull()
+      }
+      for (const id of rec.secondaryWeapon) {
+        expect(getEquipmentById(id), `arme secondaire ${id} introuvable`).not.toBeNull()
+      }
+      for (const id of rec.armor) {
+        expect(getEquipmentById(id), `armure ${id} introuvable`).not.toBeNull()
+      }
+      for (const id of rec.consumable) {
+        expect(getEquipmentById(id), `consommable ${id} introuvable`).not.toBeNull()
+      }
+    }
+  })
+
+  it('getRecommendedIds retourne les bons IDs', () => {
+    expect(getRecommendedIds('bard', 'primaryWeapon')).toEqual(['rapier-t1'])
+    expect(getRecommendedIds('seraph', 'secondaryWeapon')).toEqual(['round-shield-t1'])
+    expect(getRecommendedIds('warrior', 'armor')).toEqual(['chainmail-t1'])
+  })
+
+  it('getRecommendedIds retourne [] pour classe inconnue', () => {
+    expect(getRecommendedIds('unknown', 'primaryWeapon')).toEqual([])
+  })
+
+  it('isRecommended identifie les items recommandés', () => {
+    expect(isRecommended('rogue', 'primaryWeapon', 'dagger-t1')).toBe(true)
+    expect(isRecommended('rogue', 'primaryWeapon', 'longsword-t1')).toBe(false)
+    expect(isRecommended('druid', 'armor', 'leather-t1')).toBe(true)
   })
 })
