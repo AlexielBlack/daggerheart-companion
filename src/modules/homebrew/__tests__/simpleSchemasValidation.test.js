@@ -51,8 +51,8 @@ describe('ancestrySchema', () => {
     expect(defaults.name).toBe('')
     expect(defaults.emoji).toBe('')
     expect(defaults.description).toBe('')
-    expect(defaults.topFeature).toEqual({ name: '', description: '' })
-    expect(defaults.bottomFeature).toEqual({ name: '', description: '' })
+    expect(defaults.topFeature).toEqual({ name: '', description: '', tags: [] })
+    expect(defaults.bottomFeature).toEqual({ name: '', description: '', tags: [] })
   })
 
   it('valide une ascendance complete', () => {
@@ -137,7 +137,7 @@ describe('communitySchema', () => {
   it('peut construire des valeurs par defaut valides', () => {
     const defaults = buildDefaults(communitySchema.fields)
     expect(defaults.name).toBe('')
-    expect(defaults.feature).toEqual({ name: '', description: '' })
+    expect(defaults.feature).toEqual({ name: '', description: '', tags: [] })
     expect(defaults.adjectives).toEqual([])
     expect(defaults.flavor).toBe('')
   })
