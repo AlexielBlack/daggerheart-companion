@@ -50,13 +50,19 @@ describe('SUBCLASSES — intégrité structurelle', () => {
       expect(validTraits, `${sub.id} spellcastTrait "${sub.spellcastTrait}"`).toContain(sub.spellcastTrait)
 
       // Progression tiers (foundation, specialization, mastery)
+      // Format FeatureDescriptor : { name, description, tags }
       const tiers = ['foundation', 'specialization', 'mastery']
       tiers.forEach((tier) => {
         expect(Array.isArray(sub[tier]), `${sub.id} ${tier} est un tableau`).toBe(true)
         expect(sub[tier].length, `${sub.id} ${tier} non vide`).toBeGreaterThanOrEqual(1)
-        sub[tier].forEach((entry) => {
-          expect(typeof entry, `${sub.id} ${tier} entry`).toBe('string')
-          expect(entry.length).toBeGreaterThan(0)
+        sub[tier].forEach((entry, i) => {
+          expect(typeof entry, `${sub.id} ${tier}[${i}] doit être un objet`).toBe('object')
+          expect(typeof entry.name, `${sub.id} ${tier}[${i}].name`).toBe('string')
+          expect(entry.name.length, `${sub.id} ${tier}[${i}].name non vide`).toBeGreaterThan(0)
+          expect(typeof entry.description, `${sub.id} ${tier}[${i}].description`).toBe('string')
+          expect(entry.description.length, `${sub.id} ${tier}[${i}].description non vide`).toBeGreaterThan(0)
+          expect(Array.isArray(entry.tags), `${sub.id} ${tier}[${i}].tags est un tableau`).toBe(true)
+          expect(entry.tags.length, `${sub.id} ${tier}[${i}].tags non vide`).toBeGreaterThan(0)
         })
       })
     })
