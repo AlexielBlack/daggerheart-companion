@@ -744,6 +744,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   /**
    * Tague/détague un PJ comme ayant eu le projecteur ce round.
+   * Si tous les PJs ont joué, reset automatique.
    * @param {string} pcId
    */
   function togglePcSpotlight(pcId) {
@@ -752,13 +753,20 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     } else {
       pcSpotlights.value[pcId] = true
     }
-    // Forcer la réactivité
     pcSpotlights.value = { ...pcSpotlights.value }
+
+    // Auto-reset si tous les PJs ont joué
+    const allPlayed = participantPcIds.value.length > 0 &&
+      participantPcIds.value.every((id) => pcSpotlights.value[id])
+    if (allPlayed) {
+      pcSpotlights.value = {}
+    }
     persistState()
   }
 
   /**
    * Tague/détague un adversaire comme ayant eu le projecteur ce round.
+   * Si tous les adversaires actifs ont joué, reset automatique.
    * @param {string} adversaryId
    */
   function toggleAdvSpotlight(adversaryId) {
@@ -768,6 +776,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       advSpotlights.value[adversaryId] = true
     }
     advSpotlights.value = { ...advSpotlights.value }
+
+    // Auto-reset si tous les groupes actifs ont joué
+    const activeGroups = groupedAdversaries.value.filter((g) => g.activeCount > 0)
+    const allPlayed = activeGroups.length > 0 &&
+      activeGroups.every((g) => advSpotlights.value[g.adversaryId])
+    if (allPlayed) {
+      advSpotlights.value = {}
+    }
     persistState()
   }
 

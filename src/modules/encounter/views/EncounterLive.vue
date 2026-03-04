@@ -25,25 +25,6 @@
         </h1>
         <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
 
-        <div class="enc-live__round-controls">
-          <button
-            class="enc-live__round-btn"
-            :disabled="store.round <= 1"
-            aria-label="Round précédent"
-            @click="store.previousRound()"
-          >
-            ◀
-          </button>
-          <span class="enc-live__round-label">R{{ store.round }}</span>
-          <button
-            class="enc-live__round-btn"
-            aria-label="Round suivant"
-            @click="store.nextRound()"
-          >
-            ▶
-          </button>
-        </div>
-
         <button
           class="enc-live__end-btn"
           @click="confirmEndEncounter"
@@ -290,45 +271,6 @@ export default {
   background: rgba(224, 165, 38, 0.1);
   border-radius: var(--radius-sm);
   margin-right: auto;
-}
-
-.enc-live__round-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.enc-live__round-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-secondary);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  font-size: 0.65rem;
-}
-
-.enc-live__round-btn:hover:not(:disabled) {
-  background: var(--color-bg-elevated);
-  color: var(--color-text-primary);
-}
-
-.enc-live__round-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.enc-live__round-label {
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  min-width: 28px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
 }
 
 .enc-live__end-btn {
