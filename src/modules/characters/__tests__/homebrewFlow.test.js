@@ -18,7 +18,9 @@ function createTestClass(overrides = {}) {
     hopeFeature: 'Dépensez 3 Espoir pour vous téléporter dans les ombres.',
     classFeatures: [{ name: 'Shadow Step', description: 'Vous pouvez vous téléporter dans les ombres à portée très proche une fois par repos.' }],
     suggestedTraits: { agility: 2, strength: 1, finesse: 0, instinct: -1, presence: 1, knowledge: -1 },
-    suggestedArmor: 'Leather Armor',
+    suggestedPrimaryWeapon: null,
+    suggestedSecondaryWeapon: null,
+    suggestedArmor: null,
     classItems: 'Dagger, cloak of shadows',
     subclasses: [],
     ...overrides
@@ -82,7 +84,7 @@ describe('Homebrew class → domain cards + equipment', () => {
 
     const cls = charStore.selectedCharacterClass
     expect(cls).toBeTruthy()
-    expect(cls.suggestedArmor).toBe('Leather Armor')
+    expect(cls.suggestedArmor).toBeFalsy()
     expect(cls.classItems).toBe('Dagger, cloak of shadows')
     expect(cls.source).toBe('custom')
   })

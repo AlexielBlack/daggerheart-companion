@@ -88,8 +88,19 @@ function validateScalar(value, fieldDef, path) {
     break
 
   case FIELD_TYPES.SELECT:
-    if (fieldDef.options && !fieldDef.options.includes(value)) {
-      errors.push({ field: path, message: `${label} : valeur "${value}" non autorisée.` })
+    // Si optionsSource, les options sont dynamiques → pas de validation statique
+    if (fieldDef.optionsSource) break
+    if (fieldDef.options && fieldDef.options.length > 0) {
+      // Extraire les valeurs possibles (support {value,label} et {group,items})
+      const allowedValues = fieldDef.options.flatMap((opt) => {
+        if (opt && typeof opt === 'object' && opt.group && Array.isArray(opt.items)) {
+          return opt.items.map((i) => (i && typeof i === 'object' && 'value' in i) ? i.value : i)
+        }
+        return [(opt && typeof opt === 'object' && 'value' in opt) ? opt.value : opt]
+      })
+      if (!allowedValues.includes(value)) {
+        errors.push({ field: path, message: `${label} : valeur "${value}" non autorisée.` })
+      }
     }
     break
 
