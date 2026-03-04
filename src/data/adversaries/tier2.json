@@ -86,7 +86,7 @@
         "name": "Lurching Lunge",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Mettez l’Expérience en vedette comme action MJ supplémentaire au lieu de dépenser une Peur."
+        "description": "Placez l’Expérience sous le projecteur comme action MJ supplémentaire au lieu de dépenser une Peur."
       }
     ]
   },
@@ -127,7 +127,7 @@
       {
         "name": "Two as One",
         "type": "passive",
-        "description": "Quand le Maître des Bêtes est mis en vedette, vous pouvez aussi mettre en vedette un adversaire animal de Tier 1 actuellement sous son contrôle."
+        "description": "Quand le Maître des Bêtes est mis sous le projecteur, vous pouvez aussi placer sous le projecteur un adversaire animal de Tier 1 actuellement sous son contrôle."
       },
       {
         "name": "Pinning Strike",
@@ -138,7 +138,7 @@
       {
         "name": "Deadly Companion",
         "type": "action",
-        "description": "Deux fois par scène, invoquez un Ours, un Loup Sinistre ou un adversaire animal de Tier 1 similaire sous le contrôle du Maître des Bêtes. L’adversaire apparaît à Portée Proche et est immédiatement mis en vedette."
+        "description": "Deux fois par scène, invoquez un Ours, un Loup Sinistre ou un adversaire animal de Tier 1 similaire sous le contrôle du Maître des Bêtes. L’adversaire apparaît à Portée Proche et est immédiatement mis sous le projecteur."
       }
     ]
   },
@@ -230,7 +230,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette toutes les Recrues Géantes à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur toutes les Recrues Géantes à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -312,7 +312,7 @@
       {
         "name": "Ramp Up",
         "type": "passive",
-        "description": "Vous devez dépenser une Peur pour mettre le Minotaure en vedette. Tant qu’il est en vedette, il peut faire son attaque standard contre toutes les cibles à portée."
+        "description": "Vous devez dépenser une Peur pour placer le Minotaure sous le projecteur. Tant qu’il est sous le projecteur, il peut faire son attaque standard contre toutes les cibles à portée."
       },
       {
         "name": "Charging Bull",
@@ -408,7 +408,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "La Gorgone peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "La Gorgone peut être mise sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       },
       {
         "name": "Sunsear Arrows",
@@ -573,7 +573,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Apprentis Assassins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 4 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Apprentis Assassins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 4 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -673,7 +673,7 @@
         "name": "Strike as One",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Mettez en vedette un nombre d’autres Assassins égal aux Stress non cochés de l’Assassin."
+        "description": "Placez sous le projecteur un nombre d’autres Assassins égal aux Stress non cochés de l’Assassin."
       },
       {
         "name": "The Subtle Blade",
@@ -723,7 +723,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "La Boîte peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "La Boîte peut être mise sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       },
       {
         "name": "Randomized Tactics",
@@ -791,7 +791,7 @@
         "name": "Siphon Magic",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Faites une attaque contre un PJ avec un trait de Spellcast à Portée Très Proche. En cas de réussite, la cible coche 1d4 Stress et le Crâne retire autant de Stress. En cas de réussite, le Crâne peut immédiatement être remis en vedette."
+        "description": "Faites une attaque contre un PJ avec un trait de Spellcast à Portée Très Proche. En cas de réussite, la cible coche 1d4 Stress et le Crâne retire autant de Stress. En cas de réussite, le Crâne peut immédiatement être remis sous le projecteur."
       }
     ]
   },
@@ -831,7 +831,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Conscrits à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 6 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Conscrits à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 6 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -1016,7 +1016,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Initiés du Culte à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Initiés du Culte à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -1101,7 +1101,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "La Luciole peut être mise en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "La Luciole peut être mise sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       },
       {
         "name": "Peerless Accuracy",
@@ -1164,7 +1164,7 @@
       {
         "name": "Chevalier",
         "type": "passive",
-        "description": "Tant que le Chevalier est monté, il gagne un bonus de +2 à sa Difficulté. Quand il subit des dégâts Sévères, il est désarçonné et perd ce bonus jusqu’à sa prochaine mise en vedette."
+        "description": "Tant que le Chevalier est monté, il gagne un bonus de +2 à sa Difficulté. Quand il subit des dégâts Sévères, il est désarçonné et perd ce bonus jusqu’à sa prochaine mise sous le projecteur."
       },
       {
         "name": "Heavily Armored",
@@ -1180,7 +1180,7 @@
         "name": "For the Realm!",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Mettez en vedette 1d4+1 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
+        "description": "Placez sous le projecteur 1d4+1 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       }
     ]
   },
@@ -1277,12 +1277,12 @@
         "name": "Inevitable Death",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
+        "description": "Placez sous le projecteur 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       },
       {
         "name": "Rampage",
         "type": "reaction",
-        "description": "Compte à rebours (Boucle 1d6). Quand le Chasseur est en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, déplacez le Chasseur en ligne droite vers un point à Portée Loin et faites une attaque contre toutes les cibles sur son passage. Les cibles touchées subissent 2d8+2 dégâts physiques."
+        "description": "Compte à rebours (Boucle 1d6). Quand le Chasseur est sous le projecteur pour la première fois, activez le compte à rebours. Quand il se déclenche, déplacez le Chasseur en ligne droite vers un point à Portée Loin et faites une attaque contre toutes les cibles sur son passage. Les cibles touchées subissent 2d8+2 dégâts physiques."
       }
     ]
   },
@@ -1381,24 +1381,24 @@
         "name": "Seize Your Moment",
         "type": "action",
         "cost": "Dépensez 2 Peurs",
-        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
+        "description": "Placez sous le projecteur 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts."
       },
       {
         "name": "Our Master's Will",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Quand vous mettez en vedette un allié à Portée Loin, gagnez une Peur."
+        "description": "Quand vous placez sous le projecteur un allié à Portée Loin, gagnez une Peur."
       },
       {
         "name": "Summoning Ritual",
         "type": "reaction",
-        "description": "Compte à rebours (6). Quand le Gardien des Secrets est en vedette pour la première fois, activez le compte à rebours. Quand il coche des PV, décomptez ce compte à rebours du nombre de PV cochés. Quand il se déclenche, invoquez un Démon Mineur qui apparaît à Portée Proche."
+        "description": "Compte à rebours (6). Quand le Gardien des Secrets est sous le projecteur pour la première fois, activez le compte à rebours. Quand il coche des PV, décomptez ce compte à rebours du nombre de PV cochés. Quand il se déclenche, invoquez un Démon Mineur qui apparaît à Portée Proche."
       },
       {
         "name": "Fallen Hounds",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Une fois par scène, quand le Gardien des Secrets coche 2 PV ou plus, invoquez une Meute de Chiens Démoniaques, qui apparaît à Portée Proche et est immédiatement mise en vedette."
+        "description": "Une fois par scène, quand le Gardien des Secrets coche 2 PV ou plus, invoquez une Meute de Chiens Démoniaques, qui apparaît à Portée Proche et est immédiatement mise sous le projecteur."
       }
     ]
   },
@@ -1448,7 +1448,7 @@
         "name": "Blood in the Water",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Quand une créature à Portée Proche du Requin coche des PV suite à l’attaque d’une autre créature, mettez immédiatement le Requin en vedette, en le déplaçant à Portée de Mêlée de la cible et en faisant une attaque standard."
+        "description": "Quand une créature à Portée Proche du Requin coche des PV suite à l’attaque d’une autre créature, placez immédiatement le Requin sous le projecteur, en le déplaçant à Portée de Mêlée de la cible et en faisant une attaque standard."
       }
     ]
   },

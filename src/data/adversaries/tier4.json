@@ -40,7 +40,7 @@
         "name": "Dance of Death",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Mettez en vedette 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts, ou la totalité si vous dépensez une Peur."
+        "description": "Placez sous le projecteur 1d4 alliés. Les attaques qu’ils effectuent ainsi infligent la moitié des dégâts, ou la totalité si vous dépensez une Peur."
       },
       {
         "name": "Beam of Decay",
@@ -52,7 +52,7 @@
         "name": "Open the Gates of Death",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Invoquez une Légion de Zombies, qui apparaît à Portée Proche et prend immédiatement la vedette."
+        "description": "Invoquez une Légion de Zombies, qui apparaît à Portée Proche et passe immédiatement sous le projecteur."
       },
       {
         "name": "Not Today, My Dears",
@@ -109,7 +109,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette toutes les Troupes de Choc Déchues à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 12 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur toutes les Troupes de Choc Déchues à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 12 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -166,7 +166,7 @@
       {
         "name": "Shackles of Guilt",
         "type": "reaction",
-        "description": "Compte à rebours (Boucle 2d6). Quand le Sorcier est en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, toutes les cibles à Portée Loin deviennent Vulnérables et doivent cocher un Stress. Une cible peut se libérer avec un jet de Présence ou de Force réussi."
+        "description": "Compte à rebours (Boucle 2d6). Quand le Sorcier est sous le projecteur pour la première fois, activez le compte à rebours. Quand il se déclenche, toutes les cibles à Portée Loin deviennent Vulnérables et doivent cocher un Stress. Une cible peut se libérer avec un jet de Présence ou de Force réussi."
       }
     ]
   },
@@ -210,7 +210,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Briseur de Royaumes peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Briseur de Royaumes peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Terrifying",
@@ -262,7 +262,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Champion Invaincu peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Champion Invaincu peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Faltering Armor",
@@ -284,7 +284,7 @@
       {
         "name": "Circle of Defilement",
         "type": "reaction",
-        "description": "Compte à rebours (1d8). Quand mis en vedette pour la première fois, activez le compte à rebours. Quand il se déclenche, activez un cercle magique à Portée Loin. Les cibles dans cette zone sont Vulnérables jusqu’à ce qu’elles la quittent. Le cercle peut être retiré en infligeant des dégâts Sévères au Champion Invaincu."
+        "description": "Compte à rebours (1d8). Quand mis sous le projecteur pour la première fois, activez le compte à rebours. Quand il se déclenche, activez un cercle magique à Portée Loin. Les cibles dans cette zone sont Vulnérables jusqu’à ce qu’elles la quittent. Le cercle peut être retiré en infligeant des dégâts Sévères au Champion Invaincu."
       },
       {
         "name": "Momentum",
@@ -381,7 +381,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Soldats Sanctifiés à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 10 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Soldats Sanctifiés à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 10 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -421,7 +421,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Séraphin peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Séraphin peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Divine Flight",
@@ -444,7 +444,7 @@
         "name": "We Are One",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Une fois par scène, mettez en vedette tous les autres adversaires à Portée Loin. Les attaques qu’ils effectuent infligent la moitié des dégâts."
+        "description": "Une fois par scène, placez sous le projecteur tous les autres adversaires à Portée Loin. Les attaques qu’ils effectuent infligent la moitié des dégâts."
       }
     ]
   },
@@ -484,7 +484,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Kraken peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Kraken peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Many Tentacles",
@@ -705,7 +705,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Esclaves des Royaumes Extérieurs à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 11 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Esclaves des Royaumes Extérieurs à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 11 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -746,7 +746,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "Le Prédateur d’Obsidienne peut être mis en vedette jusqu’à deux fois par tour du MJ."
+        "description": "Le Prédateur d’Obsidienne peut être mis sous le projecteur jusqu’à deux fois par tour du MJ."
       },
       {
         "name": "Flying",
@@ -773,7 +773,7 @@
       {
         "name": "Erupting Rage (Phase Change)",
         "type": "reaction",
-        "description": "Quand le Prédateur d’Obsidienne coche son dernier PV, remplacez-le par le Fléau en Fusion et mettez-le immédiatement en vedette."
+        "description": "Quand le Prédateur d’Obsidienne coche son dernier PV, remplacez-le par le Fléau en Fusion et placez-le immédiatement sous le projecteur."
       }
     ]
   },
@@ -813,7 +813,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Fléau en Fusion peut être mis en vedette jusqu’à trois fois par tour du MJ."
+        "description": "Le Fléau en Fusion peut être mis sous le projecteur jusqu’à trois fois par tour du MJ."
       },
       {
         "name": "Cracked Scales",
@@ -845,7 +845,7 @@
       {
         "name": "Ashen Vengeance (Phase Change)",
         "type": "reaction",
-        "description": "Quand le Fléau en Fusion coche son dernier PV, remplacez-le par le Tyran de Cendres et mettez-le immédiatement en vedette."
+        "description": "Quand le Fléau en Fusion coche son dernier PV, remplacez-le par le Tyran de Cendres et placez-le immédiatement sous le projecteur."
       }
     ]
   },
@@ -885,12 +885,12 @@
       {
         "name": "Relentless (4)",
         "type": "passive",
-        "description": "Le Tyran de Cendres peut être mis en vedette jusqu’à quatre fois par tour du MJ."
+        "description": "Le Tyran de Cendres peut être mis sous le projecteur jusqu’à quatre fois par tour du MJ."
       },
       {
         "name": "Cornered",
         "type": "passive",
-        "description": "Cochez un Stress au lieu de dépenser une Peur pour mettre le Tyran de Cendres en vedette."
+        "description": "Cochez un Stress au lieu de dépenser une Peur pour placer le Tyran de Cendres sous le projecteur."
       },
       {
         "name": "Injured Wings",
@@ -912,7 +912,7 @@
         "name": "Ashen Cloud",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Fracassez le sol et soulevez de la cendre à Portée Loin. Tant qu’elle est dans le nuage de cendres, une cible a un désavantage sur les jets d’action. Se dissipe la prochaine fois qu’un adversaire est mis en vedette."
+        "description": "Fracassez le sol et soulevez de la cendre à Portée Loin. Tant qu’elle est dans le nuage de cendres, une cible a un désavantage sur les jets d’action. Se dissipe la prochaine fois qu’un adversaire est mis sous le projecteur."
       },
       {
         "name": "Apocalyptic Thrashing",

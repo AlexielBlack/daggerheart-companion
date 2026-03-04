@@ -29,7 +29,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "La Luciole peut être mise en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "La Luciole peut être mise sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       },
       {
         "name": "Never Misses",
@@ -112,7 +112,7 @@
       {
         "name": "Money Is Time",
         "type": "action",
-        "description": "Dépensez 3 poignées d’or (ou une Peur) pour mettre en vedette 1d4+1 alliés."
+        "description": "Dépensez 3 poignées d’or (ou une Peur) pour placer sous le projecteur 1d4+1 alliés."
       }
     ]
   },
@@ -224,7 +224,7 @@
         "name": "The Root of Villainy",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Mettez en vedette deux autres Démons à Portée Loin."
+        "description": "Placez sous le projecteur deux autres Démons à Portée Loin."
       },
       {
         "name": "You Pale in Comparison",
@@ -440,7 +440,7 @@
         "name": "Grow Saplings",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Faites pousser trois Minions Arbrisseau Tréant, qui apparaissent à Portée Proche et prennent immédiatement la vedette."
+        "description": "Faites pousser trois Minions Arbrisseau Tréant, qui apparaissent à Portée Proche et passent immédiatement sous le projecteur."
       },
       {
         "name": "We Are All One",
@@ -486,7 +486,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette toutes les Étincelles Élémentaires à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur toutes les Étincelles Élémentaires à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 5 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -520,7 +520,7 @@
       {
         "name": "Slow",
         "type": "passive",
-        "description": "Quand vous mettez l’Élémentaire en vedette et qu’il n’a pas de jeton sur sa fiche, il ne peut pas encore agir. Placez un jeton. Quand il est mis en vedette avec un jeton, retirez-le et il peut agir."
+        "description": "Quand vous placez l’Élémentaire sous le projecteur et qu’il n’a pas de jeton sur sa fiche, il ne peut pas encore agir. Placez un jeton. Quand il est mis sous le projecteur avec un jeton, retirez-le et il peut agir."
       },
       {
         "name": "Crushing Blows",
@@ -628,7 +628,7 @@
       {
         "name": "Slow",
         "type": "passive",
-        "description": "Quand vous mettez la Gelée en vedette et qu’elle n’a pas de jeton sur sa fiche, elle ne peut pas encore agir. Placez un jeton. Quand elle est mise en vedette avec un jeton, retirez-le et elle peut agir."
+        "description": "Quand vous placez la Gelée sous le projecteur et qu’elle n’a pas de jeton sur sa fiche, elle ne peut pas encore agir. Placez un jeton. Quand elle est mise sous le projecteur avec un jeton, retirez-le et elle peut agir."
       },
       {
         "name": "Acidic Form",
@@ -644,7 +644,7 @@
         "name": "Split",
         "type": "reaction",
         "cost": "Dépensez une Peur",
-        "description": "Quand la Gelée a 4 PV ou plus cochés, divisez-la en deux Gelées Vertes sans PV ni Stress cochés. Mettez-les immédiatement toutes les deux en vedette."
+        "description": "Quand la Gelée a 4 PV ou plus cochés, divisez-la en deux Gelées Vertes sans PV ni Stress cochés. Placez-les immédiatement toutes les deux sous le projecteur."
       }
     ]
   },
@@ -683,7 +683,7 @@
       {
         "name": "Relentless (X)",
         "type": "passive",
-        "description": "L’Hydre peut être mise en vedette X fois par tour du MJ, où X est le nombre de têtes de l’Hydre. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "L’Hydre peut être mise sous le projecteur X fois par tour du MJ, où X est le nombre de têtes de l’Hydre. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       },
       {
         "name": "Regeneration",
@@ -899,7 +899,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Arbrisseaux Tréants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 8 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Arbrisseaux Tréants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée et font un jet d’attaque partagé. En cas de réussite, ils infligent 8 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -956,12 +956,12 @@
         "name": "The Hunt Is On",
         "type": "action",
         "cost": "Dépensez 2 Peurs",
-        "description": "Invoquez 1d4 Vampires, qui apparaissent à Portée Loin et prennent immédiatement la vedette."
+        "description": "Invoquez 1d4 Vampires, qui apparaissent à Portée Loin et passent immédiatement sous le projecteur."
       },
       {
         "name": "Lifesuck",
         "type": "reaction",
-        "description": "Quand le Vampire est mis en vedette, lancez un d8. Sur un résultat de 6 ou plus, toutes les cibles à Portée Très Proche doivent cocher un PV."
+        "description": "Quand le Vampire est mis sous le projecteur, lancez un d8. Sur un résultat de 6 ou plus, toutes les cibles à Portée Très Proche doivent cocher un PV."
       }
     ]
   },
@@ -1135,7 +1135,7 @@
       {
         "name": "Slow Firing",
         "type": "passive",
-        "description": "Quand mise en vedette sans jeton, ne peut pas attaquer. Placez un jeton. Quand mise en vedette avec un jeton, retirez-le et attaquez."
+        "description": "Quand mise sous le projecteur sans jeton, ne peut pas attaquer. Placez un jeton. Quand mise sous le projecteur avec un jeton, retirez-le et attaquez."
       },
       {
         "name": "Mark Target",
@@ -1193,7 +1193,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Dragon peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Dragon peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Rend and Crush",

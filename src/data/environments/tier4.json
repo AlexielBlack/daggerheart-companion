@@ -47,7 +47,7 @@
         "name": "Outer Realms Predators",
         "type": "action",
         "fearCost": 1,
-        "description": "Dépensez une Peur pour invoquer un Outer Realms Abomination, un Outer Realms Corruptor, et 2d6 Outer Realms Thralls, qui apparaissent à Portée Proche d’un PJ choisi en défiance de toute logique et causalité. Donnez immédiatement la vedette à l’un de ces adversaires, et vous pouvez dépenser une Peur supplémentaire pour réussir automatiquement l’attaque standard de cet adversaire.",
+        "description": "Dépensez une Peur pour invoquer un Outer Realms Abomination, un Outer Realms Corruptor, et 2d6 Outer Realms Thralls, qui apparaissent à Portée Proche d’un PJ choisi en défiance de toute logique et causalité. Donnez immédiatement le projecteur à l’un de ces adversaires, et vous pouvez dépenser une Peur supplémentaire pour réussir automatiquement l’attaque standard de cet adversaire.",
         "questions": "Quels restes à demi-consumés du monde brisé ces monstruosités rejettent-elles en pourchassant la chair vivante ? Quels reflets déchiquetés d’une ancienne identité humaine entrevoyez-vous entre les moments de malveillance aveugle ?"
       },
       {
@@ -88,7 +88,7 @@
         "name": "Final Preparations",
         "type": "passive",
         "fearCost": null,
-        "description": "Quand l’environnement prend la vedette pour la première fois, désignez un adversaire comme l’Usurpateur cherchant à renverser les dieux. Activez un Long-Term Countdown (8) tandis que l’Usurpateur assemble ce dont il a besoin pour mener le rituel. Quand il se déclenche, donnez la vedette à cet environnement pour utiliser la feature « Beginning of the End ». Tant que cet environnement reste en jeu, vous pouvez détenir jusqu’à 15 Peur.",
+        "description": "Quand l’environnement passe sous le projecteur pour la première fois, désignez un adversaire comme l’Usurpateur cherchant à renverser les dieux. Activez un Long-Term Countdown (8) tandis que l’Usurpateur assemble ce dont il a besoin pour mener le rituel. Quand il se déclenche, donnez le projecteur à cet environnement pour utiliser la feature « Beginning of the End ». Tant que cet environnement reste en jeu, vous pouvez détenir jusqu’à 15 Peur.",
         "questions": "De quoi l’Usurpateur a-t-il encore besoin : le cœur d’un High Seraph ? La pierre angulaire d’un ancien portail ? La loyauté de deux ennemis jurés ? Les larmes de chagrin d’une âme pure ?"
       },
       {
@@ -102,7 +102,7 @@
         "name": "Defilers Abound",
         "type": "action",
         "fearCost": 2,
-        "description": "Dépensez 2 Peur pour invoquer 1d4+2 Fallen Shock Troops qui apparaissent à Portée Proche de l’Usurpateur pour assister son siège divin. Donnez immédiatement la vedette aux Shock Troops pour utiliser une action « Group Attack ».",
+        "description": "Dépensez 2 Peur pour invoquer 1d4+2 Fallen Shock Troops qui apparaissent à Portée Proche de l’Usurpateur pour assister son siège divin. Donnez immédiatement le projecteur aux Shock Troops pour utiliser une action « Group Attack ».",
         "questions": "Quel High Fallen ces troupes servent-elles ? La chair de quel dieu souhaitent-elles festoyer ?"
       },
       {
@@ -116,7 +116,7 @@
         "name": "Beginning of the End",
         "type": "reaction",
         "fearCost": null,
-        "description": "Quand le countdown « Final Preparations » se déclenche, l’Usurpateur commence à marteler les portes des Hallows eux-mêmes. Activez un Divine Siege Countdown (10). Donnez la vedette à l’Usurpateur pour décrire son assaut et décrémenter ce countdown de 1. Si l’Usurpateur subit des dégâts Majeurs ou supérieurs, incrémentez le countdown de 1. Quand il se déclenche, l’Usurpateur brise la barrière entre le Plan Mortel et les Hallows Above pour tuer les dieux et prendre leur place. Vous gagnez une Peur pour chaque PV non marqué de l’Usurpateur. Vous pouvez immédiatement utiliser la feature « Godslayer » sans dépenser de Peur pour faire un mouvement de MJ supplémentaire.",
+        "description": "Quand le countdown « Final Preparations » se déclenche, l’Usurpateur commence à marteler les portes des Hallows eux-mêmes. Activez un Divine Siege Countdown (10). Donnez le projecteur à l’Usurpateur pour décrire son assaut et décrémenter ce countdown de 1. Si l’Usurpateur subit des dégâts Majeurs ou supérieurs, incrémentez le countdown de 1. Quand il se déclenche, l’Usurpateur brise la barrière entre le Plan Mortel et les Hallows Above pour tuer les dieux et prendre leur place. Vous gagnez une Peur pour chaque PV non marqué de l’Usurpateur. Vous pouvez immédiatement utiliser la feature « Godslayer » sans dépenser de Peur pour faire un mouvement de MJ supplémentaire.",
         "questions": "Comment le Plan Mortel se tord-il tandis que l’ordre naturel est violé ? Quels mortels sont témoins de ce blasphème de loin ?"
       },
       {

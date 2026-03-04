@@ -54,7 +54,7 @@
         "name": "Defiler",
         "type": "action",
         "fearCost": 1,
-        "description": "Dépensez une Peur pour invoquer un Minor Chaos Elemental attiré par les échos de violence et de discorde. Il apparaît à Portée Lointaine d’un PJ choisi et prend immédiatement la vedette.",
+        "description": "Dépensez une Peur pour invoquer un Minor Chaos Elemental attiré par les échos de violence et de discorde. Il apparaît à Portée Lointaine d’un PJ choisi et passe immédiatement sous le projecteur.",
         "questions": "De quelle couleur l’herbe devient-elle quand l’élémentaire apparaît ? Comment le chaos déforme-t-il les insectes et la petite faune dans le bosquet ?"
       }
     ]
@@ -92,7 +92,7 @@
         "name": "Surprise!",
         "type": "action",
         "fearCost": null,
-        "description": "Les embusqués se révèlent au groupe, vous gagnez 2 Peur, et la vedette passe immédiatement à l’un des adversaires embusqués.",
+        "description": "Les embusqués se révèlent au groupe, vous gagnez 2 Peur, et le projecteur passe immédiatement à l’un des adversaires embusqués.",
         "questions": "Que veulent les embusqués du groupe ? Comment leurs tactiques dans l’embuscade reflètent-elles cela ?"
       }
     ]
@@ -432,7 +432,7 @@
         "name": "Patient Hunter",
         "type": "action",
         "fearCost": 1,
-        "description": "Dépensez une Peur pour invoquer un Glass Snake à Portée Proche d’un PJ choisi. Le serpent apparaît dans ou près de la rivière et prend immédiatement la vedette pour utiliser son action « Spinning Serpent ».",
+        "description": "Dépensez une Peur pour invoquer un Glass Snake à Portée Proche d’un PJ choisi. Le serpent apparaît dans ou près de la rivière et passe immédiatement sous le projecteur pour utiliser son action « Spinning Serpent ».",
         "questions": "Quels trésors la bête a-t-elle dans son terrier ? Quels voyageurs ont déjà été victimes de ce prédateur ?"
       }
     ]

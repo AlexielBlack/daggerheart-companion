@@ -35,7 +35,7 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Fouisseur peut être mis en vedette jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Fouisseur peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Earth Eruption",
@@ -147,7 +147,7 @@
       {
         "name": "Ramp Up",
         "type": "passive",
-        "description": "Vous devez dépenser une Peur pour mettre l’Ogre en vedette. Tant qu’il est en vedette, il peut faire son attaque standard contre toutes les cibles à portée."
+        "description": "Vous devez dépenser une Peur pour placer l’Ogre sous le projecteur. Tant qu’il est sous le projecteur, il peut faire son attaque standard contre toutes les cibles à portée."
       },
       {
         "name": "Bone Breaker",
@@ -198,7 +198,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "Le Constructe peut être mis en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour le mettre en vedette."
+        "description": "Le Constructe peut être mis sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
       },
       {
         "name": "Weak Structure",
@@ -215,7 +215,7 @@
         "name": "Overload",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Avant de lancer les dégâts de l’attaque du Constructe, gagnez un bonus de +10 au jet de dégâts. Le Constructe peut ensuite reprendre la vedette."
+        "description": "Avant de lancer les dégâts de l’attaque du Constructe, gagnez un bonus de +10 au jet de dégâts. Le Constructe peut ensuite reprendre le projecteur."
       },
       {
         "name": "Death Quake",
@@ -457,7 +457,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Rats Géants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 1 dégât physique chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Rats Géants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 1 dégât physique chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -556,7 +556,7 @@
         "name": "Spitter",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Introduisez un d6 Dé de Crachat. Quand le Serpent est en vedette, lancez ce dé. Sur un résultat de 5 ou plus, toutes les cibles devant le Serpent à Portée Loin doivent réussir un jet de Réaction d’Agilité ou subir 1d4 dégâts physiques. Le Serpent peut reprendre la vedette ce tour."
+        "description": "Introduisez un d6 Dé de Crachat. Quand le Serpent est sous le projecteur, lancez ce dé. Sur un résultat de 5 ou plus, toutes les cibles devant le Serpent à Portée Loin doivent réussir un jet de Réaction d’Agilité ou subir 1d4 dégâts physiques. Le Serpent peut reprendre le projecteur ce tour."
       }
     ]
   },
@@ -734,12 +734,12 @@
         "name": "Rally Guards",
         "type": "action",
         "cost": "Dépensez 2 Peurs",
-        "description": "Mettez en vedette le Chef des Gardes et jusqu’à 2d4 alliés à Portée Loin."
+        "description": "Placez sous le projecteur le Chef des Gardes et jusqu’à 2d4 alliés à Portée Loin."
       },
       {
         "name": "On My Signal",
         "type": "reaction",
-        "description": "Compte à rebours (5). Quand le Chef des Gardes est en vedette pour la première fois, activez le compte à rebours. Il décompte quand un PJ fait un jet d’attaque. Quand il se déclenche, tous les Gardes Archers à Portée Loin font une attaque standard avec avantage contre la cible la plus proche à leur portée. Si des attaques touchent la même cible, combinez leurs dégâts."
+        "description": "Compte à rebours (5). Quand le Chef des Gardes est sous le projecteur pour la première fois, activez le compte à rebours. Il décompte quand un PJ fait un jet d’attaque. Quand il se déclenche, tous les Gardes Archers à Portée Loin font une attaque standard avec avantage contre la cible la plus proche à leur portée. Si des attaques touchent la même cible, combinez leurs dégâts."
       },
       {
         "name": "Momentum",
@@ -1208,7 +1208,7 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "La Masse peut être mise en vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la mettre en vedette."
+        "description": "La Masse peut être mise sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
       }
     ],
     "atk_mod": 4
@@ -1905,7 +1905,7 @@
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et mettez en vedette tous les Larbins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 2 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Larbins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 2 dégâts physiques chacun. Combinez ces dégâts."
       }
     ]
   },
@@ -1945,7 +1945,7 @@
       {
         "name": "Tactician",
         "type": "action",
-        "description": "Quand vous mettez le Lieutenant en vedette, cochez un Stress pour aussi mettre en vedette deux alliés à Portée Proche."
+        "description": "Quand vous placez le Lieutenant sous le projecteur, cochez un Stress pour aussi placer sous le projecteur deux alliés à Portée Proche."
       },
       {
         "name": "More Where That Came From",

@@ -115,14 +115,14 @@
         "name": "Siege Weapons (Environment Change)",
         "type": "action",
         "fearCost": null,
-        "description": "Consequence Countdown (6). La force assiégeante déploie des armes de siège pour tenter de raser les fortifications des défenseurs. Activez le countdown quand le siège commence (pour un siège prolongé, utilisez un countdown à long terme). Quand il se déclenche, les fortifications des défenseurs ont été percées et les attaquants déferlent à l’intérieur. Vous gagnez 2 Peur, puis passez à l’environnement Pitched Battle et donnez-lui la vedette.",
+        "description": "Consequence Countdown (6). La force assiégeante déploie des armes de siège pour tenter de raser les fortifications des défenseurs. Activez le countdown quand le siège commence (pour un siège prolongé, utilisez un countdown à long terme). Quand il se déclenche, les fortifications des défenseurs ont été percées et les attaquants déferlent à l’intérieur. Vous gagnez 2 Peur, puis passez à l’environnement Pitched Battle et donnez-lui le projecteur.",
         "questions": "Quelles armes de siège sont déployées ? Sont-elles magiques, ordinaires, ou un mélange des deux ? Quelles défenses les personnages doivent-ils surmonter pour prendre d’assaut le château ?"
       },
       {
         "name": "Reinforcements!",
         "type": "action",
         "fearCost": null,
-        "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm prend immédiatement la vedette.",
+        "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm passe immédiatement sous le projecteur.",
         "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?"
       },
       {
@@ -191,7 +191,7 @@
         "name": "Reinforcements!",
         "type": "action",
         "fearCost": null,
-        "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm prend immédiatement la vedette.",
+        "description": "Invoquez un Knight of the Realm, un nombre de Minions de Tier 3 égal au nombre de PJ, et deux adversaires de votre choix à Portée Lointaine d’un PJ choisi comme renforts. Le Knight of the Realm passe immédiatement sous le projecteur.",
         "questions": "Qui ciblent-ils en premier ? Quelle formation adoptent-ils ?"
       }
     ]

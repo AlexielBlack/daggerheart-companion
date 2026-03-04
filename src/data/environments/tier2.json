@@ -33,7 +33,7 @@
         "name": "Blasphemous Might",
         "type": "action",
         "fearCost": null,
-        "description": "Une partie du pouvoir du rituel est détournée vers un membre du culte pour repousser les intrus. Choisissez un adversaire pour qu’il devienne Imprégné d’une magie terrible jusqu’à la fin de la scène ou sa défaite. Un adversaire Imprégné prend immédiatement la vedette et gagne l’un des bénéfices suivants, ou les trois si vous dépensez une Peur :\n• Il gagne l’avantage sur toutes ses attaques.\n• Il inflige 1d10 dégâts supplémentaires sur une attaque réussie.\n• Il gagne la feature suivante : Relentless (2) - Passive. Cet adversaire peut recevoir la vedette jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour lui donner la vedette.",
+        "description": "Une partie du pouvoir du rituel est détournée vers un membre du culte pour repousser les intrus. Choisissez un adversaire pour qu’il devienne Imprégné d’une magie terrible jusqu’à la fin de la scène ou sa défaite. Un adversaire Imprégné passe immédiatement sous le projecteur et gagne l’un des bénéfices suivants, ou les trois si vous dépensez une Peur :\n• Il gagne l’avantage sur toutes ses attaques.\n• Il inflige 1d10 dégâts supplémentaires sur une attaque réussie.\n• Il gagne la feature suivante : Relentless (2) - Passive. Cet adversaire peut recevoir le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour lui donner le projecteur.",
         "questions": "Comment l’ennemi change-t-il d’apparence ? Quelles peurs leurs coups font-ils remonter à la surface ?"
       },
       {
