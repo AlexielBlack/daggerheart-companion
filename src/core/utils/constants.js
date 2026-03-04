@@ -118,5 +118,6 @@ export const NAV_ITEMS = [
       { id: 'homebrew-environment', label: 'Environnements', icon: '🏔️', route: '/homebrew/environment' },
       { id: 'homebrew-equipment', label: 'Équipement', icon: '🗡️', route: '/homebrew/equipment' }
     ]
-  }
+  },
+  { id: 'sync', label: 'Synchronisation', icon: '🔄', route: '/sync' }
 ]

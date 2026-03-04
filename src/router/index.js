@@ -204,6 +204,12 @@ const routes = [
     meta: { title: 'Modifier domaine', module: 'homebrew' }
   },
   {
+    path: '/sync',
+    name: 'sync',
+    component: () => import('@modules/sync/views/SyncManager.vue'),
+    meta: { title: 'Synchronisation', module: 'sync' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@core/components/ErrorFallback.vue'),
