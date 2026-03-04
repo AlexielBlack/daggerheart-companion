@@ -35,23 +35,35 @@
       {
         "name": "Relentless (3)",
         "type": "passive",
-        "description": "Le Fouisseur peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
+        "description": "Le Fouisseur peut être mis sous le projecteur jusqu’à trois fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Earth Eruption",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites jaillir le Fouisseur du sol. Toutes les créatures à Portée Très Proche doivent réussir un jet de Réaction d’Agilité ou être renversées, les rendant Vulnérables jusqu’à leur prochaine action."
+        "description": "Faites jaillir le Fouisseur du sol. Toutes les créatures à Portée Très Proche doivent réussir un jet de Réaction d’Agilité ou être renversées, les rendant Vulnérables jusqu’à leur prochaine action.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Spit Acid",
         "type": "action",
-        "description": "Faites une attaque contre toutes les cibles devant le Fouisseur à Portée Proche. Les cibles touchées subissent 2d6 dégâts physiques et doivent cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elles ne peuvent pas cocher d’Emplacement d’armure, elles doivent cocher un PV supplémentaire et vous gagnez une Peur."
+        "description": "Faites une attaque contre toutes les cibles devant le Fouisseur à Portée Proche. Les cibles touchées subissent 2d6 dégâts physiques et doivent cocher un Emplacement d’armure sans en recevoir les bénéfices. Si elles ne peuvent pas cocher d’Emplacement d’armure, elles doivent cocher un PV supplémentaire et vous gagnez une Peur.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Acid Bath",
         "type": "reaction",
-        "description": "Quand le Fouisseur subit des dégâts Sévères, toutes les créatures à Portée Proche sont aspergées de son sang acide, subissant 1d10 dégâts physiques. Cette éclaboussure couvre le sol à Portée Très Proche de sang, et toutes les créatures autres que le Fouisseur qui le traversent subissent 1d6 dégâts physiques."
+        "description": "Quand le Fouisseur subit des dégâts Sévères, toutes les créatures à Portée Proche sont aspergées de son sang acide, subissant 1d10 dégâts physiques. Cette éclaboussure couvre le sol à Portée Très Proche de sang, et toutes les créatures autres que le Fouisseur qui le traversent subissent 1d6 dégâts physiques.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -95,18 +107,27 @@
       {
         "name": "Overwhelming Force",
         "type": "passive",
-        "description": "Les cibles qui cochent des PV suite à l’attaque standard de l’Ours sont repoussées à Portée Très Proche."
+        "description": "Les cibles qui cochent des PV suite à l’attaque standard de l’Ours sont repoussées à Portée Très Proche.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Bite",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques et la cible est Entravée jusqu’à ce qu’elle se libère avec un jet de Force réussi."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques et la cible est Entravée jusqu’à ce qu’elle se libère avec un jet de Force réussi.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "Quand l’Ours réussit une attaque contre un PJ, vous gagnez une Peur."
+        "description": "Quand l’Ours réussit une attaque contre un PJ, vous gagnez une Peur.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -147,23 +168,35 @@
       {
         "name": "Ramp Up",
         "type": "passive",
-        "description": "Vous devez dépenser une Peur pour placer l’Ogre sous le projecteur. Tant qu’il est sous le projecteur, il peut faire son attaque standard contre toutes les cibles à portée."
+        "description": "Vous devez dépenser une Peur pour placer l’Ogre sous le projecteur. Tant qu’il est sous le projecteur, il peut faire son attaque standard contre toutes les cibles à portée.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Bone Breaker",
         "type": "passive",
-        "description": "Les attaques de l’Ogre infligent des dégâts directs."
+        "description": "Les attaques de l’Ogre infligent des dégâts directs.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Hail of Boulders",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Ramassez des objets lourds et lancez-les sur toutes les cibles devant l’Ogre à Portée Loin. Faites une attaque contre ces cibles. Les cibles touchées subissent 1d10+2 dégâts physiques. Si l’Ogre touche plus d’une cible, vous gagnez une Peur."
+        "description": "Ramassez des objets lourds et lancez-les sur toutes les cibles devant l’Ogre à Portée Loin. Faites une attaque contre ces cibles. Les cibles touchées subissent 1d10+2 dégâts physiques. Si l’Ogre touche plus d’une cible, vous gagnez une Peur.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Rampaging Fury",
         "type": "reaction",
-        "description": "Quand l’Ogre coche 2 PV ou plus, il peut se déchaîner. Déplacez l’Ogre vers un point à Portée Proche et infligez 2d6+3 dégâts physiques directs à toutes les cibles sur son passage."
+        "description": "Quand l’Ogre coche 2 PV ou plus, il peut se déchaîner. Déplacez l’Ogre vers un point à Portée Proche et infligez 2d6+3 dégâts physiques directs à toutes les cibles sur son passage.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -198,29 +231,44 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "Le Constructe peut être mis sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur."
+        "description": "Le Constructe peut être mis sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour le placer sous le projecteur.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Weak Structure",
         "type": "passive",
-        "description": "Quand le Constructe coche des PV suite à des dégâts physiques, il doit cocher un PV supplémentaire."
+        "description": "Quand le Constructe coche des PV suite à des dégâts physiques, il doit cocher un PV supplémentaire.",
+        "tags": [
+          "défensif"
+        ]
       },
       {
         "name": "Trample",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre toutes les cibles sur le passage du Constructe quand il se déplace. Les cibles touchées subissent 1d8 dégâts physiques."
+        "description": "Faites une attaque contre toutes les cibles sur le passage du Constructe quand il se déplace. Les cibles touchées subissent 1d8 dégâts physiques.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Overload",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Avant de lancer les dégâts de l’attaque du Constructe, gagnez un bonus de +10 au jet de dégâts. Le Constructe peut ensuite reprendre le projecteur."
+        "description": "Avant de lancer les dégâts de l’attaque du Constructe, gagnez un bonus de +10 au jet de dégâts. Le Constructe peut ensuite reprendre le projecteur.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Death Quake",
         "type": "reaction",
-        "description": "Quand le Constructe coche son dernier PV, la magie qui l’anime se rompt en une explosion de force. Faites une attaque avec avantage contre toutes les cibles à Portée Très Proche."
+        "description": "Quand le Constructe coche son dernier PV, la magie qui l’anime se rompt en une explosion de force. Faites une attaque avec avantage contre toutes les cibles à Portée Très Proche.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -261,13 +309,20 @@
         "name": "Mockery",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Dites quelque chose de moqueur et forcez une cible à Portée Proche à faire un jet de Réaction de Présence (14). En cas d’échec, la cible doit cocher 2 Stress et est Vulnérable jusqu’à la fin de la scène."
+        "description": "Dites quelque chose de moqueur et forcez une cible à Portée Proche à faire un jet de Réaction de Présence (14). En cas d’échec, la cible doit cocher 2 Stress et est Vulnérable jusqu’à la fin de la scène.",
+        "tags": [
+          "social",
+          "offensif"
+        ]
       },
       {
         "name": "Scapegoat",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Ciblez un PJ. Le Courtisan convainc une foule ou un individu éminent que la cible est la cause de leur conflit ou malheur actuel."
+        "description": "Ciblez un PJ. Le Courtisan convainc une foule ou un individu éminent que la cible est la cause de leur conflit ou malheur actuel.",
+        "tags": [
+          "social"
+        ]
       }
     ]
   },
@@ -307,13 +362,19 @@
       {
         "name": "Ground Slam",
         "type": "action",
-        "description": "Frappez le sol, repoussant toutes les cibles à Portée Très Proche jusqu’à Portée Loin. Chaque cible repoussée doit cocher un Stress."
+        "description": "Frappez le sol, repoussant toutes les cibles à Portée Très Proche jusqu’à Portée Loin. Chaque cible repoussée doit cocher un Stress.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Grab and Drag",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Faites une attaque contre une cible à Portée Proche. En cas de réussite, tirez-la à Portée de Mêlée, infligez 1d6+2 dégâts physiques et Entravez-la jusqu’à ce que le Défenseur subisse des dégâts Sévères."
+        "description": "Faites une attaque contre une cible à Portée Proche. En cas de réussite, tirez-la à Portée de Mêlée, infligez 1d6+2 dégâts physiques et Entravez-la jusqu’à ce que le Défenseur subisse des dégâts Sévères.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -354,13 +415,19 @@
       {
         "name": "Pack Tactics",
         "type": "passive",
-        "description": "Si le Loup réussit une attaque standard et qu’un autre Loup Sinistre est à Portée de Mêlée de la cible, infligez 1d6+5 dégâts physiques au lieu des dégâts standard et vous gagnez une Peur."
+        "description": "Si le Loup réussit une attaque standard et qu’un autre Loup Sinistre est à Portée de Mêlée de la cible, infligez 1d6+5 dégâts physiques au lieu des dégâts standard et vous gagnez une Peur.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Hobbling Strike",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques directs et rendez-la Vulnérable jusqu’à ce qu’elle libère au moins 1 PV."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, infligez 3d4+10 dégâts physiques directs et rendez-la Vulnérable jusqu’à ce qu’elle libère au moins 1 PV.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -400,18 +467,27 @@
       {
         "name": "Horde (1d4+1)",
         "type": "passive",
-        "description": "Quand les Moustiques ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place."
+        "description": "Quand les Moustiques ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Flying",
         "type": "passive",
-        "description": "En vol, les Moustiques ont un bonus de +2 à leur Difficulté."
+        "description": "En vol, les Moustiques ont un bonus de +2 à leur Difficulté.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Bloodsucker",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Quand l’attaque des Moustiques fait cocher des PV à une cible, forcez la cible à cocher un PV supplémentaire."
+        "description": "Quand l’attaque des Moustiques fait cocher des PV à une cible, forcez la cible à cocher un PV supplémentaire.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -451,13 +527,19 @@
       {
         "name": "Minion (3)",
         "type": "passive",
-        "description": "Le Rat est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Rat, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "Le Rat est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Rat, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et placez sous le projecteur tous les Rats Géants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 1 dégât physique chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Rats Géants à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 1 dégât physique chacun. Combinez ces dégâts.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -498,18 +580,27 @@
         "name": "Double Strike",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque standard contre deux cibles à Portée de Mêlée."
+        "description": "Faites une attaque standard contre deux cibles à Portée de Mêlée.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Venomous Stinger",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, infligez 1d4+4 dégâts physiques et Empoisonnez-la jusqu’à son prochain repos ou un jet de Savoir réussi (16). Tant qu’Empoisonnée, la cible doit lancer un d6 avant chaque jet d’action. Sur un résultat de 4 ou moins, elle doit cocher un Stress."
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, infligez 1d4+4 dégâts physiques et Empoisonnez-la jusqu’à son prochain repos ou un jet de Savoir réussi (16). Tant qu’Empoisonnée, la cible doit lancer un d6 avant chaque jet d’action. Sur un résultat de 4 ou moins, elle doit cocher un Stress.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "Quand le Scorpion réussit une attaque contre un PJ, vous gagnez une Peur."
+        "description": "Quand le Scorpion réussit une attaque contre un PJ, vous gagnez une Peur.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -544,19 +635,28 @@
       {
         "name": "Armor-Shredding Shards",
         "type": "passive",
-        "description": "Après une attaque réussie contre le Serpent à Portée de Mêlée, l’attaquant doit cocher un Emplacement d’armure. S’il ne peut pas, il doit cocher un PV."
+        "description": "Après une attaque réussie contre le Serpent à Portée de Mêlée, l’attaquant doit cocher un Emplacement d’armure. S’il ne peut pas, il doit cocher un PV.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Spinning Serpent",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent 1d6+1 dégâts physiques."
+        "description": "Faites une attaque contre toutes les cibles à Portée Très Proche. Les cibles touchées subissent 1d6+1 dégâts physiques.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Spitter",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Introduisez un d6 Dé de Crachat. Quand le Serpent est sous le projecteur, lancez ce dé. Sur un résultat de 5 ou plus, toutes les cibles devant le Serpent à Portée Loin doivent réussir un jet de Réaction d’Agilité ou subir 1d4 dégâts physiques. Le Serpent peut reprendre le projecteur ce tour."
+        "description": "Introduisez un d6 Dé de Crachat. Quand le Serpent est sous le projecteur, lancez ce dé. Sur un résultat de 5 ou plus, toutes les cibles devant le Serpent à Portée Loin doivent réussir un jet de Réaction d’Agilité ou subir 1d4 dégâts physiques. Le Serpent peut reprendre le projecteur ce tour.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -596,13 +696,19 @@
       {
         "name": "Maintain Distance",
         "type": "passive",
-        "description": "Après une attaque standard, le Harceleur peut se déplacer n’importe où à Portée Loin."
+        "description": "Après une attaque standard, le Harceleur peut se déplacer n’importe où à Portée Loin.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Fall Back",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Quand une créature se déplace à Portée de Mêlée pour attaquer, avant le jet d’attaque, déplacez-vous n’importe où à Portée Proche et faites une attaque contre cette créature. En cas de réussite, infligez 1d10+2 dégâts physiques."
+        "description": "Quand une créature se déplace à Portée de Mêlée pour attaquer, avant le jet d’attaque, déplacez-vous n’importe où à Portée Proche et faites une attaque contre cette créature. En cas de réussite, infligez 1d10+2 dégâts physiques.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -643,7 +749,10 @@
         "name": "Hobbling Shot",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre une cible à Portée Loin. En cas de réussite, infligez 1d12+3 dégâts physiques. Si la cible coche des PV suite à cette attaque, elle a un désavantage sur les jets d’Agilité jusqu’à ce qu’elle libère au moins 1 PV."
+        "description": "Faites une attaque contre une cible à Portée Loin. En cas de réussite, infligez 1d12+3 dégâts physiques. Si la cible coche des PV suite à cette attaque, elle a un désavantage sur les jets d’Agilité jusqu’à ce qu’elle libère au moins 1 PV.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -683,13 +792,19 @@
       {
         "name": "Shield Wall",
         "type": "passive",
-        "description": "Une créature qui tente de se déplacer à Portée Très Proche du Garde doit réussir un jet d’Agilité. Si d’autres Gardes à l’Épée se tiennent en ligne à ses côtés, chacun à Portée de Mêlée d’un autre garde de la ligne, la Difficulté augmente du nombre total de gardes dans cette ligne."
+        "description": "Une créature qui tente de se déplacer à Portée Très Proche du Garde doit réussir un jet d’Agilité. Si d’autres Gardes à l’Épée se tiennent en ligne à ses côtés, chacun à Portée de Mêlée d’un autre garde de la ligne, la Difficulté augmente du nombre total de gardes dans cette ligne.",
+        "tags": [
+          "défensif"
+        ]
       },
       {
         "name": "Detain",
         "type": "action",
         "cost": "Cochez un Stress",
-        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, Entravez la cible jusqu’à ce qu’elle se libère avec une attaque réussie, un jet de Finesse ou un jet de Force."
+        "description": "Faites une attaque contre une cible à Portée Très Proche. En cas de réussite, Entravez la cible jusqu’à ce qu’elle se libère avec une attaque réussie, un jet de Finesse ou un jet de Force.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -734,17 +849,26 @@
         "name": "Rally Guards",
         "type": "action",
         "cost": "Dépensez 2 Peurs",
-        "description": "Placez sous le projecteur le Chef des Gardes et jusqu’à 2d4 alliés à Portée Loin."
+        "description": "Placez sous le projecteur le Chef des Gardes et jusqu’à 2d4 alliés à Portée Loin.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "On My Signal",
         "type": "reaction",
-        "description": "Compte à rebours (5). Quand le Chef des Gardes est sous le projecteur pour la première fois, activez le compte à rebours. Il décompte quand un PJ fait un jet d’attaque. Quand il se déclenche, tous les Gardes Archers à Portée Loin font une attaque standard avec avantage contre la cible la plus proche à leur portée. Si des attaques touchent la même cible, combinez leurs dégâts."
+        "description": "Compte à rebours (5). Quand le Chef des Gardes est sous le projecteur pour la première fois, activez le compte à rebours. Il décompte quand un PJ fait un jet d’attaque. Quand il se déclenche, tous les Gardes Archers à Portée Loin font une attaque standard avec avantage contre la cible la plus proche à leur portée. Si des attaques touchent la même cible, combinez leurs dégâts.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "Quand le Chef des Gardes réussit une attaque contre un PJ, vous gagnez une Peur."
+        "description": "Quand le Chef des Gardes réussit une attaque contre un PJ, vous gagnez une Peur.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -784,12 +908,18 @@
       {
         "name": "Climber",
         "type": "passive",
-        "description": "Le Bandit grimpe aussi facilement qu’il court."
+        "description": "Le Bandit grimpe aussi facilement qu’il court.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "From Above",
         "type": "passive",
-        "description": "Quand le Bandit réussit une attaque standard depuis une position surélevée, il inflige 1d10+1 dégâts physiques au lieu de ses dégâts standard."
+        "description": "Quand le Bandit réussit une attaque standard depuis une position surélevée, il inflige 1d10+1 dégâts physiques au lieu de ses dégâts standard.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -1041,7 +1171,10 @@
       {
         "name": "Minion (5)",
         "type": "passive",
-        "description": "La Drague est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Drague, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "La Drague est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Drague, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -1133,7 +1266,10 @@
       {
         "name": "Minion (4)",
         "type": "passive",
-        "description": "Le Zombie est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige au Zombie, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "Le Zombie est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige au Zombie, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -1168,13 +1304,19 @@
       {
         "name": "Horde (1d6+1)",
         "type": "passive",
-        "description": "Quand la Horde de Zombies a coché la moitié ou plus de ses PV, son attaque standard inflige 1d6+1 dégâts physiques à la place."
+        "description": "Quand la Horde de Zombies a coché la moitié ou plus de ses PV, son attaque standard inflige 1d6+1 dégâts physiques à la place.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Overwhelm",
         "type": "reaction",
         "cost": "Cochez un Stress",
-        "description": "Quand une créature inflige des dégâts à la Horde de Zombies, faites une attaque standard contre cette créature."
+        "description": "Quand une créature inflige des dégâts à la Horde de Zombies, faites une attaque standard contre cette créature.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -1208,7 +1350,10 @@
       {
         "name": "Relentless (2)",
         "type": "passive",
-        "description": "La Masse peut être mise sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur."
+        "description": "La Masse peut être mise sous le projecteur jusqu’à deux fois par tour du MJ. Dépensez une Peur comme d’habitude pour la placer sous le projecteur.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ],
     "atk_mod": 4
@@ -1244,7 +1389,10 @@
       {
         "name": "Horde (1d4)",
         "type": "passive",
-        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place."
+        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -1539,7 +1687,10 @@
       {
         "name": "Horde (1d4+1)",
         "type": "passive",
-        "description": "Quand les Pillards ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place."
+        "description": "Quand les Pillards ont coché la moitié ou plus de leurs PV, leur attaque standard inflige 1d4+1 dégâts physiques à la place.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ],
     "atk_mod": 1
@@ -1670,7 +1821,10 @@
       {
         "name": "Minion (4)",
         "type": "passive",
-        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 4 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ],
     "atk_mod": -1
@@ -1705,7 +1859,10 @@
       {
         "name": "Minion (5)",
         "type": "passive",
-        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "La Gelée est vaincue quand elle subit n’importe quels dégâts. Pour chaque tranche de 5 dégâts qu’un PJ inflige à la Gelée, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -1766,7 +1923,10 @@
       {
         "name": "Horde (1d4)",
         "type": "passive",
-        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place."
+        "description": "Quand la Nuée a coché la moitié ou plus de ses PV, son attaque standard inflige 1d4 dégâts physiques à la place.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ],
     "atk_mod": null
@@ -1806,12 +1966,18 @@
       {
         "name": "Curse",
         "type": "action",
-        "description": "Choisissez une cible à Portée Loin et Maudissez-la temporairement. Tant que la cible est Maudite, vous pouvez cocher un Stress quand cette cible obtient Espoir pour transformer le jet en jet avec Peur à la place."
+        "description": "Choisissez une cible à Portée Loin et Maudissez-la temporairement. Tant que la cible est Maudite, vous pouvez cocher un Stress quand cette cible obtient Espoir pour transformer le jet en jet avec Peur à la place.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Chaotic Flux",
         "type": "action",
-        "description": "Faites une attaque contre jusqu’à trois cibles à Portée Très Proche. Cochez un Stress pour infliger 2d6+3 dégâts magiques aux cibles touchées."
+        "description": "Faites une attaque contre jusqu’à trois cibles à Portée Très Proche. Cochez un Stress pour infliger 2d6+3 dégâts magiques aux cibles touchées.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -1855,12 +2021,18 @@
       {
         "name": "I've Got 'Em",
         "type": "passive",
-        "description": "Les créatures Entravées par le Briseur de Genoux subissent le double de dégâts des attaques des autres adversaires."
+        "description": "Les créatures Entravées par le Briseur de Genoux subissent le double de dégâts des attaques des autres adversaires.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Hold Them Down",
         "type": "action",
-        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, la cible ne subit pas de dégâts mais est Entravée et Vulnérable. La cible peut se libérer, retirant les deux conditions, avec un jet de Force réussi, ou est libérée automatiquement si le Briseur de Genoux subit des dégâts Majeurs ou supérieurs."
+        "description": "Faites une attaque contre une cible à Portée de Mêlée. En cas de réussite, la cible ne subit pas de dégâts mais est Entravée et Vulnérable. La cible peut se libérer, retirant les deux conditions, avec un jet de Force réussi, ou est libérée automatiquement si le Briseur de Genoux subit des dégâts Majeurs ou supérieurs.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -1899,13 +2071,19 @@
       {
         "name": "Minion (3)",
         "type": "passive",
-        "description": "Le Larbin est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Larbin, vainquez un Minion supplémentaire à portée que l’attaque toucherait."
+        "description": "Le Larbin est vaincu quand il subit n’importe quels dégâts. Pour chaque tranche de 3 dégâts qu’un PJ inflige au Larbin, vainquez un Minion supplémentaire à portée que l’attaque toucherait.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Group Attack",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Choisissez une cible et placez sous le projecteur tous les Larbins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 2 dégâts physiques chacun. Combinez ces dégâts."
+        "description": "Choisissez une cible et placez sous le projecteur tous les Larbins à Portée Proche d’elle. Ces Minions se déplacent à Portée de Mêlée de la cible et font un jet d’attaque partagé. En cas de réussite, ils infligent 2 dégâts physiques chacun. Combinez ces dégâts.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   },
@@ -1945,23 +2123,35 @@
       {
         "name": "Tactician",
         "type": "action",
-        "description": "Quand vous placez le Lieutenant sous le projecteur, cochez un Stress pour aussi placer sous le projecteur deux alliés à Portée Proche."
+        "description": "Quand vous placez le Lieutenant sous le projecteur, cochez un Stress pour aussi placer sous le projecteur deux alliés à Portée Proche.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "More Where That Came From",
         "type": "action",
-        "description": "Invoquez trois Larbins du Couteau Dentelé, qui apparaissent à Portée Loin."
+        "description": "Invoquez trois Larbins du Couteau Dentelé, qui apparaissent à Portée Loin.",
+        "tags": [
+          "utilitaire"
+        ]
       },
       {
         "name": "Coup de Grace",
         "type": "action",
         "cost": "Dépensez une Peur",
-        "description": "Faites une attaque contre une cible Vulnérable à Portée Proche. En cas de réussite, infligez 2d6+12 dégâts physiques et la cible doit cocher un Stress."
+        "description": "Faites une attaque contre une cible Vulnérable à Portée Proche. En cas de réussite, infligez 2d6+12 dégâts physiques et la cible doit cocher un Stress.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Momentum",
         "type": "reaction",
-        "description": "Quand le Lieutenant réussit une attaque contre un PJ, vous gagnez une Peur."
+        "description": "Quand le Lieutenant réussit une attaque contre un PJ, vous gagnez une Peur.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -2001,12 +2191,18 @@
       {
         "name": "Backstab",
         "type": "passive",
-        "description": "Quand l’Ombre réussit une attaque standard avec avantage, elle inflige 1d6+6 dégâts physiques au lieu de ses dégâts standard."
+        "description": "Quand l’Ombre réussit une attaque standard avec avantage, elle inflige 1d6+6 dégâts physiques au lieu de ses dégâts standard.",
+        "tags": [
+          "offensif"
+        ]
       },
       {
         "name": "Cloaked",
         "type": "action",
-        "description": "Devenez Caché jusqu’après la prochaine attaque de l’Ombre. Les attaques effectuées en étant Caché grâce à cette feature ont l’avantage."
+        "description": "Devenez Caché jusqu’après la prochaine attaque de l’Ombre. Les attaques effectuées en étant Caché grâce à cette feature ont l’avantage.",
+        "tags": [
+          "utilitaire"
+        ]
       }
     ]
   },
@@ -2046,7 +2242,10 @@
       {
         "name": "Unseen Strike",
         "type": "passive",
-        "description": "Si le Tireur est Caché quand il réussit une attaque standard contre une cible, il inflige 1d10+4 dégâts physiques au lieu de ses dégâts standard."
+        "description": "Si le Tireur est Caché quand il réussit une attaque standard contre une cible, il inflige 1d10+4 dégâts physiques au lieu de ses dégâts standard.",
+        "tags": [
+          "offensif"
+        ]
       }
     ]
   }

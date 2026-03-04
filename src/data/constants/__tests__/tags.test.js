@@ -8,6 +8,7 @@
 
 import { describe, it, expect } from 'vitest'
 import { ALL_TAGS, validateTags, TAG_META } from '@data/constants/tags.js'
+import { tier1, tier2, tier3, tier4 } from '@data/adversaries/index.js'
 import { CLASSES } from '@data/classes/index.js'
 import { SUBCLASSES } from '@data/subclasses/index.js'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@data/ancestries/index.js'
@@ -208,5 +209,53 @@ describe('Tags — Équipement', () => {
       expect(c.tags, `${c.id} devrait avoir des tags`).toBeDefined()
       expect(validateTags(c.tags), `${c.id} tags invalides`).toBe(true)
     }
+  })
+
+  // ── Adversaires ──────────────────────────────────
+
+  it('chaque feature d\'adversaire tier 1 a des tags valides', () => {
+    for (const adv of tier1) {
+      for (const feat of adv.features || []) {
+        expect(feat.tags, `${adv.id}/${feat.name} devrait avoir des tags`).toBeDefined()
+        expect(Array.isArray(feat.tags), `${adv.id}/${feat.name} tags devrait être un tableau`).toBe(true)
+        expect(feat.tags.length, `${adv.id}/${feat.name} devrait avoir au moins 1 tag`).toBeGreaterThan(0)
+        expect(validateTags(feat.tags), `${adv.id}/${feat.name} tags invalides: ${feat.tags}`).toBe(true)
+      }
+    }
+  })
+
+  it('chaque feature d\'adversaire tier 2 a des tags valides', () => {
+    for (const adv of tier2) {
+      for (const feat of adv.features || []) {
+        expect(feat.tags, `${adv.id}/${feat.name} devrait avoir des tags`).toBeDefined()
+        expect(validateTags(feat.tags), `${adv.id}/${feat.name} tags invalides: ${feat.tags}`).toBe(true)
+      }
+    }
+  })
+
+  it('chaque feature d\'adversaire tier 3 a des tags valides', () => {
+    for (const adv of tier3) {
+      for (const feat of adv.features || []) {
+        expect(feat.tags, `${adv.id}/${feat.name} devrait avoir des tags`).toBeDefined()
+        expect(validateTags(feat.tags), `${adv.id}/${feat.name} tags invalides: ${feat.tags}`).toBe(true)
+      }
+    }
+  })
+
+  it('chaque feature d\'adversaire tier 4 a des tags valides', () => {
+    for (const adv of tier4) {
+      for (const feat of adv.features || []) {
+        expect(feat.tags, `${adv.id}/${feat.name} devrait avoir des tags`).toBeDefined()
+        expect(validateTags(feat.tags), `${adv.id}/${feat.name} tags invalides: ${feat.tags}`).toBe(true)
+      }
+    }
+  })
+
+  it('couvre les 331 features d\'adversaires', () => {
+    const total = [tier1, tier2, tier3, tier4].reduce(
+      (sum, tier) => sum + tier.reduce((s, adv) => s + (adv.features || []).length, 0),
+      0
+    )
+    expect(total).toBe(331)
   })
 })
