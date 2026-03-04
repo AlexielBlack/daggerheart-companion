@@ -315,55 +315,64 @@
 
       <!-- Armure -->
       <div class="armor-row">
-        <input
-          type="text"
-          class="field-input"
-          :value="char.armorName"
-          placeholder="Nom de l'armure"
-          aria-label="Nom de l'armure"
-          @input="emit('update', 'armorName', $event.target.value)"
-        />
-        <div class="armor-thresholds">
-          <label class="mini-label">
-            Maj
-            <input
-              type="number"
-              class="field-input field-input--xs"
-              :value="char.armorBaseThresholds.major"
-              min="0"
-              aria-label="Seuil majeur de base armure"
-              @input="emit('update', 'armorBaseThresholds.major', parseInt($event.target.value) || 0)"
-            />
-          </label>
-          <label class="mini-label">
-            Sév
-            <input
-              type="number"
-              class="field-input field-input--xs"
-              :value="char.armorBaseThresholds.severe"
-              min="0"
-              aria-label="Seuil sévère de base armure"
-              @input="emit('update', 'armorBaseThresholds.severe', parseInt($event.target.value) || 0)"
-            />
-          </label>
-          <label class="mini-label">
-            Score
-            <input
-              type="number"
-              class="field-input field-input--xs"
-              :value="char.armorScore"
-              min="0"
-              max="12"
-              aria-label="Score d'armure"
-              @input="emit('update', 'armorScore', clampInt($event.target.value, 0, 12))"
-            />
-          </label>
+        <label
+          class="weapon-label"
+          for="sheet-armor"
+        >Armure</label>
+        <select
+          id="sheet-armor"
+          class="weapon-select"
+          :value="char.armorId"
+          aria-label="Choisir une armure"
+          @change="emit('applySelection', 'armorId', $event.target.value)"
+        >
+          <option value="">
+            — Aucune armure —
+          </option>
+          <optgroup
+            v-if="recommendedArmors.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="a in recommendedArmors"
+              :key="'rec-' + a.id"
+              :value="a.id"
+            >
+              ★ {{ a.name }} — {{ a.thresholds.major }}/{{ a.thresholds.severe }} — Score {{ a.baseScore }}
+            </option>
+          </optgroup>
+          <optgroup
+            v-for="tier in armorTiers"
+            :key="tier.label"
+            :label="tier.label"
+          >
+            <option
+              v-for="a in tier.items"
+              :key="a.id"
+              :value="a.id"
+            >
+              {{ a.name }} — {{ a.thresholds.major }}/{{ a.thresholds.severe }} — Score {{ a.baseScore }}{{ a.feature ? ` — ${a.feature}` : '' }}
+            </option>
+          </optgroup>
+        </select>
+        <div
+          v-if="char.armorName"
+          class="armor-details"
+        >
+          <span class="weapon-stat">Seuils {{ char.armorBaseThresholds.major }} / {{ char.armorBaseThresholds.severe }}</span>
+          <span class="weapon-stat weapon-stat--dmg">Score {{ char.armorScore }}</span>
           <span
             v-if="effectiveArmorScore !== char.armorScore"
             class="bonus-indicator"
             aria-label="Score d'armure effectif"
           >
             → {{ effectiveArmorScore }}
+          </span>
+          <span
+            v-if="char.evasionBonus !== 0"
+            class="weapon-stat"
+          >
+            Évasion {{ char.evasionBonus > 0 ? '+' : '' }}{{ char.evasionBonus }}
           </span>
         </div>
       </div>
@@ -861,6 +870,9 @@ export default {
     const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
     const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
 
+    // ── Armures groupées par tier ──
+    const armorTiers = computed(() => groupByTier(props.armor))
+
     // ── Recommandations armes par classe ──
     const recommendedPrimaryWeapons = computed(() =>
       getRecommendedIds(props.char?.classId || '', 'primaryWeapon')
@@ -870,6 +882,13 @@ export default {
     const recommendedSecondaryWeapons = computed(() =>
       getRecommendedIds(props.char?.classId || '', 'secondaryWeapon')
         .map(getSecondaryWeaponById)
+        .filter(Boolean)
+    )
+
+    // ── Recommandations armure par classe ──
+    const recommendedArmors = computed(() =>
+      getRecommendedIds(props.char?.classId || '', 'armor')
+        .map(getArmorById)
         .filter(Boolean)
     )
 
@@ -919,8 +938,8 @@ export default {
     return {
       conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
       resolveArmorName, resolvePrimaryName, resolveSecondaryName,
-      primaryWeaponTiers, secondaryWeaponTiers,
-      recommendedPrimaryWeapons, recommendedSecondaryWeapons
+      primaryWeaponTiers, secondaryWeaponTiers, armorTiers,
+      recommendedPrimaryWeapons, recommendedSecondaryWeapons, recommendedArmors
     }
   }
 }
@@ -1206,28 +1225,14 @@ export default {
 }
 
 .armor-row {
+  margin-top: var(--space-sm);
+}
+
+.armor-details {
   display: flex;
-  gap: var(--space-sm);
   flex-wrap: wrap;
-  align-items: end;
-}
-
-.armor-row > .field-input { flex: 1; min-width: 120px; }
-
-.armor-thresholds {
-  display: flex;
-  gap: var(--space-sm);
-}
-
-.mini-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--text-muted, #6b7280);
-  text-transform: uppercase;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 /* ── Health ── */
