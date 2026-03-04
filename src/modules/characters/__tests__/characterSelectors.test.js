@@ -106,7 +106,7 @@ describe('characterStore — sélections déroulantes', () => {
       expect(char.primaryWeapon.trait).toBe('Agility')
       expect(char.primaryWeapon.range).toBe('Melee')
       expect(char.primaryWeapon.damage).toBe('d8')
-      expect(char.primaryWeapon.feature).toBe('Reliable: +1 to attack rolls')
+      expect(char.primaryWeapon.feature).toBe('Reliable : +1 aux jets d\u2019attaque')
     })
 
     it('réinitialise les champs arme en désélectionnant', () => {
@@ -125,7 +125,7 @@ describe('characterStore — sélections déroulantes', () => {
       const char = store.characters.find((c) => c.id === store.selectedCharacterId)
       expect(char.secondaryWeaponId).toBe('round-shield-t1')
       expect(char.secondaryWeapon.name).toBe('Round Shield')
-      expect(char.secondaryWeapon.feature).toBe('Protective: +1 to Armor Score')
+      expect(char.secondaryWeapon.feature).toBe('Protective : +1 au Score d\u2019armure')
     })
   })
 
