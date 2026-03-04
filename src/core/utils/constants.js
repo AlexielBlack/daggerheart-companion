@@ -111,7 +111,9 @@ export const NAV_ITEMS = [
     children: [
       { id: 'homebrew-adversary', label: 'Adversaires', icon: '⚔️', route: '/homebrew/adversary' },
       { id: 'homebrew-ancestry', label: 'Ascendances', icon: '🧬', route: '/homebrew/ancestry' },
+      { id: 'homebrew-class', label: 'Classes', icon: '🛡️', route: '/homebrew/class' },
       { id: 'homebrew-community', label: 'Communautés', icon: '🏘️', route: '/homebrew/community' },
+      { id: 'homebrew-domain', label: 'Domaines', icon: '🃏', route: '/homebrew/domain' },
       { id: 'homebrew-environment', label: 'Environnements', icon: '🏔️', route: '/homebrew/environment' },
       { id: 'homebrew-equipment', label: 'Équipement', icon: '🗡️', route: '/homebrew/equipment' }
     ]
