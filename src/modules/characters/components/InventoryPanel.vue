@@ -124,6 +124,15 @@
           <option value="consumable">
             Consommable
           </option>
+          <option value="primaryWeapon">
+            Arme principale
+          </option>
+          <option value="secondaryWeapon">
+            Arme secondaire
+          </option>
+          <option value="armor">
+            Armure
+          </option>
           <option value="custom">
             Libre
           </option>
@@ -181,6 +190,84 @@
           </optgroup>
         </select>
 
+        <!-- Sélection Arme Principale -->
+        <select
+          v-if="slot.type === 'primaryWeapon'"
+          class="inv-item-select"
+          :value="slot.itemId"
+          :aria-label="`Choisir une arme principale – slot ${i + 1}`"
+          @change="$emit('updateItem', i, 'itemId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir une arme principale —
+          </option>
+          <optgroup
+            v-for="group in primaryWeaponsByTier"
+            :key="group.tier"
+            :label="group.label"
+          >
+            <option
+              v-for="item in group.items"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.name }} — {{ item.trait }} {{ item.range }} — {{ item.damage }}
+            </option>
+          </optgroup>
+        </select>
+
+        <!-- Sélection Arme Secondaire -->
+        <select
+          v-if="slot.type === 'secondaryWeapon'"
+          class="inv-item-select"
+          :value="slot.itemId"
+          :aria-label="`Choisir une arme secondaire – slot ${i + 1}`"
+          @change="$emit('updateItem', i, 'itemId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir une arme secondaire —
+          </option>
+          <optgroup
+            v-for="group in secondaryWeaponsByTier"
+            :key="group.tier"
+            :label="group.label"
+          >
+            <option
+              v-for="item in group.items"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.name }} — {{ item.trait }} {{ item.range }} — {{ item.damage }}
+            </option>
+          </optgroup>
+        </select>
+
+        <!-- Sélection Armure -->
+        <select
+          v-if="slot.type === 'armor'"
+          class="inv-item-select"
+          :value="slot.itemId"
+          :aria-label="`Choisir une armure – slot ${i + 1}`"
+          @change="$emit('updateItem', i, 'itemId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir une armure —
+          </option>
+          <optgroup
+            v-for="group in armorByTier"
+            :key="group.tier"
+            :label="group.label"
+          >
+            <option
+              v-for="item in group.items"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.name }} — {{ item.thresholds.major }}/{{ item.thresholds.severe }} — Score {{ item.baseScore }}
+            </option>
+          </optgroup>
+        </select>
+
         <!-- Champ libre -->
         <input
           v-if="slot.type === 'custom'"
@@ -232,6 +319,10 @@
             class="inv-rarity-badge"
             :class="`inv-rarity-badge--${getItemRarity(slot)}`"
           >{{ rarityLabels[getItemRarity(slot)] }}</span>
+          <span
+            v-if="getItemTier(slot)"
+            class="inv-tier-badge"
+          >Tier {{ getItemTier(slot) }}</span>
           {{ getItemDescription(slot) }}
         </p>
       </div>
@@ -254,6 +345,27 @@
         + Consommable
       </button>
       <button
+        class="inv-add-btn inv-add-btn--weapon"
+        aria-label="Ajouter une arme principale"
+        @click="$emit('addItem', 'primaryWeapon')"
+      >
+        + Arme 1re
+      </button>
+      <button
+        class="inv-add-btn inv-add-btn--weapon"
+        aria-label="Ajouter une arme secondaire"
+        @click="$emit('addItem', 'secondaryWeapon')"
+      >
+        + Arme 2de
+      </button>
+      <button
+        class="inv-add-btn inv-add-btn--armor"
+        aria-label="Ajouter une armure"
+        @click="$emit('addItem', 'armor')"
+      >
+        + Armure
+      </button>
+      <button
         class="inv-add-btn inv-add-btn--custom"
         aria-label="Ajouter un objet libre"
         @click="$emit('addItem', 'custom')"
@@ -268,15 +380,22 @@
 import { computed } from 'vue'
 import { LOOT, getLootById } from '@data/equipment/loot.js'
 import { CONSUMABLES, getConsumableById } from '@data/equipment/consumables.js'
+import { PRIMARY_WEAPONS, getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
+import { SECONDARY_WEAPONS, getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
+import { ARMOR, getArmorById } from '@data/equipment/armor.js'
 import { RARITIES } from '@data/equipment/constants.js'
 
 const RARITY_ORDER = ['common', 'uncommon', 'rare', 'legendary']
 
+const TIER_LABELS = {
+  1: 'Tier 1 (Niveau 1)',
+  2: 'Tier 2 (Niveaux 2–4)',
+  3: 'Tier 3 (Niveaux 5–7)',
+  4: 'Tier 4 (Niveaux 8+)'
+}
+
 /**
  * Regroupe un tableau d'items par rareté, dans l'ordre croissant.
- * @param {Array} items
- * @param {Object} labels
- * @returns {Array<{rarity: string, label: string, items: Array}>}
  */
 function groupByRarity(items, labels) {
   const groups = {}
@@ -294,6 +413,38 @@ function groupByRarity(items, labels) {
     }))
 }
 
+/**
+ * Regroupe un tableau d'items par tier.
+ */
+function groupByTier(items) {
+  const tiers = {}
+  for (const item of items) {
+    const t = item.tier || 1
+    if (!tiers[t]) tiers[t] = []
+    tiers[t].push(item)
+  }
+  return Object.keys(tiers)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((t) => ({
+      tier: Number(t),
+      label: TIER_LABELS[t] || `Tier ${t}`,
+      items: tiers[t]
+    }))
+}
+
+/** Résout un objet SRD depuis un slot d'inventaire */
+function resolveItem(slot) {
+  if (!slot || !slot.itemId) return null
+  switch (slot.type) {
+    case 'loot': return getLootById(slot.itemId)
+    case 'consumable': return getConsumableById(slot.itemId)
+    case 'primaryWeapon': return getPrimaryWeaponById(slot.itemId)
+    case 'secondaryWeapon': return getSecondaryWeaponById(slot.itemId)
+    case 'armor': return getArmorById(slot.itemId)
+    default: return null
+  }
+}
+
 export default {
   name: 'InventoryPanel',
   props: {
@@ -306,36 +457,59 @@ export default {
 
     const lootByRarity = computed(() => groupByRarity(LOOT, RARITIES))
     const consumablesByRarity = computed(() => groupByRarity(CONSUMABLES, RARITIES))
+    const primaryWeaponsByTier = computed(() => groupByTier(PRIMARY_WEAPONS))
+    const secondaryWeaponsByTier = computed(() => groupByTier(SECONDARY_WEAPONS))
+    const armorByTier = computed(() => groupByTier(ARMOR))
 
-    /** Retrouve la description d'un objet SRD depuis son slot */
+    /** Construit la description d'un objet SRD selon son type */
     function getItemDescription(slot) {
-      if (!slot || !slot.itemId) return ''
-      if (slot.type === 'loot') {
-        const item = getLootById(slot.itemId)
-        return item ? item.description : ''
+      const item = resolveItem(slot)
+      if (!item) return ''
+      if (slot.type === 'primaryWeapon' || slot.type === 'secondaryWeapon') {
+        const parts = [`${item.trait} · ${item.range} · ${item.damage}`]
+        if (item.burden) parts.push(`(${item.burden})`)
+        if (item.feature) parts.push(`— ${item.feature}`)
+        return parts.join(' ')
       }
-      if (slot.type === 'consumable') {
-        const item = getConsumableById(slot.itemId)
-        return item ? item.description : ''
+      if (slot.type === 'armor') {
+        const parts = [`Seuils ${item.thresholds.major}/${item.thresholds.severe} · Score ${item.baseScore}`]
+        if (item.feature) parts.push(`— ${item.feature}`)
+        return parts.join(' ')
       }
-      return ''
+      return item.description || ''
     }
 
-    /** Retrouve la rareté d'un objet SRD */
+    /** Retrouve la rareté d'un objet SRD (loot/consommables uniquement) */
     function getItemRarity(slot) {
-      if (!slot || !slot.itemId) return ''
-      if (slot.type === 'loot') {
-        const item = getLootById(slot.itemId)
-        return item ? item.rarity : ''
-      }
-      if (slot.type === 'consumable') {
-        const item = getConsumableById(slot.itemId)
-        return item ? item.rarity : ''
+      const item = resolveItem(slot)
+      if (!item) return ''
+      if (slot.type === 'loot' || slot.type === 'consumable') {
+        return item.rarity || ''
       }
       return ''
     }
 
-    return { lootByRarity, consumablesByRarity, rarityLabels, getItemDescription, getItemRarity }
+    /** Retrouve le tier d'un objet (armes/armures) */
+    function getItemTier(slot) {
+      const item = resolveItem(slot)
+      if (!item) return 0
+      if (slot.type === 'primaryWeapon' || slot.type === 'secondaryWeapon' || slot.type === 'armor') {
+        return item.tier || 0
+      }
+      return 0
+    }
+
+    return {
+      lootByRarity,
+      consumablesByRarity,
+      primaryWeaponsByTier,
+      secondaryWeaponsByTier,
+      armorByTier,
+      rarityLabels,
+      getItemDescription,
+      getItemRarity,
+      getItemTier
+    }
   }
 }
 </script>
@@ -437,7 +611,7 @@ export default {
 }
 
 .inv-type-select {
-  width: 110px;
+  width: 130px;
   flex-shrink: 0;
   padding: 4px 6px;
   background: var(--bg-secondary, #1f1f3a);
@@ -568,6 +742,20 @@ export default {
 .inv-rarity-badge--rare { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
 .inv-rarity-badge--legendary { background: rgba(168, 85, 247, 0.12); color: #a855f7; }
 
+.inv-tier-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 4px;
+  vertical-align: middle;
+  background: rgba(251, 146, 60, 0.12);
+  color: #fb923c;
+}
+
 /* ── Boutons d'ajout ── */
 .inv-add-bar {
   display: flex;
@@ -595,6 +783,16 @@ export default {
 .inv-add-btn--consumable:hover {
   border-color: #22c55e;
   color: #22c55e;
+}
+
+.inv-add-btn--weapon:hover {
+  border-color: #fb923c;
+  color: #fb923c;
+}
+
+.inv-add-btn--armor:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
 }
 
 .inv-add-btn--custom:hover {

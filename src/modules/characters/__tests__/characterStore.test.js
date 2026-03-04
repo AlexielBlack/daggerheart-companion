@@ -562,6 +562,39 @@ describe('characterStore', () => {
       expect(inv[1].customName).toBe('Torch')
       expect(inv[2].type).toBe('loot')
     })
+
+    it('adds primaryWeapon type items', () => {
+      store.addInventoryItem('primaryWeapon')
+      store.updateInventoryItem(0, 'itemId', 'broadsword-t1')
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.type).toBe('primaryWeapon')
+      expect(slot.itemId).toBe('broadsword-t1')
+    })
+
+    it('adds secondaryWeapon type items', () => {
+      store.addInventoryItem('secondaryWeapon')
+      store.updateInventoryItem(0, 'itemId', 'round-shield-t1')
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.type).toBe('secondaryWeapon')
+      expect(slot.itemId).toBe('round-shield-t1')
+    })
+
+    it('adds armor type items', () => {
+      store.addInventoryItem('armor')
+      store.updateInventoryItem(0, 'itemId', 'leather-t1')
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.type).toBe('armor')
+      expect(slot.itemId).toBe('leather-t1')
+    })
+
+    it('resets itemId when switching from weapon to loot', () => {
+      store.addInventoryItem('primaryWeapon')
+      store.updateInventoryItem(0, 'itemId', 'broadsword-t1')
+      store.updateInventoryItem(0, 'type', 'loot')
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.type).toBe('loot')
+      expect(slot.itemId).toBe('')
+    })
   })
 
   describe('Level up helpers', () => {
