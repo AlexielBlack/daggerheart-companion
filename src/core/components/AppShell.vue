@@ -17,29 +17,29 @@
       >
         <span aria-hidden="true">☰</span>
       </button>
+
       <h1 class="app-shell__title">
         <router-link
           to="/"
           class="app-shell__title-link"
         >
-          🗡️ Daggerheart Companion
+          🗡️ DC
         </router-link>
       </h1>
-    </header>
 
-    <div class="app-shell__body">
       <AppNav
         id="main-nav"
         :is-open="navOpen"
         @navigate="closeNav"
       />
-      <main
-        id="main-content"
-        class="app-shell__content"
-      >
-        <slot></slot>
-      </main>
-    </div>
+    </header>
+
+    <main
+      id="main-content"
+      class="app-shell__content"
+    >
+      <slot></slot>
+    </main>
 
     <!-- Notifications toast -->
     <div
@@ -102,7 +102,7 @@ export default {
 .app-shell__header {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   height: var(--header-height);
   padding: 0 var(--space-md);
   background-color: var(--color-bg-secondary);
@@ -116,6 +116,10 @@ export default {
   display: none;
   font-size: 1.5rem;
   padding: var(--space-xs);
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -125,9 +129,10 @@ export default {
 }
 
 .app-shell__title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   margin: 0;
+  flex-shrink: 0;
 }
 
 .app-shell__title-link {
@@ -139,18 +144,16 @@ export default {
   color: var(--color-accent-hope);
 }
 
-.app-shell__body {
-  display: flex;
-  flex: 1;
-}
+/* ── Contenu full width ── */
 
 .app-shell__content {
   flex: 1;
-  padding: var(--space-lg);
+  padding: var(--space-md);
   overflow-y: auto;
 }
 
-/* Notifications */
+/* ── Notifications ── */
+
 .app-shell__notifications {
   position: fixed;
   bottom: var(--space-md);

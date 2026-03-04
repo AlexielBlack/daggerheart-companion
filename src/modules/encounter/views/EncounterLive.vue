@@ -257,7 +257,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  max-width: 960px;
   margin: 0 auto;
   padding: var(--space-sm);
 }
