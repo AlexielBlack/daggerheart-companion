@@ -25,7 +25,7 @@ export const COMMUNITIES = [
         'Vous avez l\'avantage sur les jets pour fréquenter les nobles, négocier des prix ou exploiter votre réputation pour obtenir ce que vous voulez.',
       tags: ['social']
     },
-    adjectives: ['amiable', 'candid', 'conniving', 'enterprising', 'ostentatious', 'unflappable'],
+    adjectives: ['aimable', 'franc·he', 'intrigant·e', 'entreprenant·e', 'ostentatoire', 'imperturbable'],
     flavor: 'Je suis Highborne, alors bien sûr que je sais négocier avec les nobles.'
   },
   {
@@ -41,7 +41,7 @@ export const COMMUNITIES = [
         'Vous avez l\'avantage sur les jets impliquant l\'histoire, la culture ou la politique d\'une personne ou d\'un lieu important.',
       tags: ['social','utilitaire']
     },
-    adjectives: ['direct', 'eloquent', 'inquisitive', 'patient', 'rhapsodic', 'witty'],
+    adjectives: ['direct·e', 'éloquent·e', 'curieux·se', 'patient·e', 'exalté·e', 'spirituel·le'],
     flavor: 'Je suis Loreborne, alors bien sûr que je connais l\'histoire de ce lieu.'
   },
   {
@@ -57,7 +57,7 @@ export const COMMUNITIES = [
         'Notez trois dictons ou valeurs que votre éducation vous a inculqués. Une fois par repos, quand vous décrivez comment vous incarnez un de ces principes à travers votre action actuelle, vous pouvez lancer un d20 comme Dé d\'Espoir (Hope Die).',
       tags: ['social']
     },
-    adjectives: ['ambitious', 'benevolent', 'pensive', 'prudent', 'sardonic', 'stoic'],
+    adjectives: ['ambitieux·se', 'bienveillant·e', 'pensif·ve', 'prudent·e', 'sardonique', 'stoïque'],
     flavor: 'Je suis Orderborne, alors bien sûr que je sais incarner mes principes.'
   },
   {
@@ -73,7 +73,7 @@ export const COMMUNITIES = [
         'Vous avez l\'avantage sur les jets pour traverser des falaises et des rebords dangereux, naviguer dans des environnements hostiles et utiliser vos connaissances de survie.',
       tags: ['utilitaire']
     },
-    adjectives: ['bold', 'hardy', 'indomitable', 'loyal', 'reserved', 'stubborn'],
+    adjectives: ['audacieux·se', 'robuste', 'indomptable', 'loyal·e', 'réservé·e', 'obstiné·e'],
     flavor: 'Je suis Ridgeborne, alors bien sûr que je sais naviguer en terrain hostile.'
   },
   {
@@ -89,7 +89,7 @@ export const COMMUNITIES = [
         'Vous pouvez sentir le flux et le reflux de la vie. Quand vous lancez avec Peur (Fear), placez un jeton sur votre carte de communauté. Vous pouvez détenir un nombre de jetons égal à votre niveau. Avant de faire un jet d\'action, vous pouvez dépenser un nombre quelconque de ces jetons pour obtenir un bonus de +1 au jet par jeton dépensé. À la fin de chaque session, retirez tous les jetons non dépensés.',
       tags: ['utilitaire']
     },
-    adjectives: ['candid', 'cooperative', 'exuberant', 'fierce', 'resolute', 'weathered'],
+    adjectives: ['franc·he', 'coopératif·ve', 'exubérant·e', 'féroce', 'résolu·e', 'aguerri·e'],
     flavor: 'Je suis Seaborne, alors bien sûr que je sais sentir le flux et le reflux.'
   },
   {
@@ -105,7 +105,7 @@ export const COMMUNITIES = [
         'Vous avez l\'avantage sur les jets pour négocier avec des criminels, détecter les mensonges ou trouver un endroit sûr où se cacher.',
       tags: ['social']
     },
-    adjectives: ['calculating', 'clever', 'formidable', 'perceptive', 'shrewd', 'tenacious'],
+    adjectives: ['calculateur·rice', 'malin·e', 'redoutable', 'perspicace', 'rusé·e', 'tenace'],
     flavor: 'Je suis Slyborne, alors bien sûr que je sais détecter les mensonges.'
   },
   {
@@ -121,7 +121,7 @@ export const COMMUNITIES = [
         'Quand vous êtes dans une zone de faible luminosité ou d\'ombre épaisse, vous avez l\'avantage sur les jets pour vous cacher, enquêter ou percevoir des détails dans cette zone.',
       tags: ['utilitaire']
     },
-    adjectives: ['composed', 'elusive', 'indomitable', 'innovative', 'resourceful', 'unpretentious'],
+    adjectives: ['composé·e', 'insaisissable', 'indomptable', 'innovant·e', 'débrouillard·e', 'modeste'],
     flavor: 'Je suis Underborne, alors bien sûr que je sais me repérer dans l\'obscurité.'
   },
   {
@@ -137,7 +137,7 @@ export const COMMUNITIES = [
         'Ajoutez un Paquetage Nomade à votre inventaire. Une fois par session, vous pouvez dépenser un Espoir (Hope) pour fouiller dans ce paquetage et en sortir un objet ordinaire utile à votre situation. Travaillez avec le MJ pour déterminer quel objet vous en tirez.',
       tags: ['utilitaire']
     },
-    adjectives: ['inscrutable', 'magnanimous', 'mirthful', 'reliable', 'savvy', 'unorthodox'],
+    adjectives: ['impénétrable', 'magnanime', 'jovial·e', 'fiable', 'avisé·e', 'anticonformiste'],
     flavor: 'Je suis Wanderborne, alors bien sûr que j\'ai exactement ce qu\'il faut dans mon sac.'
   },
   {
@@ -153,7 +153,7 @@ export const COMMUNITIES = [
         'Votre déplacement est naturellement silencieux. Vous avez l\'avantage sur les jets pour vous déplacer sans être entendu.',
       tags: ['utilitaire']
     },
-    adjectives: ['hardy', 'loyal', 'nurturing', 'reclusive', 'sagacious', 'vibrant'],
+    adjectives: ['robuste', 'loyal·e', 'bienveillant·e', 'solitaire', 'sagace', 'vibrant·e'],
     flavor: 'Je suis Wildborne, alors bien sûr que je sais me déplacer sans un bruit.'
   }
 ]
