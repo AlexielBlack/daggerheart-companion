@@ -121,10 +121,19 @@
       </div>
       <button
         class="pc-panel__down-btn"
-        title="PJ mis à terre"
+        :class="{ 'pc-panel__down-btn--active': isDown }"
+        :title="isDown ? 'Annuler la mise à terre' : 'PJ mis à terre'"
         @click="logDown()"
       >
-        💀 Down
+        💀 {{ isDown ? 'Annuler' : 'Down' }}
+      </button>
+      <button
+        v-if="isDown"
+        class="pc-panel__revive-btn"
+        title="Réanimer le PJ"
+        @click="logRevive()"
+      >
+        ↩ Revive
       </button>
       <button
         class="pc-panel__miss-btn"
@@ -132,6 +141,20 @@
         @click="logAdvMiss()"
       >
         ✕ Raté
+      </button>
+    </div>
+
+    <!-- Indicateur Down persistant (visible aussi au tour PJ) -->
+    <div
+      v-if="isDown && isActor"
+      class="pc-panel__down-indicator"
+    >
+      💀 À terre
+      <button
+        class="pc-panel__revive-btn pc-panel__revive-btn--inline"
+        @click="logRevive()"
+      >
+        ↩ Revive
       </button>
     </div>
 
@@ -278,12 +301,18 @@ export default {
       return entries
     })
 
+    const isDown = computed(() => !!store.pcDownStatus[props.pc.id])
+
     function logHit(hpAmount) {
       store.logPcHit(props.pc.id, hpAmount)
     }
 
     function logDown() {
       store.logPcDown(props.pc.id)
+    }
+
+    function logRevive() {
+      store.logPcRevive(props.pc.id)
     }
 
     function logAdvMiss() {
@@ -296,8 +325,10 @@ export default {
 
     return {
       pcHitLog,
+      isDown,
       logHit,
       logDown,
+      logRevive,
       logAdvMiss,
       removeHitLog
     }
@@ -618,6 +649,47 @@ export default {
 
 .pc-panel__down-btn:hover {
   background: rgba(244, 67, 54, 0.15);
+}
+
+.pc-panel__down-btn--active {
+  background: rgba(244, 67, 54, 0.15);
+  border-style: dashed;
+}
+
+.pc-panel__revive-btn {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-success);
+  background: transparent;
+  color: var(--color-accent-success);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pc-panel__revive-btn:hover {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.pc-panel__revive-btn--inline {
+  padding: 2px var(--space-sm);
+  font-size: 0.65rem;
+}
+
+/* ── Down indicator ── */
+
+.pc-panel__down-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-danger);
 }
 
 /* ── Hit log (pastilles coups reçus) ── */

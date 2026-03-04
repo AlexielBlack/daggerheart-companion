@@ -53,14 +53,20 @@
               class="enc-live__spot-dot"
               :title="store.pcSpotlights[pc.id] + ' spotlight(s) ce round'"
             >✦{{ store.pcSpotlights[pc.id] > 1 ? store.pcSpotlights[pc.id] : '' }}</span>
+            <span
+              v-if="store.pcDownStatus[pc.id]"
+              class="enc-live__down-dot"
+              title="À terre"
+            >💀</span>
             <span class="enc-live__chip-name">{{ pc.name }}</span>
             <span class="enc-live__chip-sub">{{ pc.className }}</span>
             <button
               class="enc-live__spot-btn"
               :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] >= 1 }"
-              :aria-label="(store.pcSpotlights[pc.id] ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
-              :title="store.pcSpotlights[pc.id] ? 'Spotlight ✓' : 'Marquer spotlight'"
+              :aria-label="(store.pcSpotlights[pc.id] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
+              :title="store.pcSpotlights[pc.id] >= 1 ? 'Clic: +1 · Clic droit: −1' : 'Marquer spotlight'"
               @click.stop="store.togglePcSpotlight(pc.id)"
+              @contextmenu.stop.prevent="store.decrementPcSpotlight(pc.id)"
             >
               ✦
             </button>
@@ -113,9 +119,10 @@
             <button
               class="enc-live__spot-btn"
               :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] >= 1 }"
-              :aria-label="(store.advSpotlights[group.adversaryId] ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
-              :title="store.advSpotlights[group.adversaryId] ? 'Spotlight ✓' : 'Marquer spotlight'"
+              :aria-label="(store.advSpotlights[group.adversaryId] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
+              :title="store.advSpotlights[group.adversaryId] >= 1 ? 'Clic: +1 · Clic droit: −1' : 'Marquer spotlight'"
               @click.stop="store.toggleAdvSpotlight(group.adversaryId)"
+              @contextmenu.stop.prevent="store.decrementAdvSpotlight(group.adversaryId)"
             >
               ✦
             </button>
@@ -378,6 +385,11 @@ export default {
   font-size: 0.7rem;
   line-height: 1;
   text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
+}
+
+.enc-live__down-dot {
+  font-size: 0.7rem;
+  line-height: 1;
 }
 
 .enc-live__spot-btn {

@@ -111,6 +111,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const combatLog = ref([])
   /** Journal complet de la rencontre (invisible, persisté) */
   const encounterLog = ref([])
+  /** PJs à terre { pcId: true } */
+  const pcDownStatus = ref({})
 
   // ═══════════════════════════════════════════════════════
   //  Getters
@@ -711,19 +713,59 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Enregistre qu'un PJ a été mis à terre par l'adversaire actif.
+   * Met un PJ à terre (ou annule si déjà à terre).
    * @param {string} pcId
+   * @returns {boolean} true si mis à terre, false si annulé
    */
   function logPcDown(pcId) {
     const pc = participantPcs.value.find((p) => p.id === pcId)
     const adv = activeAdversary.value
-    if (!pc) return
+    if (!pc) return false
+
+    if (pcDownStatus.value[pcId]) {
+      // Annuler le down
+      delete pcDownStatus.value[pcId]
+      pcDownStatus.value = { ...pcDownStatus.value }
+      encounterLog.value.push({
+        action: 'pc_down_cancelled',
+        pcId,
+        pcName: pc.name,
+        round: round.value,
+        timestamp: Date.now()
+      })
+      persistState()
+      return false
+    }
+
+    // Mettre à terre
+    pcDownStatus.value[pcId] = true
+    pcDownStatus.value = { ...pcDownStatus.value }
     encounterLog.value.push({
       action: 'pc_down',
       pcId,
       pcName: pc.name,
       instanceId: adv ? adv.instanceId : null,
       advName: adv ? adv.name : '?',
+      round: round.value,
+      timestamp: Date.now()
+    })
+    persistState()
+    return true
+  }
+
+  /**
+   * Réanime un PJ à terre.
+   * @param {string} pcId
+   */
+  function logPcRevive(pcId) {
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    if (!pc || !pcDownStatus.value[pcId]) return
+    delete pcDownStatus.value[pcId]
+    pcDownStatus.value = { ...pcDownStatus.value }
+    encounterLog.value.push({
+      action: 'pc_revive',
+      pcId,
+      pcName: pc.name,
       round: round.value,
       timestamp: Date.now()
     })
@@ -910,6 +952,21 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
+   * Décrémente le compteur spotlight d'un PJ (correction d'erreur).
+   * @param {string} pcId
+   */
+  function decrementPcSpotlight(pcId) {
+    if (pcSpotlights.value[pcId] > 0) {
+      pcSpotlights.value[pcId]--
+      if (pcSpotlights.value[pcId] === 0) {
+        delete pcSpotlights.value[pcId]
+      }
+      pcSpotlights.value = { ...pcSpotlights.value }
+      persistState()
+    }
+  }
+
+  /**
    * Incrémente le compteur spotlight d'un adversaire.
    * Si tous les adversaires actifs ont joué au moins une fois, reset automatique.
    * @param {string} adversaryId
@@ -943,6 +1000,21 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       advSpotlights.value = {}
     }
     persistState()
+  }
+
+  /**
+   * Décrémente le compteur spotlight d'un adversaire (correction d'erreur).
+   * @param {string} adversaryId
+   */
+  function decrementAdvSpotlight(adversaryId) {
+    if (advSpotlights.value[adversaryId] > 0) {
+      advSpotlights.value[adversaryId]--
+      if (advSpotlights.value[adversaryId] === 0) {
+        delete advSpotlights.value[adversaryId]
+      }
+      advSpotlights.value = { ...advSpotlights.value }
+      persistState()
+    }
   }
 
   /** Nombre total de tokens distribués ce round */
@@ -1007,7 +1079,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       pcSpotlights: { ...pcSpotlights.value },
       advSpotlights: { ...advSpotlights.value },
       combatLog: [...combatLog.value],
-      encounterLog: [...encounterLog.value]
+      encounterLog: [...encounterLog.value],
+      pcDownStatus: { ...pcDownStatus.value }
     }
   }
 
@@ -1053,6 +1126,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       : {}
     combatLog.value = Array.isArray(data.combatLog) ? [...data.combatLog] : []
     encounterLog.value = Array.isArray(data.encounterLog) ? [...data.encounterLog] : []
+    pcDownStatus.value = data.pcDownStatus && typeof data.pcDownStatus === 'object'
+      ? { ...data.pcDownStatus }
+      : {}
 
     return true
   }
@@ -1081,6 +1157,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     advSpotlights.value = {}
     combatLog.value = []
     encounterLog.value = []
+    pcDownStatus.value = {}
     liveStorage.remove()
   }
 
@@ -1117,6 +1194,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     advSpotlights,
     combatLog,
     encounterLog,
+    pcDownStatus,
 
     // Getters
     currentSceneModeMeta,
@@ -1164,6 +1242,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     removeCombatLogEntry,
     logPcHit,
     logPcDown,
+    logPcRevive,
     logMiss,
     defeatAdversary,
     reviveAdversary,
@@ -1175,7 +1254,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     removeSpotlightToken,
     resetSpotlightTokens,
     togglePcSpotlight,
+    decrementPcSpotlight,
     toggleAdvSpotlight,
+    decrementAdvSpotlight,
 
     // Actions — Persistence
     serializeLiveState,
