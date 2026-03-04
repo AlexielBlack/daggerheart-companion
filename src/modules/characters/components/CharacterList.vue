@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { CLASSES } from '@data/classes'
+import { useCharacterStore } from '../stores/characterStore'
 
 export default {
   name: 'CharacterList',
@@ -84,9 +84,13 @@ export default {
     maxCharacters: { type: Number, default: 8 }
   },
   emits: ['select', 'add', 'delete'],
+  setup() {
+    const store = useCharacterStore()
+    return { store }
+  },
   methods: {
     getClassEmoji(classId) {
-      const cls = CLASSES.find((c) => c.id === classId)
+      const cls = this.store.allClasses.find((c) => c.id === classId)
       return cls ? cls.emoji : '🧙'
     },
     hpPercent(char) {

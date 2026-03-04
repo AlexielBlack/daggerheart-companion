@@ -24,11 +24,12 @@ import { COMMUNITIES, getCommunityById } from '@data/communities'
 import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import { computeStatBonuses } from '@data/statModifiers'
 import { DOMAIN_CARD_MODIFIERS, isTouchedActive } from '@data/domainCardModifiers'
-import { getDomainsForClass, getCardById } from '@data/domains'
+import { getDomainsForClass, getCardById, getDomainById } from '@data/domains'
 import { useStorage } from '@core/composables/useStorage'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
+import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
 
-export { useAncestryHomebrewStore }
+export { useAncestryHomebrewStore, useClassHomebrewStore }
 
 export const useCharacterStore = defineStore('characters', () => {
   // ── Persistence ────────────────────────────────────────
@@ -39,10 +40,57 @@ export const useCharacterStore = defineStore('characters', () => {
   const selectedCharacterId = ref(null)
 
   // ── Constantes ─────────────────────────────────────────
-  const availableClasses = CLASSES
   const availableTraits = TRAITS
   const availableConditions = CONDITIONS
   const maxCharacters = MAX_CHARACTERS
+
+  // ── Homebrew classes ─────────────────────────────────────
+  const classHomebrewStore = useClassHomebrewStore()
+
+  /**
+   * Normalise un item homebrew au format attendu par CharacterSheet.
+   * @param {Object} item - Item du store homebrew
+   * @returns {Object} Classe normalisée (compatible SRD)
+   */
+  function normalizeHomebrewClass(item) {
+    return {
+      id: item.id,
+      name: item.name,
+      emoji: item.emoji || '🛠️',
+      domains: item.domains || [],
+      baseEvasion: item.baseEvasion || 10,
+      baseHP: item.baseHP || 6,
+      baseStress: item.baseStress || 6,
+      hopeFeature: item.hopeFeature || '',
+      classFeatures: (item.classFeatures || []).map(
+        (f) => (typeof f === 'string' ? f : `${f.name} : ${f.description}`)
+      ),
+      suggestedTraits: item.suggestedTraits || { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
+      suggestedArmor: item.suggestedArmor || '',
+      source: 'custom'
+    }
+  }
+
+  /** Toutes les classes : SRD + homebrew normalisées */
+  const allClasses = computed(() => [
+    ...CLASSES,
+    ...classHomebrewStore.items.map(normalizeHomebrewClass)
+  ])
+
+  /**
+   * Résout une classe par ID : SRD d'abord, puis homebrew.
+   * @param {string} id
+   * @returns {Object|null}
+   */
+  function resolveClass(id) {
+    if (!id) return null
+    // SRD (rapide)
+    const srd = getClassById(id)
+    if (srd) return srd
+    // Homebrew
+    const hb = classHomebrewStore.items.find((c) => c.id === id)
+    return hb ? normalizeHomebrewClass(hb) : null
+  }
 
   // ── Init : charger depuis persistence ──────────────────
   function init() {
@@ -68,10 +116,10 @@ export const useCharacterStore = defineStore('characters', () => {
   /** Peut-on encore ajouter des PJ ? */
   const canAddCharacter = computed(() => characters.value.length < MAX_CHARACTERS)
 
-  /** Personnage sélectionné : données de classe SRD */
+  /** Personnage sélectionné : données de classe (SRD ou homebrew) */
   const selectedCharacterClass = computed(() => {
     if (!selectedCharacter.value) return null
-    return getClassById(selectedCharacter.value.classId)
+    return resolveClass(selectedCharacter.value.classId)
   })
 
   // ── Bonus de stats (ascendance + sous-classe) ──────────
@@ -92,7 +140,7 @@ export const useCharacterStore = defineStore('characters', () => {
   const selectedEffectiveMaxHP = computed(() => {
     const char = selectedCharacter.value
     if (!char) return 0
-    const cls = getClassById(char.classId)
+    const cls = resolveClass(char.classId)
     const baseHP = cls ? cls.baseHP : 6
     return baseHP + selectedStatBonuses.value.maxHP
   })
@@ -103,7 +151,7 @@ export const useCharacterStore = defineStore('characters', () => {
   const selectedEffectiveMaxStress = computed(() => {
     const char = selectedCharacter.value
     if (!char) return 0
-    const cls = getClassById(char.classId)
+    const cls = resolveClass(char.classId)
     const baseStress = cls ? cls.baseStress : 6
     return baseStress + selectedStatBonuses.value.maxStress
   })
@@ -235,14 +283,32 @@ export const useCharacterStore = defineStore('characters', () => {
   const availableSubclasses = computed(() => {
     const char = selectedCharacter.value
     if (!char) return []
-    return getSubclassesForClass(char.classId)
+    // SRD
+    const srd = getSubclassesForClass(char.classId)
+    if (srd.length > 0) return srd
+    // Homebrew : sous-classes embarquées dans l'item
+    const hb = classHomebrewStore.items.find((c) => c.id === char.classId)
+    if (!hb || !Array.isArray(hb.subclasses)) return []
+    return hb.subclasses.map((sub, i) => ({
+      id: sub.name ? sub.name.toLowerCase().replace(/\s+/g, '-') : `sub-${i}`,
+      name: sub.name || `Sous-classe ${i + 1}`,
+      spellcastTrait: sub.spellcastTrait || null,
+      description: sub.description || '',
+      foundation: Array.isArray(sub.foundation) ? sub.foundation : [],
+      specialization: Array.isArray(sub.specialization) ? sub.specialization : [],
+      mastery: Array.isArray(sub.mastery) ? sub.mastery : []
+    }))
   })
 
   /** Donnée de la sous-classe sélectionnée */
   const selectedSubclassData = computed(() => {
     const char = selectedCharacter.value
     if (!char || !char.subclassId) return null
-    return getSubclassById(char.classId, char.subclassId)
+    // SRD d'abord
+    const srd = getSubclassById(char.classId, char.subclassId)
+    if (srd) return srd
+    // Homebrew : chercher dans availableSubclasses
+    return availableSubclasses.value.find((s) => s.id === char.subclassId) || null
   })
 
   /** Donnée de l'ascendance sélectionnée (résolue pour Mixed Ancestry) */
@@ -340,7 +406,13 @@ export const useCharacterStore = defineStore('characters', () => {
   const availableDomains = computed(() => {
     const char = selectedCharacter.value
     if (!char) return []
-    return getDomainsForClass(char.className)
+    // SRD : chercher par nom de classe
+    const srd = getDomainsForClass(char.className)
+    if (srd.length > 0) return srd
+    // Homebrew : résoudre les domaines par ID depuis la classe
+    const cls = resolveClass(char.classId)
+    if (!cls || !cls.domains) return []
+    return cls.domains.map((dName) => getDomainById(dName.toLowerCase())).filter(Boolean)
   })
 
   /**
@@ -447,7 +519,7 @@ export const useCharacterStore = defineStore('characters', () => {
    */
   function _syncDerivedStats(char) {
     if (!char) return
-    const cls = getClassById(char.classId)
+    const cls = resolveClass(char.classId)
     if (!cls) return
     const bonuses = computeStatBonuses(char)
     char.maxHP = cls.baseHP + bonuses.maxHP
@@ -611,8 +683,62 @@ export const useCharacterStore = defineStore('characters', () => {
    */
   function createCharacter(classId) {
     if (characters.value.length >= MAX_CHARACTERS) return null
-    const char = createDefaultCharacter(classId)
-    if (!char) return null
+    // SRD : utiliser createDefaultCharacter
+    let char = createDefaultCharacter(classId)
+    // Homebrew : construire manuellement si SRD échoue
+    if (!char) {
+      const cls = resolveClass(classId)
+      if (!cls) return null
+      char = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        name: '',
+        pronouns: '',
+        heritage: '',
+        classId: cls.id,
+        className: cls.name,
+        subclass: '',
+        level: 1,
+        proficiency: 1,
+        subclassId: '',
+        ancestryId: '',
+        communityId: '',
+        armorId: '',
+        primaryWeaponId: '',
+        secondaryWeaponId: '',
+        selectionsLocked: false,
+        mixedAncestryConfig: { ancestry1Id: '', ancestry2Id: '', ancestry1Feature: '', ancestry2Feature: '' },
+        traits: {
+          agility: cls.suggestedTraits?.agility ?? 0,
+          strength: cls.suggestedTraits?.strength ?? 0,
+          finesse: cls.suggestedTraits?.finesse ?? 0,
+          instinct: cls.suggestedTraits?.instinct ?? 0,
+          presence: cls.suggestedTraits?.presence ?? 0,
+          knowledge: cls.suggestedTraits?.knowledge ?? 0
+        },
+        evasion: cls.baseEvasion,
+        evasionBonus: 0,
+        armorName: '',
+        armorBaseThresholds: { major: 0, severe: 0 },
+        armorScore: 0,
+        armorSlotsMarked: 0,
+        maxHP: cls.baseHP,
+        currentHP: 0,
+        maxStress: cls.baseStress,
+        currentStress: 0,
+        hope: 0,
+        experiences: [{ name: '', bonus: 0 }, { name: '', bonus: 0 }],
+        primaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
+        secondaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
+        inventory: [],
+        gold: { handfuls: 0, bags: 0, chests: 0 },
+        conditions: [],
+        domainCards: { loadout: [], vault: [] },
+        permanentCardEffects: [],
+        levelHistory: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    }
     characters.value.push(char)
     selectedCharacterId.value = char.id
     persist()
@@ -1122,7 +1248,10 @@ export const useCharacterStore = defineStore('characters', () => {
    * Gère la rétrocompatibilité.
    */
   function sanitizeCharacter(raw) {
-    const defaults = createDefaultCharacter(raw.classId || 'warrior') || {}
+    // SRD d'abord, homebrew ensuite, fallback warrior
+    const defaults = createDefaultCharacter(raw.classId || 'warrior')
+      || createDefaultCharacter('warrior')
+      || {}
     return { ...defaults, ...raw }
   }
 
@@ -1139,7 +1268,7 @@ export const useCharacterStore = defineStore('characters', () => {
     selectedCharacterId,
 
     // Constantes
-    availableClasses,
+    allClasses,
     availableTraits,
     availableConditions,
     maxCharacters,

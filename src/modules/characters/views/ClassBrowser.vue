@@ -232,15 +232,16 @@
 <script>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { CLASSES } from '@/data/classes/index.js'
 import { getSubclassesForClass } from '@/data/subclasses/index.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
+import { useCharacterStore } from '../stores/characterStore'
 
 export default {
   name: 'ClassBrowser',
 
   setup() {
     const router = useRouter()
+    const charStore = useCharacterStore()
     const searchQuery = ref('')
     const expandedClassId = ref(null)
     const activeSource = ref('all')
@@ -253,7 +254,7 @@ export default {
 
     const filteredClasses = computed(() => {
       const q = searchQuery.value.toLowerCase().trim()
-      return CLASSES.filter((cls) => {
+      return charStore.allClasses.filter((cls) => {
         const matchSource = activeSource.value === 'all' || cls.source === activeSource.value
         const matchSearch = !q ||
           cls.name.toLowerCase().includes(q) ||
@@ -272,7 +273,23 @@ export default {
 
     function getSubclasses(classId) {
       try {
-        return getSubclassesForClass(classId)
+        // SRD d'abord
+        const srd = getSubclassesForClass(classId)
+        if (srd.length > 0) return srd
+        // Homebrew : sous-classes embarquées
+        const cls = charStore.allClasses.find((c) => c.id === classId)
+        if (!cls || cls.source !== 'custom') return []
+        const hb = useClassHomebrewStore().items.find((c) => c.id === classId)
+        if (!hb || !Array.isArray(hb.subclasses)) return []
+        return hb.subclasses.map((sub, i) => ({
+          id: sub.name ? sub.name.toLowerCase().replace(/\s+/g, '-') : `sub-${i}`,
+          name: sub.name || `Sous-classe ${i + 1}`,
+          spellcastTrait: sub.spellcastTrait || null,
+          description: sub.description || '',
+          foundation: Array.isArray(sub.foundation) ? sub.foundation : [],
+          specialization: Array.isArray(sub.specialization) ? sub.specialization : [],
+          mastery: Array.isArray(sub.mastery) ? sub.mastery : []
+        }))
       } catch {
         return []
       }

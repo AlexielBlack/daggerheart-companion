@@ -15,8 +15,9 @@
       role="listbox"
       aria-label="Classes disponibles"
     >
+      <!-- ═══ Classes SRD ═══ -->
       <li
-        v-for="cls in classes"
+        v-for="cls in srdClasses"
         :key="cls.id"
         class="class-card"
         role="option"
@@ -43,6 +44,45 @@
           >❤️ {{ cls.baseHP }}</span>
         </div>
       </li>
+
+      <!-- ═══ Séparateur homebrew ═══ -->
+      <li
+        v-if="homebrewClasses.length > 0"
+        class="class-separator"
+        aria-hidden="true"
+      >
+        🛠️ Classes homebrew
+      </li>
+
+      <!-- ═══ Classes homebrew ═══ -->
+      <li
+        v-for="cls in homebrewClasses"
+        :key="cls.id"
+        class="class-card class-card--homebrew"
+        role="option"
+        :aria-selected="false"
+        tabindex="0"
+        :aria-label="`${cls.name} (homebrew) — Domaines: ${(cls.domains || []).join(' & ')}, Évasion ${cls.baseEvasion}, HP ${cls.baseHP}`"
+        @click="$emit('select', cls.id)"
+        @keydown.enter="$emit('select', cls.id)"
+        @keydown.space.prevent="$emit('select', cls.id)"
+      >
+        <span class="class-card__emoji">{{ cls.emoji || '🛠️' }}</span>
+        <div class="class-card__info">
+          <span class="class-card__name">{{ cls.name }}</span>
+          <span class="class-card__domains">{{ (cls.domains || []).join(' & ') }}</span>
+        </div>
+        <div class="class-card__stats">
+          <span
+            class="stat-badge"
+            title="Évasion de départ"
+          >🛡️ {{ cls.baseEvasion }}</span>
+          <span
+            class="stat-badge"
+            title="HP de départ"
+          >❤️ {{ cls.baseHP }}</span>
+        </div>
+      </li>
     </ul>
     <button
       class="cancel-btn"
@@ -54,13 +94,23 @@
 </template>
 
 <script>
-import { CLASSES } from '@data/classes'
+import { computed } from 'vue'
+import { useCharacterStore } from '../stores/characterStore'
 
 export default {
   name: 'ClassPicker',
   emits: ['select', 'cancel'],
   setup() {
-    return { classes: CLASSES }
+    const store = useCharacterStore()
+
+    const srdClasses = computed(() =>
+      store.allClasses.filter((c) => c.source !== 'custom')
+    )
+    const homebrewClasses = computed(() =>
+      store.allClasses.filter((c) => c.source === 'custom')
+    )
+
+    return { srdClasses, homebrewClasses }
   }
 }
 </script>
@@ -115,6 +165,10 @@ export default {
 
 .class-card:focus-visible { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 2px; }
 
+.class-card--homebrew {
+  border-left: 3px solid #eab308;
+}
+
 .class-card__emoji { font-size: 1.5rem; }
 
 .class-card__info {
@@ -146,6 +200,18 @@ export default {
   border-radius: 4px;
   color: var(--text-secondary);
   white-space: nowrap;
+}
+
+.class-separator {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #eab308;
+  padding: var(--space-xs) 0;
+  border-top: 1px dashed rgba(234, 179, 8, 0.3);
+  margin-top: var(--space-xs);
 }
 
 .cancel-btn {
