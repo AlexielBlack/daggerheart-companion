@@ -525,52 +525,117 @@
       <h3 class="section-heading">
         Armes
       </h3>
-      <div
-        v-for="(slot, key) in { primary: 'Principale', secondary: 'Secondaire' }"
-        :key="key"
-        class="weapon-block"
-      >
-        <span class="weapon-label">{{ slot }}</span>
-        <div class="weapon-fields">
-          <input
-            type="text"
-            class="field-input"
-            :value="char[key + 'Weapon'].name"
-            placeholder="Nom"
-            :aria-label="`${slot} arme nom`"
-            @input="emit('update', `${key}Weapon.name`, $event.target.value)"
-          />
-          <input
-            type="text"
-            class="field-input field-input--sm"
-            :value="char[key + 'Weapon'].trait"
-            placeholder="Trait"
-            :aria-label="`${slot} arme trait`"
-            @input="emit('update', `${key}Weapon.trait`, $event.target.value)"
-          />
-          <input
-            type="text"
-            class="field-input field-input--sm"
-            :value="char[key + 'Weapon'].range"
-            placeholder="Portée"
-            :aria-label="`${slot} arme portée`"
-            @input="emit('update', `${key}Weapon.range`, $event.target.value)"
-          />
-          <input
-            type="text"
-            class="field-input"
-            :value="char[key + 'Weapon'].damage"
-            placeholder="Dés & type"
-            :aria-label="`${slot} arme dégâts`"
-            @input="emit('update', `${key}Weapon.damage`, $event.target.value)"
-          />
-        </div>
-        <p
-          v-if="char[key + 'Weapon'].feature"
-          class="weapon-feature-text"
+
+      <!-- Arme Principale -->
+      <div class="weapon-block">
+        <label
+          class="weapon-label"
+          for="sheet-primary-weapon"
+        >Principale</label>
+        <select
+          id="sheet-primary-weapon"
+          class="weapon-select"
+          :value="char.primaryWeaponId"
+          aria-label="Choisir une arme principale"
+          @change="emit('applySelection', 'primaryWeaponId', $event.target.value)"
         >
-          {{ char[key + 'Weapon'].feature }}
-        </p>
+          <option value="">
+            — Choisir —
+          </option>
+          <optgroup
+            v-if="recommendedPrimaryWeapons.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="w in recommendedPrimaryWeapons"
+              :key="'rec-' + w.id"
+              :value="w.id"
+            >
+              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+          <optgroup
+            v-for="tier in primaryWeaponTiers"
+            :key="tier.label"
+            :label="tier.label"
+          >
+            <option
+              v-for="w in tier.items"
+              :key="w.id"
+              :value="w.id"
+            >
+              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+        </select>
+        <div
+          v-if="char.primaryWeapon && char.primaryWeapon.name"
+          class="weapon-details"
+        >
+          <span class="weapon-stat">{{ char.primaryWeapon.trait }}</span>
+          <span class="weapon-stat">{{ char.primaryWeapon.range }}</span>
+          <span class="weapon-stat weapon-stat--dmg">{{ char.primaryWeapon.damage }}</span>
+          <span
+            v-if="char.primaryWeapon.feature"
+            class="weapon-stat weapon-stat--feature"
+          >{{ char.primaryWeapon.feature }}</span>
+        </div>
+      </div>
+
+      <!-- Arme Secondaire -->
+      <div class="weapon-block">
+        <label
+          class="weapon-label"
+          for="sheet-secondary-weapon"
+        >Secondaire</label>
+        <select
+          id="sheet-secondary-weapon"
+          class="weapon-select"
+          :value="char.secondaryWeaponId"
+          aria-label="Choisir une arme secondaire"
+          @change="emit('applySelection', 'secondaryWeaponId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <optgroup
+            v-if="recommendedSecondaryWeapons.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="w in recommendedSecondaryWeapons"
+              :key="'rec-' + w.id"
+              :value="w.id"
+            >
+              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+          <optgroup
+            v-for="tier in secondaryWeaponTiers"
+            :key="tier.label"
+            :label="tier.label"
+          >
+            <option
+              v-for="w in tier.items"
+              :key="w.id"
+              :value="w.id"
+            >
+              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+        </select>
+        <div
+          v-if="char.secondaryWeapon && char.secondaryWeapon.name"
+          class="weapon-details"
+        >
+          <span class="weapon-stat">{{ char.secondaryWeapon.trait }}</span>
+          <span class="weapon-stat">{{ char.secondaryWeapon.range }}</span>
+          <span class="weapon-stat weapon-stat--dmg">{{ char.secondaryWeapon.damage }}</span>
+          <span
+            v-if="char.secondaryWeapon.feature"
+            class="weapon-stat weapon-stat--feature"
+          >{{ char.secondaryWeapon.feature }}</span>
+        </div>
       </div>
     </section>
 
@@ -714,6 +779,7 @@ import { CONDITIONS } from '@data/classes'
 import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
 import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
 import { getArmorById } from '@data/equipment/armor.js'
+import { getRecommendedIds } from '@data/equipment/classRecommendations.js'
 import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
 import CharacterSelectors from './CharacterSelectors.vue'
@@ -771,6 +837,42 @@ export default {
   setup(props, { emit }) {
     const conditions = CONDITIONS
 
+    // ── Constantes tier ──
+    const TIER_LABELS = {
+      1: 'Tier 1 (Niveau 1)',
+      2: 'Tier 2 (Niveaux 2–4)',
+      3: 'Tier 3 (Niveaux 5–7)',
+      4: 'Tier 4 (Niveaux 8+)'
+    }
+
+    function groupByTier(items) {
+      const tiers = {}
+      for (const item of items) {
+        const t = item.tier || 1
+        if (!tiers[t]) tiers[t] = []
+        tiers[t].push(item)
+      }
+      return Object.keys(tiers)
+        .sort((a, b) => Number(a) - Number(b))
+        .map((t) => ({ label: TIER_LABELS[t] || `Tier ${t}`, items: tiers[t] }))
+    }
+
+    // ── Armes groupées par tier ──
+    const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
+    const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
+
+    // ── Recommandations armes par classe ──
+    const recommendedPrimaryWeapons = computed(() =>
+      getRecommendedIds(props.char?.classId || '', 'primaryWeapon')
+        .map(getPrimaryWeaponById)
+        .filter(Boolean)
+    )
+    const recommendedSecondaryWeapons = computed(() =>
+      getRecommendedIds(props.char?.classId || '', 'secondaryWeapon')
+        .map(getSecondaryWeaponById)
+        .filter(Boolean)
+    )
+
     /** IDs des cartes acquises (loadout + vault) */
     const acquiredCardIds = computed(() => {
       if (!props.char || !props.char.domainCards) return []
@@ -814,7 +916,12 @@ export default {
       return w ? w.name : id
     }
 
-    return { conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier, resolveArmorName, resolvePrimaryName, resolveSecondaryName }
+    return {
+      conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
+      resolveArmorName, resolvePrimaryName, resolveSecondaryName,
+      primaryWeaponTiers, secondaryWeaponTiers,
+      recommendedPrimaryWeapons, recommendedSecondaryWeapons
+    }
   }
 }
 </script>
@@ -1241,20 +1348,70 @@ export default {
 }
 
 .weapon-label {
+  display: block;
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-muted, #6b7280);
+  margin-bottom: 2px;
 }
 
-.weapon-fields {
+.weapon-select {
+  width: 100%;
+  padding: 5px 8px;
+  background: var(--bg-tertiary, #2a2a4a);
+  border: 1px solid var(--border-color, #3a3a5a);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.weapon-select:focus {
+  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline-offset: 1px;
+}
+
+.weapon-select option,
+.weapon-select optgroup {
+  background: var(--bg-secondary, #1f1f3a);
+  color: var(--text-primary);
+}
+
+.weapon-details {
   display: flex;
-  gap: var(--space-xs);
   flex-wrap: wrap;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
-.weapon-fields > .field-input { flex: 1; min-width: 80px; }
+.weapon-stat {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color, #3a3a5a);
+  border-radius: 3px;
+  color: var(--text-secondary, #9ca3af);
+}
+
+.weapon-stat--dmg {
+  color: var(--accent-fear, #c84b31);
+  border-color: rgba(200, 75, 49, 0.3);
+  background: rgba(200, 75, 49, 0.06);
+  font-weight: 600;
+}
+
+.weapon-stat--feature {
+  flex-basis: 100%;
+  font-style: italic;
+  color: var(--text-muted, #6b7280);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
 
 /* ── Class Features ── */
 .class-features {
@@ -1342,11 +1499,4 @@ export default {
   margin-bottom: var(--space-xs);
 }
 
-.weapon-feature-text {
-  font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
-  margin: 4px 0 0;
-  line-height: 1.35;
-  font-style: italic;
-}
 </style>
