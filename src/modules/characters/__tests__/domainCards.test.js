@@ -234,5 +234,53 @@ describe('Domain Cards Management', () => {
       // Niv. 4 base = 5, + 3 bonus = 8 → plafond 5
       expect(store.selectedMaxLoadout).toBe(5)
     })
+
+    it('should grant +1 from School of Knowledge foundation (Prepared)', () => {
+      // Créer un wizard avec School of Knowledge
+      store.createCharacter('wizard')
+      const wizard = store.characters[store.characters.length - 1]
+      store.selectCharacter(wizard.id)
+      store.applySelection('subclassId', 'school_of_knowledge')
+
+      // Niv. 1, foundation → base 2 + 1 bonus sous-classe = 3
+      expect(store.selectedMaxLoadout).toBe(3)
+    })
+
+    it('should grant +2 from School of Knowledge specialization', () => {
+      store.createCharacter('wizard')
+      const wizard = store.characters[store.characters.length - 1]
+      store.selectCharacter(wizard.id)
+      store.applySelection('subclassId', 'school_of_knowledge')
+      wizard.level = 5
+      wizard.subclassProgression = 'specialization'
+
+      // Niv. 5 base = 5 (capped), + 2 bonus → 5 (plafond)
+      // Vérifions plutôt à niv. 2 pour voir l'effet
+      wizard.level = 2
+      // Niv. 2 base = 3, + 2 bonus = 5
+      expect(store.selectedMaxLoadout).toBe(5)
+    })
+
+    it('should grant +3 from School of Knowledge mastery', () => {
+      store.createCharacter('wizard')
+      const wizard = store.characters[store.characters.length - 1]
+      store.selectCharacter(wizard.id)
+      store.applySelection('subclassId', 'school_of_knowledge')
+      wizard.level = 1
+      wizard.subclassProgression = 'mastery'
+
+      // Niv. 1 base = 2, + 3 bonus = 5
+      expect(store.selectedMaxLoadout).toBe(5)
+    })
+
+    it('should not grant subclass bonus for School of War', () => {
+      store.createCharacter('wizard')
+      const wizard = store.characters[store.characters.length - 1]
+      store.selectCharacter(wizard.id)
+      store.applySelection('subclassId', 'school_of_war')
+
+      // Niv. 1, pas de domainCardBonuses → base 2
+      expect(store.selectedMaxLoadout).toBe(2)
+    })
   })
 })

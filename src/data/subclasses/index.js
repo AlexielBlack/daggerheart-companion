@@ -278,6 +278,7 @@ export const SUBCLASSES = {
       name: 'School of Knowledge',
       spellcastTrait: 'Knowledge',
       description: 'Jouez la School of Knowledge si vous voulez une compréhension aiguë du monde qui vous entoure.',
+      domainCardBonuses: { foundation: 1, specialization: 1, mastery: 1 },
       foundation: [
         'Prepared: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
         'Adept: Quand vous Utilisez une Expérience, vous pouvez marquer un Stress au lieu de dépenser un Espoir. Si vous le faites, doublez votre modificateur d\'Expérience pour ce jet.'

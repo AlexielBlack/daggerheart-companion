@@ -257,7 +257,7 @@ export const useCharacterStore = defineStore('characters', () => {
   })
 
   /** Nombre de cartes de domaine supplémentaires choisies en avancement */
-  const bonusDomainCards = computed(() => {
+  const bonusDomainCardsFromAdvancements = computed(() => {
     const char = selectedCharacter.value
     if (!char || !Array.isArray(char.levelHistory)) return 0
     let count = 0
@@ -270,11 +270,29 @@ export const useCharacterStore = defineStore('characters', () => {
     return count
   })
 
-  /** Nombre max de cartes dans le loadout selon le niveau + bonus */
+  /** Nombre de cartes de domaine supplémentaires octroyées par la sous-classe */
+  const bonusDomainCardsFromSubclass = computed(() => {
+    const char = selectedCharacter.value
+    if (!char || !char.subclassId) return 0
+    const sub = getSubclassById(char.classId, char.subclassId)
+    if (!sub || !sub.domainCardBonuses) return 0
+    const prog = char.subclassProgression || 'foundation'
+    let count = sub.domainCardBonuses.foundation || 0
+    if (prog === 'specialization' || prog === 'mastery') {
+      count += sub.domainCardBonuses.specialization || 0
+    }
+    if (prog === 'mastery') {
+      count += sub.domainCardBonuses.mastery || 0
+    }
+    return count
+  })
+
+  /** Nombre max de cartes dans le loadout selon le niveau + tous les bonus */
   const selectedMaxLoadout = computed(() => {
     const char = selectedCharacter.value
     if (!char) return getMaxLoadout(1, 0)
-    return getMaxLoadout(char.level, bonusDomainCards.value)
+    const totalBonus = bonusDomainCardsFromAdvancements.value + bonusDomainCardsFromSubclass.value
+    return getMaxLoadout(char.level, totalBonus)
   })
 
   /** Le loadout est-il plein ? (dynamique selon le niveau) */
