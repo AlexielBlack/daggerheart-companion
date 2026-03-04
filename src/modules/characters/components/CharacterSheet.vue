@@ -278,8 +278,28 @@
               @input="emit('update', 'armorScore', clampInt($event.target.value, 0, 12))"
             />
           </label>
+          <span
+            v-if="effectiveArmorScore !== char.armorScore"
+            class="bonus-indicator"
+            aria-label="Score d'armure effectif"
+          >
+            → {{ effectiveArmorScore }}
+          </span>
         </div>
       </div>
+    </section>
+
+    <!-- ═══ Modificateurs de cartes actifs ═══ -->
+    <section
+      v-if="activeModifiers.length > 0 || permanentEffects.length > 0"
+      class="sheet-section"
+    >
+      <ActiveModifiersPanel
+        :modifiers="activeModifiers"
+        :permanent-effects="permanentEffects"
+        :bonuses="statBonuses"
+        @toggle="(cardId) => emit('toggleEffect', cardId)"
+      />
     </section>
 
     <!-- ═══ Santé (HP, Stress, Armor Slots, Hope) ═══ -->
@@ -599,10 +619,11 @@ import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
 import CharacterSelectors from './CharacterSelectors.vue'
 import DomainCardPicker from './DomainCardPicker.vue'
+import ActiveModifiersPanel from './ActiveModifiersPanel.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker },
+  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
@@ -627,7 +648,11 @@ export default {
     loadoutCards: { type: Array, default: () => [] },
     vaultCards: { type: Array, default: () => [] },
     isLoadoutFull: { type: Boolean, default: false },
-    maxLoadout: { type: Number, default: 2 }
+    maxLoadout: { type: Number, default: 2 },
+    // Modificateurs actifs
+    activeModifiers: { type: Array, default: () => [] },
+    permanentEffects: { type: Array, default: () => [] },
+    effectiveArmorScore: { type: Number, default: 0 }
   },
   emits: [
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',
@@ -637,7 +662,8 @@ export default {
     'applySelection',
     'addCardToLoadout', 'addCardToVault',
     'moveCardToLoadout', 'moveCardToVault', 'removeCard',
-    'levelUp', 'rollback'
+    'levelUp', 'rollback',
+    'toggleEffect'
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS

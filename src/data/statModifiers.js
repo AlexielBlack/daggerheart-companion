@@ -2,14 +2,21 @@
  * @module data/statModifiers
  * @description Moteur centralisé de calcul des bonus de stats.
  *
- * Certaines ascendances et sous-classes confèrent des bonus permanents
- * aux stats du personnage (maxHP, maxStress, évasion, seuils de dégâts).
- * Ce module déclare ces modificateurs et fournit une fonction de calcul
- * qui agrège tous les bonus applicables selon le personnage et son niveau.
+ * Certaines ascendances, sous-classes et cartes de domaine confèrent
+ * des bonus permanents ou conditionnels aux stats du personnage.
+ * Ce module déclare les modificateurs d'ascendance/sous-classe et fournit
+ * une fonction de calcul qui agrège tous les bonus applicables.
  *
  * Sources : OfficialAncestries_SRD.pdf, OfficialClasses_SRD.pdf,
- *           CustomAncestries.txt, CustomClass_Assassin.pdf, CustomClass_Duellist.rtf
+ *           CustomAncestries.txt, CustomClass_Assassin.pdf, CustomClass_Duellist.rtf,
+ *           DomainCards_SRD.pdf
  */
+
+import {
+  DOMAIN_CARD_MODIFIERS,
+  isTouchedActive
+} from '@data/domainCardModifiers'
+import { getCardById } from '@data/domains'
 
 // ═══════════════════════════════════════════════════════════
 //  MODIFICATEURS D'ASCENDANCE
@@ -124,20 +131,39 @@ export const SUBCLASS_MODIFIERS = {
 
 /**
  * Structure de base d'un objet bonus (tous les champs à 0).
- * @returns {{ maxHP: number, maxStress: number, evasion: number, thresholds: { major: number, severe: number }, sources: string[] }}
+ * Inclut les champs pour les bonus de cartes de domaine.
+ * @returns {Object}
  */
 function emptyBonuses() {
   return {
+    // Stats de base (ascendance/sous-classe/cartes)
     maxHP: 0,
     maxStress: 0,
     evasion: 0,
     thresholds: { major: 0, severe: 0 },
+    // Bonus de combat (cartes de domaine)
+    armorScore: 0,
+    armorScoreOverride: null,    // Bare Bones : remplace le score d'armure
+    thresholdsOverride: null,    // Bare Bones : remplace les seuils de base
+    proficiency: 0,              // Bonus de proficiency globale
+    proficiencyDamage: 0,        // Bonus de proficiency dégâts uniquement
+    damageBonus: 0,              // Bonus fixe aux dégâts
+    spellcastBonus: 0,           // Bonus aux Spellcast Rolls
+    attackBonus: 0,              // Bonus aux jets d'attaque
+    rollBonus: 0,                // Bonus à un jet quelconque (Notorious)
+    traitBonus: null,            // { agility: N, ... } bonus aux traits
+    immuneMinor: false,          // Immunité aux dégâts Minor
+    disableArmor: false,         // Frenzy : pas d'Armor Slots
+    attackAdvantage: false,      // Avantage aux attaques
+    presenceOverride: false,     // Overwhelming Aura
     sources: []
   }
 }
 
 /**
  * Applique un modificateur individuel au cumul de bonus.
+ * Supporte les champs classiques (HP, Stress, Évasion, Seuils)
+ * et les champs de combat étendus (armorScore, proficiency, traits, etc.).
  * @param {Object} bonuses - Objet bonus mutable
  * @param {Object} mod - Modificateur à appliquer
  * @param {Object} char - Personnage (pour les bonus dynamiques)
@@ -161,6 +187,52 @@ function applyModifier(bonuses, mod, char) {
     bonuses.thresholds.major += prof
     bonuses.thresholds.severe += prof
   }
+  // ── Champs étendus (cartes de domaine) ──
+  if (mod.armorScore) {
+    bonuses.armorScore += mod.armorScore
+  }
+  if (mod.armorScoreOverride !== null && mod.armorScoreOverride !== undefined) {
+    bonuses.armorScoreOverride = mod.armorScoreOverride
+  }
+  if (mod.thresholdsOverride) {
+    bonuses.thresholdsOverride = { ...mod.thresholdsOverride }
+  }
+  if (mod.proficiency) {
+    bonuses.proficiency += mod.proficiency
+  }
+  if (mod.proficiencyDamage) {
+    bonuses.proficiencyDamage += mod.proficiencyDamage
+  }
+  if (mod.damageBonus) {
+    bonuses.damageBonus += mod.damageBonus
+  }
+  if (mod.spellcastBonus) {
+    bonuses.spellcastBonus += mod.spellcastBonus
+  }
+  if (mod.attackBonus) {
+    bonuses.attackBonus += mod.attackBonus
+  }
+  if (mod.rollBonus) {
+    bonuses.rollBonus += mod.rollBonus
+  }
+  if (mod.traitBonus) {
+    if (!bonuses.traitBonus) bonuses.traitBonus = {}
+    for (const [trait, value] of Object.entries(mod.traitBonus)) {
+      bonuses.traitBonus[trait] = (bonuses.traitBonus[trait] || 0) + value
+    }
+  }
+  if (mod.immuneMinor) {
+    bonuses.immuneMinor = true
+  }
+  if (mod.disableArmor) {
+    bonuses.disableArmor = true
+  }
+  if (mod.attackAdvantage) {
+    bonuses.attackAdvantage = true
+  }
+  if (mod.presenceOverride) {
+    bonuses.presenceOverride = true
+  }
   if (mod.source) {
     bonuses.sources.push(mod.source)
   }
@@ -168,9 +240,10 @@ function applyModifier(bonuses, mod, char) {
 
 /**
  * Calcule tous les bonus de stats applicables pour un personnage donné.
+ * Agrège : ascendance + sous-classe + cartes de domaine (loadout).
  *
- * @param {Object} char - Personnage complet (avec ancestryId, subclassId, level, proficiency)
- * @returns {{ maxHP: number, maxStress: number, evasion: number, thresholds: { major: number, severe: number }, sources: string[] }}
+ * @param {Object} char - Personnage complet
+ * @returns {Object} Objet bonus agrégé avec tous les champs étendus
  */
 export function computeStatBonuses(char) {
   const bonuses = emptyBonuses()
@@ -203,6 +276,66 @@ export function computeStatBonuses(char) {
     }
   }
 
+  // ── Bonus des cartes de domaine ──────────────────────
+  const loadout = char.domainCards?.loadout || []
+  const activeEffects = char.activeEffects || {}
+
+  for (const cardId of loadout) {
+    const mod = DOMAIN_CARD_MODIFIERS[cardId]
+    if (!mod || !mod.compute) continue
+
+    let shouldApply = false
+
+    switch (mod.type) {
+      case 'passive':
+        // Toujours actif dans le loadout
+        shouldApply = true
+        break
+
+      case 'conditional':
+        // Actif si la condition de fiche est remplie
+        shouldApply = typeof mod.isActive === 'function' && mod.isActive(char)
+        break
+
+      case 'touched':
+        // Actif si 4+ cartes du domaine dans le loadout
+        shouldApply = isTouchedActive(mod, loadout, getCardById)
+        // Si la carte a aussi un toggle (Sage-Touched en env. naturel)
+        if (shouldApply && mod.hasToggle) {
+          shouldApply = !!activeEffects[cardId]
+        }
+        break
+
+      case 'toggle':
+        // Actif seulement si le joueur a activé le toggle
+        shouldApply = !!activeEffects[cardId]
+        break
+
+      case 'activable':
+        // Actif seulement si le joueur l'a activé (temporaire)
+        shouldApply = !!activeEffects[cardId]
+        break
+
+      // 'permanent' : géré séparément (modifie la fiche directement)
+      default:
+        break
+    }
+
+    if (shouldApply) {
+      const result = mod.compute(char)
+      if (result) {
+        applyModifier(bonuses, result, char)
+      }
+    }
+  }
+
+  // ── Bonus permanents (cartes en vault après application) ──
+  if (Array.isArray(char.permanentCardEffects)) {
+    for (const effect of char.permanentCardEffects) {
+      applyModifier(bonuses, effect, char)
+    }
+  }
+
   return bonuses
 }
 
@@ -218,4 +351,17 @@ export function hasStatBonuses(char) {
     || bonuses.evasion > 0
     || bonuses.thresholds.major > 0
     || bonuses.thresholds.severe > 0
+    || bonuses.armorScore > 0
+    || bonuses.armorScoreOverride !== null
+    || bonuses.proficiency > 0
+    || bonuses.spellcastBonus > 0
+    || bonuses.attackBonus > 0
+    || bonuses.traitBonus !== null
+    || bonuses.immuneMinor
+    || bonuses.disableArmor
 }
+
+/**
+ * Exporte le registre pour usage externe (ex: ActiveModifiersPanel).
+ */
+export { DOMAIN_CARD_MODIFIERS } from '@data/domainCardModifiers'

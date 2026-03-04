@@ -343,6 +343,10 @@ export function createDefaultCharacter(classId) {
     // Conditions actives
     conditions: [],
 
+    // ── Effets de cartes de domaine ──
+    activeEffects: {},          // { cardId: true/false } pour toggles et activables
+    permanentCardEffects: [],   // Effets permanents appliqués (Vitality, Master of the Craft)
+
     // ── Level Up ──
     levelHistory: [],       // Historique complet des level ups
     markedTraits: [],       // Traits marqués (ne peuvent être réaugmentés avant clear)

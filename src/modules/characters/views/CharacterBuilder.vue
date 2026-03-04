@@ -48,6 +48,9 @@
           :vault-cards="store.selectedVaultCards"
           :is-loadout-full="store.isLoadoutFull"
           :max-loadout="store.selectedMaxLoadout"
+          :active-modifiers="store.activeModifiersList"
+          :permanent-effects="store.selectedCharacter?.permanentCardEffects || []"
+          :effective-armor-score="store.selectedEffectiveArmorScore"
           @update="store.updateField"
           @apply-selection="store.applySelection"
           @mark-h-p="store.markHP()"
@@ -66,6 +69,7 @@
           @move-card-to-loadout="store.moveCardToLoadout"
           @move-card-to-vault="store.moveCardToVault"
           @remove-card="store.removeCard"
+          @toggle-effect="store.toggleEffect"
           @level-up="onLevelUp"
           @rollback="onRollback"
         />

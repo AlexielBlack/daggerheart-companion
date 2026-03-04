@@ -23,6 +23,7 @@ import { ALL_ANCESTRIES, getAncestryById } from '@data/ancestries'
 import { COMMUNITIES, getCommunityById } from '@data/communities'
 import { ARMOR, getArmorById, PRIMARY_WEAPONS, SECONDARY_WEAPONS, getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import { computeStatBonuses } from '@data/statModifiers'
+import { DOMAIN_CARD_MODIFIERS, isTouchedActive } from '@data/domainCardModifiers'
 import { getDomainsForClass, getCardById } from '@data/domains'
 import { useStorage } from '@core/composables/useStorage'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
@@ -109,12 +110,19 @@ export const useCharacterStore = defineStore('characters', () => {
 
   /**
    * Seuils de dégâts effectifs du personnage sélectionné.
-   * = base thresholds armure + niveau du personnage + bonus ascendance/sous-classe
+   * Priorité : Bare Bones override (sans armure) > base armure + niveau + bonus
    */
   const selectedThresholds = computed(() => {
     const char = selectedCharacter.value
     if (!char) return { major: 0, severe: 0 }
     const bonuses = selectedStatBonuses.value
+    // Si Bare Bones override est actif (pas d'armure + carte dans loadout)
+    if (bonuses.thresholdsOverride) {
+      return {
+        major: bonuses.thresholdsOverride.major + bonuses.thresholds.major,
+        severe: bonuses.thresholdsOverride.severe + bonuses.thresholds.severe
+      }
+    }
     return {
       major: (char.armorBaseThresholds?.major || 0) + char.level + bonuses.thresholds.major,
       severe: (char.armorBaseThresholds?.severe || 0) + char.level + bonuses.thresholds.severe
@@ -122,13 +130,103 @@ export const useCharacterStore = defineStore('characters', () => {
   })
 
   /**
-   * Évasion effective = base évasion + bonus armure + bonus ascendance/sous-classe
+   * Évasion effective = base évasion + bonus armure + bonus ascendance/sous-classe/cartes
    */
   const selectedEffectiveEvasion = computed(() => {
     const char = selectedCharacter.value
     if (!char) return 0
     const bonuses = selectedStatBonuses.value
     return char.evasion + (char.evasionBonus || 0) + bonuses.evasion
+  })
+
+  /**
+   * Score d'armure effectif = base + bonus cartes (Armorer, Valor-Touched)
+   * ou override (Bare Bones).
+   */
+  const selectedEffectiveArmorScore = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return 0
+    const bonuses = selectedStatBonuses.value
+    if (bonuses.armorScoreOverride !== null) {
+      return bonuses.armorScoreOverride + bonuses.armorScore
+    }
+    return char.armorScore + bonuses.armorScore
+  })
+
+  /**
+   * Liste des modificateurs de cartes de domaine avec leur état actif/inactif.
+   * Utilisée par ActiveModifiersPanel.vue pour afficher les bonus en jeu.
+   */
+  const activeModifiersList = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return []
+    const loadout = char.domainCards?.loadout || []
+    const activeEffects = char.activeEffects || {}
+    const result = []
+
+    for (const cardId of loadout) {
+      const mod = DOMAIN_CARD_MODIFIERS[cardId]
+      if (!mod) continue
+
+      let active = false
+      let canToggle = false
+      let statusLabel = ''
+
+      switch (mod.type) {
+        case 'passive':
+          active = true
+          statusLabel = 'Actif'
+          break
+        case 'conditional':
+          active = typeof mod.isActive === 'function' && mod.isActive(char)
+          statusLabel = active ? mod.conditionLabel : `Inactif (${mod.conditionLabel})`
+          break
+        case 'touched': {
+          const touchedOk = isTouchedActive(mod, loadout, getCardById)
+          if (mod.hasToggle) {
+            active = touchedOk && !!activeEffects[cardId]
+            canToggle = touchedOk
+            statusLabel = !touchedOk ? 'Inactif (< 4 cartes)' : (active ? mod.toggleLabel : `Inactif (${mod.toggleLabel})`)
+          } else {
+            active = touchedOk
+            statusLabel = active ? 'Actif (4+ cartes)' : 'Inactif (< 4 cartes)'
+          }
+          break
+        }
+        case 'toggle':
+          canToggle = true
+          active = !!activeEffects[cardId]
+          statusLabel = active ? mod.toggleLabel : `Inactif (${mod.toggleLabel})`
+          break
+        case 'activable':
+          canToggle = true
+          active = !!activeEffects[cardId]
+          statusLabel = active ? 'Activé' : 'Disponible'
+          break
+        case 'permanent':
+          // Les permanents ne sont pas dans cette liste, ils sont appliqués directement
+          continue
+        default:
+          break
+      }
+
+      result.push({
+        cardId,
+        name: mod.name,
+        domain: mod.domain,
+        icon: mod.icon,
+        type: mod.type,
+        description: mod.description,
+        active,
+        canToggle,
+        statusLabel,
+        frequency: mod.frequency || null,
+        cost: mod.cost || null,
+        toggleLabel: mod.toggleLabel || null
+      })
+    }
+
+    return result
   })
 
   // ── Données de sélection (pour les déroulants) ──────────
@@ -735,6 +833,107 @@ export const useCharacterStore = defineStore('characters', () => {
     return char.domainCards.loadout.includes(cardId) || char.domainCards.vault.includes(cardId)
   }
 
+  // ── Effets de cartes de domaine ────────────────────────
+
+  /**
+   * Active/désactive un effet toggle ou activable.
+   * @param {string} cardId
+   * @returns {boolean} Nouvel état
+   */
+  function toggleEffect(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    if (!char.activeEffects) char.activeEffects = {}
+    const newState = !char.activeEffects[cardId]
+    char.activeEffects[cardId] = newState
+    char.updatedAt = new Date().toISOString()
+    _syncDerivedStats(char)
+    persist()
+    return newState
+  }
+
+  /**
+   * Désactive un effet activable (fin de durée, repos, etc.).
+   * @param {string} cardId
+   */
+  function deactivateEffect(cardId) {
+    const char = selectedCharacter.value
+    if (!char) return
+    if (!char.activeEffects) char.activeEffects = {}
+    char.activeEffects[cardId] = false
+    char.updatedAt = new Date().toISOString()
+    _syncDerivedStats(char)
+    persist()
+  }
+
+  /**
+   * Désactive tous les effets activables (repos court).
+   */
+  function deactivateRestEffects() {
+    const char = selectedCharacter.value
+    if (!char || !char.activeEffects) return
+    const loadout = char.domainCards?.loadout || []
+    for (const cardId of loadout) {
+      const mod = DOMAIN_CARD_MODIFIERS[cardId]
+      if (mod && mod.type === 'activable') {
+        char.activeEffects[cardId] = false
+      }
+    }
+    char.updatedAt = new Date().toISOString()
+    _syncDerivedStats(char)
+    persist()
+  }
+
+  /**
+   * Applique un effet permanent (Vitality, Master of the Craft).
+   * L'effet est enregistré dans permanentCardEffects et la carte va en vault.
+   * @param {string} cardId
+   * @param {string[]} choiceIds - IDs des choix sélectionnés
+   * @returns {boolean} true si appliqué
+   */
+  function applyPermanentEffect(cardId, choiceIds) {
+    const char = selectedCharacter.value
+    if (!char) return false
+    const mod = DOMAIN_CARD_MODIFIERS[cardId]
+    if (!mod || mod.type !== 'permanent') return false
+    if (!Array.isArray(char.permanentCardEffects)) char.permanentCardEffects = []
+    // Vérifier qu'on n'a pas déjà appliqué cette carte
+    if (char.permanentCardEffects.some((e) => e.cardId === cardId)) return false
+    // Récupérer les effets des choix
+    for (const choiceId of choiceIds) {
+      const choice = mod.choices.find((c) => c.id === choiceId)
+      if (choice && choice.effect) {
+        char.permanentCardEffects.push({
+          cardId,
+          choiceId,
+          ...choice.effect,
+          source: `${mod.name} (${choice.label})`
+        })
+      }
+    }
+    // Déplacer la carte en vault (permanent)
+    _ensureDomainCards(char)
+    char.domainCards.loadout = char.domainCards.loadout.filter((id) => id !== cardId)
+    if (!char.domainCards.vault.includes(cardId)) {
+      char.domainCards.vault.push(cardId)
+    }
+    char.updatedAt = new Date().toISOString()
+    _syncDerivedStats(char)
+    persist()
+    return true
+  }
+
+  /**
+   * Vérifie si un effet permanent a déjà été appliqué.
+   * @param {string} cardId
+   * @returns {boolean}
+   */
+  function hasPermanentEffect(cardId) {
+    const char = selectedCharacter.value
+    if (!char || !Array.isArray(char.permanentCardEffects)) return false
+    return char.permanentCardEffects.some((e) => e.cardId === cardId)
+  }
+
   // ── Utilitaires ────────────────────────────────────────
 
   function persist() {
@@ -842,6 +1041,17 @@ export const useCharacterStore = defineStore('characters', () => {
     moveCardToVault,
     removeCard,
     hasCard,
+
+    // Actions effets de cartes de domaine
+    toggleEffect,
+    deactivateEffect,
+    deactivateRestEffects,
+    applyPermanentEffect,
+    hasPermanentEffect,
+
+    // Getters cartes de domaine étendus
+    selectedEffectiveArmorScore,
+    activeModifiersList,
 
     // Utilitaires
     persist,
