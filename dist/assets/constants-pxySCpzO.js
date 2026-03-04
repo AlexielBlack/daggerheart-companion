@@ -1,1 +1,0 @@
-const n={Melee:"Mêlée","Very Close":"Très Proche",Close:"Proche",Far:"Loin","Very Far":"Très Loin"},r={"One-Handed":"Une main","Two-Handed":"Deux mains"},o={common:"Commun",uncommon:"Peu commun",rare:"Rare",legendary:"Légendaire"};function a(e){return e<=12?"common":e<=24?"uncommon":e<=36?"rare":"legendary"}export{r as B,o as R,n as a,a as g};
