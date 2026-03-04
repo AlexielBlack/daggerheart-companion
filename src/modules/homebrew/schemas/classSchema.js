@@ -224,7 +224,7 @@ export const classSchema = {
       label: 'Armure suggeree',
       required: false,
       maxLength: 200,
-      placeholder: 'Ex: Chainmail Armor — Thresholds 7/15 — Score 4'
+      placeholder: 'Ex: Chainmail Armor — Seuils 7/15 — Score 4'
     },
     {
       key: 'classItems',
