@@ -245,10 +245,50 @@ export const useCharacterStore = defineStore('characters', () => {
     return getSubclassById(char.classId, char.subclassId)
   })
 
-  /** Donnée de l'ascendance sélectionnée */
+  /** Donnée de l'ascendance sélectionnée (résolue pour Mixed Ancestry) */
   const selectedAncestryData = computed(() => {
     const char = selectedCharacter.value
     if (!char || !char.ancestryId) return null
+
+    // ── Mixed Ancestry : construire un objet synthétique ──
+    if (char.ancestryId === 'mixed-ancestry') {
+      const config = char.mixedAncestryConfig
+      if (!config) return getAncestryById('mixed-ancestry')
+
+      const a1 = config.ancestry1Id ? getAncestryById(config.ancestry1Id) : null
+      const a2 = config.ancestry2Id ? getAncestryById(config.ancestry2Id) : null
+      const base = getAncestryById('mixed-ancestry')
+
+      // Résoudre les features sélectionnées
+      let topFeature = base.topFeature
+      let bottomFeature = base.bottomFeature
+
+      if (config.topFeatureSource && (a1 || a2)) {
+        const src = config.topFeatureSource === config.ancestry1Id ? a1 : a2
+        if (src) topFeature = src.topFeature
+      }
+      if (config.bottomFeatureSource && (a1 || a2)) {
+        const src = config.bottomFeatureSource === config.ancestry1Id ? a1 : a2
+        if (src) bottomFeature = src.bottomFeature
+      }
+
+      // Construire le nom composite
+      const names = [a1, a2].filter(Boolean).map((a) => a.name)
+      const label = names.length > 0 ? `Mixed (${names.join(' / ')})` : 'Mixed Ancestry'
+
+      return {
+        ...base,
+        name: label,
+        topFeature,
+        bottomFeature,
+        // Données brutes pour l'UI
+        _resolved: true,
+        _ancestry1: a1,
+        _ancestry2: a2,
+        _config: config
+      }
+    }
+
     return getAncestryById(char.ancestryId)
   })
 
@@ -485,6 +525,17 @@ export const useCharacterStore = defineStore('characters', () => {
         }
         // ancestryId et communityId : recalculer les stats dérivées
         case 'ancestryId':
+          // Réinitialiser la config Mixed Ancestry si on change d'ascendance
+          if (value !== 'mixed-ancestry') {
+            char.mixedAncestryConfig = {
+              ancestry1Id: '',
+              ancestry2Id: '',
+              topFeatureSource: '',
+              bottomFeatureSource: ''
+            }
+          }
+          _syncDerivedStats(char)
+          break
         case 'subclassId':
           // Recalculer maxHP et maxStress avec les nouveaux bonus
           _syncDerivedStats(char)
@@ -500,6 +551,47 @@ export const useCharacterStore = defineStore('characters', () => {
       console.error(`[characterStore] applySelection error for ${field}:`, err)
     }
 
+    persist()
+  }
+
+  /**
+   * Met à jour un champ de la configuration Mixed Ancestry.
+   * Gère la contrainte SRD : top d'une ascendance, bottom d'une autre.
+   * @param {string} field - 'ancestry1Id' | 'ancestry2Id' | 'topFeatureSource' | 'bottomFeatureSource'
+   * @param {string} value - ID de l'ascendance
+   */
+  function updateMixedAncestry(field, value) {
+    const char = selectedCharacter.value
+    if (!char || char.ancestryId !== 'mixed-ancestry') return
+    if (!char.mixedAncestryConfig) {
+      char.mixedAncestryConfig = {
+        ancestry1Id: '', ancestry2Id: '',
+        topFeatureSource: '', bottomFeatureSource: ''
+      }
+    }
+    const config = char.mixedAncestryConfig
+
+    if (field === 'ancestry1Id' || field === 'ancestry2Id') {
+      config[field] = value
+      // Réinitialiser les features si les ascendances changent
+      config.topFeatureSource = ''
+      config.bottomFeatureSource = ''
+    } else if (field === 'topFeatureSource') {
+      config.topFeatureSource = value
+      // Contrainte SRD : bottom doit venir de l'autre ascendance
+      if (value && config.bottomFeatureSource === value) {
+        config.bottomFeatureSource = ''
+      }
+    } else if (field === 'bottomFeatureSource') {
+      config.bottomFeatureSource = value
+      // Contrainte SRD : top doit venir de l'autre ascendance
+      if (value && config.topFeatureSource === value) {
+        config.topFeatureSource = ''
+      }
+    }
+
+    char.updatedAt = new Date().toISOString()
+    _syncDerivedStats(char)
     persist()
   }
 
@@ -1008,6 +1100,7 @@ export const useCharacterStore = defineStore('characters', () => {
     selectCharacter,
     updateField,
     applySelection,
+    updateMixedAncestry,
 
     // Actions HP/Stress/Armor
     markHP,

@@ -71,12 +71,185 @@
         </optgroup>
       </select>
       <p
-        v-if="ancestryData"
+        v-if="ancestryData && char.ancestryId !== 'mixed-ancestry'"
         class="selector-hint"
       >
         {{ ancestryData.description }}
       </p>
     </div>
+
+    <!-- ═══ Mixed Ancestry — Sélection des 2 ascendances parentes ═══ -->
+    <template v-if="char.ancestryId === 'mixed-ancestry'">
+      <div class="selector-field selector-field--mixed-intro">
+        <p class="mixed-intro">
+          🔀 Choisissez deux ascendances parentes, puis une feature de chaque.
+          Vous devez prendre la <strong>Top Feature</strong> d'une ascendance et la <strong>Bottom Feature</strong> de l'autre.
+        </p>
+      </div>
+
+      <!-- Ascendance parente 1 -->
+      <div class="selector-field">
+        <label
+          class="selector-label"
+          for="sel-mixed-a1"
+        >Ascendance parente 1</label>
+        <select
+          id="sel-mixed-a1"
+          class="selector-select"
+          :value="mixedConfig.ancestry1Id"
+          aria-label="Première ascendance parente"
+          @change="$emit('updateMixed', 'ancestry1Id', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <option
+            v-for="a in selectableAncestries"
+            :key="a.id"
+            :value="a.id"
+            :disabled="a.id === mixedConfig.ancestry2Id"
+          >
+            {{ a.emoji }} {{ a.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Ascendance parente 2 -->
+      <div class="selector-field">
+        <label
+          class="selector-label"
+          for="sel-mixed-a2"
+        >Ascendance parente 2</label>
+        <select
+          id="sel-mixed-a2"
+          class="selector-select"
+          :value="mixedConfig.ancestry2Id"
+          aria-label="Seconde ascendance parente"
+          @change="$emit('updateMixed', 'ancestry2Id', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <option
+            v-for="a in selectableAncestries"
+            :key="a.id"
+            :value="a.id"
+            :disabled="a.id === mixedConfig.ancestry1Id"
+          >
+            {{ a.emoji }} {{ a.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Sélection croisée des features -->
+      <div
+        v-if="mixedAncestry1 && mixedAncestry2"
+        class="selector-field selector-field--full"
+      >
+        <span class="selector-label">Features sélectionnées</span>
+
+        <!-- Top Feature (première feature) -->
+        <fieldset
+          class="mixed-feature-fieldset"
+          aria-label="Choisir la Top Feature"
+        >
+          <legend class="mixed-feature-legend">
+            Top Feature (première feature)
+          </legend>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.topFeatureSource === mixedConfig.ancestry1Id }"
+          >
+            <input
+              type="radio"
+              name="mixed-top"
+              :value="mixedConfig.ancestry1Id"
+              :checked="mixedConfig.topFeatureSource === mixedConfig.ancestry1Id"
+              :disabled="mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id"
+              @change="$emit('updateMixed', 'topFeatureSource', mixedConfig.ancestry1Id)"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry1.topFeature.name }}</span>
+            <span class="mixed-feature-option__source">{{ mixedAncestry1.emoji }} {{ mixedAncestry1.name }}</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry1.topFeature.description }}
+            </p>
+          </label>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.topFeatureSource === mixedConfig.ancestry2Id }"
+          >
+            <input
+              type="radio"
+              name="mixed-top"
+              :value="mixedConfig.ancestry2Id"
+              :checked="mixedConfig.topFeatureSource === mixedConfig.ancestry2Id"
+              :disabled="mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id"
+              @change="$emit('updateMixed', 'topFeatureSource', mixedConfig.ancestry2Id)"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry2.topFeature.name }}</span>
+            <span class="mixed-feature-option__source">{{ mixedAncestry2.emoji }} {{ mixedAncestry2.name }}</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry2.topFeature.description }}
+            </p>
+          </label>
+        </fieldset>
+
+        <!-- Bottom Feature (seconde feature) -->
+        <fieldset
+          class="mixed-feature-fieldset"
+          aria-label="Choisir la Bottom Feature"
+        >
+          <legend class="mixed-feature-legend">
+            Bottom Feature (seconde feature)
+          </legend>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id }"
+          >
+            <input
+              type="radio"
+              name="mixed-bottom"
+              :value="mixedConfig.ancestry1Id"
+              :checked="mixedConfig.bottomFeatureSource === mixedConfig.ancestry1Id"
+              :disabled="mixedConfig.topFeatureSource === mixedConfig.ancestry1Id"
+              @change="$emit('updateMixed', 'bottomFeatureSource', mixedConfig.ancestry1Id)"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry1.bottomFeature.name }}</span>
+            <span class="mixed-feature-option__source">{{ mixedAncestry1.emoji }} {{ mixedAncestry1.name }}</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry1.bottomFeature.description }}
+            </p>
+          </label>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id }"
+          >
+            <input
+              type="radio"
+              name="mixed-bottom"
+              :value="mixedConfig.ancestry2Id"
+              :checked="mixedConfig.bottomFeatureSource === mixedConfig.ancestry2Id"
+              :disabled="mixedConfig.topFeatureSource === mixedConfig.ancestry2Id"
+              @change="$emit('updateMixed', 'bottomFeatureSource', mixedConfig.ancestry2Id)"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry2.bottomFeature.name }}</span>
+            <span class="mixed-feature-option__source">{{ mixedAncestry2.emoji }} {{ mixedAncestry2.name }}</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry2.bottomFeature.description }}
+            </p>
+          </label>
+        </fieldset>
+
+        <!-- Avertissement contrainte SRD -->
+        <p
+          v-if="mixedConfig.topFeatureSource && mixedConfig.bottomFeatureSource && mixedConfig.topFeatureSource === mixedConfig.bottomFeatureSource"
+          class="mixed-warning"
+          role="alert"
+        >
+          ⚠ La Top et la Bottom Feature doivent venir de deux ascendances différentes.
+        </p>
+      </div>
+    </template>
 
     <!-- ═══ Communauté ═══ -->
     <div class="selector-field">
@@ -210,6 +383,7 @@
 
 <script>
 import { computed } from 'vue'
+import { getAncestryById, ALL_ANCESTRIES } from '@data/ancestries'
 
 const TIER_LABELS = {
   1: 'Tier 1 (Niveau 1)',
@@ -252,7 +426,7 @@ export default {
     primaryWeapons: { type: Array, default: () => [] },
     secondaryWeapons: { type: Array, default: () => [] }
   },
-  emits: ['select'],
+  emits: ['select', 'updateMixed'],
   setup(props, { emit }) {
     const srdAncestries = computed(() =>
       props.ancestries.filter((a) => a.source === 'srd')
@@ -264,6 +438,34 @@ export default {
     const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
     const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
 
+    // ── Mixed Ancestry ──
+    /** Config Mixed du personnage actuel */
+    const mixedConfig = computed(() =>
+      props.char.mixedAncestryConfig || {
+        ancestry1Id: '', ancestry2Id: '',
+        topFeatureSource: '', bottomFeatureSource: ''
+      }
+    )
+
+    /** Ascendances sélectionnables (exclut Mixed Ancestry elle-même) */
+    const selectableAncestries = computed(() =>
+      ALL_ANCESTRIES.filter((a) => a.id !== 'mixed-ancestry')
+    )
+
+    /** Données de l'ascendance parente 1 */
+    const mixedAncestry1 = computed(() =>
+      mixedConfig.value.ancestry1Id
+        ? getAncestryById(mixedConfig.value.ancestry1Id)
+        : null
+    )
+
+    /** Données de l'ascendance parente 2 */
+    const mixedAncestry2 = computed(() =>
+      mixedConfig.value.ancestry2Id
+        ? getAncestryById(mixedConfig.value.ancestry2Id)
+        : null
+    )
+
     function onSelect(field, value) {
       emit('select', field, value)
     }
@@ -274,7 +476,11 @@ export default {
       armorTiers,
       primaryWeaponTiers,
       secondaryWeaponTiers,
-      onSelect
+      onSelect,
+      mixedConfig,
+      selectableAncestries,
+      mixedAncestry1,
+      mixedAncestry2
     }
   }
 }
@@ -343,5 +549,100 @@ export default {
   max-height: 3.9em;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ── Mixed Ancestry ── */
+.selector-field--mixed-intro {
+  grid-column: 1 / -1;
+}
+
+.selector-field--full {
+  grid-column: 1 / -1;
+}
+
+.mixed-intro {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #9ca3af);
+  line-height: 1.4;
+  margin: 0;
+  padding: 6px 8px;
+  background: rgba(83, 168, 182, 0.06);
+  border-left: 2px solid var(--accent-hope, #53a8b6);
+  border-radius: 0 4px 4px 0;
+}
+
+.mixed-feature-fieldset {
+  border: 1px solid var(--border-color, #3a3a5a);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.mixed-feature-legend {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-hope, #53a8b6);
+  padding: 0 4px;
+}
+
+.mixed-feature-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color, #3a3a5a);
+  border-radius: 4px;
+  margin: 4px 0;
+  cursor: pointer;
+  transition: border-color 150ms, background 150ms;
+}
+
+.mixed-feature-option:hover { border-color: var(--text-secondary, #9ca3af); }
+.mixed-feature-option--selected {
+  border-color: var(--accent-hope, #53a8b6);
+  background: rgba(83, 168, 182, 0.08);
+}
+
+.mixed-feature-option input[type="radio"] {
+  accent-color: var(--accent-hope, #53a8b6);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.mixed-feature-option input[type="radio"]:disabled + .mixed-feature-option__name {
+  opacity: 0.4;
+}
+
+.mixed-feature-option__name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary, #e5e7eb);
+}
+
+.mixed-feature-option__source {
+  font-size: 0.65rem;
+  color: var(--text-muted, #6b7280);
+  margin-left: auto;
+}
+
+.mixed-feature-option__desc {
+  width: 100%;
+  font-size: 0.72rem;
+  color: var(--text-secondary, #9ca3af);
+  line-height: 1.35;
+  margin: 2px 0 0;
+}
+
+.mixed-warning {
+  font-size: 0.75rem;
+  color: #f97316;
+  padding: 4px 8px;
+  background: rgba(249, 115, 22, 0.08);
+  border-left: 2px solid #f97316;
+  border-radius: 0 4px 4px 0;
+  margin: 4px 0 0;
 }
 </style>

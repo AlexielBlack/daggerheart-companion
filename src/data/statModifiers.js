@@ -32,35 +32,50 @@ import { getCardById } from '@data/domains'
  * - evasion      : bonus fixe à l'Évasion
  * - thresholds   : { major, severe } bonus fixes aux seuils
  * - thresholdsFn : 'proficiency' → bonus dynamique = proficiency du personnage
+ * - featurePosition : 'top' | 'bottom' → indique quel feature déclenche le bonus
+ *                     (utilisé par Mixed Ancestry pour n'appliquer le bonus que
+ *                     si le bon feature est sélectionné)
  */
 export const ANCESTRY_MODIFIERS = {
   // SRD — Giant : "Endurance: Gain an additional Hit Point slot at character creation."
   giant: {
     maxHP: 1,
+    featurePosition: 'top',
     source: 'Endurance (Giant)'
+  },
+
+  // SRD — Human : "High Stamina: Gain an additional Stress slot at character creation."
+  human: {
+    maxStress: 1,
+    featurePosition: 'top',
+    source: 'High Stamina (Human)'
   },
 
   // SRD — Simiah : "Nimble: Gain a permanent +1 bonus to your Evasion at character creation."
   simiah: {
     evasion: 1,
+    featurePosition: 'bottom',
     source: 'Nimble (Simiah)'
   },
 
   // SRD — Galapa : "Shell: Gain a bonus to your damage thresholds equal to your Proficiency."
   galapa: {
     thresholdsFn: 'proficiency',
+    featurePosition: 'top',
     source: 'Shell (Galapa)'
   },
 
   // Custom — Skjalma : "Tu gagnes un PV supplémentaire à la création du personnage."
   skjalma: {
     maxHP: 1,
+    featurePosition: 'top',
     source: 'Endurance (Skjalma)'
   },
 
   // Custom — Plassédien·ne : "Gagne un emplacement de Stress supplémentaire à la création."
   plassedien: {
     maxStress: 1,
+    featurePosition: 'top',
     source: 'Endurance Élevée (Plassédien·ne)'
   }
 }
@@ -251,7 +266,26 @@ export function computeStatBonuses(char) {
   if (!char) return bonuses
 
   // ── Bonus d'ascendance ───────────────────────────────
-  if (char.ancestryId && ANCESTRY_MODIFIERS[char.ancestryId]) {
+  if (char.ancestryId === 'mixed-ancestry') {
+    // Mixed Ancestry : appliquer les modificateurs des ascendances parentes
+    // seulement si le feature correspondant est sélectionné
+    const config = char.mixedAncestryConfig
+    if (config) {
+      const ancestryIds = [config.ancestry1Id, config.ancestry2Id].filter(Boolean)
+      for (const aId of ancestryIds) {
+        const mod = ANCESTRY_MODIFIERS[aId]
+        if (!mod) continue
+        // Vérifier que le bon feature est sélectionné pour cette ascendance
+        const isTopSelected = config.topFeatureSource === aId
+        const isBottomSelected = config.bottomFeatureSource === aId
+        if (mod.featurePosition === 'top' && isTopSelected) {
+          applyModifier(bonuses, mod, char)
+        } else if (mod.featurePosition === 'bottom' && isBottomSelected) {
+          applyModifier(bonuses, mod, char)
+        }
+      }
+    }
+  } else if (char.ancestryId && ANCESTRY_MODIFIERS[char.ancestryId]) {
     applyModifier(bonuses, ANCESTRY_MODIFIERS[char.ancestryId], char)
   }
 

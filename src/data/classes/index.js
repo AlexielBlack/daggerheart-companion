@@ -293,6 +293,15 @@ export function createDefaultCharacter(classId) {
     primaryWeaponId: '',
     secondaryWeaponId: '',
 
+    // ── Mixed Ancestry ──
+    // Actif quand ancestryId === 'mixed-ancestry'
+    mixedAncestryConfig: {
+      ancestry1Id: '',          // Première ascendance parente
+      ancestry2Id: '',          // Seconde ascendance parente
+      topFeatureSource: '',     // ID de l'ascendance fournissant la Top Feature
+      bottomFeatureSource: ''   // ID de l'ascendance fournissant la Bottom Feature
+    },
+
     // Traits — préremplis avec suggestions
     traits: {
       agility: cls.suggestedTraits.agility,

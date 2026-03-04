@@ -53,6 +53,7 @@
           :effective-armor-score="store.selectedEffectiveArmorScore"
           @update="store.updateField"
           @apply-selection="store.applySelection"
+          @update-mixed="store.updateMixedAncestry"
           @mark-h-p="store.markHP()"
           @clear-h-p="store.clearHP()"
           @mark-stress="store.markStress()"

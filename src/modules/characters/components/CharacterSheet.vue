@@ -111,6 +111,7 @@
         :primary-weapons="primaryWeapons"
         :secondary-weapons="secondaryWeapons"
         @select="(field, value) => emit('applySelection', field, value)"
+        @update-mixed="(field, value) => emit('updateMixed', field, value)"
       />
     </section>
 
@@ -660,6 +661,7 @@ export default {
     'addExperience', 'removeExperience',
     'addCondition', 'removeCondition',
     'applySelection',
+    'updateMixed',
     'addCardToLoadout', 'addCardToVault',
     'moveCardToLoadout', 'moveCardToVault', 'removeCard',
     'levelUp', 'rollback',
