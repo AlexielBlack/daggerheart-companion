@@ -169,14 +169,14 @@ export default {
         const raw = toRawData()
         if (isEditMode.value) {
           const updated = store.update(route.params.id, raw)
-          if (!updated) {
-            submitError.value = 'Échec de la mise à jour.'
+          if (!updated.success) {
+            submitError.value = updated.error || 'Échec de la mise à jour.'
             return
           }
         } else {
           const created = store.create(raw)
-          if (!created) {
-            submitError.value = 'Échec de la création.'
+          if (!created.success) {
+            submitError.value = created.error || 'Échec de la création.'
             return
           }
         }

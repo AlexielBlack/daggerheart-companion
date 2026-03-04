@@ -187,10 +187,10 @@ export default {
         const raw = toRawData()
         if (isEditMode.value) {
           const updated = store.update(route.params.id, raw)
-          if (!updated) { submitError.value = 'Echec de la mise a jour.'; return }
+          if (!updated.success) { submitError.value = updated.error || 'Echec de la mise a jour.'; return }
         } else {
           const created = store.create(raw)
-          if (!created) { submitError.value = 'Echec de la creation.'; return }
+          if (!created.success) { submitError.value = created.error || 'Echec de la creation.'; return }
         }
         router.push('/homebrew/class')
       } catch (err) {
