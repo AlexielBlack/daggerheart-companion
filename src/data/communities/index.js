@@ -23,7 +23,8 @@ export const COMMUNITIES = [
       name: 'Privilege',
       description:
         'Vous avez l\'avantage sur les jets pour fréquenter les nobles, négocier des prix ou exploiter votre réputation pour obtenir ce que vous voulez.',
-      tags: ['social']
+      tags: ['social'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['aimable', 'franc·he', 'intrigant·e', 'entreprenant·e', 'ostentatoire', 'imperturbable'],
     flavor: 'Je suis Highborne, alors bien sûr que je sais négocier avec les nobles.'
@@ -39,7 +40,8 @@ export const COMMUNITIES = [
       name: 'Well-Read',
       description:
         'Vous avez l\'avantage sur les jets impliquant l\'histoire, la culture ou la politique d\'une personne ou d\'un lieu important.',
-      tags: ['social','utilitaire']
+      tags: ['social','utilitaire'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['direct·e', 'éloquent·e', 'curieux·se', 'patient·e', 'exalté·e', 'spirituel·le'],
     flavor: 'Je suis Loreborne, alors bien sûr que je connais l\'histoire de ce lieu.'
@@ -55,7 +57,8 @@ export const COMMUNITIES = [
       name: 'Dedicated',
       description:
         'Notez trois dictons ou valeurs que votre éducation vous a inculqués. Une fois par repos, quand vous décrivez comment vous incarnez un de ces principes à travers votre action actuelle, vous pouvez lancer un d20 comme Dé d\'Espoir (Hope Die).',
-      tags: ['social']
+      tags: ['social'],
+      activationType: 'reaction', cost: { type: 'free', amount: 0 }, frequency: 'oncePerShortRest', trigger: 'Vous agissez selon vos valeurs'
     },
     adjectives: ['ambitieux·se', 'bienveillant·e', 'pensif·ve', 'prudent·e', 'sardonique', 'stoïque'],
     flavor: 'Je suis Orderborne, alors bien sûr que je sais incarner mes principes.'
@@ -71,7 +74,8 @@ export const COMMUNITIES = [
       name: 'Steady',
       description:
         'Vous avez l\'avantage sur les jets pour traverser des falaises et des rebords dangereux, naviguer dans des environnements hostiles et utiliser vos connaissances de survie.',
-      tags: ['utilitaire']
+      tags: ['utilitaire'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['audacieux·se', 'robuste', 'indomptable', 'loyal·e', 'réservé·e', 'obstiné·e'],
     flavor: 'Je suis Ridgeborne, alors bien sûr que je sais naviguer en terrain hostile.'
@@ -87,7 +91,8 @@ export const COMMUNITIES = [
       name: 'Know the Tide',
       description:
         'Vous pouvez sentir le flux et le reflux de la vie. Quand vous lancez avec Peur (Fear), placez un jeton sur votre carte de communauté. Vous pouvez détenir un nombre de jetons égal à votre niveau. Avant de faire un jet d\'action, vous pouvez dépenser un nombre quelconque de ces jetons pour obtenir un bonus de +1 au jet par jeton dépensé. À la fin de chaque session, retirez tous les jetons non dépensés.',
-      tags: ['utilitaire']
+      tags: ['utilitaire'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['franc·he', 'coopératif·ve', 'exubérant·e', 'féroce', 'résolu·e', 'aguerri·e'],
     flavor: 'Je suis Seaborne, alors bien sûr que je sais sentir le flux et le reflux.'
@@ -103,7 +108,8 @@ export const COMMUNITIES = [
       name: 'Scoundrel',
       description:
         'Vous avez l\'avantage sur les jets pour négocier avec des criminels, détecter les mensonges ou trouver un endroit sûr où se cacher.',
-      tags: ['social']
+      tags: ['social'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['calculateur·rice', 'malin·e', 'redoutable', 'perspicace', 'rusé·e', 'tenace'],
     flavor: 'Je suis Slyborne, alors bien sûr que je sais détecter les mensonges.'
@@ -119,7 +125,8 @@ export const COMMUNITIES = [
       name: 'Low-Light Living',
       description:
         'Quand vous êtes dans une zone de faible luminosité ou d\'ombre épaisse, vous avez l\'avantage sur les jets pour vous cacher, enquêter ou percevoir des détails dans cette zone.',
-      tags: ['utilitaire']
+      tags: ['utilitaire'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['composé·e', 'insaisissable', 'indomptable', 'innovant·e', 'débrouillard·e', 'modeste'],
     flavor: 'Je suis Underborne, alors bien sûr que je sais me repérer dans l\'obscurité.'
@@ -135,7 +142,8 @@ export const COMMUNITIES = [
       name: 'Nomadic Pack',
       description:
         'Ajoutez un Paquetage Nomade à votre inventaire. Une fois par session, vous pouvez dépenser un Espoir (Hope) pour fouiller dans ce paquetage et en sortir un objet ordinaire utile à votre situation. Travaillez avec le MJ pour déterminer quel objet vous en tirez.',
-      tags: ['utilitaire']
+      tags: ['utilitaire'],
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'oncePerSession'
     },
     adjectives: ['impénétrable', 'magnanime', 'jovial·e', 'fiable', 'avisé·e', 'anticonformiste'],
     flavor: 'Je suis Wanderborne, alors bien sûr que j\'ai exactement ce qu\'il faut dans mon sac.'
@@ -151,7 +159,8 @@ export const COMMUNITIES = [
       name: 'Lightfoot',
       description:
         'Votre déplacement est naturellement silencieux. Vous avez l\'avantage sur les jets pour vous déplacer sans être entendu.',
-      tags: ['utilitaire']
+      tags: ['utilitaire'],
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     },
     adjectives: ['robuste', 'loyal·e', 'bienveillant·e', 'solitaire', 'sagace', 'vibrant·e'],
     flavor: 'Je suis Wildborne, alors bien sûr que je sais me déplacer sans un bruit.'
