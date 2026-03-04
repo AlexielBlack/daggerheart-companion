@@ -7,8 +7,6 @@ import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
-  SCENE_MODE_SOCIAL,
-  SCENE_MODE_TRAVERSAL,
   MAX_FEAR,
   MAX_HOPE,
   SPOTLIGHT_PC,
@@ -233,8 +231,8 @@ describe('encounterLiveStore', () => {
 
   describe('mode de scène', () => {
     it('change le mode avec setSceneMode', () => {
-      store.setSceneMode(SCENE_MODE_SOCIAL)
-      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
+      store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
+      expect(store.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
     })
 
     it('refuse un mode invalide', () => {
@@ -248,8 +246,8 @@ describe('encounterLiveStore', () => {
       expect(store.currentSceneModeMeta.primaryTags).toContain('défensif')
     })
 
-    it('supporte les 4 modes', () => {
-      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK, SCENE_MODE_SOCIAL, SCENE_MODE_TRAVERSAL]
+    it('supporte les 2 modes actifs', () => {
+      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK]
       for (const mode of modes) {
         store.setSceneMode(mode)
         expect(store.sceneMode).toBe(mode)
@@ -509,7 +507,7 @@ describe('encounterLiveStore', () => {
     it('restoreState restaure depuis le localStorage', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
       store.addFear(5, 'test')
-      store.setSceneMode(SCENE_MODE_SOCIAL)
+      store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
       store.nextRound()
 
       // Nouveau store = simule un refresh
@@ -521,7 +519,7 @@ describe('encounterLiveStore', () => {
       expect(restored).toBe(true)
       expect(freshStore.isActive).toBe(true)
       expect(freshStore.fear).toBe(5)
-      expect(freshStore.sceneMode).toBe(SCENE_MODE_SOCIAL)
+      expect(freshStore.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
       expect(freshStore.round).toBe(2)
       expect(freshStore.liveAdversaries).toHaveLength(3)
     })
@@ -539,7 +537,7 @@ describe('encounterLiveStore', () => {
     it('resetLive remet tout à zéro', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
       store.addFear(10)
-      store.setSceneMode(SCENE_MODE_TRAVERSAL)
+      store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
       store.resetLive()
 
       expect(store.isActive).toBe(false)
