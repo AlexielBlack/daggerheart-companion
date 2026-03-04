@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewForm from '../core/components/HomebrewForm.vue'
@@ -62,6 +62,46 @@ import { classSchema } from '../schemas/classSchema.js'
 import { useFormSchema } from '../core/composables/useFormSchema.js'
 import { validateHomebrewData } from '../core/composables/useHomebrewValidation.js'
 import { useClassHomebrewStore } from '../categories/class/useClassHomebrewStore.js'
+import { PRIMARY_WEAPONS } from '@data/equipment/primaryWeapons.js'
+import { SECONDARY_WEAPONS } from '@data/equipment/secondaryWeapons.js'
+import { ARMOR } from '@data/equipment/armor.js'
+import { useEquipmentHomebrewStore } from '../categories/equipment/useEquipmentHomebrewStore.js'
+import { RANGES } from '@data/equipment/constants.js'
+
+/**
+ * Construit les options groupées par tier pour un type d'équipement.
+ * @param {Array} srdItems - Items SRD
+ * @param {Array} homebrewItems - Items homebrew
+ * @param {'weapon'|'armor'} kind - Type d'item
+ * @returns {Array} Options pour le SELECT (avec optgroups)
+ */
+function buildEquipmentOptions(srdItems, homebrewItems, kind) {
+  const tiers = {}
+  for (const item of srdItems) {
+    const t = item.tier || 1
+    if (!tiers[t]) tiers[t] = []
+    const label = kind === 'armor'
+      ? `${item.name} — ${item.thresholds.major}/${item.thresholds.severe} — Score ${item.baseScore}${item.featureKey ? ` — ${item.featureKey}` : ''}`
+      : `${item.name} — ${item.trait} ${RANGES[item.range] || item.range} — ${item.damage}${item.burden === 'Two-Handed' ? ' ⚔' : ''}`
+    tiers[t].push({ value: item.id, label })
+  }
+  const groups = Object.keys(tiers)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((t) => ({ group: `Tier ${t}`, items: tiers[t] }))
+
+  if (homebrewItems.length > 0) {
+    groups.push({
+      group: '★ Homebrew',
+      items: homebrewItems.map((item) => {
+        const label = kind === 'armor'
+          ? `${item.name} — ${item.thresholds?.major || '?'}/${item.thresholds?.severe || '?'} — Score ${item.baseScore || '?'}`
+          : `${item.name} — ${item.trait || '?'} — ${item.damage || '?'}`
+        return { value: item.id, label }
+      })
+    })
+  }
+  return groups
+}
 
 export default {
   name: 'HomebrewClassEditor',
@@ -70,10 +110,52 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useClassHomebrewStore()
+    const equipHbStore = useEquipmentHomebrewStore()
     const { formData, isDirty, isEditMode, reset, hydrate, setField, toRawData } = useFormSchema(classSchema)
     const validationErrors = ref([])
     const submitError = ref('')
     const isSubmitting = ref(false)
+
+    // ── Options dynamiques SRD + Homebrew pour les SELECT d'équipement ──
+    const primaryWeaponOptions = computed(() =>
+      buildEquipmentOptions(
+        PRIMARY_WEAPONS,
+        equipHbStore.items.filter((i) => i.category === 'primaryWeapon'),
+        'weapon'
+      )
+    )
+    const secondaryWeaponOptions = computed(() =>
+      buildEquipmentOptions(
+        SECONDARY_WEAPONS,
+        equipHbStore.items.filter((i) => i.category === 'secondaryWeapon'),
+        'weapon'
+      )
+    )
+    const armorOptions = computed(() =>
+      buildEquipmentOptions(
+        ARMOR,
+        equipHbStore.items.filter((i) => i.category === 'armor'),
+        'armor'
+      )
+    )
+
+    /** Schéma enrichi avec les options d'équipement injectées */
+    const enrichedSchema = computed(() => {
+      const optionsSources = {
+        primaryWeapon: primaryWeaponOptions.value,
+        secondaryWeapon: secondaryWeaponOptions.value,
+        armor: armorOptions.value
+      }
+      return {
+        ...classSchema,
+        fields: classSchema.fields.map((field) => {
+          if (field.optionsSource && optionsSources[field.optionsSource]) {
+            return { ...field, options: optionsSources[field.optionsSource] }
+          }
+          return field
+        })
+      }
+    })
 
     onMounted(() => {
       const id = route.params.id
@@ -130,7 +212,7 @@ export default {
     function onCancel() { router.push('/homebrew/class') }
 
     return {
-      classSchema, formData, isDirty, isEditMode,
+      classSchema: enrichedSchema, formData, isDirty, isEditMode,
       validationErrors, submitError, isSubmitting,
       onFieldUpdate, onSubmit, onReset, onCancel
     }

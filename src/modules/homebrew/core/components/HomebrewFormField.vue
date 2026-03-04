@@ -75,7 +75,7 @@
       @input="onNumberInput"
     />
 
-    <!-- SELECT -->
+    <!-- SELECT (avec support optgroup et {value,label}) -->
     <select
       v-else-if="field.type === 'select'"
       :id="fieldId"
@@ -92,14 +92,31 @@
       >
         — Choisir —
       </option>
-      <option
-        v-for="opt in field.options"
-        :key="opt"
-        :value="opt"
-        :selected="modelValue === opt"
+      <template
+        v-for="(opt, oi) in field.options"
+        :key="optionKey(opt, oi)"
       >
-        {{ formatOption(opt) }}
-      </option>
+        <!-- Groupe d'options -->
+        <optgroup
+          v-if="opt && typeof opt === 'object' && opt.group"
+          :label="opt.group"
+        >
+          <option
+            v-for="(item, ii) in opt.items"
+            :key="optionValue(item) + '-' + ii"
+            :value="optionValue(item)"
+          >
+            {{ optionLabel(item) }}
+          </option>
+        </optgroup>
+        <!-- Option simple -->
+        <option
+          v-else
+          :value="optionValue(opt)"
+        >
+          {{ optionLabel(opt) }}
+        </option>
+      </template>
     </select>
 
     <!-- MULTI_SELECT (checkboxes) -->
@@ -307,6 +324,25 @@ export default {
       return opt
     },
 
+    /** Extraire la valeur d'une option (string ou {value, label}) */
+    optionValue(opt) {
+      if (opt !== null && typeof opt === 'object' && 'value' in opt) return opt.value
+      return opt
+    },
+
+    /** Extraire le libellé d'une option */
+    optionLabel(opt) {
+      if (opt !== null && typeof opt === 'object' && opt.label) return opt.label
+      if (typeof opt === 'number') return String(opt)
+      return opt ?? '— Aucun —'
+    },
+
+    /** Clé unique pour v-for */
+    optionKey(opt, index) {
+      if (opt !== null && typeof opt === 'object' && opt.group) return `grp-${opt.group}-${index}`
+      return `opt-${this.optionValue(opt)}-${index}`
+    },
+
     onNumberInput(event) {
       const raw = event.target.value
       if (raw === '') {
@@ -321,8 +357,10 @@ export default {
 
     onSelectChange(event) {
       let value = event.target.value
-      // Restaurer le type d'origine si les options sont des nombres
-      if (this.field.options?.length > 0 && typeof this.field.options[0] === 'number') {
+      // Restaurer le type d'origine si les options sont des nombres simples
+      const firstOpt = this.field.options?.find((o) => typeof o !== 'object' || !o?.group)
+      const rawFirst = this.optionValue(firstOpt)
+      if (typeof rawFirst === 'number') {
         value = Number(value)
       }
       this.$emit('update:modelValue', value === '' ? null : value)

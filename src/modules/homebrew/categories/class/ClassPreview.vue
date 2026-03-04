@@ -198,11 +198,26 @@
       </div>
     </section>
     <footer
-      v-if="data.suggestedArmor || data.classItems"
+      v-if="data.suggestedPrimaryWeapon || data.suggestedSecondaryWeapon || data.suggestedArmor || data.classItems"
       class="class-preview__footer"
     >
-      <p v-if="data.suggestedArmor">
-        {{ data.suggestedArmor }}
+      <p
+        v-if="data.suggestedPrimaryWeapon"
+        class="class-preview__equip-line"
+      >
+        ⚔️ {{ resolveEquipName('primary', data.suggestedPrimaryWeapon) }}
+      </p>
+      <p
+        v-if="data.suggestedSecondaryWeapon"
+        class="class-preview__equip-line"
+      >
+        🛡️ {{ resolveEquipName('secondary', data.suggestedSecondaryWeapon) }}
+      </p>
+      <p
+        v-if="data.suggestedArmor"
+        class="class-preview__equip-line"
+      >
+        🪖 {{ resolveEquipName('armor', data.suggestedArmor) }}
       </p>
       <p v-if="data.classItems">
         {{ data.classItems }}
@@ -212,7 +227,34 @@
 </template>
 
 <script>
+import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
+import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
+import { getArmorById } from '@data/equipment/armor.js'
+import { useEquipmentHomebrewStore } from '@modules/homebrew/categories/equipment/useEquipmentHomebrewStore.js'
+
 const TRAIT_LABELS = { agility: 'AGI', strength: 'FOR', finesse: 'FIN', instinct: 'INS', presence: 'PRE', knowledge: 'SAV' }
+
+/** Résout un ID d'équipement en nom affiché (SRD puis homebrew). */
+function resolveById(kind, id) {
+  if (!id) return null
+  if (kind === 'primary') {
+    const item = getPrimaryWeaponById(id)
+    if (item) return item.name
+  } else if (kind === 'secondary') {
+    const item = getSecondaryWeaponById(id)
+    if (item) return item.name
+  } else if (kind === 'armor') {
+    const item = getArmorById(id)
+    if (item) return item.name
+  }
+  // Fallback homebrew
+  try {
+    const hbStore = useEquipmentHomebrewStore()
+    const hbItem = hbStore.items.find((i) => i.id === id)
+    if (hbItem) return hbItem.name
+  } catch { /* store pas disponible */ }
+  return id
+}
 
 export default {
   name: 'ClassPreview',
@@ -226,6 +268,9 @@ export default {
     displaySubclasses() { return Array.isArray(this.data.subclasses) ? this.data.subclasses.filter(s => s && (s.name || s.description)) : [] },
     hasTraits() { return this.data.suggestedTraits && typeof this.data.suggestedTraits === 'object' },
     traitEntries() { if (!this.hasTraits) return []; return Object.entries(TRAIT_LABELS).map(([key, label]) => ({ key, label, value: this.data.suggestedTraits[key] || 0 })) }
+  },
+  methods: {
+    resolveEquipName(kind, id) { return resolveById(kind, id) }
   }
 }
 </script>
@@ -277,4 +322,5 @@ export default {
 .class-preview__trait-value--neg { color: var(--color-accent-fear); }
 .class-preview__footer { display: flex; flex-direction: column; gap: 2px; font-size: var(--font-xs); color: var(--color-text-tertiary); }
 .class-preview__footer p { margin: 0; }
+.class-preview__equip-line { color: var(--color-text-secondary); }
 </style>

@@ -229,12 +229,31 @@ export const classSchema = {
       ]
     },
     {
-      key: 'suggestedArmor',
-      type: FIELD_TYPES.TEXT,
-      label: 'Armure suggeree',
+      key: 'suggestedPrimaryWeapon',
+      type: FIELD_TYPES.SELECT,
+      label: 'Arme primaire suggérée',
       required: false,
-      maxLength: 200,
-      placeholder: 'Ex: Chainmail Armor — Seuils 7/15 — Score 4'
+      options: [],
+      optionsSource: 'primaryWeapon',
+      helpText: 'Arme primaire recommandée pour cette classe.'
+    },
+    {
+      key: 'suggestedSecondaryWeapon',
+      type: FIELD_TYPES.SELECT,
+      label: 'Arme secondaire suggérée',
+      required: false,
+      options: [],
+      optionsSource: 'secondaryWeapon',
+      helpText: 'Arme secondaire recommandée (optionnel).'
+    },
+    {
+      key: 'suggestedArmor',
+      type: FIELD_TYPES.SELECT,
+      label: 'Armure suggérée',
+      required: false,
+      options: [],
+      optionsSource: 'armor',
+      helpText: 'Armure recommandée pour cette classe.'
     },
     {
       key: 'classItems',
