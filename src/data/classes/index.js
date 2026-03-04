@@ -292,6 +292,7 @@ export function createDefaultCharacter(classId) {
     armorId: '',
     primaryWeaponId: '',
     secondaryWeaponId: '',
+    selectionsLocked: false,
 
     // ── Mixed Ancestry ──
     // Actif quand ancestryId === 'mixed-ancestry'

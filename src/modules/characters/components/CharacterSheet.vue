@@ -4,6 +4,106 @@
     class="char-sheet"
     :aria-label="`Fiche de ${char.name || 'Nouveau personnage'}`"
   >
+    <!-- ═══ Choix du personnage (déroulants) ═══ -->
+    <section class="sheet-section sheet-section--choices">
+      <div class="section-header section-header--choices">
+        <h3 class="section-heading">
+          📋 Choix du personnage
+        </h3>
+        <button
+          v-if="char.selectionsLocked"
+          class="choices-toggle-btn choices-toggle-btn--edit"
+          aria-label="Modifier les choix du personnage"
+          @click="emit('update', 'selectionsLocked', false)"
+        >
+          ✏️ Modifier
+        </button>
+      </div>
+
+      <!-- Mode verrouillé : résumé compact -->
+      <div
+        v-if="char.selectionsLocked"
+        class="choices-summary"
+      >
+        <div
+          v-if="subclassData"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Sous-classe</span>
+          <span class="choices-summary__value">{{ subclassData.name }}</span>
+        </div>
+        <div
+          v-if="ancestryData"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Ascendance</span>
+          <span class="choices-summary__value">{{ ancestryData.emoji || '' }} {{ ancestryData.name }}</span>
+        </div>
+        <div
+          v-if="communityData"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Communauté</span>
+          <span class="choices-summary__value">{{ communityData.emoji || '' }} {{ communityData.name }}</span>
+        </div>
+        <div
+          v-if="char.armorId"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Armure</span>
+          <span class="choices-summary__value">{{ resolveArmorName(char.armorId) }}</span>
+        </div>
+        <div
+          v-if="char.primaryWeaponId"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Arme 1re</span>
+          <span class="choices-summary__value">{{ resolvePrimaryName(char.primaryWeaponId) }}</span>
+        </div>
+        <div
+          v-if="char.secondaryWeaponId"
+          class="choices-summary__item"
+        >
+          <span class="choices-summary__label">Arme 2de</span>
+          <span class="choices-summary__value">{{ resolveSecondaryName(char.secondaryWeaponId) }}</span>
+        </div>
+        <p
+          v-if="!subclassData && !ancestryData && !communityData && !char.armorId && !char.primaryWeaponId"
+          class="choices-summary__empty"
+        >
+          Aucun choix effectué. Cliquez sur « Modifier » pour commencer.
+        </p>
+      </div>
+
+      <!-- Mode déverrouillé : sélecteurs complets -->
+      <template v-else>
+        <CharacterSelectors
+          :char="char"
+          :subclasses="subclasses"
+          :subclass-data="subclassData"
+          :ancestry-data="ancestryData"
+          :community-data="communityData"
+          :ancestries="ancestries"
+          :communities="communities"
+          :armor="armor"
+          :primary-weapons="primaryWeapons"
+          :secondary-weapons="secondaryWeapons"
+          :class-id="char.classId || ''"
+          @select="(field, value) => emit('applySelection', field, value)"
+          @update-mixed="(field, value) => emit('updateMixed', field, value)"
+        />
+        <div class="choices-actions">
+          <button
+            class="choices-toggle-btn choices-toggle-btn--validate"
+            aria-label="Valider les choix du personnage"
+            @click="emit('update', 'selectionsLocked', true)"
+          >
+            ✅ Valider les choix
+          </button>
+        </div>
+      </template>
+    </section>
+
     <!-- ═══ Identité ═══ -->
     <section class="sheet-section">
       <div class="identity-grid">
@@ -92,28 +192,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- ═══ Choix du personnage (déroulants) ═══ -->
-    <section class="sheet-section">
-      <h3 class="section-heading">
-        📋 Choix du personnage
-      </h3>
-      <CharacterSelectors
-        :char="char"
-        :subclasses="subclasses"
-        :subclass-data="subclassData"
-        :ancestry-data="ancestryData"
-        :community-data="communityData"
-        :ancestries="ancestries"
-        :communities="communities"
-        :armor="armor"
-        :primary-weapons="primaryWeapons"
-        :secondary-weapons="secondaryWeapons"
-        :class-id="char.classId || ''"
-        @select="(field, value) => emit('applySelection', field, value)"
-        @update-mixed="(field, value) => emit('updateMixed', field, value)"
-      />
     </section>
 
     <!-- ═══ Ascendance (features) ═══ -->
@@ -633,6 +711,9 @@
 <script>
 import { computed } from 'vue'
 import { CONDITIONS } from '@data/classes'
+import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
+import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
+import { getArmorById } from '@data/equipment/armor.js'
 import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
 import CharacterSelectors from './CharacterSelectors.vue'
@@ -719,7 +800,21 @@ export default {
       return 'foundation'
     }
 
-    return { conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier }
+    // ── Résolution noms pour le résumé verrouillé ──
+    function resolveArmorName(id) {
+      const a = getArmorById(id)
+      return a ? a.name : id
+    }
+    function resolvePrimaryName(id) {
+      const w = getPrimaryWeaponById(id)
+      return w ? w.name : id
+    }
+    function resolveSecondaryName(id) {
+      const w = getSecondaryWeaponById(id)
+      return w ? w.name : id
+    }
+
+    return { conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier, resolveArmorName, resolvePrimaryName, resolveSecondaryName }
   }
 }
 </script>
@@ -754,6 +849,99 @@ export default {
 }
 
 .section-header .section-heading { margin: 0; }
+
+/* ── Choix du personnage (verrouillage) ── */
+.sheet-section--choices {
+  border-color: var(--accent-hope, #53a8b6);
+  border-width: 1px 1px 1px 3px;
+}
+
+.section-header--choices {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.section-header--choices .section-heading { margin: 0; }
+
+.choices-toggle-btn {
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-color, #3a3a5a);
+  transition: background 150ms, border-color 150ms, opacity 150ms;
+}
+
+.choices-toggle-btn--edit {
+  background: transparent;
+  color: var(--accent-hope, #53a8b6);
+  border-color: var(--accent-hope, #53a8b6);
+}
+
+.choices-toggle-btn--edit:hover {
+  background: rgba(83, 168, 182, 0.1);
+}
+
+.choices-toggle-btn--validate {
+  background: var(--accent-hope, #53a8b6);
+  color: #fff;
+  border-color: var(--accent-hope, #53a8b6);
+}
+
+.choices-toggle-btn--validate:hover {
+  opacity: 0.9;
+}
+
+.choices-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-sm);
+}
+
+.choices-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-xs) var(--space-sm);
+}
+
+.choices-summary__item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 8px;
+  background: rgba(83, 168, 182, 0.06);
+  border-radius: 4px;
+  border-left: 2px solid var(--accent-hope, #53a8b6);
+}
+
+.choices-summary__label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted, #6b7280);
+}
+
+.choices-summary__value {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-primary, #e5e7eb);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.choices-summary__empty {
+  grid-column: 1 / -1;
+  font-size: 0.82rem;
+  color: var(--text-muted, #6b7280);
+  font-style: italic;
+  margin: 0;
+  padding: 4px 0;
+}
 
 /* ── Fields ── */
 .identity-grid {
