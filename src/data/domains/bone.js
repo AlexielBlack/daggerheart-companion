@@ -25,7 +25,8 @@ export const bone = {
       recallCost: 0,
       tags: ['utilitaire'],
       feature:
-        'Une fois par repos, marquez un Stress pour sprinter n\'importe où à Portée Lointaine sans faire de jet d\'Agilité pour y arriver. Si vous terminez ce mouvement à Portée de Mêlée d\'un adversaire et faites immédiatement une attaque contre lui, gagnez un bonus de +1 au jet d\'attaque.'
+        'Une fois par repos, marquez un Stress pour sprinter n\'importe où à Portée Lointaine sans faire de jet d\'Agilité pour y arriver. Si vous terminez ce mouvement à Portée de Mêlée d\'un adversaire et faites immédiatement une attaque contre lui, gagnez un bonus de +1 au jet d\'attaque.',
+      activationType: 'passive', cost: { type: 'stress', amount: 1 }, frequency: 'oncePerShortRest', range: 'melee'
     },
     {
       id: 'bone-i-see-it-coming',
@@ -35,7 +36,8 @@ export const bone = {
       recallCost: 1,
       tags: ['défensif'],
       feature:
-        'Quand vous êtes ciblé par une attaque faite au-delà de la Portée de Mêlée, vous pouvez marquer un Stress pour lancer un d4 et gagner un bonus à votre Évasion égal au résultat contre cette attaque.'
+        'Quand vous êtes ciblé par une attaque faite au-delà de la Portée de Mêlée, vous pouvez marquer un Stress pour lancer un d4 et gagner un bonus à votre Évasion égal au résultat contre cette attaque.',
+      activationType: 'action', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', range: 'melee'
     },
     {
       id: 'bone-untouchable',
@@ -44,7 +46,8 @@ export const bone = {
       type: 'ability',
       recallCost: 1,
       tags: ['défensif'],
-      feature: 'Gagnez un bonus à votre Évasion égal à la moitié de votre Agilité.'
+      feature: 'Gagnez un bonus à votre Évasion égal à la moitié de votre Agilité.',
+      activationType: 'action', cost: { type: 'free', amount: 0 }, frequency: 'atWill'
     },
 
     // ── Level 2 (2 cards) ──────────────────────────────
@@ -56,7 +59,8 @@ export const bone = {
       recallCost: 2,
       tags: ['offensif'],
       feature:
-        'Quand vous forcez un adversaire à marquer 1 ou plusieurs Points de Vie, vous pouvez dépenser 2 Espoir pour augmenter votre Évasion du nombre de Points de Vie qu\'il a marqués. Ce bonus dure jusqu\'après la prochaine attaque effectuée contre vous.'
+        'Quand vous forcez un adversaire à marquer 1 ou plusieurs Points de Vie, vous pouvez dépenser 2 Espoir pour augmenter votre Évasion du nombre de Points de Vie qu\'il a marqués. Ce bonus dure jusqu\'après la prochaine attaque effectuée contre vous.',
+      activationType: 'action', cost: { type: 'hope', amount: 2 }, frequency: 'atWill'
     },
     {
       id: 'bone-strategic-approach',
@@ -66,7 +70,8 @@ export const bone = {
       recallCost: 1,
       tags: ['utilitaire'],
       feature:
-        'Après un repos long, placez un nombre de jetons égal à votre Connaissance sur cette carte (minimum 1). La première fois que vous vous déplacez à Portée Proche d\'un adversaire et faites une attaque contre lui, vous pouvez dépenser un jeton pour choisir une des options suivantes : Vous faites l\'attaque avec avantage ; Vous effacez un Stress sur un allié à Portée de Mêlée de l\'adversaire ; Vous ajoutez un d8 à votre jet de dégâts. Lors d\'un repos long, retirez tous les jetons non dépensés.'
+        'Après un repos long, placez un nombre de jetons égal à votre Connaissance sur cette carte (minimum 1). La première fois que vous vous déplacez à Portée Proche d\'un adversaire et faites une attaque contre lui, vous pouvez dépenser un jeton pour choisir une des options suivantes : Vous faites l\'attaque avec avantage ; Vous effacez un Stress sur un allié à Portée de Mêlée de l\'adversaire ; Vous ajoutez un d8 à votre jet de dégâts. Lors d\'un repos long, retirez tous les jetons non dépensés.',
+      activationType: 'action', cost: { type: 'free', amount: 0 }, frequency: 'atWill', range: 'melee'
     },
 
     // ── Level 3 (2 cards) ──────────────────────────────
@@ -78,7 +83,8 @@ export const bone = {
       recallCost: 1,
       tags: ['défensif'],
       feature:
-        'Quand vous marquez un Emplacement d\'Armure pour réduire les dégâts entrants, vous pouvez marquer un Stress pour marquer un Emplacement d\'Armure supplémentaire.'
+        'Quand vous marquez un Emplacement d\'Armure pour réduire les dégâts entrants, vous pouvez marquer un Stress pour marquer un Emplacement d\'Armure supplémentaire.',
+      activationType: 'reaction', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', trigger: 'Quand vous marquez un emplacement d\'armure pour réduire les dégâts entrants'
     },
     {
       id: 'bone-tactician',
@@ -88,7 +94,8 @@ export const bone = {
       recallCost: 1,
       tags: ['social','utilitaire'],
       feature:
-        'Quand vous Aidez un Allié, il peut dépenser un Espoir pour ajouter une de vos Expériences à son jet en plus de votre dé d\'avantage. Quand vous faites un Jet en Équipe, vous pouvez lancer un d20 comme Dé d\'Espoir.'
+        'Quand vous Aidez un Allié, il peut dépenser un Espoir pour ajouter une de vos Expériences à son jet en plus de votre dé d\'avantage. Quand vous faites un Jet en Équipe, vous pouvez lancer un d20 comme Dé d\'Espoir.',
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'atWill'
     },
 
     // ── Level 4 (2 cards) ──────────────────────────────
@@ -100,7 +107,8 @@ export const bone = {
       recallCost: 1,
       tags: ['utilitaire'],
       feature:
-        'Marquez un Stress pour prendre appui sur un allié consentant à Portée Proche, vous propulser dans les airs et effectuer une attaque aérienne contre une cible à Portée Lointaine. Vous avez l\'avantage sur l\'attaque, ajoutez un d10 au jet de dégâts, et terminez votre mouvement à Portée de Mêlée de la cible.'
+        'Marquez un Stress pour prendre appui sur un allié consentant à Portée Proche, vous propulser dans les airs et effectuer une attaque aérienne contre une cible à Portée Lointaine. Vous avez l\'avantage sur l\'attaque, ajoutez un d10 au jet de dégâts, et terminez votre mouvement à Portée de Mêlée de la cible.',
+      activationType: 'action', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', range: 'melee'
     },
     {
       id: 'bone-redirect',
@@ -110,7 +118,8 @@ export const bone = {
       recallCost: 1,
       tags: ['offensif','défensif'],
       feature:
-        'Quand une attaque faite contre vous au-delà de la Portée de Mêlée échoue, lancez un nombre de d6 égal à votre Maîtrise. Si l\'un donne un 6, vous pouvez marquer un Stress pour rediriger l\'attaque et infliger les dégâts à un adversaire à Portée Très Proche à la place.'
+        'Quand une attaque faite contre vous au-delà de la Portée de Mêlée échoue, lancez un nombre de d6 égal à votre Maîtrise. Si l\'un donne un 6, vous pouvez marquer un Stress pour rediriger l\'attaque et infliger les dégâts à un adversaire à Portée Très Proche à la place.',
+      activationType: 'action', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', range: 'veryClose'
     },
 
     // ── Level 5 (2 cards) ──────────────────────────────
@@ -122,7 +131,8 @@ export const bone = {
       recallCost: 1,
       tags: ['utilitaire'],
       feature:
-        'En observant une créature, vous pouvez faire un jet d\'Instinct contre elle. Sur un succès, dépensez un Espoir et demandez au MJ un ensemble d\'informations sur la cible parmi les options suivantes : Ses Points de Vie et Stress non marqués ; Sa Difficulté et ses seuils de dégâts ; Ses tactiques et dés de dégâts d\'attaque de base ; Ses capacités et Expériences. De plus, sur un succès, vous pouvez marquer un Stress pour retirer une Peur de la Réserve de Peur du MJ.'
+        'En observant une créature, vous pouvez faire un jet d\'Instinct contre elle. Sur un succès, dépensez un Espoir et demandez au MJ un ensemble d\'informations sur la cible parmi les options suivantes : Ses Points de Vie et Stress non marqués ; Sa Difficulté et ses seuils de dégâts ; Ses tactiques et dés de dégâts d\'attaque de base ; Ses capacités et Expériences. De plus, sur un succès, vous pouvez marquer un Stress pour retirer une Peur de la Réserve de Peur du MJ.',
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'atWill'
     },
     {
       id: 'bone-signature-move',
@@ -132,7 +142,8 @@ export const bone = {
       recallCost: 1,
       tags: ['offensif'],
       feature:
-        'Nommez et décrivez votre coup signature. Une fois par repos, quand vous exécutez ce coup signature dans le cadre d\'une action que vous effectuez, vous pouvez lancer un d20 comme Dé d\'Espoir. Sur un succès, effacez un Stress.'
+        'Nommez et décrivez votre coup signature. Une fois par repos, quand vous exécutez ce coup signature dans le cadre d\'une action que vous effectuez, vous pouvez lancer un d20 comme Dé d\'Espoir. Sur un succès, effacez un Stress.',
+      activationType: 'action', cost: { type: 'free', amount: 0 }, frequency: 'oncePerShortRest'
     },
 
     // ── Level 6 (2 cards) ──────────────────────────────
@@ -144,7 +155,8 @@ export const bone = {
       recallCost: 0,
       tags: ['offensif','défensif'],
       feature:
-        'Quand une attaque faite contre vous depuis la Portée de Mêlée échoue, vous pouvez marquer un Stress et saisir l\'opportunité pour infliger les dégâts d\'arme d\'une de vos armes actives à l\'attaquant.'
+        'Quand une attaque faite contre vous depuis la Portée de Mêlée échoue, vous pouvez marquer un Stress et saisir l\'opportunité pour infliger les dégâts d\'arme d\'une de vos armes actives à l\'attaquant.',
+      activationType: 'action', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', range: 'melee'
     },
     {
       id: 'bone-recovery',
@@ -154,7 +166,8 @@ export const bone = {
       recallCost: 1,
       tags: ['utilitaire'],
       feature:
-        'Pendant un repos court, vous pouvez choisir un mouvement de temps libre de repos long à la place. Vous pouvez dépenser un Espoir pour permettre à un allié d\'en faire autant.'
+        'Pendant un repos court, vous pouvez choisir un mouvement de temps libre de repos long à la place. Vous pouvez dépenser un Espoir pour permettre à un allié d\'en faire autant.',
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'atWill'
     },
 
     // ── Level 7 (2 cards) ──────────────────────────────
@@ -166,7 +179,8 @@ export const bone = {
       recallCost: 2,
       tags: ['offensif','défensif'],
       feature:
-        'Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Bone, vous gagnez les bénéfices suivants : bonus de +1 à l\'Agilité ; Une fois par repos, vous pouvez dépenser 3 Espoir pour transformer une attaque réussie contre vous en échec.'
+        'Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Bone, vous gagnez les bénéfices suivants : bonus de +1 à l\'Agilité ; Une fois par repos, vous pouvez dépenser 3 Espoir pour transformer une attaque réussie contre vous en échec.',
+      activationType: 'action', cost: { type: 'hope', amount: 3 }, frequency: 'oncePerShortRest'
     },
     {
       id: 'bone-cruel-precision',
@@ -176,7 +190,8 @@ export const bone = {
       recallCost: 1,
       tags: ['offensif'],
       feature:
-        'Quand vous réussissez une attaque avec une arme, gagnez un bonus à votre jet de dégâts égal à votre Finesse ou votre Agilité (au choix).'
+        'Quand vous réussissez une attaque avec une arme, gagnez un bonus à votre jet de dégâts égal à votre Finesse ou votre Agilité (au choix).',
+      activationType: 'reaction', cost: { type: 'free', amount: 0 }, frequency: 'atWill', trigger: 'Quand vous réussissez une attaque avec une arme'
     },
 
     // ── Level 8 (2 cards) ──────────────────────────────
@@ -188,7 +203,8 @@ export const bone = {
       recallCost: 3,
       tags: ['offensif'],
       feature:
-        'Quand vous réussissez une attaque, vous pouvez marquer un Stress pour que la prochaine attaque réussie contre cette même cible inflige 2d12 dégâts supplémentaires.'
+        'Quand vous réussissez une attaque, vous pouvez marquer un Stress pour que la prochaine attaque réussie contre cette même cible inflige 2d12 dégâts supplémentaires.',
+      activationType: 'reaction', cost: { type: 'stress', amount: 1 }, frequency: 'atWill', trigger: 'Quand vous réussissez une attaque'
     },
     {
       id: 'bone-wrangle',
@@ -198,7 +214,8 @@ export const bone = {
       recallCost: 1,
       tags: ['offensif'],
       feature:
-        'Faites un jet d\'Agilité contre toutes les cibles à Portée Proche. Dépensez un Espoir pour déplacer les cibles contre lesquelles vous réussissez, ainsi que tout allié consentant à Portée Proche, vers un autre point à Portée Proche.'
+        'Faites un jet d\'Agilité contre toutes les cibles à Portée Proche. Dépensez un Espoir pour déplacer les cibles contre lesquelles vous réussissez, ainsi que tout allié consentant à Portée Proche, vers un autre point à Portée Proche.',
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'atWill', range: 'close'
     },
 
     // ── Level 9 (2 cards) ──────────────────────────────
@@ -210,7 +227,8 @@ export const bone = {
       recallCost: 1,
       tags: ['défensif'],
       feature:
-        'Quand il vous reste 2 Points de Vie non marqués ou moins, vous ne subissez pas les dégâts Mineurs.'
+        'Quand il vous reste 2 Points de Vie non marqués ou moins, vous ne subissez pas les dégâts Mineurs.',
+      activationType: 'action', cost: { type: 'free', amount: 0 }, frequency: 'atWill'
     },
     {
       id: 'bone-splintering-strike',
@@ -220,7 +238,8 @@ export const bone = {
       recallCost: 3,
       tags: ['offensif'],
       feature:
-        'Dépensez un Espoir et faites une attaque contre tous les adversaires à portée de votre arme. Une fois par repos long, sur un succès contre au moins une cible, lancez les dégâts de votre arme et répartissez ces dégâts comme vous le souhaitez entre les cibles touchées. Avant d\'infliger les dégâts à chaque cible, lancez un dé de dégâts supplémentaire et ajoutez son résultat aux dégâts que vous lui infligez.'
+        'Dépensez un Espoir et faites une attaque contre tous les adversaires à portée de votre arme. Une fois par repos long, sur un succès contre au moins une cible, lancez les dégâts de votre arme et répartissez ces dégâts comme vous le souhaitez entre les cibles touchées. Avant d\'infliger les dégâts à chaque cible, lancez un dé de dégâts supplémentaire et ajoutez son résultat aux dégâts que vous lui infligez.',
+      activationType: 'action', cost: { type: 'hope', amount: 1 }, frequency: 'oncePerLongRest'
     },
 
     // ── Level 10 (2 cards) ─────────────────────────────
@@ -232,7 +251,8 @@ export const bone = {
       recallCost: 1,
       tags: ['offensif'],
       feature:
-        'Dépensez 3 Espoir pour courir en ligne droite à travers le champ de bataille jusqu\'à un point à Portée Lointaine, faisant une attaque contre tous les adversaires à portée de votre arme le long de ce chemin. Choisissez l\'ordre dans lequel vous infligez les dégâts aux cibles touchées. Pour la première, lancez vos dégâts d\'arme avec un bonus de +1 à votre Maîtrise. Puis retirez un dé de votre jet de dégâts et infligez les dégâts restants à la cible suivante. Continuez à retirer un dé pour chaque cible suivante jusqu\'à épuisement des dés de dégâts ou des adversaires. Vous ne pouvez pas cibler le même adversaire plus d\'une fois par attaque.'
+        'Dépensez 3 Espoir pour courir en ligne droite à travers le champ de bataille jusqu\'à un point à Portée Lointaine, faisant une attaque contre tous les adversaires à portée de votre arme le long de ce chemin. Choisissez l\'ordre dans lequel vous infligez les dégâts aux cibles touchées. Pour la première, lancez vos dégâts d\'arme avec un bonus de +1 à votre Maîtrise. Puis retirez un dé de votre jet de dégâts et infligez les dégâts restants à la cible suivante. Continuez à retirer un dé pour chaque cible suivante jusqu\'à épuisement des dés de dégâts ou des adversaires. Vous ne pouvez pas cibler le même adversaire plus d\'une fois par attaque.',
+      activationType: 'passive', cost: { type: 'hope', amount: 3 }, range: 'far'
     },
     {
       id: 'bone-swift-step',
@@ -242,7 +262,8 @@ export const bone = {
       recallCost: 2,
       tags: ['défensif','utilitaire'],
       feature:
-        'Quand une attaque faite contre vous échoue, effacez un Stress. Si vous ne pouvez pas effacer de Stress, gagnez un Espoir.'
+        'Quand une attaque faite contre vous échoue, effacez un Stress. Si vous ne pouvez pas effacer de Stress, gagnez un Espoir.',
+      activationType: 'passive', cost: { type: 'free', amount: 0 }
     }
   ]
 }
