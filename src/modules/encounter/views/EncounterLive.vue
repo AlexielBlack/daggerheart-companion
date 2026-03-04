@@ -49,15 +49,15 @@
             @click="store.selectPc(pc.id)"
           >
             <span
-              v-if="store.pcSpotlights[pc.id]"
+              v-if="store.pcSpotlights[pc.id] >= 1"
               class="enc-live__spot-dot"
-              title="A joué ce round"
-            >✦</span>
+              :title="store.pcSpotlights[pc.id] + ' spotlight(s) ce round'"
+            >✦{{ store.pcSpotlights[pc.id] > 1 ? store.pcSpotlights[pc.id] : '' }}</span>
             <span class="enc-live__chip-name">{{ pc.name }}</span>
             <span class="enc-live__chip-sub">{{ pc.className }}</span>
             <button
               class="enc-live__spot-btn"
-              :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] }"
+              :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] >= 1 }"
               :aria-label="(store.pcSpotlights[pc.id] ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
               :title="store.pcSpotlights[pc.id] ? 'Spotlight ✓' : 'Marquer spotlight'"
               @click.stop="store.togglePcSpotlight(pc.id)"
@@ -97,10 +97,10 @@
             @click="store.selectAdversaryGroup(group.adversaryId)"
           >
             <span
-              v-if="store.advSpotlights[group.adversaryId]"
+              v-if="store.advSpotlights[group.adversaryId] >= 1"
               class="enc-live__spot-dot"
-              title="A joué ce round"
-            >✦</span>
+              :title="store.advSpotlights[group.adversaryId] + ' spotlight(s) ce round'"
+            >✦{{ store.advSpotlights[group.adversaryId] > 1 ? store.advSpotlights[group.adversaryId] : '' }}</span>
             <span class="enc-live__chip-name">{{ group.name }}</span>
             <span
               v-if="group.instances.length > 1"
@@ -112,7 +112,7 @@
             >{{ group.defeatedCount }}💀</span>
             <button
               class="enc-live__spot-btn"
-              :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] }"
+              :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] >= 1 }"
               :aria-label="(store.advSpotlights[group.adversaryId] ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
               :title="store.advSpotlights[group.adversaryId] ? 'Spotlight ✓' : 'Marquer spotlight'"
               @click.stop="store.toggleAdvSpotlight(group.adversaryId)"

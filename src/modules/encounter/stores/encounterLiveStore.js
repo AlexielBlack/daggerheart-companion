@@ -100,15 +100,17 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   /** Nombre de fois que chaque PJ a eu le projecteur ce round { pcId: count } */
   const spotlightTokens = ref({})
 
-  // ── Spotlight tracking ce round { [id]: true } ────────
-  /** PJs qui ont eu le projecteur ce round */
+  // ── Spotlight tracking ce round { [id]: count } ────────
+  /** Nombre de fois que chaque PJ a eu le projecteur ce round */
   const pcSpotlights = ref({})
-  /** Adversaires (par adversaryId) qui ont eu le projecteur ce round */
+  /** Nombre de fois que chaque adversaire (par adversaryId) a eu le projecteur ce round */
   const advSpotlights = ref({})
 
   // ── Historique de combat ───────────────────────────────
-  /** Journal des dégâts infligés : [{ pcId, pcName, instanceId, advName, type, amount, round, timestamp }] */
+  /** Journal visible des dégâts infligés (pastilles) */
   const combatLog = ref([])
+  /** Journal complet de la rencontre (invisible, persisté) */
+  const encounterLog = ref([])
 
   // ═══════════════════════════════════════════════════════
   //  Getters
@@ -575,7 +577,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Logger le PJ source
     if (actual > 0 && activePcId.value) {
       const pc = participantPcs.value.find((p) => p.id === activePcId.value)
-      combatLog.value.push({
+      const entry = {
         pcId: activePcId.value,
         pcName: pc ? pc.name : '?',
         instanceId,
@@ -584,7 +586,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         amount: actual,
         round: round.value,
         timestamp: Date.now()
-      })
+      }
+      combatLog.value.push(entry)
+      encounterLog.value.push({ ...entry, action: 'damage' })
     }
     // Vérifier défaite : Minions n'ont pas de seuils
     if (adv.type === 'Minion' && adv.markedHP > 0) {
@@ -622,7 +626,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const actual = adv.markedStress - prev
     if (actual > 0 && activePcId.value) {
       const pc = participantPcs.value.find((p) => p.id === activePcId.value)
-      combatLog.value.push({
+      const entry = {
         pcId: activePcId.value,
         pcName: pc ? pc.name : '?',
         instanceId,
@@ -631,7 +635,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         amount: actual,
         round: round.value,
         timestamp: Date.now()
-      })
+      }
+      combatLog.value.push(entry)
+      encounterLog.value.push({ ...entry, action: 'damage' })
     }
     persistState()
   }
@@ -645,6 +651,24 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedStress = Math.max(0, adv.markedStress - amount)
+    persistState()
+  }
+
+  /**
+   * Supprime une entrée du combat log (pastille cliquée par erreur).
+   * Supprime aussi l'entrée correspondante dans l'encounterLog.
+   * @param {number} index - Index dans combatLog
+   */
+  function removeCombatLogEntry(index) {
+    if (index < 0 || index >= combatLog.value.length) return
+    const entry = combatLog.value[index]
+    combatLog.value.splice(index, 1)
+    // Enregistrer l'annulation dans l'encounterLog
+    encounterLog.value.push({
+      ...entry,
+      action: 'damage_removed',
+      timestamp: Date.now()
+    })
     persistState()
   }
 
@@ -743,21 +767,34 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Tague/détague un PJ comme ayant eu le projecteur ce round.
-   * Si tous les PJs ont joué, reset automatique.
+   * Incrémente le compteur spotlight d'un PJ.
+   * Si tous les PJs ont joué au moins une fois, reset automatique.
    * @param {string} pcId
    */
   function togglePcSpotlight(pcId) {
-    if (pcSpotlights.value[pcId]) {
-      delete pcSpotlights.value[pcId]
-    } else {
-      pcSpotlights.value[pcId] = true
+    if (!pcSpotlights.value[pcId]) {
+      pcSpotlights.value[pcId] = 0
     }
+    pcSpotlights.value[pcId]++
     pcSpotlights.value = { ...pcSpotlights.value }
 
-    // Auto-reset si tous les PJs ont joué
+    // Logger dans encounterLog si multi-spotlight
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    if (pcSpotlights.value[pcId] > 1) {
+      encounterLog.value.push({
+        action: 'multi_spotlight',
+        entityType: 'pc',
+        entityId: pcId,
+        entityName: pc ? pc.name : '?',
+        count: pcSpotlights.value[pcId],
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
+
+    // Auto-reset si tous les PJs ont joué au moins une fois
     const allPlayed = participantPcIds.value.length > 0 &&
-      participantPcIds.value.every((id) => pcSpotlights.value[id])
+      participantPcIds.value.every((id) => pcSpotlights.value[id] >= 1)
     if (allPlayed) {
       pcSpotlights.value = {}
     }
@@ -765,22 +802,35 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Tague/détague un adversaire comme ayant eu le projecteur ce round.
-   * Si tous les adversaires actifs ont joué, reset automatique.
+   * Incrémente le compteur spotlight d'un adversaire.
+   * Si tous les adversaires actifs ont joué au moins une fois, reset automatique.
    * @param {string} adversaryId
    */
   function toggleAdvSpotlight(adversaryId) {
-    if (advSpotlights.value[adversaryId]) {
-      delete advSpotlights.value[adversaryId]
-    } else {
-      advSpotlights.value[adversaryId] = true
+    if (!advSpotlights.value[adversaryId]) {
+      advSpotlights.value[adversaryId] = 0
     }
+    advSpotlights.value[adversaryId]++
     advSpotlights.value = { ...advSpotlights.value }
 
-    // Auto-reset si tous les groupes actifs ont joué
+    // Logger dans encounterLog si multi-spotlight
+    const group = groupedAdversaries.value.find((g) => g.adversaryId === adversaryId)
+    if (advSpotlights.value[adversaryId] > 1) {
+      encounterLog.value.push({
+        action: 'multi_spotlight',
+        entityType: 'adversary',
+        entityId: adversaryId,
+        entityName: group ? group.name : '?',
+        count: advSpotlights.value[adversaryId],
+        round: round.value,
+        timestamp: Date.now()
+      })
+    }
+
+    // Auto-reset si tous les groupes actifs ont joué au moins une fois
     const activeGroups = groupedAdversaries.value.filter((g) => g.activeCount > 0)
     const allPlayed = activeGroups.length > 0 &&
-      activeGroups.every((g) => advSpotlights.value[g.adversaryId])
+      activeGroups.every((g) => advSpotlights.value[g.adversaryId] >= 1)
     if (allPlayed) {
       advSpotlights.value = {}
     }
@@ -848,7 +898,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       lastClickCategory: lastClickCategory.value,
       pcSpotlights: { ...pcSpotlights.value },
       advSpotlights: { ...advSpotlights.value },
-      combatLog: [...combatLog.value]
+      combatLog: [...combatLog.value],
+      encounterLog: [...encounterLog.value]
     }
   }
 
@@ -893,6 +944,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       ? { ...data.advSpotlights }
       : {}
     combatLog.value = Array.isArray(data.combatLog) ? [...data.combatLog] : []
+    encounterLog.value = Array.isArray(data.encounterLog) ? [...data.encounterLog] : []
 
     return true
   }
@@ -920,6 +972,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pcSpotlights.value = {}
     advSpotlights.value = {}
     combatLog.value = []
+    encounterLog.value = []
     liveStorage.remove()
   }
 
@@ -955,6 +1008,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pcSpotlights,
     advSpotlights,
     combatLog,
+    encounterLog,
 
     // Getters
     currentSceneModeMeta,
@@ -999,6 +1053,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     clearAdversaryStress,
     addAdversaryCondition,
     removeAdversaryCondition,
+    removeCombatLogEntry,
     defeatAdversary,
     reviveAdversary,
 

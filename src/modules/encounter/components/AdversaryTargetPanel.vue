@@ -169,13 +169,16 @@
           v-if="instanceLogs[inst.instanceId] && instanceLogs[inst.instanceId].length > 0"
           class="adv-panel__log"
         >
-          <span
+          <button
             v-for="(entry, logIdx) in instanceLogs[inst.instanceId]"
             :key="logIdx"
             class="adv-panel__log-entry"
             :class="'adv-panel__log-entry--' + entry.type"
-            :title="'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST')"
-          >{{ entry.pcName }} {{ entry.type === 'hp' ? '❤️' : '💢' }}{{ entry.amount }}</span>
+            :title="'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST') + ' (clic pour annuler)'"
+            @click.stop="removeLogEntry(entry._globalIdx)"
+          >
+            {{ entry.pcName }} {{ entry.type === 'hp' ? '❤️' : '💢' }}{{ entry.amount }}
+          </button>
         </div>
       </div>
     </div>
@@ -337,20 +340,24 @@ export default {
       store.reviveAdversary(instanceId)
     }
 
-    /** Log de combat filtré par les instances siblings */
+    /** Log de combat filtré par les instances siblings, avec index global */
     const siblingIds = computed(() =>
       props.siblings.map((s) => s.instanceId)
     )
     const instanceLogs = computed(() => {
       const logs = {}
-      for (const entry of store.combatLog) {
+      store.combatLog.forEach((entry, globalIdx) => {
         if (siblingIds.value.includes(entry.instanceId)) {
           if (!logs[entry.instanceId]) logs[entry.instanceId] = []
-          logs[entry.instanceId].push(entry)
+          logs[entry.instanceId].push({ ...entry, _globalIdx: globalIdx })
         }
-      }
+      })
       return logs
     })
+
+    function removeLogEntry(globalIdx) {
+      store.removeCombatLogEntry(globalIdx)
+    }
 
     return {
       rawFocusResults,
@@ -361,7 +368,8 @@ export default {
       clearStress,
       defeat,
       revive,
-      instanceLogs
+      instanceLogs,
+      removeLogEntry
     }
   },
   computed: {
@@ -701,6 +709,14 @@ export default {
   font-size: 0.6rem;
   font-weight: var(--font-semibold);
   line-height: 1.3;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.adv-panel__log-entry:hover {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 
 .adv-panel__log-entry--hp {
