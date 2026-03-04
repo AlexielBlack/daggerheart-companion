@@ -229,7 +229,7 @@ export const equipmentSchema = {
       type: FIELD_TYPES.TEXTAREA,
       label: 'Feature',
       maxLength: 500,
-      placeholder: 'Ex: Reliable: +1 to attack rolls',
+      placeholder: 'Ex: Reliable : +1 aux jets d\u2019attaque',
       helpText: 'Capacité spéciale de l\'équipement (optionnel).'
     },
     {

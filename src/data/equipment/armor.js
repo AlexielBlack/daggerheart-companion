@@ -14,7 +14,7 @@ export const ARMOR = [
     tier: 1,
     thresholds: { major: 5, severe: 11 },
     baseScore: 3,
-    feature: 'Flexible: +1 to Evasion',
+    feature: 'Flexible : +1 en Évasion',
     featureKey: 'Flexible'
   },
   {
@@ -32,7 +32,7 @@ export const ARMOR = [
     tier: 1,
     thresholds: { major: 7, severe: 15 },
     baseScore: 4,
-    feature: 'Heavy: −1 to Evasion',
+    feature: 'Heavy : −1 en Évasion',
     featureKey: 'Heavy'
   },
   {
@@ -41,7 +41,7 @@ export const ARMOR = [
     tier: 1,
     thresholds: { major: 8, severe: 17 },
     baseScore: 4,
-    feature: 'Very Heavy: −2 to Evasion; −1 to Agility',
+    feature: 'Very Heavy : −2 en Évasion ; −1 en Agilité',
     featureKey: 'Very Heavy'
   },
 
@@ -54,7 +54,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 7, severe: 16 },
     baseScore: 4,
-    feature: 'Flexible: +1 to Evasion',
+    feature: 'Flexible : +1 en Évasion',
     featureKey: 'Flexible'
   },
   {
@@ -72,7 +72,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 11, severe: 24 },
     baseScore: 5,
-    feature: 'Heavy: −1 to Evasion',
+    feature: 'Heavy : −1 en Évasion',
     featureKey: 'Heavy'
   },
   {
@@ -81,7 +81,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 13, severe: 28 },
     baseScore: 5,
-    feature: 'Very Heavy: −2 to Evasion; −1 to Agility',
+    feature: 'Very Heavy : −2 en Évasion ; −1 en Agilité',
     featureKey: 'Very Heavy'
   },
   {
@@ -90,7 +90,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 9, severe: 21 },
     baseScore: 4,
-    feature: 'Warded: You reduce incoming magic damage by your Armor Score before applying it to your damage thresholds.',
+    feature: 'Warded : Vous réduisez les dégâts magiques entrants de votre Score d’armure avant de les appliquer à vos seuils de dégâts.',
     featureKey: 'Warded'
   },
   {
@@ -99,7 +99,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 9, severe: 21 },
     baseScore: 4,
-    feature: 'Resilient: Before you mark your last Armor Slot, roll a d6. On a result of 6, reduce the severity by one threshold without marking an Armor Slot.',
+    feature: 'Resilient : Avant de cocher votre dernier Emplacement d’armure, lancez un d6. Sur un résultat de 6, réduisez la gravité d’un seuil sans cocher d’Emplacement d’armure.',
     featureKey: 'Resilient'
   },
   {
@@ -108,7 +108,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 9, severe: 20 },
     baseScore: 4,
-    feature: 'Reinforced: When you mark your last Armor Slot, increase your damage thresholds by +2 until you clear at least 1 Armor Slot.',
+    feature: 'Reinforced : Quand vous cochez votre dernier Emplacement d’armure, augmentez vos seuils de dégâts de +2 jusqu’à ce que vous libériez au moins 1 Emplacement d’armure.',
     featureKey: 'Reinforced'
   },
   {
@@ -117,7 +117,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 9, severe: 20 },
     baseScore: 4,
-    feature: 'Shifting: When you are targeted for an attack, you can mark an Armor Slot to give the attack roll against you disadvantage.',
+    feature: 'Shifting : Quand vous êtes ciblé par une attaque, vous pouvez cocher un Emplacement d’armure pour imposer un désavantage au jet d’attaque contre vous.',
     featureKey: 'Shifting'
   },
   {
@@ -126,7 +126,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 8, severe: 18 },
     baseScore: 5,
-    feature: 'Quiet: You gain a +2 bonus to rolls you make to move silently.',
+    feature: 'Quiet : Vous obtenez un bonus de +2 aux jets pour vous déplacer silencieusement.',
     featureKey: 'Quiet'
   },
   {
@@ -135,7 +135,7 @@ export const ARMOR = [
     tier: 2,
     thresholds: { major: 11, severe: 23 },
     baseScore: 5,
-    feature: 'Hopeful: When you would spend a Hope, you can mark an Armor Slot instead.',
+    feature: 'Hopeful : Quand vous devriez dépenser un Espoir, vous pouvez cocher un Emplacement d’armure à la place.',
     featureKey: 'Hopeful'
   },
 
@@ -148,7 +148,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 9, severe: 23 },
     baseScore: 5,
-    feature: 'Flexible: +1 to Evasion',
+    feature: 'Flexible : +1 en Évasion',
     featureKey: 'Flexible'
   },
   {
@@ -166,7 +166,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 13, severe: 31 },
     baseScore: 6,
-    feature: 'Heavy: −1 to Evasion',
+    feature: 'Heavy : −1 en Évasion',
     featureKey: 'Heavy'
   },
   {
@@ -175,7 +175,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 15, severe: 35 },
     baseScore: 6,
-    feature: 'Very Heavy: −2 to Evasion; −1 to Agility',
+    feature: 'Very Heavy : −2 en Évasion ; −1 en Agilité',
     featureKey: 'Very Heavy'
   },
   {
@@ -184,7 +184,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 11, severe: 27 },
     baseScore: 5,
-    feature: 'Gilded: +1 to Presence',
+    feature: 'Gilded : +1 en Présence',
     featureKey: 'Gilded'
   },
   {
@@ -193,7 +193,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 11, severe: 27 },
     baseScore: 5,
-    feature: 'Impenetrable: Once per short rest, when you would mark your last Hit Point, you can instead mark a Stress.',
+    feature: 'Impenetrable : Une fois par repos court, quand vous devriez cocher votre dernier Point de vie, vous pouvez cocher un Stress à la place.',
     featureKey: 'Impenetrable'
   },
   {
@@ -202,7 +202,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 10, severe: 25 },
     baseScore: 5,
-    feature: 'Sharp: On a successful attack against a target within Melee range, add a d4 to the damage roll.',
+    feature: 'Sharp : Sur une attaque réussie contre une cible à portée de Mêlée, ajoutez un d4 au jet de dégâts.',
     featureKey: 'Sharp'
   },
   {
@@ -211,7 +211,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 16, severe: 39 },
     baseScore: 6,
-    feature: 'Physical: You can\'t mark an Armor Slot to reduce magic damage.',
+    feature: 'Physical : Vous ne pouvez pas cocher un Emplacement d\u2019armure pour réduire les dégâts magiques.',
     featureKey: 'Physical'
   },
   {
@@ -220,7 +220,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 16, severe: 39 },
     baseScore: 6,
-    feature: 'Magic: You can\'t mark an Armor Slot to reduce physical damage.',
+    feature: 'Magic : Vous ne pouvez pas cocher un Emplacement d\u2019armure pour réduire les dégâts physiques.',
     featureKey: 'Magic'
   },
   {
@@ -229,7 +229,7 @@ export const ARMOR = [
     tier: 3,
     thresholds: { major: 17, severe: 43 },
     baseScore: 6,
-    feature: 'Painful: Each time you mark an Armor Slot, you must mark a Stress.',
+    feature: 'Painful : Chaque fois que vous cochez un Emplacement d’armure, vous devez cocher un Stress.',
     featureKey: 'Painful'
   },
 
@@ -242,7 +242,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 11, severe: 32 },
     baseScore: 6,
-    feature: 'Flexible: +1 to Evasion',
+    feature: 'Flexible : +1 en Évasion',
     featureKey: 'Flexible'
   },
   {
@@ -260,7 +260,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 15, severe: 40 },
     baseScore: 7,
-    feature: 'Heavy: −1 to Evasion',
+    feature: 'Heavy : −1 en Évasion',
     featureKey: 'Heavy'
   },
   {
@@ -269,7 +269,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 17, severe: 44 },
     baseScore: 7,
-    feature: 'Very Heavy: −2 to Evasion; −1 to Agility',
+    feature: 'Very Heavy : −2 en Évasion ; −1 en Agilité',
     featureKey: 'Very Heavy'
   },
   {
@@ -278,7 +278,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 13, severe: 36 },
     baseScore: 7,
-    feature: 'Timeslowing: Mark an Armor Slot to roll a d4 and add its result as a bonus to your Evasion against an incoming attack.',
+    feature: 'Timeslowing : Cochez un Emplacement d’armure pour lancer un d4 et ajouter son résultat en bonus à votre Évasion contre une attaque entrante.',
     featureKey: 'Timeslowing'
   },
   {
@@ -287,7 +287,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 13, severe: 36 },
     baseScore: 5,
-    feature: 'Channeling: +1 to Spellcast Rolls',
+    feature: 'Channeling : +1 aux jets de Sorts',
     featureKey: 'Channeling'
   },
   {
@@ -296,7 +296,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 13, severe: 36 },
     baseScore: 6,
-    feature: 'Burning: When an adversary attacks you within Melee range, they mark a Stress.',
+    feature: 'Burning : Quand un adversaire vous attaque à portée de Mêlée, il coche un Stress.',
     featureKey: 'Burning'
   },
   {
@@ -305,7 +305,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 15, severe: 40 },
     baseScore: 4,
-    feature: 'Fortified: When you mark an Armor Slot, you reduce the severity of an attack by two thresholds instead of one.',
+    feature: 'Fortified : Quand vous cochez un Emplacement d’armure, vous réduisez la gravité d’une attaque de deux seuils au lieu d’un.',
     featureKey: 'Fortified'
   },
   {
@@ -314,7 +314,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 13, severe: 36 },
     baseScore: 6,
-    feature: 'Truthseeking: This armor glows when another creature within Close range tells a lie.',
+    feature: 'Truthseeking : Cette armure brille quand une autre créature à portée Proche ment.',
     featureKey: 'Truthseeking'
   },
   {
@@ -323,7 +323,7 @@ export const ARMOR = [
     tier: 4,
     thresholds: { major: 18, severe: 48 },
     baseScore: 8,
-    feature: 'Difficult: −1 to all character traits and Evasion',
+    feature: 'Difficult : −1 à tous les traits de personnage et à l’Évasion',
     featureKey: 'Difficult'
   }
 ]
