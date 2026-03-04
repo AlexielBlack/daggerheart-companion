@@ -1,181 +1,5 @@
 <template>
   <div class="enc-live">
-    <!-- Header avec nom + contrôles de session -->
-    <header class="enc-live__header">
-      <div class="enc-live__title-row">
-        <h1 class="enc-live__title">
-          {{ store.encounterName || 'Rencontre' }}
-        </h1>
-        <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
-      </div>
-      <div class="enc-live__session-controls">
-        <SpotlightToggle
-          :spotlight="store.spotlight"
-          @toggle="store.toggleSpotlight()"
-        />
-        <div class="enc-live__round-controls">
-          <button
-            class="enc-live__round-btn"
-            :disabled="store.round <= 1"
-            aria-label="Round précédent"
-            @click="store.previousRound()"
-          >
-            ◀
-          </button>
-          <span class="enc-live__round-label">Round {{ store.round }}</span>
-          <button
-            class="enc-live__round-btn"
-            aria-label="Round suivant"
-            @click="store.nextRound()"
-          >
-            ▶
-          </button>
-        </div>
-        <button
-          class="enc-live__end-btn"
-          @click="confirmEndEncounter"
-        >
-          Terminer
-        </button>
-      </div>
-    </header>
-
-    <!-- Mode de scène -->
-    <SceneModeSelector
-      :model-value="store.sceneMode"
-      @update:model-value="store.setSceneMode($event)"
-    />
-
-    <!-- Fear / Hope Tracker -->
-    <FearHopeTracker
-      :fear="store.fear"
-      :hope="store.hope"
-      :round="store.round"
-      :history="store.fearHopeHistory"
-      :show-history="showHistory"
-      @add-fear="store.addFear($event)"
-      @spend-fear="store.spendFear($event)"
-      @add-hope="store.addHope($event)"
-      @spend-hope="store.spendHope($event)"
-    />
-    <button
-      class="enc-live__toggle-history"
-      @click="showHistory = !showHistory"
-    >
-      {{ showHistory ? 'Masquer' : 'Afficher' }} l'historique
-    </button>
-
-    <!-- Sélecteurs PJ/Adversaire actifs -->
-    <div class="enc-live__selectors">
-      <div class="enc-live__selector">
-        <span class="enc-live__selector-label">PJ actif</span>
-        <div class="enc-live__chip-row">
-          <button
-            v-for="pc in store.participantPcs"
-            :key="pc.id"
-            class="enc-live__chip"
-            :class="{ 'enc-live__chip--active': store.activePcId === pc.id }"
-            @click="store.setActivePc(pc.id)"
-          >
-            <span class="enc-live__chip-name">{{ pc.name }}</span>
-            <span class="enc-live__chip-sub">{{ pc.className }}</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="enc-live__selector">
-        <span class="enc-live__selector-label">
-          Adversaire cible
-          <span class="enc-live__active-count">({{ store.activeAdversaries.length }} actifs)</span>
-        </span>
-        <div class="enc-live__chip-row">
-          <button
-            v-for="adv in store.liveAdversaries"
-            :key="adv.instanceId"
-            class="enc-live__chip"
-            :class="{
-              'enc-live__chip--active': store.activeAdversaryId === adv.instanceId,
-              'enc-live__chip--defeated': adv.isDefeated
-            }"
-            @click="store.setActiveAdversary(adv.instanceId)"
-          >
-            <span class="enc-live__chip-name">{{ adv.name }}</span>
-            <span class="enc-live__chip-sub">{{ adv.type }}</span>
-            <span
-              v-if="adv.isDefeated"
-              class="enc-live__chip-defeated"
-            >💀</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Spotlight Tracker -->
-    <SpotlightTracker
-      :pcs="store.participantPcs"
-      :active-pc-id="store.activePcId"
-      :spotlight="store.spotlight"
-      :spotlight-tokens="store.spotlightTokens"
-      :total-tokens="store.totalSpotlightTokens"
-      @give-spotlight="store.giveSpotlight($event)"
-      @remove-token="store.removeSpotlightToken($event)"
-      @gm-spotlight="store.setGmSpotlight()"
-    />
-
-    <!-- Panels contextuels — ordre piloté par le mode de scène -->
-    <div
-      class="enc-live__battlefield"
-      :class="'enc-live__battlefield--' + store.sceneMode"
-    >
-      <PcLivePanel
-        v-if="store.activePc"
-        :pc="store.activePc"
-        :is-actor="isPcActor"
-        :scene-mode="store.sceneMode"
-        :primary-features="pcPrimary"
-        :secondary-features="pcSecondary"
-        :passive-features="pcPassive"
-        :reaction-features="pcReaction"
-        :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
-      />
-
-      <AdversaryTargetPanel
-        v-if="store.activeAdversary && !isTraversalMode"
-        :adversary="store.activeAdversary"
-        :scene-mode="store.sceneMode"
-        :is-actor="!isPcActor"
-        :pcs="store.participantPcs"
-        :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
-      />
-
-      <!-- En mode Traversal : environnement à droite au lieu de l'adversaire -->
-      <EnvironmentPanel
-        v-if="store.activeEnvironment && isTraversalMode"
-        :environment="store.activeEnvironment"
-        class="enc-live__panel--second"
-      />
-    </div>
-
-    <!-- Résumé combat -->
-    <div
-      v-if="store.adversaryCombatSummary.count > 0"
-      class="enc-live__summary"
-    >
-      <span>{{ store.adversaryCombatSummary.count }} adversaires actifs</span>
-      <span class="enc-live__summary-sep">·</span>
-      <span>HP : {{ store.adversaryCombatSummary.markedHP }}/{{ store.adversaryCombatSummary.totalHP }}</span>
-      <span class="enc-live__summary-sep">·</span>
-      <span>Stress : {{ store.adversaryCombatSummary.markedStress }}/{{ store.adversaryCombatSummary.totalStress }}</span>
-      <span class="enc-live__summary-sep">·</span>
-      <span>{{ store.defeatedAdversaries.length }} vaincus</span>
-    </div>
-
-    <!-- Environnement (compact hors mode Traversal) -->
-    <EnvironmentPanel
-      v-if="store.activeEnvironment && !isTraversalMode"
-      :environment="store.activeEnvironment"
-    />
-
     <!-- Message si aucune rencontre active -->
     <div
       v-if="!store.isActive"
@@ -189,6 +13,173 @@
         Retour au builder de rencontres
       </button>
     </div>
+
+    <template v-else>
+      <!-- ── Barre supérieure : titre + contrôles de session ── -->
+      <header class="enc-live__header">
+        <div class="enc-live__title-row">
+          <h1 class="enc-live__title">
+            {{ store.encounterName || 'Rencontre' }}
+          </h1>
+          <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
+        </div>
+
+        <div class="enc-live__controls">
+          <!-- Mode de scène (intégré dans le header) -->
+          <SceneModeSelector
+            :model-value="store.sceneMode"
+            @update:model-value="store.setSceneMode($event)"
+          />
+
+          <div class="enc-live__session">
+            <SpotlightToggle
+              :spotlight="store.spotlight"
+              @toggle="store.toggleSpotlight()"
+            />
+
+            <div class="enc-live__round-controls">
+              <button
+                class="enc-live__round-btn"
+                :disabled="store.round <= 1"
+                aria-label="Round précédent"
+                @click="store.previousRound()"
+              >
+                ◀
+              </button>
+              <span class="enc-live__round-label">R{{ store.round }}</span>
+              <button
+                class="enc-live__round-btn"
+                aria-label="Round suivant"
+                @click="store.nextRound()"
+              >
+                ▶
+              </button>
+            </div>
+
+            <button
+              class="enc-live__end-btn"
+              @click="confirmEndEncounter"
+            >
+              Fin
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ── Fear / Hope Tracker ── -->
+      <FearHopeTracker
+        :fear="store.fear"
+        :hope="store.hope"
+        :round="store.round"
+        :history="store.fearHopeHistory"
+        :show-history="showHistory"
+        @add-fear="store.addFear($event)"
+        @spend-fear="store.spendFear($event)"
+        @add-hope="store.addHope($event)"
+        @spend-hope="store.spendHope($event)"
+      />
+      <button
+        class="enc-live__toggle-history"
+        @click="showHistory = !showHistory"
+      >
+        {{ showHistory ? 'Masquer' : 'Afficher' }} l'historique
+      </button>
+
+      <!-- ── Sélecteurs fusionnés ── -->
+      <div class="enc-live__selectors">
+        <!-- PJ + Projecteur (fusionné) -->
+        <PcSpotlightBar
+          :pcs="store.participantPcs"
+          :active-pc-id="store.activePcId"
+          :spotlight="store.spotlight"
+          :spotlight-tokens="store.spotlightTokens"
+          :total-tokens="store.totalSpotlightTokens"
+          @give-spotlight="store.giveSpotlight($event)"
+          @remove-token="store.removeSpotlightToken($event)"
+          @gm-spotlight="store.setGmSpotlight()"
+        />
+
+        <!-- Adversaire cible -->
+        <div class="enc-live__adv-bar">
+          <span class="enc-live__adv-label">
+            Cible
+            <span class="enc-live__adv-count">({{ store.activeAdversaries.length }})</span>
+          </span>
+          <div class="enc-live__adv-chips">
+            <button
+              v-for="adv in store.liveAdversaries"
+              :key="adv.instanceId"
+              class="enc-live__adv-chip"
+              :class="{
+                'enc-live__adv-chip--active': store.activeAdversaryId === adv.instanceId,
+                'enc-live__adv-chip--defeated': adv.isDefeated
+              }"
+              @click="store.setActiveAdversary(adv.instanceId)"
+            >
+              <span class="enc-live__adv-name">{{ adv.name }}</span>
+              <span
+                v-if="adv.isDefeated"
+                class="enc-live__adv-defeated"
+              >💀</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Battlefield — panels contextuels ── -->
+      <div
+        class="enc-live__battlefield"
+        :class="'enc-live__battlefield--' + store.sceneMode"
+      >
+        <PcLivePanel
+          v-if="store.activePc"
+          :pc="store.activePc"
+          :is-actor="isPcActor"
+          :scene-mode="store.sceneMode"
+          :primary-features="pcPrimary"
+          :secondary-features="pcSecondary"
+          :passive-features="pcPassive"
+          :reaction-features="pcReaction"
+          :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
+        />
+
+        <AdversaryTargetPanel
+          v-if="store.activeAdversary && !isTraversalMode"
+          :adversary="store.activeAdversary"
+          :scene-mode="store.sceneMode"
+          :is-actor="!isPcActor"
+          :pcs="store.participantPcs"
+          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
+        />
+
+        <!-- En mode Traversal : environnement à droite au lieu de l'adversaire -->
+        <EnvironmentPanel
+          v-if="store.activeEnvironment && isTraversalMode"
+          :environment="store.activeEnvironment"
+          class="enc-live__panel--second"
+        />
+      </div>
+
+      <!-- ── Résumé combat ── -->
+      <div
+        v-if="store.adversaryCombatSummary.count > 0"
+        class="enc-live__summary"
+      >
+        <span>{{ store.adversaryCombatSummary.count }} actifs</span>
+        <span class="enc-live__summary-sep">·</span>
+        <span>HP {{ store.adversaryCombatSummary.markedHP }}/{{ store.adversaryCombatSummary.totalHP }}</span>
+        <span class="enc-live__summary-sep">·</span>
+        <span>ST {{ store.adversaryCombatSummary.markedStress }}/{{ store.adversaryCombatSummary.totalStress }}</span>
+        <span class="enc-live__summary-sep">·</span>
+        <span>{{ store.defeatedAdversaries.length }} 💀</span>
+      </div>
+
+      <!-- ── Environnement (compact hors mode Traversal) ── -->
+      <EnvironmentPanel
+        v-if="store.activeEnvironment && !isTraversalMode"
+        :environment="store.activeEnvironment"
+      />
+    </template>
   </div>
 </template>
 
@@ -201,9 +192,9 @@ import FearHopeTracker from '../components/FearHopeTracker.vue'
 import SceneModeSelector from '../components/SceneModeSelector.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import PcLivePanel from '../components/PcLivePanel.vue'
+import PcSpotlightBar from '../components/PcSpotlightBar.vue'
 import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
 import EnvironmentPanel from '../components/EnvironmentPanel.vue'
-import SpotlightTracker from '../components/SpotlightTracker.vue'
 
 export default {
   name: 'EncounterLive',
@@ -212,9 +203,9 @@ export default {
     SceneModeSelector,
     SpotlightToggle,
     PcLivePanel,
+    PcSpotlightBar,
     AdversaryTargetPanel,
-    EnvironmentPanel,
-    SpotlightTracker
+    EnvironmentPanel
   },
   setup() {
     const store = useEncounterLiveStore()
@@ -265,18 +256,18 @@ export default {
 .enc-live {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   max-width: 960px;
   margin: 0 auto;
-  padding: var(--space-md);
+  padding: var(--space-sm);
 }
 
-/* ── Header ── */
+/* ── Header compact ── */
 
 .enc-live__header {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 }
 
 .enc-live__title-row {
@@ -286,26 +277,33 @@ export default {
 }
 
 .enc-live__title {
-  font-size: var(--font-xl, 1.5rem);
+  font-size: var(--font-lg, 1.25rem);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
   margin: 0;
 }
 
 .enc-live__tier {
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   color: var(--color-accent-gold);
   font-weight: var(--font-semibold);
-  padding: 2px var(--space-sm);
+  padding: 1px var(--space-xs);
   background: rgba(224, 165, 38, 0.1);
   border-radius: var(--radius-sm);
 }
 
-.enc-live__session-controls {
+.enc-live__controls {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   flex-wrap: wrap;
+}
+
+.enc-live__session {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-left: auto;
 }
 
 .enc-live__round-controls {
@@ -318,14 +316,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
   color: var(--color-text-secondary);
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 .enc-live__round-btn:hover:not(:disabled) {
@@ -340,20 +338,20 @@ export default {
 
 .enc-live__round-label {
   font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-bold);
   color: var(--color-text-secondary);
-  min-width: 64px;
+  min-width: 28px;
   text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .enc-live__end-btn {
-  margin-left: auto;
-  padding: var(--space-xs) var(--space-md);
+  padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-accent-danger);
   background: transparent;
   color: var(--color-accent-danger);
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   font-weight: var(--font-semibold);
   cursor: pointer;
   transition: background 0.15s;
@@ -367,7 +365,7 @@ export default {
 
 .enc-live__toggle-history {
   align-self: flex-start;
-  padding: var(--space-xs) var(--space-sm);
+  padding: 2px var(--space-sm);
   border: none;
   background: none;
   color: var(--color-text-muted);
@@ -380,78 +378,81 @@ export default {
   color: var(--color-text-secondary);
 }
 
-/* ── Selectors ── */
+/* ── Sélecteurs (PJ+Spot + Adversaire) ── */
 
 .enc-live__selectors {
-  display: flex;
-  gap: var(--space-md);
-  flex-wrap: wrap;
-}
-
-.enc-live__selector {
-  flex: 1;
-  min-width: 200px;
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
 }
 
-.enc-live__selector-label {
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+/* ── Barre adversaires compacte ── */
+
+.enc-live__adv-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
-.enc-live__active-count {
+.enc-live__adv-label {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-fear);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.enc-live__adv-count {
   font-weight: normal;
   color: var(--color-text-muted);
 }
 
-.enc-live__chip-row {
+.enc-live__adv-chips {
   display: flex;
   gap: var(--space-xs);
   flex-wrap: wrap;
+  flex: 1;
 }
 
-.enc-live__chip {
+.enc-live__adv-chip {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 3px;
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
+  border: 2px solid transparent;
   background: var(--color-bg-primary);
   cursor: pointer;
   transition: border-color 0.15s;
   font-size: var(--font-xs);
 }
 
-.enc-live__chip:hover {
+.enc-live__adv-chip:hover {
   border-color: var(--color-border-active);
 }
 
-.enc-live__chip--active {
-  border-color: var(--color-accent-hope);
-  box-shadow: 0 0 0 1px var(--color-accent-hope);
+.enc-live__adv-chip--active {
+  border-color: var(--color-accent-fear);
+  box-shadow: 0 0 0 1px var(--color-accent-fear);
 }
 
-.enc-live__chip--defeated {
-  opacity: 0.5;
+.enc-live__adv-chip--defeated {
+  opacity: 0.4;
 }
 
-.enc-live__chip-name {
+.enc-live__adv-name {
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
 }
 
-.enc-live__chip-sub {
-  color: var(--color-text-muted);
-}
-
-.enc-live__chip-defeated {
-  font-size: 0.8rem;
+.enc-live__adv-defeated {
+  font-size: 0.75rem;
 }
 
 /* ── Battlefield — panels contextuels ── */
@@ -459,7 +460,7 @@ export default {
 .enc-live__battlefield {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .enc-live__panel--first  { order: 1; }

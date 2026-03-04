@@ -27,6 +27,7 @@ export { default as PcLivePanel } from './components/PcLivePanel.vue'
 export { default as AdversaryTargetPanel } from './components/AdversaryTargetPanel.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 export { default as SpotlightTracker } from './components/SpotlightTracker.vue'
+export { default as PcSpotlightBar } from './components/PcSpotlightBar.vue'
 
 // Composables
 export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'

@@ -116,7 +116,7 @@ export default {
     dimmed: { type: Boolean, default: false }
   },
   data() {
-    return { expanded: false }
+    return { expanded: true }
   },
   computed: {
     activationEmoji() { return ACTIVATION_EMOJI[this.feature.activationType] || '⚪' },
