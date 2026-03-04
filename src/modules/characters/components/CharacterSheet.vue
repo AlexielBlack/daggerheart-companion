@@ -301,15 +301,10 @@
         </div>
         <div class="combat-stat">
           <span class="combat-stat__label">Proficiency</span>
-          <input
-            type="number"
-            class="field-input field-input--sm"
-            :value="char.proficiency"
-            min="1"
-            max="8"
+          <span
+            class="combat-stat__value"
             aria-label="Proficiency"
-            @input="emit('update', 'proficiency', clampInt($event.target.value, 1, 8))"
-          />
+          >{{ char.proficiency }}</span>
         </div>
       </div>
 
