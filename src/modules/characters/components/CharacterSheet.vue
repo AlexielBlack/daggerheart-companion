@@ -58,10 +58,10 @@
           class="choices-summary__item"
         >
           <span class="choices-summary__label">Arme 1re</span>
-          <span class="choices-summary__value">{{ resolvePrimaryName(char.primaryWeaponId) }}</span>
+          <span class="choices-summary__value">{{ resolvePrimaryName(char.primaryWeaponId) }}{{ primaryIsTwoHanded ? ' ⚔ Deux mains' : '' }}</span>
         </div>
         <div
-          v-if="char.secondaryWeaponId"
+          v-if="char.secondaryWeaponId && !primaryIsTwoHanded"
           class="choices-summary__item"
         >
           <span class="choices-summary__label">Arme 2de</span>
@@ -585,7 +585,7 @@
               :key="'rec-' + w.id"
               :value="w.id"
             >
-              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
             </option>
           </optgroup>
           <optgroup
@@ -598,7 +598,7 @@
               :key="w.id"
               :value="w.id"
             >
-              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
             </option>
           </optgroup>
         </select>
@@ -610,6 +610,10 @@
           <span class="weapon-stat">{{ char.primaryWeapon.range }}</span>
           <span class="weapon-stat weapon-stat--dmg">{{ char.primaryWeapon.damage }}</span>
           <span
+            v-if="char.primaryWeapon.burden === 'Two-Handed'"
+            class="weapon-stat weapon-stat--burden"
+          >⚔ Deux mains</span>
+          <span
             v-if="char.primaryWeapon.feature"
             class="weapon-stat weapon-stat--feature"
           >{{ char.primaryWeapon.feature }}</span>
@@ -617,12 +621,16 @@
       </div>
 
       <!-- Arme Secondaire -->
-      <div class="weapon-block">
+      <div
+        class="weapon-block"
+        :class="{ 'weapon-block--disabled': primaryIsTwoHanded }"
+      >
         <label
           class="weapon-label"
           for="sheet-secondary-weapon"
         >Secondaire</label>
         <select
+          v-if="!primaryIsTwoHanded"
           id="sheet-secondary-weapon"
           class="weapon-select"
           :value="char.secondaryWeaponId"
@@ -658,8 +666,15 @@
             </option>
           </optgroup>
         </select>
+        <p
+          v-else
+          class="weapon-twohanded-notice"
+          aria-live="polite"
+        >
+          ⚔ Slot occupé — arme principale à deux mains
+        </p>
         <div
-          v-if="char.secondaryWeapon && char.secondaryWeapon.name"
+          v-if="!primaryIsTwoHanded && char.secondaryWeapon && char.secondaryWeapon.name"
           class="weapon-details"
         >
           <span class="weapon-stat">{{ char.secondaryWeapon.trait }}</span>
@@ -901,6 +916,11 @@ export default {
     const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
     const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
 
+    /** L'arme principale est-elle à deux mains ? */
+    const primaryIsTwoHanded = computed(() =>
+      props.char?.primaryWeapon?.burden === 'Two-Handed'
+    )
+
     // ── Armures groupées par tier ──
     const armorTiers = computed(() => groupByTier(props.armor))
 
@@ -986,7 +1006,7 @@ export default {
     return {
       conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
       resolveArmorName, resolvePrimaryName, resolveSecondaryName,
-      primaryWeaponTiers, secondaryWeaponTiers, armorTiers,
+      primaryWeaponTiers, secondaryWeaponTiers, primaryIsTwoHanded, armorTiers,
       recommendedPrimaryWeapons, recommendedSecondaryWeapons, recommendedArmors,
       hpSources, stressSources, armorSources
     }
@@ -1468,6 +1488,28 @@ export default {
   padding: 0;
   font-size: 0.75rem;
   line-height: 1.35;
+}
+
+.weapon-stat--burden {
+  color: #eab308;
+  border-color: rgba(234, 179, 8, 0.3);
+  background: rgba(234, 179, 8, 0.08);
+  font-weight: 600;
+}
+
+.weapon-block--disabled {
+  opacity: 0.5;
+}
+
+.weapon-twohanded-notice {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #eab308;
+  margin: 4px 0 0;
+  padding: 6px 10px;
+  background: rgba(234, 179, 8, 0.06);
+  border: 1px dashed rgba(234, 179, 8, 0.3);
+  border-radius: 4px;
 }
 
 /* ── Class Features ── */

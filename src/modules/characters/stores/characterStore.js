@@ -724,14 +724,24 @@ export const useCharacterStore = defineStore('characters', () => {
               trait: wpn.trait,
               range: wpn.range,
               damage: wpn.damage,
-              feature: wpn.feature || ''
+              feature: wpn.feature || '',
+              burden: wpn.burden || 'One-Handed'
+            }
+            // Arme à deux mains → libérer le slot secondaire
+            if (wpn.burden === 'Two-Handed') {
+              char.secondaryWeaponId = ''
+              char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
             }
           } else {
-            char.primaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '' }
+            char.primaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
           }
           break
         }
         case 'secondaryWeaponId': {
+          // Bloquer si arme principale à deux mains
+          if (char.primaryWeapon && char.primaryWeapon.burden === 'Two-Handed') {
+            break
+          }
           const wpn = getSecondaryWeaponById(value) || allSecondaryWeapons.value.find((w) => w.id === value)
           if (wpn) {
             char.secondaryWeapon = {
@@ -739,10 +749,11 @@ export const useCharacterStore = defineStore('characters', () => {
               trait: wpn.trait,
               range: wpn.range,
               damage: wpn.damage,
-              feature: wpn.feature || ''
+              feature: wpn.feature || '',
+              burden: wpn.burden || 'One-Handed'
             }
           } else {
-            char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '' }
+            char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
           }
           break
         }
@@ -880,8 +891,8 @@ export const useCharacterStore = defineStore('characters', () => {
         currentStress: 0,
         hope: 0,
         experiences: [{ name: '', bonus: 0 }, { name: '', bonus: 0 }],
-        primaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
-        secondaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
+        primaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '', burden: '' },
+        secondaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '', burden: '' },
         inventory: [],
         gold: { handfuls: 0, bags: 0, chests: 0 },
         conditions: [],

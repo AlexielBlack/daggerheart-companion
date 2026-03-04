@@ -6,12 +6,12 @@
 
 /** 6 traits de personnage */
 export const TRAITS = [
-  { id: 'agility', label: 'Agilité', skills: ['Sprint', 'Leap', 'Maneuver'] },
-  { id: 'strength', label: 'Force', skills: ['Lift', 'Smash', 'Grapple'] },
-  { id: 'finesse', label: 'Finesse', skills: ['Control', 'Hide', 'Tinker'] },
-  { id: 'instinct', label: 'Instinct', skills: ['Perceive', 'Sense', 'Navigate'] },
-  { id: 'presence', label: 'Présence', skills: ['Charm', 'Perform', 'Deceive'] },
-  { id: 'knowledge', label: 'Savoir', skills: ['Recall', 'Analyze', 'Comprehend'] }
+  { id: 'agility', label: 'Agilité', skills: ['Sprinter', 'Sauter', 'Manœuvrer'] },
+  { id: 'strength', label: 'Force', skills: ['Soulever', 'Fracasser', 'Agripper'] },
+  { id: 'finesse', label: 'Finesse', skills: ['Contrôler', 'Se cacher', 'Bricoler'] },
+  { id: 'instinct', label: 'Instinct', skills: ['Percevoir', 'Sentir', 'Naviguer'] },
+  { id: 'presence', label: 'Présence', skills: ['Charmer', 'Performer', 'Tromper'] },
+  { id: 'knowledge', label: 'Savoir', skills: ['Se souvenir', 'Analyser', 'Comprendre'] }
 ]
 
 /**

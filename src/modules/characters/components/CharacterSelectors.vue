@@ -332,7 +332,7 @@
             :key="'rec-' + w.id"
             :value="w.id"
           >
-            ★ {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }} ({{ w.damageType === 'phy' ? 'Physique' : 'Magique' }})
+            ★ {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }} ({{ w.damageType === 'phy' ? 'Physique' : 'Magique' }}){{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
           </option>
         </optgroup>
         <optgroup
@@ -345,19 +345,23 @@
             :key="w.id"
             :value="w.id"
           >
-            {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }} ({{ w.damageType === 'phy' ? 'Physique' : 'Magique' }})
+            {{ w.name }} — {{ w.trait }} — {{ w.range }} — {{ w.damage }} ({{ w.damageType === 'phy' ? 'Physique' : 'Magique' }}){{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
           </option>
         </optgroup>
       </select>
     </div>
 
     <!-- ═══ Arme Secondaire ═══ -->
-    <div class="selector-field">
+    <div
+      class="selector-field"
+      :class="{ 'selector-field--disabled': primaryIsTwoHanded }"
+    >
       <label
         class="selector-label"
         for="sel-secondary"
       >Arme Secondaire</label>
       <select
+        v-if="!primaryIsTwoHanded"
         id="sel-secondary"
         class="selector-select"
         :value="char.secondaryWeaponId"
@@ -393,6 +397,13 @@
           </option>
         </optgroup>
       </select>
+      <p
+        v-else
+        class="twohanded-notice"
+        aria-live="polite"
+      >
+        ⚔ Slot occupé — arme principale à deux mains
+      </p>
     </div>
   </div>
 </template>
@@ -459,6 +470,11 @@ export default {
     const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
     const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
 
+    /** L'arme principale est-elle à deux mains ? */
+    const primaryIsTwoHanded = computed(() =>
+      props.char?.primaryWeapon?.burden === 'Two-Handed'
+    )
+
     // ── Recommandations par classe ──
     const recommendedArmor = computed(() =>
       getRecommendedIds(props.classId, 'armor')
@@ -514,6 +530,7 @@ export default {
       armorTiers,
       primaryWeaponTiers,
       secondaryWeaponTiers,
+      primaryIsTwoHanded,
       recommendedArmor,
       recommendedPrimaryWeapon,
       recommendedSecondaryWeapon,
@@ -681,5 +698,20 @@ export default {
   color: var(--text-secondary, #9ca3af);
   line-height: 1.35;
   margin: 2px 0 0;
+}
+
+.selector-field--disabled {
+  opacity: 0.5;
+}
+
+.twohanded-notice {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #eab308;
+  margin: 4px 0 0;
+  padding: 6px 10px;
+  background: rgba(234, 179, 8, 0.06);
+  border: 1px dashed rgba(234, 179, 8, 0.3);
+  border-radius: 4px;
 }
 </style>
