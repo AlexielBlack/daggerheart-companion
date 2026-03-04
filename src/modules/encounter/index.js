@@ -23,6 +23,9 @@ export { default as SceneModeSelector } from './components/SceneModeSelector.vue
 export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 export { default as AdversaryLiveCard } from './components/AdversaryLiveCard.vue'
 
+// Composables
+export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'
+
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'
 export { default as EncounterLive } from './views/EncounterLive.vue'
