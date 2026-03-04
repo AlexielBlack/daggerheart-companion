@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * @module levelup/__tests__/moduleIndex.test
  * @description Valide que l'index du module exporte correctement

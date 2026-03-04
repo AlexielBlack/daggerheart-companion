@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ImportExportPanel from '../core/components/ImportExportPanel.vue'

@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * @file adversaryStore.test.js
  * @description Tests du store Pinia pour les adversaires.

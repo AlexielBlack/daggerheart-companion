@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * @module levelup/__tests__/levelUpStore.test
  * @description Tests du store Pinia levelUpStore (wizard de level up).

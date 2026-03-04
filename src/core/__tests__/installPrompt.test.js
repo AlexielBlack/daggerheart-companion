@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * @module core/__tests__/installPrompt.test
  * @description Tests du composable useInstallPrompt.

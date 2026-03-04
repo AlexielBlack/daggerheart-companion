@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * @module characters/__tests__/characterSelectors.test
  * @description Tests pour les fonctionnalités de sélection déroulante du character store.
