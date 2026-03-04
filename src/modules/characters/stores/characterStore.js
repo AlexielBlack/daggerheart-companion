@@ -28,8 +28,11 @@ import { getDomainsForClass, getCardById, getDomainById } from '@data/domains'
 import { useStorage } from '@core/composables/useStorage'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
+import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
+import { useEquipmentHomebrewStore } from '@modules/homebrew/categories/equipment/useEquipmentHomebrewStore.js'
+import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
 
-export { useAncestryHomebrewStore, useClassHomebrewStore }
+export { useAncestryHomebrewStore, useClassHomebrewStore, useCommunityHomebrewStore, useEquipmentHomebrewStore, useDomainHomebrewStore }
 
 export const useCharacterStore = defineStore('characters', () => {
   // ── Persistence ────────────────────────────────────────
@@ -361,6 +364,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char || !char.communityId) return null
     return getCommunityById(char.communityId)
+      || allCommunities.value.find((c) => c.id === char.communityId) || null
   })
 
   /** Donnée de l'armure sélectionnée */
@@ -368,6 +372,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char || !char.armorId) return null
     return getArmorById(char.armorId)
+      || allArmor.value.find((a) => a.id === char.armorId) || null
   })
 
   /** Donnée de l'arme primaire sélectionnée */
@@ -375,6 +380,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char || !char.primaryWeaponId) return null
     return getPrimaryWeaponById(char.primaryWeaponId)
+      || allPrimaryWeapons.value.find((w) => w.id === char.primaryWeaponId) || null
   })
 
   /** Donnée de l'arme secondaire sélectionnée */
@@ -382,6 +388,7 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = selectedCharacter.value
     if (!char || !char.secondaryWeaponId) return null
     return getSecondaryWeaponById(char.secondaryWeaponId)
+      || allSecondaryWeapons.value.find((w) => w.id === char.secondaryWeaponId) || null
   })
 
   /** Listes de référence pour les déroulants */
@@ -395,24 +402,127 @@ export const useCharacterStore = defineStore('characters', () => {
       source: 'custom'
     }))
   ])
-  const allCommunities = COMMUNITIES
-  const allArmor = ARMOR
-  const allPrimaryWeapons = PRIMARY_WEAPONS
-  const allSecondaryWeapons = SECONDARY_WEAPONS
+  const allCommunities = computed(() => {
+    const communityHomebrewStore = useCommunityHomebrewStore()
+    return [
+      ...COMMUNITIES,
+      ...communityHomebrewStore.items.map((item) => ({
+        ...item,
+        source: 'custom'
+      }))
+    ]
+  })
+
+  // ── Store Homebrew Equipment ────────────────────────────
+  const equipmentHomebrewStore = useEquipmentHomebrewStore()
+
+  /**
+   * Normalise un équipement homebrew en armure SRD-compatible.
+   */
+  function normalizeHomebrewArmor(item) {
+    return {
+      id: item.id,
+      name: item.name,
+      tier: item.tier || 1,
+      thresholds: item.thresholds || { major: 6, severe: 13 },
+      baseScore: item.baseScore || 3,
+      feature: item.feature || null,
+      featureKey: item.featureKey || null,
+      source: 'custom'
+    }
+  }
+
+  /**
+   * Normalise un équipement homebrew en arme SRD-compatible.
+   */
+  function normalizeHomebrewWeapon(item) {
+    return {
+      id: item.id,
+      name: item.name,
+      tier: item.tier || 1,
+      damageType: item.damageType || 'phy',
+      trait: item.trait || 'Agility',
+      range: item.range || 'Melee',
+      damage: item.damage || 'd8',
+      burden: item.burden || 'One-Handed',
+      feature: item.feature || null,
+      featureKey: item.featureKey || null,
+      source: 'custom'
+    }
+  }
+
+  const allArmor = computed(() => [
+    ...ARMOR,
+    ...equipmentHomebrewStore.items
+      .filter((i) => i.category === 'armor')
+      .map(normalizeHomebrewArmor)
+  ])
+
+  const allPrimaryWeapons = computed(() => [
+    ...PRIMARY_WEAPONS,
+    ...equipmentHomebrewStore.items
+      .filter((i) => i.category === 'primaryWeapon')
+      .map(normalizeHomebrewWeapon)
+  ])
+
+  const allSecondaryWeapons = computed(() => [
+    ...SECONDARY_WEAPONS,
+    ...equipmentHomebrewStore.items
+      .filter((i) => i.category === 'secondaryWeapon')
+      .map(normalizeHomebrewWeapon)
+  ])
 
   // ── Cartes de domaine ───────────────────────────────────
 
   /** Domaines disponibles pour la classe du personnage sélectionné */
+  // ── Store Homebrew Domain (pour résoudre les domaines homebrew) ──
+  const domainHomebrewStore = useDomainHomebrewStore()
+
+  /**
+   * Résout un domaine par nom (insensible à la casse) : SRD puis homebrew.
+   */
+  function resolveDomainByName(name) {
+    if (!name) return null
+    const lower = name.toLowerCase()
+    // SRD
+    const srd = getDomainById(lower)
+    if (srd) return srd
+    // Homebrew : chercher par ID ou par nom
+    const hb = domainHomebrewStore.items.find(
+      (d) => d.id === lower || (d.name && d.name.toLowerCase() === lower)
+    )
+    if (!hb) return null
+    return {
+      id: hb.id,
+      name: hb.name,
+      emoji: hb.emoji || '🃏',
+      color: hb.color || '#7c3aed',
+      description: hb.description || '',
+      classes: hb.classes || [],
+      themes: hb.themes || [],
+      hasSpells: hb.hasSpells !== false,
+      source: 'custom',
+      cards: (hb.cards || []).map((card, i) => ({
+        id: card.id || `${hb.id}-card-${i}`,
+        name: card.name || `Carte ${i + 1}`,
+        level: card.level || 1,
+        type: card.type || 'ability',
+        recallCost: card.recallCost ?? 0,
+        feature: card.feature || ''
+      }))
+    }
+  }
+
   const availableDomains = computed(() => {
     const char = selectedCharacter.value
     if (!char) return []
     // SRD : chercher par nom de classe
     const srd = getDomainsForClass(char.className)
     if (srd.length > 0) return srd
-    // Homebrew : résoudre les domaines par ID depuis la classe
+    // Homebrew / fallback : résoudre les domaines par nom depuis la classe
     const cls = resolveClass(char.classId)
     if (!cls || !cls.domains) return []
-    return cls.domains.map((dName) => getDomainById(dName.toLowerCase())).filter(Boolean)
+    return cls.domains.map((dName) => resolveDomainByName(dName)).filter(Boolean)
   })
 
   /**
@@ -542,7 +652,7 @@ export const useCharacterStore = defineStore('characters', () => {
     try {
       switch (field) {
         case 'armorId': {
-          const armor = getArmorById(value)
+          const armor = getArmorById(value) || allArmor.value.find((a) => a.id === value)
           if (armor) {
             char.armorName = armor.name
             char.armorBaseThresholds = { major: armor.thresholds.major, severe: armor.thresholds.severe }
@@ -564,7 +674,7 @@ export const useCharacterStore = defineStore('characters', () => {
           break
         }
         case 'primaryWeaponId': {
-          const wpn = getPrimaryWeaponById(value)
+          const wpn = getPrimaryWeaponById(value) || allPrimaryWeapons.value.find((w) => w.id === value)
           if (wpn) {
             char.primaryWeapon = {
               name: wpn.name,
@@ -579,7 +689,7 @@ export const useCharacterStore = defineStore('characters', () => {
           break
         }
         case 'secondaryWeaponId': {
-          const wpn = getSecondaryWeaponById(value)
+          const wpn = getSecondaryWeaponById(value) || allSecondaryWeapons.value.find((w) => w.id === value)
           if (wpn) {
             char.secondaryWeapon = {
               name: wpn.name,

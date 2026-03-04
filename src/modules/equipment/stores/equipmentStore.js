@@ -13,6 +13,9 @@ import {
   CONSUMABLES,
   EQUIPMENT_COUNTS
 } from '@/data/equipment/index.js'
+import { useEquipmentHomebrewStore } from '@modules/homebrew/categories/equipment/useEquipmentHomebrewStore.js'
+
+export { useEquipmentHomebrewStore }
 
 export const useEquipmentStore = defineStore('equipment', () => {
   // ─── State ───
@@ -21,6 +24,44 @@ export const useEquipmentStore = defineStore('equipment', () => {
   const activeTier = ref(0) // 0 = all tiers
   const activeDamageType = ref('all') // all | phy | mag
   const activeRarity = ref('all') // all | common | uncommon | rare | legendary
+
+  // ─── Homebrew ───
+  const homebrewStore = useEquipmentHomebrewStore()
+
+  /** Items homebrew par catégorie, normalisés avec source: 'custom' */
+  const homebrewPrimary = computed(() =>
+    homebrewStore.items.filter((i) => i.category === 'primaryWeapon').map((i) => ({ ...i, source: 'custom' }))
+  )
+  const homebrewSecondary = computed(() =>
+    homebrewStore.items.filter((i) => i.category === 'secondaryWeapon').map((i) => ({ ...i, source: 'custom' }))
+  )
+  const homebrewArmor = computed(() =>
+    homebrewStore.items.filter((i) => i.category === 'armor').map((i) => ({ ...i, source: 'custom' }))
+  )
+  const homebrewLoot = computed(() =>
+    homebrewStore.items.filter((i) => i.category === 'loot').map((i) => ({ ...i, source: 'custom' }))
+  )
+  const homebrewConsumable = computed(() =>
+    homebrewStore.items.filter((i) => i.category === 'consumable').map((i) => ({ ...i, source: 'custom' }))
+  )
+
+  /** Listes fusionnées SRD + homebrew */
+  const allPrimary = computed(() => [...PRIMARY_WEAPONS, ...homebrewPrimary.value])
+  const allSecondary = computed(() => [...SECONDARY_WEAPONS, ...homebrewSecondary.value])
+  const allArmor = computed(() => [...ARMOR, ...homebrewArmor.value])
+  const allLoot = computed(() => [...LOOT, ...homebrewLoot.value])
+  const allConsumable = computed(() => [...CONSUMABLES, ...homebrewConsumable.value])
+
+  /** Compteurs dynamiques */
+  const counts = computed(() => ({
+    ...EQUIPMENT_COUNTS,
+    total: allPrimary.value.length + allSecondary.value.length + allArmor.value.length + allLoot.value.length + allConsumable.value.length,
+    primary: allPrimary.value.length,
+    secondary: allSecondary.value.length,
+    armor: allArmor.value.length,
+    loot: allLoot.value.length,
+    consumable: allConsumable.value.length
+  }))
 
   // ─── Catégories ───
   const categories = [
@@ -70,23 +111,23 @@ export const useEquipmentStore = defineStore('equipment', () => {
 
   // ─── Computed filtered lists ───
   const filteredPrimaryWeapons = computed(() =>
-    PRIMARY_WEAPONS.filter((w) => matchesSearch(w) && matchesTier(w) && matchesDamageType(w))
+    allPrimary.value.filter((w) => matchesSearch(w) && matchesTier(w) && matchesDamageType(w))
   )
 
   const filteredSecondaryWeapons = computed(() =>
-    SECONDARY_WEAPONS.filter((w) => matchesSearch(w) && matchesTier(w))
+    allSecondary.value.filter((w) => matchesSearch(w) && matchesTier(w))
   )
 
   const filteredArmor = computed(() =>
-    ARMOR.filter((a) => matchesSearch(a) && matchesTier(a))
+    allArmor.value.filter((a) => matchesSearch(a) && matchesTier(a))
   )
 
   const filteredLoot = computed(() =>
-    LOOT.filter((l) => matchesSearch(l) && matchesRarity(l))
+    allLoot.value.filter((l) => matchesSearch(l) && matchesRarity(l))
   )
 
   const filteredConsumables = computed(() =>
-    CONSUMABLES.filter((c) => matchesSearch(c) && matchesRarity(c))
+    allConsumable.value.filter((c) => matchesSearch(c) && matchesRarity(c))
   )
 
   // ─── Visibilité par catégorie ───
@@ -122,7 +163,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
     activeRarity,
     // Constants
     categories,
-    counts: EQUIPMENT_COUNTS,
+    counts,
     // Computed
     filteredPrimaryWeapons,
     filteredSecondaryWeapons,

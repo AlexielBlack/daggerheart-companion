@@ -958,15 +958,15 @@ export default {
 
     // ── Résolution noms pour le résumé verrouillé ──
     function resolveArmorName(id) {
-      const a = getArmorById(id)
+      const a = getArmorById(id) || props.armor.find((x) => x.id === id)
       return a ? a.name : id
     }
     function resolvePrimaryName(id) {
-      const w = getPrimaryWeaponById(id)
+      const w = getPrimaryWeaponById(id) || props.primaryWeapons.find((x) => x.id === id)
       return w ? w.name : id
     }
     function resolveSecondaryName(id) {
-      const w = getSecondaryWeaponById(id)
+      const w = getSecondaryWeaponById(id) || props.secondaryWeapons.find((x) => x.id === id)
       return w ? w.name : id
     }
 

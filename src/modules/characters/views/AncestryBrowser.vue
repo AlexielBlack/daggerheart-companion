@@ -257,6 +257,7 @@ export default {
 
   setup() {
     const router = useRouter()
+    const homebrewStore = useAncestryHomebrewStore()
     const searchQuery = ref('')
     const expandedId = ref(null)
     const activeSource = ref('all')
@@ -268,6 +269,14 @@ export default {
       { id: 'transformation', label: 'Transformations' }
     ]
 
+    /** Ascendances homebrew normalisées (source: 'custom') */
+    const homebrewAncestries = computed(() =>
+      homebrewStore.items.map((item) => ({
+        ...item,
+        source: 'custom'
+      }))
+    )
+
     const showAncestries = computed(() => activeSource.value !== 'transformation')
     const showTransformations = computed(() => activeSource.value === 'all' || activeSource.value === 'transformation')
 
@@ -275,14 +284,14 @@ export default {
       const q = searchQuery.value.toLowerCase().trim()
       const pool =
         activeSource.value === 'srd' ? SRD_ANCESTRIES :
-        activeSource.value === 'custom' ? CUSTOM_ANCESTRIES :
-        [...SRD_ANCESTRIES, ...CUSTOM_ANCESTRIES]
+        activeSource.value === 'custom' ? [...CUSTOM_ANCESTRIES, ...homebrewAncestries.value] :
+        [...SRD_ANCESTRIES, ...CUSTOM_ANCESTRIES, ...homebrewAncestries.value]
       if (!q) return pool
       return pool.filter((a) =>
         a.name.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q) ||
-        a.topFeature.name.toLowerCase().includes(q) ||
-        a.bottomFeature.name.toLowerCase().includes(q)
+        (a.description || '').toLowerCase().includes(q) ||
+        (a.topFeature?.name || '').toLowerCase().includes(q) ||
+        (a.bottomFeature?.name || '').toLowerCase().includes(q)
       )
     })
 

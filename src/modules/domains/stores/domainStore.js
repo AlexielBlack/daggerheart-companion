@@ -14,6 +14,9 @@ import {
   getCardsByLevel,
   getCardsByType
 } from '@/data/domains/index.js'
+import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
+
+export { useDomainHomebrewStore }
 
 export const useDomainStore = defineStore('domains', () => {
   // ── State ──────────────────────────────────────────────
@@ -23,17 +26,68 @@ export const useDomainStore = defineStore('domains', () => {
   const filterLevel = ref(0) // 0 = all levels
   const filterSpell = ref('all') // 'all' | 'spells' | 'martial'
 
+  // ── Homebrew ──────────────────────────────────────────
+  const homebrewStore = useDomainHomebrewStore()
+
+  /**
+   * Normalise un domaine homebrew au format SRD-compatible.
+   */
+  function normalizeHomebrewDomain(item) {
+    return {
+      id: item.id,
+      name: item.name,
+      emoji: item.emoji || '🃏',
+      color: item.color || '#7c3aed',
+      description: item.description || '',
+      classes: item.classes || [],
+      themes: item.themes || [],
+      hasSpells: item.hasSpells !== false,
+      source: 'custom',
+      cards: (item.cards || []).map((card, i) => ({
+        id: card.id || `${item.id}-card-${i}`,
+        name: card.name || `Carte ${i + 1}`,
+        level: card.level || 1,
+        type: card.type || 'ability',
+        recallCost: card.recallCost ?? 0,
+        feature: card.feature || ''
+      }))
+    }
+  }
+
   // ── Getters ────────────────────────────────────────────
-  const allDomains = computed(() => DOMAINS)
-  const domainCount = computed(() => DOMAINS.length)
+  const allDomains = computed(() => [
+    ...DOMAINS,
+    ...homebrewStore.items.map(normalizeHomebrewDomain)
+  ])
+  const domainCount = computed(() => allDomains.value.length)
 
   const totalCardCount = computed(() =>
-    DOMAINS.reduce((sum, d) => sum + d.cards.length, 0)
+    allDomains.value.reduce((sum, d) => sum + d.cards.length, 0)
   )
+
+  /**
+   * Résout un domaine par ID : SRD puis homebrew.
+   */
+  function resolveDomain(id) {
+    return getDomainById(id) || allDomains.value.find((d) => d.id === id) || null
+  }
+
+  /**
+   * Résout une carte par ID : SRD puis homebrew.
+   */
+  function resolveCard(cardId) {
+    const srd = getCardById(cardId)
+    if (srd) return srd
+    for (const d of allDomains.value) {
+      const card = d.cards.find((c) => c.id === cardId)
+      if (card) return card
+    }
+    return null
+  }
 
   const filteredDomains = computed(() => {
     const q = searchQuery.value.toLowerCase().trim()
-    return DOMAINS.filter((domain) => {
+    return allDomains.value.filter((domain) => {
       const matchSpell =
         filterSpell.value === 'all' ||
         (filterSpell.value === 'spells' && domain.hasSpells) ||
@@ -56,7 +110,7 @@ export const useDomainStore = defineStore('domains', () => {
   })
 
   const selectedDomain = computed(() =>
-    selectedDomainId.value ? getDomainById(selectedDomainId.value) : null
+    selectedDomainId.value ? resolveDomain(selectedDomainId.value) : null
   )
 
   const selectedDomainCards = computed(() => {
@@ -139,6 +193,8 @@ export const useDomainStore = defineStore('domains', () => {
     setFilterSpell,
     resetFilters,
     // Re-export utilities
+    resolveDomain,
+    resolveCard,
     getDomainById,
     getDomainsForClass,
     getCardById,
