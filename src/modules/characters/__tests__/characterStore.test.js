@@ -493,17 +493,74 @@ describe('characterStore', () => {
       store.createCharacter('ranger')
     })
 
-    it('adds items', () => {
-      store.addInventoryItem('Rope 50ft')
-      store.addInventoryItem('Torch')
-      expect(store.selectedCharacter.inventory).toEqual(['Rope 50ft', 'Torch'])
+    it('adds items with structured format', () => {
+      store.addInventoryItem('loot')
+      store.addInventoryItem('consumable')
+      const inv = store.selectedCharacter.inventory
+      expect(inv).toHaveLength(2)
+      expect(inv[0].type).toBe('loot')
+      expect(inv[0].itemId).toBe('')
+      expect(inv[0].quantity).toBe(1)
+      expect(inv[1].type).toBe('consumable')
     })
 
     it('removes items by index', () => {
-      store.addInventoryItem('Rope')
-      store.addInventoryItem('Torch')
+      store.addInventoryItem('loot')
+      store.addInventoryItem('custom')
       store.removeInventoryItem(0)
-      expect(store.selectedCharacter.inventory).toEqual(['Torch'])
+      const inv = store.selectedCharacter.inventory
+      expect(inv).toHaveLength(1)
+      expect(inv[0].type).toBe('custom')
+    })
+
+    it('updates inventory item fields', () => {
+      store.addInventoryItem('consumable')
+      store.updateInventoryItem(0, 'itemId', 'cons-07')
+      store.updateInventoryItem(0, 'quantity', 3)
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.itemId).toBe('cons-07')
+      expect(slot.quantity).toBe(3)
+    })
+
+    it('resets fields when changing type', () => {
+      store.addInventoryItem('loot')
+      store.updateInventoryItem(0, 'itemId', 'loot-01')
+      store.updateInventoryItem(0, 'type', 'custom')
+      const slot = store.selectedCharacter.inventory[0]
+      expect(slot.type).toBe('custom')
+      expect(slot.itemId).toBe('')
+    })
+
+    it('updates gold', () => {
+      store.updateGold('handfuls', 5)
+      store.updateGold('bags', 2)
+      store.updateGold('chests', 1)
+      const gold = store.selectedCharacter.gold
+      expect(gold.handfuls).toBe(5)
+      expect(gold.bags).toBe(2)
+      expect(gold.chests).toBe(1)
+    })
+
+    it('clamps gold to minimum 0', () => {
+      store.updateGold('handfuls', -3)
+      expect(store.selectedCharacter.gold.handfuls).toBe(0)
+    })
+
+    it('clamps quantity to minimum 1', () => {
+      store.addInventoryItem('consumable')
+      store.updateInventoryItem(0, 'quantity', 0)
+      expect(store.selectedCharacter.inventory[0].quantity).toBe(1)
+    })
+
+    it('migrates legacy string items', () => {
+      // Simuler un inventaire legacy
+      store.selectedCharacter.inventory = ['Rope 50ft', 'Torch']
+      store.addInventoryItem('loot')
+      const inv = store.selectedCharacter.inventory
+      expect(inv[0].type).toBe('custom')
+      expect(inv[0].customName).toBe('Rope 50ft')
+      expect(inv[1].customName).toBe('Torch')
+      expect(inv[2].type).toBe('loot')
     })
   })
 
