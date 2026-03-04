@@ -418,7 +418,7 @@
         <SlotTracker
           label="Armure"
           variant="armor"
-          :max="char.armorScore"
+          :max="effectiveArmorScore"
           :marked="char.armorSlotsMarked"
           @mark="emit('markArmor')"
           @clear="emit('clearArmor')"
