@@ -87,7 +87,16 @@
         ]
       }
     ],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demon-of-avarice",
@@ -145,7 +154,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 2,
+      "lowHP": 1,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demon-of-despair",
@@ -215,7 +233,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 3,
+      "lowEvasion": 1,
+      "nearest": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demon-of-hubris",
@@ -291,7 +318,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demon-of-jealousy",
@@ -360,7 +396,16 @@
         ]
       }
     ],
-    "atk_mod": 4
+    "atk_mod": 4,
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demon-of-wrath",
@@ -428,7 +473,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 2,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "dire-bat",
@@ -489,7 +543,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "dryad",
@@ -552,7 +615,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 3,
+      "nearest": 0,
+      "lowHP": 1,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "elemental-spark",
@@ -598,7 +670,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "greater-earth-elemental",
@@ -668,7 +749,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "greater-water-elemental",
@@ -724,7 +814,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "huge-green-ooze",
@@ -792,7 +891,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 3,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "hydra",
@@ -863,7 +971,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 0
+    }
   },
   {
     "id": "monarch",
@@ -928,7 +1045,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "stag-knight",
@@ -990,7 +1116,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "oak-treant",
@@ -1051,7 +1186,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "treant-sapling",
@@ -1098,7 +1242,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "head-vampire",
@@ -1175,7 +1328,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 3,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "vampire",
@@ -1228,7 +1390,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 1,
+      "highGold": 0
+    }
   },
   {
     "id": "vault-guardian-gaoler",
@@ -1275,7 +1446,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "vault-guardian-sentinel",
@@ -1338,7 +1518,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 3,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "vault-guardian-turret",
@@ -1403,7 +1592,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 2,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "young-ice-dragon",
@@ -1498,6 +1696,15 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   }
 ]

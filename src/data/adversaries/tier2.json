@@ -44,7 +44,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "failed-experiment",
@@ -103,7 +112,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-beastmaster",
@@ -164,7 +182,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 3,
+      "highPresence": 3,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-brawler",
@@ -224,7 +251,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-recruit",
@@ -271,7 +307,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 1,
+      "highGold": 0
+    }
   },
   {
     "id": "electric-eels",
@@ -318,7 +363,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "minotaur-wrecker",
@@ -379,7 +433,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 2,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-eagle",
@@ -433,7 +496,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 3,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "gorgon",
@@ -510,7 +582,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 1,
+      "lowHP": 1,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "merchant-baron",
@@ -566,7 +647,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "archer-squadron",
@@ -623,7 +713,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 1,
+      "lowEvasion": 2,
+      "lowArmor": 2,
+      "lowHP": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "apprentice-assassin",
@@ -675,7 +774,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "assassin-poisoner",
@@ -735,7 +843,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "master-assassin",
@@ -808,7 +925,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "battle-box",
@@ -876,7 +1002,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "chaos-skull",
@@ -939,7 +1074,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "conscript",
@@ -985,7 +1129,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "courtesan",
@@ -1033,7 +1186,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "cult-adept",
@@ -1106,7 +1268,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "cult-fang",
@@ -1152,7 +1323,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "cult-initiate",
@@ -1198,7 +1378,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "demonic-hound-pack",
@@ -1259,7 +1448,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "juvenile-flickerfly",
@@ -1322,7 +1520,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "knight-of-the-realm",
@@ -1397,7 +1604,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "masked-thief",
@@ -1450,7 +1666,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "mortal-hunter",
@@ -1518,7 +1743,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 2,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "royal-advisor",
@@ -1582,7 +1816,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "secret-keeper",
@@ -1655,7 +1898,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 3,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "shark",
@@ -1714,7 +1966,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "siren",
@@ -1765,7 +2026,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 3,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "spectral-archer",
@@ -1817,7 +2087,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "spectral-captain",
@@ -1886,7 +2165,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "spectral-guardian",
@@ -1938,7 +2226,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "spy",
@@ -1991,7 +2288,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "stonewraith",
@@ -2059,7 +2365,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 3,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 2,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "war-wizard",
@@ -2142,6 +2457,15 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   }
 ]

@@ -62,6 +62,17 @@ export const RANGE_LABELS = {
   'Very Far': 'Très Loin'
 }
 
+/** Facteurs du profil de focus — clés et labels FR */
+export const FOCUS_FACTORS = {
+  lowHP: { label: 'PV bas', icon: '💔', description: 'Cible les PJ affaiblis' },
+  lowArmor: { label: 'Armure faible', icon: '🛡️', description: 'Cible les PJ peu protégés' },
+  lowEvasion: { label: 'Évasion faible', icon: '🎯', description: 'Cible les PJ faciles à toucher' },
+  highThreat: { label: 'Menace élevée', icon: '⚔️', description: 'Cible les PJ les plus dangereux' },
+  highPresence: { label: 'Présence forte', icon: '👑', description: 'Cible les PJ les plus visibles' },
+  highGold: { label: 'Riche en or', icon: '💰', description: 'Cible les PJ les plus riches' },
+  nearest: { label: 'Proximité', icon: '📍', description: 'Cible le PJ le plus proche' }
+}
+
 /** Labels des types de dégâts (FR) */
 export const DAMAGE_TYPE_LABELS = {
   phy: 'Physique',

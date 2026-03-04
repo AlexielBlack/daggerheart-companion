@@ -65,7 +65,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "bear",
@@ -129,7 +138,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "cave-ogre",
@@ -198,7 +216,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "construct",
@@ -270,7 +297,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "courtier",
@@ -324,7 +360,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "deeproot-defender",
@@ -376,7 +421,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 3,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "dire-wolf",
@@ -429,7 +483,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 3,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 2,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-mosquitoes",
@@ -489,7 +552,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "giant-rat",
@@ -541,7 +613,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "giant-scorpion",
@@ -602,7 +683,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "glass-snake",
@@ -658,7 +748,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "harrier",
@@ -710,7 +809,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 2,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "archer-guard",
@@ -754,7 +862,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "bladed-guard",
@@ -806,7 +923,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "head-guard",
@@ -870,7 +996,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "jagged-knife-bandit",
@@ -921,7 +1056,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "merchant",
@@ -954,7 +1098,16 @@
         "modifier": 3
       }
     ],
-    "features": []
+    "features": [],
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 3,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "sellsword",
@@ -985,7 +1138,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "spellblade",
@@ -1019,7 +1181,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "weaponmaster",
@@ -1053,7 +1224,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 2
+    "atk_mod": 2,
+    "focusProfile": {
+      "nearest": 2,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "skeleton-warrior",
@@ -1082,7 +1262,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 0
+    "atk_mod": 0,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "skeleton-archer",
@@ -1110,7 +1299,16 @@
       "damageType": "phy"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "skeleton-knight",
@@ -1139,7 +1337,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 2
+    "atk_mod": 2,
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "skeleton-dredge",
@@ -1176,7 +1383,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "shambling-zombie",
@@ -1205,7 +1421,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 0
+    "atk_mod": 0,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "brawny-zombie",
@@ -1234,7 +1459,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 2
+    "atk_mod": 2,
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "rotted-zombie",
@@ -1271,7 +1505,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "zombie-pack",
@@ -1318,7 +1561,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "patchwork-zombie-hulk",
@@ -1356,7 +1608,16 @@
         ]
       }
     ],
-    "atk_mod": 4
+    "atk_mod": 4,
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "swarm-of-rats",
@@ -1394,7 +1655,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "minor-demon",
@@ -1423,7 +1693,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "minor-fire-elemental",
@@ -1452,7 +1731,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "minor-chaos-elemental",
@@ -1481,7 +1769,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": 3
+    "atk_mod": 3,
+    "focusProfile": {
+      "nearest": 2,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "minor-treant",
@@ -1514,7 +1811,16 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "young-dryad",
@@ -1548,7 +1854,16 @@
       }
     ],
     "features": [],
-    "atk_mod": null
+    "atk_mod": null,
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "sylvan-soldier",
@@ -1582,7 +1897,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 0
+    "atk_mod": 0,
+    "focusProfile": {
+      "nearest": 1,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 1,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "petty-noble",
@@ -1616,7 +1940,16 @@
       }
     ],
     "features": [],
-    "atk_mod": null
+    "atk_mod": null,
+    "focusProfile": {
+      "highPresence": 3,
+      "highGold": 1,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highThreat": 0
+    }
   },
   {
     "id": "pirate-captain",
@@ -1654,7 +1987,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 4
+    "atk_mod": 4,
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 3,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "pirate-raiders",
@@ -1693,7 +2035,16 @@
         ]
       }
     ],
-    "atk_mod": 1
+    "atk_mod": 1,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "pirate-tough",
@@ -1726,7 +2077,16 @@
         "modifier": 2
       }
     ],
-    "features": []
+    "features": [],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 3,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 0
+    }
   },
   {
     "id": "green-ooze",
@@ -1761,7 +2121,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 1
+    "atk_mod": 1,
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 3,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "red-ooze",
@@ -1789,7 +2158,16 @@
       "damageType": "mag"
     },
     "experiences": [],
-    "features": []
+    "features": [],
+    "focusProfile": {
+      "lowHP": 3,
+      "lowArmor": 3,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "tiny-green-ooze",
@@ -1827,7 +2205,16 @@
         ]
       }
     ],
-    "atk_mod": -1
+    "atk_mod": -1,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "tiny-red-ooze",
@@ -1864,7 +2251,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "tangle-bramble",
@@ -1890,7 +2286,16 @@
     },
     "experiences": [],
     "features": [],
-    "atk_mod": -1
+    "atk_mod": -1,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "tangle-bramble-swarm",
@@ -1929,7 +2334,16 @@
         ]
       }
     ],
-    "atk_mod": null
+    "atk_mod": null,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "jagged-knife-hexer",
@@ -1979,7 +2393,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 2
+    }
   },
   {
     "id": "jagged-knife-kneebreaker",
@@ -2034,7 +2457,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 1,
+      "lowHP": 0,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 2
+    }
   },
   {
     "id": "jagged-knife-lackey",
@@ -2085,7 +2517,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "jagged-knife-lieutenant",
@@ -2153,7 +2594,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 3,
+      "nearest": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "jagged-knife-shadow",
@@ -2204,7 +2654,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowHP": 2,
+      "lowArmor": 2,
+      "lowEvasion": 1,
+      "nearest": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "jagged-knife-sniper",
@@ -2247,6 +2706,15 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   }
 ]

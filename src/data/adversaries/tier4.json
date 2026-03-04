@@ -81,7 +81,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "fallen-shock-troop",
@@ -137,7 +146,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "fallen-sorcerer",
@@ -208,7 +226,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "fallen-warlord-realm-breaker",
@@ -263,7 +290,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "fallen-warlord-undefeated-champion",
@@ -364,7 +400,16 @@
           "social"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 3,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "hallowed-archer",
@@ -411,7 +456,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "lowArmor": 3,
+      "lowEvasion": 2,
+      "highThreat": 1,
+      "nearest": 0,
+      "lowHP": 0,
+      "highPresence": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "hallowed-soldier",
@@ -466,7 +520,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "high-seraph",
@@ -545,7 +608,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "highPresence": 2,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highGold": 2
+    }
   },
   {
     "id": "kraken",
@@ -622,7 +694,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "oracle-of-doom",
@@ -710,7 +791,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 1,
+      "lowHP": 1,
+      "lowArmor": 2,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "outer-realms-abomination",
@@ -773,7 +863,16 @@
           "défensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "highThreat": 2,
+      "lowArmor": 2,
+      "lowHP": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "outer-realms-corrupter",
@@ -820,7 +919,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 1,
+      "nearest": 2,
+      "lowHP": 0,
+      "lowArmor": 1,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "outer-realms-thrall",
@@ -867,7 +975,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 0,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 1,
+      "highGold": 0
+    }
   },
   {
     "id": "volcanic-dragon-obsidian-predator",
@@ -953,7 +1070,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 2,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 2
+    }
   },
   {
     "id": "volcanic-dragon-molten-scourge",
@@ -1046,7 +1172,16 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "volcanic-dragon-ashen-tyrant",
@@ -1141,7 +1276,16 @@
           "offensif"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "highThreat": 2,
+      "nearest": 2,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "lowEvasion": 0,
+      "highPresence": 1,
+      "highGold": 2
+    }
   },
   {
     "id": "perfected-zombie",
@@ -1175,7 +1319,16 @@
       }
     ],
     "features": [],
-    "atk_mod": 4
+    "atk_mod": 4,
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 1,
+      "lowHP": 1,
+      "lowArmor": 0,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   },
   {
     "id": "zombie-legion",
@@ -1213,6 +1366,15 @@
           "utilitaire"
         ]
       }
-    ]
+    ],
+    "focusProfile": {
+      "nearest": 3,
+      "lowEvasion": 2,
+      "lowArmor": 1,
+      "lowHP": 1,
+      "highThreat": 0,
+      "highPresence": 0,
+      "highGold": 0
+    }
   }
 ]
