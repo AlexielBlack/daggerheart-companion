@@ -8,7 +8,10 @@
       <abbr
         v-if="segment.type === 'keyword'"
         class="glossary-keyword"
-        :class="`glossary-keyword--${segment.entry.category}`"
+        :class="[
+          `glossary-keyword--${segment.entry.category}`,
+          { 'glossary-keyword--prominent': isProminent(segment.entry.category) }
+        ]"
         :style="keywordStyle(segment.entry)"
         :title="segment.entry.fr"
         :aria-label="`${segment.entry.fr} — ${segment.entry.definition}`"
@@ -18,6 +21,19 @@
         @focus="showTooltip($event, segment.entry)"
         @blur="hideTooltip"
       >{{ segment.value }}</abbr>
+      <span
+        v-else-if="segment.type === 'dice'"
+        class="glossary-dice"
+        role="img"
+        :aria-label="`Dé : ${segment.value}`"
+      >{{ segment.value }}</span>
+      <span
+        v-else-if="segment.type === 'stat-value'"
+        class="glossary-stat-value"
+        :class="`glossary-stat-value--${segment.normalizedUnit || normalizeStatUnit(segment.statUnit)}`"
+        role="img"
+        :aria-label="`${segment.statNumber} ${segment.statUnit}`"
+      ><span class="glossary-stat-value__number">{{ segment.statNumber }}</span>&nbsp;<span class="glossary-stat-value__unit">{{ segment.statUnit }}</span></span>
       <template v-else>{{ segment.value }}</template>
     </template>
 
@@ -97,6 +113,31 @@ export default {
   },
   methods: {
     /**
+     * Catégories « proéminentes » — affichées avec un badge plutôt qu'un simple soulignement.
+     * Inclut les portées, les types de capacités et les caractéristiques.
+     * @param {string} category
+     * @returns {boolean}
+     */
+    isProminent(category) {
+      return ['range', 'feature', 'trait'].includes(category)
+    },
+
+    /**
+     * Normalise l'unité stat pour la classe CSS.
+     * @param {string} unit
+     * @returns {string}
+     */
+    normalizeStatUnit(unit) {
+      if (!unit) return 'generic'
+      const lower = unit.toLowerCase()
+      if (lower === 'hp' || lower === 'pv' || lower.startsWith('hit point')) return 'hp'
+      if (lower === 'stress') return 'stress'
+      if (lower.startsWith('armor')) return 'armor'
+      if (lower === 'evasion') return 'evasion'
+      return 'generic'
+    },
+
+    /**
      * Retourne le style inline de bordure colorée pour un mot-clé.
      * @param {Object} entry
      * @returns {Object}
@@ -173,6 +214,104 @@ export default {
   outline: 2px solid var(--color-border-active);
   outline-offset: 1px;
   border-radius: var(--radius-sm);
+}
+
+/* ── Keywords proéminents (portée, capacité, trait) ── */
+.glossary-keyword--prominent {
+  border-bottom: none;
+  font-weight: 600;
+  padding: 0 0.2em;
+  border-radius: 3px;
+}
+
+.glossary-keyword--range {
+  color: #81c784;
+}
+.glossary-keyword--prominent.glossary-keyword--range {
+  background-color: rgba(129, 199, 132, 0.15);
+}
+
+.glossary-keyword--feature {
+  color: #ba68c8;
+}
+.glossary-keyword--prominent.glossary-keyword--feature {
+  background-color: rgba(186, 104, 200, 0.15);
+}
+
+.glossary-keyword--trait {
+  color: var(--color-accent-gold, #ffd54f);
+}
+.glossary-keyword--prominent.glossary-keyword--trait {
+  background-color: rgba(255, 213, 79, 0.12);
+}
+
+/* ── Notation de dés (ex : 1d4, 2d6+3) ── */
+.glossary-dice {
+  display: inline;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: #4fc3f7;
+  background-color: rgba(79, 195, 247, 0.12);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* ── Valeurs de stat (ex : 3 HP, 2 Stress) ── */
+.glossary-stat-value {
+  display: inline;
+  font-weight: 700;
+  font-size: 0.95em;
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.glossary-stat-value__number {
+  font-variant-numeric: tabular-nums;
+}
+.glossary-stat-value__unit {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
+/* HP / PV — rouge vif */
+.glossary-stat-value--hp {
+  color: #ef5350;
+  background-color: rgba(239, 83, 80, 0.12);
+  border: 1px solid rgba(239, 83, 80, 0.3);
+}
+
+/* Stress — violet/magenta */
+.glossary-stat-value--stress {
+  color: #ce93d8;
+  background-color: rgba(206, 147, 216, 0.12);
+  border: 1px solid rgba(206, 147, 216, 0.3);
+}
+
+/* Armor — doré */
+.glossary-stat-value--armor {
+  color: var(--color-accent-gold, #ffd54f);
+  background-color: rgba(255, 213, 79, 0.12);
+  border: 1px solid rgba(255, 213, 79, 0.25);
+}
+
+/* Evasion — cyan */
+.glossary-stat-value--evasion {
+  color: #4dd0e1;
+  background-color: rgba(77, 208, 225, 0.12);
+  border: 1px solid rgba(77, 208, 225, 0.3);
+}
+
+/* Fallback générique */
+.glossary-stat-value--generic {
+  color: var(--color-text-primary, #e8e8f0);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 </style>
 

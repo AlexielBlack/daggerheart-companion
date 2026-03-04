@@ -162,11 +162,13 @@ describe('Glossaire — parseGlossaryTerms', () => {
     expect(keywords.length).toBeGreaterThanOrEqual(2)
   })
 
-  it('détecte les aliases', () => {
+  it('détecte les aliases et fusionne les valeurs stat', () => {
     const result = parseGlossaryTerms('Character has 5 HP remaining.')
-    const keywords = result.filter(s => s.type === 'keyword')
-    const hpSegment = keywords.find(k => k.entry.id === 'hit_points')
-    expect(hpSegment).toBeDefined()
+    // « 5 HP » est fusionné en stat-value (nombre + keyword combat)
+    const statValues = result.filter(s => s.type === 'stat-value')
+    expect(statValues).toHaveLength(1)
+    expect(statValues[0].statNumber).toBe('5')
+    expect(statValues[0].statUnit).toBe('HP')
   })
 
   it('ne détecte pas de faux positifs dans les sous-chaînes', () => {
@@ -282,6 +284,113 @@ describe('Glossaire — getCategoryMeta', () => {
 
   it('retourne undefined pour une catégorie inexistante', () => {
     expect(getCategoryMeta('nonexistent')).toBeUndefined()
+  })
+})
+
+// ──────────────────────────────────────────────────────────
+// Détection des patterns inline (dés, valeurs stat)
+// ──────────────────────────────────────────────────────────
+
+describe('Glossaire — parseGlossaryTerms (patterns inline)', () => {
+  // ── Notations de dés ──
+  it('détecte une notation de dé simple (1d4)', () => {
+    const result = parseGlossaryTerms('Roll 1d4 for healing.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(1)
+    expect(dice[0].value).toBe('1d4')
+  })
+
+  it('détecte une notation de dé avec modificateur (2d6+3)', () => {
+    const result = parseGlossaryTerms('Deal 2d6+3 damage.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(1)
+    expect(dice[0].value).toBe('2d6+3')
+  })
+
+  it('détecte une notation de dé avec espace autour du modificateur (1d12 + 2)', () => {
+    const result = parseGlossaryTerms('Roll 1d12 + 2 for the attack.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(1)
+    expect(dice[0].value).toBe('1d12 + 2')
+  })
+
+  it('détecte plusieurs notations de dés', () => {
+    const result = parseGlossaryTerms('Roll 2d12 then 1d8 for bonus.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(2)
+    expect(dice[0].value).toBe('2d12')
+    expect(dice[1].value).toBe('1d8')
+  })
+
+  it('détecte un dé avec soustraction (1d6-1)', () => {
+    const result = parseGlossaryTerms('Heal for 1d6-1.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(1)
+    expect(dice[0].value).toBe('1d6-1')
+  })
+
+  // ── Valeurs de stat ──
+  it('détecte une valeur HP', () => {
+    const result = parseGlossaryTerms('The target takes 3 HP.')
+    const stats = result.filter(s => s.type === 'stat-value')
+    expect(stats).toHaveLength(1)
+    expect(stats[0].statNumber).toBe('3')
+    expect(stats[0].statUnit).toBe('HP')
+  })
+
+  it('détecte une valeur Stress', () => {
+    // « take 2 Stress » n'est pas un alias complet, donc « 2 » + « Stress » keyword fusionnent
+    const result = parseGlossaryTerms('The target takes 2 Stress from the blast.')
+    const stats = result.filter(s => s.type === 'stat-value')
+    expect(stats).toHaveLength(1)
+    expect(stats[0].statNumber).toBe('2')
+    expect(stats[0].statUnit).toBe('Stress')
+  })
+
+  it('détecte Hit Points (forme longue)', () => {
+    const result = parseGlossaryTerms('Restore 5 Hit Points.')
+    const stats = result.filter(s => s.type === 'stat-value')
+    expect(stats).toHaveLength(1)
+    expect(stats[0].statNumber).toBe('5')
+    expect(stats[0].statUnit).toBe('Hit Points')
+  })
+
+  it('détecte Armor Slots', () => {
+    const result = parseGlossaryTerms('Has 2 Armor Slots.')
+    const stats = result.filter(s => s.type === 'stat-value')
+    expect(stats).toHaveLength(1)
+    expect(stats[0].statNumber).toBe('2')
+    expect(stats[0].statUnit).toBe('Armor Slots')
+  })
+
+  // ── Combinaison glossaire + patterns inline ──
+  it('détecte à la fois un keyword et un dé dans la même phrase', () => {
+    const result = parseGlossaryTerms('Deal 1d8 physical damage at Close range.')
+    const dice = result.filter(s => s.type === 'dice')
+    const keywords = result.filter(s => s.type === 'keyword')
+    expect(dice).toHaveLength(1)
+    expect(dice[0].value).toBe('1d8')
+    expect(keywords.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('préserve le texte original avec tous les types de segments', () => {
+    const text = 'Roll 2d6+3 and mark 1 Stress at Very Close range.'
+    const result = parseGlossaryTerms(text)
+    const rebuilt = result.map(s => s.value).join('')
+    expect(rebuilt).toBe(text)
+  })
+
+  it('ne détecte pas les nombres isolés comme des dés', () => {
+    const result = parseGlossaryTerms('The target has 42 problems.')
+    const dice = result.filter(s => s.type === 'dice')
+    expect(dice).toHaveLength(0)
+  })
+
+  it('ne détecte pas les stat-values sans nombre', () => {
+    // « HP » seul est traité par le glossaire (alias), pas comme stat-value
+    const result = parseGlossaryTerms('Check your HP total.')
+    const stats = result.filter(s => s.type === 'stat-value')
+    expect(stats).toHaveLength(0)
   })
 })
 
