@@ -1,206 +1,85 @@
+// @vitest-environment happy-dom
 /**
  * @module core/__tests__/moduleIndexes.test
  * @description Valide que chaque module exporte correctement
  * ses composants, stores et constantes via son index.js.
  *
- * Approche : on verifie la forme (typeof) de chaque export
- * sans instancier les stores (evite les dependances circulaires).
+ * Approche : un seul import dynamique par module (beforeAll),
+ * toutes les vérifications groupées pour minimiser le coût d'import.
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 
-// ══════════════════════════════════════════════════════
-//  adversaries
-// ══════════════════════════════════════════════════════
+const expectDefined = (mod, keys) =>
+  keys.forEach((k) => expect(mod[k], `export "${k}" should be defined`).toBeDefined())
+
+const expectFunctions = (mod, keys) =>
+  keys.forEach((k) => expect(typeof mod[k], `export "${k}" should be a function`).toBe('function'))
 
 describe('adversaries module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/adversaries')
-    expect(typeof mod.useAdversaryStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/adversaries')
-    expect(mod.AdversaryCard).toBeDefined()
-    expect(mod.AdversaryFilters).toBeDefined()
-    expect(mod.FeatureBlock).toBeDefined()
-    expect(mod.StatBlock).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/adversaries')
-    expect(mod.AdversaryBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/adversaries') })
+  it('exporte le store', () => expectFunctions(mod, ['useAdversaryStore']))
+  it('exporte les composants', () => expectDefined(mod, ['AdversaryCard', 'AdversaryFilters', 'FeatureBlock', 'StatBlock']))
+  it('exporte la vue', () => expectDefined(mod, ['AdversaryBrowser']))
 })
-
-// ══════════════════════════════════════════════════════
-//  characters
-// ══════════════════════════════════════════════════════
 
 describe('characters module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/characters')
-    expect(typeof mod.useCharacterStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/characters')
-    expect(mod.CharacterList).toBeDefined()
-    expect(mod.CharacterSelectors).toBeDefined()
-    expect(mod.CharacterSheet).toBeDefined()
-    expect(mod.ClassPicker).toBeDefined()
-    expect(mod.DomainCardPicker).toBeDefined()
-    expect(mod.SlotTracker).toBeDefined()
-    expect(mod.TraitBlock).toBeDefined()
-  })
-
-  it('exporte les vues', async () => {
-    const mod = await import('@modules/characters')
-    expect(mod.CharacterBuilder).toBeDefined()
-    expect(mod.ClassBrowser).toBeDefined()
-    expect(mod.AncestryBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/characters') })
+  it('exporte le store', () => expectFunctions(mod, ['useCharacterStore']))
+  it('exporte les composants', () => expectDefined(mod, ['CharacterList', 'CharacterSelectors', 'CharacterSheet', 'ClassPicker', 'DomainCardPicker', 'SlotTracker', 'TraitBlock']))
+  it('exporte les vues', () => expectDefined(mod, ['CharacterBuilder', 'ClassBrowser', 'AncestryBrowser']))
 })
-
-// ══════════════════════════════════════════════════════
-//  communities
-// ══════════════════════════════════════════════════════
 
 describe('communities module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/communities')
-    expect(typeof mod.useCommunityStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/communities')
-    expect(mod.CommunityCard).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/communities')
-    expect(mod.CommunityBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/communities') })
+  it('exporte le store', () => expectFunctions(mod, ['useCommunityStore']))
+  it('exporte les composants', () => expectDefined(mod, ['CommunityCard']))
+  it('exporte la vue', () => expectDefined(mod, ['CommunityBrowser']))
 })
-
-// ══════════════════════════════════════════════════════
-//  dice
-// ══════════════════════════════════════════════════════
 
 describe('dice module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/dice')
-    expect(typeof mod.useDiceStore).toBe('function')
-  })
-
-  it('exporte les constantes', async () => {
-    const mod = await import('@modules/dice')
-    expect(mod.DUALITY_OUTCOMES).toBeDefined()
-    expect(typeof mod.resolveDualityOutcome).toBe('function')
-    expect(typeof mod.calculateCriticalDamage).toBe('function')
-    expect(mod.QUICK_DICE).toBeDefined()
-    expect(mod.ROLL_PRESETS).toBeDefined()
+  let mod
+  beforeAll(async () => { mod = await import('@modules/dice') })
+  it('exporte le store', () => expectFunctions(mod, ['useDiceStore']))
+  it('exporte les constantes', () => {
+    expectDefined(mod, ['DUALITY_OUTCOMES', 'QUICK_DICE', 'ROLL_PRESETS'])
+    expectFunctions(mod, ['resolveDualityOutcome', 'calculateCriticalDamage'])
     expect(typeof mod.MAX_HISTORY).toBe('number')
   })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/dice')
-    expect(mod.DamagePanel).toBeDefined()
-    expect(mod.DiceHistory).toBeDefined()
-    expect(mod.DualityPanel).toBeDefined()
-    expect(mod.QuickDice).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/dice')
-    expect(mod.DiceRoller).toBeDefined()
-  })
+  it('exporte les composants', () => expectDefined(mod, ['DamagePanel', 'DiceHistory', 'DualityPanel', 'QuickDice']))
+  it('exporte la vue', () => expectDefined(mod, ['DiceRoller']))
 })
-
-// ══════════════════════════════════════════════════════
-//  domains
-// ══════════════════════════════════════════════════════
 
 describe('domains module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/domains')
-    expect(typeof mod.useDomainStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/domains')
-    expect(mod.DomainCardItem).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/domains')
-    expect(mod.DomainBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/domains') })
+  it('exporte le store', () => expectFunctions(mod, ['useDomainStore']))
+  it('exporte les composants', () => expectDefined(mod, ['DomainCardItem']))
+  it('exporte la vue', () => expectDefined(mod, ['DomainBrowser']))
 })
-
-// ══════════════════════════════════════════════════════
-//  encounter
-// ══════════════════════════════════════════════════════
 
 describe('encounter module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/encounter')
-    expect(typeof mod.useEncounterStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/encounter')
-    expect(mod.AdversaryPicker).toBeDefined()
-    expect(mod.BattlePointsBar).toBeDefined()
-    expect(mod.EncounterConfig).toBeDefined()
-    expect(mod.EncounterSlotList).toBeDefined()
-    expect(mod.EncounterSummary).toBeDefined()
-    expect(mod.EnvironmentPicker).toBeDefined()
-    expect(mod.SavedEncounterList).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/encounter')
-    expect(mod.EncounterBuilder).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/encounter') })
+  it('exporte le store', () => expectFunctions(mod, ['useEncounterStore']))
+  it('exporte les composants', () => expectDefined(mod, ['AdversaryPicker', 'BattlePointsBar', 'EncounterConfig', 'EncounterSlotList', 'EncounterSummary', 'EnvironmentPicker', 'SavedEncounterList']))
+  it('exporte la vue', () => expectDefined(mod, ['EncounterBuilder']))
 })
-
-// ══════════════════════════════════════════════════════
-//  environments
-// ══════════════════════════════════════════════════════
 
 describe('environments module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/environments')
-    expect(typeof mod.useEnvironmentStore).toBe('function')
-  })
-
-  it('exporte les composants', async () => {
-    const mod = await import('@modules/environments')
-    expect(mod.EnvironmentCard).toBeDefined()
-    expect(mod.EnvironmentFeatureBlock).toBeDefined()
-    expect(mod.EnvironmentFilters).toBeDefined()
-    expect(mod.EnvironmentStatBlock).toBeDefined()
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/environments')
-    expect(mod.EnvironmentBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/environments') })
+  it('exporte le store', () => expectFunctions(mod, ['useEnvironmentStore']))
+  it('exporte les composants', () => expectDefined(mod, ['EnvironmentCard', 'EnvironmentFeatureBlock', 'EnvironmentFilters', 'EnvironmentStatBlock']))
+  it('exporte la vue', () => expectDefined(mod, ['EnvironmentBrowser']))
 })
 
-// ══════════════════════════════════════════════════════
-//  equipment
-// ══════════════════════════════════════════════════════
-
 describe('equipment module index', () => {
-  it('exporte le store', async () => {
-    const mod = await import('@modules/equipment')
-    expect(typeof mod.useEquipmentStore).toBe('function')
-  })
-
-  it('exporte la vue', async () => {
-    const mod = await import('@modules/equipment')
-    expect(mod.EquipmentBrowser).toBeDefined()
-  })
+  let mod
+  beforeAll(async () => { mod = await import('@modules/equipment') })
+  it('exporte le store', () => expectFunctions(mod, ['useEquipmentStore']))
+  it('exporte la vue', () => expectDefined(mod, ['EquipmentBrowser']))
 })

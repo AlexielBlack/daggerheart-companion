@@ -18,6 +18,13 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     setupFiles: ['./src/__test-setup__/node-globals.js'],
-    include: ['src/**/__tests__/**/*.test.js']
+    include: ['src/**/__tests__/**/*.test.js'],
+    deps: {
+      optimizer: {
+        ssr: {
+          include: ['vue', 'pinia', '@vue/test-utils', 'happy-dom']
+        }
+      }
+    }
   }
 })
