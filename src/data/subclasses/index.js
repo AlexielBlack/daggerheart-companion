@@ -29,14 +29,17 @@ export const SUBCLASSES = {
         'Unwavering: Gagnez un bonus permanent de +1 à vos seuils de dégâts.',
         'Iron Will: Quand vous subissez des dégâts physiques, vous pouvez marquer un emplacement d\'armure supplémentaire pour réduire la sévérité.'
       ],
+      foundationTags: [['défensif'],['défensif']],
       specialization: [
         'Unrelenting: Gagnez un bonus permanent de +2 à vos seuils de dégâts.',
         'Partners-in-Arms: Quand un allié à Portée Très Proche subit des dégâts, vous pouvez marquer un emplacement d\'armure pour réduire la sévérité d\'un seuil.'
       ],
+      specializationTags: [['défensif'],['défensif']],
       mastery: [
         'Undaunted: Gagnez un bonus permanent de +3 à vos seuils de dégâts.',
         'Loyal Protector: Quand un allié à Portée Proche a 2 PV ou moins non marqués et subirait des dégâts, vous pouvez marquer un Stress pour sprinter à ses côtés et subir les dégâts à sa place.'
-      ]
+      ],
+      masteryTags: [['défensif'],['défensif']]
     },
     {
       id: 'vengeance',
@@ -47,12 +50,15 @@ export const SUBCLASSES = {
         'At Ease: Gagnez un emplacement de Stress supplémentaire.',
         'Revenge: Quand un adversaire à Portée de Mêlée réussit une attaque contre vous, vous pouvez marquer 2 Stress pour forcer l\'attaquant à marquer un PV.'
       ],
+      foundationTags: [['défensif'],['offensif','défensif']],
       specialization: [
         'Act of Reprisal: Quand un adversaire blesse un allié à Portée de Mêlée, vous gagnez un bonus de +1 à votre Maîtrise pour la prochaine attaque réussie contre cet adversaire.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'Nemesis: Dépensez 2 Espoir pour Prioriser un adversaire jusqu\'à votre prochain repos. Quand vous attaquez votre adversaire Priorisé, vous pouvez échanger les résultats de vos Dés d\'Espoir et de Peur. Vous ne pouvez Prioriser qu\'un adversaire à la fois.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ],
 
@@ -67,12 +73,15 @@ export const SUBCLASSES = {
         'Spirit Weapon: Quand vous avez une arme équipée avec une portée de Mêlée ou Très Proche, elle peut voler de votre main pour attaquer un adversaire à Portée Proche puis revenir. Vous pouvez marquer un Stress pour cibler un adversaire supplémentaire à portée avec le même jet d\'attaque.',
         'Sparing Touch: Une fois par repos long, touchez une créature et effacez 2 PV ou 2 Stress.'
       ],
+      foundationTags: [['offensif'],['offensif']],
       specialization: [
         'Devout: Quand vous lancez vos Dés de Prière, vous pouvez lancer un dé supplémentaire et défausser le résultat le plus bas. De plus, vous pouvez utiliser votre feature « Sparing Touch » deux fois au lieu d\'une par repos long.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'Sacred Resonance: Quand vous lancez les dégâts pour votre feature « Spirit Weapon », si des résultats de dés correspondent, doublez la valeur de chaque dé correspondant.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     },
     {
       id: 'winged_sentinel',
@@ -82,13 +91,16 @@ export const SUBCLASSES = {
       foundation: [
         'Wings of Light: Vous pouvez voler. En vol, vous pouvez : marquer un Stress pour transporter une autre créature consentante de votre taille ou moins ; dépenser un Espoir pour infliger 1d8 dégâts supplémentaires sur une attaque réussie.'
       ],
+      foundationTags: [['défensif']],
       specialization: [
         'Ethereal Visage: Votre visage surnaturel inspire crainte et respect. En vol, vous avez avantage sur les jets de Présence. Quand vous réussissez avec Espoir sur un jet de Présence, vous pouvez retirer une Peur de la réserve du MJ au lieu de gagner un Espoir.'
       ],
+      specializationTags: [['défensif']],
       mastery: [
         'Ascendant: Gagnez un bonus permanent de +4 à votre seuil de dégâts Sévères.',
         'Power of the Gods: En vol, vous infligez 1d12 dégâts supplémentaires au lieu de 1d8 grâce à votre feature « Wings of Light ».'
-      ]
+      ],
+      masteryTags: [['offensif'],['défensif']]
     }
   ],
 
@@ -103,12 +115,15 @@ export const SUBCLASSES = {
         'Courage: Quand vous échouez un jet avec Peur, vous gagnez un Espoir.',
         'Battle Ritual: Une fois par repos long, avant de tenter quelque chose d\'incroyablement dangereux ou d\'affronter un ennemi qui vous surpasse clairement, décrivez le rituel ou les préparatifs que vous effectuez. Effacez 2 Stress et gagnez 2 Espoir.'
       ],
+      foundationTags: [['offensif'],['offensif']],
       specialization: [
         'Rise to the Challenge: Vous êtes vigilant face au danger croissant. Tant que vous avez 2 PV non marqués ou moins, vous pouvez lancer un d20 comme Dé d\'Espoir.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'Camaraderie: Votre bravoure inébranlable est un point de ralliement pour vos alliés. Vous pouvez initier un Tag Team Roll une fois supplémentaire par session. De plus, quand un allié initie un Tag Team Roll avec vous, il n\'a besoin de dépenser que 2 Espoir.'
-      ]
+      ],
+      masteryTags: [['offensif','défensif']]
     },
     {
       id: 'call_of_the_slayer',
@@ -118,12 +133,15 @@ export const SUBCLASSES = {
       foundation: [
         'Slayer: Vous obtenez une réserve de dés appelés Slayer Dice. Sur un jet avec Espoir, vous pouvez placer un d6 sur cette carte au lieu de gagner un Espoir. Vous pouvez stocker un nombre de Slayer Dice égal à votre Maîtrise. Quand vous faites un jet d\'attaque ou de dégâts, vous pouvez dépenser n\'importe quel nombre de ces dés en les lançant et ajoutant le résultat. À la fin de chaque session, effacez les Slayer Dice non dépensés et gagnez un Espoir par dé effacé.'
       ],
+      foundationTags: [['offensif']],
       specialization: [
         'Weapon Specialist: Vous pouvez manier plusieurs armes avec une aise dangereuse. Quand vous réussissez une attaque, vous pouvez dépenser un Espoir pour ajouter un dé de dégâts de votre arme secondaire au jet de dégâts. De plus, une fois par repos long quand vous lancez vos Slayer Dice, relancez les 1.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'Martial Preparation: Vous êtes un guerrier inspirant pour tous ceux qui voyagent avec vous. Votre groupe gagne accès au mouvement de temps libre Martial Preparation. Pour l\'utiliser pendant un repos, décrivez comment vous entraînez votre groupe. Vous et chaque allié qui choisit ce mouvement gagnez un Slayer Die d6.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ],
 
@@ -137,14 +155,17 @@ export const SUBCLASSES = {
       foundation: [
         'Shadow Stepper: Vous pouvez vous déplacer d\'ombre en ombre. Quand vous entrez dans une zone d\'obscurité ou une ombre projetée par une créature ou un objet, vous pouvez marquer un Stress pour disparaître et réapparaître dans une autre ombre à Portée Lointaine. Quand vous réapparaissez, vous êtes Dissimulé (Cloaked).'
       ],
+      foundationTags: [['utilitaire']],
       specialization: [
         'Dark Cloud: Faites un Spellcast Roll (15). En cas de succès, créez un nuage sombre temporaire couvrant une zone à Portée Proche. Personne dans ce nuage ne peut voir à l\'extérieur, et personne à l\'extérieur ne peut voir à l\'intérieur. Vous êtes considéré Dissimulé pour tout adversaire dont le nuage bloque la ligne de vue.',
         'Adrenaline: Tant que vous êtes Vulnérable, ajoutez votre niveau à vos jets de dégâts.'
       ],
+      specializationTags: [['offensif'],['utilitaire']],
       mastery: [
         'Fleeting Shadow: Gagnez un bonus permanent de +1 à votre Évasion. Vous pouvez utiliser votre feature « Shadow Stepper » pour vous déplacer à Portée Très Lointaine.',
         'Vanishing Act: Marquez un Stress pour devenir Dissimulé à tout moment. Quand vous êtes Dissimulé par cette feature, vous effacez automatiquement la condition Entravé si vous l\'avez. Vous restez Dissimulé jusqu\'à ce que vous rouliez avec Peur ou jusqu\'à votre prochain repos.'
-      ]
+      ],
+      masteryTags: [['offensif'],['utilitaire']]
     },
     {
       id: 'syndicate',
@@ -154,12 +175,15 @@ export const SUBCLASSES = {
       foundation: [
         'Well-Connected: Quand vous arrivez dans une ville ou un environnement important, vous connaissez quelqu\'un qui y vit. Donnez-lui un nom, notez comment il pourrait être utile, et choisissez un fait : il vous doit une faveur mais sera difficile à trouver ; il va demander quelque chose en échange ; il est toujours dans de gros ennuis ; vous étiez ensemble, c\'est une longue histoire ; vous ne vous êtes pas quittés en bons termes.'
       ],
+      foundationTags: [['social','utilitaire']],
       specialization: [
         'Contacts Everywhere: Une fois par session, vous pouvez brièvement faire appel à un contact louche. Choisissez un bénéfice et décrivez ce qui l\'a amené ici : il fournit 1 poignée d\'or, un outil unique, ou un objet mundain nécessaire ; sur votre prochain jet d\'action, son aide fournit un bonus de +3 au résultat de votre Dé d\'Espoir ou de Peur ; la prochaine fois que vous infligez des dégâts, il tire depuis les ombres, ajoutant 2d8 à votre jet de dégâts.'
       ],
+      specializationTags: [['utilitaire']],
       mastery: [
         'Reliable Backup: Vous pouvez utiliser votre feature « Contacts Everywhere » trois fois par session. Les options suivantes s\'ajoutent à la liste de bénéfices : quand vous marquez 1+ PV, il peut se précipiter pour vous protéger, réduisant les PV marqués de 1 ; quand vous faites un jet de Présence en conversation, il vous soutient — vous pouvez lancer un d20 comme Dé d\'Espoir.'
-      ]
+      ],
+      masteryTags: [['utilitaire']]
     }
   ],
 
@@ -173,12 +197,15 @@ export const SUBCLASSES = {
       foundation: [
         'Gifted Performer: Vous pouvez jouer trois types de chansons différentes, une fois chacune par repos long ; décrivez comment vous jouez pour obtenir le bénéfice : Relaxing Song — vous et tous les alliés à Portée Proche effacez un PV ; Epic Song — rendez temporairement une cible à Portée Proche Vulnérable ; Heartbreaking Song — vous et tous les alliés à Portée Proche gagnez un Espoir.'
       ],
+      foundationTags: [['social','défensif']],
       specialization: [
         'Maestro: Vos chants de ralliement renforcent le courage de ceux qui écoutent. Quand vous donnez un Rally Die à un allié, il peut gagner un Espoir ou effacer un Stress.'
       ],
+      specializationTags: [['défensif']],
       mastery: [
         'Virtuoso: Vous êtes parmi les plus grands de votre art et votre talent est sans limites. Vous pouvez interpréter chacune des chansons de votre feature « Gifted Performer » deux fois par repos long.'
-      ]
+      ],
+      masteryTags: [['défensif']]
     },
     {
       id: 'wordsmith',
@@ -189,12 +216,15 @@ export const SUBCLASSES = {
         'Rousing Speech: Une fois par repos long, vous pouvez donner un discours inspirant et sincère. Tous les alliés à Portée Lointaine effacent 2 Stress.',
         'Heart of a Poet: Après un jet d\'action pour impressionner, persuader ou offenser quelqu\'un, vous pouvez dépenser un Espoir pour ajouter un d4 au jet.'
       ],
+      foundationTags: [['social'],['social']],
       specialization: [
         'Eloquent: Vos mots émouvants remontent le moral. Une fois par session, quand vous encouragez un allié, vous pouvez : lui permettre de trouver un objet ou outil mundain dont il a besoin ; Aider un Allié sans dépenser d\'Espoir ; lui donner un mouvement de temps libre supplémentaire pendant son prochain repos.'
       ],
+      specializationTags: [['social']],
       mastery: [
         'Epic Poetry: Votre Rally Die passe à un d10. De plus, quand vous Aidez un Allié, vous pouvez narrer le moment comme si vous écriviez le récit de leur héroïsme dans des mémoires. Quand vous le faites, lancez un d10 comme dé d\'avantage.'
-      ]
+      ],
+      masteryTags: [['social']]
     }
   ],
 
@@ -208,12 +238,15 @@ export const SUBCLASSES = {
       foundation: [
         'Elemental Incarnation: Marquez un Stress pour Canaliser un des éléments suivants jusqu\'à ce que vous subissiez des dégâts Sévères ou jusqu\'à votre prochain repos — Feu : quand un adversaire à Portée de Mêlée vous inflige des dégâts, il subit 1d10 dégâts magiques ; Terre : gagnez un bonus à vos seuils de dégâts égal à votre Maîtrise ; Eau : quand vous infligez des dégâts à un adversaire à Portée de Mêlée, tous les autres adversaires à Portée Très Proche doivent marquer un Stress ; Air : vous pouvez léviter, gagnant avantage sur les jets d\'Agilité.'
       ],
+      foundationTags: [['utilitaire']],
       specialization: [
         'Elemental Aura: Une fois par repos en Canalisant, vous pouvez assumer une aura correspondant à votre élément. L\'aura affecte les cibles à Portée Proche jusqu\'à la fin de votre Canalisation — Feu : quand un adversaire marque 1+ PV, il doit aussi marquer un Stress ; Terre : vos alliés gagnent +1 en Force ; Eau : quand un adversaire vous inflige des dégâts, marquez un Stress pour le déplacer n\'importe où à Portée Très Proche de sa position ; Air : quand vous ou un allié subissez des dégâts d\'une attaque au-delà de Mêlée, réduisez les dégâts de 1d8.'
       ],
+      specializationTags: [['offensif','utilitaire']],
       mastery: [
         'Elemental Dominion: Vous incarnez davantage votre élément. En Canalisant, vous gagnez le bénéfice suivant — Feu : +1 à votre Maîtrise pour les attaques et sorts qui infligent des dégâts ; Terre : quand vous marquez des PV, lancez un d6 par PV marqué — pour chaque résultat de 6, réduisez les PV marqués de 1 ; Eau : quand une attaque contre vous réussit, marquez un Stress pour rendre l\'attaquant temporairement Vulnérable ; Air : +1 à votre Évasion et vous pouvez voler.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     },
     {
       id: 'warden_of_renewal',
@@ -224,13 +257,16 @@ export const SUBCLASSES = {
         'Clarity of Nature: Une fois par repos long, vous pouvez créer un espace de sérénité naturelle à Portée Proche. Quand vous passez quelques minutes à vous reposer dans cet espace, effacez du Stress égal à votre Instinct, réparti comme vous le souhaitez entre vous et vos alliés.',
         'Regeneration: Touchez une créature et dépensez 3 Espoir. Cette créature efface 1d4 PV.'
       ],
+      foundationTags: [['utilitaire'],['défensif']],
       specialization: [
         'Regenerative Reach: Vous pouvez cibler des créatures à Portée Très Proche avec votre feature « Regeneration ».',
         'Warden\'s Protection: Une fois par repos long, dépensez 2 Espoir pour effacer 2 PV sur 1d4 alliés à Portée Proche.'
       ],
+      specializationTags: [['utilitaire'],['offensif']],
       mastery: [
         'Defender: Votre transformation animale incarne un esprit gardien guérisseur. Quand vous êtes en Beastform et qu\'un allié à Portée Proche marque 2 PV ou plus, vous pouvez marquer un Stress pour réduire le nombre de PV qu\'il marque de 1.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ],
 
@@ -244,14 +280,17 @@ export const SUBCLASSES = {
       foundation: [
         'Companion: Vous avez un compagnon animal de votre choix (à la discrétion du MJ). Il reste à vos côtés sauf indication contraire. Prenez la feuille Ranger Companion. Quand vous montez de niveau, choisissez une option de montée de niveau pour votre compagnon également.'
       ],
+      foundationTags: [['utilitaire']],
       specialization: [
         'Expert Training: Choisissez une option de montée de niveau supplémentaire pour votre compagnon.',
         'Battle-Bonded: Quand un adversaire vous attaque alors qu\'il est à Portée de Mêlée de votre compagnon, vous gagnez un bonus de +2 à votre Évasion contre l\'attaque.'
       ],
+      specializationTags: [['utilitaire'],['défensif']],
       mastery: [
         'Advanced Training: Choisissez deux options de montée de niveau supplémentaires pour votre compagnon.',
         'Loyal Friend: Une fois par repos long, quand les dégâts d\'une attaque marqueraient le dernier Stress de votre compagnon ou votre dernier PV et que vous êtes à Portée Proche l\'un de l\'autre, vous ou votre compagnon pouvez vous précipiter aux côtés de l\'autre et subir ces dégâts à sa place.'
-      ]
+      ],
+      masteryTags: [['utilitaire'],['défensif']]
     },
     {
       id: 'wayfinder',
@@ -262,12 +301,15 @@ export const SUBCLASSES = {
         'Ruthless Predator: Quand vous faites un jet de dégâts, vous pouvez marquer un Stress pour gagner un bonus de +1 à votre Maîtrise. De plus, quand vous infligez des dégâts Sévères à un adversaire, il doit marquer un Stress.',
         'Path Forward: Quand vous voyagez vers un lieu que vous avez déjà visité ou que vous portez un objet qui s\'y trouvait, vous pouvez identifier le chemin le plus court et le plus direct vers votre destination.'
       ],
+      foundationTags: [['offensif'],['offensif']],
       specialization: [
         'Elusive Predator: Quand votre Focus vous attaque, vous gagnez un bonus de +2 à votre Évasion contre l\'attaque.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'Apex Predator: Avant de faire un jet d\'attaque contre votre Focus, vous pouvez dépenser un Espoir. Sur une attaque réussie, vous retirez une Peur de la réserve du MJ.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ],
 
@@ -283,6 +325,9 @@ export const SUBCLASSES = {
         'Prepared: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
         'Adept: Quand vous Utilisez une Expérience, vous pouvez marquer un Stress au lieu de dépenser un Espoir. Si vous le faites, doublez votre modificateur d\'Expérience pour ce jet.'
       ],
+      masteryTags: [['utilitaire'],['défensif']],
+      specializationTags: [['utilitaire'],['utilitaire']],
+      foundationTags: [['utilitaire'],['utilitaire']],
       specialization: [
         'Accomplished: Prenez une carte de domaine supplémentaire de votre niveau ou inférieur d\'un domaine auquel vous avez accès.',
         'Perfect Recall: Une fois par repos, quand vous rappelez une carte de domaine de votre coffre, vous pouvez réduire son Coût de Rappel de 1.'
@@ -301,14 +346,17 @@ export const SUBCLASSES = {
         'Battlemage: Vous avez concentré vos études pour devenir une force imparable sur le champ de bataille. Gagnez un emplacement de PV supplémentaire.',
         'Face Your Fear: Quand vous réussissez avec Peur sur un jet d\'attaque, vous infligez 1d10 dégâts magiques supplémentaires.'
       ],
+      foundationTags: [['offensif'],['offensif']],
       specialization: [
         'Conjure Shield: Vous pouvez maintenir une barrière protectrice de magie. Tant que vous avez au moins 2 Espoir, vous ajoutez votre Maîtrise à votre Évasion.',
         'Fueled by Fear: Les dégâts magiques supplémentaires de votre feature « Face Your Fear » passent à 2d10.'
       ],
+      specializationTags: [['offensif'],['offensif']],
       mastery: [
         'Thrive in Chaos: Quand vous réussissez une attaque, vous pouvez marquer un Stress après avoir lancé les dégâts pour forcer la cible à marquer un PV supplémentaire.',
         'Have No Fear: Les dégâts magiques supplémentaires de votre feature « Face Your Fear » passent à 3d10.'
-      ]
+      ],
+      masteryTags: [['offensif'],['offensif']]
     }
   ],
 
@@ -322,12 +370,15 @@ export const SUBCLASSES = {
       foundation: [
         'Elementalist: Choisissez un élément à la création du personnage : air, terre, feu, foudre, eau. Vous pouvez façonner cet élément en effets inoffensifs. De plus, dépensez un Espoir et décrivez comment votre contrôle de cet élément aide un jet d\'action que vous allez faire, puis gagnez un bonus de +2 au jet ou un bonus de +3 aux dégâts du jet.'
       ],
+      foundationTags: [['offensif','utilitaire']],
       specialization: [
         'Natural Evasion: Vous pouvez invoquer votre élément pour vous protéger. Quand un jet d\'attaque contre vous réussit, vous pouvez marquer un Stress et décrire comment vous utilisez votre élément pour vous défendre. Quand vous le faites, lancez un d6 et ajoutez son résultat à votre Évasion contre l\'attaque.'
       ],
+      specializationTags: [['défensif']],
       mastery: [
         'Transcendence: Une fois par repos long, vous pouvez vous transformer en une manifestation physique de votre élément. Décrivez votre transformation et choisissez deux des bénéfices suivants jusqu\'à votre prochain repos : +4 au seuil Sévère ; +1 à un trait de personnage de votre choix ; +1 à votre Maîtrise ; +2 à votre Évasion.'
-      ]
+      ],
+      masteryTags: [['défensif','utilitaire']]
     },
     {
       id: 'primal_origin',
@@ -337,12 +388,15 @@ export const SUBCLASSES = {
       foundation: [
         'Manipulate Magic: Votre origine primale vous permet de modifier l\'essence même de la magie. Après avoir lancé un sort ou fait une attaque avec une arme infligeant des dégâts magiques, vous pouvez marquer un Stress pour : étendre la portée du sort ou de l\'attaque d\'un cran ; gagner un bonus de +2 au résultat du jet d\'action ; doubler un dé de dégâts de votre choix ; toucher une cible supplémentaire à portée.'
       ],
+      foundationTags: [['offensif','utilitaire']],
       specialization: [
         'Enchanted Aid: Vous pouvez améliorer la magie des autres avec votre essence. Quand vous Aidez un Allié avec un Spellcast Roll, vous pouvez lancer un d8 comme dé d\'avantage. Une fois par repos long, après qu\'un allié a fait un Spellcast Roll avec votre aide, vous pouvez échanger les résultats de ses Duality Dice.'
       ],
+      specializationTags: [['social','utilitaire']],
       mastery: [
         'Arcane Charge: Vous pouvez accumuler de l\'énergie magique pour améliorer vos capacités. Quand vous subissez des dégâts magiques, vous devenez Chargé. Alternativement, vous pouvez dépenser 2 Espoir pour devenir Chargé. Quand vous réussissez une attaque infligeant des dégâts magiques en étant Chargé, vous pouvez dissiper votre Charge pour gagner un bonus de +10 aux dégâts ou un bonus de +3 à la Difficulté d\'un jet de réaction que le sort impose à la cible. Vous cessez d\'être Chargé à votre prochain repos long.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ],
 
@@ -361,14 +415,17 @@ export const SUBCLASSES = {
         'First Strike: La première fois dans une scène que vous réussissez un jet d\'attaque, doublez les dégâts de l\'attaque.',
         'Ambush: Votre feature « Marked for Death » utilise des d6 au lieu de d4.'
       ],
+      foundationTags: [['offensif'],['utilitaire']],
       specialization: [
         'Death Strike: Quand vous infligez des dégâts Sévères à une créature, vous pouvez marquer un Stress pour lui faire marquer un PV supplémentaire.',
         'Scorpion\'s Poise: Vous gagnez un bonus de +2 à votre Évasion contre toute attaque effectuée par une créature Marked for Death.'
       ],
+      specializationTags: [['offensif'],['offensif']],
       mastery: [
         'True Strike: Une fois par repos long, quand vous échouez un jet d\'attaque, vous pouvez dépenser un Espoir pour en faire une réussite.',
         'Backstab: Votre feature « Marked for Death » utilise des d8 au lieu de d6.'
-      ]
+      ],
+      masteryTags: [['offensif'],['offensif']]
     },
     {
       id: 'poisoners_guild',
@@ -379,14 +436,17 @@ export const SUBCLASSES = {
         'Toxic Concoctions: Marquez un Stress pour ajouter 1d4+1 jetons sur cette carte. À votre prochain repos long, videz cette carte. Vous connaissez ces poisons : Gorgon Root (la cible reçoit un malus permanent de -1 à sa Difficulté, une seule fois) ; Grave Spore (la cible doit aussi marquer un Stress) ; Leech Weed (bonus de +1d6 aux dégâts de cette attaque).',
         'Envenomate: Quand vous réussissez une attaque avec une arme, vous pouvez dépenser un jeton de cette carte pour infliger à la cible l\'effet d\'un poison connu.'
       ],
+      foundationTags: [['offensif'],['utilitaire']],
       specialization: [
         'Poison Compendium: Vous connaissez aussi ces poisons : Midnight\'s Veil (malus permanent de -2 aux jets d\'attaque de la cible, une seule fois) ; Ghost Petal (diminuez d\'un cran les dés de dégâts de l\'attaque standard de la cible, une seule fois).',
         'Adder\'s Blessing: Vous êtes immunisé aux poisons et autres toxines.'
       ],
+      specializationTags: [['offensif'],['utilitaire']],
       mastery: [
         'Venomancer: Vous connaissez aussi ces poisons : Blight Seed (malus permanent de -3 aux seuils de dégâts de la cible, une seule fois) ; Fear Leaf (cette attaque gagne un bonus aux dégâts égal au résultat de votre Dé de Peur).',
         'Twin Fang: Quand vous infligez l\'effet d\'un poison connu à une cible, vous pouvez dépenser un jeton supplémentaire pour infliger l\'effet d\'un second poison connu.'
-      ]
+      ],
+      masteryTags: [['offensif'],['utilitaire']]
     }
   ],
 
@@ -401,12 +461,15 @@ export const SUBCLASSES = {
         'Roiling Braggart: Quand vous Fanfaronnez (Boast), vous pouvez donner une Peur au MJ pour augmenter le dé d\'avantage à un d8.',
         'A Tale to Tell: Décrivez comme si vous racontiez l\'histoire plus tard — narrez comment vous rendez un Rival Vulnérable. Il reste Vulnérable jusqu\'à ce que quelqu\'un l\'attaque.'
       ],
+      foundationTags: [['offensif'],['social']],
       specialization: [
         'Deflective Dodge: Quand un adversaire vous attaque alors qu\'un autre adversaire est à Portée de Mêlée, marquez un Stress pour rediriger l\'attaque et infliger ses dégâts à cet adversaire.'
       ],
+      specializationTags: [['offensif']],
       mastery: [
         'A Worthy Opponent: Vous pouvez avoir un Rival Juré. Cette Rivalité ne compte pas dans votre limite de Rivaux et ne se termine pas à la fin d\'une scène. Deux fois par repos, tant que vous pouvez voir votre Rival Juré, vous pouvez Fanfaronner un jet pour 2 Espoir. De plus, vous pouvez facilement découvrir la localisation et les activités récentes de votre Rival Juré. Vous ne pouvez pas avoir de nouveau Rival Juré sans en informer le précédent.'
-      ]
+      ],
+      masteryTags: [['offensif','utilitaire']]
     },
     {
       id: 'acrobat',
@@ -417,13 +480,16 @@ export const SUBCLASSES = {
         'Stunt Performer: Quand vous Fanfaronnez un jet d\'Agilité, au lieu d\'ajouter le résultat du dé d\'avantage à votre total, ajoutez-le à votre Dé d\'Espoir.',
         'Roll With the Punches: Une fois par repos long, quand vous échouez un jet d\'action, vous pouvez dépenser 2 Espoir pour faire un jet d\'Agilité afin de rapidement fuir ou vous cacher — utilisez un d20 pour le Dé de Peur.'
       ],
+      foundationTags: [['offensif'],['utilitaire']],
       specialization: [
         'Tumbler: Vous êtes immunisé aux dégâts physiques causés par les chutes ou le fait d\'être projeté.',
         'A Double Act: Une fois par repos long, vous pouvez choisir un allié. Le coût pour initier un Tag Team Roll avec cet allié est réduit à 1 Espoir.'
       ],
+      specializationTags: [['offensif'],['défensif']],
       mastery: [
         'Steal the Spotlight: Une fois par repos, marquez un Stress pour commencer une démonstration éblouissante. Pendant cette démonstration, tous les adversaires deviennent vos Rivaux. Placez un d4 Dazzling Die sur cette carte avec la valeur 4. Quand un adversaire vous attaque ou vous inflige des dégâts, ajoutez la valeur actuelle du Dazzling Die à votre Évasion et vos seuils de dégâts, déplacez-vous immédiatement jusqu\'à Portée Lointaine, puis diminuez la valeur du dé de 1. Une fois que la valeur atteint 0 ou que la scène se termine, la démonstration prend fin.'
-      ]
+      ],
+      masteryTags: [['offensif']]
     }
   ]
 }

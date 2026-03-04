@@ -20,12 +20,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Purposeful Design',
       description:
-        'Décidez qui vous a créé et dans quel but. À la création du personnage, choisissez une de vos Expériences qui correspond le mieux à ce but et gagnez un bonus permanent de +1 à celle-ci.'
+        'Décidez qui vous a créé et dans quel but. À la création du personnage, choisissez une de vos Expériences qui correspond le mieux à ce but et gagnez un bonus permanent de +1 à celle-ci.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Efficient',
       description:
-        'Quand vous prenez un repos court, vous pouvez choisir un mouvement de repos long au lieu d\'un mouvement de repos court.'
+        'Quand vous prenez un repos court, vous pouvez choisir un mouvement de repos long au lieu d\'un mouvement de repos court.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -38,12 +40,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Scales',
       description:
-        'Vos écailles agissent comme une protection naturelle. Quand vous subiriez des dégâts Sévères, vous pouvez marquer un Stress pour marquer 1 PV de moins.'
+        'Vos écailles agissent comme une protection naturelle. Quand vous subiriez des dégâts Sévères, vous pouvez marquer un Stress pour marquer 1 PV de moins.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Elemental Breath',
       description:
-        'Choisissez un élément pour votre souffle (comme l\'électricité, le feu ou la glace). Vous pouvez utiliser ce souffle contre une cible ou un groupe de cibles à portée Très Proche, en le traitant comme une arme d\'Instinct qui inflige d8 dégâts magiques en utilisant votre Maîtrise.'
+        'Choisissez un élément pour votre souffle (comme l\'électricité, le feu ou la glace). Vous pouvez utiliser ce souffle contre une cible ou un groupe de cibles à portée Très Proche, en le traitant comme une arme d\'Instinct qui inflige d8 dégâts magiques en utilisant votre Maîtrise.',
+      tags: ['offensif']
     }
   },
   {
@@ -56,12 +60,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Thick Skin',
       description:
-        'Quand vous subissez des dégâts Mineurs, vous pouvez marquer 2 Stress au lieu de marquer un PV.'
+        'Quand vous subissez des dégâts Mineurs, vous pouvez marquer 2 Stress au lieu de marquer un PV.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Increased Fortitude',
       description:
-        'Dépensez 3 Espoir pour réduire de moitié les dégâts physiques entrants.'
+        'Dépensez 3 Espoir pour réduire de moitié les dégâts physiques entrants.',
+      tags: ['défensif']
     }
   },
   {
@@ -74,12 +80,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Quick Reactions',
       description:
-        'Marquez un Stress pour obtenir l\'avantage sur un jet de réaction.'
+        'Marquez un Stress pour obtenir l\'avantage sur un jet de réaction.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Celestial Trance',
       description:
-        'Pendant un repos, vous pouvez entrer en transe pour choisir un mouvement de temps libre supplémentaire.'
+        'Pendant un repos, vous pouvez entrer en transe pour choisir un mouvement de temps libre supplémentaire.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -92,12 +100,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Luckbender',
       description:
-        'Une fois par session, après que vous ou un allié consentant à portée Proche avez fait un jet d\'action, vous pouvez dépenser 3 Espoir pour relancer les Dés de Dualité.'
+        'Une fois par session, après que vous ou un allié consentant à portée Proche avez fait un jet d\'action, vous pouvez dépenser 3 Espoir pour relancer les Dés de Dualité.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Wings',
       description:
-        'Vous pouvez voler. En vol, vous pouvez marquer un Stress après qu\'un adversaire ait fait une attaque contre vous pour gagner un bonus de +2 à votre Évasion contre cette attaque.'
+        'Vous pouvez voler. En vol, vous pouvez marquer un Stress après qu\'un adversaire ait fait une attaque contre vous pour gagner un bonus de +2 à votre Évasion contre cette attaque.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -110,12 +120,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Caprine Leap',
       description:
-        'Vous pouvez sauter n\'importe où à portée Proche comme s\'il s\'agissait d\'un mouvement normal, vous permettant de franchir des obstacles, sauter par-dessus des gouffres ou escalader des barrières avec facilité.'
+        'Vous pouvez sauter n\'importe où à portée Proche comme s\'il s\'agissait d\'un mouvement normal, vous permettant de franchir des obstacles, sauter par-dessus des gouffres ou escalader des barrières avec facilité.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Kick',
       description:
-        'Quand vous réussissez une attaque contre une cible à portée de Mêlée, vous pouvez marquer un Stress pour la repousser d\'un coup de sabot, infligeant 2d6 dégâts supplémentaires et repoussant soit vous-même soit la cible à portée Très Proche.'
+        'Quand vous réussissez une attaque contre une cible à portée de Mêlée, vous pouvez marquer un Stress pour la repousser d\'un coup de sabot, infligeant 2d6 dégâts supplémentaires et repoussant soit vous-même soit la cible à portée Très Proche.',
+      tags: ['offensif']
     }
   },
   {
@@ -128,12 +140,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Charge',
       description:
-        'Quand vous réussissez un jet d\'Agilité pour vous déplacer de Loin ou Très Loin à portée de Mêlée d\'une ou plusieurs cibles, vous pouvez marquer un Stress pour infliger 1d12 dégâts physiques à toutes les cibles à portée de Mêlée.'
+        'Quand vous réussissez un jet d\'Agilité pour vous déplacer de Loin ou Très Loin à portée de Mêlée d\'une ou plusieurs cibles, vous pouvez marquer un Stress pour infliger 1d12 dégâts physiques à toutes les cibles à portée de Mêlée.',
+      tags: ['offensif','utilitaire']
     },
     bottomFeature: {
       name: 'Unshakable',
       description:
-        'Quand vous devriez marquer un Stress, lancez un d6. Sur un résultat de 6, ne le marquez pas.'
+        'Quand vous devriez marquer un Stress, lancez un d6. Sur un résultat de 6, ne le marquez pas.',
+      tags: ['défensif']
     }
   },
   {
@@ -146,12 +160,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Fungril Network',
       description:
-        'Faites un jet d\'Instinct (12) pour utiliser votre réseau mycélien afin de parler avec d\'autres membres de votre ascendance. En cas de succès, vous pouvez communiquer à n\'importe quelle distance.'
+        'Faites un jet d\'Instinct (12) pour utiliser votre réseau mycélien afin de parler avec d\'autres membres de votre ascendance. En cas de succès, vous pouvez communiquer à n\'importe quelle distance.',
+      tags: ['social','utilitaire']
     },
     bottomFeature: {
       name: 'Death Connection',
       description:
-        'En touchant un cadavre mort récemment, vous pouvez marquer un Stress pour extraire un souvenir du cadavre lié à une émotion ou sensation spécifique de votre choix.'
+        'En touchant un cadavre mort récemment, vous pouvez marquer un Stress pour extraire un souvenir du cadavre lié à une émotion ou sensation spécifique de votre choix.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -164,12 +180,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Shell',
       description:
-        'Gagnez un bonus à vos seuils de dégâts égal à votre Maîtrise.'
+        'Gagnez un bonus à vos seuils de dégâts égal à votre Maîtrise.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Retract',
       description:
-        'Marquez un Stress pour vous rétracter dans votre carapace. Dans votre carapace, vous avez la résistance aux dégâts physiques, vous avez le désavantage sur les jets d\'action, et vous ne pouvez pas vous déplacer.'
+        'Marquez un Stress pour vous rétracter dans votre carapace. Dans votre carapace, vous avez la résistance aux dégâts physiques, vous avez le désavantage sur les jets d\'action, et vous ne pouvez pas vous déplacer.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -182,12 +200,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Endurance',
       description:
-        'Gagnez un emplacement de PV supplémentaire à la création du personnage.'
+        'Gagnez un emplacement de PV supplémentaire à la création du personnage.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Reach',
       description:
-        'Traitez toute arme, capacité, sort ou autre aptitude ayant une portée de Mêlée comme ayant une portée Très Proche à la place.'
+        'Traitez toute arme, capacité, sort ou autre aptitude ayant une portée de Mêlée comme ayant une portée Très Proche à la place.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -200,12 +220,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Surefooted',
       description:
-        'Vous ignorez le désavantage sur les jets d\'Agilité.'
+        'Vous ignorez le désavantage sur les jets d\'Agilité.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Danger Sense',
       description:
-        'Une fois par repos, marquez un Stress pour forcer un adversaire à relancer une attaque contre vous ou un allié à portée Très Proche.'
+        'Une fois par repos, marquez un Stress pour forcer un adversaire à relancer une attaque contre vous ou un allié à portée Très Proche.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -218,12 +240,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Luckbringer',
       description:
-        'Au début de chaque session, tous les membres de votre groupe gagnent un Espoir.'
+        'Au début de chaque session, tous les membres de votre groupe gagnent un Espoir.',
+      tags: ['social','utilitaire']
     },
     bottomFeature: {
       name: 'Internal Compass',
       description:
-        'Quand vous obtenez un 1 sur votre Dé d\'Espoir, vous pouvez le relancer.'
+        'Quand vous obtenez un 1 sur votre Dé d\'Espoir, vous pouvez le relancer.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -236,12 +260,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'High Stamina',
       description:
-        'Gagnez un emplacement de Stress supplémentaire à la création du personnage.'
+        'Gagnez un emplacement de Stress supplémentaire à la création du personnage.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Adaptability',
       description:
-        'Quand vous ratez un jet qui utilisait une de vos Expériences, vous pouvez marquer un Stress pour relancer.'
+        'Quand vous ratez un jet qui utilisait une de vos Expériences, vous pouvez marquer un Stress pour relancer.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -254,12 +280,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Fearless',
       description:
-        'Quand vous lancez avec Peur, vous pouvez marquer 2 Stress pour transformer ce jet en un jet avec Espoir à la place.'
+        'Quand vous lancez avec Peur, vous pouvez marquer 2 Stress pour transformer ce jet en un jet avec Espoir à la place.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Dread Visage',
       description:
-        'Vous avez l\'avantage sur les jets pour intimider les créatures hostiles.'
+        'Vous avez l\'avantage sur les jets pour intimider les créatures hostiles.',
+      tags: ['social']
     }
   },
   {
@@ -272,12 +300,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Feline Instincts',
       description:
-        'Quand vous faites un jet d\'Agilité, vous pouvez dépenser 2 Espoir pour relancer votre Dé d\'Espoir.'
+        'Quand vous faites un jet d\'Agilité, vous pouvez dépenser 2 Espoir pour relancer votre Dé d\'Espoir.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Retracting Claws',
       description:
-        'Faites un jet d\'Agilité pour griffer une cible à portée de Mêlée. En cas de succès, elle devient temporairement Vulnérable.'
+        'Faites un jet d\'Agilité pour griffer une cible à portée de Mêlée. En cas de succès, elle devient temporairement Vulnérable.',
+      tags: ['offensif']
     }
   },
   {
@@ -290,12 +320,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Sturdy',
       description:
-        'Quand il ne vous reste qu\'1 PV, les attaques contre vous ont le désavantage.'
+        'Quand il ne vous reste qu\'1 PV, les attaques contre vous ont le désavantage.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Tusks',
       description:
-        'Quand vous réussissez une attaque contre une cible à portée de Mêlée, vous pouvez dépenser un Espoir pour empaler la cible avec vos défenses, infligeant 1d6 dégâts supplémentaires.'
+        'Quand vous réussissez une attaque contre une cible à portée de Mêlée, vous pouvez dépenser un Espoir pour empaler la cible avec vos défenses, infligeant 1d6 dégâts supplémentaires.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -308,12 +340,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Amphibious',
       description:
-        'Vous pouvez respirer et vous déplacer naturellement sous l\'eau.'
+        'Vous pouvez respirer et vous déplacer naturellement sous l\'eau.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Long Tongue',
       description:
-        'Vous pouvez utiliser votre longue langue pour saisir des choses à portée Proche. Marquez un Stress pour utiliser votre langue comme une arme de Finesse Proche qui inflige d12 dégâts physiques en utilisant votre Maîtrise.'
+        'Vous pouvez utiliser votre longue langue pour saisir des choses à portée Proche. Marquez un Stress pour utiliser votre langue comme une arme de Finesse Proche qui inflige d12 dégâts physiques en utilisant votre Maîtrise.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -326,12 +360,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Natural Climber',
       description:
-        'Vous avez l\'avantage sur les jets d\'Agilité impliquant l\'équilibre et l\'escalade.'
+        'Vous avez l\'avantage sur les jets d\'Agilité impliquant l\'équilibre et l\'escalade.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Nimble',
       description:
-        'Gagnez un bonus permanent de +1 à votre Évasion à la création du personnage.'
+        'Gagnez un bonus permanent de +1 à votre Évasion à la création du personnage.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -344,12 +380,14 @@ export const SRD_ANCESTRIES = [
     topFeature: {
       name: 'Mixed Top Feature',
       description:
-        'Choisissez la Top Feature (première feature) d\'une des ascendances de votre lignée.'
+        'Choisissez la Top Feature (première feature) d\'une des ascendances de votre lignée.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Mixed Bottom Feature',
       description:
-        'Choisissez la Bottom Feature (seconde feature) d\'une autre ascendance de votre lignée.'
+        'Choisissez la Bottom Feature (seconde feature) d\'une autre ascendance de votre lignée.',
+      tags: ['utilitaire']
     }
   }
 ]
@@ -366,12 +404,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Glissement d\'Alcyon',
       description:
-        'Lorsque tu réussis un jet d\'Agilité pour passer de Loin ou Très Loin à Portée de mêlée d\'une ou plusieurs cibles, tu peux marquer 1 Stress pour infliger 1d12 dégâts à toutes les cibles à portée de mêlée.'
+        'Lorsque tu réussis un jet d\'Agilité pour passer de Loin ou Très Loin à Portée de mêlée d\'une ou plusieurs cibles, tu peux marquer 1 Stress pour infliger 1d12 dégâts à toutes les cibles à portée de mêlée.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Détachement',
       description:
-        'Lorsque tu devrais marquer un Stress, lance 1d6. Sur un résultat de 6, ne marque pas ce Stress.'
+        'Lorsque tu devrais marquer un Stress, lance 1d6. Sur un résultat de 6, ne marque pas ce Stress.',
+      tags: ['défensif']
     }
   },
   {
@@ -384,12 +424,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Communion',
       description:
-        'Au début de chaque session, le groupe commence par se remémorer un chant, un poème ou un geste appris ensemble. Chaque membre du groupe qui participe gagne 1 Espoir.'
+        'Au début de chaque session, le groupe commence par se remémorer un chant, un poème ou un geste appris ensemble. Chaque membre du groupe qui participe gagne 1 Espoir.',
+      tags: ['social']
     },
     bottomFeature: {
       name: 'Réglage fin',
       description:
-        'Lorsque tu obtiens un 1 sur ton dé d\'Espoir, tu peux le relancer.'
+        'Lorsque tu obtiens un 1 sur ton dé d\'Espoir, tu peux le relancer.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -402,12 +444,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Réseau onirique',
       description:
-        'Fais un jet d\'Instinct (12) pour utiliser le rêve afin de contacter un autre Iries. En cas de succès, tu peux communiquer à toute distance.'
+        'Fais un jet d\'Instinct (12) pour utiliser le rêve afin de contacter un autre Iries. En cas de succès, tu peux communiquer à toute distance.',
+      tags: ['social','utilitaire']
     },
     bottomFeature: {
       name: 'Mémoire résiduelle',
       description:
-        'Lorsque tu touches le corps d\'une créature morte récemment, tu peux marquer 1 Stress pour extraire une réminiscence liée à une émotion ou une sensation.'
+        'Lorsque tu touches le corps d\'une créature morte récemment, tu peux marquer 1 Stress pour extraire une réminiscence liée à une émotion ou une sensation.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -420,12 +464,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Corps de Canopée',
       description:
-        'Sur un jet d\'Agilité, tu peux marquer un Stress pour tirer avec Avantage.'
+        'Sur un jet d\'Agilité, tu peux marquer un Stress pour tirer avec Avantage.',
+      tags: ['offensif']
     },
     bottomFeature: {
       name: 'Équilibre Exigeant',
       description:
-        'Lors d\'un repos, tu peux entrer en méditation pour effectuer une action supplémentaire.'
+        'Lors d\'un repos, tu peux entrer en méditation pour effectuer une action supplémentaire.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -438,12 +484,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Endurance Élevée',
       description:
-        'Gagne un emplacement de Stress supplémentaire à la création du personnage.'
+        'Gagne un emplacement de Stress supplémentaire à la création du personnage.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Adaptabilité',
       description:
-        'Lorsque tu rates un jet qui utilisait l\'une de tes Expériences, tu peux marquer un Stress pour relancer.'
+        'Lorsque tu rates un jet qui utilisait l\'une de tes Expériences, tu peux marquer un Stress pour relancer.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -456,12 +504,14 @@ export const CUSTOM_ANCESTRIES = [
     topFeature: {
       name: 'Endurance',
       description:
-        'Tu gagnes un PV supplémentaire à la création du personnage.'
+        'Tu gagnes un PV supplémentaire à la création du personnage.',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Portée',
       description:
-        'Traite toute arme, capacité, sort ou autre aptitude ayant une portée de Mêlée comme si elle avait une portée Très Proche à la place.'
+        'Traite toute arme, capacité, sort ou autre aptitude ayant une portée de Mêlée comme si elle avait une portée Très Proche à la place.',
+      tags: ['offensif','défensif']
     }
   }
 ]
@@ -478,12 +528,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Crocs',
       description:
-        'Effectuez un jet de Force pour mordre une cible à Portée de Mêlée, infligeant dS dégâts physiques en utilisant votre Maîtrise.'
+        'Effectuez un jet de Force pour mordre une cible à Portée de Mêlée, infligeant dS dégâts physiques en utilisant votre Maîtrise.',
+      tags: ['offensif']
     },
     bottomFeature: {
       name: 'Se nourrir',
       description:
-        'Après une attaque Crocs réussie, marquez un Stress pour vous nourrir. Placez des jetons sur cette carte égaux aux PV que la cible marque (max 5). Dépensez un jeton avant un jet d\'action pour que votre dé de Peur devienne un d20. Lors d\'un Repos Long, perdez un jeton. Sans jetons, tous vos jets d\'action et de réaction se font avec désavantage.'
+        'Après une attaque Crocs réussie, marquez un Stress pour vous nourrir. Placez des jetons sur cette carte égaux aux PV que la cible marque (max 5). Dépensez un jeton avant un jet d\'action pour que votre dé de Peur devienne un d20. Lors d\'un Repos Long, perdez un jeton. Sans jetons, tous vos jets d\'action et de réaction se font avec désavantage.',
+      tags: ['offensif','défensif']
     }
   },
   {
@@ -496,12 +548,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Forme de Loup',
       description:
-        'Quand vous marquez un ou plusieurs PV, vous pouvez marquer un Stress pour entrer en Forme de Loup. Gagnez un dé de Loup (d10) ajouté à tous les jets d\'attaque et de dégâts. Quand vous gagneriez de l\'Espoir en Forme de Loup, marquez un Stress à la place.'
+        'Quand vous marquez un ou plusieurs PV, vous pouvez marquer un Stress pour entrer en Forme de Loup. Gagnez un dé de Loup (d10) ajouté à tous les jets d\'attaque et de dégâts. Quand vous gagneriez de l\'Espoir en Forme de Loup, marquez un Stress à la place.',
+      tags: ['offensif']
     },
     bottomFeature: {
       name: 'Frénésie',
       description:
-        'Quand vous marquez votre dernier Stress en Forme de Loup, entrez en Frénésie. Lancez un nombre de d20s égal à votre tier et infligez automatiquement autant de dégâts physiques à toutes les créatures à Portée Très Proche. Sortez ensuite de la Forme de Loup.'
+        'Quand vous marquez votre dernier Stress en Forme de Loup, entrez en Frénésie. Lancez un nombre de d20s égal à votre tier et infligez automatiquement autant de dégâts physiques à toutes les créatures à Portée Très Proche. Sortez ensuite de la Forme de Loup.',
+      tags: ['offensif']
     }
   },
   {
@@ -514,12 +568,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Rafistolage',
       description:
-        'Lors d\'un repos, vous ne pouvez effacer des PV que si vous avez accès aux restes d\'une créature récemment décédée. Décrivez comment l\'utilisation de ce matériau affecte votre apparence. Vous ne pouvez effacer des PV que lors d\'un repos prolongé ou du Mouvement de Mort "Tout risquer".'
+        'Lors d\'un repos, vous ne pouvez effacer des PV que si vous avez accès aux restes d\'une créature récemment décédée. Décrivez comment l\'utilisation de ce matériau affecte votre apparence. Vous ne pouvez effacer des PV que lors d\'un repos prolongé ou du Mouvement de Mort "Tout risquer".',
+      tags: ['défensif']
     },
     bottomFeature: {
       name: 'Cadavre',
       description:
-        'Quand vous Tout risquez sur un Mouvement de Mort, si vous échouez, vous pouvez marquer définitivement un PV pour réussir quand même. Utilisez toujours la valeur du Dé d\'Espoir pour effacer PV et Stress.'
+        'Quand vous Tout risquez sur un Mouvement de Mort, si vous échouez, vous pouvez marquer définitivement un PV pour réussir quand même. Utilisez toujours la valeur du Dé d\'Espoir pour effacer PV et Stress.',
+      tags: ['défensif']
     }
   },
   {
@@ -532,12 +588,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Changer de Forme',
       description:
-        'Lors d\'un Repos Long, vous pouvez dépenser un mouvement de temps libre pour échanger votre ascendance actuelle contre une autre. Décrivez comment votre apparence change.'
+        'Lors d\'un Repos Long, vous pouvez dépenser un mouvement de temps libre pour échanger votre ascendance actuelle contre une autre. Décrivez comment votre apparence change.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Juste une Apparence',
       description:
-        'Quand vous Changez de Forme, vous ne bénéficiez que d\'une des capacités de l\'ascendance, que vous choisissez. Vous pouvez dépenser un mouvement de temps libre pour changer de capacité.'
+        'Quand vous Changez de Forme, vous ne bénéficiez que d\'une des capacités de l\'ascendance, que vous choisissez. Vous pouvez dépenser un mouvement de temps libre pour changer de capacité.',
+      tags: ['utilitaire']
     }
   },
   {
@@ -550,12 +608,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Forme Spirituelle',
       description:
-        'Marquez un Stress pour basculer entre forme corporelle et incorporelle. En Forme Spirituelle : traversez les objets solides, immunité aux dégâts physiques, subissez le double de dégâts magiques. Dépensez 2 Espoir pour attaquer ou interagir physiquement avec le monde matériel.'
+        'Marquez un Stress pour basculer entre forme corporelle et incorporelle. En Forme Spirituelle : traversez les objets solides, immunité aux dégâts physiques, subissez le double de dégâts magiques. Dépensez 2 Espoir pour attaquer ou interagir physiquement avec le monde matériel.',
+      tags: ['utilitaire','défensif']
     },
     bottomFeature: {
       name: 'Éphémère',
       description:
-        'Rayez un emplacement de PV à la prise de cette carte et à chaque augmentation de tier. Quand vous marquez votre dernier PV, vous devez choisir Éclat de Gloire comme Mouvement de Mort.'
+        'Rayez un emplacement de PV à la prise de cette carte et à chaque augmentation de tier. Quand vous marquez votre dernier PV, vous devez choisir Éclat de Gloire comme Mouvement de Mort.',
+      tags: ['défensif']
     }
   },
   {
@@ -568,12 +628,14 @@ export const TRANSFORMATIONS = [
     topFeature: {
       name: 'Ichor des Dieux',
       description:
-        'Votre dé d\'avantage est toujours un d10 au lieu d\'un d6.'
+        'Votre dé d\'avantage est toujours un d10 au lieu d\'un d6.',
+      tags: ['utilitaire']
     },
     bottomFeature: {
       name: 'Poids de la Divinité',
       description:
-        'Quand vous obtenez un échec avec Peur, vous devez marquer un Stress ou donner au MJ une Peur supplémentaire.'
+        'Quand vous obtenez un échec avec Peur, vous devez marquer un Stress ou donner au MJ une Peur supplémentaire.',
+      tags: ['défensif']
     }
   }
 ]

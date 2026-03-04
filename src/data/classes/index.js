@@ -72,9 +72,11 @@ export const CLASSES = [
     baseHP: 7,
     baseStress: 6,
     hopeFeature: 'Frontline Tank : Dépensez 3 Espoir pour libérer 2 Emplacements d\u2019armure.',
+    hopeFeatureTags: ['défensif'],
     classFeatures: [
       'Unstoppable : Une fois par repos long, devenez Inarrêtable. Gagnez un Dé Inarrêtable (d4 au niv. 1, d6 au niv. 5). Après avoir infligé 1+ PV, augmentez la valeur du dé. Tant qu\u2019Inarrêtable : réduisez la gravité des dégâts physiques d\u2019un seuil, ajoutez la valeur du dé aux dégâts, vous ne pouvez pas être Entravé ou Vulnérable.'
     ],
+    classFeatureTags: [['offensif','défensif']],
     suggestedTraits: { agility: 1, strength: 2, finesse: -1, instinct: 0, presence: 1, knowledge: 0 },
     suggestedArmor: 'Chainmail Armor — Seuils 7/15 — Score 4 — Heavy : -1 en Évasion',
     source: 'srd'
@@ -88,9 +90,11 @@ export const CLASSES = [
     baseHP: 7,
     baseStress: 6,
     hopeFeature: 'Life Support : Dépensez 3 Espoir pour libérer un Point de vie sur un allié à Portée Proche.',
+    hopeFeatureTags: ['défensif'],
     classFeatures: [
       'Prayer Dice : Au début de la session, lancez un nombre de d4 égal à votre trait de Sort. Dépensez-les pour : réduire les dégâts entrants, ajouter à un jet, ou gagner un Espoir égal au résultat. Videz-les en fin de session.'
     ],
+    classFeatureTags: [['défensif']],
     suggestedTraits: { agility: 0, strength: 2, finesse: 0, instinct: 1, presence: 1, knowledge: -1 },
     suggestedArmor: 'Chainmail Armor — Seuils 7/15 — Score 4 — Heavy : -1 en Évasion',
     source: 'srd'
@@ -104,10 +108,12 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'No Mercy : Dépensez 3 Espoir pour gagner +1 aux jets d\u2019attaque jusqu\u2019au prochain repos.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Attack of Opportunity : Quand un adversaire en Mêlée quitte la portée, jet de réaction. En cas de réussite, choisissez : l\u2019arrêter, infliger les dégâts de l\u2019arme principale, ou vous déplacer avec lui. Critique : choisissez deux.',
       'Combat Training : Ignorez le burden des armes. Ajoutez votre niveau aux jets de dégâts physiques.'
     ],
+    classFeatureTags: [['offensif','défensif'],['offensif']],
     suggestedTraits: { agility: 2, strength: 1, finesse: 0, instinct: 1, presence: -1, knowledge: 0 },
     suggestedArmor: 'Chainmail Armor — Seuils 7/15 — Score 4 — Heavy : -1 en Évasion',
     source: 'srd'
@@ -121,10 +127,12 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Rogue\u2019s Dodge : Dépensez 3 Espoir pour gagner +2 en Évasion jusqu\u2019à la prochaine attaque réussie contre vous ou votre prochain repos.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Cloaked : Caché devient Dissimulé — restez invisible si vous êtes immobile quand un adversaire se déplace pour vous voir. Se termine après une attaque ou un déplacement en ligne de vue.',
       'Sneak Attack : Quand vous attaquez en étant Dissimulé ou qu\u2019un allié est en Mêlée de la cible, ajoutez un nombre de d6 égal à votre tier aux dégâts.'
     ],
+    classFeatureTags: [['utilitaire'],['offensif']],
     suggestedTraits: { agility: 1, strength: -1, finesse: 2, instinct: 0, presence: 1, knowledge: 0 },
     suggestedArmor: 'Gambeson Armor — Seuils 5/11 — Score 3 — Flexible : +1 en Évasion',
     source: 'srd'
@@ -138,9 +146,11 @@ export const CLASSES = [
     baseHP: 5,
     baseStress: 6,
     hopeFeature: 'Make a Scene : Dépensez 3 Espoir pour temporairement Distraire une cible à Portée Proche, imposant -2 à sa Difficulté.',
+    hopeFeatureTags: ['social','défensif'],
     classFeatures: [
       'Rally : Une fois par session, donnez-vous et à chaque allié un Rally Die (d6 au niv. 1, d8 au niv. 5). Dépensez-le pour ajouter à un jet d\u2019action/réaction/dégâts ou libérer du Stress égal au résultat. Videz en fin de session.'
     ],
+    classFeatureTags: [['social','défensif']],
     suggestedTraits: { agility: 0, strength: -1, finesse: 1, instinct: 0, presence: 2, knowledge: 1 },
     suggestedArmor: 'Gambeson Armor — Seuils 5/11 — Score 3 — Flexible : +1 en Évasion',
     source: 'srd'
@@ -154,10 +164,12 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Evolution : Dépensez 3 Espoir pour vous transformer en Beastform sans cocher de Stress. Choisissez un trait à augmenter de +1 jusqu\u2019à ce que vous quittiez la forme.',
+    hopeFeatureTags: ['utilitaire'],
     classFeatures: [
       'Beastform : Cochez un Stress pour vous transformer en créature de votre tier ou inférieur. Gagnez les features de Beastform, ajoutez le bonus d\u2019Évasion, utilisez le trait spécifié pour les attaques. Vous ne pouvez pas utiliser d\u2019armes/sorts de cartes de domaine en étant transformé.',
       'Wildtouch : Réalisez des effets naturels inoffensifs et subtils à volonté (faire pousser une fleur, souffle de vent, allumer un feu de camp).'
     ],
+    classFeatureTags: [['offensif','défensif','utilitaire'],['utilitaire']],
     suggestedTraits: { agility: 1, strength: 0, finesse: 1, instinct: 2, presence: -1, knowledge: 0 },
     suggestedArmor: 'Leather Armor — Seuils 6/13 — Score 3',
     source: 'srd'
@@ -171,9 +183,11 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Hold Them Off : Dépensez 3 Espoir sur une attaque d\u2019arme réussie pour utiliser le même jet contre 2 adversaires supplémentaires à portée.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Ranger\u2019s Focus : Dépensez un Espoir + attaquez une cible. En cas de réussite : dégâts normaux, la cible devient votre Focus. Contre le Focus : connaissez sa direction, il coche un Stress quand vous lui infligez des dégâts, vous pouvez mettre fin au Focus pour relancer une attaque ratée.'
     ],
+    classFeatureTags: [['offensif']],
     suggestedTraits: { agility: 2, strength: 0, finesse: 1, instinct: 1, presence: -1, knowledge: 0 },
     suggestedArmor: 'Leather Armor — Seuils 6/13 — Score 3',
     source: 'srd'
@@ -187,10 +201,12 @@ export const CLASSES = [
     baseHP: 5,
     baseStress: 6,
     hopeFeature: 'Not This Time : Dépensez 3 Espoir pour forcer un adversaire à Portée Loin à relancer un jet d\u2019attaque ou de dégâts.',
+    hopeFeatureTags: ['défensif'],
     classFeatures: [
       'Prestidigitation : Réalisez des effets magiques inoffensifs et subtils à volonté (changer une couleur, créer une odeur, allumer une bougie, faire léviter un petit objet, illuminer une pièce, réparer un petit objet).',
       'Strange Patterns : Choisissez un nombre de 1 à 12. Quand vous l\u2019obtenez sur un Dé de Dualité, gagnez un Espoir ou libérez un Stress. Changez lors d\u2019un repos long.'
     ],
+    classFeatureTags: [['utilitaire'],['utilitaire']],
     suggestedTraits: { agility: -1, strength: 0, finesse: 0, instinct: 1, presence: 1, knowledge: 2 },
     suggestedArmor: 'Leather Armor — Seuils 6/13 — Score 3',
     source: 'srd'
@@ -204,11 +220,13 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Volatile Magic : Dépensez 3 Espoir pour relancer un nombre quelconque de vos dés de dégâts sur une attaque infligeant des dégâts magiques.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Arcane Sense : Vous pouvez sentir la présence de personnes et d\u2019objets magiques à Portée Proche.',
       'Minor Illusion : Faites un Spellcast Roll (10). En cas de réussite, créez une illusion visuelle mineure pas plus grande que vous à Portée Proche, convaincante pour quiconque à Portée Proche ou au-delà.',
       'Channel Raw Power : Une fois par repos long, placez une carte de domaine de votre équipement actif dans votre réserve. Gagnez un Espoir égal au niveau de la carte, ou améliorez un sort de dégâts avec un bonus égal au double du niveau de la carte.'
     ],
+    classFeatureTags: [['utilitaire'],['social','utilitaire'],['offensif','utilitaire']],
     suggestedTraits: { agility: 0, strength: -1, finesse: 1, instinct: 2, presence: 1, knowledge: 0 },
     suggestedArmor: 'Gambeson Armor — Seuils 5/11 — Score 3 — Flexible : +1 en Évasion',
     source: 'srd'
@@ -223,10 +241,12 @@ export const CLASSES = [
     baseHP: 5,
     baseStress: 6,
     hopeFeature: 'Grim Resolve : Dépensez 3 Espoir pour libérer 2 Stress.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Marked for Death : Sur une attaque d\u2019arme réussie, cochez un Stress pour marquer la cible « Marked for Death ». Les attaques contre une cible Marquée gagnent +1d4 dégâts par tier. Une seule cible Marquée à la fois ; se termine à la défaite, au repos, ou si le MJ dépense une Peur égale à votre Maîtrise.',
       'Get In & Get Out : Dépensez un Espoir pour demander au MJ un moyen rapide ou discret d\u2019entrer ou sortir d\u2019un bâtiment ou structure visible. Votre prochain jet exploitant cette info a l\u2019avantage.'
     ],
+    classFeatureTags: [['offensif'],['offensif','utilitaire']],
     suggestedTraits: { agility: 2, strength: -1, finesse: 1, instinct: 0, presence: 0, knowledge: 1 },
     suggestedArmor: 'Leather Armor — Seuils 6/13 — Score 3',
     source: 'custom'
@@ -240,10 +260,12 @@ export const CLASSES = [
     baseHP: 6,
     baseStress: 6,
     hopeFeature: 'Parkour : Dépensez 3 Espoir, puis travaillez avec le MJ pour créer un chemin pour vous déplacer rapidement dans la zone (lustre, échelle de bibliothèque, etc.). Gagnez l\u2019avantage sur les jets liés à ce chemin.',
+    hopeFeatureTags: ['offensif'],
     classFeatures: [
       'Boast : Cochez un Stress pour gagner l\u2019avantage sur un jet d\u2019action. Si vous obtenez Espoir, gagnez un Espoir supplémentaire ; si vous obtenez Peur, le MJ gagne une Peur supplémentaire.',
       'Flash of Rivalry : Dépensez un Espoir pour faire un jet de Présence contre un adversaire à Portée Loin — en cas de réussite, il devient votre Rival jusqu\u2019à la fin de la scène. Les Rivaux ont un désavantage quand ils ciblent des créatures autres que vous. Ajoutez un d6 aux dégâts infligés entre vous et un Rival. Vous pouvez avoir un nombre de Rivaux égal à votre tier.'
     ],
+    classFeatureTags: [['offensif','utilitaire'],['offensif','social']],
     suggestedTraits: { agility: 1, strength: 0, finesse: 0, instinct: 1, presence: 2, knowledge: -1 },
     suggestedArmor: 'Leather Armor — Seuils 6/13 — Score 3',
     source: 'custom'
