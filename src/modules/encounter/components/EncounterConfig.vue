@@ -108,30 +108,74 @@
       <summary class="config-label config-label--clickable">
         Ajustements BP
         <span
-          v-if="activeAdjustments.length > 0"
+          v-if="totalActiveCount > 0"
           class="badge"
-        >{{ activeAdjustments.length }}</span>
+        >{{ totalActiveCount }}</span>
       </summary>
-      <div class="adjustments-list">
-        <label
-          v-for="adj in adjustmentOptions"
-          :key="adj.id"
-          class="adjustment-item"
-          :title="adj.description"
-        >
-          <input
-            type="checkbox"
-            :checked="activeAdjustments.includes(adj.id)"
-            @change="$emit('toggleAdjustment', adj.id)"
-          />
-          <span class="adjustment-label">{{ adj.label }}</span>
-          <span
-            class="adjustment-value"
-            :class="adj.value > 0 ? 'adjustment-value--positive' : 'adjustment-value--negative'"
+
+      <!-- Ajustements auto-détectés -->
+      <div
+        v-if="autoAdjustmentOptions.length > 0"
+        class="adjustments-group"
+      >
+        <span class="adjustments-group__title">Auto-détectés</span>
+        <div class="adjustments-list">
+          <div
+            v-for="adj in autoAdjustmentOptions"
+            :key="adj.id"
+            class="adjustment-item adjustment-item--auto"
+            :class="{ 'adjustment-item--active': autoAdjustments.includes(adj.id) }"
+            :title="adj.description"
           >
-            {{ adj.value > 0 ? '+' : '' }}{{ adj.value }}
-          </span>
-        </label>
+            <span
+              class="adjustment-indicator"
+              :class="autoAdjustments.includes(adj.id) ? 'adjustment-indicator--on' : 'adjustment-indicator--off'"
+              aria-hidden="true"
+            >{{ autoAdjustments.includes(adj.id) ? '✓' : '—' }}</span>
+            <span class="adjustment-label">
+              {{ adj.label }}
+              <span
+                v-if="adj.id === 'lower-tier' && autoAdjustments.includes('lower-tier')"
+                class="adjustment-meta"
+              >({{ lowerTierPercentage }}% des adversaires)</span>
+            </span>
+            <span
+              class="adjustment-value"
+              :class="[
+                adj.value > 0 ? 'adjustment-value--positive' : 'adjustment-value--negative',
+                { 'adjustment-value--inactive': !autoAdjustments.includes(adj.id) }
+              ]"
+            >
+              {{ adj.value > 0 ? '+' : '' }}{{ adj.value }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ajustements manuels -->
+      <div class="adjustments-group">
+        <span class="adjustments-group__title">Manuels</span>
+        <div class="adjustments-list">
+          <label
+            v-for="adj in manualAdjustmentOptions"
+            :key="adj.id"
+            class="adjustment-item"
+            :title="adj.description"
+          >
+            <input
+              type="checkbox"
+              :checked="activeAdjustments.includes(adj.id)"
+              @change="$emit('toggleAdjustment', adj.id)"
+            />
+            <span class="adjustment-label">{{ adj.label }}</span>
+            <span
+              class="adjustment-value"
+              :class="adj.value > 0 ? 'adjustment-value--positive' : 'adjustment-value--negative'"
+            >
+              {{ adj.value > 0 ? '+' : '' }}{{ adj.value }}
+            </span>
+          </label>
+        </div>
       </div>
     </details>
   </section>
@@ -150,6 +194,8 @@ export default {
     tier: { type: Number, required: true },
     intensity: { type: String, required: true },
     activeAdjustments: { type: Array, default: () => [] },
+    autoAdjustments: { type: Array, default: () => [] },
+    lowerTierPercentage: { type: Number, default: 0 },
     minPc: { type: Number, default: 2 },
     maxPc: { type: Number, default: 8 },
     characters: { type: Array, default: () => [] },
@@ -158,8 +204,18 @@ export default {
   emits: ['update:name', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment', 'update:selectedPcIds'],
   setup() {
     return {
-      intensityOptions: SCENE_INTENSITY,
-      adjustmentOptions: BP_ADJUSTMENTS
+      intensityOptions: SCENE_INTENSITY
+    }
+  },
+  computed: {
+    autoAdjustmentOptions() {
+      return BP_ADJUSTMENTS.filter((a) => a.autoDetect)
+    },
+    manualAdjustmentOptions() {
+      return BP_ADJUSTMENTS.filter((a) => !a.autoDetect)
+    },
+    totalActiveCount() {
+      return this.autoAdjustments.length + this.activeAdjustments.length
     }
   }
 }
@@ -316,6 +372,71 @@ export default {
   gap: var(--space-xs);
 }
 
+.adjustments-group {
+  margin-bottom: var(--space-sm);
+}
+
+.adjustments-group:last-child {
+  margin-bottom: 0;
+}
+
+.adjustments-group__title {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #6b7280);
+  margin-bottom: var(--space-xs);
+}
+
+.adjustment-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.adjustment-item--auto {
+  cursor: default;
+  opacity: 0.65;
+  transition: opacity var(--transition-fast, 150ms);
+}
+
+.adjustment-item--auto.adjustment-item--active {
+  opacity: 1;
+}
+
+.adjustment-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.adjustment-indicator--on {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.adjustment-indicator--off {
+  background: var(--bg-tertiary, #2a2a4a);
+  color: var(--text-muted, #6b7280);
+}
+
+.adjustment-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+  font-weight: 400;
+}
+
 .adjustment-item {
   display: flex;
   align-items: center;
@@ -343,4 +464,5 @@ export default {
 
 .adjustment-value--positive { color: #22c55e; }
 .adjustment-value--negative { color: var(--accent-fear, #c84b31); }
+.adjustment-value--inactive { opacity: 0.4; }
 </style>

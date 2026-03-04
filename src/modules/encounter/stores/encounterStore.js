@@ -12,6 +12,7 @@ import { allEnvironments } from '@data/environments'
 import {
   BATTLE_POINT_COSTS,
   BP_ADJUSTMENTS,
+  AUTO_DETECTABLE_ADJUSTMENTS,
   SCENE_INTENSITY,
   HEAVY_HITTER_TYPES,
   PC_COUNT_MIN,
@@ -69,14 +70,6 @@ export const useEncounterStore = defineStore('encounter', () => {
 
   /** Battle Points de base : (3 × PJ) + 2 */
   const baseBattlePoints = computed(() => calculateBaseBattlePoints(pcCount.value))
-
-  /** Total des ajustements actifs */
-  const adjustmentTotal = computed(() => {
-    return activeAdjustments.value.reduce((sum, adjId) => {
-      const adj = BP_ADJUSTMENTS.find((a) => a.id === adjId)
-      return sum + (adj ? adj.value : 0)
-    }, 0)
-  })
 
   /** Budget total de Battle Points (base + ajustements) */
   const totalBattlePoints = computed(() => {
@@ -187,6 +180,68 @@ export const useEncounterStore = defineStore('encounter', () => {
       .reduce((sum, slot) => sum + slot.quantity, 0)
   })
 
+  /** Informations sur les adversaires de tier inférieur */
+  const lowerTierInfo = computed(() => {
+    if (adversarySlotsDetailed.value.length === 0) {
+      return { count: 0, total: 0, percentage: 0 }
+    }
+    const total = adversarySlotsDetailed.value.length
+    const count = adversarySlotsDetailed.value.filter(
+      (slot) => slot.adversary.tier < selectedTier.value
+    ).length
+    return {
+      count,
+      total,
+      percentage: Math.round((count / total) * 100)
+    }
+  })
+
+  /**
+   * Ajustements auto-détectés selon la composition actuelle.
+   * Ces ajustements sont calculés automatiquement et ne nécessitent
+   * pas d'activation manuelle.
+   */
+  const autoAdjustments = computed(() => {
+    if (adversarySlots.value.length === 0) return []
+
+    const result = []
+
+    // 2+ adversaires Solo → -2 BP
+    if (soloCount.value >= 2) {
+      result.push('multi-solo')
+    }
+
+    // Adversaire(s) de tier inférieur → +1 BP
+    if (lowerTierInfo.value.count > 0) {
+      result.push('lower-tier')
+    }
+
+    // Pas de Bruiser / Horde / Leader / Solo → +1 BP
+    if (!hasHeavyHitters.value) {
+      result.push('no-heavy-hitters')
+    }
+
+    return result
+  })
+
+  /** Total des ajustements (manuels + auto-détectés) */
+  const adjustmentTotal = computed(() => {
+    // Ajustements manuels (excluant ceux qui sont auto-détectables)
+    const manualSum = activeAdjustments.value.reduce((sum, adjId) => {
+      if (AUTO_DETECTABLE_ADJUSTMENTS.includes(adjId)) return sum
+      const adj = BP_ADJUSTMENTS.find((a) => a.id === adjId)
+      return sum + (adj ? adj.value : 0)
+    }, 0)
+
+    // Ajustements auto-détectés
+    const autoSum = autoAdjustments.value.reduce((sum, adjId) => {
+      const adj = BP_ADJUSTMENTS.find((a) => a.id === adjId)
+      return sum + (adj ? adj.value : 0)
+    }, 0)
+
+    return manualSum + autoSum
+  })
+
   /** Alertes et conseils pour le MJ */
   const warnings = computed(() => {
     const result = []
@@ -202,20 +257,6 @@ export const useEncounterStore = defineStore('encounter', () => {
       result.push({
         type: 'warning',
         message: `${remainingBattlePoints.value} BP restants. Ajoutez des adversaires ou réduisez le budget.`
-      })
-    }
-
-    if (soloCount.value >= 2 && !activeAdjustments.value.includes('multi-solo')) {
-      result.push({
-        type: 'info',
-        message: 'Avec 2+ Solo, pensez à activer l\'ajustement "2+ adversaires Solo" (-2 BP).'
-      })
-    }
-
-    if (!hasHeavyHitters.value && adversarySlots.value.length > 0 && !activeAdjustments.value.includes('no-heavy-hitters')) {
-      result.push({
-        type: 'info',
-        message: 'Aucun Bruiser/Horde/Leader/Solo — vous pouvez activer l\'ajustement "+1 BP".'
       })
     }
 
@@ -282,10 +323,12 @@ export const useEncounterStore = defineStore('encounter', () => {
   }
 
   /**
-   * Active/désactive un ajustement de BP.
+   * Active/désactive un ajustement de BP (manuels uniquement).
+   * Les ajustements auto-détectables sont ignorés.
    * @param {string} adjustmentId
    */
   function toggleAdjustment(adjustmentId) {
+    if (AUTO_DETECTABLE_ADJUSTMENTS.includes(adjustmentId)) return
     const idx = activeAdjustments.value.indexOf(adjustmentId)
     if (idx >= 0) {
       activeAdjustments.value.splice(idx, 1)
@@ -509,6 +552,8 @@ export const useEncounterStore = defineStore('encounter', () => {
     currentIntensity,
     hasHeavyHitters,
     soloCount,
+    lowerTierInfo,
+    autoAdjustments,
     warnings,
     isValid,
     savedEncountersList,

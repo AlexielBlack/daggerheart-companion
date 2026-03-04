@@ -23,6 +23,8 @@
               :tier="store.selectedTier"
               :intensity="store.selectedIntensity"
               :active-adjustments="store.activeAdjustments"
+              :auto-adjustments="store.autoAdjustments"
+              :lower-tier-percentage="store.lowerTierInfo.percentage"
               :min-pc="store.minPcCount"
               :max-pc="store.maxPcCount"
               :characters="store.availableCharacters"

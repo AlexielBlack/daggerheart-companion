@@ -34,39 +34,52 @@ export const BP_ADJUSTMENTS = [
     id: 'easier',
     label: 'Combat plus facile / plus court',
     value: -1,
-    description: 'Retire 1 point si le combat doit être moins difficile ou plus court.'
+    description: 'Retire 1 point si le combat doit être moins difficile ou plus court.',
+    autoDetect: false
   },
   {
     id: 'multi-solo',
     label: '2+ adversaires Solo',
     value: -2,
-    description: 'Retire 2 points si vous utilisez 2 Solo ou plus.'
+    description: 'Retire 2 points si vous utilisez 2 Solo ou plus.',
+    autoDetect: true
   },
   {
     id: 'damage-boost',
     label: 'Boost dégâts (+1d4 / +2 à tous)',
     value: -2,
-    description: 'Retire 2 points si vous ajoutez +1d4 (ou +2) aux dégâts de tous les adversaires.'
+    description: 'Retire 2 points si vous ajoutez +1d4 (ou +2) aux dégâts de tous les adversaires.',
+    autoDetect: false
   },
   {
     id: 'lower-tier',
     label: 'Adversaire(s) de tier inférieur',
     value: 1,
-    description: 'Ajoute 1 point si un adversaire provient d\'un tier inférieur.'
+    description: 'Ajoute 1 point si un adversaire provient d\'un tier inférieur.',
+    autoDetect: true
   },
   {
     id: 'no-heavy-hitters',
     label: 'Pas de Bruiser / Horde / Leader / Solo',
     value: 1,
-    description: 'Ajoute 1 point si aucun Bruiser, Horde, Leader ou Solo n\'est présent.'
+    description: 'Ajoute 1 point si aucun Bruiser, Horde, Leader ou Solo n\'est présent.',
+    autoDetect: true
   },
   {
     id: 'harder',
     label: 'Combat plus dangereux / plus long',
     value: 2,
-    description: 'Ajoute 2 points si le combat doit être plus dangereux ou plus long.'
+    description: 'Ajoute 2 points si le combat doit être plus dangereux ou plus long.',
+    autoDetect: false
   }
 ]
+
+/**
+ * IDs des ajustements auto-détectables (calculés automatiquement selon la composition).
+ */
+export const AUTO_DETECTABLE_ADJUSTMENTS = BP_ADJUSTMENTS
+  .filter((a) => a.autoDetect)
+  .map((a) => a.id)
 
 /**
  * Guide de dépense de Fear par intensité de scène.

@@ -5,6 +5,7 @@ import { allAdversaries } from '@data/adversaries'
 import {
   BATTLE_POINT_COSTS,
   BP_ADJUSTMENTS,
+  AUTO_DETECTABLE_ADJUSTMENTS,
   SCENE_INTENSITY,
   calculateBaseBattlePoints,
   calculateAdversaryCost
@@ -71,7 +72,15 @@ describe('encounterStore', () => {
         expect(adj).toHaveProperty('id')
         expect(adj).toHaveProperty('value')
         expect(adj).toHaveProperty('label')
+        expect(adj).toHaveProperty('autoDetect')
       })
+    })
+
+    it('a 3 ajustements auto-détectables', () => {
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).toHaveLength(3)
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('multi-solo')
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('lower-tier')
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('no-heavy-hitters')
     })
 
     it('a 5 niveaux d\'intensité', () => {
@@ -143,8 +152,8 @@ describe('encounterStore', () => {
 
   // ── Ajustements ───────────────────────────────────────
 
-  describe('ajustements BP', () => {
-    it('toggle un ajustement', () => {
+  describe('ajustements BP manuels', () => {
+    it('toggle un ajustement manuel', () => {
       store.toggleAdjustment('easier')
       expect(store.activeAdjustments).toContain('easier')
       expect(store.adjustmentTotal).toBe(-1)
@@ -155,20 +164,123 @@ describe('encounterStore', () => {
       expect(store.totalBattlePoints).toBe(14)
     })
 
-    it('cumule plusieurs ajustements', () => {
+    it('cumule plusieurs ajustements manuels', () => {
       store.toggleAdjustment('harder') // +2
-      store.toggleAdjustment('no-heavy-hitters') // +1
-      expect(store.adjustmentTotal).toBe(3)
-      expect(store.totalBattlePoints).toBe(17)
+      store.toggleAdjustment('easier') // -1
+      expect(store.adjustmentTotal).toBe(1)
+      expect(store.totalBattlePoints).toBe(15)
+    })
+
+    it('ignore le toggle sur un ajustement auto-détectable', () => {
+      store.toggleAdjustment('multi-solo')
+      expect(store.activeAdjustments).not.toContain('multi-solo')
+
+      store.toggleAdjustment('no-heavy-hitters')
+      expect(store.activeAdjustments).not.toContain('no-heavy-hitters')
+
+      store.toggleAdjustment('lower-tier')
+      expect(store.activeAdjustments).not.toContain('lower-tier')
     })
 
     it('ne descend pas en dessous de 0 BP', () => {
       store.setPcCount(2) // base = 8
       store.toggleAdjustment('easier') // -1
-      store.toggleAdjustment('multi-solo') // -2
       store.toggleAdjustment('damage-boost') // -2
-      // 8 - 5 = 3, toujours > 0
-      expect(store.totalBattlePoints).toBe(3)
+      // 8 - 3 = 5, toujours > 0
+      expect(store.totalBattlePoints).toBe(5)
+    })
+  })
+
+  describe('ajustements auto-détectés', () => {
+    it('retourne un tableau vide sans adversaires', () => {
+      expect(store.autoAdjustments).toEqual([])
+    })
+
+    it('détecte multi-solo quand 2+ Solo', () => {
+      const solo = allAdversaries.find((a) => a.type === 'Solo')
+      if (solo) {
+        store.setPcCount(8) // budget large
+        store.addAdversary(solo.id, 2)
+        expect(store.autoAdjustments).toContain('multi-solo')
+      }
+    })
+
+    it('ne détecte pas multi-solo avec 1 Solo', () => {
+      const solo = allAdversaries.find((a) => a.type === 'Solo')
+      if (solo) {
+        store.setPcCount(8)
+        store.addAdversary(solo.id, 1)
+        expect(store.autoAdjustments).not.toContain('multi-solo')
+      }
+    })
+
+    it('détecte no-heavy-hitters sans Bruiser/Horde/Leader/Solo', () => {
+      const standard = allAdversaries.find((a) => a.type === 'Standard')
+      if (standard) {
+        store.addAdversary(standard.id)
+        expect(store.autoAdjustments).toContain('no-heavy-hitters')
+      }
+    })
+
+    it('ne détecte pas no-heavy-hitters avec un Bruiser', () => {
+      const bruiser = allAdversaries.find((a) => a.type === 'Bruiser')
+      if (bruiser) {
+        store.addAdversary(bruiser.id)
+        expect(store.autoAdjustments).not.toContain('no-heavy-hitters')
+      }
+    })
+
+    it('détecte lower-tier quand un adversaire est de tier inférieur', () => {
+      store.setTier(2)
+      const t1 = allAdversaries.find((a) => a.tier === 1)
+      if (t1) {
+        store.addAdversary(t1.id)
+        expect(store.autoAdjustments).toContain('lower-tier')
+      }
+    })
+
+    it('ne détecte pas lower-tier si tous les adversaires sont du même tier', () => {
+      store.setTier(1)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type === 'Standard')
+      if (t1) {
+        store.addAdversary(t1.id)
+        expect(store.autoAdjustments).not.toContain('lower-tier')
+      }
+    })
+
+    it('calcule lowerTierInfo correctement', () => {
+      store.setTier(2)
+      const t1 = allAdversaries.find((a) => a.tier === 1)
+      const t2 = allAdversaries.find((a) => a.tier === 2)
+      if (t1 && t2) {
+        store.addAdversary(t1.id)
+        store.addAdversary(t2.id)
+        expect(store.lowerTierInfo.count).toBe(1)
+        expect(store.lowerTierInfo.total).toBe(2)
+        expect(store.lowerTierInfo.percentage).toBe(50)
+      }
+    })
+
+    it('inclut les auto-ajustements dans le total BP', () => {
+      const standard = allAdversaries.find((a) => a.type === 'Standard')
+      if (standard) {
+        store.addAdversary(standard.id)
+        // no-heavy-hitters est auto-détecté → +1
+        expect(store.autoAdjustments).toContain('no-heavy-hitters')
+        expect(store.adjustmentTotal).toBe(1)
+        expect(store.totalBattlePoints).toBe(15) // 14 + 1
+      }
+    })
+
+    it('cumule ajustements auto et manuels', () => {
+      const standard = allAdversaries.find((a) => a.type === 'Standard')
+      if (standard) {
+        store.addAdversary(standard.id)
+        // auto: no-heavy-hitters → +1
+        store.toggleAdjustment('harder') // manuel: +2
+        expect(store.adjustmentTotal).toBe(3)
+        expect(store.totalBattlePoints).toBe(17)
+      }
     })
   })
 
@@ -272,7 +384,8 @@ describe('encounterStore', () => {
       const solo = allAdversaries.find((a) => a.type === 'Solo')
       if (solo) {
         store.setPcCount(2) // 8 BP
-        store.addAdversary(solo.id, 2) // 10 BP
+        store.addAdversary(solo.id, 2) // 10 BP (- 2 auto multi-solo = 6 BP budget)
+        // Avec auto multi-solo (-2), budget = 6, spent = 10 → dépassé de 4
         const errors = store.warnings.filter((w) => w.type === 'error')
         expect(errors.length).toBeGreaterThan(0)
       }
@@ -281,28 +394,28 @@ describe('encounterStore', () => {
     it('avertit si BP restants élevés', () => {
       const minion = allAdversaries.find((a) => a.type === 'Minion')
       if (minion) {
-        store.addAdversary(minion.id) // 1 BP sur 14
+        store.addAdversary(minion.id) // 1 BP sur 15 (14 + 1 auto no-heavy)
         const warns = store.warnings.filter((w) => w.type === 'warning' && w.message.includes('restant'))
         expect(warns.length).toBeGreaterThan(0)
       }
     })
 
-    it('suggère ajustement multi-solo', () => {
+    it('ne suggère plus d\'activer multi-solo manuellement (auto-détecté)', () => {
       const solo = allAdversaries.find((a) => a.type === 'Solo')
       if (solo) {
-        store.setPcCount(8) // 26 BP
-        store.addAdversary(solo.id, 2) // 2 Solo
-        const infos = store.warnings.filter((w) => w.message.includes('Solo'))
-        expect(infos.length).toBeGreaterThan(0)
+        store.setPcCount(8)
+        store.addAdversary(solo.id, 2)
+        const infos = store.warnings.filter((w) => w.message.includes('pensez à activer'))
+        expect(infos).toHaveLength(0)
       }
     })
 
-    it('suggère ajustement no-heavy-hitters', () => {
+    it('ne suggère plus d\'activer no-heavy-hitters manuellement (auto-détecté)', () => {
       const standard = allAdversaries.find((a) => a.type === 'Standard')
       if (standard) {
         store.addAdversary(standard.id)
-        const infos = store.warnings.filter((w) => w.message.includes('Bruiser'))
-        expect(infos.length).toBeGreaterThan(0)
+        const infos = store.warnings.filter((w) => w.message.includes('pouvez activer'))
+        expect(infos).toHaveLength(0)
       }
     })
 
