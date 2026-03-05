@@ -55,6 +55,16 @@
         <span class="adv-panel__stat-label adv-panel__stat-label--severe">Sévère</span>
         <span class="adv-panel__stat-value adv-panel__stat-value--severe">{{ adversary.thresholds.severe || '—' }}</span>
       </div>
+      <button
+        v-if="isActor"
+        class="adv-panel__aoe-btn"
+        :class="{ 'adv-panel__aoe-btn--open': aoeActive }"
+        title="Dégâts de zone (AoE)"
+        aria-label="Dégâts de zone"
+        @click="$emit('aoe-click')"
+      >
+        💥 AoE
+      </button>
     </div>
 
     <!-- HP / Stress — barres individuelles par instance -->
@@ -396,8 +406,10 @@ export default {
     siblings: { type: Array, default: () => [] },
     sceneMode: { type: String, required: true },
     isActor: { type: Boolean, default: false },
-    pcs: { type: Array, default: () => [] }
+    pcs: { type: Array, default: () => [] },
+    aoeActive: { type: Boolean, default: false }
   },
+  emits: ['aoe-click'],
   setup(props) {
     const store = useEncounterLiveStore()
 
@@ -637,6 +649,7 @@ export default {
 
 .adv-panel__stats {
   display: flex;
+  align-items: center;
   gap: var(--space-sm);
 }
 
@@ -673,6 +686,37 @@ export default {
 .adv-panel__stat-value--major { color: #f59e0b; }
 .adv-panel__stat-label--severe { color: #ef4444; }
 .adv-panel__stat-value--severe { color: #ef4444; }
+
+/* ── Bouton AoE (dans la ligne stats) ── */
+
+.adv-panel__aoe-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: var(--space-xs) var(--space-sm);
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-accent-warning);
+  background: transparent;
+  color: var(--color-accent-warning);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.adv-panel__aoe-btn:hover {
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.08);
+}
+
+.adv-panel__aoe-btn--open {
+  border-style: solid;
+  background: rgba(255, 152, 0, 0.12);
+}
 
 /* ── Instances (barres HP/Stress individuelles) ── */
 

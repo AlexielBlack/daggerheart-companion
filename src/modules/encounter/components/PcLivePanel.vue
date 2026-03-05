@@ -74,6 +74,16 @@
         </span>
         <span class="pc-panel__stat-label">Seuils</span>
       </div>
+      <button
+        v-if="isActor"
+        class="pc-panel__aoe-btn"
+        :class="{ 'pc-panel__aoe-btn--open': aoeActive }"
+        title="Dégâts de zone (AoE)"
+        aria-label="Dégâts de zone"
+        @click="$emit('aoe-click')"
+      >
+        💥 AoE
+      </button>
     </div>
 
     <!-- Conditions -->
@@ -315,8 +325,10 @@ export default {
     primaryFeatures: { type: Array, default: () => [] },
     secondaryFeatures: { type: Array, default: () => [] },
     passiveFeatures: { type: Array, default: () => [] },
-    reactionFeatures: { type: Array, default: () => [] }
+    reactionFeatures: { type: Array, default: () => [] },
+    aoeActive: { type: Boolean, default: false }
   },
+  emits: ['aoe-click'],
   setup(props) {
     const store = useEncounterLiveStore()
 
@@ -483,6 +495,7 @@ export default {
 .pc-panel__stats {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-xs);
 }
 
@@ -514,6 +527,37 @@ export default {
 
 .pc-panel__stat-label {
   color: var(--color-text-muted);
+}
+
+/* ── Bouton AoE (dans la ligne stats) ── */
+
+.pc-panel__aoe-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: var(--space-xs) var(--space-sm);
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-accent-warning);
+  background: transparent;
+  color: var(--color-accent-warning);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pc-panel__aoe-btn:hover {
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.08);
+}
+
+.pc-panel__aoe-btn--open {
+  border-style: solid;
+  background: rgba(255, 152, 0, 0.12);
 }
 
 /* ── Conditions ── */
