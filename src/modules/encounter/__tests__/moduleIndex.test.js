@@ -28,8 +28,9 @@ describe('encounter module index', () => {
   it('exporte les composants Live Play', async () => {
     const mod = await import('../index.js')
     const liveComponents = [
-      'SceneModeSelector', 'AdversaryLiveCard', 'FeatureCard',
-      'PcLivePanel', 'AdversaryTargetPanel', 'EnvironmentPanel'
+      'PcSidebarCard', 'AdversaryGroupCard', 'ContextPanel',
+      'FeatureCard', 'EnvironmentPanel',
+      'SceneModeSelector', 'AdversaryLiveCard', 'PcLivePanel', 'AdversaryTargetPanel'
     ]
     for (const name of liveComponents) {
       expect(mod[name]).toBeDefined()
@@ -52,10 +53,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 23 éléments', async () => {
+  it('exporte exactement 26 éléments', async () => {
     const mod = await import('../index.js')
-    // 2 stores + 8 builder + 6 live + 5 composables + 2 vues = 23
+    // 2 stores + 8 builder + 9 live + 5 composables + 2 vues = 26
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(23)
+    expect(exportNames.length).toBe(26)
   })
 })

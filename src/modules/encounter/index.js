@@ -17,13 +17,18 @@ export { default as EnvironmentPicker } from './components/EnvironmentPicker.vue
 export { default as PcPicker } from './components/PcPicker.vue'
 export { default as SavedEncounterList } from './components/SavedEncounterList.vue'
 
-// Composants — Live
+// Composants — Live (nouveau layout 3 colonnes)
+export { default as PcSidebarCard } from './components/PcSidebarCard.vue'
+export { default as AdversaryGroupCard } from './components/AdversaryGroupCard.vue'
+export { default as ContextPanel } from './components/ContextPanel.vue'
+export { default as FeatureCard } from './components/FeatureCard.vue'
+export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
+
+// Composants — Live (legacy, conservés pour compatibilité)
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
 export { default as AdversaryLiveCard } from './components/AdversaryLiveCard.vue'
-export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as PcLivePanel } from './components/PcLivePanel.vue'
 export { default as AdversaryTargetPanel } from './components/AdversaryTargetPanel.vue'
-export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 
 // Composables
 export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'

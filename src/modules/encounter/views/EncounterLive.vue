@@ -1,16 +1,16 @@
 <template>
   <div
-    class="enc-live"
-    :class="'enc-live--' + store.sceneMode"
+    class="live"
+    :class="'live--' + store.sceneMode"
   >
-    <!-- Message si aucune rencontre active -->
+    <!-- Écran inactif -->
     <div
       v-if="!store.isActive"
-      class="enc-live__inactive"
+      class="live__inactive"
     >
       <p>Aucune rencontre en cours.</p>
       <button
-        class="enc-live__go-builder"
+        class="live__go-builder"
         @click="$router.push('/encounters')"
       >
         Retour au builder de rencontres
@@ -18,16 +18,33 @@
     </div>
 
     <template v-else>
-      <!-- ── Header : titre + fin ── -->
-      <header class="enc-live__header">
-        <h1 class="enc-live__title">
+      <!-- ══ Header ══ -->
+      <header class="live__header">
+        <h1 class="live__title">
           {{ store.encounterName || 'Rencontre' }}
         </h1>
-        <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
+        <span class="live__tier">T{{ store.encounterTier }}</span>
+
+        <button
+          class="live__mode-btn"
+          :class="'live__mode-btn--' + store.sceneMode"
+          :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
+          aria-label="Inverser le projecteur"
+          @click="store.swapSpotlight()"
+        >
+          {{ isPcActor ? '⚔️ PJ Attaque' : '💀 MJ Attaque' }}
+        </button>
+
+        <span
+          v-if="store.adversaryCombatSummary.count > 0"
+          class="live__combat-sum"
+        >
+          {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
+        </span>
 
         <button
           v-if="store.undoStack.length > 0"
-          class="enc-live__undo-btn"
+          class="live__undo-btn"
           :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
           aria-label="Annuler la dernière action"
           @click="store.undo()"
@@ -36,319 +53,191 @@
         </button>
 
         <button
-          class="enc-live__end-btn"
+          class="live__end-btn"
           @click="confirmEndEncounter"
         >
           Fin
         </button>
       </header>
 
-      <!-- ── Barres de sélection PJ / Adversaire ── -->
-      <div class="enc-live__selectors">
-        <!-- PJ chips -->
-        <div class="enc-live__bar enc-live__bar--pc">
-          <button
+      <!-- ══ Grille 3 colonnes ══ -->
+      <div
+        class="live__grid"
+        :class="{ 'live__grid--social': !hasAdversaries }"
+      >
+        <!-- Colonne PJ -->
+        <div class="live__col-pc">
+          <PcSidebarCard
             v-for="pc in store.participantPcs"
             :key="pc.id"
-            class="enc-live__chip"
-            :class="{
-              'enc-live__chip--active': store.activePcId === pc.id,
-              'enc-live__chip--actor': isPcActor && store.activePcId === pc.id,
-              'enc-live__chip--target': !isPcActor && store.activePcId === pc.id
-            }"
-            @click="store.selectPc(pc.id)"
-          >
-            <span
-              v-if="store.pcSpotlights[pc.id] >= 1"
-              class="enc-live__spot-dot"
-              :title="store.pcSpotlights[pc.id] + ' spotlight(s) ce cycle'"
-            >✦{{ store.pcSpotlights[pc.id] > 1 ? store.pcSpotlights[pc.id] : '' }}</span>
-            <span
-              v-if="store.pcDownStatus[pc.id]"
-              class="enc-live__down-dot"
-              title="À terre"
-            >💀</span>
-            <span class="enc-live__chip-name">{{ pc.name }}</span>
-            <button
-              class="enc-live__spot-btn"
-              :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] >= 1 }"
-              :aria-label="(store.pcSpotlights[pc.id] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
-              :title="store.pcSpotlights[pc.id] >= 1 ? 'Clic: +1 · Maintenir: −1' : 'Marquer spotlight'"
-              @click.stop="onPcSpotClick(pc.id)"
-              @contextmenu.stop.prevent="store.decrementPcSpotlight(pc.id)"
-              @pointerdown.stop="spotLongPressDown(() => store.decrementPcSpotlight(pc.id))"
-              @pointerup.stop="spotLongPressUp()"
-              @pointerleave.stop="spotLongPressUp()"
-            >
-              ✦
-            </button>
-          </button>
+            :pc="pc"
+            :is-selected="store.activePcId === pc.id"
+            :is-down="!!store.pcDownStatus[pc.id]"
+            :active-conditions="store.pcConditions[pc.id] || []"
+            :spotlight-count="store.pcSpotlights[pc.id] || 0"
+            @select="onSelectPc"
+            @toggle-condition="onTogglePcCondition"
+          />
         </div>
 
-        <!-- Indicateur de mode de scène central -->
+        <!-- Colonne Adversaires -->
         <div
-          class="enc-live__mode-indicator"
-          :class="'enc-live__mode-indicator--' + store.sceneMode"
-          :title="isPcActor ? 'PJ attaque — cliquer pour inverser' : 'Adversaire attaque — cliquer pour inverser'"
-          role="button"
-          tabindex="0"
-          aria-label="Inverser le projecteur"
-          @click="store.swapSpotlight()"
-          @keydown.enter="store.swapSpotlight()"
-          @keydown.space.prevent="store.swapSpotlight()"
+          v-if="hasAdversaries"
+          class="live__col-adv"
         >
-          <span class="enc-live__mode-label">{{ isPcActor ? 'PJ Attaque' : 'MJ Attaque' }}</span>
-          <span class="enc-live__mode-icon">{{ isPcActor ? '⚔️ →' : '← 💀' }}</span>
-          <span class="enc-live__mode-hint">Tab pour inverser</span>
-        </div>
-
-        <!-- Adversaire chips (groupés) -->
-        <div class="enc-live__bar enc-live__bar--adv">
-          <button
+          <AdversaryGroupCard
             v-for="group in store.groupedAdversaries"
             :key="group.adversaryId"
-            class="enc-live__chip"
-            :class="{
-              'enc-live__chip--active': store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
-              'enc-live__chip--actor': !isPcActor && store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
-              'enc-live__chip--target': isPcActor && store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId,
-              'enc-live__chip--all-defeated': group.activeCount === 0
-            }"
-            @click="store.selectAdversaryGroup(group.adversaryId)"
-          >
-            <span
-              v-if="store.advSpotlights[group.adversaryId] >= 1"
-              class="enc-live__spot-dot"
-              :title="store.advSpotlights[group.adversaryId] + ' spotlight(s) ce cycle'"
-            >✦{{ store.advSpotlights[group.adversaryId] > 1 ? store.advSpotlights[group.adversaryId] : '' }}</span>
-            <span class="enc-live__chip-name">{{ group.name }}</span>
-            <span
-              v-if="group.instances.length > 1"
-              class="enc-live__chip-qty"
-            >×{{ group.instances.length }}</span>
-            <span
-              v-if="group.defeatedCount > 0"
-              class="enc-live__chip-dead"
-            >{{ group.defeatedCount }}💀</span>
-            <button
-              class="enc-live__spot-btn"
-              :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] >= 1 }"
-              :aria-label="(store.advSpotlights[group.adversaryId] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
-              :title="store.advSpotlights[group.adversaryId] >= 1 ? 'Clic: +1 · Maintenir: −1' : 'Marquer spotlight'"
-              @click.stop="onAdvSpotClick(group.adversaryId)"
-              @contextmenu.stop.prevent="store.decrementAdvSpotlight(group.adversaryId)"
-              @pointerdown.stop="spotLongPressDown(() => store.decrementAdvSpotlight(group.adversaryId))"
-              @pointerup.stop="spotLongPressUp()"
-              @pointerleave.stop="spotLongPressUp()"
-            >
-              ✦
-            </button>
-          </button>
-          <!-- Bouton renforts -->
+            :group="group"
+            :is-selected="store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId"
+            @select-group="onSelectAdversaryGroup"
+            @apply-damage="onApplyDamage"
+            @mark-stress="onMarkStress"
+            @clear-stress="onClearStress"
+            @clear-hp="onClearHP"
+            @defeat="onDefeat"
+            @revive="onRevive"
+            @toggle-condition="onToggleAdvCondition"
+          />
           <button
-            class="enc-live__reinforce-btn"
-            :class="{ 'enc-live__reinforce-btn--open': showReinforcementPanel }"
+            class="live__reinforce-btn"
+            :class="{ 'live__reinforce-btn--open': showReinforcementPanel }"
             title="Ajouter des renforts"
             aria-label="Ajouter des renforts"
             @click="toggleReinforcementPanel()"
           >
-            +
+            + Renforts
           </button>
+          <div
+            v-if="showReinforcementPanel"
+            class="live__reinforce-panel"
+          >
+            <input
+              v-model="reinforcementSearch"
+              class="live__reinforce-search"
+              type="text"
+              placeholder="Rechercher un adversaire…"
+              aria-label="Rechercher un adversaire"
+            />
+            <div class="live__reinforce-list">
+              <button
+                v-for="adv in filteredAdversaries"
+                :key="adv.id"
+                class="live__reinforce-item"
+                @click="addReinforcement(adv.id)"
+              >
+                <span>{{ adv.name }}</span>
+                <span class="live__reinforce-meta">{{ adv.type }} · T{{ adv.tier }}</span>
+              </button>
+              <p
+                v-if="filteredAdversaries.length === 0"
+                class="live__reinforce-empty"
+              >
+                Aucun résultat
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Colonne Contexte -->
+        <div class="live__col-ctx">
+          <ContextPanel
+            :pc="store.activePc"
+            :adversary="store.activeAdversary"
+            :environment="store.activeEnvironment"
+            :scene-mode="store.sceneMode"
+            :last-click-category="store.lastClickCategory"
+            :primary-features="pcPrimary"
+            :secondary-features="pcSecondary"
+            :passive-features="pcPassive"
+            :reaction-features="pcReaction"
+          />
         </div>
       </div>
 
-      <!-- ── Panneau renforts (toggle) ── -->
-      <div
-        v-if="showReinforcementPanel"
-        class="enc-live__reinforce-panel"
-      >
-        <input
-          v-model="reinforcementSearch"
-          class="enc-live__reinforce-search"
-          type="text"
-          placeholder="Rechercher un adversaire…"
-          aria-label="Rechercher un adversaire"
-        />
-        <div class="enc-live__reinforce-list">
-          <button
-            v-for="adv in filteredAdversaries"
-            :key="adv.id"
-            class="enc-live__reinforce-item"
-            @click="addReinforcement(adv.id)"
-          >
-            <span class="enc-live__reinforce-name">{{ adv.name }}</span>
-            <span class="enc-live__reinforce-meta">{{ adv.type }} · T{{ adv.tier }} · {{ adv.hp }}HP</span>
-          </button>
-          <p
-            v-if="filteredAdversaries.length === 0"
-            class="enc-live__reinforce-empty"
-          >
-            Aucun résultat
-          </p>
-        </div>
-      </div>
-
-      <!-- ── Battlefield — panels contextuels ── -->
-      <div class="enc-live__battlefield">
-        <PcLivePanel
-          v-if="store.activePc"
-          :pc="store.activePc"
-          :is-actor="isPcActor"
-          :scene-mode="store.sceneMode"
-          :primary-features="pcPrimary"
-          :secondary-features="pcSecondary"
-          :passive-features="pcPassive"
-          :reaction-features="pcReaction"
-          :aoe-active="aoeMode"
-          :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
-          @aoe-click="toggleAoeMode()"
-        />
-
-        <AdversaryTargetPanel
-          v-if="store.activeAdversary"
-          :adversary="store.activeAdversary"
-          :siblings="store.activeAdversarySiblings"
-          :scene-mode="store.sceneMode"
-          :is-actor="!isPcActor"
-          :pcs="store.participantPcs"
-          :aoe-active="aoeMode"
-          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
-          @aoe-click="toggleAoeMode()"
-        />
-      </div>
-
-      <!-- ── Modal AoE (dégâts de zone) ── -->
+      <!-- ══ Modal AoE ══ -->
       <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
       <div
         v-if="aoeMode"
-        class="enc-live__aoe-overlay"
+        class="live__overlay"
         @click.self="aoeMode = false"
       >
         <!-- eslint-enable -->
         <div
-          class="enc-live__aoe-modal"
+          class="live__aoe-modal"
           role="dialog"
           aria-label="Dégâts de zone"
         >
-          <div class="enc-live__aoe-header">
-            <span class="enc-live__aoe-title">💥 Dégâts de zone</span>
-            <span class="enc-live__aoe-attacker">{{ aoeAttackerName }}</span>
+          <div class="live__aoe-header">
+            <span>💥 Dégâts de zone</span>
             <button
-              class="enc-live__aoe-close"
               aria-label="Fermer"
               @click="aoeMode = false"
             >
               ✕
             </button>
           </div>
-
-          <!-- Liste adversaires -->
           <div
-            v-if="aoeAvailableInstances.length > 0"
-            class="enc-live__aoe-section"
+            v-for="inst in aoeAvailableInstances"
+            :key="inst.instanceId"
+            class="live__aoe-row"
+            :class="{ 'live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
           >
-            <span class="enc-live__aoe-section-label">👹 Adversaires</span>
-            <div
-              v-for="inst in aoeAvailableInstances"
-              :key="inst.instanceId"
-              class="enc-live__aoe-row"
-              :class="{ 'enc-live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
-            >
-              <span class="enc-live__aoe-row-name">{{ inst.displayName }}</span>
-              <span class="enc-live__aoe-row-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-              <span
-                v-if="inst.thresholds"
-                class="enc-live__aoe-row-thresh"
-                title="Seuils Majeur / Sévère"
-              >⚔️{{ inst.thresholds.major || '—' }}/{{ inst.thresholds.severe || '—' }}</span>
-              <div class="enc-live__aoe-row-btns">
-                <button
-                  v-for="n in 4"
-                  :key="n"
-                  class="enc-live__aoe-hp-btn"
-                  @click="aoeHitTarget(inst.instanceId, n)"
-                >
-                  {{ n }}
-                </button>
-              </div>
-              <span
-                v-if="aoeDamage[inst.instanceId] > 0"
-                class="enc-live__aoe-row-dmg"
-              >
-                −{{ aoeDamage[inst.instanceId] }}
-              </span>
-              <button
-                v-if="aoeDamage[inst.instanceId] > 0"
-                class="enc-live__aoe-row-undo"
-                title="Annuler"
-                @click="aoeUndoTarget(inst.instanceId)"
-              >
-                ↩
-              </button>
-            </div>
-          </div>
-
-          <!-- Liste PJs -->
-          <div
-            v-if="store.participantPcs.length > 0"
-            class="enc-live__aoe-section"
-          >
-            <span class="enc-live__aoe-section-label">🧑‍🤝‍🧑 PJs</span>
-            <div
-              v-for="pc in store.participantPcs"
-              :key="'pc_' + pc.id"
-              class="enc-live__aoe-row enc-live__aoe-row--pc"
-              :class="{ 'enc-live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
-            >
-              <span class="enc-live__aoe-row-name">{{ pc.name }}</span>
-              <span class="enc-live__aoe-row-hp">❤️{{ pc.maxHP }}</span>
-              <span
-                v-if="pc.armorBaseThresholds"
-                class="enc-live__aoe-row-thresh"
-                title="Seuils Majeur / Sévère"
-              >⚔️{{ pc.armorBaseThresholds.major || '—' }}/{{ pc.armorBaseThresholds.severe || '—' }}</span>
-              <div class="enc-live__aoe-row-btns">
-                <button
-                  v-for="n in 4"
-                  :key="n"
-                  class="enc-live__aoe-hp-btn"
-                  @click="aoeHitTarget('pc_' + pc.id, n)"
-                >
-                  {{ n }}
-                </button>
-              </div>
-              <span
-                v-if="aoeDamage['pc_' + pc.id] > 0"
-                class="enc-live__aoe-row-dmg"
-              >
-                −{{ aoeDamage['pc_' + pc.id] }}
-              </span>
-              <button
-                v-if="aoeDamage['pc_' + pc.id] > 0"
-                class="enc-live__aoe-row-undo"
-                title="Annuler"
-                @click="aoeUndoTarget('pc_' + pc.id)"
-              >
-                ↩
-              </button>
-            </div>
-          </div>
-
-          <!-- Barre d'actions -->
-          <div class="enc-live__aoe-footer">
-            <span class="enc-live__aoe-total">
-              {{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }} · {{ aoeTotalDamage }} HP
-            </span>
+            <span class="live__aoe-name">{{ inst.displayName }}</span>
+            <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+            <input
+              class="live__aoe-input"
+              type="number"
+              min="1"
+              placeholder="Dmg"
+              :aria-label="'Dégâts de zone pour ' + inst.displayName"
+              @click.stop
+              @keydown.enter.stop="aoeSetDamage(inst.instanceId, $event)"
+            />
+            <span
+              v-if="aoeDamage[inst.instanceId] > 0"
+              class="live__aoe-dmg"
+            >−{{ aoeDamage[inst.instanceId] }}</span>
             <button
-              class="enc-live__aoe-reset"
-              :disabled="aoeTotalDamage === 0"
-              @click="aoeResetAll"
+              v-if="aoeDamage[inst.instanceId] > 0"
+              class="live__aoe-undo"
+              @click="aoeUndoTarget(inst.instanceId)"
             >
-              Réinitialiser
+              ↩
             </button>
+          </div>
+          <div
+            v-for="pc in store.participantPcs"
+            :key="'pc_' + pc.id"
+            class="live__aoe-row"
+          >
+            <span class="live__aoe-name">🧑 {{ pc.name }}</span>
+            <span class="live__aoe-hp">Évasion {{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</span>
+            <input
+              class="live__aoe-input"
+              type="number"
+              min="1"
+              placeholder="HP"
+              :aria-label="'Dégâts de zone pour ' + pc.name"
+              @click.stop
+              @keydown.enter.stop="aoeSetDamage('pc_' + pc.id, $event)"
+            />
+            <span
+              v-if="aoeDamage['pc_' + pc.id] > 0"
+              class="live__aoe-dmg"
+            >−{{ aoeDamage['pc_' + pc.id] }}</span>
             <button
-              class="enc-live__aoe-apply"
-              :disabled="aoeTotalDamage === 0"
+              v-if="aoeDamage['pc_' + pc.id] > 0"
+              class="live__aoe-undo"
+              @click="aoeUndoTarget('pc_' + pc.id)"
+            >
+              ↩
+            </button>
+          </div>
+          <div class="live__aoe-footer">
+            <span>{{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }}</span>
+            <button
+              :disabled="aoeTotalTargets === 0"
               @click="applyAoe"
             >
               Appliquer
@@ -357,125 +246,57 @@
         </div>
       </div>
 
-      <!-- ── Résumé combat ── -->
-      <div
-        v-if="store.adversaryCombatSummary.count > 0"
-        class="enc-live__summary"
-      >
-        <span>{{ store.adversaryCombatSummary.count }} actifs</span>
-        <span class="enc-live__summary-sep">·</span>
-        <span>HP {{ store.adversaryCombatSummary.markedHP }}/{{ store.adversaryCombatSummary.totalHP }}</span>
-        <span class="enc-live__summary-sep">·</span>
-        <span>ST {{ store.adversaryCombatSummary.markedStress }}/{{ store.adversaryCombatSummary.totalStress }}</span>
-        <span class="enc-live__summary-sep">·</span>
-        <span>{{ store.defeatedAdversaries.length }} 💀</span>
-      </div>
-
-      <!-- ── Environnement ── -->
-      <EnvironmentPanel
-        v-if="store.activeEnvironment"
-        :environment="store.activeEnvironment"
-      />
-
-      <!-- ── Overlay résumé post-combat ── -->
+      <!-- ══ Modal fin ══ -->
       <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
       <div
         v-if="showEndSummary && endSummaryData"
-        class="enc-live__overlay"
+        class="live__overlay"
         @click.self="cancelEndEncounter"
       >
         <!-- eslint-enable -->
         <div
-          class="enc-live__summary-modal"
+          class="live__end-modal"
           role="dialog"
           aria-label="Résumé de la rencontre"
         >
-          <h2 class="enc-live__modal-title">
-            📋 Résumé — {{ endSummaryData.name }}
-          </h2>
-
-          <div class="enc-live__modal-stats">
-            <div class="enc-live__modal-stat">
-              <span class="enc-live__modal-stat-val">{{ endSummaryData.defeated }}</span>
-              <span class="enc-live__modal-stat-label">💀 Vaincus</span>
+          <h2>📋 Résumé — {{ endSummaryData.name }}</h2>
+          <div class="live__end-stats">
+            <div class="live__end-stat">
+              <span class="live__end-val">{{ endSummaryData.defeated.length }}</span>
+              <span>💀 Vaincus</span>
             </div>
-            <div class="enc-live__modal-stat">
-              <span class="enc-live__modal-stat-val">{{ endSummaryData.remaining }}</span>
-              <span class="enc-live__modal-stat-label">🔴 Restants</span>
+            <div class="live__end-stat">
+              <span class="live__end-val">{{ endSummaryData.surviving.length }}</span>
+              <span>🔴 Restants</span>
             </div>
-            <div class="enc-live__modal-stat">
-              <span class="enc-live__modal-stat-val">{{ endSummaryData.totalDamageHP }}</span>
-              <span class="enc-live__modal-stat-label">❤️ HP infligés</span>
-            </div>
-            <div class="enc-live__modal-stat">
-              <span class="enc-live__modal-stat-val">{{ endSummaryData.totalDamageStress }}</span>
-              <span class="enc-live__modal-stat-label">💢 Stress infligé</span>
-            </div>
-            <div class="enc-live__modal-stat">
-              <span class="enc-live__modal-stat-val">{{ endSummaryData.misses }}</span>
-              <span class="enc-live__modal-stat-label">✕ Ratés</span>
+            <div class="live__end-stat">
+              <span class="live__end-val">{{ endSummaryData.totalHPMarked }}</span>
+              <span>❤️ HP marqués</span>
             </div>
           </div>
-
-          <!-- Dégâts par PJ -->
           <div
-            v-if="Object.keys(endSummaryData.dmgByPc).length > 0"
-            class="enc-live__modal-section"
+            v-if="Object.keys(endSummaryData.damageByPc).length > 0"
+            class="live__end-section"
           >
-            <h3 class="enc-live__modal-subtitle">
-              Dégâts par PJ
-            </h3>
+            <h3>Dégâts par PJ</h3>
             <div
-              v-for="(dmg, pcName) in endSummaryData.dmgByPc"
-              :key="pcName"
-              class="enc-live__modal-row"
+              v-for="(dmg, pcId) in endSummaryData.damageByPc"
+              :key="pcId"
+              class="live__end-row"
             >
-              <span class="enc-live__modal-row-name">{{ pcName }}</span>
-              <span class="enc-live__modal-row-val">❤️{{ dmg.hp }} · 💢{{ dmg.stress }}</span>
+              <span>{{ dmg.pcName }}</span>
+              <span>❤️{{ dmg.hp }} · 💢{{ dmg.stress }}</span>
             </div>
           </div>
-
-          <!-- Adversaires vaincus -->
-          <div
-            v-if="endSummaryData.defeats.length > 0"
-            class="enc-live__modal-section"
-          >
-            <h3 class="enc-live__modal-subtitle">
-              Adversaires vaincus
-            </h3>
-            <div
-              v-for="(d, idx) in endSummaryData.defeats"
-              :key="idx"
-              class="enc-live__modal-row"
-            >
-              <span class="enc-live__modal-row-name">💀 {{ d.name }}</span>
-              <span class="enc-live__modal-row-val">par {{ d.by }}</span>
-            </div>
-          </div>
-
-          <!-- PJs tombés -->
-          <div
-            v-if="endSummaryData.pcDowns.length > 0"
-            class="enc-live__modal-section"
-          >
-            <h3 class="enc-live__modal-subtitle">
-              PJs tombés
-            </h3>
-            <span class="enc-live__modal-list">{{ endSummaryData.pcDowns.join(', ') }}</span>
-          </div>
-
-          <div class="enc-live__modal-actions">
-            <button
-              class="enc-live__modal-cancel"
-              @click="cancelEndEncounter"
-            >
-              Retour au combat
+          <div class="live__end-actions">
+            <button @click="cancelEndEncounter">
+              Retour
             </button>
             <button
-              class="enc-live__modal-confirm"
+              class="live__end-confirm"
               @click="finalEndEncounter"
             >
-              Terminer la rencontre
+              Terminer
             </button>
           </div>
         </div>
@@ -490,21 +311,17 @@ import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
 import { allAdversaries } from '@data/adversaries'
-import PcLivePanel from '../components/PcLivePanel.vue'
-import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
-import EnvironmentPanel from '../components/EnvironmentPanel.vue'
+import PcSidebarCard from '../components/PcSidebarCard.vue'
+import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
+import ContextPanel from '../components/ContextPanel.vue'
 
 export default {
   name: 'EncounterLive',
-  components: {
-    PcLivePanel,
-    AdversaryTargetPanel,
-    EnvironmentPanel
-  },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel },
   setup() {
     const store = useEncounterLiveStore()
 
-    // Features contextuelles du PJ actif
+    // Features PJ contextuelles
     const activePcRef = computed(() => store.activePc)
     const sceneModeRef = computed(() => store.sceneMode)
     const pcFeatures = useEncounterFeatures(activePcRef, sceneModeRef)
@@ -514,11 +331,27 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
-    // ── Panneau renforts ──────────────────────────────────
+    const hasAdversaries = computed(() => store.liveAdversaries.length > 0)
+
+    // ── Sélection ──
+    function onSelectPc(pcId) { store.selectPc(pcId) }
+    function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
+
+    // ── Actions adversaire ──
+    function onApplyDamage({ instanceId, hpToMark }) { store.markAdversaryHP(instanceId, hpToMark) }
+    function onMarkStress(instanceId) { store.markAdversaryStress(instanceId, 1) }
+    function onClearStress(instanceId) { store.clearAdversaryStress(instanceId, 1) }
+    function onClearHP(instanceId) { store.clearAdversaryHP(instanceId, 1) }
+    function onDefeat(instanceId) { store.defeatAdversary(instanceId) }
+    function onRevive(instanceId) { store.reviveAdversary(instanceId) }
+
+    // ── Conditions ──
+    function onTogglePcCondition({ pcId, conditionId }) { store.togglePcCondition(pcId, conditionId) }
+    function onToggleAdvCondition({ instanceId, conditionId }) { store.toggleAdversaryCondition(instanceId, conditionId) }
+
+    // ── Renforts ──
     const showReinforcementPanel = ref(false)
     const reinforcementSearch = ref('')
-
-    /** Adversaires filtrés par recherche, triés par tier puis nom */
     const filteredAdversaries = computed(() => {
       const q = reinforcementSearch.value.toLowerCase().trim()
       let list = allAdversaries
@@ -529,300 +362,112 @@ export default {
           || String(a.tier).includes(q)
         )
       }
-      return list.slice(0, 20) // Limiter pour la perf du dropdown
+      return list.slice(0, 20)
     })
-
     function toggleReinforcementPanel() {
       showReinforcementPanel.value = !showReinforcementPanel.value
-      if (showReinforcementPanel.value) {
-        reinforcementSearch.value = ''
-      }
+      if (showReinforcementPanel.value) reinforcementSearch.value = ''
     }
+    function addReinforcement(adversaryId) { store.addReinforcement(adversaryId, 1) }
 
-    function addReinforcement(adversaryId) {
-      store.addReinforcement(adversaryId, 1)
-    }
-
-    // ── Modal AoE (dégâts de zone) ──────────────────────
+    // ── AoE ──
     const aoeMode = ref(false)
-    const aoeDamage = ref({}) // { targetId → accumulated HP }
-
-    /** Instances adversaires non vaincues, avec displayName numéroté (#1, #2…) */
+    const aoeDamage = ref({})
     const aoeAvailableInstances = computed(() => {
       const active = store.liveAdversaries.filter((a) => !a.isDefeated)
       const countByAdv = {}
-      for (const a of store.liveAdversaries) {
-        countByAdv[a.adversaryId] = (countByAdv[a.adversaryId] || 0) + 1
-      }
+      for (const a of store.liveAdversaries) { countByAdv[a.adversaryId] = (countByAdv[a.adversaryId] || 0) + 1 }
       const indexByAdv = {}
       return active.map((a) => {
         indexByAdv[a.adversaryId] = (indexByAdv[a.adversaryId] || 0) + 1
         const needsNumber = countByAdv[a.adversaryId] > 1
-        return {
-          ...a,
-          displayName: needsNumber ? `${a.name} #${indexByAdv[a.adversaryId]}` : a.name
-        }
+        return { ...a, displayName: needsNumber ? `${a.name} #${indexByAdv[a.adversaryId]}` : a.name }
       })
     })
-
-    /** Nom de l'attaquant AoE selon le mode de scène */
-    const aoeAttackerName = computed(() => {
-      if (isPcActor.value) {
-        return store.activePc ? store.activePc.name : '?'
-      }
-      return store.activeAdversary ? store.activeAdversary.name : '?'
-    })
-
-    /** Nombre de cibles touchées */
-    const aoeTotalTargets = computed(() =>
-      Object.values(aoeDamage.value).filter((v) => v > 0).length
-    )
-
-    /** Total des dégâts distribués */
-    const aoeTotalDamage = computed(() =>
-      Object.values(aoeDamage.value).reduce((s, v) => s + v, 0)
-    )
-
-    function toggleAoeMode() {
-      aoeMode.value = !aoeMode.value
-      if (aoeMode.value) {
-        aoeDamage.value = {}
-        showReinforcementPanel.value = false
-      }
+    const aoeTotalTargets = computed(() => Object.values(aoeDamage.value).filter((v) => v > 0).length)
+    function aoeSetDamage(targetId, event) {
+      const val = parseInt(event.target.value)
+      if (!val || val <= 0) return
+      aoeDamage.value = { ...aoeDamage.value, [targetId]: val }
+      event.target.value = ''
     }
-
-    function aoeHitTarget(targetId, amount) {
-      aoeDamage.value = {
-        ...aoeDamage.value,
-        [targetId]: (aoeDamage.value[targetId] || 0) + amount
-      }
-    }
-
     function aoeUndoTarget(targetId) {
       const copy = { ...aoeDamage.value }
       delete copy[targetId]
       aoeDamage.value = copy
     }
-
-    function aoeResetAll() {
-      aoeDamage.value = {}
-    }
-
     function applyAoe() {
       const dmg = aoeDamage.value
-      const advIds = []
-      const pcHits = [] // { pcId, amount }
-      const advCustom = {} // instanceId → amount (pour dégâts différenciés)
-
+      const advCustom = {}
+      const pcHits = []
       for (const [targetId, amount] of Object.entries(dmg)) {
         if (amount <= 0) continue
-        if (targetId.startsWith('pc_')) {
-          pcHits.push({ pcId: targetId.slice(3), amount })
-        } else {
-          advIds.push(targetId)
-          advCustom[targetId] = amount
-        }
+        if (targetId.startsWith('pc_')) { pcHits.push({ pcId: targetId.slice(3), amount }) }
+        else { advCustom[targetId] = amount }
       }
-
-      // Appliquer dégâts adversaires (par instance, montants potentiellement différents)
-      if (advIds.length > 0) {
-        store.applyAoeDamagePerTarget(advCustom)
-      }
-      // Appliquer dégâts PJs
-      if (pcHits.length > 0) {
-        store.applyAoeDamageToPcsPerTarget(pcHits)
-      }
-
+      if (Object.keys(advCustom).length > 0) store.applyAoeDamagePerTarget(advCustom)
+      if (pcHits.length > 0) store.applyAoeDamageToPcsPerTarget(pcHits)
       aoeDamage.value = {}
       aoeMode.value = false
     }
 
-    // ── Résumé post-combat ────────────────────────────────
+    // ── Fin ──
     const showEndSummary = ref(false)
     const endSummaryData = ref(null)
 
-    function generateSummary() {
-      const log = store.encounterLog
-      const totalDamageHP = log
-        .filter((e) => e.action === 'damage' && e.type === 'hp')
-        .reduce((s, e) => s + e.amount, 0)
-      const totalDamageStress = log
-        .filter((e) => e.action === 'damage' && e.type === 'stress')
-        .reduce((s, e) => s + e.amount, 0)
-      const defeats = log.filter((e) => e.action === 'adv_down')
-      const pcDowns = log.filter((e) => e.action === 'pc_down')
-      const misses = log.filter((e) => e.action === 'miss')
-
-      // Dégâts par PJ
-      const dmgByPc = {}
-      log.filter((e) => e.action === 'damage').forEach((e) => {
-        if (!dmgByPc[e.pcName]) dmgByPc[e.pcName] = { hp: 0, stress: 0 }
-        if (e.type === 'hp') dmgByPc[e.pcName].hp += e.amount
-        else dmgByPc[e.pcName].stress += e.amount
-      })
-
-      return {
-        name: store.encounterName,
-        tier: store.encounterTier,
-        totalAdversaries: store.liveAdversaries.length,
-        defeated: store.defeatedAdversaries.length,
-        remaining: store.activeAdversaries.length,
-        totalDamageHP,
-        totalDamageStress,
-        pcDowns: pcDowns.map((e) => e.pcName),
-        defeats: defeats.map((e) => ({ name: e.advName, by: e.pcName })),
-        misses: misses.length,
-        dmgByPc,
-        logEntries: log.length
-      }
-    }
-
-    // ── Raccourcis clavier ─────────────────────────────────
+    // ── Raccourcis clavier ──
     function onKeydown(e) {
       if (!store.isActive) return
-
-      // Ignorer si on tape dans un input/textarea
       const tag = e.target.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
-
-      // Ctrl+Z : undo
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (store.undoStack.length > 0) {
-          e.preventDefault()
-          store.undo()
-        }
+        if (store.undoStack.length > 0) { e.preventDefault(); store.undo() }
         return
       }
-
-      // Tab : basculer projecteur PJ ↔ MJ
-      if (e.key === 'Tab') {
-        e.preventDefault()
-        store.swapSpotlight()
-        return
-      }
-
-      // Escape : fermer renforts / résumé / AoE
+      if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); return }
       if (e.key === 'Escape') {
-        if (aoeMode.value) {
-          aoeMode.value = false
-        }
-        if (showReinforcementPanel.value) {
-          showReinforcementPanel.value = false
-        }
-        if (showEndSummary.value) {
-          showEndSummary.value = false
-        }
+        if (aoeMode.value) aoeMode.value = false
+        if (showReinforcementPanel.value) showReinforcementPanel.value = false
+        if (showEndSummary.value) showEndSummary.value = false
         return
       }
-
-      // 1-9 : sélection rapide PJ / Shift+1-9 : adversaire
       const num = parseInt(e.key)
       if (num >= 1 && num <= 9 && !e.ctrlKey && !e.metaKey && !e.altKey) {
         if (e.shiftKey) {
-          // Shift+N : sélection rapide groupe adversaire par index
           const groups = store.groupedAdversaries
-          if (num <= groups.length) {
-            e.preventDefault()
-            store.selectAdversaryGroup(groups[num - 1].adversaryId)
-          }
+          if (num <= groups.length) { e.preventDefault(); store.selectAdversaryGroup(groups[num - 1].adversaryId) }
         } else {
-          // N : sélection rapide PJ par index
           const pcs = store.participantPcs
-          if (num <= pcs.length) {
-            e.preventDefault()
-            store.selectPc(pcs[num - 1].id)
-          }
+          if (num <= pcs.length) { e.preventDefault(); store.selectPc(pcs[num - 1].id) }
         }
-        return
       }
     }
 
     onMounted(() => {
-      if (!store.isActive) {
-        store.restoreState()
-      }
+      if (!store.isActive) store.restoreState()
       window.addEventListener('keydown', onKeydown)
     })
-
-    onUnmounted(() => {
-      window.removeEventListener('keydown', onKeydown)
-    })
-
-    // ── Long press spotlights (alternative mobile au clic droit) ──
-    let _lpTimer = null
-    let _lpFired = false
-
-    function spotLongPressDown(callback) {
-      _lpFired = false
-      _lpTimer = setTimeout(() => {
-        _lpFired = true
-        callback()
-      }, 500)
-    }
-
-    function spotLongPressUp() {
-      if (_lpTimer) {
-        clearTimeout(_lpTimer)
-        _lpTimer = null
-      }
-    }
-
-    function spotLongPressFired() {
-      return _lpFired
-    }
-
-    /** Gère le clic sur le bouton spotlight PJ avec long-press */
-    function onPcSpotClick(pcId) {
-      if (_lpFired) { _lpFired = false; return }
-      store.togglePcSpotlight(pcId)
-    }
-
-    /** Gère le clic sur le bouton spotlight adversaire avec long-press */
-    function onAdvSpotClick(advId) {
-      if (_lpFired) { _lpFired = false; return }
-      store.toggleAdvSpotlight(advId)
-    }
+    onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
     return {
-      store,
-      isPcActor,
+      store, isPcActor, hasAdversaries,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
       pcReaction: pcFeatures.reactionFeatures,
-      // Renforts
-      showReinforcementPanel,
-      reinforcementSearch,
-      filteredAdversaries,
-      toggleReinforcementPanel,
-      addReinforcement,
-      // AoE
-      aoeMode,
-      aoeDamage,
-      aoeAvailableInstances,
-      aoeAttackerName,
-      aoeTotalTargets,
-      aoeTotalDamage,
-      toggleAoeMode,
-      aoeHitTarget,
-      aoeUndoTarget,
-      aoeResetAll,
-      applyAoe,
-      // Long press spotlights
-      spotLongPressDown,
-      spotLongPressUp,
-      spotLongPressFired,
-      onPcSpotClick,
-      onAdvSpotClick,
-      // Résumé
-      showEndSummary,
-      endSummaryData,
-      generateSummary
+      onSelectPc, onSelectAdversaryGroup,
+      onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
+      onTogglePcCondition, onToggleAdvCondition,
+      showReinforcementPanel, reinforcementSearch, filteredAdversaries,
+      toggleReinforcementPanel, addReinforcement,
+      aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
+      aoeSetDamage, aoeUndoTarget, applyAoe,
+      showEndSummary, endSummaryData
     }
   },
   methods: {
     confirmEndEncounter() {
-      this.endSummaryData = this.generateSummary()
+      this.endSummaryData = this.store.generateSummary()
       this.showEndSummary = true
     },
     finalEndEncounter() {
@@ -840,838 +485,81 @@ export default {
 </script>
 
 <style scoped>
-/* ── Teinte de fond selon le mode ── */
-
-.enc-live {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  margin: 0 auto;
-  padding: var(--space-sm);
-  min-height: 100%;
-  transition: background-color 0.3s;
-}
-
-.enc-live--pcAttack {
-  background-color: rgba(83, 168, 182, 0.03);
-}
-
-.enc-live--adversaryAttack {
-  background-color: rgba(200, 75, 49, 0.05);
-}
-
-/* ── Header inline ── */
-
-.enc-live__header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.enc-live__title {
-  font-size: var(--font-lg, 1.25rem);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-  margin: 0;
-}
-
-.enc-live__tier {
-  font-size: var(--font-xs);
-  color: var(--color-accent-gold);
-  font-weight: var(--font-semibold);
-  padding: 1px var(--space-xs);
-  background: rgba(224, 165, 38, 0.1);
-  border-radius: var(--radius-sm);
-  margin-right: auto;
-}
-
-.enc-live__undo-btn {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-text-muted);
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-size: var(--font-xs);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: background 0.15s;
-  font-variant-numeric: tabular-nums;
-}
-
-.enc-live__undo-btn:hover {
-  background: var(--color-bg-elevated);
-  border-color: var(--color-border-active);
-}
-
-.enc-live__end-btn {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-danger);
-  background: transparent;
-  color: var(--color-accent-danger);
-  font-size: var(--font-xs);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__end-btn:hover {
-  background: rgba(244, 67, 54, 0.1);
-}
-
-/* ── Sélecteurs PJ ← flèche → Adversaire ── */
-
-.enc-live__selectors {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.enc-live__bar {
-  display: flex;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-  flex: 1;
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-/* ── Chips universels ── */
-
-.enc-live__chip {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  border: 2px solid transparent;
-  background: var(--color-bg-primary);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  font-size: var(--font-xs);
-}
-
-.enc-live__chip:hover {
-  background: var(--color-bg-elevated);
-  border-color: var(--color-border-active);
-}
-
-.enc-live__chip--active {
-  border-color: var(--color-border-active);
-}
-
-.enc-live__chip--actor {
-  border-color: var(--color-accent-hope);
-  box-shadow: 0 0 0 1px var(--color-accent-hope);
-  background: rgba(83, 168, 182, 0.08);
-}
-
-.enc-live__chip--target {
-  border-color: var(--color-accent-fear);
-  box-shadow: 0 0 0 1px var(--color-accent-fear);
-  background: rgba(200, 75, 49, 0.08);
-}
-
-.enc-live__chip--all-defeated {
-  opacity: 0.4;
-}
-
-.enc-live__chip-name {
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-}
-
-.enc-live__chip-sub {
-  color: var(--color-text-muted);
-}
-
-.enc-live__chip-qty {
-  font-size: 0.65rem;
-  font-weight: var(--font-bold);
-  color: var(--color-accent-gold);
-  padding: 0 3px;
-  background: rgba(224, 165, 38, 0.15);
-  border-radius: var(--radius-sm);
-  line-height: 1.4;
-}
-
-.enc-live__chip-dead {
-  font-size: 0.75rem;
-}
-
-/* ── Spotlight indicators ── */
-
-.enc-live__spot-dot {
-  color: var(--color-accent-gold);
-  font-size: 0.7rem;
-  line-height: 1;
-  text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
-}
-
-.enc-live__down-dot {
-  font-size: 0.7rem;
-  line-height: 1;
-}
-
-.enc-live__spot-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: 0.6rem;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 2px;
-  transition: all 0.15s;
-  flex-shrink: 0;
-}
-
-.enc-live__spot-btn:hover {
-  border-color: var(--color-accent-gold);
-  color: var(--color-accent-gold);
-}
-
-.enc-live__spot-btn--on {
-  background: rgba(224, 165, 38, 0.2);
-  border-color: var(--color-accent-gold);
-  color: var(--color-accent-gold);
-  text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
-}
-
-/* ── Indicateur de mode de scène central ── */
-
-.enc-live__mode-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  gap: 2px;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  background: var(--color-bg-secondary);
-  cursor: pointer;
-  transition: all 0.25s;
-  user-select: none;
-  min-width: 100px;
-}
-
-.enc-live__mode-indicator:hover {
-  background: var(--color-bg-elevated);
-  transform: scale(1.05);
-}
-
-.enc-live__mode-indicator--pcAttack {
-  border-color: var(--color-accent-hope);
-  background: rgba(83, 168, 182, 0.08);
-}
-
-.enc-live__mode-indicator--adversaryAttack {
-  border-color: var(--color-accent-fear);
-  background: rgba(200, 75, 49, 0.08);
-}
-
-.enc-live__mode-label {
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.enc-live__mode-indicator--pcAttack .enc-live__mode-label {
-  color: var(--color-accent-hope);
-}
-
-.enc-live__mode-indicator--adversaryAttack .enc-live__mode-label {
-  color: var(--color-accent-fear);
-}
-
-.enc-live__mode-icon {
-  font-size: 1.3rem;
-  font-weight: var(--font-bold);
-  white-space: nowrap;
-  line-height: 1;
-}
-
-.enc-live__mode-hint {
-  font-size: 0.55rem;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-/* ── Battlefield ── */
-
-.enc-live__battlefield {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-}
-
-.enc-live__panel--first  { order: 1; }
-.enc-live__panel--second { order: 2; }
-
-@media (max-width: 700px) {
-  .enc-live__battlefield {
-    grid-template-columns: 1fr;
-  }
-
-  .enc-live__selectors {
-    flex-direction: column;
-  }
-
-  .enc-live__mode-indicator {
-    transform: rotate(0deg);
-    flex-direction: row;
-    gap: var(--space-xs);
-    min-width: auto;
-  }
-}
-
-/* ── Summary ── */
-
-.enc-live__summary {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-  flex-wrap: wrap;
-}
-
-.enc-live__summary-sep {
-  color: var(--color-text-muted);
-}
-
-/* ── Inactive ── */
-
-.enc-live__inactive {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-xl, 2rem);
-  text-align: center;
-}
-
-.enc-live__inactive p {
-  color: var(--color-text-muted);
-  font-size: var(--font-md, 1rem);
-}
-
-.enc-live__go-builder {
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-hope);
-  background: transparent;
-  color: var(--color-accent-hope);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__go-builder:hover {
-  background: rgba(83, 168, 182, 0.1);
-}
-
-/* ── Bouton renforts ── */
-
-.enc-live__reinforce-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-md);
-  border: 1px dashed var(--color-border-active);
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: var(--font-lg);
-  font-weight: var(--font-bold);
-  cursor: pointer;
-  transition: all 0.15s;
-  flex-shrink: 0;
-  align-self: center;
-}
-
-.enc-live__reinforce-btn:hover {
-  border-color: var(--color-accent-fear);
-  color: var(--color-accent-fear);
-  background: rgba(200, 75, 49, 0.08);
-}
-
-.enc-live__reinforce-btn--open {
-  border-style: solid;
-  border-color: var(--color-accent-fear);
-  color: var(--color-accent-fear);
-  background: rgba(200, 75, 49, 0.1);
-}
-
-/* ── Panneau renforts ── */
-
-.enc-live__reinforce-panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  padding: var(--space-sm);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-.enc-live__reinforce-search {
-  width: 100%;
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-size: var(--font-sm);
-}
-
-.enc-live__reinforce-search:focus {
-  outline: none;
-  border-color: var(--color-border-active);
-}
-
-.enc-live__reinforce-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.enc-live__reinforce-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-xs) var(--space-sm);
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.1s;
-  text-align: left;
-}
-
-.enc-live__reinforce-item:hover {
-  background: var(--color-bg-elevated);
-}
-
-.enc-live__reinforce-name {
-  font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
-}
-
-.enc-live__reinforce-meta {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.enc-live__reinforce-empty {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  text-align: center;
-  padding: var(--space-sm);
-  margin: 0;
-}
-
-/* ── Modal AoE ── */
-
-.enc-live__aoe-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 100;
-  padding: var(--space-md);
-}
-
-.enc-live__aoe-modal {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-accent-warning);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  max-width: 480px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-.enc-live__aoe-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.enc-live__aoe-title {
-  font-size: var(--font-md);
-  font-weight: var(--font-bold);
-  color: var(--color-accent-warning);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.enc-live__aoe-attacker {
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-  font-style: italic;
-  margin-left: auto;
-}
-
-.enc-live__aoe-close {
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  font-size: var(--font-md);
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  margin-left: var(--space-sm);
-}
-
-.enc-live__aoe-close:hover {
-  background: var(--color-bg-elevated);
-  color: var(--color-text-primary);
-}
-
-.enc-live__aoe-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.enc-live__aoe-section-label {
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-/* ── Lignes cibles ── */
-
-.enc-live__aoe-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  transition: border-color 0.15s, background 0.15s;
-}
-
-.enc-live__aoe-row--pc {
-  border-left: 3px solid var(--color-accent-hope);
-}
-
-.enc-live__aoe-row--hit {
-  border-color: var(--color-accent-warning);
-  background: rgba(255, 152, 0, 0.05);
-}
-
-.enc-live__aoe-row-name {
-  font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.enc-live__aoe-row-hp {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.enc-live__aoe-row-thresh {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.enc-live__aoe-row-btns {
-  display: flex;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.enc-live__aoe-hp-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-fear);
-  background: transparent;
-  color: var(--color-accent-fear);
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__aoe-hp-btn:hover {
-  background: rgba(200, 75, 49, 0.15);
-}
-
-.enc-live__aoe-row-dmg {
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  color: var(--color-accent-warning);
-  font-variant-numeric: tabular-nums;
-  min-width: 28px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.enc-live__aoe-row-undo {
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  font-size: var(--font-sm);
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-}
-
-.enc-live__aoe-row-undo:hover {
-  color: var(--color-text-primary);
-  background: var(--color-bg-elevated);
-}
-
-/* ── Footer ── */
-
-.enc-live__aoe-footer {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding-top: var(--space-sm);
-  border-top: 1px solid var(--color-border);
-}
-
-.enc-live__aoe-total {
-  font-size: var(--font-xs);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-semibold);
-}
-
-.enc-live__aoe-reset {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: var(--font-xs);
-  cursor: pointer;
-  margin-left: auto;
-  transition: all 0.15s;
-}
-
-.enc-live__aoe-reset:hover:not(:disabled) {
-  border-color: var(--color-border-active);
-  color: var(--color-text-primary);
-}
-
-.enc-live__aoe-reset:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.enc-live__aoe-apply {
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-warning);
-  background: rgba(255, 152, 0, 0.1);
-  color: var(--color-accent-warning);
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__aoe-apply:hover:not(:disabled) {
-  background: rgba(255, 152, 0, 0.2);
-}
-
-.enc-live__aoe-apply:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* ── Overlay résumé post-combat ── */
-
-.enc-live__overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 100;
-  padding: var(--space-md);
-}
-
-.enc-live__summary-modal {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  width: 100%;
-  max-width: 520px;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: var(--space-lg, 1.5rem);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.enc-live__modal-title {
-  font-size: var(--font-lg, 1.25rem);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-  margin: 0;
-}
-
-.enc-live__modal-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.enc-live__modal-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-sm);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-md);
-  min-width: 72px;
-  flex: 1;
-}
-
-.enc-live__modal-stat-val {
-  font-size: var(--font-xl, 1.5rem);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
-  font-variant-numeric: tabular-nums;
-}
-
-.enc-live__modal-stat-label {
-  font-size: var(--font-xs);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.enc-live__modal-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.enc-live__modal-subtitle {
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0;
-}
-
-.enc-live__modal-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px var(--space-sm);
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-sm);
-}
-
-.enc-live__modal-row-name {
-  font-weight: var(--font-semibold);
-  color: var(--color-text-primary);
-}
-
-.enc-live__modal-row-val {
-  color: var(--color-text-secondary);
-  font-variant-numeric: tabular-nums;
-}
-
-.enc-live__modal-list {
-  font-size: var(--font-sm);
-  color: var(--color-accent-danger);
-  font-weight: var(--font-semibold);
-}
-
-.enc-live__modal-actions {
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: flex-end;
-  padding-top: var(--space-sm);
-  border-top: 1px solid var(--color-border);
-}
-
-.enc-live__modal-cancel {
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__modal-cancel:hover {
-  background: var(--color-bg-elevated);
-}
-
-.enc-live__modal-confirm {
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-danger);
-  background: rgba(244, 67, 54, 0.1);
-  color: var(--color-accent-danger);
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.enc-live__modal-confirm:hover {
-  background: rgba(244, 67, 54, 0.2);
-}
+/* ══ Racine ══ */
+.live { display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s; }
+.live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
+.live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
+.live__inactive { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); padding: var(--space-xl); min-height: 60vh; color: var(--color-text-muted); }
+.live__go-builder { padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--color-accent-hope); background: transparent; color: var(--color-accent-hope); cursor: pointer; }
+
+/* ══ Header ══ */
+.live__header { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid var(--color-border); background: var(--color-bg-secondary); flex-wrap: wrap; flex-shrink: 0; }
+.live__title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; }
+.live__tier { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); background: rgba(224, 165, 38, 0.1); border-radius: var(--radius-sm); }
+.live__mode-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); }
+.live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
+.live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
+.live__mode-btn:hover { background: var(--color-bg-elevated); }
+.live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-left: auto; }
+.live__undo-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; }
+.live__undo-btn:hover { background: var(--color-bg-elevated); }
+.live__end-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: transparent; color: var(--color-accent-danger); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; }
+.live__end-btn:hover { background: rgba(244, 67, 54, 0.1); }
+
+/* ══ Grille 3 colonnes ══ */
+.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
+.live__grid--social { grid-template-columns: minmax(200px, 1fr) minmax(280px, 1.5fr); }
+.live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
+.live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
+.live__col-ctx { overflow: hidden; }
+
+@media (max-width: 900px) {
+  .live__grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .live__col-pc { flex-direction: row; overflow-x: auto; overflow-y: visible; border-right: none; border-bottom: 1px solid var(--color-border); padding: var(--space-xs) var(--space-sm); }
+  .live__col-adv { min-height: 40vh; }
+  .live__col-ctx { border-top: 1px solid var(--color-border); max-height: 40vh; }
+}
+
+/* ══ Renforts ══ */
+.live__reinforce-btn { padding: var(--space-xs) var(--space-sm); border: 1px dashed var(--color-border); border-radius: var(--radius-md); background: transparent; color: var(--color-text-muted); font-size: var(--font-size-xs); cursor: pointer; text-align: center; transition: border-color var(--transition-fast), color var(--transition-fast); }
+.live__reinforce-btn:hover, .live__reinforce-btn--open { border-color: var(--color-accent-hope); color: var(--color-accent-hope); }
+.live__reinforce-panel { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-secondary); }
+.live__reinforce-search { padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg-input); color: var(--color-text-primary); font-size: var(--font-size-sm); }
+.live__reinforce-search:focus { outline: none; border-color: var(--color-border-active); }
+.live__reinforce-list { max-height: 10rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1px; }
+.live__reinforce-item { display: flex; justify-content: space-between; padding: var(--space-xs) var(--space-sm); border: none; background: var(--color-bg-primary); color: var(--color-text-primary); font-size: var(--font-size-xs); cursor: pointer; text-align: left; }
+.live__reinforce-item:hover { background: var(--color-bg-elevated); }
+.live__reinforce-meta { color: var(--color-text-muted); }
+.live__reinforce-empty { font-size: var(--font-size-xs); color: var(--color-text-muted); text-align: center; padding: var(--space-sm); margin: 0; }
+
+/* ══ Overlays ══ */
+.live__overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; padding: var(--space-md); }
+
+/* AoE modal */
+.live__aoe-modal { background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border); max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-sm); }
+.live__aoe-header { display: flex; justify-content: space-between; align-items: center; font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+.live__aoe-header button { border: none; background: transparent; color: var(--color-text-muted); font-size: var(--font-size-md); cursor: pointer; }
+.live__aoe-row { display: flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs); border-radius: var(--radius-sm); background: var(--color-bg-primary); }
+.live__aoe-row--hit { background: rgba(244, 67, 54, 0.1); }
+.live__aoe-name { flex: 1; font-size: var(--font-size-xs); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live__aoe-hp { font-size: var(--font-size-xs); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+.live__aoe-input { width: 3.5rem; padding: 2px var(--space-xs); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg-input); color: var(--color-text-primary); font-size: var(--font-size-xs); text-align: center; }
+.live__aoe-input:focus { outline: none; border-color: var(--color-accent-fear); }
+.live__aoe-dmg { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-accent-danger); }
+.live__aoe-undo { border: none; background: transparent; color: var(--color-text-muted); cursor: pointer; font-size: var(--font-size-xs); }
+.live__aoe-footer { display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-sm); border-top: 1px solid var(--color-border); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.live__aoe-footer button { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: var(--color-accent-danger); color: white; font-weight: var(--font-weight-bold); cursor: pointer; }
+.live__aoe-footer button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* End modal */
+.live__end-modal { background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border); max-width: 500px; width: 100%; padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-md); }
+.live__end-modal h2 { margin: 0; font-size: var(--font-size-lg); color: var(--color-text-primary); }
+.live__end-stats { display: flex; gap: var(--space-md); }
+.live__end-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+.live__end-val { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+.live__end-section h3 { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-xs); }
+.live__end-row { display: flex; justify-content: space-between; font-size: var(--font-size-xs); color: var(--color-text-primary); padding: 2px 0; }
+.live__end-actions { display: flex; justify-content: flex-end; gap: var(--space-sm); padding-top: var(--space-sm); }
+.live__end-actions button { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+.live__end-confirm { border-color: var(--color-accent-danger) !important; background: var(--color-accent-danger) !important; color: white !important; font-weight: var(--font-weight-bold); }
 </style>
