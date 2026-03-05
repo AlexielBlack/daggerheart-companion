@@ -389,10 +389,20 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
       spotlight.value = SPOTLIGHT_GM
     } else if (sceneMode.value === SCENE_MODE_ADVERSARY_ATTACK) {
-      sceneMode.value = SCENE_MODE_SOCIAL
+      sceneMode.value = SCENE_MODE_PC_ATTACK
+      spotlight.value = SPOTLIGHT_PC
+    }
+    // En mode social, swap n'a pas d'effet
+    persistState()
+  }
+
+  /** Bascule vers/depuis le mode social (bouton dédié) */
+  function toggleSocial() {
+    if (sceneMode.value === SCENE_MODE_SOCIAL) {
+      sceneMode.value = SCENE_MODE_PC_ATTACK
       spotlight.value = SPOTLIGHT_PC
     } else {
-      sceneMode.value = SCENE_MODE_PC_ATTACK
+      sceneMode.value = SCENE_MODE_SOCIAL
       spotlight.value = SPOTLIGHT_PC
     }
     persistState()
@@ -843,7 +853,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Actions — Mode & Projecteur
     setSceneMode, setPlayerSpotlight, setGmSpotlight, toggleSpotlight,
     setActivePc, setActiveAdversary, setActiveAdversaryGroup,
-    selectPc, selectAdversaryGroup, swapSpotlight,
+    selectPc, selectAdversaryGroup, swapSpotlight, toggleSocial,
 
     // Actions — Adversaire live (HP/Stress/Défaite)
     markAdversaryHP, clearAdversaryHP,

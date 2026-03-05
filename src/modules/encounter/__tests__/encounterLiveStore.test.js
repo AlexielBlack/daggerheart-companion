@@ -680,13 +680,27 @@ describe('encounterLiveStore', () => {
       expect(store.sceneMode).toBe(modeBefore)
     })
 
-    it('swapSpotlight cycle entre les 3 modes', () => {
+    it('swapSpotlight alterne entre PJ et MJ attaque', () => {
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
       store.swapSpotlight()
       expect(store.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
       store.swapSpotlight()
+      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
+    })
+
+    it('swapSpotlight n\'a pas d\'effet en mode social', () => {
+      store.toggleSocial()
       expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
       store.swapSpotlight()
+      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
+    })
+
+    it('toggleSocial bascule vers/depuis le mode social', () => {
+      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
+      store.toggleSocial()
+      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
+      expect(store.spotlight).toBe(SPOTLIGHT_PC)
+      store.toggleSocial()
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
     })
   })

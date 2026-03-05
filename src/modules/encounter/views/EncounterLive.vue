@@ -25,14 +25,27 @@
         </h1>
         <span class="live__tier">T{{ store.encounterTier }}</span>
 
+        <!-- Swap PJ/MJ combat (désactivé en mode social) -->
         <button
+          v-if="!isSocialMode"
           class="live__mode-btn"
           :class="'live__mode-btn--' + store.sceneMode"
-          :title="currentModeLabel + ' — Tab pour changer de mode'"
-          aria-label="Changer de mode de scène"
+          :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
+          aria-label="Inverser PJ / MJ"
           @click="store.swapSpotlight()"
         >
-          {{ currentModeLabel }}
+          {{ isPcActor ? '⚔️ PJ Attaque' : '💀 MJ Attaque' }}
+        </button>
+
+        <!-- Toggle social (bouton séparé) -->
+        <button
+          class="live__mode-btn live__mode-btn--social-toggle"
+          :class="{ 'live__mode-btn--social-on': isSocialMode }"
+          :title="isSocialMode ? 'Quitter le mode social' : 'Passer en mode social'"
+          aria-label="Mode social"
+          @click="store.toggleSocial()"
+        >
+          🗣️ Social
         </button>
 
         <span
@@ -391,11 +404,6 @@ export default {
 
     const isSocialMode = computed(() => store.sceneMode === 'social')
 
-    const currentModeLabel = computed(() => {
-      const meta = SCENE_MODE_META[store.sceneMode]
-      return meta ? meta.emoji + ' ' + meta.label : '⚔️ PJ Attaque'
-    })
-
     const hasAdversaries = computed(() => store.liveAdversaries.length > 0)
 
     // ── Sélection ──
@@ -542,7 +550,13 @@ export default {
         if (store.undoStack.length > 0) { e.preventDefault(); store.undo() }
         return
       }
-      if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); return }
+      if (e.key === 'Tab') {
+        if (store.sceneMode !== 'social') {
+          e.preventDefault()
+          store.swapSpotlight()
+        }
+        return
+      }
       if (e.key === 'Escape') {
         if (aoeMode.value) aoeMode.value = false
         if (showReinforcementPanel.value) showReinforcementPanel.value = false
@@ -568,7 +582,7 @@ export default {
     onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
     return {
-      store, isPcActor, isSocialMode, currentModeLabel, hasAdversaries,
+      store, isPcActor, isSocialMode, hasAdversaries,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -622,6 +636,9 @@ export default {
 .live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
 .live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
 .live__mode-btn--social { color: #0891b2; border-color: #0891b2; }
+.live__mode-btn--social-toggle { color: var(--color-text-muted); border-color: var(--color-border); }
+.live__mode-btn--social-toggle:hover { color: #0891b2; border-color: #0891b2; }
+.live__mode-btn--social-on { color: #0891b2; border-color: #0891b2; background: rgba(8, 145, 178, 0.15); }
 .live__mode-btn:hover { background: var(--color-bg-elevated); }
 .live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-left: auto; }
 .live__undo-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; }
