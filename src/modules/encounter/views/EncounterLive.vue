@@ -65,6 +65,16 @@
             💥 AoE
           </button>
           <button
+            v-if="hasAdversaries"
+            class="live__reinforce-header-btn"
+            :class="{ 'live__reinforce-header-btn--open': showReinforcementPanel }"
+            title="Ajouter des renforts"
+            aria-label="Ajouter des renforts"
+            @click="showReinforcementPanel = true"
+          >
+            + Renforts
+          </button>
+          <button
             v-if="store.countdowns.length === 0"
             class="live__cd-btn"
             title="Ajouter un countdown"
@@ -155,100 +165,6 @@
             @revive="onRevive"
             @toggle-condition="onToggleAdvCondition"
           />
-          <button
-            class="live__reinforce-btn"
-            :class="{ 'live__reinforce-btn--open': showReinforcementPanel }"
-            title="Ajouter des renforts"
-            aria-label="Ajouter des renforts"
-            @click="toggleReinforcementPanel()"
-          >
-            + Renforts
-          </button>
-          <div
-            v-if="showReinforcementPanel"
-            class="live__reinforce-panel"
-          >
-            <!-- Recherche texte -->
-            <input
-              v-model="reinforcementSearch"
-              class="live__reinforce-search"
-              type="text"
-              placeholder="Rechercher un adversaire…"
-              aria-label="Rechercher un adversaire"
-            />
-
-            <!-- Filtres tier -->
-            <div class="live__reinforce-filters">
-              <span class="live__reinforce-filter-label">Tier</span>
-              <button
-                v-for="t in 4"
-                :key="'tier-' + t"
-                class="live__reinforce-filter"
-                :class="{ 'live__reinforce-filter--on': reinforceTierFilter.includes(t) }"
-                :aria-label="'Tier ' + t"
-                @click="toggleTierFilter(t)"
-              >
-                {{ t }}
-              </button>
-            </div>
-
-            <!-- Filtres type -->
-            <div class="live__reinforce-filters">
-              <span class="live__reinforce-filter-label">Type</span>
-              <button
-                v-for="typ in adversaryTypes"
-                :key="typ"
-                class="live__reinforce-filter"
-                :class="{ 'live__reinforce-filter--on': reinforceTypeFilter.includes(typ) }"
-                :aria-label="typ"
-                @click="toggleTypeFilter(typ)"
-              >
-                {{ typ.slice(0, 3) }}
-              </button>
-            </div>
-
-            <!-- Tri -->
-            <div class="live__reinforce-filters">
-              <span class="live__reinforce-filter-label">Tri</span>
-              <button
-                v-for="opt in sortOptions"
-                :key="opt.key"
-                class="live__reinforce-filter"
-                :class="{ 'live__reinforce-filter--on': reinforceSort === opt.key }"
-                @click="reinforceSort = opt.key"
-              >
-                {{ opt.label }}
-              </button>
-            </div>
-
-            <!-- Compteur résultats -->
-            <span class="live__reinforce-count">
-              {{ filteredAdversaries.length }} résultat{{ filteredAdversaries.length > 1 ? 's' : '' }}
-            </span>
-
-            <!-- Liste résultats -->
-            <div class="live__reinforce-list">
-              <button
-                v-for="adv in filteredAdversaries"
-                :key="adv.id"
-                class="live__reinforce-item"
-                @click="addReinforcement(adv.id)"
-              >
-                <span class="live__reinforce-name">
-                  {{ adv.name }}
-                </span>
-                <span class="live__reinforce-meta">
-                  {{ adv.type }} · T{{ adv.tier }} · {{ adv.hp }}HP
-                </span>
-              </button>
-              <p
-                v-if="filteredAdversaries.length === 0"
-                class="live__reinforce-empty"
-              >
-                Aucun résultat
-              </p>
-            </div>
-          </div>
         </div>
 
         <!-- Colonne Contexte -->
@@ -270,6 +186,12 @@
           />
         </div>
       </div>
+
+      <!-- ══ Drawer Renforts ══ -->
+      <ReinforcementDrawer
+        v-model="showReinforcementPanel"
+        @add="addReinforcement"
+      />
 
       <!-- ══ Modal AoE ══ -->
       <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
@@ -460,15 +382,15 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
-import { allAdversaries, ADVERSARY_TYPES } from '@data/adversaries'
 import PcSidebarCard from '../components/PcSidebarCard.vue'
 import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
 import ContextPanel from '../components/ContextPanel.vue'
 import CountdownTracker from '../components/CountdownTracker.vue'
+import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer },
   setup() {
     const store = useEncounterLiveStore()
 
@@ -502,76 +424,7 @@ export default {
 
     // ── Renforts ──
     const showReinforcementPanel = ref(false)
-    const reinforcementSearch = ref('')
-    const reinforceTierFilter = ref([])
-    const reinforceTypeFilter = ref([])
-    const reinforceSort = ref('name')
-    const adversaryTypes = ADVERSARY_TYPES
 
-    const sortOptions = [
-      { key: 'name', label: 'Nom' },
-      { key: 'tier', label: 'Tier' },
-      { key: 'type', label: 'Type' },
-      { key: 'hp', label: 'HP' }
-    ]
-
-    function toggleTierFilter(tier) {
-      const idx = reinforceTierFilter.value.indexOf(tier)
-      if (idx >= 0) reinforceTierFilter.value.splice(idx, 1)
-      else reinforceTierFilter.value.push(tier)
-    }
-
-    function toggleTypeFilter(type) {
-      const idx = reinforceTypeFilter.value.indexOf(type)
-      if (idx >= 0) reinforceTypeFilter.value.splice(idx, 1)
-      else reinforceTypeFilter.value.push(type)
-    }
-
-    const filteredAdversaries = computed(() => {
-      const q = reinforcementSearch.value.toLowerCase().trim()
-      const tiers = reinforceTierFilter.value
-      const types = reinforceTypeFilter.value
-      const sort = reinforceSort.value
-
-      let list = allAdversaries
-
-      // Filtre texte
-      if (q) {
-        list = list.filter((a) =>
-          a.name.toLowerCase().includes(q)
-          || a.type.toLowerCase().includes(q)
-        )
-      }
-
-      // Filtre tier
-      if (tiers.length > 0) {
-        list = list.filter((a) => tiers.includes(a.tier))
-      }
-
-      // Filtre type
-      if (types.length > 0) {
-        list = list.filter((a) => types.includes(a.type))
-      }
-
-      // Tri
-      const sorted = [...list]
-      if (sort === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name))
-      else if (sort === 'tier') sorted.sort((a, b) => a.tier - b.tier || a.name.localeCompare(b.name))
-      else if (sort === 'type') sorted.sort((a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name))
-      else if (sort === 'hp') sorted.sort((a, b) => (b.hp || 0) - (a.hp || 0) || a.name.localeCompare(b.name))
-
-      return sorted.slice(0, 40)
-    })
-
-    function toggleReinforcementPanel() {
-      showReinforcementPanel.value = !showReinforcementPanel.value
-      if (showReinforcementPanel.value) {
-        reinforcementSearch.value = ''
-        reinforceTierFilter.value = []
-        reinforceTypeFilter.value = []
-        reinforceSort.value = 'name'
-      }
-    }
     function addReinforcement(adversaryId) { store.addReinforcement(adversaryId, 1) }
 
     // ── AoE ──
@@ -683,11 +536,7 @@ export default {
       onSelectPc, onSelectAdversaryGroup,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition,
-      showReinforcementPanel, reinforcementSearch, filteredAdversaries,
-      reinforceTierFilter, reinforceTypeFilter, reinforceSort,
-      adversaryTypes, sortOptions,
-      toggleTierFilter, toggleTypeFilter,
-      toggleReinforcementPanel, addReinforcement,
+      showReinforcementPanel, addReinforcement,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetHp, aoeUndoTarget, applyAoe,
       showCountdownBar,
@@ -812,24 +661,9 @@ export default {
   .live__col--tablet-hidden { display: flex; }
 }
 
-/* ══ Renforts ══ */
-.live__reinforce-btn { padding: var(--space-xs) var(--space-sm); border: 1px dashed var(--color-border); border-radius: var(--radius-md); background: transparent; color: var(--color-text-muted); font-size: var(--font-size-xs); cursor: pointer; text-align: center; transition: border-color var(--transition-fast), color var(--transition-fast); }
-.live__reinforce-btn:hover, .live__reinforce-btn--open { border-color: var(--color-accent-hope); color: var(--color-accent-hope); }
-.live__reinforce-panel { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-secondary); }
-.live__reinforce-search { padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg-input); color: var(--color-text-primary); font-size: var(--font-size-sm); }
-.live__reinforce-search:focus { outline: none; border-color: var(--color-border-active); }
-.live__reinforce-filters { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
-.live__reinforce-filter-label { font-size: var(--font-size-xs); color: var(--color-text-muted); min-width: 2.2rem; font-weight: var(--font-weight-medium); }
-.live__reinforce-filter { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; transition: background var(--transition-fast), border-color var(--transition-fast); display: inline-flex; align-items: center; touch-action: manipulation; }
-.live__reinforce-filter:hover { background: var(--color-bg-elevated); }
-.live__reinforce-filter--on { background: rgba(83, 168, 182, 0.2); border-color: var(--color-accent-hope); color: var(--color-accent-hope); font-weight: var(--font-weight-bold); }
-.live__reinforce-count { font-size: var(--font-size-xs); color: var(--color-text-muted); text-align: right; }
-.live__reinforce-list { max-height: 12rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1px; }
-.live__reinforce-item { display: flex; justify-content: space-between; align-items: center; min-height: var(--touch-min); padding: var(--space-xs) var(--space-sm); border: none; background: var(--color-bg-primary); color: var(--color-text-primary); font-size: var(--font-size-xs); cursor: pointer; text-align: left; gap: var(--space-xs); touch-action: manipulation; }
-.live__reinforce-item:hover { background: var(--color-bg-elevated); }
-.live__reinforce-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: var(--font-weight-medium); }
-.live__reinforce-meta { color: var(--color-text-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.live__reinforce-empty { font-size: var(--font-size-xs); color: var(--color-text-muted); text-align: center; padding: var(--space-sm); margin: 0; }
+/* ══ Bouton Renforts (header) ══ */
+.live__reinforce-header-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px dashed var(--color-border); background: transparent; color: var(--color-text-muted); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: border-color var(--transition-fast), color var(--transition-fast); touch-action: manipulation; }
+.live__reinforce-header-btn:hover, .live__reinforce-header-btn--open { border-color: var(--color-accent-hope); color: var(--color-accent-hope); }
 
 /* ══ Overlays ══ */
 .live__overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; padding: var(--space-md); }
