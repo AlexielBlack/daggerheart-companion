@@ -273,6 +273,7 @@
           :key="f.name + f.source"
           :feature="f"
           :dimmed="true"
+          :default-expanded="false"
         />
       </div>
 
@@ -290,6 +291,7 @@
           :key="f.name + f.source"
           :feature="f"
           :dimmed="true"
+          :default-expanded="false"
         />
       </div>
     </div>

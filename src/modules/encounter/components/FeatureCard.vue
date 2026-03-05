@@ -101,10 +101,11 @@ export default {
   name: 'FeatureCard',
   props: {
     feature: { type: Object, required: true },
-    dimmed: { type: Boolean, default: false }
+    dimmed: { type: Boolean, default: false },
+    defaultExpanded: { type: Boolean, default: true }
   },
   data() {
-    return { expanded: true }
+    return { expanded: this.defaultExpanded }
   },
   computed: {
     activationEmoji() { return ACTIVATION_EMOJI[this.feature.activationType] || '⚪' },

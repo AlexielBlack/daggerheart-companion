@@ -26,6 +26,16 @@
         <span class="enc-live__tier">Tier {{ store.encounterTier }}</span>
 
         <button
+          v-if="store.undoStack.length > 0"
+          class="enc-live__undo-btn"
+          :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
+          aria-label="Annuler la dernière action"
+          @click="store.undo()"
+        >
+          ↩ {{ store.undoStack.length }}
+        </button>
+
+        <button
           class="enc-live__end-btn"
           @click="confirmEndEncounter"
         >
@@ -178,7 +188,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
@@ -206,10 +216,25 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
+    // ── Raccourci clavier Ctrl+Z pour undo ──
+    function onKeydown(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        if (store.isActive && store.undoStack.length > 0) {
+          e.preventDefault()
+          store.undo()
+        }
+      }
+    }
+
     onMounted(() => {
       if (!store.isActive) {
         store.restoreState()
       }
+      window.addEventListener('keydown', onKeydown)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('keydown', onKeydown)
     })
 
     return {
@@ -277,6 +302,24 @@ export default {
   background: rgba(224, 165, 38, 0.1);
   border-radius: var(--radius-sm);
   margin-right: auto;
+}
+
+.enc-live__undo-btn {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-text-muted);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-variant-numeric: tabular-nums;
+}
+
+.enc-live__undo-btn:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
 }
 
 .enc-live__end-btn {

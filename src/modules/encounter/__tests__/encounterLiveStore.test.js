@@ -497,4 +497,84 @@ describe('encounterLiveStore', () => {
       expect(store.advSpotlights).toEqual({})
     })
   })
+
+  // ═══════════════════════════════════════════════════════
+  //  Undo (Ctrl+Z)
+  // ═══════════════════════════════════════════════════════
+
+  describe('undo', () => {
+    let instanceId
+
+    beforeEach(() => {
+      store.startEncounter(MOCK_BUILDER_DATA)
+      instanceId = store.liveAdversaries[0].instanceId
+    })
+
+    it('la pile d\'undo est vide au départ', () => {
+      expect(store.undoStack).toHaveLength(0)
+    })
+
+    it('markAdversaryHP pousse un snapshot dans la pile', () => {
+      store.markAdversaryHP(instanceId, 3)
+      expect(store.undoStack.length).toBeGreaterThan(0)
+    })
+
+    it('undo restaure les HP avant markAdversaryHP', () => {
+      const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(adv.markedHP).toBe(0)
+      store.markAdversaryHP(instanceId, 5)
+      expect(adv.markedHP).toBe(5)
+      const success = store.undo()
+      expect(success).toBe(true)
+      const restored = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(restored.markedHP).toBe(0)
+    })
+
+    it('undo restaure les conditions adversaire', () => {
+      store.toggleAdversaryCondition(instanceId, 'hidden')
+      const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(adv.conditions).toContain('hidden')
+      store.undo()
+      const restored = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(restored.conditions).not.toContain('hidden')
+    })
+
+    it('undo restaure la défaite d\'un adversaire', () => {
+      store.defeatAdversary(instanceId)
+      expect(store.liveAdversaries.find((a) => a.instanceId === instanceId).isDefeated).toBe(true)
+      store.undo()
+      expect(store.liveAdversaries.find((a) => a.instanceId === instanceId).isDefeated).toBe(false)
+    })
+
+    it('undo retourne false si la pile est vide', () => {
+      expect(store.undo()).toBe(false)
+    })
+
+    it('plusieurs undos successifs fonctionnent', () => {
+      store.markAdversaryHP(instanceId, 2)
+      store.markAdversaryStress(instanceId, 3)
+      store.undo() // annule stress
+      const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(adv.markedStress).toBe(0)
+      expect(adv.markedHP).toBe(2)
+      store.undo() // annule HP
+      const adv2 = store.liveAdversaries.find((a) => a.instanceId === instanceId)
+      expect(adv2.markedHP).toBe(0)
+    })
+
+    it('resetLive vide la pile d\'undo', () => {
+      store.markAdversaryHP(instanceId, 5)
+      expect(store.undoStack.length).toBeGreaterThan(0)
+      store.resetLive()
+      expect(store.undoStack).toHaveLength(0)
+    })
+
+    it('la pile ne dépasse pas 50 entrées', () => {
+      for (let i = 0; i < 55; i++) {
+        store.markAdversaryHP(instanceId, 1)
+        store.clearAdversaryHP(instanceId, 1)
+      }
+      expect(store.undoStack.length).toBeLessThanOrEqual(50)
+    })
+  })
 })

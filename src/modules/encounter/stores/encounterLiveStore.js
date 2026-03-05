@@ -105,6 +105,49 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   /** 'pc' ou 'adversary' — détermine le sens de l'affrontement */
   const lastClickCategory = ref('pc')
 
+  // ── Pile d'annulation (Ctrl+Z) — non persistée ──────
+  /** Snapshots d'état avant chaque action mutante */
+  const undoStack = ref([])
+  /** Taille maximale de la pile */
+  const UNDO_MAX = 50
+
+  /**
+   * Sauvegarde un snapshot de l'état actuel dans la pile d'undo.
+   * Appelé avant chaque action qui modifie les données de combat.
+   */
+  function pushUndo() {
+    if (!isActive.value) return
+    const snapshot = {
+      liveAdversaries: JSON.parse(JSON.stringify(liveAdversaries.value)),
+      combatLog: JSON.parse(JSON.stringify(combatLog.value)),
+      encounterLog: JSON.parse(JSON.stringify(encounterLog.value)),
+      pcDownStatus: { ...pcDownStatus.value },
+      pcConditions: JSON.parse(JSON.stringify(pcConditions.value)),
+      activeAdversaryId: activeAdversaryId.value
+    }
+    undoStack.value.push(snapshot)
+    if (undoStack.value.length > UNDO_MAX) {
+      undoStack.value.shift()
+    }
+  }
+
+  /**
+   * Annule la dernière action de combat (Ctrl+Z).
+   * @returns {boolean} true si un undo a été effectué
+   */
+  function undo() {
+    if (undoStack.value.length === 0) return false
+    const snapshot = undoStack.value.pop()
+    liveAdversaries.value = snapshot.liveAdversaries
+    combatLog.value = snapshot.combatLog
+    encounterLog.value = snapshot.encounterLog
+    pcDownStatus.value = snapshot.pcDownStatus
+    pcConditions.value = snapshot.pcConditions
+    activeAdversaryId.value = snapshot.activeAdversaryId
+    persistState()
+    return true
+  }
+
   // ═══════════════════════════════════════════════════════
   //  Getters
   // ═══════════════════════════════════════════════════════
@@ -472,6 +515,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} condition
    */
   function togglePcCondition(pcId, condition) {
+    pushUndo()
     if (!pcConditions.value[pcId]) {
       pcConditions.value[pcId] = []
     }
@@ -508,6 +552,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} condition
    */
   function toggleAdversaryCondition(instanceId, condition) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     const idx = adv.conditions.indexOf(condition)
@@ -545,6 +590,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} [amount=1]
    */
   function markAdversaryHP(instanceId, amount = 1) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedHP
@@ -602,6 +648,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} [amount=1]
    */
   function clearAdversaryHP(instanceId, amount = 1) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedHP = Math.max(0, adv.markedHP - amount)
@@ -617,6 +664,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} [amount=1]
    */
   function markAdversaryStress(instanceId, amount = 1) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedStress
@@ -661,6 +709,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} [amount=1]
    */
   function clearAdversaryStress(instanceId, amount = 1) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedStress = Math.max(0, adv.markedStress - amount)
@@ -672,6 +721,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} index - Index dans combatLog
    */
   function removeCombatLogEntry(index) {
+    pushUndo()
     if (index < 0 || index >= combatLog.value.length) return
     const entry = combatLog.value[index]
     combatLog.value.splice(index, 1)
@@ -693,6 +743,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {number} hpAmount - Nombre de HP marqués (1 à 4)
    */
   function logPcHit(pcId, hpAmount) {
+    pushUndo()
     const pc = participantPcs.value.find((p) => p.id === pcId)
     const adv = activeAdversary.value
     if (!pc) return
@@ -716,6 +767,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @returns {boolean} true si mis à terre, false si annulé
    */
   function logPcDown(pcId) {
+    pushUndo()
     const pc = participantPcs.value.find((p) => p.id === pcId)
     const adv = activeAdversary.value
     if (!pc) return false
@@ -752,6 +804,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} pcId
    */
   function logPcRevive(pcId) {
+    pushUndo()
     const pc = participantPcs.value.find((p) => p.id === pcId)
     if (!pc || !pcDownStatus.value[pcId]) return
     delete pcDownStatus.value[pcId]
@@ -770,6 +823,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} pcId
    */
   function logPcArmorUsed(pcId) {
+    pushUndo()
     const pc = participantPcs.value.find((p) => p.id === pcId)
     const adv = activeAdversary.value
     if (!pc) return
@@ -791,6 +845,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} attackerType - 'pc' ou 'adversary'
    */
   function logMiss(attackerType) {
+    pushUndo()
     if (attackerType === 'pc') {
       const pc = participantPcs.value.find((p) => p.id === activePcId.value)
       const adv = activeAdversary.value
@@ -829,6 +884,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} condition
    */
   function addAdversaryCondition(instanceId, condition) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.conditions.includes(condition)) return
     adv.conditions.push(condition)
@@ -841,6 +897,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} condition
    */
   function removeAdversaryCondition(instanceId, condition) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     const idx = adv.conditions.indexOf(condition)
@@ -855,6 +912,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} instanceId
    */
   function defeatAdversary(instanceId) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = true
@@ -879,6 +937,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    * @param {string} instanceId
    */
   function reviveAdversary(instanceId) {
+    pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = false
@@ -1091,6 +1150,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     encounterLog.value = []
     pcDownStatus.value = {}
     pcConditions.value = {}
+    undoStack.value = []
     liveStorage.remove()
   }
 
@@ -1183,6 +1243,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState,
     restoreState,
     resetLive,
-    endEncounter
+    endEncounter,
+
+    // Actions — Undo
+    undo,
+    undoStack
   }
 })

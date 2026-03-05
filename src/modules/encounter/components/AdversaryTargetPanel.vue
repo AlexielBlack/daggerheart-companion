@@ -39,22 +39,6 @@
         <span class="adv-panel__stat-label">Diff</span>
         <span class="adv-panel__stat-value">{{ adversary.difficulty }}</span>
       </div>
-      <div
-        v-if="adversary.thresholds"
-        class="adv-panel__stat"
-        title="Seuil Majeur"
-      >
-        <span class="adv-panel__stat-label">Maj</span>
-        <span class="adv-panel__stat-value">{{ adversary.thresholds.major || '—' }}</span>
-      </div>
-      <div
-        v-if="adversary.thresholds"
-        class="adv-panel__stat"
-        title="Seuil Sévère"
-      >
-        <span class="adv-panel__stat-label">Sév</span>
-        <span class="adv-panel__stat-value">{{ adversary.thresholds.severe || '—' }}</span>
-      </div>
     </div>
 
     <!-- HP / Stress — barres individuelles par instance -->
@@ -115,8 +99,30 @@
                 class="adv-panel__bar-fill adv-panel__bar-fill--hp"
                 :style="{ width: hpPercent(inst) + '%' }"
               ></div>
+              <!-- Marqueurs seuils sur la barre -->
+              <span
+                v-if="adversary.thresholds && adversary.thresholds.major && inst.maxHP > 0"
+                class="adv-panel__bar-threshold adv-panel__bar-threshold--major"
+                :style="{ left: Math.min(100, (adversary.thresholds.major / inst.maxHP) * 100) + '%' }"
+                :title="'Seuil Majeur : ' + adversary.thresholds.major"
+              ></span>
+              <span
+                v-if="adversary.thresholds && adversary.thresholds.severe && inst.maxHP > 0"
+                class="adv-panel__bar-threshold adv-panel__bar-threshold--severe"
+                :style="{ left: Math.min(100, (adversary.thresholds.severe / inst.maxHP) * 100) + '%' }"
+                :title="'Seuil Sévère : ' + adversary.thresholds.severe"
+              ></span>
             </div>
             <span class="adv-panel__bar-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+            <span
+              v-if="adversary.thresholds"
+              class="adv-panel__thresholds"
+              title="Seuils Majeur / Sévère"
+            >
+              <span class="adv-panel__thresh adv-panel__thresh--major">{{ adversary.thresholds.major || '—' }}</span>
+              <span class="adv-panel__thresh-sep">/</span>
+              <span class="adv-panel__thresh adv-panel__thresh--severe">{{ adversary.thresholds.severe || '—' }}</span>
+            </span>
             <button
               class="adv-panel__bar-btn"
               :disabled="inst.markedHP >= inst.maxHP || inst.isDefeated"
@@ -273,6 +279,7 @@
           :key="f.name"
           :feature="f"
           :dimmed="true"
+          :default-expanded="false"
         />
       </div>
     </div>
@@ -665,6 +672,7 @@ export default {
   background: var(--color-bg-secondary);
   border-radius: var(--radius-full);
   overflow: hidden;
+  position: relative;
 }
 
 .adv-panel__bar-fill {
@@ -675,6 +683,46 @@ export default {
 
 .adv-panel__bar-fill--hp { background: var(--color-accent-danger); }
 .adv-panel__bar-fill--stress { background: #8b5cf6; }
+
+/* ── Marqueurs de seuils sur la barre HP ── */
+
+.adv-panel__bar-threshold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  pointer-events: none;
+}
+
+.adv-panel__bar-threshold--major {
+  background: #f59e0b;
+  box-shadow: 0 0 3px rgba(245, 158, 11, 0.5);
+}
+
+.adv-panel__bar-threshold--severe {
+  background: #ef4444;
+  box-shadow: 0 0 3px rgba(239, 68, 68, 0.5);
+}
+
+/* ── Badges seuils inline à côté de HP ── */
+
+.adv-panel__thresholds {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated);
+  font-size: 0.65rem;
+  font-weight: var(--font-bold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.adv-panel__thresh--major { color: #f59e0b; }
+.adv-panel__thresh--severe { color: #ef4444; }
+.adv-panel__thresh-sep { color: var(--color-text-muted); }
 
 .adv-panel__bar-val {
   font-size: var(--font-xs);
