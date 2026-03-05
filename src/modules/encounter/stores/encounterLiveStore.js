@@ -674,21 +674,40 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const prev = adv.markedHP
     adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
     const actual = adv.markedHP - prev
-    // Logger le PJ source
+    // Logger le PJ source (consolider si même PJ + même cible + même round)
     if (actual > 0 && activePcId.value) {
-      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
-      const entry = {
-        pcId: activePcId.value,
-        pcName: pc ? pc.name : '?',
-        instanceId,
-        advName: adv.name,
-        type: 'hp',
-        amount: actual,
-        round: round.value,
-        timestamp: Date.now()
+      const last = combatLog.value[combatLog.value.length - 1]
+      if (last && last.action === 'damage' && last.type === 'hp'
+        && last.pcId === activePcId.value && last.instanceId === instanceId
+        && last.round === round.value) {
+        last.amount += actual
+        last.timestamp = Date.now()
+        // Mettre à jour aussi dans encounterLog
+        const lastEnc = encounterLog.value.findLast(
+          (e) => e.action === 'damage' && e.type === 'hp'
+            && e.pcId === activePcId.value && e.instanceId === instanceId
+            && e.round === round.value
+        )
+        if (lastEnc) {
+          lastEnc.amount += actual
+          lastEnc.timestamp = Date.now()
+        }
+      } else {
+        const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+        const entry = {
+          action: 'damage',
+          pcId: activePcId.value,
+          pcName: pc ? pc.name : '?',
+          instanceId,
+          advName: adv.name,
+          type: 'hp',
+          amount: actual,
+          round: round.value,
+          timestamp: Date.now()
+        }
+        combatLog.value.push(entry)
+        encounterLog.value.push({ ...entry })
       }
-      combatLog.value.push(entry)
-      encounterLog.value.push({ ...entry, action: 'damage' })
     }
     // Vérifier défaite : Minions n'ont pas de seuils
     if (adv.type === 'Minion' && adv.markedHP > 0) {
@@ -735,19 +754,37 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     adv.markedStress = Math.min(adv.maxStress, adv.markedStress + amount)
     const actual = adv.markedStress - prev
     if (actual > 0 && activePcId.value) {
-      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
-      const entry = {
-        pcId: activePcId.value,
-        pcName: pc ? pc.name : '?',
-        instanceId,
-        advName: adv.name,
-        type: 'stress',
-        amount: actual,
-        round: round.value,
-        timestamp: Date.now()
+      const last = combatLog.value[combatLog.value.length - 1]
+      if (last && last.action === 'damage' && last.type === 'stress'
+        && last.pcId === activePcId.value && last.instanceId === instanceId
+        && last.round === round.value) {
+        last.amount += actual
+        last.timestamp = Date.now()
+        const lastEnc = encounterLog.value.findLast(
+          (e) => e.action === 'damage' && e.type === 'stress'
+            && e.pcId === activePcId.value && e.instanceId === instanceId
+            && e.round === round.value
+        )
+        if (lastEnc) {
+          lastEnc.amount += actual
+          lastEnc.timestamp = Date.now()
+        }
+      } else {
+        const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+        const entry = {
+          action: 'damage',
+          pcId: activePcId.value,
+          pcName: pc ? pc.name : '?',
+          instanceId,
+          advName: adv.name,
+          type: 'stress',
+          amount: actual,
+          round: round.value,
+          timestamp: Date.now()
+        }
+        combatLog.value.push(entry)
+        encounterLog.value.push({ ...entry })
       }
-      combatLog.value.push(entry)
-      encounterLog.value.push({ ...entry, action: 'damage' })
     }
     persistState()
   }
