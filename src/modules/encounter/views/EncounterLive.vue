@@ -18,7 +18,7 @@
     </div>
 
     <template v-else>
-      <!-- ── Header : titre + round + fin ── -->
+      <!-- ── Header : titre + fin ── -->
       <header class="enc-live__header">
         <h1 class="enc-live__title">
           {{ store.encounterName || 'Rencontre' }}
@@ -51,7 +51,7 @@
             <span
               v-if="store.pcSpotlights[pc.id] >= 1"
               class="enc-live__spot-dot"
-              :title="store.pcSpotlights[pc.id] + ' spotlight(s) ce round'"
+              :title="store.pcSpotlights[pc.id] + ' spotlight(s) ce cycle'"
             >✦{{ store.pcSpotlights[pc.id] > 1 ? store.pcSpotlights[pc.id] : '' }}</span>
             <span
               v-if="store.pcDownStatus[pc.id]"
@@ -104,7 +104,7 @@
             <span
               v-if="store.advSpotlights[group.adversaryId] >= 1"
               class="enc-live__spot-dot"
-              :title="store.advSpotlights[group.adversaryId] + ' spotlight(s) ce round'"
+              :title="store.advSpotlights[group.adversaryId] + ' spotlight(s) ce cycle'"
             >✦{{ store.advSpotlights[group.adversaryId] > 1 ? store.advSpotlights[group.adversaryId] : '' }}</span>
             <span class="enc-live__chip-name">{{ group.name }}</span>
             <span

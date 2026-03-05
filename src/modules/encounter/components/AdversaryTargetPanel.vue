@@ -191,7 +191,7 @@
             :class="'adv-panel__log-entry--' + (entry.action === 'miss' ? 'miss' : entry.type)"
             :title="entry.action === 'miss'
               ? entry.pcName + ' : raté (clic pour annuler)'
-              : 'R' + entry.round + ' — ' + entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST') + ' (clic pour annuler)'"
+              : entry.pcName + ' : ' + entry.amount + (entry.type === 'hp' ? ' HP' : ' ST') + ' (clic pour annuler)'"
             @click.stop="removeLogEntry(entry._globalIdx)"
           >
             {{ entry.pcName }} {{ entry.action === 'miss' ? '✕' : (entry.type === 'hp' ? '❤️' : '💢') }}{{ entry.action !== 'miss' ? entry.amount : '' }}

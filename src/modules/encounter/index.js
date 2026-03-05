@@ -18,16 +18,12 @@ export { default as PcPicker } from './components/PcPicker.vue'
 export { default as SavedEncounterList } from './components/SavedEncounterList.vue'
 
 // Composants — Live
-export { default as FearHopeTracker } from './components/FearHopeTracker.vue'
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
-export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 export { default as AdversaryLiveCard } from './components/AdversaryLiveCard.vue'
 export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as PcLivePanel } from './components/PcLivePanel.vue'
 export { default as AdversaryTargetPanel } from './components/AdversaryTargetPanel.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
-export { default as SpotlightTracker } from './components/SpotlightTracker.vue'
-export { default as PcSpotlightBar } from './components/PcSpotlightBar.vue'
 
 // Composables
 export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'

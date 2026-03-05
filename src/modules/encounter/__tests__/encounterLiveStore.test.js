@@ -7,8 +7,6 @@ import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
-  MAX_FEAR,
-  MAX_HOPE,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM
 } from '@data/encounters/liveConstants'
@@ -50,11 +48,6 @@ describe('encounterLiveStore', () => {
       expect(store.isActive).toBe(false)
     })
 
-    it('fear et hope sont à 0', () => {
-      expect(store.fear).toBe(0)
-      expect(store.hope).toBe(0)
-    })
-
     it('mode de scène par défaut = pcAttack', () => {
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
     })
@@ -63,10 +56,6 @@ describe('encounterLiveStore', () => {
       expect(store.spotlight).toBe(SPOTLIGHT_PC)
       expect(store.isPlayerSpotlight).toBe(true)
       expect(store.isGmSpotlight).toBe(false)
-    })
-
-    it('round 1 par défaut', () => {
-      expect(store.round).toBe(1)
     })
 
     it('aucun adversaire live', () => {
@@ -103,7 +92,7 @@ describe('encounterLiveStore', () => {
 
     it('crée les instances live d\'adversaires', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
-      // acid-burrower × 1 + asp × 2 = 3 instances
+      // acid-burrower × 1 + bear × 2 = 3 instances
       expect(store.liveAdversaries.length).toBe(3)
     })
 
@@ -129,16 +118,6 @@ describe('encounterLiveStore', () => {
       expect(store.activeAdversaryId).toBe(store.liveAdversaries[0].instanceId)
     })
 
-    it('initialise Hope = nombre de PJs', () => {
-      store.startEncounter(MOCK_BUILDER_DATA)
-      expect(store.hope).toBe(3)
-    })
-
-    it('initialise Fear = 0', () => {
-      store.startEncounter(MOCK_BUILDER_DATA)
-      expect(store.fear).toBe(0)
-    })
-
     it('ne plante pas avec des données null', () => {
       store.startEncounter(null)
       expect(store.isActive).toBe(false)
@@ -146,82 +125,9 @@ describe('encounterLiveStore', () => {
 
     it('reset correctement avant de relancer', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
-      store.addFear(5)
+      store.markAdversaryHP(store.liveAdversaries[0].instanceId, 5)
       store.startEncounter(MOCK_BUILDER_DATA)
-      expect(store.fear).toBe(0)
-    })
-  })
-
-  // ═══════════════════════════════════════════════════════
-  //  Fear / Hope
-  // ═══════════════════════════════════════════════════════
-
-  describe('fear / hope', () => {
-    beforeEach(() => {
-      store.startEncounter(MOCK_BUILDER_DATA)
-    })
-
-    it('addFear augmente la fear', () => {
-      store.addFear(3)
-      expect(store.fear).toBe(3)
-    })
-
-    it('addFear ne dépasse pas MAX_FEAR', () => {
-      store.addFear(MAX_FEAR + 5)
-      expect(store.fear).toBe(MAX_FEAR)
-    })
-
-    it('spendFear réduit la fear', () => {
-      store.addFear(5)
-      const success = store.spendFear(3)
-      expect(success).toBe(true)
-      expect(store.fear).toBe(2)
-    })
-
-    it('spendFear échoue si pas assez', () => {
-      store.addFear(2)
-      const success = store.spendFear(5)
-      expect(success).toBe(false)
-      expect(store.fear).toBe(2) // inchangé
-    })
-
-    it('addHope augmente la hope', () => {
-      store.addHope(2)
-      expect(store.hope).toBe(5) // 3 initial + 2
-    })
-
-    it('addHope ne dépasse pas MAX_HOPE', () => {
-      store.addHope(MAX_HOPE + 5)
-      expect(store.hope).toBe(MAX_HOPE)
-    })
-
-    it('spendHope réduit la hope', () => {
-      const success = store.spendHope(2)
-      expect(success).toBe(true)
-      expect(store.hope).toBe(1) // 3 - 2
-    })
-
-    it('spendHope échoue si pas assez', () => {
-      const success = store.spendHope(10)
-      expect(success).toBe(false)
-      expect(store.hope).toBe(3)
-    })
-
-    it('enregistre l\'historique Fear/Hope', () => {
-      store.addFear(1, 'Momentum')
-      store.addHope(1, 'Action roll')
-      expect(store.fearHopeHistory).toHaveLength(2)
-      expect(store.fearHopeHistory[0].type).toBe('fear')
-      expect(store.fearHopeHistory[0].delta).toBe(1)
-      expect(store.fearHopeHistory[0].reason).toBe('Momentum')
-      expect(store.fearHopeHistory[1].type).toBe('hope')
-    })
-
-    it('dépense de fear/hope enregistre delta négatif', () => {
-      store.addFear(5)
-      store.spendFear(2, 'GM move')
-      const lastEntry = store.fearHopeHistory[store.fearHopeHistory.length - 1]
-      expect(lastEntry.delta).toBe(-2)
+      expect(store.liveAdversaries[0].markedHP).toBe(0)
     })
   })
 
@@ -298,25 +204,25 @@ describe('encounterLiveStore', () => {
     })
 
     it('setActivePc refuse un PJ non-participant', () => {
-      store.setActivePc('unknown-pc')
+      store.setActivePc('unknown')
       expect(store.activePcId).toBe('pc-1') // inchangé
     })
 
     it('setActiveAdversary change l\'adversaire actif', () => {
-      const second = store.liveAdversaries[1]
-      store.setActiveAdversary(second.instanceId)
-      expect(store.activeAdversaryId).toBe(second.instanceId)
+      const secondId = store.liveAdversaries[1].instanceId
+      store.setActiveAdversary(secondId)
+      expect(store.activeAdversaryId).toBe(secondId)
     })
 
     it('setActiveAdversary refuse un ID inexistant', () => {
-      const original = store.activeAdversaryId
-      store.setActiveAdversary('fake-id')
-      expect(store.activeAdversaryId).toBe(original)
+      const originalId = store.activeAdversaryId
+      store.setActiveAdversary('nonexistent')
+      expect(store.activeAdversaryId).toBe(originalId)
     })
   })
 
   // ═══════════════════════════════════════════════════════
-  //  Adversaire live — HP / Stress / Conditions
+  //  Adversaire live — HP / Stress
   // ═══════════════════════════════════════════════════════
 
   describe('adversaire live — HP / Stress', () => {
@@ -347,7 +253,7 @@ describe('encounterLiveStore', () => {
     })
 
     it('clearAdversaryHP ne descend pas sous 0', () => {
-      store.clearAdversaryHP(instanceId, 5)
+      store.clearAdversaryHP(instanceId, 10)
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
       expect(adv.markedHP).toBe(0)
     })
@@ -366,11 +272,15 @@ describe('encounterLiveStore', () => {
 
     it('ne marque pas un adversaire vaincu', () => {
       store.defeatAdversary(instanceId)
-      store.markAdversaryHP(instanceId, 1)
+      store.markAdversaryHP(instanceId, 5)
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
-      expect(adv.markedHP).toBe(0) // inchangé car vaincu
+      expect(adv.markedHP).toBe(0)
     })
   })
+
+  // ═══════════════════════════════════════════════════════
+  //  Adversaire live — Conditions
+  // ═══════════════════════════════════════════════════════
 
   describe('adversaire live — Conditions', () => {
     let instanceId
@@ -381,25 +291,29 @@ describe('encounterLiveStore', () => {
     })
 
     it('ajoute une condition', () => {
-      store.addAdversaryCondition(instanceId, 'Restrained')
+      store.addAdversaryCondition(instanceId, 'hidden')
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
-      expect(adv.conditions).toContain('Restrained')
+      expect(adv.conditions).toContain('hidden')
     })
 
     it('ne duplique pas une condition existante', () => {
-      store.addAdversaryCondition(instanceId, 'Restrained')
-      store.addAdversaryCondition(instanceId, 'Restrained')
+      store.addAdversaryCondition(instanceId, 'hidden')
+      store.addAdversaryCondition(instanceId, 'hidden')
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
-      expect(adv.conditions.filter((c) => c === 'Restrained')).toHaveLength(1)
+      expect(adv.conditions.filter((c) => c === 'hidden')).toHaveLength(1)
     })
 
     it('retire une condition', () => {
-      store.addAdversaryCondition(instanceId, 'Restrained')
-      store.removeAdversaryCondition(instanceId, 'Restrained')
+      store.addAdversaryCondition(instanceId, 'hidden')
+      store.removeAdversaryCondition(instanceId, 'hidden')
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
-      expect(adv.conditions).not.toContain('Restrained')
+      expect(adv.conditions).not.toContain('hidden')
     })
   })
+
+  // ═══════════════════════════════════════════════════════
+  //  Adversaire live — Défaite / Revival
+  // ═══════════════════════════════════════════════════════
 
   describe('adversaire live — Défaite / Revival', () => {
     let instanceId
@@ -427,18 +341,17 @@ describe('encounterLiveStore', () => {
     })
 
     it('vaincre l\'adversaire actif sélectionne le suivant', () => {
-      store.setActiveAdversary(instanceId)
+      // L'adversaire actif est le premier
+      expect(store.activeAdversaryId).toBe(instanceId)
       store.defeatAdversary(instanceId)
-      // Devrait sélectionner le prochain non-vaincu
-      if (store.activeAdversaries.length > 0) {
-        expect(store.activeAdversaryId).toBe(store.activeAdversaries[0].instanceId)
-      } else {
-        expect(store.activeAdversaryId).toBeNull()
-      }
+      // Un autre adversaire devrait être sélectionné
+      expect(store.activeAdversaryId).not.toBe(instanceId)
+      expect(store.activeAdversaryId).toBeTruthy()
     })
 
     it('reviveAdversary réanime', () => {
       store.defeatAdversary(instanceId)
+      expect(store.defeatedAdversaries.length).toBe(1)
       store.reviveAdversary(instanceId)
       const adv = store.liveAdversaries.find((a) => a.instanceId === instanceId)
       expect(adv.isDefeated).toBe(false)
@@ -446,45 +359,23 @@ describe('encounterLiveStore', () => {
   })
 
   // ═══════════════════════════════════════════════════════
-  //  adversaryCombatSummary
+  //  Résumé combat
   // ═══════════════════════════════════════════════════════
 
   describe('adversaryCombatSummary', () => {
     it('calcule les totaux des adversaires actifs', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
       const summary = store.adversaryCombatSummary
-      expect(summary.count).toBe(3) // 1 + 2 instances
+      expect(summary.count).toBe(3)
       expect(summary.totalHP).toBeGreaterThan(0)
       expect(summary.markedHP).toBe(0)
     })
 
     it('exclut les vaincus', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
+      const totalBefore = store.adversaryCombatSummary.count
       store.defeatAdversary(store.liveAdversaries[0].instanceId)
-      expect(store.adversaryCombatSummary.count).toBe(2)
-    })
-  })
-
-  // ═══════════════════════════════════════════════════════
-  //  Rounds
-  // ═══════════════════════════════════════════════════════
-
-  describe('rounds', () => {
-    it('nextRound incrémente', () => {
-      store.nextRound()
-      expect(store.round).toBe(2)
-    })
-
-    it('previousRound décrémente', () => {
-      store.nextRound()
-      store.nextRound()
-      store.previousRound()
-      expect(store.round).toBe(2)
-    })
-
-    it('previousRound ne descend pas sous 1', () => {
-      store.previousRound()
-      expect(store.round).toBe(1)
+      expect(store.adversaryCombatSummary.count).toBe(totalBefore - 1)
     })
   })
 
@@ -498,17 +389,13 @@ describe('encounterLiveStore', () => {
       const state = store.serializeLiveState()
       expect(state.isActive).toBe(true)
       expect(state.encounterName).toBe('Combat test')
-      expect(state.fear).toBe(0)
-      expect(state.hope).toBe(3)
       expect(state.liveAdversaries).toHaveLength(3)
       expect(state.participantPcIds).toEqual(['pc-1', 'pc-2', 'pc-3'])
     })
 
     it('restoreState restaure depuis le localStorage', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
-      store.addFear(5, 'test')
       store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
-      store.nextRound()
 
       // Nouveau store = simule un refresh
       setActivePinia(createPinia())
@@ -518,9 +405,7 @@ describe('encounterLiveStore', () => {
       const restored = freshStore.restoreState()
       expect(restored).toBe(true)
       expect(freshStore.isActive).toBe(true)
-      expect(freshStore.fear).toBe(5)
       expect(freshStore.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
-      expect(freshStore.round).toBe(2)
       expect(freshStore.liveAdversaries).toHaveLength(3)
     })
 
@@ -536,16 +421,12 @@ describe('encounterLiveStore', () => {
   describe('resetLive / endEncounter', () => {
     it('resetLive remet tout à zéro', () => {
       store.startEncounter(MOCK_BUILDER_DATA)
-      store.addFear(10)
       store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
       store.resetLive()
 
       expect(store.isActive).toBe(false)
-      expect(store.fear).toBe(0)
-      expect(store.hope).toBe(0)
       expect(store.liveAdversaries).toHaveLength(0)
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
-      expect(store.round).toBe(1)
     })
 
     it('endEncounter fait la même chose que resetLive', () => {
@@ -557,86 +438,63 @@ describe('encounterLiveStore', () => {
   })
 
   // ═══════════════════════════════════════════════════════
-  //  Spotlight Tracker
+  //  Spotlight couche 1 (pcSpotlights / advSpotlights)
   // ═══════════════════════════════════════════════════════
 
-  describe('spotlight tracker', () => {
+  describe('spotlight couche 1', () => {
     beforeEach(() => {
       store.startEncounter(MOCK_BUILDER_DATA)
     })
 
-    it('giveSpotlight enregistre un token', () => {
-      store.giveSpotlight('pc-1')
-      expect(store.spotlightTokens['pc-1']).toBe(1)
+    it('togglePcSpotlight incrémente le compteur', () => {
+      store.togglePcSpotlight('pc-1')
+      expect(store.pcSpotlights['pc-1']).toBe(1)
     })
 
-    it('giveSpotlight cumule les tokens', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-1')
-      expect(store.spotlightTokens['pc-1']).toBe(2)
+    it('togglePcSpotlight cumule', () => {
+      store.togglePcSpotlight('pc-1')
+      store.togglePcSpotlight('pc-1')
+      expect(store.pcSpotlights['pc-1']).toBe(2)
     })
 
-    it('giveSpotlight sélectionne le PJ et passe le spotlight côté PJ', () => {
-      store.setGmSpotlight()
-      store.giveSpotlight('pc-2')
-      expect(store.activePcId).toBe('pc-2')
-      expect(store.spotlight).toBe('pc')
+    it('auto-reset quand tous les PJs ont joué', () => {
+      store.togglePcSpotlight('pc-1')
+      store.togglePcSpotlight('pc-2')
+      store.togglePcSpotlight('pc-3')
+      // Tous ont joué → reset automatique
+      expect(store.pcSpotlights).toEqual({})
     })
 
-    it('giveSpotlight refuse un PJ non-participant', () => {
-      store.giveSpotlight('unknown')
-      expect(store.spotlightTokens['unknown']).toBeUndefined()
+    it('decrementPcSpotlight corrige une erreur', () => {
+      store.togglePcSpotlight('pc-1')
+      store.togglePcSpotlight('pc-1')
+      store.decrementPcSpotlight('pc-1')
+      expect(store.pcSpotlights['pc-1']).toBe(1)
     })
 
-    it('removeSpotlightToken décrémente un token', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-1')
-      store.removeSpotlightToken('pc-1')
-      expect(store.spotlightTokens['pc-1']).toBe(1)
+    it('decrementPcSpotlight supprime la clé à 0', () => {
+      store.togglePcSpotlight('pc-1')
+      store.decrementPcSpotlight('pc-1')
+      expect(store.pcSpotlights['pc-1']).toBeUndefined()
     })
 
-    it('removeSpotlightToken ne descend pas sous 0', () => {
-      store.removeSpotlightToken('pc-1')
-      // Pas de crash, token reste undefined ou 0
-      expect(store.spotlightTokens['pc-1'] || 0).toBe(0)
+    it('toggleAdvSpotlight incrémente le compteur adversaire', () => {
+      const advId = store.liveAdversaries[0].adversaryId
+      store.toggleAdvSpotlight(advId)
+      expect(store.advSpotlights[advId]).toBe(1)
     })
 
-    it('totalSpotlightTokens calcule le total', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-2')
-      store.giveSpotlight('pc-1')
-      expect(store.totalSpotlightTokens).toBe(3)
+    it('pcSpotlights survivent à la sérialisation', () => {
+      store.togglePcSpotlight('pc-1')
+      const state = store.serializeLiveState()
+      expect(state.pcSpotlights['pc-1']).toBe(1)
     })
 
-    it('resetSpotlightTokens vide les tokens', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-2')
-      store.resetSpotlightTokens()
-      expect(store.totalSpotlightTokens).toBe(0)
-      expect(store.spotlightTokens).toEqual({})
-    })
-
-    it('nextRound réinitialise les tokens', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-2')
-      store.nextRound()
-      expect(store.totalSpotlightTokens).toBe(0)
-      expect(store.round).toBe(2)
-    })
-
-    it('les tokens survivent à la sérialisation/restauration', () => {
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-1')
-      store.giveSpotlight('pc-2')
-      const serialized = store.serializeLiveState()
-      expect(serialized.spotlightTokens['pc-1']).toBe(2)
-      expect(serialized.spotlightTokens['pc-2']).toBe(1)
-    })
-
-    it('resetLive vide les tokens', () => {
-      store.giveSpotlight('pc-1')
+    it('resetLive vide les spotlights', () => {
+      store.togglePcSpotlight('pc-1')
       store.resetLive()
-      expect(store.spotlightTokens).toEqual({})
+      expect(store.pcSpotlights).toEqual({})
+      expect(store.advSpotlights).toEqual({})
     })
   })
 })

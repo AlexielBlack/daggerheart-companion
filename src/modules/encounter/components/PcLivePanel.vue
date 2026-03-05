@@ -204,9 +204,9 @@
       </button>
     </div>
 
-    <!-- Expériences (affichées en mode Social) -->
+    <!-- Expériences -->
     <div
-      v-if="showExperiences && pcExperiences.length > 0"
+      v-if="pcExperiences.length > 0"
       class="pc-panel__experiences"
     >
       <h4 class="pc-panel__exp-title">
@@ -398,14 +398,9 @@ export default {
     primaryLabel() {
       const labels = {
         pcAttack: '⚔️ Offensives',
-        adversaryAttack: '🛡️ Défensives',
-        social: '💬 Sociales',
-        traversal: '🔧 Utilitaires'
+        adversaryAttack: '🛡️ Défensives'
       }
       return labels[this.sceneMode] || '⚔️ Prioritaires'
-    },
-    showExperiences() {
-      return this.sceneMode === 'social'
     },
     pcExperiences() {
       return Array.isArray(this.pc.experiences)

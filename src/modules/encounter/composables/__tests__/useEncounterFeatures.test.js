@@ -19,7 +19,6 @@ import {
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
-  SCENE_MODE_SOCIAL,
   SCENE_MODE_META
 } from '@data/encounters/liveConstants'
 
@@ -259,15 +258,6 @@ describe('computePriorityScore', () => {
     expect(score).toBe(1) // 1 (passive bonus)
   })
 
-  it('score élevé pour feature sociale en mode Social', () => {
-    const socialMeta = SCENE_MODE_META[SCENE_MODE_SOCIAL]
-    const f = normalizeFeature({
-      name: 'X', tags: ['social'], activationType: 'action'
-    }, 'test', 'T')
-    const score = computePriorityScore(f, socialMeta)
-    expect(score).toBeGreaterThanOrEqual(15)
-  })
-
   it('cumule les scores pour multi-tags', () => {
     const f = normalizeFeature({
       name: 'X', tags: ['offensif', 'défensif'], activationType: 'action'
@@ -359,28 +349,16 @@ describe('useEncounterFeatures', () => {
     }
   })
 
-  it('place les features sociales passives dans passiveFeatures en mode Social', () => {
-    const pcRef = ref(GUARDIAN_PC)
-    const modeRef = ref(SCENE_MODE_SOCIAL)
-    const { passiveFeatures, scoredFeatures } = useEncounterFeatures(pcRef, modeRef)
-    // Highborne Privilege (social + passive) doit être dans passiveFeatures
-    const privilege = passiveFeatures.value.find((f) => f.name === 'Privilege')
-    expect(privilege).toBeTruthy()
-    // Et doit avoir un score élevé grâce au tag social
-    const scored = scoredFeatures.value.find((f) => f.name === 'Privilege')
-    expect(scored._score).toBeGreaterThanOrEqual(10)
-  })
-
   it('recalcule quand le mode change', () => {
     const pcRef = ref(GUARDIAN_PC)
     const modeRef = ref(SCENE_MODE_PC_ATTACK)
     const { primaryFeatures } = useEncounterFeatures(pcRef, modeRef)
     const countPcAttack = primaryFeatures.value.length
 
-    modeRef.value = SCENE_MODE_SOCIAL
-    const countSocial = primaryFeatures.value.length
-    // Les features primaires diffèrent entre combat et social
-    expect(countPcAttack).not.toBe(countSocial)
+    modeRef.value = SCENE_MODE_ADVERSARY_ATTACK
+    const countAdvAttack = primaryFeatures.value.length
+    // Les features primaires diffèrent entre les modes
+    expect(countPcAttack).not.toBe(countAdvAttack)
   })
 
   it('gère les sous-classes avec progression mastery', () => {
@@ -456,13 +434,6 @@ describe('classifyAdversaryFeatures', () => {
 
   it('en mode pcAttack (tour PJ), masque les actions adversaire', () => {
     const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_PC_ATTACK)
-    expect(result.actionFeatures).toHaveLength(0)
-    expect(result.passiveFeatures).toHaveLength(1)
-    expect(result.reactionFeatures).toHaveLength(1)
-  })
-
-  it('en mode social (tour PJ), masque les actions adversaire', () => {
-    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_SOCIAL)
     expect(result.actionFeatures).toHaveLength(0)
     expect(result.passiveFeatures).toHaveLength(1)
     expect(result.reactionFeatures).toHaveLength(1)

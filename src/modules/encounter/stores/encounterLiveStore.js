@@ -4,11 +4,9 @@
  *
  * Responsabilités :
  *  - Initialisation depuis le builder (encounterStore.serializeEncounter)
- *  - Fear / Hope pools avec historique
  *  - Suivi HP / Stress / conditions des adversaires en temps réel
- *  - Mode de scène actif (PJ Attaque, Adversaire Attaque, Social, Traversal)
+ *  - Mode de scène actif (PJ Attaque, Adversaire Attaque)
  *  - Projecteur (PJ actif / MJ)
- *  - Compteur de rounds
  *  - Persistance localStorage pour résilience
  */
 
@@ -26,9 +24,6 @@ import {
   SCENE_MODE_META,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM,
-  INITIAL_FEAR,
-  MAX_FEAR,
-  MAX_HOPE,
   isValidSceneMode
 } from '@data/encounters/liveConstants'
 
@@ -73,11 +68,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const encounterName = ref('')
   const encounterTier = ref(1)
 
-  // ── Fear / Hope ────────────────────────────────────────
-  const fear = ref(INITIAL_FEAR)
-  const hope = ref(0)
-  const fearHopeHistory = ref([])
-
   // ── Mode de scène et projecteur ────────────────────────
   const sceneMode = ref(SCENE_MODE_PC_ATTACK)
   const spotlight = ref(SPOTLIGHT_PC)
@@ -95,17 +85,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Environnement ──────────────────────────────────────
   const environmentId = ref(null)
 
-  // ── Compteur de rounds ─────────────────────────────────
-  const round = ref(1)
-
-  // ── Spotlight Tracker (tokens par PJ) ──────────────────
-  /** Nombre de fois que chaque PJ a eu le projecteur ce round { pcId: count } */
-  const spotlightTokens = ref({})
-
-  // ── Spotlight tracking ce round { [id]: count } ────────
-  /** Nombre de fois que chaque PJ a eu le projecteur ce round */
+  // ── Spotlight tracking (couche 1 — compteurs par entité) ──
+  /** Nombre de fois que chaque PJ a eu le projecteur ce cycle { [id]: count } */
   const pcSpotlights = ref({})
-  /** Nombre de fois que chaque adversaire (par adversaryId) a eu le projecteur ce round */
+  /** Nombre de fois que chaque adversaire (par adversaryId) a eu le projecteur ce cycle */
   const advSpotlights = ref({})
 
   // ── Historique de combat ───────────────────────────────
@@ -117,6 +100,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const pcDownStatus = ref({})
   /** Conditions actives des PJs { pcId: ['hidden', 'vulnerable', ...] } */
   const pcConditions = ref({})
+
+  // ── Dernière catégorie cliquée (pour la logique cross-projecteur) ──
+  /** 'pc' ou 'adversary' — détermine le sens de l'affrontement */
+  const lastClickCategory = ref('pc')
 
   // ═══════════════════════════════════════════════════════
   //  Getters
@@ -320,110 +307,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Environnement
     environmentId.value = builderData.environmentId || null
 
-    // Hope initial : 1 par PJ participant (convention courante)
-    hope.value = participantPcIds.value.length || 0
-
     // Activer
     isActive.value = true
-    round.value = 1
 
     // Persister
     persistState()
   }
-
-  // ═══════════════════════════════════════════════════════
-  //  Actions — Fear / Hope
-  // ═══════════════════════════════════════════════════════
-
-  /**
-   * Ajoute de la Fear.
-   * @param {number} [amount=1]
-   * @param {string} [reason=''] - Raison pour l'historique
-   */
-  function addFear(amount = 1, reason = '') {
-    const prev = fear.value
-    fear.value = Math.min(MAX_FEAR, fear.value + amount)
-    const actual = fear.value - prev
-    if (actual > 0) {
-      fearHopeHistory.value.push({
-        type: 'fear',
-        delta: actual,
-        newValue: fear.value,
-        reason,
-        round: round.value,
-        timestamp: Date.now()
-      })
-      persistState()
-    }
-  }
-
-  /**
-   * Dépense de la Fear.
-   * @param {number} [amount=1]
-   * @param {string} [reason='']
-   * @returns {boolean} true si la dépense a réussi
-   */
-  function spendFear(amount = 1, reason = '') {
-    if (fear.value < amount) return false
-    fear.value -= amount
-    fearHopeHistory.value.push({
-      type: 'fear',
-      delta: -amount,
-      newValue: fear.value,
-      reason,
-      round: round.value,
-      timestamp: Date.now()
-    })
-    persistState()
-    return true
-  }
-
-  /**
-   * Ajoute de la Hope.
-   * @param {number} [amount=1]
-   * @param {string} [reason='']
-   */
-  function addHope(amount = 1, reason = '') {
-    const prev = hope.value
-    hope.value = Math.min(MAX_HOPE, hope.value + amount)
-    const actual = hope.value - prev
-    if (actual > 0) {
-      fearHopeHistory.value.push({
-        type: 'hope',
-        delta: actual,
-        newValue: hope.value,
-        reason,
-        round: round.value,
-        timestamp: Date.now()
-      })
-      persistState()
-    }
-  }
-
-  /**
-   * Dépense de la Hope.
-   * @param {number} [amount=1]
-   * @param {string} [reason='']
-   * @returns {boolean} true si la dépense a réussi
-   */
-  function spendHope(amount = 1, reason = '') {
-    if (hope.value < amount) return false
-    hope.value -= amount
-    fearHopeHistory.value.push({
-      type: 'hope',
-      delta: -amount,
-      newValue: hope.value,
-      reason,
-      round: round.value,
-      timestamp: Date.now()
-    })
-    persistState()
-    return true
-  }
-
-  // ── Dernière catégorie cliquée (pour la logique cross-projecteur) ──
-  /** 'pc' ou 'adversary' — détermine le sens de l'affrontement */
-  const lastClickCategory = ref('pc')
 
   // ═══════════════════════════════════════════════════════
   //  Actions — Mode de scène & Projecteur
@@ -467,9 +356,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   /**
    * Sélectionne un PJ avec logique cross-catégorie.
-   * - Clic PJ quand dernier clic était adversaire → bascule en adversaryAttack (PJ = cible)
-   * - Clic PJ quand dernier clic était PJ → simple swap PJ
-   * - Double-clic sur le PJ déjà actif → swap le mode
    * @param {string} pcId
    */
   function selectPc(pcId) {
@@ -478,16 +364,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const isSameEntity = activePcId.value === pcId && lastClickCategory.value === 'pc'
 
     if (isSameEntity) {
-      // Double-clic sur le même PJ : swap le mode
       swapSpotlight()
     } else if (lastClickCategory.value === 'adversary') {
-      // Cross-catégorie : adversaire → PJ = l'adversaire attaque ce PJ
       activePcId.value = pcId
       sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
       spotlight.value = SPOTLIGHT_GM
       lastClickCategory.value = 'pc'
     } else {
-      // Même catégorie : simple changement de PJ actif
       activePcId.value = pcId
       lastClickCategory.value = 'pc'
     }
@@ -496,9 +379,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   /**
    * Sélectionne un groupe d'adversaires avec logique cross-catégorie.
-   * - Clic adversaire quand dernier clic était PJ → bascule en pcAttack (adversaire = cible)
-   * - Clic adversaire quand dernier clic était adversaire → simple swap cible
-   * - Double-clic sur le même adversaire → swap le mode
    * @param {string} adversaryId
    */
   function selectAdversaryGroup(adversaryId) {
@@ -506,16 +386,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const isSameEntity = currentAdvId === adversaryId && lastClickCategory.value === 'adversary'
 
     if (isSameEntity) {
-      // Double-clic sur le même adversaire : swap le mode
       swapSpotlight()
     } else if (lastClickCategory.value === 'pc') {
-      // Cross-catégorie : PJ → adversaire = le PJ attaque cet adversaire
       setActiveAdversaryGroupInternal(adversaryId)
       sceneMode.value = SCENE_MODE_PC_ATTACK
       spotlight.value = SPOTLIGHT_PC
       lastClickCategory.value = 'adversary'
     } else {
-      // Même catégorie : simple changement d'adversaire cible
       setActiveAdversaryGroupInternal(adversaryId)
       lastClickCategory.value = 'adversary'
     }
@@ -608,7 +485,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         entityId: pcId,
         entityName: pc ? pc.name : '?',
         condition,
-        round: round.value,
         timestamp: Date.now()
       })
     } else {
@@ -619,7 +495,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         entityId: pcId,
         entityName: pc ? pc.name : '?',
         condition,
-        round: round.value,
         timestamp: Date.now()
       })
     }
@@ -644,7 +519,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         entityId: instanceId,
         entityName: adv.name,
         condition,
-        round: round.value,
         timestamp: Date.now()
       })
     } else {
@@ -655,12 +529,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         entityId: instanceId,
         entityName: adv.name,
         condition,
-        round: round.value,
         timestamp: Date.now()
       })
     }
     persistState()
   }
+
+  // ═══════════════════════════════════════════════════════
+  //  Actions — HP / Stress adversaire
   // ═══════════════════════════════════════════════════════
 
   /**
@@ -674,19 +550,15 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const prev = adv.markedHP
     adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
     const actual = adv.markedHP - prev
-    // Logger le PJ source (consolider si même PJ + même cible + même round)
     if (actual > 0 && activePcId.value) {
       const last = combatLog.value[combatLog.value.length - 1]
       if (last && last.action === 'damage' && last.type === 'hp'
-        && last.pcId === activePcId.value && last.instanceId === instanceId
-        && last.round === round.value) {
+        && last.pcId === activePcId.value && last.instanceId === instanceId) {
         last.amount += actual
         last.timestamp = Date.now()
-        // Mettre à jour aussi dans encounterLog
         const lastEnc = encounterLog.value.findLast(
           (e) => e.action === 'damage' && e.type === 'hp'
             && e.pcId === activePcId.value && e.instanceId === instanceId
-            && e.round === round.value
         )
         if (lastEnc) {
           lastEnc.amount += actual
@@ -702,7 +574,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
           advName: adv.name,
           type: 'hp',
           amount: actual,
-          round: round.value,
           timestamp: Date.now()
         }
         combatLog.value.push(entry)
@@ -719,7 +590,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         advName: adv.name,
         pcId: activePcId.value || null,
         pcName: pcDown ? pcDown.name : '?',
-        round: round.value,
         timestamp: Date.now()
       })
     }
@@ -735,7 +605,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedHP = Math.max(0, adv.markedHP - amount)
-    // Réanimer si plus de HP marqués
     if (adv.isDefeated && adv.markedHP < adv.maxHP) {
       adv.isDefeated = false
     }
@@ -756,14 +625,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (actual > 0 && activePcId.value) {
       const last = combatLog.value[combatLog.value.length - 1]
       if (last && last.action === 'damage' && last.type === 'stress'
-        && last.pcId === activePcId.value && last.instanceId === instanceId
-        && last.round === round.value) {
+        && last.pcId === activePcId.value && last.instanceId === instanceId) {
         last.amount += actual
         last.timestamp = Date.now()
         const lastEnc = encounterLog.value.findLast(
           (e) => e.action === 'damage' && e.type === 'stress'
             && e.pcId === activePcId.value && e.instanceId === instanceId
-            && e.round === round.value
         )
         if (lastEnc) {
           lastEnc.amount += actual
@@ -779,7 +646,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
           advName: adv.name,
           type: 'stress',
           amount: actual,
-          round: round.value,
           timestamp: Date.now()
         }
         combatLog.value.push(entry)
@@ -803,14 +669,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   /**
    * Supprime une entrée du combat log (pastille cliquée par erreur).
-   * Supprime aussi l'entrée correspondante dans l'encounterLog.
    * @param {number} index - Index dans combatLog
    */
   function removeCombatLogEntry(index) {
     if (index < 0 || index >= combatLog.value.length) return
     const entry = combatLog.value[index]
     combatLog.value.splice(index, 1)
-    // Enregistrer l'annulation dans l'encounterLog
     encounterLog.value.push({
       ...entry,
       action: 'damage_removed',
@@ -839,7 +703,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       instanceId: adv ? adv.instanceId : null,
       advName: adv ? adv.name : '?',
       hpMarked: hpAmount,
-      round: round.value,
       timestamp: Date.now()
     }
     combatLog.value.push(entry)
@@ -858,21 +721,18 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (!pc) return false
 
     if (pcDownStatus.value[pcId]) {
-      // Annuler le down
       delete pcDownStatus.value[pcId]
       pcDownStatus.value = { ...pcDownStatus.value }
       encounterLog.value.push({
         action: 'pc_down_cancelled',
         pcId,
         pcName: pc.name,
-        round: round.value,
         timestamp: Date.now()
       })
       persistState()
       return false
     }
 
-    // Mettre à terre
     pcDownStatus.value[pcId] = true
     pcDownStatus.value = { ...pcDownStatus.value }
     encounterLog.value.push({
@@ -881,7 +741,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       pcName: pc.name,
       instanceId: adv ? adv.instanceId : null,
       advName: adv ? adv.name : '?',
-      round: round.value,
       timestamp: Date.now()
     })
     persistState()
@@ -901,7 +760,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       action: 'pc_revive',
       pcId,
       pcName: pc.name,
-      round: round.value,
       timestamp: Date.now()
     })
     persistState()
@@ -921,7 +779,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       pcName: pc.name,
       instanceId: adv ? adv.instanceId : null,
       advName: adv ? adv.name : '?',
-      round: round.value,
       timestamp: Date.now()
     }
     combatLog.value.push(entry)
@@ -944,7 +801,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         pcName: pc ? pc.name : '?',
         instanceId: adv ? adv.instanceId : null,
         advName: adv ? adv.name : '?',
-        round: round.value,
         timestamp: Date.now()
       }
       combatLog.value.push(entry)
@@ -959,7 +815,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         pcName: pc ? pc.name : '?',
         instanceId: adv ? adv.instanceId : null,
         advName: adv ? adv.name : '?',
-        round: round.value,
         timestamp: Date.now()
       }
       combatLog.value.push(entry)
@@ -1003,7 +858,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = true
-    // Logger qui l'a abattu
     const pc = participantPcs.value.find((p) => p.id === activePcId.value)
     encounterLog.value.push({
       action: 'adv_down',
@@ -1011,10 +865,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       advName: adv.name,
       pcId: activePcId.value || null,
       pcName: pc ? pc.name : '?',
-      round: round.value,
       timestamp: Date.now()
     })
-    // Si c'était l'adversaire actif, sélectionner le prochain non vaincu
     if (activeAdversaryId.value === instanceId) {
       const next = activeAdversaries.value[0]
       activeAdversaryId.value = next ? next.instanceId : null
@@ -1034,44 +886,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
-  //  Actions — Rounds & Spotlight Tracker
+  //  Actions — Spotlight (couche 1 uniquement)
   // ═══════════════════════════════════════════════════════
-
-  /**
-   * Enregistre un usage du projecteur pour un PJ.
-   * @param {string} pcId
-   */
-  function giveSpotlight(pcId) {
-    if (!participantPcIds.value.includes(pcId)) return
-    if (!spotlightTokens.value[pcId]) {
-      spotlightTokens.value[pcId] = 0
-    }
-    spotlightTokens.value[pcId]++
-    activePcId.value = pcId
-    spotlight.value = SPOTLIGHT_PC
-    persistState()
-  }
-
-  /**
-   * Retire un token de projecteur d'un PJ.
-   * @param {string} pcId
-   */
-  function removeSpotlightToken(pcId) {
-    if (spotlightTokens.value[pcId] > 0) {
-      spotlightTokens.value[pcId]--
-      persistState()
-    }
-  }
-
-  /**
-   * Réinitialise les tokens de projecteur (début de round).
-   */
-  function resetSpotlightTokens() {
-    spotlightTokens.value = {}
-    pcSpotlights.value = {}
-    advSpotlights.value = {}
-    persistState()
-  }
 
   /**
    * Incrémente le compteur spotlight d'un PJ.
@@ -1085,16 +901,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pcSpotlights.value[pcId]++
     pcSpotlights.value = { ...pcSpotlights.value }
 
-    // Logger dans encounterLog si multi-spotlight
-    const pc = participantPcs.value.find((p) => p.id === pcId)
     if (pcSpotlights.value[pcId] > 1) {
+      const pc = participantPcs.value.find((p) => p.id === pcId)
       encounterLog.value.push({
         action: 'multi_spotlight',
         entityType: 'pc',
         entityId: pcId,
         entityName: pc ? pc.name : '?',
         count: pcSpotlights.value[pcId],
-        round: round.value,
         timestamp: Date.now()
       })
     }
@@ -1135,16 +949,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     advSpotlights.value[adversaryId]++
     advSpotlights.value = { ...advSpotlights.value }
 
-    // Logger dans encounterLog si multi-spotlight
-    const group = groupedAdversaries.value.find((g) => g.adversaryId === adversaryId)
     if (advSpotlights.value[adversaryId] > 1) {
+      const group = groupedAdversaries.value.find((g) => g.adversaryId === adversaryId)
       encounterLog.value.push({
         action: 'multi_spotlight',
         entityType: 'adversary',
         entityId: adversaryId,
         entityName: group ? group.name : '?',
         count: advSpotlights.value[adversaryId],
-        round: round.value,
         timestamp: Date.now()
       })
     }
@@ -1174,30 +986,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     }
   }
 
-  /** Nombre total de tokens distribués ce round */
-  const totalSpotlightTokens = computed(() => {
-    return Object.values(spotlightTokens.value).reduce((s, v) => s + v, 0)
-  })
-
-  /**
-   * Passe au round suivant (reset tokens projecteur).
-   */
-  function nextRound() {
-    round.value++
-    resetSpotlightTokens()
-    persistState()
-  }
-
-  /**
-   * Revient au round précédent.
-   */
-  function previousRound() {
-    if (round.value > 1) {
-      round.value--
-      persistState()
-    }
-  }
-
   // ═══════════════════════════════════════════════════════
   //  Actions — Persistence
   // ═══════════════════════════════════════════════════════
@@ -1211,9 +999,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       isActive: isActive.value,
       encounterName: encounterName.value,
       encounterTier: encounterTier.value,
-      fear: fear.value,
-      hope: hope.value,
-      fearHopeHistory: [...fearHopeHistory.value],
       sceneMode: sceneMode.value,
       spotlight: spotlight.value,
       participantPcIds: [...participantPcIds.value],
@@ -1230,8 +1015,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       })),
       activeAdversaryId: activeAdversaryId.value,
       environmentId: environmentId.value,
-      round: round.value,
-      spotlightTokens: { ...spotlightTokens.value },
       lastClickCategory: lastClickCategory.value,
       pcSpotlights: { ...pcSpotlights.value },
       advSpotlights: { ...advSpotlights.value },
@@ -1261,9 +1044,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     isActive.value = true
     encounterName.value = data.encounterName || ''
     encounterTier.value = data.encounterTier || 1
-    fear.value = data.fear || 0
-    hope.value = data.hope || 0
-    fearHopeHistory.value = Array.isArray(data.fearHopeHistory) ? [...data.fearHopeHistory] : []
     sceneMode.value = isValidSceneMode(data.sceneMode) ? data.sceneMode : SCENE_MODE_PC_ATTACK
     spotlight.value = [SPOTLIGHT_PC, SPOTLIGHT_GM].includes(data.spotlight) ? data.spotlight : SPOTLIGHT_PC
     participantPcIds.value = Array.isArray(data.participantPcIds) ? [...data.participantPcIds] : []
@@ -1271,10 +1051,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     liveAdversaries.value = Array.isArray(data.liveAdversaries) ? data.liveAdversaries : []
     activeAdversaryId.value = data.activeAdversaryId || null
     environmentId.value = data.environmentId || null
-    round.value = data.round || 1
-    spotlightTokens.value = data.spotlightTokens && typeof data.spotlightTokens === 'object'
-      ? { ...data.spotlightTokens }
-      : {}
     lastClickCategory.value = data.lastClickCategory || 'pc'
     pcSpotlights.value = data.pcSpotlights && typeof data.pcSpotlights === 'object'
       ? { ...data.pcSpotlights }
@@ -1301,9 +1077,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     isActive.value = false
     encounterName.value = ''
     encounterTier.value = 1
-    fear.value = INITIAL_FEAR
-    hope.value = 0
-    fearHopeHistory.value = []
     sceneMode.value = SCENE_MODE_PC_ATTACK
     spotlight.value = SPOTLIGHT_PC
     participantPcIds.value = []
@@ -1311,8 +1084,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     liveAdversaries.value = []
     activeAdversaryId.value = null
     environmentId.value = null
-    round.value = 1
-    spotlightTokens.value = {}
     lastClickCategory.value = 'pc'
     pcSpotlights.value = {}
     advSpotlights.value = {}
@@ -1339,9 +1110,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     isActive,
     encounterName,
     encounterTier,
-    fear,
-    hope,
-    fearHopeHistory,
     sceneMode,
     spotlight,
     participantPcIds,
@@ -1349,8 +1117,6 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     liveAdversaries,
     activeAdversaryId,
     environmentId,
-    round,
-    spotlightTokens,
     lastClickCategory,
     pcSpotlights,
     advSpotlights,
@@ -1372,16 +1138,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     adversaryCombatSummary,
     isPlayerSpotlight,
     isGmSpotlight,
-    totalSpotlightTokens,
 
     // Actions — Initialisation
     startEncounter,
-
-    // Actions — Fear / Hope
-    addFear,
-    spendFear,
-    addHope,
-    spendHope,
 
     // Actions — Mode & Projecteur
     setSceneMode,
@@ -1413,12 +1172,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     defeatAdversary,
     reviveAdversary,
 
-    // Actions — Rounds & Spotlight
-    nextRound,
-    previousRound,
-    giveSpotlight,
-    removeSpotlightToken,
-    resetSpotlightTokens,
+    // Actions — Spotlight (couche 1)
     togglePcSpotlight,
     decrementPcSpotlight,
     toggleAdvSpotlight,

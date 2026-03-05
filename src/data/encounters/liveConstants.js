@@ -9,11 +9,9 @@
 //  Modes de scène
 // ═══════════════════════════════════════════════════════════
 
-/** Identifiants des 4 modes de scène */
+/** Identifiants des 2 modes de scène */
 export const SCENE_MODE_PC_ATTACK = 'pcAttack'
 export const SCENE_MODE_ADVERSARY_ATTACK = 'adversaryAttack'
-export const SCENE_MODE_SOCIAL = 'social'
-export const SCENE_MODE_TRAVERSAL = 'traversal'
 
 /** Liste des modes actifs pour itération / validation */
 export const SCENE_MODES = [
@@ -48,28 +46,6 @@ export const SCENE_MODE_META = {
     primaryActivation: ['reaction'],
     actorRole: 'adversary',
     targetRole: 'pc'
-  },
-  [SCENE_MODE_SOCIAL]: {
-    label: 'Social',
-    emoji: '💬',
-    color: '#d97706',
-    description: 'Interaction sociale, dialogue, persuasion',
-    primaryTags: ['social'],
-    secondaryTags: ['utilitaire'],
-    primaryActivation: ['action'],
-    actorRole: 'pc',
-    targetRole: 'adversary'
-  },
-  [SCENE_MODE_TRAVERSAL]: {
-    label: 'Traversal',
-    emoji: '🗺️',
-    color: '#059669',
-    description: 'Exploration, environnement, défi physique',
-    primaryTags: ['utilitaire'],
-    secondaryTags: ['défensif'],
-    primaryActivation: ['action'],
-    actorRole: 'pc',
-    targetRole: 'environment'
   }
 }
 
@@ -80,25 +56,6 @@ export const SCENE_MODE_META = {
 /** Qui détient le projecteur */
 export const SPOTLIGHT_PC = 'pc'
 export const SPOTLIGHT_GM = 'gm'
-
-// ═══════════════════════════════════════════════════════════
-//  Limites et valeurs par défaut
-// ═══════════════════════════════════════════════════════════
-
-/** Valeur initiale de Fear (SRD : le MJ commence avec 0 Fear) */
-export const INITIAL_FEAR = 0
-
-/** Pas de maximum strict dans le SRD, mais cap raisonnable pour l'UI */
-export const MAX_FEAR = 20
-
-/** Pas de maximum strict pour Hope non plus */
-export const MAX_HOPE = 20
-
-/** Fear minimum */
-export const MIN_FEAR = 0
-
-/** Hope minimum */
-export const MIN_HOPE = 0
 
 /**
  * Valide qu'un mode de scène est valide.
