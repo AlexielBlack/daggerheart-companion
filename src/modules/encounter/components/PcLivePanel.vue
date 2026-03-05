@@ -303,6 +303,7 @@ import { computed } from 'vue'
 import FeatureCard from './FeatureCard.vue'
 import { getPrimaryWeaponById } from '@data/equipment'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 
 export default {
   name: 'PcLivePanel',
@@ -335,12 +336,7 @@ export default {
 
     const isDown = computed(() => !!store.pcDownStatus[props.pc.id])
 
-    const allConditions = [
-      { id: 'hidden', emoji: '👁️‍🗨️', label: 'Hidden' },
-      { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable' },
-      { id: 'restrained', emoji: '⛓️', label: 'Restrained' },
-      { id: 'poisoned', emoji: '☠️', label: 'Poisoned' }
-    ]
+    const allConditions = LIVE_CONDITIONS
 
     function hasCond(condId) {
       const conds = store.pcConditions[props.pc.id]
@@ -789,9 +785,9 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: var(--radius-sm);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: var(--font-semibold);
   line-height: 1.3;
   background: rgba(200, 75, 49, 0.1);

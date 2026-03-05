@@ -353,8 +353,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Activer
     isActive.value = true
 
-    // Persister
-    persistState()
+    // Persister immédiatement (action critique)
+    persistStateNow()
   }
 
   // ═══════════════════════════════════════════════════════
@@ -945,6 +945,67 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
+  //  Actions — Renforts mid-combat
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Ajoute des renforts en cours de combat.
+   * @param {string} adversaryId - ID SRD de l'adversaire
+   * @param {number} [quantity=1] - Nombre d'instances à ajouter
+   * @returns {string[]} instanceIds créés
+   */
+  function addReinforcement(adversaryId, quantity = 1) {
+    pushUndo()
+    const adversaryData = allAdversaries.find((a) => a.id === adversaryId)
+    if (!adversaryData) return []
+
+    // Trouver le prochain index d'instance pour cet adversaire
+    const existingCount = liveAdversaries.value.filter(
+      (a) => a.adversaryId === adversaryId
+    ).length
+
+    const newIds = []
+    for (let i = 0; i < quantity; i++) {
+      const instance = createLiveAdversary(adversaryData, existingCount + i)
+      liveAdversaries.value.push(instance)
+      newIds.push(instance.instanceId)
+    }
+
+    encounterLog.value.push({
+      action: 'reinforcement',
+      adversaryId,
+      advName: adversaryData.name,
+      quantity,
+      instanceIds: newIds,
+      timestamp: Date.now()
+    })
+
+    // Sélectionner le premier renfort si aucun adversaire actif
+    if (!activeAdversaryId.value && newIds.length > 0) {
+      activeAdversaryId.value = newIds[0]
+    }
+
+    persistState()
+    return newIds
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  Actions — Notes adversaires
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Met à jour les notes d'un adversaire.
+   * @param {string} instanceId
+   * @param {string} text
+   */
+  function setAdversaryNotes(instanceId, text) {
+    const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
+    if (!adv) return
+    adv.notes = text
+    persistState()
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  Actions — Spotlight (couche 1 uniquement)
   // ═══════════════════════════════════════════════════════
 
@@ -1085,10 +1146,27 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Persiste l'état dans le localStorage.
+   * Persiste l'état dans le localStorage (debounced 300ms).
+   * Évite les écritures excessives lors d'actions rapides en combat.
    */
+  let _persistTimer = null
   function persistState() {
     if (!isActive.value) return
+    if (_persistTimer) clearTimeout(_persistTimer)
+    _persistTimer = setTimeout(() => {
+      liveStorage.save(serializeLiveState())
+      _persistTimer = null
+    }, 300)
+  }
+
+  /**
+   * Persiste immédiatement (sans debounce).
+   * Utilisé pour les actions critiques : startEncounter, endEncounter.
+   */
+  function persistStateNow() {
+    if (!isActive.value) return
+    if (_persistTimer) clearTimeout(_persistTimer)
+    _persistTimer = null
     liveStorage.save(serializeLiveState())
   }
 
@@ -1154,10 +1232,73 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     liveStorage.remove()
   }
 
+  /** Dernier résumé de rencontre (survit au reset, pas persisté) */
+  const lastEncounterSummary = ref(null)
+
   /**
-   * Termine la rencontre et nettoie la persistence.
+   * Génère un résumé de la rencontre en cours.
+   * @returns {Object|null}
+   */
+  function generateSummary() {
+    if (!isActive.value && liveAdversaries.value.length === 0) return null
+
+    const defeated = liveAdversaries.value.filter((a) => a.isDefeated)
+    const surviving = liveAdversaries.value.filter((a) => !a.isDefeated)
+    const pcsFallen = Object.keys(pcDownStatus.value).filter((id) => pcDownStatus.value[id])
+    const totalHPMarked = liveAdversaries.value.reduce((s, a) => s + a.markedHP, 0)
+    const totalStressMarked = liveAdversaries.value.reduce((s, a) => s + a.markedStress, 0)
+    const hitCount = encounterLog.value.filter((e) => e.action === 'damage').length
+    const missCount = encounterLog.value.filter((e) => e.action === 'miss').length
+    const pcHitCount = encounterLog.value.filter((e) => e.action === 'pc_hit').length
+
+    // Dégâts par PJ
+    const damageByPc = {}
+    for (const entry of encounterLog.value) {
+      if (entry.action === 'damage' && entry.pcId) {
+        if (!damageByPc[entry.pcId]) {
+          damageByPc[entry.pcId] = { pcName: entry.pcName, hp: 0, stress: 0 }
+        }
+        if (entry.type === 'hp') damageByPc[entry.pcId].hp += entry.amount
+        if (entry.type === 'stress') damageByPc[entry.pcId].stress += entry.amount
+      }
+    }
+
+    // Kills par PJ
+    const killsByPc = {}
+    for (const entry of encounterLog.value) {
+      if (entry.action === 'adv_down' && entry.pcId) {
+        if (!killsByPc[entry.pcId]) {
+          killsByPc[entry.pcId] = { pcName: entry.pcName, count: 0, names: [] }
+        }
+        killsByPc[entry.pcId].count++
+        killsByPc[entry.pcId].names.push(entry.advName)
+      }
+    }
+
+    return {
+      name: encounterName.value,
+      tier: encounterTier.value,
+      totalAdversaries: liveAdversaries.value.length,
+      defeated: defeated.map((a) => ({ name: a.name, instanceId: a.instanceId })),
+      surviving: surviving.map((a) => ({ name: a.name, markedHP: a.markedHP, maxHP: a.maxHP })),
+      pcsFallen,
+      totalHPMarked,
+      totalStressMarked,
+      hitCount,
+      missCount,
+      pcHitCount,
+      damageByPc,
+      killsByPc,
+      logEntries: encounterLog.value.length,
+      endedAt: new Date().toISOString()
+    }
+  }
+
+  /**
+   * Termine la rencontre, génère le résumé, puis nettoie.
    */
   function endEncounter() {
+    lastEncounterSummary.value = generateSummary()
     resetLive()
   }
 
@@ -1231,6 +1372,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     toggleAdversaryCondition,
     defeatAdversary,
     reviveAdversary,
+    addReinforcement,
+    setAdversaryNotes,
 
     // Actions — Spotlight (couche 1)
     togglePcSpotlight,
@@ -1247,6 +1390,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
     // Actions — Undo
     undo,
-    undoStack
+    undoStack,
+
+    // Actions — Résumé
+    lastEncounterSummary,
+    generateSummary
   }
 })

@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import {
@@ -394,8 +394,10 @@ describe('encounterLiveStore', () => {
     })
 
     it('restoreState restaure depuis le localStorage', () => {
+      vi.useFakeTimers()
       store.startEncounter(MOCK_BUILDER_DATA)
       store.setSceneMode(SCENE_MODE_ADVERSARY_ATTACK)
+      vi.advanceTimersByTime(500) // Flush du debounce persistState
 
       // Nouveau store = simule un refresh
       setActivePinia(createPinia())
@@ -407,6 +409,7 @@ describe('encounterLiveStore', () => {
       expect(freshStore.isActive).toBe(true)
       expect(freshStore.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
       expect(freshStore.liveAdversaries).toHaveLength(3)
+      vi.useRealTimers()
     })
 
     it('restoreState retourne false si rien à restaurer', () => {

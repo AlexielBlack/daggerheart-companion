@@ -65,3 +65,19 @@ export const SPOTLIGHT_GM = 'gm'
 export function isValidSceneMode(mode) {
   return SCENE_MODES.includes(mode)
 }
+
+// ═══════════════════════════════════════════════════════════
+//  Conditions (SRD standard + utilitaires)
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Conditions standard du SRD Daggerheart.
+ * Hidden, Restrained, Vulnerable sont les 3 conditions officielles.
+ * Temporary est un tag SRD (la créature peut tenter de se libérer).
+ */
+export const LIVE_CONDITIONS = [
+  { id: 'hidden', emoji: '👁️‍🗨️', label: 'Hidden', description: 'Rolls against have disadvantage. Lost on attack or being seen.' },
+  { id: 'restrained', emoji: '⛓️', label: 'Restrained', description: 'Can\'t move, but can still take actions.' },
+  { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable', description: 'All rolls targeting have advantage.' },
+  { id: 'temporary', emoji: '⏳', label: 'Temporary', description: 'Can be cleared by making a move against it.' }
+]

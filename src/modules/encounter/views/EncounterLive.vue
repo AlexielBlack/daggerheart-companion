@@ -136,6 +136,47 @@
               ✦
             </button>
           </button>
+          <!-- Bouton renforts -->
+          <button
+            class="enc-live__reinforce-btn"
+            :class="{ 'enc-live__reinforce-btn--open': showReinforcementPanel }"
+            title="Ajouter des renforts"
+            aria-label="Ajouter des renforts"
+            @click="toggleReinforcementPanel()"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Panneau renforts (toggle) ── -->
+      <div
+        v-if="showReinforcementPanel"
+        class="enc-live__reinforce-panel"
+      >
+        <input
+          v-model="reinforcementSearch"
+          class="enc-live__reinforce-search"
+          type="text"
+          placeholder="Rechercher un adversaire…"
+          aria-label="Rechercher un adversaire"
+        />
+        <div class="enc-live__reinforce-list">
+          <button
+            v-for="adv in filteredAdversaries"
+            :key="adv.id"
+            class="enc-live__reinforce-item"
+            @click="addReinforcement(adv.id)"
+          >
+            <span class="enc-live__reinforce-name">{{ adv.name }}</span>
+            <span class="enc-live__reinforce-meta">{{ adv.type }} · T{{ adv.tier }} · {{ adv.hp }}HP</span>
+          </button>
+          <p
+            v-if="filteredAdversaries.length === 0"
+            class="enc-live__reinforce-empty"
+          >
+            Aucun résultat
+          </p>
         </div>
       </div>
 
@@ -183,15 +224,120 @@
         v-if="store.activeEnvironment"
         :environment="store.activeEnvironment"
       />
+
+      <!-- ── Overlay résumé post-combat ── -->
+      <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+      <div
+        v-if="showEndSummary && endSummaryData"
+        class="enc-live__overlay"
+        @click.self="cancelEndEncounter"
+      >
+        <!-- eslint-enable -->
+        <div
+          class="enc-live__summary-modal"
+          role="dialog"
+          aria-label="Résumé de la rencontre"
+        >
+          <h2 class="enc-live__modal-title">
+            📋 Résumé — {{ endSummaryData.name }}
+          </h2>
+
+          <div class="enc-live__modal-stats">
+            <div class="enc-live__modal-stat">
+              <span class="enc-live__modal-stat-val">{{ endSummaryData.defeated }}</span>
+              <span class="enc-live__modal-stat-label">💀 Vaincus</span>
+            </div>
+            <div class="enc-live__modal-stat">
+              <span class="enc-live__modal-stat-val">{{ endSummaryData.remaining }}</span>
+              <span class="enc-live__modal-stat-label">🔴 Restants</span>
+            </div>
+            <div class="enc-live__modal-stat">
+              <span class="enc-live__modal-stat-val">{{ endSummaryData.totalDamageHP }}</span>
+              <span class="enc-live__modal-stat-label">❤️ HP infligés</span>
+            </div>
+            <div class="enc-live__modal-stat">
+              <span class="enc-live__modal-stat-val">{{ endSummaryData.totalDamageStress }}</span>
+              <span class="enc-live__modal-stat-label">💢 Stress infligé</span>
+            </div>
+            <div class="enc-live__modal-stat">
+              <span class="enc-live__modal-stat-val">{{ endSummaryData.misses }}</span>
+              <span class="enc-live__modal-stat-label">✕ Ratés</span>
+            </div>
+          </div>
+
+          <!-- Dégâts par PJ -->
+          <div
+            v-if="Object.keys(endSummaryData.dmgByPc).length > 0"
+            class="enc-live__modal-section"
+          >
+            <h3 class="enc-live__modal-subtitle">
+              Dégâts par PJ
+            </h3>
+            <div
+              v-for="(dmg, pcName) in endSummaryData.dmgByPc"
+              :key="pcName"
+              class="enc-live__modal-row"
+            >
+              <span class="enc-live__modal-row-name">{{ pcName }}</span>
+              <span class="enc-live__modal-row-val">❤️{{ dmg.hp }} · 💢{{ dmg.stress }}</span>
+            </div>
+          </div>
+
+          <!-- Adversaires vaincus -->
+          <div
+            v-if="endSummaryData.defeats.length > 0"
+            class="enc-live__modal-section"
+          >
+            <h3 class="enc-live__modal-subtitle">
+              Adversaires vaincus
+            </h3>
+            <div
+              v-for="(d, idx) in endSummaryData.defeats"
+              :key="idx"
+              class="enc-live__modal-row"
+            >
+              <span class="enc-live__modal-row-name">💀 {{ d.name }}</span>
+              <span class="enc-live__modal-row-val">par {{ d.by }}</span>
+            </div>
+          </div>
+
+          <!-- PJs tombés -->
+          <div
+            v-if="endSummaryData.pcDowns.length > 0"
+            class="enc-live__modal-section"
+          >
+            <h3 class="enc-live__modal-subtitle">
+              PJs tombés
+            </h3>
+            <span class="enc-live__modal-list">{{ endSummaryData.pcDowns.join(', ') }}</span>
+          </div>
+
+          <div class="enc-live__modal-actions">
+            <button
+              class="enc-live__modal-cancel"
+              @click="cancelEndEncounter"
+            >
+              Retour au combat
+            </button>
+            <button
+              class="enc-live__modal-confirm"
+              @click="finalEndEncounter"
+            >
+              Terminer la rencontre
+            </button>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
+import { allAdversaries } from '@data/adversaries'
 import PcLivePanel from '../components/PcLivePanel.vue'
 import AdversaryTargetPanel from '../components/AdversaryTargetPanel.vue'
 import EnvironmentPanel from '../components/EnvironmentPanel.vue'
@@ -216,13 +362,119 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
-    // ── Raccourci clavier Ctrl+Z pour undo ──
+    // ── Panneau renforts ──────────────────────────────────
+    const showReinforcementPanel = ref(false)
+    const reinforcementSearch = ref('')
+
+    /** Adversaires filtrés par recherche, triés par tier puis nom */
+    const filteredAdversaries = computed(() => {
+      const q = reinforcementSearch.value.toLowerCase().trim()
+      let list = allAdversaries
+      if (q) {
+        list = list.filter((a) =>
+          a.name.toLowerCase().includes(q)
+          || a.type.toLowerCase().includes(q)
+          || String(a.tier).includes(q)
+        )
+      }
+      return list.slice(0, 20) // Limiter pour la perf du dropdown
+    })
+
+    function toggleReinforcementPanel() {
+      showReinforcementPanel.value = !showReinforcementPanel.value
+      if (showReinforcementPanel.value) {
+        reinforcementSearch.value = ''
+      }
+    }
+
+    function addReinforcement(adversaryId) {
+      store.addReinforcement(adversaryId, 1)
+    }
+
+    // ── Résumé post-combat ────────────────────────────────
+    const showEndSummary = ref(false)
+    const endSummaryData = ref(null)
+
+    function generateSummary() {
+      const log = store.encounterLog
+      const totalDamageHP = log
+        .filter((e) => e.action === 'damage' && e.type === 'hp')
+        .reduce((s, e) => s + e.amount, 0)
+      const totalDamageStress = log
+        .filter((e) => e.action === 'damage' && e.type === 'stress')
+        .reduce((s, e) => s + e.amount, 0)
+      const defeats = log.filter((e) => e.action === 'adv_down')
+      const pcDowns = log.filter((e) => e.action === 'pc_down')
+      const misses = log.filter((e) => e.action === 'miss')
+
+      // Dégâts par PJ
+      const dmgByPc = {}
+      log.filter((e) => e.action === 'damage').forEach((e) => {
+        if (!dmgByPc[e.pcName]) dmgByPc[e.pcName] = { hp: 0, stress: 0 }
+        if (e.type === 'hp') dmgByPc[e.pcName].hp += e.amount
+        else dmgByPc[e.pcName].stress += e.amount
+      })
+
+      return {
+        name: store.encounterName,
+        tier: store.encounterTier,
+        totalAdversaries: store.liveAdversaries.length,
+        defeated: store.defeatedAdversaries.length,
+        remaining: store.activeAdversaries.length,
+        totalDamageHP,
+        totalDamageStress,
+        pcDowns: pcDowns.map((e) => e.pcName),
+        defeats: defeats.map((e) => ({ name: e.advName, by: e.pcName })),
+        misses: misses.length,
+        dmgByPc,
+        logEntries: log.length
+      }
+    }
+
+    // ── Raccourcis clavier ─────────────────────────────────
     function onKeydown(e) {
+      if (!store.isActive) return
+
+      // Ignorer si on tape dans un input/textarea
+      const tag = e.target.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+
+      // Ctrl+Z : undo
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (store.isActive && store.undoStack.length > 0) {
+        if (store.undoStack.length > 0) {
           e.preventDefault()
           store.undo()
         }
+        return
+      }
+
+      // Tab : basculer projecteur PJ ↔ MJ
+      if (e.key === 'Tab') {
+        e.preventDefault()
+        store.swapSpotlight()
+        return
+      }
+
+      // Escape : fermer renforts / résumé
+      if (e.key === 'Escape') {
+        if (showReinforcementPanel.value) {
+          showReinforcementPanel.value = false
+        }
+        if (showEndSummary.value) {
+          showEndSummary.value = false
+        }
+        return
+      }
+
+      // 1-9 : sélection rapide PJ par index
+      const num = parseInt(e.key)
+      if (num >= 1 && num <= 9 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const pcs = store.participantPcs
+        if (num <= pcs.length) {
+          e.preventDefault()
+          store.selectPc(pcs[num - 1].id)
+        }
+        return
       }
     }
 
@@ -243,15 +495,33 @@ export default {
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
-      pcReaction: pcFeatures.reactionFeatures
+      pcReaction: pcFeatures.reactionFeatures,
+      // Renforts
+      showReinforcementPanel,
+      reinforcementSearch,
+      filteredAdversaries,
+      toggleReinforcementPanel,
+      addReinforcement,
+      // Résumé
+      showEndSummary,
+      endSummaryData,
+      generateSummary
     }
   },
   methods: {
     confirmEndEncounter() {
-      if (window.confirm('Terminer cette rencontre ? Les données live seront perdues.')) {
-        this.store.endEncounter()
-        this.$router.push('/encounters')
-      }
+      this.endSummaryData = this.generateSummary()
+      this.showEndSummary = true
+    },
+    finalEndEncounter() {
+      this.showEndSummary = false
+      this.endSummaryData = null
+      this.store.endEncounter()
+      this.$router.push('/encounters')
+    },
+    cancelEndEncounter() {
+      this.showEndSummary = false
+      this.endSummaryData = null
     }
   }
 }
@@ -573,5 +843,256 @@ export default {
 
 .enc-live__go-builder:hover {
   background: rgba(83, 168, 182, 0.1);
+}
+
+/* ── Bouton renforts ── */
+
+.enc-live__reinforce-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border-active);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-lg);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.enc-live__reinforce-btn:hover {
+  border-color: var(--color-accent-fear);
+  color: var(--color-accent-fear);
+  background: rgba(200, 75, 49, 0.08);
+}
+
+.enc-live__reinforce-btn--open {
+  border-style: solid;
+  border-color: var(--color-accent-fear);
+  color: var(--color-accent-fear);
+  background: rgba(200, 75, 49, 0.1);
+}
+
+/* ── Panneau renforts ── */
+
+.enc-live__reinforce-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.enc-live__reinforce-search {
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+}
+
+.enc-live__reinforce-search:focus {
+  outline: none;
+  border-color: var(--color-border-active);
+}
+
+.enc-live__reinforce-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.enc-live__reinforce-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-xs) var(--space-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.1s;
+  text-align: left;
+}
+
+.enc-live__reinforce-item:hover {
+  background: var(--color-bg-elevated);
+}
+
+.enc-live__reinforce-name {
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.enc-live__reinforce-meta {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.enc-live__reinforce-empty {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-sm);
+  margin: 0;
+}
+
+/* ── Overlay résumé post-combat ── */
+
+.enc-live__overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  padding: var(--space-md);
+}
+
+.enc-live__summary-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: var(--space-lg, 1.5rem);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.enc-live__modal-title {
+  font-size: var(--font-lg, 1.25rem);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.enc-live__modal-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.enc-live__modal-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-sm);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  min-width: 72px;
+  flex: 1;
+}
+
+.enc-live__modal-stat-val {
+  font-size: var(--font-xl, 1.5rem);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.enc-live__modal-stat-label {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.enc-live__modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.enc-live__modal-subtitle {
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.enc-live__modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px var(--space-sm);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+}
+
+.enc-live__modal-row-name {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.enc-live__modal-row-val {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.enc-live__modal-list {
+  font-size: var(--font-sm);
+  color: var(--color-accent-danger);
+  font-weight: var(--font-semibold);
+}
+
+.enc-live__modal-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.enc-live__modal-cancel {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.enc-live__modal-cancel:hover {
+  background: var(--color-bg-elevated);
+}
+
+.enc-live__modal-confirm {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-danger);
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--color-accent-danger);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.enc-live__modal-confirm:hover {
+  background: rgba(244, 67, 54, 0.2);
 }
 </style>

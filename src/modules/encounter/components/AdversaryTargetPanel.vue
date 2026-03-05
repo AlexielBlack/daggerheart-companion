@@ -203,6 +203,16 @@
             {{ entry.pcName }} {{ entry.action === 'miss' ? '✕' : (entry.type === 'hp' ? '❤️' : '💢') }}{{ entry.action !== 'miss' ? entry.amount : '' }}
           </button>
         </div>
+
+        <!-- Notes (champ inline) -->
+        <input
+          class="adv-panel__notes"
+          :value="inst.notes"
+          placeholder="Notes…"
+          :aria-label="'Notes pour ' + inst.name + (hasSiblings ? ' #' + (idx + 1) : '')"
+          @input="updateNotes(inst.instanceId, $event.target.value)"
+          @click.stop
+        >
       </div>
     </div>
 
@@ -317,6 +327,7 @@ import FeatureCard from './FeatureCard.vue'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
 import { useAdversaryFocus } from '@modules/adversaries/composables/useAdversaryFocus'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 
 export default {
   name: 'AdversaryTargetPanel',
@@ -387,15 +398,14 @@ export default {
       store.logMiss('pc')
     }
 
-    const advConditions = [
-      { id: 'hidden', emoji: '👁️‍🗨️', label: 'Hidden' },
-      { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable' },
-      { id: 'restrained', emoji: '⛓️', label: 'Restrained' },
-      { id: 'poisoned', emoji: '☠️', label: 'Poisoned' }
-    ]
+    const advConditions = LIVE_CONDITIONS
 
     function toggleAdvCond(instanceId, condId) {
       store.toggleAdversaryCondition(instanceId, condId)
+    }
+
+    function updateNotes(instanceId, text) {
+      store.setAdversaryNotes(instanceId, text)
     }
 
     return {
@@ -411,7 +421,8 @@ export default {
       removeLogEntry,
       logPcMiss,
       advConditions,
-      toggleAdvCond
+      toggleAdvCond,
+      updateNotes
     }
   },
   computed: {
@@ -809,9 +820,9 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: var(--radius-sm);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: var(--font-semibold);
   line-height: 1.3;
   border: none;
@@ -861,6 +872,33 @@ export default {
 
 .adv-panel__miss-btn:hover {
   background: rgba(107, 114, 128, 0.1);
+}
+
+/* ── Notes inline ── */
+
+.adv-panel__notes {
+  width: 100%;
+  padding: 3px var(--space-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  font-style: italic;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.adv-panel__notes:hover {
+  border-color: var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+.adv-panel__notes:focus {
+  outline: none;
+  border-color: var(--color-border-active);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-style: normal;
 }
 
 /* ── Attack ── */
