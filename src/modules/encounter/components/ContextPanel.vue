@@ -304,7 +304,8 @@ export default {
   height: 100%;
   border-left: 1px solid var(--color-border);
   background: var(--color-bg-primary);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ── Tabs ── */
@@ -314,6 +315,9 @@ export default {
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .ctx-panel__tab {
