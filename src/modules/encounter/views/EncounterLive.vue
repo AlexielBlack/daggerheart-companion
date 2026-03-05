@@ -26,15 +26,10 @@
             {{ store.encounterName || 'Rencontre' }}
           </h1>
           <span class="live__tier">T{{ store.encounterTier }}</span>
-          <button
-            class="live__mode-btn"
-            :class="'live__mode-btn--' + store.sceneMode"
-            :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
-            aria-label="Inverser PJ / MJ"
-            @click="store.swapSpotlight()"
-          >
-            {{ isPcActor ? '⚔️ PJ' : '💀 MJ' }}
-          </button>
+          <SpotlightToggle
+            :scene-mode="store.sceneMode"
+            @update:scene-mode="onSetSceneMode"
+          />
           <span
             v-if="store.adversaryCombatSummary.count > 0"
             class="live__combat-sum"
@@ -50,7 +45,7 @@
             class="live__undo-btn"
             :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
             aria-label="Annuler la dernière action"
-            @click="store.undo()"
+            @click="onUndo"
           >
             ↩ {{ store.undoStack.length }}
           </button>
@@ -387,12 +382,15 @@ import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
 import ContextPanel from '../components/ContextPanel.vue'
 import CountdownTracker from '../components/CountdownTracker.vue'
 import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
+import SpotlightToggle from '../components/SpotlightToggle.vue'
+import { useHaptic } from '../composables/useHaptic'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, SpotlightToggle },
   setup() {
     const store = useEncounterLiveStore()
+    const haptic = useHaptic()
 
     // Features PJ contextuelles
     const activePcRef = computed(() => store.activePc)
@@ -410,22 +408,57 @@ export default {
     function onSelectPc(pcId) { store.selectPc(pcId) }
     function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
 
-    // ── Actions adversaire ──
-    function onApplyDamage({ instanceId, hpToMark }) { store.markAdversaryHP(instanceId, hpToMark) }
-    function onMarkStress(instanceId) { store.markAdversaryStress(instanceId, 1) }
-    function onClearStress(instanceId) { store.clearAdversaryStress(instanceId, 1) }
-    function onClearHP(instanceId) { store.clearAdversaryHP(instanceId, 1) }
-    function onDefeat(instanceId) { store.defeatAdversary(instanceId) }
-    function onRevive(instanceId) { store.reviveAdversary(instanceId) }
+    // ── Scene mode (depuis le toggle) ──
+    function onSetSceneMode(mode) {
+      store.setSceneMode(mode)
+    }
 
-    // ── Conditions ──
-    function onTogglePcCondition({ pcId, conditionId }) { store.togglePcCondition(pcId, conditionId) }
-    function onToggleAdvCondition({ instanceId, conditionId }) { store.toggleAdversaryCondition(instanceId, conditionId) }
+    // ── Actions adversaire (avec haptique) ──
+    function onApplyDamage({ instanceId, hpToMark }) {
+      haptic.tap()
+      store.markAdversaryHP(instanceId, hpToMark)
+    }
+    function onMarkStress(instanceId) {
+      haptic.tap()
+      store.markAdversaryStress(instanceId, 1)
+    }
+    function onClearStress(instanceId) {
+      haptic.tap()
+      store.clearAdversaryStress(instanceId, 1)
+    }
+    function onClearHP(instanceId) {
+      haptic.tap()
+      store.clearAdversaryHP(instanceId, 1)
+    }
+    function onDefeat(instanceId) {
+      haptic.defeat()
+      store.defeatAdversary(instanceId)
+    }
+    function onRevive(instanceId) {
+      haptic.tap()
+      store.reviveAdversary(instanceId)
+    }
+
+    // ── Conditions (avec haptique) ──
+    function onTogglePcCondition({ pcId, conditionId }) {
+      haptic.tap()
+      store.togglePcCondition(pcId, conditionId)
+    }
+    function onToggleAdvCondition({ instanceId, conditionId }) {
+      haptic.tap()
+      store.toggleAdversaryCondition(instanceId, conditionId)
+    }
 
     // ── Renforts ──
     const showReinforcementPanel = ref(false)
 
     function addReinforcement(adversaryId) { store.addReinforcement(adversaryId, 1) }
+
+    // ── Undo (avec haptique) ──
+    function onUndo() {
+      haptic.undo()
+      store.undo()
+    }
 
     // ── AoE ──
     const aoeMode = ref(false)
@@ -481,6 +514,7 @@ export default {
       }
       if (Object.keys(advCustom).length > 0) store.applyAoeDamagePerTarget(advCustom)
       if (pcHits.length > 0) store.applyAoeDamageToPcsPerTarget(pcHits)
+      haptic.confirm()
       aoeDamage.value = {}
       aoeMode.value = false
     }
@@ -498,10 +532,10 @@ export default {
       const tag = e.target.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        if (store.undoStack.length > 0) { e.preventDefault(); store.undo() }
+        if (store.undoStack.length > 0) { e.preventDefault(); haptic.undo(); store.undo() }
         return
       }
-      if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); return }
+      if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); haptic.swap(); return }
       if (e.key === 'Escape') {
         if (aoeMode.value) aoeMode.value = false
         if (showReinforcementPanel.value) showReinforcementPanel.value = false
@@ -528,6 +562,7 @@ export default {
 
     return {
       store, isPcActor, hasAdversaries,
+      onSetSceneMode,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -536,22 +571,25 @@ export default {
       onSelectPc, onSelectAdversaryGroup,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition,
-      showReinforcementPanel, addReinforcement,
+      showReinforcementPanel, addReinforcement, onUndo,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetHp, aoeUndoTarget, applyAoe,
       showCountdownBar,
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
       showEndSummary, endSummaryData,
-      tabletMainTab
+      tabletMainTab,
+      haptic
     }
   },
   methods: {
     confirmEndEncounter() {
+      this.haptic.warning()
       this.endSummaryData = this.store.generateSummary()
       this.showEndSummary = true
     },
     finalEndEncounter() {
+      this.haptic.confirm()
       this.showEndSummary = false
       this.endSummaryData = null
       this.store.endEncounter()
@@ -570,6 +608,7 @@ export default {
 .live { display: flex; flex-direction: column; height: 100vh; transition: background-color 0.3s; }
 .live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
 .live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
+.live--social { background-color: rgba(8, 145, 178, 0.03); }
 .live__inactive { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); padding: var(--space-xl); min-height: 60vh; color: var(--color-text-muted); }
 .live__go-builder { padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--color-accent-hope); background: transparent; color: var(--color-accent-hope); cursor: pointer; }
 
@@ -579,10 +618,6 @@ export default {
 .live__header-actions { display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
 .live__title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 16rem; }
 .live__tier { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); background: rgba(224, 165, 38, 0.1); border-radius: var(--radius-sm); white-space: nowrap; }
-.live__mode-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); touch-action: manipulation; white-space: nowrap; }
-.live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
-.live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
-.live__mode-btn:hover { background: var(--color-bg-elevated); }
 .live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); white-space: nowrap; }
 .live__undo-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; touch-action: manipulation; }
 .live__undo-btn:hover { background: var(--color-bg-elevated); }

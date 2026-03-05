@@ -24,6 +24,7 @@ export { default as ContextPanel } from './components/ContextPanel.vue'
 export { default as CountdownTracker } from './components/CountdownTracker.vue'
 export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
+export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 
 // Composants — Live (legacy, conservés pour compatibilité)
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
@@ -36,6 +37,7 @@ export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/u
 export { useUndoStack } from './composables/useUndoStack'
 export { useCombatLog } from './composables/useCombatLog'
 export { useSpotlights } from './composables/useSpotlights'
+export { useHaptic, HAPTIC_PATTERNS } from './composables/useHaptic'
 
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'
