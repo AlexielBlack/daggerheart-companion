@@ -262,7 +262,7 @@
         "name": "Slippery",
         "description": "Quand le Sorcier subit des dégâts d’une attaque, il peut se téléporter jusqu’à Portée Loin.",
         "tags": [
-          "utilitaire"
+          "défensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -484,7 +484,7 @@
         "name": "Momentum",
         "description": "Quand le Champion Invaincu réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -864,7 +864,7 @@
         "name": "Momentum",
         "description": "Quand le Kraken réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {

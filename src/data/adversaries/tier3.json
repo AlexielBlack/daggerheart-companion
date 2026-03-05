@@ -293,7 +293,7 @@
         "name": "Momentum",
         "description": "Quand le Démon réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -943,7 +943,7 @@
         "name": "Momentum",
         "description": "Quand l’Élémentaire réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -1893,7 +1893,7 @@
         "name": "Momentum",
         "description": "Quand la Sentinelle réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -2129,7 +2129,7 @@
         "name": "Momentum",
         "description": "Quand le Dragon réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {

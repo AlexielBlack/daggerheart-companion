@@ -166,7 +166,7 @@
         "name": "Momentum",
         "description": "Quand l’Ours réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -822,7 +822,7 @@
         "name": "Momentum",
         "description": "Quand le Scorpion réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -973,7 +973,7 @@
         "name": "Fall Back",
         "description": "Quand une créature se déplace à Portée de Mêlée pour attaquer, avant le jet d’attaque, déplacez-vous n’importe où à Portée Proche et faites une attaque contre cette créature. En cas de réussite, infligez 1d10+2 dégâts physiques.",
         "tags": [
-          "utilitaire"
+          "défensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -1194,7 +1194,7 @@
         "name": "Momentum",
         "description": "Quand le Chef des Gardes réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -2895,7 +2895,7 @@
         "name": "Momentum",
         "description": "Quand le Lieutenant réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {

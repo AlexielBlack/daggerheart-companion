@@ -296,7 +296,7 @@
         "name": "Momentum",
         "description": "Quand le Bagarreur réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -700,7 +700,7 @@
         "name": "Momentum",
         "description": "Quand la Gorgone réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -1108,7 +1108,7 @@
         "name": "Momentum",
         "description": "Quand l’Assassin réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -1737,7 +1737,7 @@
         "name": "Momentum",
         "description": "Quand la Meute réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -2613,7 +2613,7 @@
         "name": "Momentum",
         "description": "Quand le Capitaine réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
@@ -2852,7 +2852,7 @@
         "name": "Momentum",
         "description": "Quand le Spectre de Pierre réussit une attaque contre un PJ, vous gagnez une Peur.",
         "tags": [
-          "utilitaire"
+          "offensif"
         ],
         "activationType": "reaction",
         "cost": {
