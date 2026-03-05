@@ -37,10 +37,12 @@ export function useUndoStack(deps) {
   /**
    * Sauvegarde un snapshot de l'état actuel dans la pile d'undo.
    * Appelé avant chaque action qui modifie les données de combat.
+   * @param {string} [label=''] - Description courte de l'action (ex: '+2 HP Goblin')
    */
-  function pushUndo() {
+  function pushUndo(label = '') {
     if (!isActive.value) return
     const snapshot = {
+      label,
       liveAdversaries: JSON.parse(JSON.stringify(liveAdversaries.value)),
       combatLog: JSON.parse(JSON.stringify(combatLog.value)),
       encounterLog: JSON.parse(JSON.stringify(encounterLog.value)),

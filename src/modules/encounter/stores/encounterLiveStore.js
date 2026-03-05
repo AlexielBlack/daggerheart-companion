@@ -32,6 +32,7 @@ import {
   isValidSceneMode,
   DYNAMIC_ADVANCEMENT
 } from '@data/encounters/liveConstants'
+import { calculateBaseBattlePoints, BATTLE_POINT_COSTS } from '@data/encounters/constants'
 import { useUndoStack } from '../composables/useUndoStack'
 import { useCombatLog } from '../composables/useCombatLog'
 import { useSpotlights } from '../composables/useSpotlights'
@@ -232,6 +233,23 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const isPlayerSpotlight = computed(() => spotlight.value === SPOTLIGHT_PC)
   const isGmSpotlight = computed(() => spotlight.value === SPOTLIGHT_GM)
 
+  // ── Battle Points live ─────────────────────────────────
+  const liveBpTotal = computed(() => calculateBaseBattlePoints(participantPcIds.value.length))
+  const liveBpSpent = computed(() => {
+    // Comptage par adversaryId : chaque type coûte selon BATTLE_POINT_COSTS
+    const byType = {}
+    for (const adv of liveAdversaries.value) {
+      const key = adv.type
+      byType[key] = (byType[key] || 0) + 1
+    }
+    let total = 0
+    for (const [type, count] of Object.entries(byType)) {
+      total += (BATTLE_POINT_COSTS[type] ?? 2) * count
+    }
+    return total
+  })
+  const liveBpRemaining = computed(() => liveBpTotal.value - liveBpSpent.value)
+
   // ═══════════════════════════════════════════════════════
   //  Persistence (déclaré avant les composables qui en dépendent)
   // ═══════════════════════════════════════════════════════
@@ -292,6 +310,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const { undoStack, pushUndo, undo, clearUndo } = useUndoStack({
     isActive, liveAdversaries, combatLog, encounterLog,
     pcDownStatus, pcConditions, activeAdversaryId, persistState
+  })
+
+  /** Label de la dernière action annulable (pour l'affichage dans le bouton undo) */
+  const lastUndoLabel = computed(() => {
+    const stack = undoStack.value
+    return stack.length > 0 ? stack[stack.length - 1].label || '' : ''
   })
 
   const {
@@ -430,8 +454,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   //  Actions — HP / Stress / Défaite adversaire
   // ═══════════════════════════════════════════════════════
 
+  /** Nom court d'une instance adversaire pour les labels d'undo */
+  function advShortName(instanceId) {
+    const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
+    return adv ? adv.name : '?'
+  }
+
   function markAdversaryHP(instanceId, amount = 1) {
-    pushUndo()
+    pushUndo('+' + amount + ' HP ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedHP
@@ -471,7 +501,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function clearAdversaryHP(instanceId, amount = 1) {
-    pushUndo()
+    pushUndo('−' + amount + ' HP ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedHP = Math.max(0, adv.markedHP - amount)
@@ -480,7 +510,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function markAdversaryStress(instanceId, amount = 1) {
-    pushUndo()
+    pushUndo('+' + amount + ' ST ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedStress
@@ -511,7 +541,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function clearAdversaryStress(instanceId, amount = 1) {
-    pushUndo()
+    pushUndo('−' + amount + ' ST ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedStress = Math.max(0, adv.markedStress - amount)
@@ -519,7 +549,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function addAdversaryCondition(instanceId, condition) {
-    pushUndo()
+    pushUndo('Cond + ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.conditions.includes(condition)) return
     adv.conditions.push(condition)
@@ -527,7 +557,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function removeAdversaryCondition(instanceId, condition) {
-    pushUndo()
+    pushUndo('Cond − ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     const idx = adv.conditions.indexOf(condition)
@@ -535,7 +565,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function defeatAdversary(instanceId) {
-    pushUndo()
+    pushUndo('💀 ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = true
@@ -552,7 +582,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function reviveAdversary(instanceId) {
-    pushUndo()
+    pushUndo('↩ ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = false
@@ -564,7 +594,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ═══════════════════════════════════════════════════════
 
   function addReinforcement(adversaryId, quantity = 1) {
-    pushUndo()
+    pushUndo('Renfort ×' + quantity)
     const adversaryData = allAdversaries.find((a) => a.id === adversaryId)
     if (!adversaryData) return []
 
@@ -600,7 +630,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    */
   function applyAoeDamage(instanceIds, amount, type = 'hp') {
     if (!instanceIds.length || amount <= 0) return
-    pushUndo()
+    pushUndo('AoE ' + instanceIds.length + ' cibles')
     const pc = participantPcs.value.find((p) => p.id === activePcId.value)
     for (const instanceId of instanceIds) {
       const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
@@ -649,7 +679,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    */
   function applyAoeDamagePerTarget(damageMap) {
     if (!Object.keys(damageMap).length) return
-    pushUndo()
+    pushUndo('AoE ' + Object.keys(damageMap).length + ' cibles')
     const pc = participantPcs.value.find((p) => p.id === activePcId.value)
     for (const [instanceId, amount] of Object.entries(damageMap)) {
       if (amount <= 0) continue
@@ -684,7 +714,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
    */
   function applyAoeDamageToPcsPerTarget(pcHits) {
     if (!pcHits.length) return
-    pushUndo()
+    pushUndo('AoE ' + pcHits.length + ' PJ')
     const adv = liveAdversaries.value.find((a) => a.instanceId === activeAdversaryId.value)
     for (const { pcId, amount } of pcHits) {
       if (amount <= 0) continue
@@ -929,6 +959,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversary, groupedAdversaries, activeAdversarySiblings,
     activeEnvironment, adversaryCombatSummary,
     isPlayerSpotlight, isGmSpotlight,
+    liveBpTotal, liveBpSpent, liveBpRemaining,
 
     // Actions — Initialisation
     startEncounter,
@@ -966,7 +997,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     resetLive, endEncounter,
 
     // Actions — Undo (composable)
-    undo, undoStack,
+    undo, undoStack, lastUndoLabel,
 
     // Actions — Résumé
     lastEncounterSummary, generateSummary

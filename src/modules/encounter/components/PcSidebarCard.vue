@@ -8,9 +8,12 @@
     role="button"
     tabindex="0"
     :aria-label="pc.name + (isDown ? ' (à terre)' : '') + ' — Évasion ' + effectiveEvasion"
-    @click="$emit('select', pc.id)"
+    @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
+    @pointerdown="lp.onPointerDown($event)"
+    @pointerup="lp.onPointerUp()"
+    @pointerleave="lp.onPointerLeave()"
   >
     <!-- Ligne 1 : nom + indicateurs -->
     <div class="pc-sidebar__header">
@@ -81,6 +84,7 @@
 
 <script>
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
+import { useLongPress } from '../composables/useLongPress'
 
 export default {
   name: 'PcSidebarCard',
@@ -91,7 +95,21 @@ export default {
     activeConditions: { type: Array, default: () => [] },
     spotlightCount: { type: Number, default: 0 }
   },
-  emits: ['select', 'toggle-condition'],
+  emits: ['select', 'toggle-condition', 'long-press'],
+  setup(props, { emit }) {
+    const lp = useLongPress(() => {
+      emit('long-press', props.pc.id)
+    }, { delay: 400 })
+
+    /** Bloque le clic normal si le long press a été déclenché */
+    function onClick() {
+      if (!lp.wasFired()) {
+        emit('select', props.pc.id)
+      }
+    }
+
+    return { lp, onClick }
+  },
   computed: {
     effectiveEvasion() {
       return (this.pc.evasion || 10) + (this.pc.evasionBonus || 0)

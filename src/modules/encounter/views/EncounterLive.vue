@@ -36,6 +36,19 @@
           >
             {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
           </span>
+          <!-- BP indicator compact -->
+          <span
+            v-if="store.liveAdversaries.length > 0"
+            class="live__bp-pill"
+            :class="{
+              'live__bp-pill--over': store.liveBpRemaining < 0,
+              'live__bp-pill--exact': store.liveBpRemaining === 0,
+              'live__bp-pill--under': store.liveBpRemaining > 0
+            }"
+            :title="store.liveBpSpent + ' / ' + store.liveBpTotal + ' BP (' + (store.liveBpRemaining >= 0 ? '+' : '') + store.liveBpRemaining + ')'"
+          >
+            {{ store.liveBpSpent }}/{{ store.liveBpTotal }} BP
+          </span>
         </div>
 
         <!-- Groupe droit : actions rapides -->
@@ -43,11 +56,11 @@
           <button
             v-if="store.undoStack.length > 0"
             class="live__undo-btn"
-            :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
+            :title="'Annuler : ' + (store.lastUndoLabel || 'dernière action') + ' (Ctrl+Z)'"
             aria-label="Annuler la dernière action"
             @click="onUndo"
           >
-            ↩ {{ store.undoStack.length }}
+            ↩ <span class="live__undo-label">{{ store.lastUndoLabel || store.undoStack.length }}</span>
           </button>
           <button
             v-if="hasAdversaries"
@@ -125,6 +138,7 @@
             :spotlight-count="store.pcSpotlights[pc.id] || 0"
             @select="onSelectPc"
             @toggle-condition="onTogglePcCondition"
+            @long-press="onLongPressPc"
           />
         </div>
 
@@ -405,6 +419,13 @@ export default {
     function onSelectPc(pcId) { store.selectPc(pcId) }
     function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
 
+    // ── Long-press PJ : ouvre le side-sheet contexte en tablette ──
+    function onLongPressPc(pcId) {
+      store.selectPc(pcId)
+      haptic.swap()
+      tabletCtxOpen.value = true
+    }
+
     // ── Scene mode (depuis le toggle) ──
     function onSetSceneMode(mode) {
       store.setSceneMode(mode)
@@ -581,7 +602,7 @@ export default {
       pcPassive: pcFeatures.passiveFeatures,
       pcReaction: pcFeatures.reactionFeatures,
       pcAllFeatures: pcFeatures.allFeatures,
-      onSelectPc, onSelectAdversaryGroup,
+      onSelectPc, onSelectAdversaryGroup, onLongPressPc,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition,
       showReinforcementPanel, addReinforcement, onUndo,
@@ -632,7 +653,15 @@ export default {
 .live__title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 16rem; }
 .live__tier { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); background: rgba(224, 165, 38, 0.1); border-radius: var(--radius-sm); white-space: nowrap; }
 .live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); white-space: nowrap; }
-.live__undo-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; touch-action: manipulation; }
+
+/* BP indicator compact */
+.live__bp-pill { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.live__bp-pill--under { background: rgba(83, 168, 182, 0.1); color: var(--color-accent-hope); }
+.live__bp-pill--exact { background: rgba(76, 175, 80, 0.15); color: var(--color-accent-success); }
+.live__bp-pill--over { background: rgba(244, 67, 54, 0.15); color: var(--color-accent-danger); }
+
+.live__undo-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; touch-action: manipulation; max-width: 10rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.live__undo-label { font-variant-numeric: normal; }
 .live__undo-btn:hover { background: var(--color-bg-elevated); }
 .live__end-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: transparent; color: var(--color-accent-danger); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; touch-action: manipulation; }
 .live__end-btn:hover { background: rgba(244, 67, 54, 0.1); }

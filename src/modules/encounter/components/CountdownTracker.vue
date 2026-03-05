@@ -107,7 +107,6 @@
 
     <!-- Bouton ajout -->
     <button
-      v-if="!showAddForm"
       class="cd-bar__add-btn"
       title="Ajouter un countdown"
       aria-label="Ajouter un countdown"
@@ -116,82 +115,114 @@
       + Countdown
     </button>
 
-    <!-- Formulaire ajout inline -->
-    <div
-      v-if="showAddForm"
-      class="cd-bar__add-form"
+    <!-- Drawer d'ajout -->
+    <BottomDrawer
+      :model-value="showAddForm"
+      title="⏱️ Nouveau countdown"
+      @update:model-value="showAddForm = $event"
     >
-      <input
-        v-model="newName"
-        class="cd-bar__input"
-        type="text"
-        placeholder="Nom…"
-        aria-label="Nom du countdown"
-      />
-      <select
-        v-model="newType"
-        class="cd-bar__select"
-        aria-label="Type de countdown"
-      >
-        <option
-          v-for="t in countdownTypes"
-          :key="t.id"
-          :value="t.id"
+      <div class="cd-bar__drawer-form">
+        <div class="cd-bar__field">
+          <span class="cd-bar__field-label">Nom</span>
+          <input
+            ref="nameInput"
+            v-model="newName"
+            class="cd-bar__field-input"
+            type="text"
+            placeholder="Nom du countdown…"
+            aria-label="Nom du countdown"
+          />
+        </div>
+
+        <div class="cd-bar__field">
+          <span class="cd-bar__field-label">Type</span>
+          <div class="cd-bar__type-pills">
+            <button
+              v-for="t in countdownTypes"
+              :key="t.id"
+              class="cd-bar__type-pill"
+              :class="{ 'cd-bar__type-pill--on': newType === t.id }"
+              :aria-pressed="newType === t.id"
+              :aria-label="t.label"
+              :title="t.description"
+              @click="newType = t.id"
+            >
+              {{ t.emoji }} {{ t.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="cd-bar__field-row">
+          <div class="cd-bar__field">
+            <span class="cd-bar__field-label">Valeur de départ</span>
+            <input
+              v-model.number="newValue"
+              class="cd-bar__field-input cd-bar__field-input--num"
+              type="number"
+              min="1"
+              max="99"
+              aria-label="Valeur de départ"
+            />
+          </div>
+          <div class="cd-bar__field">
+            <span class="cd-bar__field-label">Boucle</span>
+            <button
+              class="cd-bar__loop-pill"
+              :class="{ 'cd-bar__loop-pill--on': newLoop }"
+              :aria-pressed="newLoop"
+              aria-label="Activer la boucle"
+              @click="newLoop = !newLoop"
+            >
+              ↻ {{ newLoop ? 'Oui' : 'Non' }}
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="cd-bar__confirm-btn"
+          :disabled="!newValue || newValue < 1"
+          @click="confirmAdd"
         >
-          {{ t.emoji }} {{ t.label }}
-        </option>
-      </select>
-      <input
-        v-model.number="newValue"
-        class="cd-bar__input cd-bar__input--small"
-        type="number"
-        min="1"
-        max="99"
-        placeholder="N"
-        aria-label="Valeur de départ"
-      />
-      <label class="cd-bar__loop-label">
-        <input
-          v-model="newLoop"
-          type="checkbox"
-        />
-        ↻
-      </label>
-      <button
-        class="cd-bar__btn cd-bar__btn--confirm"
-        :disabled="!newValue || newValue < 1"
-        @click="confirmAdd"
-      >
-        ✓
-      </button>
-      <button
-        class="cd-bar__btn"
-        @click="cancelAdd"
-      >
-        ✕
-      </button>
-    </div>
+          Ajouter le countdown
+        </button>
+      </div>
+    </BottomDrawer>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { COUNTDOWN_TYPES, DYNAMIC_ADVANCEMENT, ROLL_RESULTS } from '@data/encounters/liveConstants'
+import BottomDrawer from './BottomDrawer.vue'
 
 export default {
   name: 'CountdownTracker',
+  components: { BottomDrawer },
   props: {
     countdowns: { type: Array, default: () => [] }
   },
   emits: ['add', 'remove', 'tick', 'untick', 'advance-by-result', 'reset'],
   setup(props, { emit }) {
     const showAddForm = ref(false)
+    const nameInput = ref(null)
     const newName = ref('')
     const newType = ref('standard')
     const newValue = ref(4)
     const newLoop = ref(false)
     const countdownTypes = COUNTDOWN_TYPES
     const rollResults = ROLL_RESULTS
+
+    // Focus auto sur l'input nom à l'ouverture du drawer
+    watch(showAddForm, async (val) => {
+      if (val) {
+        await nextTick()
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            nameInput.value?.focus()
+          })
+        })
+      }
+    })
 
     function confirmAdd() {
       if (!newValue.value || newValue.value < 1) return
@@ -230,6 +261,7 @@ export default {
 
     return {
       showAddForm, newName, newType, newValue, newLoop,
+      nameInput,
       countdownTypes, rollResults,
       confirmAdd, cancelAdd, typeEmoji,
       advancementAmount, advancementLabel
@@ -395,7 +427,7 @@ export default {
   justify-content: flex-end;
 }
 
-/* ── Add button & form ── */
+/* ── Add button ── */
 
 .cd-bar__add-btn {
   padding: var(--space-xs) var(--space-sm);
@@ -416,45 +448,119 @@ export default {
   color: var(--color-accent-hope);
 }
 
-.cd-bar__add-form {
+/* ── Drawer form ── */
+
+.cd-bar__drawer-form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.cd-bar__field {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-xs);
-  padding: var(--space-xs);
+}
+
+.cd-bar__field-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cd-bar__field-input {
+  padding: var(--space-sm) var(--space-md);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-bg-primary);
-}
-
-.cd-bar__input {
-  padding: 2px var(--space-xs);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
   background: var(--color-bg-input);
   color: var(--color-text-primary);
-  font-size: var(--font-size-xs);
-  width: 6rem;
+  font-size: var(--font-size-md);
+  box-sizing: border-box;
 }
 
-.cd-bar__input--small { width: 3rem; text-align: center; }
-
-.cd-bar__input:focus { outline: none; border-color: var(--color-border-active); }
-
-.cd-bar__select {
-  padding: 2px var(--space-xs);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg-input);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-xs);
+.cd-bar__field-input:focus {
+  outline: none;
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.2);
 }
 
-.cd-bar__loop-label {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+.cd-bar__field-input--num {
+  width: 5rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-bar__field-row {
   display: flex;
-  align-items: center;
-  gap: 2px;
-  cursor: pointer;
+  gap: var(--space-md);
+  align-items: flex-start;
 }
+
+.cd-bar__type-pills {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.cd-bar__type-pill {
+  padding: var(--space-sm) var(--space-md);
+  min-height: var(--touch-min);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.cd-bar__type-pill:hover { background: var(--color-bg-elevated); }
+
+.cd-bar__type-pill--on {
+  background: rgba(83, 168, 182, 0.15);
+  border-color: var(--color-accent-hope);
+  color: var(--color-accent-hope);
+  font-weight: var(--font-weight-bold);
+}
+
+.cd-bar__loop-pill {
+  padding: var(--space-sm) var(--space-md);
+  min-height: var(--touch-min);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background var(--transition-fast);
+}
+
+.cd-bar__loop-pill--on {
+  background: rgba(33, 150, 243, 0.15);
+  border-color: var(--color-accent-info);
+  color: var(--color-accent-info);
+}
+
+.cd-bar__confirm-btn {
+  padding: var(--space-sm) var(--space-lg);
+  min-height: var(--touch-min);
+  border: 1px solid var(--color-accent-hope);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-hope);
+  color: white;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: opacity var(--transition-fast);
+}
+
+.cd-bar__confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.cd-bar__confirm-btn:hover:not(:disabled) { opacity: 0.9; }
 </style>
