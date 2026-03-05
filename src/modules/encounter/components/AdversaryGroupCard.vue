@@ -8,15 +8,15 @@
     }"
     :aria-label="group.name + ' — ' + group.instances.length + ' instance(s)'"
   >
-    <!-- ── Header : toujours visible, sert de toggle ── -->
+    <!-- ── Header : toujours visible ── -->
     <div
       class="adv-group__header"
       role="button"
       tabindex="0"
       :aria-expanded="!collapsed"
-      @click="onHeaderClick"
-      @keydown.enter="onHeaderClick"
-      @keydown.space.prevent="onHeaderClick"
+      @click="$emit('select-group', group.adversaryId)"
+      @keydown.enter="$emit('select-group', group.adversaryId)"
+      @keydown.space.prevent="$emit('select-group', group.adversaryId)"
     >
       <div class="adv-group__identity">
         <span class="adv-group__name">
@@ -35,7 +35,7 @@
         >{{ group.defeatedCount }}💀</span>
       </div>
 
-      <!-- Résumé HP (visible surtout quand collapsed) -->
+      <!-- Résumé HP (toujours visible) -->
       <span class="adv-group__hp-summary">
         ❤️{{ totalMarkedHP }}/{{ totalMaxHP }}
       </span>
@@ -48,11 +48,15 @@
         {{ firstInstance.difficulty }}
       </div>
 
-      <!-- Chevron collapse -->
-      <span
-        class="adv-group__chevron"
-        aria-hidden="true"
-      >{{ collapsed ? '▶' : '▼' }}</span>
+      <!-- Bouton collapse dédié -->
+      <button
+        class="adv-group__collapse-btn"
+        :aria-label="collapsed ? 'Déplier' : 'Replier'"
+        :title="collapsed ? 'Déplier' : 'Replier'"
+        @click.stop="manualCollapsed = !collapsed"
+      >
+        {{ collapsed ? '▶' : '▼' }}
+      </button>
     </div>
 
     <!-- ── Contenu dépliable ── -->
@@ -60,69 +64,20 @@
       v-show="!collapsed"
       class="adv-group__body"
     >
-      <!-- Seuils de dégâts comme BOUTONS (le geste principal) -->
+      <!-- Seuils (une seule ligne de référence, pas des boutons) -->
       <div
         v-if="firstInstance.thresholds"
-        class="adv-group__thresholds"
+        class="adv-group__thresh-ref"
       >
-        <button
-          v-for="inst in activeInstances"
-          :key="inst.instanceId"
-          class="adv-group__thresh-row-label"
-          disabled
-          :aria-hidden="true"
-        >
-          {{ group.instances.length > 1 ? '#' + (instanceIndex(inst) + 1) : '' }}
-          {{ inst.markedHP }}/{{ inst.maxHP }}
-        </button>
-      </div>
-      <div
-        v-if="firstInstance.thresholds"
-        class="adv-group__thresh-grid"
-      >
-        <!-- Header row -->
-        <div class="adv-group__thresh-header">
-          <span class="adv-group__thresh-h adv-group__thresh-h--minor">
-            &lt; {{ firstInstance.thresholds.major }}
-          </span>
-          <span class="adv-group__thresh-h adv-group__thresh-h--major">
-            {{ firstInstance.thresholds.major }}–{{ firstInstance.thresholds.severe - 1 }}
-          </span>
-          <span class="adv-group__thresh-h adv-group__thresh-h--severe">
-            ≥ {{ firstInstance.thresholds.severe }}
-          </span>
-        </div>
-        <!-- Boutons par instance -->
-        <div
-          v-for="inst in activeInstances"
-          :key="inst.instanceId"
-          class="adv-group__thresh-btns"
-        >
-          <button
-            class="adv-group__thresh-btn adv-group__thresh-btn--minor"
-            :title="'Mineur — marquer 1 HP'"
-            :aria-label="'Dégâts mineurs sur ' + inst.name + ' — 1 HP'"
-            @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
-          >
-            1 HP
-          </button>
-          <button
-            class="adv-group__thresh-btn adv-group__thresh-btn--major"
-            :title="'Majeur — marquer 2 HP'"
-            :aria-label="'Dégâts majeurs sur ' + inst.name + ' — 2 HP'"
-            @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
-          >
-            2 HP
-          </button>
-          <button
-            class="adv-group__thresh-btn adv-group__thresh-btn--severe"
-            :title="'Sévère — marquer 3 HP'"
-            :aria-label="'Dégâts sévères sur ' + inst.name + ' — 3 HP'"
-            @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
-          >
-            3 HP
-          </button>
-        </div>
+        <span class="adv-group__thresh-tag adv-group__thresh-tag--minor">
+          &lt; {{ firstInstance.thresholds.major }} → 1HP
+        </span>
+        <span class="adv-group__thresh-tag adv-group__thresh-tag--major">
+          {{ firstInstance.thresholds.major }}–{{ firstInstance.thresholds.severe - 1 }} → 2HP
+        </span>
+        <span class="adv-group__thresh-tag adv-group__thresh-tag--severe">
+          ≥ {{ firstInstance.thresholds.severe }} → 3HP
+        </span>
       </div>
 
       <!-- Attaque standard -->
@@ -143,7 +98,7 @@
         </span>
       </div>
 
-      <!-- Instances détaillées -->
+      <!-- ══ Instances : UNE ligne par instance, boutons seuils intégrés ══ -->
       <div class="adv-group__instances">
         <div
           v-for="(inst, idx) in group.instances"
@@ -151,7 +106,8 @@
           class="adv-group__inst"
           :class="{ 'adv-group__inst--defeated': inst.isDefeated }"
         >
-          <div class="adv-group__inst-head">
+          <!-- Ligne principale : identité + HP + boutons seuils -->
+          <div class="adv-group__inst-main">
             <span
               v-if="group.instances.length > 1"
               class="adv-group__inst-num"
@@ -160,21 +116,53 @@
               v-if="inst.isDefeated"
               class="adv-group__inst-status"
             >💀</span>
-            <!-- Conditions -->
-            <div class="adv-group__inst-conds">
+
+            <!-- HP compteur + barre compacte intégrée -->
+            <div
+              v-if="!inst.isDefeated"
+              class="adv-group__inst-hp"
+            >
+              <div class="adv-group__hp-bar">
+                <div
+                  class="adv-group__hp-fill"
+                  :style="{ width: hpPercent(inst) + '%' }"
+                ></div>
+              </div>
+              <span class="adv-group__hp-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+            </div>
+
+            <!-- Boutons seuils (le geste principal) -->
+            <div
+              v-if="!inst.isDefeated && firstInstance.thresholds"
+              class="adv-group__thresh-btns"
+            >
               <button
-                v-for="cond in conditions"
-                :key="cond.id"
-                class="adv-group__cond"
-                :class="{ 'adv-group__cond--on': inst.conditions.includes(cond.id) }"
-                :title="cond.label"
-                :aria-label="cond.label"
-                @click.stop="$emit('toggle-condition', { instanceId: inst.instanceId, conditionId: cond.id })"
+                class="adv-group__thresh-btn adv-group__thresh-btn--minor"
+                :title="'Mineur — marquer 1 HP'"
+                :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
               >
-                {{ cond.emoji }}
+                1
+              </button>
+              <button
+                class="adv-group__thresh-btn adv-group__thresh-btn--major"
+                :title="'Majeur — marquer 2 HP'"
+                :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
+              >
+                2
+              </button>
+              <button
+                class="adv-group__thresh-btn adv-group__thresh-btn--severe"
+                :title="'Sévère — marquer 3 HP'"
+                :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
+              >
+                3
               </button>
             </div>
-            <!-- Actions rapides inline -->
+
+            <!-- Actions compactes -->
             <button
               v-if="!inst.isDefeated"
               class="adv-group__action-btn adv-group__action-btn--heal"
@@ -183,7 +171,7 @@
               aria-label="Retirer 1 HP"
               @click.stop="$emit('clear-hp', inst.instanceId)"
             >
-              −❤️
+              −
             </button>
             <button
               v-if="!inst.isDefeated"
@@ -205,52 +193,47 @@
             </button>
           </div>
 
-          <!-- HP bar -->
+          <!-- Ligne secondaire : stress + conditions (seulement si pertinent) -->
           <div
-            v-if="!inst.isDefeated"
-            class="adv-group__hp-row"
+            v-if="!inst.isDefeated && (inst.maxStress > 0 || inst.conditions.length > 0)"
+            class="adv-group__inst-secondary"
           >
-            <span class="adv-group__hp-label">HP</span>
-            <div class="adv-group__hp-bar">
-              <div
-                class="adv-group__hp-fill"
-                :style="{ width: hpPercent(inst) + '%' }"
-              ></div>
+            <!-- Stress compact -->
+            <template v-if="inst.maxStress > 0">
+              <span class="adv-group__stress-label">ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
+              <button
+                class="adv-group__micro-btn"
+                :disabled="inst.markedStress >= inst.maxStress"
+                title="Marquer 1 Stress"
+                aria-label="Marquer 1 Stress"
+                @click.stop="$emit('mark-stress', inst.instanceId)"
+              >
+                +
+              </button>
+              <button
+                class="adv-group__micro-btn"
+                :disabled="inst.markedStress <= 0"
+                title="Retirer 1 Stress"
+                aria-label="Retirer 1 Stress"
+                @click.stop="$emit('clear-stress', inst.instanceId)"
+              >
+                −
+              </button>
+            </template>
+            <!-- Conditions -->
+            <div class="adv-group__inst-conds">
+              <button
+                v-for="cond in conditions"
+                :key="cond.id"
+                class="adv-group__cond"
+                :class="{ 'adv-group__cond--on': inst.conditions.includes(cond.id) }"
+                :title="cond.label"
+                :aria-label="cond.label"
+                @click.stop="$emit('toggle-condition', { instanceId: inst.instanceId, conditionId: cond.id })"
+              >
+                {{ cond.emoji }}
+              </button>
             </div>
-            <span class="adv-group__hp-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-          </div>
-
-          <!-- Stress bar -->
-          <div
-            v-if="!inst.isDefeated && inst.maxStress > 0"
-            class="adv-group__stress-row"
-          >
-            <span class="adv-group__stress-label">ST</span>
-            <div class="adv-group__stress-bar">
-              <div
-                class="adv-group__stress-fill"
-                :style="{ width: stressPercent(inst) + '%' }"
-              ></div>
-            </div>
-            <span class="adv-group__stress-val">{{ inst.markedStress }}/{{ inst.maxStress }}</span>
-            <button
-              class="adv-group__stress-btn"
-              :disabled="inst.markedStress >= inst.maxStress"
-              title="Marquer 1 Stress"
-              aria-label="Marquer 1 Stress"
-              @click.stop="$emit('mark-stress', inst.instanceId)"
-            >
-              +
-            </button>
-            <button
-              class="adv-group__stress-btn"
-              :disabled="inst.markedStress <= 0"
-              title="Retirer 1 Stress"
-              aria-label="Retirer 1 Stress"
-              @click.stop="$emit('clear-stress', inst.instanceId)"
-            >
-              −
-            </button>
           </div>
         </div>
       </div>
@@ -275,7 +258,6 @@ export default {
   ],
   data() {
     return {
-      /** État replié explicite (null = auto selon isSelected) */
       manualCollapsed: null
     }
   },
@@ -286,14 +268,9 @@ export default {
     conditions() {
       return LIVE_CONDITIONS
     },
-    /** Replié automatiquement sauf si sélectionné ou forcé manuellement */
     collapsed() {
       if (this.manualCollapsed !== null) return this.manualCollapsed
       return !this.isSelected
-    },
-    /** Instances non vaincues (pour les boutons de seuils) */
-    activeInstances() {
-      return this.group.instances.filter((i) => !i.isDefeated)
     },
     totalMarkedHP() {
       return this.group.instances.reduce((s, i) => s + i.markedHP, 0)
@@ -303,9 +280,9 @@ export default {
     }
   },
   watch: {
-    /** Quand la sélection change, reset le toggle manuel */
-    isSelected() {
-      this.manualCollapsed = null
+    /** Quand sélectionné, auto-déplier (reset le manuel) */
+    isSelected(val) {
+      if (val) this.manualCollapsed = null
     }
   },
   methods: {
@@ -316,16 +293,6 @@ export default {
     stressPercent(inst) {
       if (!inst.maxStress) return 0
       return Math.round((inst.markedStress / inst.maxStress) * 100)
-    },
-    instanceIndex(inst) {
-      return this.group.instances.indexOf(inst)
-    },
-    onHeaderClick() {
-      this.$emit('select-group', this.group.adversaryId)
-      // Toggle collapse si déjà sélectionné
-      if (this.isSelected) {
-        this.manualCollapsed = this.manualCollapsed === null ? true : !this.manualCollapsed
-      }
     }
   }
 }
@@ -347,7 +314,7 @@ export default {
 
 .adv-group--all-defeated { opacity: 0.5; }
 
-/* ── Header (toujours visible) ── */
+/* ── Header ── */
 
 .adv-group__header {
   display: flex;
@@ -398,86 +365,50 @@ export default {
   line-height: 1;
 }
 
-.adv-group__chevron {
-  font-size: var(--font-size-xs);
+.adv-group__collapse-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: transparent;
   color: var(--color-text-muted);
-  width: 1rem;
-  text-align: center;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
 }
 
-/* ── Body (collapsible) ── */
+.adv-group__collapse-btn:hover { background: var(--color-bg-elevated); }
+
+/* ── Body ── */
 
 .adv-group__body {
   display: flex;
   flex-direction: column;
 }
 
-/* ══ Seuils — grille de boutons ══ */
+/* ── Seuils de référence (une seule ligne d'étiquettes) ── */
 
-.adv-group__thresh-row-label {
-  display: none; /* Caché, géré via la grille */
-}
-
-.adv-group__thresh-grid {
+.adv-group__thresh-ref {
   display: flex;
-  flex-direction: column;
   gap: 1px;
   background: var(--color-border);
 }
 
-.adv-group__thresh-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-}
-
-.adv-group__thresh-h {
+.adv-group__thresh-tag {
+  flex: 1;
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
   text-align: center;
   padding: 2px var(--space-xs);
   font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
 }
 
-.adv-group__thresh-h--minor { background: rgba(76, 175, 80, 0.1); }
-.adv-group__thresh-h--major { background: rgba(255, 152, 0, 0.1); }
-.adv-group__thresh-h--severe { background: rgba(244, 67, 54, 0.1); }
-
-.adv-group__thresh-btns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-}
-
-.adv-group__thresh-btn {
-  padding: var(--space-sm) var(--space-xs);
-  border: none;
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  cursor: pointer;
-  transition: filter 0.1s;
-  touch-action: manipulation;
-}
-
-.adv-group__thresh-btn:active {
-  filter: brightness(1.3);
-  transform: scale(0.96);
-}
-
-.adv-group__thresh-btn--minor {
-  background: rgba(76, 175, 80, 0.2);
-  color: var(--color-accent-success);
-}
-
-.adv-group__thresh-btn--major {
-  background: rgba(255, 152, 0, 0.2);
-  color: var(--color-accent-warning);
-}
-
-.adv-group__thresh-btn--severe {
-  background: rgba(244, 67, 54, 0.2);
-  color: var(--color-accent-danger);
-}
+.adv-group__thresh-tag--minor { background: rgba(76, 175, 80, 0.1); }
+.adv-group__thresh-tag--major { background: rgba(255, 152, 0, 0.1); }
+.adv-group__thresh-tag--severe { background: rgba(244, 67, 54, 0.1); }
 
 /* ── Attaque standard ── */
 
@@ -495,7 +426,7 @@ export default {
 .adv-group__atk-mod { font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
 .adv-group__atk-dmg { font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-left: auto; }
 
-/* ── Instances ── */
+/* ══ Instances — une ligne par instance ══ */
 
 .adv-group__instances {
   padding: var(--space-xs);
@@ -512,38 +443,100 @@ export default {
 
 .adv-group__inst--defeated { opacity: 0.4; }
 
-.adv-group__inst-head {
+/* Ligne principale : numéro + HP + boutons seuils + actions */
+
+.adv-group__inst-main {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  margin-bottom: 2px;
 }
 
-.adv-group__inst-num { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-muted); }
+.adv-group__inst-num {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  min-width: 1.2rem;
+}
+
 .adv-group__inst-status { font-size: var(--font-size-sm); }
 
-.adv-group__inst-conds { display: flex; gap: 1px; flex: 1; }
+/* HP compact : barre + valeur */
 
-.adv-group__cond {
-  width: 1.3rem; height: 1.3rem;
-  border: 1px solid transparent; border-radius: var(--radius-sm);
-  background: transparent; font-size: 0.65rem;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
-  transition: background var(--transition-fast);
+.adv-group__inst-hp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex: 1;
+  min-width: 0;
 }
 
-.adv-group__cond:hover { background: var(--color-bg-elevated); }
-.adv-group__cond--on { background: rgba(244, 67, 54, 0.2); border-color: var(--color-accent-danger); }
+.adv-group__hp-bar {
+  flex: 1;
+  height: 0.4rem;
+  background: var(--color-bg-input);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  min-width: 2rem;
+}
 
-/* Action buttons inline dans le header d'instance */
+.adv-group__hp-fill {
+  height: 100%;
+  background: var(--color-accent-danger);
+  transition: width var(--transition-fast);
+  border-radius: var(--radius-full);
+}
+
+.adv-group__hp-val {
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* Boutons seuils intégrés à la ligne */
+
+.adv-group__thresh-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.adv-group__thresh-btn {
+  width: 2rem;
+  height: 1.6rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: filter 0.1s;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adv-group__thresh-btn:active {
+  filter: brightness(1.3);
+  transform: scale(0.95);
+}
+
+.adv-group__thresh-btn--minor { background: rgba(76, 175, 80, 0.25); color: var(--color-accent-success); }
+.adv-group__thresh-btn--major { background: rgba(255, 152, 0, 0.25); color: var(--color-accent-warning); }
+.adv-group__thresh-btn--severe { background: rgba(244, 67, 54, 0.25); color: var(--color-accent-danger); }
+
+/* Actions compactes */
 
 .adv-group__action-btn {
-  padding: 1px var(--space-xs);
+  width: 1.6rem;
+  height: 1.6rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: transparent;
   font-size: var(--font-size-xs);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background var(--transition-fast);
 }
 
@@ -552,37 +545,62 @@ export default {
 .adv-group__action-btn--revive:hover { background: rgba(76, 175, 80, 0.15); border-color: var(--color-accent-success); }
 .adv-group__action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* ── HP / Stress rows ── */
+/* Ligne secondaire : stress + conditions */
 
-.adv-group__hp-row, .adv-group__stress-row {
-  display: flex; align-items: center; gap: var(--space-xs);
+.adv-group__inst-secondary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: 2px;
+  padding-left: 1.4rem; /* Aligné sous le contenu principal */
 }
 
-.adv-group__stress-row { margin-top: 2px; }
-
-.adv-group__hp-label, .adv-group__stress-label {
-  font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-muted); min-width: 1.2rem;
+.adv-group__stress-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.adv-group__hp-bar, .adv-group__stress-bar {
-  flex: 1; height: 0.5rem; background: var(--color-bg-input); border-radius: var(--radius-full); overflow: hidden;
+.adv-group__micro-btn {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
-.adv-group__hp-fill { height: 100%; background: var(--color-accent-danger); transition: width var(--transition-fast); border-radius: var(--radius-full); }
-.adv-group__stress-fill { height: 100%; background: var(--color-accent-warning); transition: width var(--transition-fast); border-radius: var(--radius-full); }
+.adv-group__micro-btn:hover:not(:disabled) { background: var(--color-bg-elevated); }
+.adv-group__micro-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-.adv-group__hp-val, .adv-group__stress-val {
-  font-size: var(--font-size-xs); font-variant-numeric: tabular-nums; color: var(--color-text-secondary); min-width: 2.5rem; text-align: right;
+.adv-group__inst-conds {
+  display: flex;
+  gap: 1px;
+  margin-left: auto;
 }
 
-.adv-group__stress-btn {
-  width: 1.3rem; height: 1.3rem;
-  border: 1px solid var(--color-border); border-radius: var(--radius-sm);
-  background: transparent; color: var(--color-text-secondary);
-  font-size: var(--font-size-xs); cursor: pointer;
-  display: flex; align-items: center; justify-content: center; padding: 0;
+.adv-group__cond {
+  width: 1.3rem;
+  height: 1.3rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background var(--transition-fast);
 }
 
-.adv-group__stress-btn:hover:not(:disabled) { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
-.adv-group__stress-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.adv-group__cond:hover { background: var(--color-bg-elevated); }
+.adv-group__cond--on { background: rgba(244, 67, 54, 0.2); border-color: var(--color-accent-danger); }
 </style>
