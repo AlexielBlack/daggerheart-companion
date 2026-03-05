@@ -45,7 +45,21 @@
       </div>
     </div>
 
-    <!-- Conditions togglables -->
+    <!-- Résumé compact des conditions actives (visible quand non sélectionné) -->
+    <div
+      v-if="!isSelected && activeConditions.length > 0"
+      class="pc-sidebar__cond-summary"
+      :aria-label="activeConditions.length + ' condition(s) active(s)'"
+    >
+      <span
+        v-for="cond in activeConditionDetails"
+        :key="cond.id"
+        class="pc-sidebar__cond-dot"
+        :title="cond.label"
+      >{{ cond.emoji }}</span>
+    </div>
+
+    <!-- Conditions togglables (visible quand sélectionné) -->
     <div
       v-if="isSelected"
       class="pc-sidebar__conditions"
@@ -84,6 +98,10 @@ export default {
     },
     conditions() {
       return LIVE_CONDITIONS
+    },
+    /** Détails des conditions actuellement actives (pour le résumé compact) */
+    activeConditionDetails() {
+      return LIVE_CONDITIONS.filter((c) => this.activeConditions.includes(c.id))
     }
   },
   methods: {
@@ -189,7 +207,27 @@ export default {
   letter-spacing: 0.05em;
 }
 
-/* ── Conditions ── */
+/* ── Résumé conditions (non-sélectionné) ── */
+
+.pc-sidebar__cond-summary {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.pc-sidebar__cond-dot {
+  font-size: var(--font-size-xs);
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244, 67, 54, 0.15);
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+
+/* ── Conditions togglables (sélectionné) ── */
 
 .pc-sidebar__conditions {
   display: flex;

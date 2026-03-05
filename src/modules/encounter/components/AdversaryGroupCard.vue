@@ -98,30 +98,22 @@
         </span>
       </div>
 
-      <!-- ══ Instances : 2 lignes par instance pour surface tactile optimale ══ -->
+      <!-- ══ Instances actives : 2 lignes par instance ══ -->
       <div class="adv-group__instances">
         <div
-          v-for="(inst, idx) in group.instances"
+          v-for="inst in activeInstances"
           :key="inst.instanceId"
           class="adv-group__inst"
-          :class="{ 'adv-group__inst--defeated': inst.isDefeated }"
         >
-          <!-- Ligne 1 : identité + HP barre étendue + vaincre/réanimer -->
+          <!-- Ligne 1 : identité + HP barre étendue + vaincre -->
           <div class="adv-group__inst-row1">
             <span
               v-if="group.instances.length > 1"
               class="adv-group__inst-num"
-            >#{{ idx + 1 }}</span>
-            <span
-              v-if="inst.isDefeated"
-              class="adv-group__inst-status"
-            >💀</span>
+            >#{{ inst.originalIdx + 1 }}</span>
 
             <!-- HP compteur + barre étendue -->
-            <div
-              v-if="!inst.isDefeated"
-              class="adv-group__inst-hp"
-            >
+            <div class="adv-group__inst-hp">
               <div class="adv-group__hp-bar">
                 <div
                   class="adv-group__hp-fill"
@@ -132,7 +124,6 @@
             </div>
 
             <button
-              v-if="!inst.isDefeated"
               class="adv-group__action-btn adv-group__action-btn--defeat"
               title="Vaincre"
               aria-label="Vaincre"
@@ -140,26 +131,17 @@
             >
               💀
             </button>
-            <button
-              v-if="inst.isDefeated"
-              class="adv-group__action-btn adv-group__action-btn--revive"
-              title="Réanimer"
-              aria-label="Réanimer"
-              @click.stop="$emit('revive', inst.instanceId)"
-            >
-              ↩
-            </button>
           </div>
 
-          <!-- Ligne 2 : boutons seuils élargis + heal (seulement si vivant) -->
+          <!-- Ligne 2 : boutons seuils élargis + heal -->
           <div
-            v-if="!inst.isDefeated && firstInstance.thresholds"
+            v-if="firstInstance.thresholds"
             class="adv-group__inst-row2"
           >
             <button
               class="adv-group__thresh-btn adv-group__thresh-btn--minor"
               :title="'Mineur — marquer 1 HP'"
-              :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
               @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
             >
               1
@@ -167,7 +149,7 @@
             <button
               class="adv-group__thresh-btn adv-group__thresh-btn--major"
               :title="'Majeur — marquer 2 HP'"
-              :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
               @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
             >
               2
@@ -175,7 +157,7 @@
             <button
               class="adv-group__thresh-btn adv-group__thresh-btn--severe"
               :title="'Sévère — marquer 3 HP'"
-              :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
               @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
             >
               3
@@ -191,12 +173,11 @@
             </button>
           </div>
 
-          <!-- Ligne secondaire : stress + conditions (seulement si pertinent) -->
+          <!-- Ligne secondaire : stress + conditions -->
           <div
-            v-if="!inst.isDefeated && (inst.maxStress > 0 || inst.conditions.length > 0)"
+            v-if="inst.maxStress > 0 || inst.conditions.length > 0"
             class="adv-group__inst-secondary"
           >
-            <!-- Stress compact -->
             <template v-if="inst.maxStress > 0">
               <span class="adv-group__stress-label">ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
               <button
@@ -218,7 +199,6 @@
                 −
               </button>
             </template>
-            <!-- Conditions -->
             <div class="adv-group__inst-conds">
               <button
                 v-for="cond in conditions"
@@ -233,6 +213,48 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <!-- ══ Résumé vaincus (collapsé) ══ -->
+        <div
+          v-if="defeatedInstances.length > 0"
+          class="adv-group__defeated-summary"
+        >
+          <button
+            class="adv-group__defeated-toggle"
+            :aria-expanded="showDefeated"
+            :aria-label="defeatedInstances.length + ' vaincu(s) — cliquer pour déplier'"
+            @click.stop="showDefeated = !showDefeated"
+          >
+            <span class="adv-group__defeated-label">
+              💀 {{ defeatedInstances.length }} vaincu{{ defeatedInstances.length > 1 ? 's' : '' }}
+            </span>
+            <span class="adv-group__defeated-chevron">{{ showDefeated ? '▲' : '▼' }}</span>
+          </button>
+          <!-- Instances vaincues dépliables -->
+          <template v-if="showDefeated">
+            <div
+              v-for="inst in defeatedInstances"
+              :key="inst.instanceId"
+              class="adv-group__inst adv-group__inst--defeated"
+            >
+              <div class="adv-group__inst-row1">
+                <span
+                  v-if="group.instances.length > 1"
+                  class="adv-group__inst-num"
+                >#{{ inst.originalIdx + 1 }}</span>
+                <span class="adv-group__inst-status">💀</span>
+                <button
+                  class="adv-group__action-btn adv-group__action-btn--revive"
+                  title="Réanimer"
+                  aria-label="Réanimer"
+                  @click.stop="$emit('revive', inst.instanceId)"
+                >
+                  ↩
+                </button>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -256,7 +278,8 @@ export default {
   ],
   data() {
     return {
-      manualCollapsed: null
+      manualCollapsed: null,
+      showDefeated: false
     }
   },
   computed: {
@@ -275,6 +298,18 @@ export default {
     },
     totalMaxHP() {
       return this.group.instances.reduce((s, i) => s + i.maxHP, 0)
+    },
+    /** Instances actives (non vaincues) avec leur index original */
+    activeInstances() {
+      return this.group.instances
+        .map((inst, idx) => ({ ...inst, originalIdx: idx }))
+        .filter((inst) => !inst.isDefeated)
+    },
+    /** Instances vaincues avec leur index original */
+    defeatedInstances() {
+      return this.group.instances
+        .map((inst, idx) => ({ ...inst, originalIdx: idx }))
+        .filter((inst) => inst.isDefeated)
     }
   },
   watch: {
@@ -620,4 +655,41 @@ export default {
 
 .adv-group__cond:hover { background: var(--color-bg-elevated); }
 .adv-group__cond--on { background: rgba(244, 67, 54, 0.2); border-color: var(--color-accent-danger); }
+
+/* ══ Résumé vaincus collapsé ══ */
+
+.adv-group__defeated-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.adv-group__defeated-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background var(--transition-fast);
+}
+
+.adv-group__defeated-toggle:hover {
+  background: var(--color-bg-elevated);
+}
+
+.adv-group__defeated-label {
+  font-weight: var(--font-weight-medium);
+}
+
+.adv-group__defeated-chevron {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+}
 </style>

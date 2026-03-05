@@ -211,6 +211,11 @@
             <span class="live__aoe-name">
               {{ inst.displayName }}
             </span>
+            <span
+              v-if="inst.thresholds"
+              class="live__aoe-ref"
+              :title="'Seuils : Maj ' + inst.thresholds.major + ' / Sév ' + inst.thresholds.severe"
+            >{{ inst.thresholds.major }}/{{ inst.thresholds.severe }}</span>
             <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
             <!-- Boutons seuils (comme sur les cartes) -->
             <div class="live__aoe-thresh">
@@ -766,7 +771,13 @@ export default {
 .live__aoe-row { display: flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs); border-radius: var(--radius-sm); background: var(--color-bg-primary); }
 .live__aoe-row--hit { background: rgba(244, 67, 54, 0.1); }
 .live__aoe-name { flex: 1; font-size: var(--font-size-xs); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live__aoe-ref { font-size: var(--font-size-xs); color: var(--color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; padding: 1px var(--space-xs); background: var(--color-bg-elevated); border-radius: var(--radius-sm); }
 .live__aoe-hp { font-size: var(--font-size-xs); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+/* AoE modal élargie en tablette */
+@media (min-width: 768px) {
+  .live__aoe-modal { max-width: 720px; }
+}
 .live__aoe-thresh { display: flex; gap: 2px; }
 .live__aoe-th { min-width: var(--touch-min); min-height: var(--touch-min); border: none; border-radius: var(--radius-sm); font-size: var(--font-size-md); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
 .live__aoe-th:active { filter: brightness(1.3); transform: scale(0.95); }

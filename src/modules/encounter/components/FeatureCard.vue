@@ -37,7 +37,7 @@
           :key="tag"
           class="feat-card__tag"
           :class="'feat-card__tag--' + tag"
-        >{{ tagEmoji(tag) }}</span>
+        >{{ tagEmoji(tag) }} <span class="feat-card__tag-lbl">{{ tagShort(tag) }}</span></span>
         <span
           v-if="feature.range"
           class="feat-card__badge feat-card__badge--range"
@@ -85,6 +85,7 @@ const ACTIVATION_EMOJI = { passive: '🔵', action: '🟢', reaction: '🟠' }
 const ACTIVATION_LABEL = { passive: 'Passive', action: 'Action', reaction: 'Réaction' }
 const COST_EMOJI = { hope: '✨', stress: '💢', fear: '😱', armor: '🛡️' }
 const TAG_EMOJI = { offensif: '⚔️', défensif: '🛡️', social: '💬', utilitaire: '🔧' }
+const TAG_SHORT = { offensif: 'Off', défensif: 'Déf', social: 'Soc', utilitaire: 'Util' }
 const RANGE_LABEL = {
   self: 'Soi',
   melee: 'Mêlée',
@@ -123,7 +124,8 @@ export default {
     frequencyLabel() { return FREQ_LABEL[this.feature.frequency] || this.feature.frequency }
   },
   methods: {
-    tagEmoji(tag) { return TAG_EMOJI[tag] || '🏷️' }
+    tagEmoji(tag) { return TAG_EMOJI[tag] || '🏷️' },
+    tagShort(tag) { return TAG_SHORT[tag] || tag }
   }
 }
 </script>
@@ -174,9 +176,9 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: var(--radius-sm);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: var(--font-semibold);
   background: var(--color-bg-secondary);
   color: var(--color-text-secondary);
@@ -192,16 +194,30 @@ export default {
 .feat-card__tag {
   display: inline-flex;
   align-items: center;
-  padding: 1px 4px;
+  gap: 2px;
+  padding: 2px 5px;
   border-radius: var(--radius-sm);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   background: var(--color-bg-elevated);
+}
+
+.feat-card__tag-lbl {
+  font-size: 0.65rem;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
 }
 
 .feat-card__tag--offensif   { background: rgba(220, 38, 38, 0.1); }
 .feat-card__tag--défensif   { background: rgba(59, 130, 246, 0.1); }
 .feat-card__tag--social     { background: rgba(217, 119, 6, 0.1); }
 .feat-card__tag--utilitaire { background: rgba(5, 150, 105, 0.1); }
+
+/* Tablette : badges et tags plus lisibles à distance */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .feat-card__badge { font-size: 0.8rem; padding: 3px 7px; }
+  .feat-card__tag { font-size: 0.8rem; padding: 3px 6px; }
+  .feat-card__tag-lbl { font-size: 0.7rem; }
+}
 
 .feat-card__source {
   font-size: 0.65rem;
