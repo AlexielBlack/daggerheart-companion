@@ -132,6 +132,13 @@
         >
           {{ n }}
         </button>
+        <button
+          class="pc-panel__armor-btn"
+          :title="'Armure utilisée (score: ' + pc.armorScore + ')'"
+          @click="logArmor()"
+        >
+          🛡️
+        </button>
       </div>
       <button
         class="pc-panel__down-btn"
@@ -181,13 +188,19 @@
         v-for="(entry, idx) in pcHitLog"
         :key="idx"
         class="pc-panel__hit-entry"
-        :class="{ 'pc-panel__hit-entry--miss': entry.action === 'miss' }"
+        :class="{
+          'pc-panel__hit-entry--miss': entry.action === 'miss',
+          'pc-panel__hit-entry--armor': entry.action === 'pc_armor'
+        }"
         :title="entry.action === 'miss'
           ? entry.advName + ' : raté (clic pour annuler)'
-          : entry.advName + ' : ' + (entry.hpMarked || 0) + ' HP (clic pour annuler)'"
+          : entry.action === 'pc_armor'
+            ? '🛡️ armure utilisée (clic pour annuler)'
+            : entry.advName + ' : ' + (entry.hpMarked || 0) + ' HP (clic pour annuler)'"
         @click="removeHitLog(entry._globalIdx)"
       >
-        {{ entry.advName }} {{ entry.action === 'miss' ? '✕' : ('❤️' + entry.hpMarked) }}
+        {{ entry.action === 'pc_armor' ? '🛡️' : entry.advName }}
+        {{ entry.action === 'miss' ? '✕' : entry.action === 'pc_armor' ? '' : ('❤️' + entry.hpMarked) }}
       </button>
     </div>
 
@@ -304,11 +317,14 @@ export default {
   setup(props) {
     const store = useEncounterLiveStore()
 
-    /** Log des coups reçus et ratés par ce PJ, avec index global */
+    /** Log des coups reçus, armure et ratés par ce PJ, avec index global */
     const pcHitLog = computed(() => {
       const entries = []
       store.combatLog.forEach((entry, globalIdx) => {
-        if (entry.pcId === props.pc.id && (entry.action === 'pc_hit' || (entry.action === 'miss' && entry.attackerType === 'adversary'))) {
+        const isHit = entry.action === 'pc_hit' && entry.pcId === props.pc.id
+        const isMiss = entry.action === 'miss' && entry.attackerType === 'adversary' && entry.pcId === props.pc.id
+        const isArmor = entry.action === 'pc_armor' && entry.pcId === props.pc.id
+        if (isHit || isMiss || isArmor) {
           entries.push({ ...entry, _globalIdx: globalIdx })
         }
       })
@@ -349,6 +365,10 @@ export default {
       store.logMiss('adversary')
     }
 
+    function logArmor() {
+      store.logPcArmorUsed(props.pc.id)
+    }
+
     function removeHitLog(globalIdx) {
       store.removeCombatLogEntry(globalIdx)
     }
@@ -363,6 +383,7 @@ export default {
       logDown,
       logRevive,
       logAdvMiss,
+      logArmor,
       removeHitLog
     }
   },
@@ -791,6 +812,29 @@ export default {
 .pc-panel__hit-entry--miss {
   background: rgba(107, 114, 128, 0.15);
   color: var(--color-text-muted);
+}
+
+.pc-panel__hit-entry--armor {
+  background: rgba(83, 168, 182, 0.15);
+  color: var(--color-accent-hope);
+}
+
+.pc-panel__armor-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-hope);
+  background: transparent;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.pc-panel__armor-btn:hover {
+  background: rgba(83, 168, 182, 0.15);
 }
 
 .pc-panel__miss-btn {

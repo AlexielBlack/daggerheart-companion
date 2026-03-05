@@ -18,6 +18,8 @@ import { allAdversaries } from '@data/adversaries'
 import { allEnvironments } from '@data/environments'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { computeStatBonuses } from '@data/statModifiers'
+import { getClassById } from '@data/classes'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
@@ -125,7 +127,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return SCENE_MODE_META[sceneMode.value] || SCENE_MODE_META[SCENE_MODE_PC_ATTACK]
   })
 
-  /** PJs participants avec données enrichies depuis le characterStore */
+  /** PJs participants avec données enrichies et valeurs effectives */
   const participantPcs = computed(() => {
     try {
       const charStore = useCharacterStore()
@@ -133,6 +135,33 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         .map((id) => {
           const c = charStore.characters.find((ch) => ch.id === id)
           if (!c) return null
+          const bonuses = computeStatBonuses(c)
+          const cls = getClassById(c.classId)
+          const baseHP = cls ? cls.baseHP : 6
+          const baseStress = cls ? cls.baseStress : 6
+
+          // Seuils effectifs (avec Bare Bones override + niveau + bonus cartes)
+          let effectiveThresholds
+          if (bonuses.thresholdsOverride) {
+            effectiveThresholds = {
+              major: bonuses.thresholdsOverride.major + bonuses.thresholds.major,
+              severe: bonuses.thresholdsOverride.severe + bonuses.thresholds.severe
+            }
+          } else {
+            effectiveThresholds = {
+              major: (c.armorBaseThresholds?.major || 0) + c.level + bonuses.thresholds.major,
+              severe: (c.armorBaseThresholds?.severe || 0) + c.level + bonuses.thresholds.severe
+            }
+          }
+
+          // Score d'armure effectif (avec Bare Bones override + bonus cartes)
+          let effectiveArmorScore
+          if (bonuses.armorScoreOverride !== null) {
+            effectiveArmorScore = bonuses.armorScoreOverride + bonuses.armorScore
+          } else {
+            effectiveArmorScore = (c.armorScore || 0) + bonuses.armorScore
+          }
+
           return {
             id: c.id,
             name: c.name || 'PJ sans nom',
@@ -140,28 +169,21 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
             className: c.className || '—',
             subclassId: c.subclassId || '',
             level: c.level || 1,
-            // Stats live calculées depuis le store characters
-            maxHP: c.maxHP || 6,
-            maxStress: c.maxStress || 6,
+            maxHP: baseHP + bonuses.maxHP,
+            maxStress: baseStress + bonuses.maxStress,
             evasion: c.evasion || 10,
-            evasionBonus: c.evasionBonus || 0,
-            armorScore: c.armorScore || 0,
+            evasionBonus: (c.evasionBonus || 0) + bonuses.evasion,
+            armorScore: effectiveArmorScore,
             armorName: c.armorName || '',
-            armorBaseThresholds: c.armorBaseThresholds || { major: 0, severe: 0 },
-            // Données de domaine pour les features
+            armorBaseThresholds: effectiveThresholds,
             domainCards: c.domainCards || { loadout: [], vault: [] },
-            // Ascendance et communauté pour les features
             ancestryId: c.ancestryId || '',
             communityId: c.communityId || '',
             mixedAncestryData: c.mixedAncestryData || null,
-            // Proficiency pour les dégâts
-            proficiency: c.proficiency || 1,
-            // Armes
+            proficiency: (c.proficiency || 1) + bonuses.proficiency,
             primaryWeaponId: c.primaryWeaponId || '',
             secondaryWeaponId: c.secondaryWeaponId || '',
-            // Expériences (pour mode Social)
             experiences: Array.isArray(c.experiences) ? c.experiences.filter((e) => e.name) : [],
-            // Progression sous-classe (pour filtrage features)
             subclassProgression: c.subclassProgression || 'foundation'
           }
         })
@@ -849,6 +871,28 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
+   * Enregistre qu'un PJ a utilisé un slot d'armure.
+   * @param {string} pcId
+   */
+  function logPcArmorUsed(pcId) {
+    const pc = participantPcs.value.find((p) => p.id === pcId)
+    const adv = activeAdversary.value
+    if (!pc) return
+    const entry = {
+      action: 'pc_armor',
+      pcId,
+      pcName: pc.name,
+      instanceId: adv ? adv.instanceId : null,
+      advName: adv ? adv.name : '?',
+      round: round.value,
+      timestamp: Date.now()
+    }
+    combatLog.value.push(entry)
+    encounterLog.value.push(entry)
+    persistState()
+  }
+
+  /**
    * Enregistre une attaque ratée.
    * @param {string} attackerType - 'pc' ou 'adversary'
    */
@@ -1325,6 +1369,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     logPcHit,
     logPcDown,
     logPcRevive,
+    logPcArmorUsed,
     logMiss,
     togglePcCondition,
     toggleAdversaryCondition,
