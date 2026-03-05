@@ -37,6 +37,10 @@
 
     <div class="npc-card__meta">
       <span
+        v-if="npc.classId"
+        class="npc-card__tag npc-card__tag--class"
+      >{{ classLabel }}</span>
+      <span
         v-if="npc.faction"
         class="npc-card__tag"
       >🏴 {{ npc.faction }}</span>
@@ -62,6 +66,7 @@
 <script>
 import { computed } from 'vue'
 import { NPC_STATUS_META, NPC_STATUS_NEUTRAL } from '../constants.js'
+import { CLASSES } from '@data/classes'
 
 export default {
   name: 'NpcCard',
@@ -87,12 +92,21 @@ export default {
     const statusEmoji = computed(() => statusMeta.value.emoji)
     const statusLabel = computed(() => statusMeta.value.label)
 
+    const classLabel = computed(() => {
+      if (!props.npc.classId) return ''
+      const cls = CLASSES.find((c) => c.id === props.npc.classId)
+      const name = cls ? cls.name : props.npc.classId
+      const emoji = cls ? cls.emoji : '🛠️'
+      const lvl = props.npc.level ? ` Lv.${props.npc.level}` : ''
+      return `${emoji} ${name}${lvl}`
+    })
+
     function truncate(text, max) {
       if (!text || text.length <= max) return text
       return text.slice(0, max).trimEnd() + '…'
     }
 
-    return { statusEmoji, statusLabel, truncate }
+    return { statusEmoji, statusLabel, classLabel, truncate }
   }
 }
 </script>
@@ -164,6 +178,11 @@ export default {
   background: var(--color-tag-bg, #374151);
   color: var(--color-text-muted, #9ca3af);
   white-space: nowrap;
+}
+
+.npc-card__tag--class {
+  background: #1e3a5f;
+  color: #93c5fd;
 }
 
 .npc-card__motives {

@@ -183,6 +183,20 @@
       </div>
     </fieldset>
 
+    <!-- ── Build Lite ── -->
+    <NpcBuildPanel
+      :class-id="form.classId"
+      :subclass-id="form.subclassId"
+      :level="form.level"
+      :domain-cards="form.domainCards"
+      :homebrew-classes="homebrewClasses"
+      :homebrew-domains="homebrewDomains"
+      @update:class-id="form.classId = $event"
+      @update:subclass-id="form.subclassId = $event"
+      @update:level="form.level = $event"
+      @update:domain-cards="form.domainCards = $event"
+    />
+
     <!-- ── Relations PJ ── -->
     <fieldset class="npc-sheet__section">
       <legend>Relations avec les PJs</legend>
@@ -352,8 +366,12 @@ import {
   createDefaultNpc
 } from '../constants.js'
 
+import NpcBuildPanel from './NpcBuildPanel.vue'
+
 export default {
   name: 'NpcSheet',
+
+  components: { NpcBuildPanel },
 
   props: {
     /** PNJ existant à éditer, ou null pour un nouveau */
@@ -363,7 +381,11 @@ export default {
     /** Factions existantes (pour autocomplétion) */
     factions: { type: Array, default: () => [] },
     /** Lieux existants (pour autocomplétion) */
-    locations: { type: Array, default: () => [] }
+    locations: { type: Array, default: () => [] },
+    /** Classes homebrew */
+    homebrewClasses: { type: Array, default: () => [] },
+    /** Domaines homebrew */
+    homebrewDomains: { type: Array, default: () => [] }
   },
 
   emits: ['save', 'delete'],
