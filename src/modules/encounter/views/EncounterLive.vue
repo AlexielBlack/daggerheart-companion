@@ -171,7 +171,10 @@
           @click.self="tabletCtxOpen = false"
         >
           <!-- eslint-enable -->
-          <div class="live__col-ctx">
+          <div
+            ref="ctxColRef"
+            class="live__col-ctx"
+          >
             <ContextPanel
               :pc="store.activePc"
               :adversary="store.activeAdversary"
@@ -543,6 +546,22 @@ export default {
 
     // ── Navigation tablette : side-sheet contexte ──
     const tabletCtxOpen = ref(false)
+    const ctxColRef = ref(null)
+    const ctxSavedScroll = ref(0)
+
+    // Sauvegarde / restauration du scroll du panneau contexte
+    watch(tabletCtxOpen, (open) => {
+      if (!ctxColRef.value) return
+      if (!open) {
+        // Fermeture → sauvegarder
+        ctxSavedScroll.value = ctxColRef.value.scrollTop
+      } else {
+        // Ouverture → restaurer (après l'animation)
+        setTimeout(() => {
+          if (ctxColRef.value) ctxColRef.value.scrollTop = ctxSavedScroll.value
+        }, 50)
+      }
+    })
 
     // Auto-ouvre le side-sheet contexte quand le MJ sélectionne un PJ ou un adversaire
     // (uniquement en breakpoint tablette — détecté via matchMedia)
@@ -612,7 +631,7 @@ export default {
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
       showEndSummary, endSummaryData,
-      tabletCtxOpen,
+      tabletCtxOpen, ctxColRef,
       haptic
     }
   },
@@ -783,6 +802,28 @@ export default {
   /* En mobile, le contexte est une colonne visible inline */
   .live__col-ctx-wrapper { display: contents; }
   .live__col-ctx { border-top: 1px solid var(--color-border); max-height: 40vh; overflow-y: auto; }
+  .live__ctx-fab { display: none; }
+}
+
+/* ══ Paysage tablette / petit laptop (768–1279px landscape) ══ */
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1279px) {
+  .live__grid {
+    grid-template-columns: 200px 2fr 1.5fr;
+  }
+  .live__col-pc {
+    min-width: 200px;
+    max-width: 200px;
+  }
+  /* En paysage tablette, le side-sheet n'est pas nécessaire : on affiche les 3 colonnes */
+  .live__col-ctx-wrapper { display: contents; }
+  .live__col-ctx {
+    border-left: 1px solid var(--color-border);
+    position: static;
+    transform: none;
+    width: auto;
+    box-shadow: none;
+    background: var(--color-bg-primary);
+  }
   .live__ctx-fab { display: none; }
 }
 

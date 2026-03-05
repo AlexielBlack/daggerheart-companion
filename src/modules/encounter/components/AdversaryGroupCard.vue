@@ -104,113 +104,132 @@
           v-for="inst in activeInstances"
           :key="inst.instanceId"
           class="adv-group__inst"
+          :class="{ 'adv-group__inst--swiped': swipedId === inst.instanceId }"
         >
-          <!-- Ligne 1 : identité + HP barre étendue + vaincre -->
-          <div class="adv-group__inst-row1">
-            <span
-              v-if="group.instances.length > 1"
-              class="adv-group__inst-num"
-            >#{{ inst.originalIdx + 1 }}</span>
+          <!-- Bouton vaincre révélé par swipe -->
+          <button
+            v-if="swipedId === inst.instanceId"
+            class="adv-group__swipe-defeat"
+            aria-label="Confirmer vaincre"
+            @click.stop="confirmSwipeDefeat(inst.instanceId)"
+          >
+            💀 Vaincre
+          </button>
 
-            <!-- HP compteur + barre étendue -->
-            <div class="adv-group__inst-hp">
-              <div class="adv-group__hp-bar">
-                <div
-                  class="adv-group__hp-fill"
-                  :style="{ width: hpPercent(inst) + '%' }"
-                ></div>
+          <!-- Contenu swipeable -->
+          <div
+            class="adv-group__inst-content"
+            :style="swipedId === inst.instanceId ? { transform: 'translateX(-5rem)' } : {}"
+            @touchstart.passive="onInstTouchStart($event, inst.instanceId)"
+            @touchend.passive="onInstTouchEnd"
+          >
+            <!-- Ligne 1 : identité + HP barre étendue + vaincre -->
+            <div class="adv-group__inst-row1">
+              <span
+                v-if="group.instances.length > 1"
+                class="adv-group__inst-num"
+              >#{{ inst.originalIdx + 1 }}</span>
+
+              <!-- HP compteur + barre étendue -->
+              <div class="adv-group__inst-hp">
+                <div class="adv-group__hp-bar">
+                  <div
+                    class="adv-group__hp-fill"
+                    :style="{ width: hpPercent(inst) + '%' }"
+                  ></div>
+                </div>
+                <span class="adv-group__hp-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
               </div>
-              <span class="adv-group__hp-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+
+              <button
+                class="adv-group__action-btn adv-group__action-btn--defeat"
+                title="Vaincre"
+                aria-label="Vaincre"
+                @click.stop="$emit('defeat', inst.instanceId)"
+              >
+                💀
+              </button>
             </div>
 
-            <button
-              class="adv-group__action-btn adv-group__action-btn--defeat"
-              title="Vaincre"
-              aria-label="Vaincre"
-              @click.stop="$emit('defeat', inst.instanceId)"
+            <!-- Ligne 2 : boutons seuils élargis + heal -->
+            <div
+              v-if="firstInstance.thresholds"
+              class="adv-group__inst-row2"
             >
-              💀
-            </button>
-          </div>
-
-          <!-- Ligne 2 : boutons seuils élargis + heal -->
-          <div
-            v-if="firstInstance.thresholds"
-            class="adv-group__inst-row2"
-          >
-            <button
-              class="adv-group__thresh-btn adv-group__thresh-btn--minor"
-              :title="'Mineur — marquer 1 HP'"
-              :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
-            >
-              1
-            </button>
-            <button
-              class="adv-group__thresh-btn adv-group__thresh-btn--major"
-              :title="'Majeur — marquer 2 HP'"
-              :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
-            >
-              2
-            </button>
-            <button
-              class="adv-group__thresh-btn adv-group__thresh-btn--severe"
-              :title="'Sévère — marquer 3 HP'"
-              :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
-            >
-              3
-            </button>
-            <button
-              class="adv-group__action-btn adv-group__action-btn--heal"
-              :disabled="inst.markedHP <= 0"
-              title="Retirer 1 HP"
-              aria-label="Retirer 1 HP"
-              @click.stop="$emit('clear-hp', inst.instanceId)"
-            >
-              −
-            </button>
-          </div>
-
-          <!-- Ligne secondaire : stress + conditions -->
-          <div
-            v-if="inst.maxStress > 0 || inst.conditions.length > 0"
-            class="adv-group__inst-secondary"
-          >
-            <template v-if="inst.maxStress > 0">
-              <span class="adv-group__stress-label">ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
               <button
-                class="adv-group__micro-btn"
-                :disabled="inst.markedStress >= inst.maxStress"
-                title="Marquer 1 Stress"
-                aria-label="Marquer 1 Stress"
-                @click.stop="$emit('mark-stress', inst.instanceId)"
+                class="adv-group__thresh-btn adv-group__thresh-btn--minor"
+                :title="'Mineur — marquer 1 HP'"
+                :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
               >
-                +
+                1
               </button>
               <button
-                class="adv-group__micro-btn"
-                :disabled="inst.markedStress <= 0"
-                title="Retirer 1 Stress"
-                aria-label="Retirer 1 Stress"
-                @click.stop="$emit('clear-stress', inst.instanceId)"
+                class="adv-group__thresh-btn adv-group__thresh-btn--major"
+                :title="'Majeur — marquer 2 HP'"
+                :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
+              >
+                2
+              </button>
+              <button
+                class="adv-group__thresh-btn adv-group__thresh-btn--severe"
+                :title="'Sévère — marquer 3 HP'"
+                :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
+                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
+              >
+                3
+              </button>
+              <button
+                class="adv-group__action-btn adv-group__action-btn--heal"
+                :disabled="inst.markedHP <= 0"
+                title="Retirer 1 HP"
+                aria-label="Retirer 1 HP"
+                @click.stop="$emit('clear-hp', inst.instanceId)"
               >
                 −
               </button>
-            </template>
-            <div class="adv-group__inst-conds">
-              <button
-                v-for="cond in conditions"
-                :key="cond.id"
-                class="adv-group__cond"
-                :class="{ 'adv-group__cond--on': inst.conditions.includes(cond.id) }"
-                :title="cond.label"
-                :aria-label="cond.label"
-                @click.stop="$emit('toggle-condition', { instanceId: inst.instanceId, conditionId: cond.id })"
-              >
-                {{ cond.emoji }}
-              </button>
+            </div>
+
+            <!-- Ligne secondaire : stress + conditions -->
+            <div
+              v-if="inst.maxStress > 0 || inst.conditions.length > 0"
+              class="adv-group__inst-secondary"
+            >
+              <template v-if="inst.maxStress > 0">
+                <span class="adv-group__stress-label">ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
+                <button
+                  class="adv-group__micro-btn"
+                  :disabled="inst.markedStress >= inst.maxStress"
+                  title="Marquer 1 Stress"
+                  aria-label="Marquer 1 Stress"
+                  @click.stop="$emit('mark-stress', inst.instanceId)"
+                >
+                  +
+                </button>
+                <button
+                  class="adv-group__micro-btn"
+                  :disabled="inst.markedStress <= 0"
+                  title="Retirer 1 Stress"
+                  aria-label="Retirer 1 Stress"
+                  @click.stop="$emit('clear-stress', inst.instanceId)"
+                >
+                  −
+                </button>
+              </template>
+              <div class="adv-group__inst-conds">
+                <button
+                  v-for="cond in conditions"
+                  :key="cond.id"
+                  class="adv-group__cond"
+                  :class="{ 'adv-group__cond--on': inst.conditions.includes(cond.id) }"
+                  :title="cond.label"
+                  :aria-label="cond.label"
+                  @click.stop="$emit('toggle-condition', { instanceId: inst.instanceId, conditionId: cond.id })"
+                >
+                  {{ cond.emoji }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -279,7 +298,11 @@ export default {
   data() {
     return {
       manualCollapsed: null,
-      showDefeated: false
+      showDefeated: false,
+      swipedId: null,
+      touchStartX: 0,
+      touchStartY: 0,
+      touchInstId: null
     }
   },
   computed: {
@@ -326,6 +349,37 @@ export default {
     stressPercent(inst) {
       if (!inst.maxStress) return 0
       return Math.round((inst.markedStress / inst.maxStress) * 100)
+    },
+    /** Détecte le début du swipe sur une instance */
+    onInstTouchStart(e, instanceId) {
+      const touch = e.changedTouches[0]
+      this.touchStartX = touch.clientX
+      this.touchStartY = touch.clientY
+      this.touchInstId = instanceId
+    },
+    /** Évalue le swipe à la fin du touch */
+    onInstTouchEnd(e) {
+      const touch = e.changedTouches[0]
+      const dx = touch.clientX - this.touchStartX
+      const dy = touch.clientY - this.touchStartY
+      const absDx = Math.abs(dx)
+      const absDy = Math.abs(dy)
+      // Seuil 60px, intention clairement horizontale
+      if (absDx > 60 && absDx > absDy * 1.5) {
+        if (dx < 0) {
+          // Swipe gauche → révéler le bouton vaincre
+          this.swipedId = this.touchInstId
+        } else {
+          // Swipe droite → refermer
+          this.swipedId = null
+        }
+      }
+      this.touchInstId = null
+    },
+    /** Confirme la défaite via le bouton révélé par swipe */
+    confirmSwipeDefeat(instanceId) {
+      this.swipedId = null
+      this.$emit('defeat', instanceId)
     }
   }
 }
@@ -477,9 +531,42 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  position: relative;
+  overflow: hidden;
 }
 
 .adv-group__inst--defeated { opacity: 0.4; }
+
+/* Contenu swipeable */
+.adv-group__inst-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Bouton vaincre révélé par swipe (positionné derrière le contenu) */
+.adv-group__swipe-defeat {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5rem;
+  border: none;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-accent-danger);
+  color: white;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  z-index: 0;
+}
+
+.adv-group__swipe-defeat:active { filter: brightness(1.2); }
 
 /* Ligne 1 : numéro + HP barre étendue + bouton vaincre/réanimer */
 
