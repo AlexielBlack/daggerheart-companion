@@ -31,351 +31,373 @@
       </button>
     </nav>
 
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!--  Contenu PJ : features filtrées par tags / mode scène  -->
-    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Indicateur de position (dots) — visible si ≥ 2 tabs -->
     <div
-      v-if="activeTab === 'pc' && pc"
-      class="ctx-panel__content"
+      v-if="visibleTabs.length >= 2"
+      class="ctx-panel__dots"
+      aria-hidden="true"
     >
-      <!-- Armes — info jet d'attaque + dégâts -->
+      <span
+        v-for="tab in visibleTabs"
+        :key="tab.id"
+        class="ctx-panel__dot"
+        :class="{ 'ctx-panel__dot--active': activeTab === tab.id }"
+      ></span>
+    </div>
+
+    <!-- Zone swipeable — englobe tout le contenu -->
+    <div
+      ref="swipeZone"
+      class="ctx-panel__swipe-zone"
+      @touchstart.passive="onTouchStart"
+      @touchend.passive="onTouchEnd"
+    >
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <!--  Contenu PJ : features filtrées par tags / mode scène  -->
+      <!-- ═══════════════════════════════════════════════════════ -->
       <div
-        v-if="primaryWeapon || secondaryWeapon"
-        class="ctx-panel__weapons"
+        v-if="activeTab === 'pc' && pc"
+        class="ctx-panel__content"
       >
-        <!-- Arme principale -->
+        <!-- Armes — info jet d'attaque + dégâts -->
         <div
-          v-if="primaryWeapon"
-          class="ctx-panel__weapon"
+          v-if="primaryWeapon || secondaryWeapon"
+          class="ctx-panel__weapons"
         >
-          <div class="ctx-panel__weapon-header">
-            <span class="ctx-panel__weapon-name">
-              {{ primaryWeapon.name }}
-            </span>
-            <span class="ctx-panel__weapon-badge ctx-panel__weapon-badge--primary">
-              Principale
-            </span>
-          </div>
-          <div class="ctx-panel__weapon-stats">
-            <span
-              class="ctx-panel__weapon-stat"
-              title="Trait utilisé pour le jet d'attaque"
-            >🎯 {{ primaryWeapon.trait }}</span>
-            <span
-              class="ctx-panel__weapon-stat"
-              title="Dés de dégâts + Proficiency"
-            >🎲 {{ primaryWeapon.damage }}+{{ pcProficiency }}</span>
-            <span
-              class="ctx-panel__weapon-stat"
-              :title="'Type de dégâts : ' + (primaryWeapon.damageType === 'mag' ? 'Magique' : 'Physique')"
-            >{{ primaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
-            <span
-              class="ctx-panel__weapon-stat"
-              title="Portée"
-            >📏 {{ primaryWeapon.range }}</span>
-            <span
-              v-if="primaryWeapon.burden"
-              class="ctx-panel__weapon-stat"
-              title="Prise"
-            >✋ {{ primaryWeapon.burden }}</span>
-          </div>
-          <p
-            v-if="primaryWeapon.feature"
-            class="ctx-panel__weapon-feature"
+          <!-- Arme principale -->
+          <div
+            v-if="primaryWeapon"
+            class="ctx-panel__weapon"
           >
-            {{ primaryWeapon.feature }}
-          </p>
-        </div>
+            <div class="ctx-panel__weapon-header">
+              <span class="ctx-panel__weapon-name">
+                {{ primaryWeapon.name }}
+              </span>
+              <span class="ctx-panel__weapon-badge ctx-panel__weapon-badge--primary">
+                Principale
+              </span>
+            </div>
+            <div class="ctx-panel__weapon-stats">
+              <span
+                class="ctx-panel__weapon-stat"
+                title="Trait utilisé pour le jet d'attaque"
+              >🎯 {{ primaryWeapon.trait }}</span>
+              <span
+                class="ctx-panel__weapon-stat"
+                title="Dés de dégâts + Proficiency"
+              >🎲 {{ primaryWeapon.damage }}+{{ pcProficiency }}</span>
+              <span
+                class="ctx-panel__weapon-stat"
+                :title="'Type de dégâts : ' + (primaryWeapon.damageType === 'mag' ? 'Magique' : 'Physique')"
+              >{{ primaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
+              <span
+                class="ctx-panel__weapon-stat"
+                title="Portée"
+              >📏 {{ primaryWeapon.range }}</span>
+              <span
+                v-if="primaryWeapon.burden"
+                class="ctx-panel__weapon-stat"
+                title="Prise"
+              >✋ {{ primaryWeapon.burden }}</span>
+            </div>
+            <p
+              v-if="primaryWeapon.feature"
+              class="ctx-panel__weapon-feature"
+            >
+              {{ primaryWeapon.feature }}
+            </p>
+          </div>
 
-        <!-- Arme secondaire -->
-        <div
-          v-if="secondaryWeapon"
-          class="ctx-panel__weapon ctx-panel__weapon--secondary"
-        >
-          <div class="ctx-panel__weapon-header">
-            <span class="ctx-panel__weapon-name">
-              {{ secondaryWeapon.name }}
-            </span>
-            <span class="ctx-panel__weapon-badge">
-              Secondaire
-            </span>
-          </div>
-          <div class="ctx-panel__weapon-stats">
-            <span class="ctx-panel__weapon-stat">🎯 {{ secondaryWeapon.trait }}</span>
-            <span class="ctx-panel__weapon-stat">🎲 {{ secondaryWeapon.damage }}+{{ pcProficiency }}</span>
-            <span class="ctx-panel__weapon-stat">{{ secondaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
-            <span class="ctx-panel__weapon-stat">📏 {{ secondaryWeapon.range }}</span>
-          </div>
-          <p
-            v-if="secondaryWeapon.feature"
-            class="ctx-panel__weapon-feature"
+          <!-- Arme secondaire -->
+          <div
+            v-if="secondaryWeapon"
+            class="ctx-panel__weapon ctx-panel__weapon--secondary"
           >
-            {{ secondaryWeapon.feature }}
-          </p>
+            <div class="ctx-panel__weapon-header">
+              <span class="ctx-panel__weapon-name">
+                {{ secondaryWeapon.name }}
+              </span>
+              <span class="ctx-panel__weapon-badge">
+                Secondaire
+              </span>
+            </div>
+            <div class="ctx-panel__weapon-stats">
+              <span class="ctx-panel__weapon-stat">🎯 {{ secondaryWeapon.trait }}</span>
+              <span class="ctx-panel__weapon-stat">🎲 {{ secondaryWeapon.damage }}+{{ pcProficiency }}</span>
+              <span class="ctx-panel__weapon-stat">{{ secondaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
+              <span class="ctx-panel__weapon-stat">📏 {{ secondaryWeapon.range }}</span>
+            </div>
+            <p
+              v-if="secondaryWeapon.feature"
+              class="ctx-panel__weapon-feature"
+            >
+              {{ secondaryWeapon.feature }}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <!-- Expériences -->
-      <div
-        v-if="pcExperiences.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title">
-          📋 Expériences
-        </h4>
-        <div class="ctx-panel__exp-list">
-          <span
-            v-for="exp in pcExperiences"
-            :key="exp.name"
-            class="ctx-panel__exp"
-          >{{ exp.name }} <strong v-if="exp.bonus">+{{ exp.bonus }}</strong></span>
-        </div>
-      </div>
-
-      <!-- ── Filtre par tag ── -->
-      <div class="ctx-panel__tag-filters">
-        <button
-          v-for="tf in TAG_FILTERS"
-          :key="tf.id"
-          class="ctx-panel__tag-btn"
-          :class="{
-            'ctx-panel__tag-btn--on': activeTagFilter === tf.id
-          }"
-          :title="tf.label"
-          :aria-label="'Filtrer par ' + tf.label"
-          @click="toggleTagFilter(tf.id)"
-        >
-          {{ tf.emoji }}
-        </button>
-      </div>
-
-      <!-- ══ Vue filtrée par tag ══ -->
-      <template v-if="activeTagFilter">
+        <!-- Expériences -->
         <div
-          v-if="tagFilteredTotal === 0"
-          class="ctx-panel__empty-filter"
-        >
-          <p>
-            Aucune feature {{ activeTagFilter }} pour ce PJ.
-          </p>
-        </div>
-
-        <div
-          v-if="tagFilteredActions.length > 0"
+          v-if="pcExperiences.length > 0"
           class="ctx-panel__section"
         >
-          <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
-            Actions
-            <span class="ctx-panel__count">{{ tagFilteredActions.length }}</span>
+          <h4 class="ctx-panel__section-title">
+            📋 Expériences
           </h4>
-          <FeatureCard
-            v-for="f in tagFilteredActions"
-            :key="f.name + f.source"
-            :feature="f"
-          />
+          <div class="ctx-panel__exp-list">
+            <span
+              v-for="exp in pcExperiences"
+              :key="exp.name"
+              class="ctx-panel__exp"
+            >{{ exp.name }} <strong v-if="exp.bonus">+{{ exp.bonus }}</strong></span>
+          </div>
         </div>
 
+        <!-- ── Filtre par tag ── -->
+        <div class="ctx-panel__tag-filters">
+          <button
+            v-for="tf in TAG_FILTERS"
+            :key="tf.id"
+            class="ctx-panel__tag-btn"
+            :class="{
+              'ctx-panel__tag-btn--on': activeTagFilter === tf.id
+            }"
+            :title="tf.label"
+            :aria-label="'Filtrer par ' + tf.label"
+            @click="toggleTagFilter(tf.id)"
+          >
+            {{ tf.emoji }}
+          </button>
+        </div>
+
+        <!-- ══ Vue filtrée par tag ══ -->
+        <template v-if="activeTagFilter">
+          <div
+            v-if="tagFilteredTotal === 0"
+            class="ctx-panel__empty-filter"
+          >
+            <p>
+              Aucune feature {{ activeTagFilter }} pour ce PJ.
+            </p>
+          </div>
+
+          <div
+            v-if="tagFilteredActions.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
+              Actions
+              <span class="ctx-panel__count">{{ tagFilteredActions.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in tagFilteredActions"
+              :key="f.name + f.source"
+              :feature="f"
+            />
+          </div>
+
+          <div
+            v-if="tagFilteredReactions.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
+              🟠 Réactions
+              <span class="ctx-panel__count">{{ tagFilteredReactions.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in tagFilteredReactions"
+              :key="f.name + f.source"
+              :feature="f"
+            />
+          </div>
+
+          <div
+            v-if="tagFilteredPassives.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
+              🔵 Passives
+              <span class="ctx-panel__count">{{ tagFilteredPassives.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in tagFilteredPassives"
+              :key="f.name + f.source"
+              :feature="f"
+            />
+          </div>
+        </template>
+
+        <!-- ══ Vue classifiée par mode (quand pas de filtre tag) ══ -->
+        <template v-else>
+          <!-- Features principales -->
+          <div
+            v-if="primaryFeatures.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
+              {{ primaryLabel }}
+              <span class="ctx-panel__count">{{ primaryFeatures.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in primaryFeatures"
+              :key="f.name + f.source"
+              :feature="f"
+            />
+          </div>
+
+          <!-- Réactions -->
+          <div
+            v-if="reactionFeatures.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
+              🟠 Réactions
+              <span class="ctx-panel__count">{{ reactionFeatures.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in reactionFeatures"
+              :key="f.name + f.source"
+              :feature="f"
+            />
+          </div>
+
+          <!-- Features secondaires (atténuées) -->
+          <div
+            v-if="secondaryFeatures.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--secondary">
+              Secondaires
+              <span class="ctx-panel__count">{{ secondaryFeatures.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in secondaryFeatures"
+              :key="f.name + f.source"
+              :feature="f"
+              :dimmed="true"
+              :default-expanded="false"
+            />
+          </div>
+
+          <!-- Passives -->
+          <div
+            v-if="passiveFeatures.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
+              🔵 Passives
+              <span class="ctx-panel__count">{{ passiveFeatures.length }}</span>
+            </h4>
+            <FeatureCard
+              v-for="f in passiveFeatures"
+              :key="f.name + f.source"
+              :feature="f"
+              :dimmed="true"
+              :default-expanded="false"
+            />
+          </div>
+        </template>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <!--  Contenu Adversaire : features + motives/tactiques     -->
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <div
+        v-if="activeTab === 'adversary' && adversary"
+        class="ctx-panel__content"
+      >
+        <!-- Expériences adversaire -->
         <div
-          v-if="tagFilteredReactions.length > 0"
+          v-if="adversary.experiences && adversary.experiences.length > 0"
           class="ctx-panel__section"
         >
-          <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
-            🟠 Réactions
-            <span class="ctx-panel__count">{{ tagFilteredReactions.length }}</span>
+          <h4 class="ctx-panel__section-title">
+            📋 Expériences
           </h4>
-          <FeatureCard
-            v-for="f in tagFilteredReactions"
-            :key="f.name + f.source"
-            :feature="f"
-          />
+          <div class="ctx-panel__exp-list">
+            <span
+              v-for="exp in adversary.experiences"
+              :key="typeof exp === 'string' ? exp : exp.name"
+              class="ctx-panel__exp"
+            >{{ typeof exp === 'string' ? exp : (exp.name + (exp.bonus ? ' +' + exp.bonus : '')) }}</span>
+          </div>
         </div>
 
+        <!-- Motives / Tactiques -->
         <div
-          v-if="tagFilteredPassives.length > 0"
+          v-if="adversary.motives && adversary.motives.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title">
+            🎯 Motives &amp; Tactiques
+          </h4>
+          <p class="ctx-panel__motives">
+            {{ adversary.motives.join(', ') }}
+          </p>
+        </div>
+
+        <!-- Features adversaire classifiées -->
+        <div
+          v-if="advPassives.length > 0"
           class="ctx-panel__section"
         >
           <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
             🔵 Passives
-            <span class="ctx-panel__count">{{ tagFilteredPassives.length }}</span>
           </h4>
           <FeatureCard
-            v-for="f in tagFilteredPassives"
-            :key="f.name + f.source"
+            v-for="f in advPassives"
+            :key="f.name"
             :feature="f"
           />
         </div>
-      </template>
 
-      <!-- ══ Vue classifiée par mode (quand pas de filtre tag) ══ -->
-      <template v-else>
-        <!-- Features principales -->
         <div
-          v-if="primaryFeatures.length > 0"
+          v-if="advActions.length > 0"
           class="ctx-panel__section"
         >
           <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
-            {{ primaryLabel }}
-            <span class="ctx-panel__count">{{ primaryFeatures.length }}</span>
+            ⚔️ Actions
           </h4>
           <FeatureCard
-            v-for="f in primaryFeatures"
-            :key="f.name + f.source"
+            v-for="f in advActions"
+            :key="f.name"
             :feature="f"
           />
         </div>
 
-        <!-- Réactions -->
         <div
-          v-if="reactionFeatures.length > 0"
+          v-if="advReactions.length > 0"
           class="ctx-panel__section"
         >
           <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
             🟠 Réactions
-            <span class="ctx-panel__count">{{ reactionFeatures.length }}</span>
           </h4>
           <FeatureCard
-            v-for="f in reactionFeatures"
-            :key="f.name + f.source"
+            v-for="f in advReactions"
+            :key="f.name"
             :feature="f"
           />
         </div>
-
-        <!-- Features secondaires (atténuées) -->
-        <div
-          v-if="secondaryFeatures.length > 0"
-          class="ctx-panel__section"
-        >
-          <h4 class="ctx-panel__section-title ctx-panel__section-title--secondary">
-            Secondaires
-            <span class="ctx-panel__count">{{ secondaryFeatures.length }}</span>
-          </h4>
-          <FeatureCard
-            v-for="f in secondaryFeatures"
-            :key="f.name + f.source"
-            :feature="f"
-            :dimmed="true"
-            :default-expanded="false"
-          />
-        </div>
-
-        <!-- Passives -->
-        <div
-          v-if="passiveFeatures.length > 0"
-          class="ctx-panel__section"
-        >
-          <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
-            🔵 Passives
-            <span class="ctx-panel__count">{{ passiveFeatures.length }}</span>
-          </h4>
-          <FeatureCard
-            v-for="f in passiveFeatures"
-            :key="f.name + f.source"
-            :feature="f"
-            :dimmed="true"
-            :default-expanded="false"
-          />
-        </div>
-      </template>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!--  Contenu Adversaire : features + motives/tactiques     -->
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <div
-      v-if="activeTab === 'adversary' && adversary"
-      class="ctx-panel__content"
-    >
-      <!-- Expériences adversaire -->
-      <div
-        v-if="adversary.experiences && adversary.experiences.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title">
-          📋 Expériences
-        </h4>
-        <div class="ctx-panel__exp-list">
-          <span
-            v-for="exp in adversary.experiences"
-            :key="typeof exp === 'string' ? exp : exp.name"
-            class="ctx-panel__exp"
-          >{{ typeof exp === 'string' ? exp : (exp.name + (exp.bonus ? ' +' + exp.bonus : '')) }}</span>
-        </div>
       </div>
 
-      <!-- Motives / Tactiques -->
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <!--  Contenu Environnement                                 -->
+      <!-- ═══════════════════════════════════════════════════════ -->
       <div
-        v-if="adversary.motives && adversary.motives.length > 0"
-        class="ctx-panel__section"
+        v-if="activeTab === 'environment' && environment"
+        class="ctx-panel__content"
       >
-        <h4 class="ctx-panel__section-title">
-          🎯 Motives &amp; Tactiques
-        </h4>
-        <p class="ctx-panel__motives">
-          {{ adversary.motives.join(', ') }}
-        </p>
+        <EnvironmentPanel :environment="environment" />
       </div>
 
-      <!-- Features adversaire classifiées -->
+      <!-- État vide -->
       <div
-        v-if="advPassives.length > 0"
-        class="ctx-panel__section"
+        v-if="!pc && !adversary && !environment"
+        class="ctx-panel__empty"
       >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
-          🔵 Passives
-        </h4>
-        <FeatureCard
-          v-for="f in advPassives"
-          :key="f.name"
-          :feature="f"
-        />
+        <p>Sélectionnez un PJ ou un adversaire pour voir ses features.</p>
       </div>
-
-      <div
-        v-if="advActions.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
-          ⚔️ Actions
-        </h4>
-        <FeatureCard
-          v-for="f in advActions"
-          :key="f.name"
-          :feature="f"
-        />
-      </div>
-
-      <div
-        v-if="advReactions.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
-          🟠 Réactions
-        </h4>
-        <FeatureCard
-          v-for="f in advReactions"
-          :key="f.name"
-          :feature="f"
-        />
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <!--  Contenu Environnement                                 -->
-    <!-- ═══════════════════════════════════════════════════════ -->
-    <div
-      v-if="activeTab === 'environment' && environment"
-      class="ctx-panel__content"
-    >
-      <EnvironmentPanel :environment="environment" />
-    </div>
-
-    <!-- État vide -->
-    <div
-      v-if="!pc && !adversary && !environment"
-      class="ctx-panel__empty"
-    >
-      <p>Sélectionnez un PJ ou un adversaire pour voir ses features.</p>
-    </div>
+    </div><!-- fin swipe-zone -->
   </aside>
 </template>
 
@@ -383,6 +405,7 @@
 import { computed, ref, watch } from 'vue'
 import { SCENE_MODE_META, SCENE_MODE_PC_ATTACK } from '@data/encounters/liveConstants'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
+import { useSwipe } from '../composables/useSwipe'
 import { getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import FeatureCard from './FeatureCard.vue'
 import EnvironmentPanel from './EnvironmentPanel.vue'
@@ -410,7 +433,45 @@ export default {
     allFeatures: { type: Array, default: () => [] }
   },
   setup(props) {
-    const activeTab = ref('pc')
+    const activeTab  = ref('pc')
+    const swipeZone  = ref(null)
+
+    // ── Tabs visibles selon les props disponibles ──────────────
+    const visibleTabs = computed(() => {
+      const tabs = []
+      if (props.pc)          tabs.push({ id: 'pc' })
+      if (props.adversary)   tabs.push({ id: 'adversary' })
+      if (props.environment) tabs.push({ id: 'environment' })
+      return tabs
+    })
+
+    // ── Navigation par swipe ───────────────────────────────────
+    function swipeNext() {
+      const tabs = visibleTabs.value
+      const idx  = tabs.findIndex((t) => t.id === activeTab.value)
+      if (idx < tabs.length - 1) {
+        activeTab.value = tabs[idx + 1].id
+        resetScroll()
+      }
+    }
+
+    function swipePrev() {
+      const tabs = visibleTabs.value
+      const idx  = tabs.findIndex((t) => t.id === activeTab.value)
+      if (idx > 0) {
+        activeTab.value = tabs[idx - 1].id
+        resetScroll()
+      }
+    }
+
+    function resetScroll() {
+      if (swipeZone.value) swipeZone.value.scrollTop = 0
+    }
+
+    const { onTouchStart, onTouchEnd } = useSwipe({
+      onSwipeLeft:  swipeNext,
+      onSwipeRight: swipePrev
+    })
 
     // Auto-switch quand le MJ clique sur un PJ ou un adversaire
     watch(() => props.lastClickCategory, (cat) => {
@@ -508,7 +569,8 @@ export default {
     const advReactions = computed(() => advClassified.value.reactionFeatures)
 
     return {
-      activeTab,
+      activeTab, swipeZone, visibleTabs,
+      onTouchStart, onTouchEnd,
       primaryLabel,
       TAG_FILTERS, activeTagFilter, toggleTagFilter,
       tagFilteredActions, tagFilteredReactions, tagFilteredPassives, tagFilteredTotal,
@@ -527,8 +589,48 @@ export default {
   height: 100%;
   border-left: 1px solid var(--color-border);
   background: var(--color-bg-primary);
+  overflow: hidden;
+}
+
+/* ── Dots indicateur de position ── */
+
+.ctx-panel__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: var(--space-xs) 0;
+  flex-shrink: 0;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ctx-panel__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-active);
+  opacity: 0.35;
+  transition: opacity var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+
+.ctx-panel__dot--active {
+  background: var(--color-accent-hope);
+  opacity: 1;
+  transform: scale(1.25);
+}
+
+/* ── Zone swipeable ── */
+
+.ctx-panel__swipe-zone {
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  /* Scroll inertiel iOS */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 /* ── Tabs ── */
@@ -574,7 +676,6 @@ export default {
 
 .ctx-panel__content {
   flex: 1;
-  overflow-y: auto;
   padding: var(--space-sm);
   display: flex;
   flex-direction: column;
