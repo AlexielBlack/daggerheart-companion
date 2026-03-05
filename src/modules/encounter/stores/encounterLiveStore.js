@@ -638,14 +638,50 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   /**
-   * Applique des dégâts AoE à plusieurs PJs en un seul batch (un seul pushUndo).
-   * L'attaquant est l'adversaire actif.
+   * Applique des dégâts AoE différenciés par adversaire.
+   * @param {Object} damageMap - { instanceId → amount }
    */
-  function applyAoeDamageToPcs(pcIds, amount) {
-    if (!pcIds.length || amount <= 0) return
+  function applyAoeDamagePerTarget(damageMap) {
+    if (!Object.keys(damageMap).length) return
+    pushUndo()
+    const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+    for (const [instanceId, amount] of Object.entries(damageMap)) {
+      if (amount <= 0) continue
+      const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
+      if (!adv || adv.isDefeated) continue
+
+      const prev = adv.markedHP
+      adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
+      const actual = adv.markedHP - prev
+      if (actual > 0) {
+        const entry = {
+          action: 'damage', pcId: activePcId.value || null, pcName: pc ? pc.name : '?',
+          instanceId, advName: adv.name, type: 'hp', amount: actual, isAoE: true, timestamp: Date.now()
+        }
+        combatLog.value.push(entry)
+        encounterLog.value.push({ ...entry })
+      }
+      if ((adv.type === 'Minion' && adv.markedHP > 0) || adv.markedHP >= adv.maxHP) {
+        adv.isDefeated = true
+        encounterLog.value.push({
+          action: 'adv_down', instanceId, advName: adv.name,
+          pcId: activePcId.value || null, pcName: pc ? pc.name : '?', timestamp: Date.now()
+        })
+      }
+    }
+    persistState()
+  }
+
+  /**
+   * Applique des dégâts AoE différenciés aux PJs.
+   * @param {Array<{pcId: string, amount: number}>} pcHits
+   */
+  function applyAoeDamageToPcsPerTarget(pcHits) {
+    if (!pcHits.length) return
     pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === activeAdversaryId.value)
-    for (const pcId of pcIds) {
+    for (const { pcId, amount } of pcHits) {
+      if (amount <= 0) continue
       const pc = participantPcs.value.find((p) => p.id === pcId)
       if (!pc) continue
       const entry = {
@@ -812,7 +848,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     defeatAdversary, reviveAdversary,
     addReinforcement, setAdversaryNotes,
     applyAoeDamage,
-    applyAoeDamageToPcs,
+    applyAoeDamagePerTarget,
+    applyAoeDamageToPcsPerTarget,
 
     // Actions — Combat log & conditions (composable)
     removeCombatLogEntry,

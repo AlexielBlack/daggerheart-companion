@@ -217,122 +217,133 @@
         />
       </div>
 
-      <!-- ── Panneau AoE (dégâts de zone) ── -->
+      <!-- ── Modal AoE (dégâts de zone) ── -->
+      <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
       <div
         v-if="aoeMode"
-        class="enc-live__aoe-panel"
+        class="enc-live__aoe-overlay"
+        @click.self="aoeMode = false"
       >
-        <div class="enc-live__aoe-header">
-          <span class="enc-live__aoe-title">💥 Dégâts de zone</span>
-          <span class="enc-live__aoe-attacker">
-            {{ aoeAttackerName }} attaque
-          </span>
-          <button
-            class="enc-live__aoe-close"
-            aria-label="Fermer le mode AoE"
-            @click="aoeMode = false"
-          >
-            ✕
-          </button>
-        </div>
-
-        <!-- Cibles adversaires -->
-        <div class="enc-live__aoe-section">
-          <div class="enc-live__aoe-section-header">
-            <span class="enc-live__aoe-section-label">👹 Adversaires</span>
-            <label class="enc-live__aoe-select-all">
-              <input
-                type="checkbox"
-                :checked="allAdvSelected"
-                @change="toggleAoeAllAdv"
-              />
-              <span>Tous ({{ aoeAvailableInstances.length }})</span>
-            </label>
+        <!-- eslint-enable -->
+        <div
+          class="enc-live__aoe-modal"
+          role="dialog"
+          aria-label="Dégâts de zone"
+        >
+          <div class="enc-live__aoe-header">
+            <span class="enc-live__aoe-title">💥 Dégâts de zone</span>
+            <span class="enc-live__aoe-attacker">{{ aoeAttackerName }}</span>
+            <button
+              class="enc-live__aoe-close"
+              aria-label="Fermer"
+              @click="aoeMode = false"
+            >
+              ✕
+            </button>
           </div>
-          <div class="enc-live__aoe-targets">
-            <label
+
+          <!-- Liste adversaires -->
+          <div
+            v-if="aoeAvailableInstances.length > 0"
+            class="enc-live__aoe-section"
+          >
+            <span class="enc-live__aoe-section-label">👹 Adversaires</span>
+            <div
               v-for="inst in aoeAvailableInstances"
               :key="inst.instanceId"
-              class="enc-live__aoe-target"
-              :class="{ 'enc-live__aoe-target--selected': aoeSelectedIds.includes(inst.instanceId) }"
+              class="enc-live__aoe-row"
+              :class="{ 'enc-live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
             >
-              <input
-                type="checkbox"
-                :value="inst.instanceId"
-                :checked="aoeSelectedIds.includes(inst.instanceId)"
-                @change="toggleAoeTarget(inst.instanceId)"
-              />
-              <span class="enc-live__aoe-target-name">{{ inst.displayName }}</span>
-              <span class="enc-live__aoe-target-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-            </label>
+              <span class="enc-live__aoe-row-name">{{ inst.displayName }}</span>
+              <span class="enc-live__aoe-row-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+              <div class="enc-live__aoe-row-btns">
+                <button
+                  v-for="n in 4"
+                  :key="n"
+                  class="enc-live__aoe-hp-btn"
+                  @click="aoeHitTarget(inst.instanceId, n)"
+                >
+                  {{ n }}
+                </button>
+              </div>
+              <span
+                v-if="aoeDamage[inst.instanceId] > 0"
+                class="enc-live__aoe-row-dmg"
+              >
+                −{{ aoeDamage[inst.instanceId] }}
+              </span>
+              <button
+                v-if="aoeDamage[inst.instanceId] > 0"
+                class="enc-live__aoe-row-undo"
+                title="Annuler"
+                @click="aoeUndoTarget(inst.instanceId)"
+              >
+                ↩
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Cibles PJ -->
-        <div class="enc-live__aoe-section">
-          <div class="enc-live__aoe-section-header">
+          <!-- Liste PJs -->
+          <div
+            v-if="store.participantPcs.length > 0"
+            class="enc-live__aoe-section"
+          >
             <span class="enc-live__aoe-section-label">🧑‍🤝‍🧑 PJs</span>
-            <label class="enc-live__aoe-select-all">
-              <input
-                type="checkbox"
-                :checked="allPcSelected"
-                @change="toggleAoeAllPc"
-              />
-              <span>Tous ({{ store.participantPcs.length }})</span>
-            </label>
-          </div>
-          <div class="enc-live__aoe-targets">
-            <label
+            <div
               v-for="pc in store.participantPcs"
               :key="'pc_' + pc.id"
-              class="enc-live__aoe-target enc-live__aoe-target--pc"
-              :class="{ 'enc-live__aoe-target--selected': aoeSelectedPcIds.includes(pc.id) }"
+              class="enc-live__aoe-row enc-live__aoe-row--pc"
+              :class="{ 'enc-live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
             >
-              <input
-                type="checkbox"
-                :value="pc.id"
-                :checked="aoeSelectedPcIds.includes(pc.id)"
-                @change="toggleAoePcTarget(pc.id)"
-              />
-              <span class="enc-live__aoe-target-name">{{ pc.name }}</span>
-              <span class="enc-live__aoe-target-hp">❤️{{ pc.maxHP }}</span>
-            </label>
+              <span class="enc-live__aoe-row-name">{{ pc.name }}</span>
+              <span class="enc-live__aoe-row-hp">❤️{{ pc.maxHP }}</span>
+              <div class="enc-live__aoe-row-btns">
+                <button
+                  v-for="n in 4"
+                  :key="n"
+                  class="enc-live__aoe-hp-btn"
+                  @click="aoeHitTarget('pc_' + pc.id, n)"
+                >
+                  {{ n }}
+                </button>
+              </div>
+              <span
+                v-if="aoeDamage['pc_' + pc.id] > 0"
+                class="enc-live__aoe-row-dmg"
+              >
+                −{{ aoeDamage['pc_' + pc.id] }}
+              </span>
+              <button
+                v-if="aoeDamage['pc_' + pc.id] > 0"
+                class="enc-live__aoe-row-undo"
+                title="Annuler"
+                @click="aoeUndoTarget('pc_' + pc.id)"
+              >
+                ↩
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Contrôles dégâts -->
-        <div class="enc-live__aoe-controls">
-          <input
-            v-model.number="aoeDamageAmount"
-            class="enc-live__aoe-input"
-            type="number"
-            min="1"
-            placeholder="Dégâts"
-            aria-label="Montant de dégâts AoE"
-          />
-          <div class="enc-live__aoe-type-btns">
+          <!-- Barre d'actions -->
+          <div class="enc-live__aoe-footer">
+            <span class="enc-live__aoe-total">
+              {{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }} · {{ aoeTotalDamage }} HP
+            </span>
             <button
-              class="enc-live__aoe-type-btn"
-              :class="{ 'enc-live__aoe-type-btn--active': aoeDamageType === 'hp' }"
-              @click="aoeDamageType = 'hp'"
+              class="enc-live__aoe-reset"
+              :disabled="aoeTotalDamage === 0"
+              @click="aoeResetAll"
             >
-              ❤️ HP
+              Réinitialiser
             </button>
             <button
-              class="enc-live__aoe-type-btn"
-              :class="{ 'enc-live__aoe-type-btn--active': aoeDamageType === 'stress' }"
-              @click="aoeDamageType = 'stress'"
+              class="enc-live__aoe-apply"
+              :disabled="aoeTotalDamage === 0"
+              @click="applyAoe"
             >
-              💢 Stress
+              Appliquer
             </button>
           </div>
-          <button
-            class="enc-live__aoe-apply"
-            :disabled="aoeTotalSelected === 0 || !aoeDamageAmount || aoeDamageAmount <= 0"
-            @click="applyAoe"
-          >
-            Appliquer ({{ aoeTotalSelected }})
-          </button>
         </div>
       </div>
 
@@ -522,22 +533,17 @@ export default {
       store.addReinforcement(adversaryId, 1)
     }
 
-    // ── Panneau AoE (dégâts de zone) ──────────────────────
+    // ── Modal AoE (dégâts de zone) ──────────────────────
     const aoeMode = ref(false)
-    const aoeSelectedIds = ref([])
-    const aoeSelectedPcIds = ref([])
-    const aoeDamageAmount = ref(null)
-    const aoeDamageType = ref('hp')
+    const aoeDamage = ref({}) // { targetId → accumulated HP }
 
     /** Instances adversaires non vaincues, avec displayName numéroté (#1, #2…) */
     const aoeAvailableInstances = computed(() => {
       const active = store.liveAdversaries.filter((a) => !a.isDefeated)
-      // Compter combien d'instances par adversaryId
       const countByAdv = {}
       for (const a of store.liveAdversaries) {
         countByAdv[a.adversaryId] = (countByAdv[a.adversaryId] || 0) + 1
       }
-      // Numéroter les instances dont le groupe a plus d'un membre
       const indexByAdv = {}
       return active.map((a) => {
         indexByAdv[a.adversaryId] = (indexByAdv[a.adversaryId] || 0) + 1
@@ -549,23 +555,6 @@ export default {
       })
     })
 
-    /** Tous les adversaires sélectionnés ? */
-    const allAdvSelected = computed(() =>
-      aoeAvailableInstances.value.length > 0 &&
-      aoeSelectedIds.value.length === aoeAvailableInstances.value.length
-    )
-
-    /** Tous les PJs sélectionnés ? */
-    const allPcSelected = computed(() =>
-      store.participantPcs.length > 0 &&
-      aoeSelectedPcIds.value.length === store.participantPcs.length
-    )
-
-    /** Total cibles sélectionnées (adversaires + PJs) */
-    const aoeTotalSelected = computed(() =>
-      aoeSelectedIds.value.length + aoeSelectedPcIds.value.length
-    )
-
     /** Nom de l'attaquant AoE selon le mode de scène */
     const aoeAttackerName = computed(() => {
       if (isPcActor.value) {
@@ -574,63 +563,68 @@ export default {
       return store.activeAdversary ? store.activeAdversary.name : '?'
     })
 
+    /** Nombre de cibles touchées */
+    const aoeTotalTargets = computed(() =>
+      Object.values(aoeDamage.value).filter((v) => v > 0).length
+    )
+
+    /** Total des dégâts distribués */
+    const aoeTotalDamage = computed(() =>
+      Object.values(aoeDamage.value).reduce((s, v) => s + v, 0)
+    )
+
     function toggleAoeMode() {
       aoeMode.value = !aoeMode.value
       if (aoeMode.value) {
-        // Présélectionner tous les adversaires actifs, aucun PJ
-        aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
-        aoeSelectedPcIds.value = []
-        aoeDamageAmount.value = null
-        aoeDamageType.value = 'hp'
+        aoeDamage.value = {}
         showReinforcementPanel.value = false
       }
     }
 
-    function toggleAoeTarget(instanceId) {
-      const idx = aoeSelectedIds.value.indexOf(instanceId)
-      if (idx >= 0) {
-        aoeSelectedIds.value.splice(idx, 1)
-      } else {
-        aoeSelectedIds.value.push(instanceId)
+    function aoeHitTarget(targetId, amount) {
+      aoeDamage.value = {
+        ...aoeDamage.value,
+        [targetId]: (aoeDamage.value[targetId] || 0) + amount
       }
     }
 
-    function toggleAoePcTarget(pcId) {
-      const idx = aoeSelectedPcIds.value.indexOf(pcId)
-      if (idx >= 0) {
-        aoeSelectedPcIds.value.splice(idx, 1)
-      } else {
-        aoeSelectedPcIds.value.push(pcId)
-      }
+    function aoeUndoTarget(targetId) {
+      const copy = { ...aoeDamage.value }
+      delete copy[targetId]
+      aoeDamage.value = copy
     }
 
-    function toggleAoeAllAdv() {
-      if (allAdvSelected.value) {
-        aoeSelectedIds.value = []
-      } else {
-        aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
-      }
-    }
-
-    function toggleAoeAllPc() {
-      if (allPcSelected.value) {
-        aoeSelectedPcIds.value = []
-      } else {
-        aoeSelectedPcIds.value = store.participantPcs.map((p) => p.id)
-      }
+    function aoeResetAll() {
+      aoeDamage.value = {}
     }
 
     function applyAoe() {
-      if (aoeTotalSelected.value === 0 || !aoeDamageAmount.value || aoeDamageAmount.value <= 0) return
-      // Appliquer aux adversaires (store gère le log avec isAoE)
-      if (aoeSelectedIds.value.length > 0) {
-        store.applyAoeDamage(aoeSelectedIds.value, aoeDamageAmount.value, aoeDamageType.value)
+      const dmg = aoeDamage.value
+      const advIds = []
+      const pcHits = [] // { pcId, amount }
+      const advCustom = {} // instanceId → amount (pour dégâts différenciés)
+
+      for (const [targetId, amount] of Object.entries(dmg)) {
+        if (amount <= 0) continue
+        if (targetId.startsWith('pc_')) {
+          pcHits.push({ pcId: targetId.slice(3), amount })
+        } else {
+          advIds.push(targetId)
+          advCustom[targetId] = amount
+        }
       }
-      // Appliquer aux PJs — log batché avec contexte attaquant correct
-      if (aoeSelectedPcIds.value.length > 0) {
-        store.applyAoeDamageToPcs(aoeSelectedPcIds.value, aoeDamageAmount.value)
+
+      // Appliquer dégâts adversaires (par instance, montants potentiellement différents)
+      if (advIds.length > 0) {
+        store.applyAoeDamagePerTarget(advCustom)
       }
-      aoeDamageAmount.value = null
+      // Appliquer dégâts PJs
+      if (pcHits.length > 0) {
+        store.applyAoeDamageToPcsPerTarget(pcHits)
+      }
+
+      aoeDamage.value = {}
+      aoeMode.value = false
     }
 
     // ── Résumé post-combat ────────────────────────────────
@@ -794,20 +788,15 @@ export default {
       addReinforcement,
       // AoE
       aoeMode,
-      aoeSelectedIds,
-      aoeSelectedPcIds,
-      aoeDamageAmount,
-      aoeDamageType,
+      aoeDamage,
       aoeAvailableInstances,
-      allAdvSelected,
-      allPcSelected,
-      aoeTotalSelected,
       aoeAttackerName,
+      aoeTotalTargets,
+      aoeTotalDamage,
       toggleAoeMode,
-      toggleAoeTarget,
-      toggleAoePcTarget,
-      toggleAoeAllAdv,
-      toggleAoeAllPc,
+      aoeHitTarget,
+      aoeUndoTarget,
+      aoeResetAll,
       applyAoe,
       // Long press spotlights
       spotLongPressDown,
@@ -1292,26 +1281,41 @@ export default {
   margin: 0;
 }
 
-/* ── Panneau AoE ── */
+/* ── Modal AoE ── */
 
-.enc-live__aoe-panel {
+.enc-live__aoe-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  padding: var(--space-md);
+}
+
+.enc-live__aoe-modal {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  padding: var(--space-sm);
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-accent-warning);
   border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
 .enc-live__aoe-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space-sm);
 }
 
 .enc-live__aoe-title {
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
   font-weight: var(--font-bold);
   color: var(--color-accent-warning);
   text-transform: uppercase;
@@ -1323,7 +1327,6 @@ export default {
   color: var(--color-text-secondary);
   font-style: italic;
   margin-left: auto;
-  margin-right: var(--space-sm);
 }
 
 .enc-live__aoe-close {
@@ -1334,17 +1337,12 @@ export default {
   cursor: pointer;
   padding: 2px 6px;
   border-radius: var(--radius-sm);
+  margin-left: var(--space-sm);
 }
 
 .enc-live__aoe-close:hover {
   background: var(--color-bg-elevated);
   color: var(--color-text-primary);
-}
-
-.enc-live__aoe-targets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
 }
 
 .enc-live__aoe-section {
@@ -1353,132 +1351,143 @@ export default {
   gap: var(--space-xs);
 }
 
-.enc-live__aoe-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-}
-
 .enc-live__aoe-section-label {
   font-size: var(--font-xs);
   font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.enc-live__aoe-select-all {
+/* ── Lignes cibles ── */
+
+.enc-live__aoe-row {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px var(--space-sm);
-  border-radius: var(--radius-md);
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  color: var(--color-text-secondary);
-  cursor: pointer;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-}
-
-.enc-live__aoe-select-all:hover {
-  border-color: var(--color-border-active);
-}
-
-.enc-live__aoe-target {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px var(--space-sm);
   border-radius: var(--radius-md);
-  font-size: var(--font-xs);
-  cursor: pointer;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border);
   transition: border-color 0.15s, background 0.15s;
 }
 
-.enc-live__aoe-target:hover {
-  border-color: var(--color-border-active);
-}
-
-.enc-live__aoe-target--selected {
-  border-color: var(--color-accent-warning);
-  background: rgba(255, 152, 0, 0.06);
-}
-
-.enc-live__aoe-target--pc {
+.enc-live__aoe-row--pc {
   border-left: 3px solid var(--color-accent-hope);
 }
 
-.enc-live__aoe-target-name {
+.enc-live__aoe-row--hit {
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.05);
+}
+
+.enc-live__aoe-row-name {
+  font-size: var(--font-sm);
   font-weight: var(--font-semibold);
   color: var(--color-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
 }
 
-.enc-live__aoe-target-hp {
+.enc-live__aoe-row-hp {
+  font-size: var(--font-xs);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.enc-live__aoe-controls {
+.enc-live__aoe-row-btns {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.enc-live__aoe-hp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-fear);
+  background: transparent;
+  color: var(--color-accent-fear);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.enc-live__aoe-hp-btn:hover {
+  background: rgba(200, 75, 49, 0.15);
+}
+
+.enc-live__aoe-row-dmg {
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-warning);
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.enc-live__aoe-row-undo {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.enc-live__aoe-row-undo:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-elevated);
+}
+
+/* ── Footer ── */
+
+.enc-live__aoe-footer {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  flex-wrap: wrap;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
 }
 
-.enc-live__aoe-input {
-  width: 70px;
-  height: 32px;
-  padding: 0 var(--space-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-size: var(--font-sm);
-  font-weight: var(--font-bold);
-  text-align: center;
-  -moz-appearance: textfield;
+.enc-live__aoe-total {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-semibold);
 }
 
-.enc-live__aoe-input::-webkit-inner-spin-button,
-.enc-live__aoe-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.enc-live__aoe-input:focus {
-  outline: none;
-  border-color: var(--color-accent-warning);
-}
-
-.enc-live__aoe-type-btns {
-  display: flex;
-  gap: 2px;
-}
-
-.enc-live__aoe-type-btn {
+.enc-live__aoe-reset {
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: transparent;
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   font-size: var(--font-xs);
-  font-weight: var(--font-semibold);
   cursor: pointer;
+  margin-left: auto;
   transition: all 0.15s;
 }
 
-.enc-live__aoe-type-btn:hover {
-  background: var(--color-bg-elevated);
+.enc-live__aoe-reset:hover:not(:disabled) {
+  border-color: var(--color-border-active);
+  color: var(--color-text-primary);
 }
 
-.enc-live__aoe-type-btn--active {
-  border-color: var(--color-accent-warning);
-  color: var(--color-accent-warning);
-  background: rgba(255, 152, 0, 0.08);
+.enc-live__aoe-reset:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .enc-live__aoe-apply {
@@ -1491,7 +1500,6 @@ export default {
   font-weight: var(--font-bold);
   cursor: pointer;
   transition: background 0.15s;
-  margin-left: auto;
 }
 
 .enc-live__aoe-apply:hover:not(:disabled) {
