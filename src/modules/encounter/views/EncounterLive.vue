@@ -162,7 +162,7 @@
             aria-label="Dégâts de zone"
             @click="toggleAoeMode()"
           >
-            💥
+            💥 AoE
           </button>
         </div>
       </div>
@@ -213,33 +213,72 @@
             ✕
           </button>
         </div>
-        <div class="enc-live__aoe-targets">
-          <label
-            class="enc-live__aoe-select-all"
-          >
-            <input
-              type="checkbox"
-              :checked="aoeSelectedIds.length === aoeAvailableInstances.length"
-              @change="toggleAoeSelectAll"
-            />
-            <span>Tous ({{ aoeAvailableInstances.length }})</span>
-          </label>
-          <label
-            v-for="inst in aoeAvailableInstances"
-            :key="inst.instanceId"
-            class="enc-live__aoe-target"
-            :class="{ 'enc-live__aoe-target--selected': aoeSelectedIds.includes(inst.instanceId) }"
-          >
-            <input
-              type="checkbox"
-              :value="inst.instanceId"
-              :checked="aoeSelectedIds.includes(inst.instanceId)"
-              @change="toggleAoeTarget(inst.instanceId)"
-            />
-            <span class="enc-live__aoe-target-name">{{ inst.name }}</span>
-            <span class="enc-live__aoe-target-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-          </label>
+
+        <!-- Cibles adversaires -->
+        <div class="enc-live__aoe-section">
+          <div class="enc-live__aoe-section-header">
+            <span class="enc-live__aoe-section-label">👹 Adversaires</span>
+            <label class="enc-live__aoe-select-all">
+              <input
+                type="checkbox"
+                :checked="allAdvSelected"
+                @change="toggleAoeAllAdv"
+              />
+              <span>Tous ({{ aoeAvailableInstances.length }})</span>
+            </label>
+          </div>
+          <div class="enc-live__aoe-targets">
+            <label
+              v-for="inst in aoeAvailableInstances"
+              :key="inst.instanceId"
+              class="enc-live__aoe-target"
+              :class="{ 'enc-live__aoe-target--selected': aoeSelectedIds.includes(inst.instanceId) }"
+            >
+              <input
+                type="checkbox"
+                :value="inst.instanceId"
+                :checked="aoeSelectedIds.includes(inst.instanceId)"
+                @change="toggleAoeTarget(inst.instanceId)"
+              />
+              <span class="enc-live__aoe-target-name">{{ inst.displayName }}</span>
+              <span class="enc-live__aoe-target-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+            </label>
+          </div>
         </div>
+
+        <!-- Cibles PJ -->
+        <div class="enc-live__aoe-section">
+          <div class="enc-live__aoe-section-header">
+            <span class="enc-live__aoe-section-label">🧑‍🤝‍🧑 PJs</span>
+            <label class="enc-live__aoe-select-all">
+              <input
+                type="checkbox"
+                :checked="allPcSelected"
+                @change="toggleAoeAllPc"
+              />
+              <span>Tous ({{ store.participantPcs.length }})</span>
+            </label>
+          </div>
+          <div class="enc-live__aoe-targets">
+            <label
+              v-for="pc in store.participantPcs"
+              :key="'pc_' + pc.id"
+              class="enc-live__aoe-target enc-live__aoe-target--pc"
+              :class="{ 'enc-live__aoe-target--selected': aoeSelectedPcIds.includes(pc.id) }"
+            >
+              <input
+                type="checkbox"
+                :value="pc.id"
+                :checked="aoeSelectedPcIds.includes(pc.id)"
+                @change="toggleAoePcTarget(pc.id)"
+              />
+              <span class="enc-live__aoe-target-name">{{ pc.name }}</span>
+              <span class="enc-live__aoe-target-hp">❤️{{ pc.maxHP }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Contrôles dégâts -->
         <div class="enc-live__aoe-controls">
           <input
             v-model.number="aoeDamageAmount"
@@ -267,10 +306,10 @@
           </div>
           <button
             class="enc-live__aoe-apply"
-            :disabled="aoeSelectedIds.length === 0 || !aoeDamageAmount || aoeDamageAmount <= 0"
+            :disabled="aoeTotalSelected === 0 || !aoeDamageAmount || aoeDamageAmount <= 0"
             @click="applyAoe"
           >
-            Appliquer ({{ aoeSelectedIds.length }})
+            Appliquer ({{ aoeTotalSelected }})
           </button>
         </div>
       </div>
@@ -489,19 +528,53 @@ export default {
     // ── Panneau AoE (dégâts de zone) ──────────────────────
     const aoeMode = ref(false)
     const aoeSelectedIds = ref([])
+    const aoeSelectedPcIds = ref([])
     const aoeDamageAmount = ref(null)
     const aoeDamageType = ref('hp')
 
-    /** Instances adversaires non vaincues, disponibles pour l'AoE */
+    /** Instances adversaires non vaincues, avec displayName numéroté (#1, #2…) */
     const aoeAvailableInstances = computed(() => {
-      return store.liveAdversaries.filter((a) => !a.isDefeated)
+      const active = store.liveAdversaries.filter((a) => !a.isDefeated)
+      // Compter combien d'instances par adversaryId
+      const countByAdv = {}
+      for (const a of store.liveAdversaries) {
+        countByAdv[a.adversaryId] = (countByAdv[a.adversaryId] || 0) + 1
+      }
+      // Numéroter les instances dont le groupe a plus d'un membre
+      const indexByAdv = {}
+      return active.map((a) => {
+        indexByAdv[a.adversaryId] = (indexByAdv[a.adversaryId] || 0) + 1
+        const needsNumber = countByAdv[a.adversaryId] > 1
+        return {
+          ...a,
+          displayName: needsNumber ? `${a.name} #${indexByAdv[a.adversaryId]}` : a.name
+        }
+      })
     })
+
+    /** Tous les adversaires sélectionnés ? */
+    const allAdvSelected = computed(() =>
+      aoeAvailableInstances.value.length > 0 &&
+      aoeSelectedIds.value.length === aoeAvailableInstances.value.length
+    )
+
+    /** Tous les PJs sélectionnés ? */
+    const allPcSelected = computed(() =>
+      store.participantPcs.length > 0 &&
+      aoeSelectedPcIds.value.length === store.participantPcs.length
+    )
+
+    /** Total cibles sélectionnées (adversaires + PJs) */
+    const aoeTotalSelected = computed(() =>
+      aoeSelectedIds.value.length + aoeSelectedPcIds.value.length
+    )
 
     function toggleAoeMode() {
       aoeMode.value = !aoeMode.value
       if (aoeMode.value) {
-        // Présélectionner toutes les instances actives
+        // Présélectionner tous les adversaires actifs, aucun PJ
         aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
+        aoeSelectedPcIds.value = []
         aoeDamageAmount.value = null
         aoeDamageType.value = 'hp'
         showReinforcementPanel.value = false
@@ -517,17 +590,43 @@ export default {
       }
     }
 
-    function toggleAoeSelectAll() {
-      if (aoeSelectedIds.value.length === aoeAvailableInstances.value.length) {
+    function toggleAoePcTarget(pcId) {
+      const idx = aoeSelectedPcIds.value.indexOf(pcId)
+      if (idx >= 0) {
+        aoeSelectedPcIds.value.splice(idx, 1)
+      } else {
+        aoeSelectedPcIds.value.push(pcId)
+      }
+    }
+
+    function toggleAoeAllAdv() {
+      if (allAdvSelected.value) {
         aoeSelectedIds.value = []
       } else {
         aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
       }
     }
 
+    function toggleAoeAllPc() {
+      if (allPcSelected.value) {
+        aoeSelectedPcIds.value = []
+      } else {
+        aoeSelectedPcIds.value = store.participantPcs.map((p) => p.id)
+      }
+    }
+
     function applyAoe() {
-      if (aoeSelectedIds.value.length === 0 || !aoeDamageAmount.value || aoeDamageAmount.value <= 0) return
-      store.applyAoeDamage(aoeSelectedIds.value, aoeDamageAmount.value, aoeDamageType.value)
+      if (aoeTotalSelected.value === 0 || !aoeDamageAmount.value || aoeDamageAmount.value <= 0) return
+      // Appliquer aux adversaires
+      if (aoeSelectedIds.value.length > 0) {
+        store.applyAoeDamage(aoeSelectedIds.value, aoeDamageAmount.value, aoeDamageType.value)
+      }
+      // Appliquer aux PJs (seul HP est pertinent pour les PJs)
+      if (aoeSelectedPcIds.value.length > 0) {
+        for (const pcId of aoeSelectedPcIds.value) {
+          store.logPcHit(pcId, aoeDamageAmount.value)
+        }
+      }
       aoeDamageAmount.value = null
     }
 
@@ -693,12 +792,18 @@ export default {
       // AoE
       aoeMode,
       aoeSelectedIds,
+      aoeSelectedPcIds,
       aoeDamageAmount,
       aoeDamageType,
       aoeAvailableInstances,
+      allAdvSelected,
+      allPcSelected,
+      aoeTotalSelected,
       toggleAoeMode,
       toggleAoeTarget,
-      toggleAoeSelectAll,
+      toggleAoePcTarget,
+      toggleAoeAllAdv,
+      toggleAoeAllPc,
       applyAoe,
       // Long press spotlights
       spotLongPressDown,
@@ -1189,16 +1294,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  gap: 4px;
+  padding: var(--space-xs) var(--space-sm);
+  height: 32px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--color-accent-warning);
   background: transparent;
-  font-size: 0.85rem;
+  color: var(--color-accent-warning);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
   cursor: pointer;
   transition: all 0.15s;
   flex-shrink: 0;
   align-self: center;
+  white-space: nowrap;
 }
 
 .enc-live__aoe-btn:hover {
@@ -1259,6 +1368,27 @@ export default {
   gap: var(--space-xs);
 }
 
+.enc-live__aoe-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.enc-live__aoe-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.enc-live__aoe-section-label {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .enc-live__aoe-select-all {
   display: flex;
   align-items: center;
@@ -1297,6 +1427,10 @@ export default {
 .enc-live__aoe-target--selected {
   border-color: var(--color-accent-warning);
   background: rgba(255, 152, 0, 0.06);
+}
+
+.enc-live__aoe-target--pc {
+  border-left: 3px solid var(--color-accent-hope);
 }
 
 .enc-live__aoe-target-name {
