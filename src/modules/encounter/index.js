@@ -25,6 +25,7 @@ export { default as CountdownTracker } from './components/CountdownTracker.vue'
 export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
+export { default as CombatLogDrawer } from './components/CombatLogDrawer.vue'
 
 // Composants — Live (legacy, conservés pour compatibilité)
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'

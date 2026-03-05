@@ -31,7 +31,7 @@ describe('encounter module index', () => {
       'PcSidebarCard', 'AdversaryGroupCard', 'ContextPanel', 'CountdownTracker',
       'FeatureCard', 'EnvironmentPanel',
       'SceneModeSelector', 'AdversaryLiveCard', 'PcLivePanel', 'AdversaryTargetPanel',
-      'SpotlightToggle'
+      'SpotlightToggle', 'CombatLogDrawer'
     ]
     for (const name of liveComponents) {
       expect(mod[name]).toBeDefined()
@@ -56,10 +56,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 30 éléments', async () => {
+  it('exporte exactement 31 éléments', async () => {
     const mod = await import('../index.js')
-    // 2 stores + 8 builder + 11 live + 7 composables + 2 vues = 30
+    // 2 stores + 8 builder + 12 live + 7 composables + 2 vues = 31
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(30)
+    expect(exportNames.length).toBe(31)
   })
 })

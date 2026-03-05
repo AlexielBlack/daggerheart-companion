@@ -92,6 +92,15 @@
             ⏱️
           </button>
           <button
+            class="live__log-btn"
+            :class="{ 'live__log-btn--has': store.encounterLog.length > 0 }"
+            title="Journal de combat"
+            aria-label="Journal de combat"
+            @click="showCombatLog = true"
+          >
+            📜
+          </button>
+          <button
             class="live__end-btn"
             @click="confirmEndEncounter"
           >
@@ -195,6 +204,13 @@
       <ReinforcementDrawer
         v-model="showReinforcementPanel"
         @add="addReinforcement"
+      />
+
+      <!-- ══ Drawer Journal de combat ══ -->
+      <CombatLogDrawer
+        v-model="showCombatLog"
+        :entries="store.encounterLog"
+        @clear="clearCombatLog"
       />
 
       <!-- ══ Modal AoE ══ -->
@@ -396,12 +412,13 @@ import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
 import ContextPanel from '../components/ContextPanel.vue'
 import CountdownTracker from '../components/CountdownTracker.vue'
 import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
+import CombatLogDrawer from '../components/CombatLogDrawer.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import { useHaptic } from '../composables/useHaptic'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, SpotlightToggle },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle },
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
@@ -479,6 +496,14 @@ export default {
     function onUndo() {
       haptic.undo()
       store.undo()
+    }
+
+    // ── Journal de combat ──
+    const showCombatLog = ref(false)
+    function clearCombatLog() {
+      store.combatLog.splice(0)
+      store.encounterLog.splice(0)
+      store.persistState()
     }
 
     // ── AoE ──
@@ -625,6 +650,7 @@ export default {
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition,
       showReinforcementPanel, addReinforcement, onUndo,
+      showCombatLog, clearCombatLog,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetHp, aoeUndoTarget, applyAoe,
       showCountdownBar,
@@ -689,6 +715,9 @@ export default {
 .live__aoe-btn--on { background: rgba(255, 152, 0, 0.2); }
 .live__cd-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); min-width: var(--touch-min); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; touch-action: manipulation; }
 .live__cd-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
+.live__log-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); min-width: var(--touch-min); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; touch-action: manipulation; }
+.live__log-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
+.live__log-btn--has { border-color: var(--color-accent-hope); }
 
 /* ══ Tabs tablette — supprimées, remplacées par le side-sheet ══ */
 .live__tablet-tabs { display: none; }

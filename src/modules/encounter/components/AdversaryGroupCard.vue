@@ -66,7 +66,7 @@
     >
       <!-- Seuils (une seule ligne de référence, pas des boutons) -->
       <div
-        v-if="firstInstance.thresholds"
+        v-if="hasThresholds"
         class="adv-group__thresh-ref"
       >
         <span class="adv-group__thresh-tag adv-group__thresh-tag--minor">
@@ -98,8 +98,32 @@
         </span>
       </div>
 
-      <!-- ══ Instances actives : 2 lignes par instance ══ -->
-      <div class="adv-group__instances">
+      <!-- ══ MINION : grille compacte de coches ══ -->
+      <div
+        v-if="isMinion"
+        class="adv-group__minion-grid"
+      >
+        <button
+          v-for="inst in group.instances"
+          :key="inst.instanceId"
+          class="adv-group__minion-btn"
+          :class="{ 'adv-group__minion-btn--dead': inst.isDefeated }"
+          :aria-label="(inst.isDefeated ? 'Réanimer' : 'Vaincre') + ' minion #' + (group.instances.indexOf(inst) + 1)"
+          :title="inst.isDefeated ? 'Réanimer' : 'Vaincre'"
+          @click.stop="toggleMinion(inst)"
+        >
+          {{ inst.isDefeated ? '💀' : '✦' }}
+        </button>
+        <span class="adv-group__minion-count">
+          {{ group.activeCount }}/{{ group.instances.length }}
+        </span>
+      </div>
+
+      <!-- ══ NON-MINION : instances actives en 2 lignes ══ -->
+      <div
+        v-else
+        class="adv-group__instances"
+      >
         <div
           v-for="inst in activeInstances"
           :key="inst.instanceId"
@@ -153,7 +177,7 @@
 
             <!-- Ligne 2 : boutons seuils élargis + heal -->
             <div
-              v-if="firstInstance.thresholds"
+              v-if="hasThresholds"
               class="adv-group__inst-row2"
             >
               <button
@@ -309,6 +333,15 @@ export default {
     firstInstance() {
       return this.group.instances[0] || {}
     },
+    /** Indique si ce groupe est de type Minion (layout compact) */
+    isMinion() {
+      return this.group.type === 'Minion'
+    },
+    /** Indique si les seuils de dégâts sont définis (pas null) */
+    hasThresholds() {
+      const t = this.firstInstance.thresholds
+      return t && t.major !== null && t.severe !== null
+    },
     conditions() {
       return LIVE_CONDITIONS
     },
@@ -380,6 +413,14 @@ export default {
     confirmSwipeDefeat(instanceId) {
       this.swipedId = null
       this.$emit('defeat', instanceId)
+    },
+    /** Toggle minion vivant/mort — tap unique */
+    toggleMinion(inst) {
+      if (inst.isDefeated) {
+        this.$emit('revive', inst.instanceId)
+      } else {
+        this.$emit('defeat', inst.instanceId)
+      }
     }
   }
 }
@@ -522,6 +563,51 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
+}
+
+/* ══ Minion : grille compacte de coches ══ */
+
+.adv-group__minion-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  align-items: center;
+}
+
+.adv-group__minion-btn {
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(76, 175, 80, 0.12);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+}
+
+.adv-group__minion-btn:active { transform: scale(0.9); }
+.adv-group__minion-btn:hover:not(.adv-group__minion-btn--dead) { background: rgba(76, 175, 80, 0.25); border-color: var(--color-accent-success); }
+
+.adv-group__minion-btn--dead {
+  background: rgba(244, 67, 54, 0.1);
+  border-color: transparent;
+  opacity: 0.5;
+}
+
+.adv-group__minion-btn--dead:hover { opacity: 0.7; background: rgba(244, 67, 54, 0.15); }
+
+.adv-group__minion-count {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .adv-group__inst {
