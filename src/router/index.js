@@ -66,6 +66,12 @@ const routes = [
     meta: { title: 'Équipement', module: 'equipment', parent: 'characters' }
   },
   {
+    path: '/npcs',
+    name: 'npcs',
+    component: () => import('@modules/npcs/views/NpcManager.vue'),
+    meta: { title: 'PNJs', module: 'npcs' }
+  },
+  {
     path: '/dice',
     name: 'dice',
     component: () => import('@modules/dice/views/DiceRoller.vue'),

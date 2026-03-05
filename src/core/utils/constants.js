@@ -88,6 +88,7 @@ export const NAV_ITEMS = [
   { id: 'adversaries', label: 'Adversaires', icon: '⚔️', route: '/adversaries' },
   { id: 'environments', label: 'Environnements', icon: '🌍', route: '/environments' },
   { id: 'encounters', label: 'Rencontres', icon: '🗺️', route: '/encounters' },
+  { id: 'npcs', label: 'PNJs', icon: '🎭', route: '/npcs' },
   {
     id: 'characters',
     label: 'Personnages',
