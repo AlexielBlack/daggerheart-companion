@@ -97,6 +97,7 @@
           :locations="store.allLocations"
           :homebrew-classes="homebrewClasses"
           :homebrew-domains="homebrewDomains"
+          :all-adversaries="allAdversaries"
           @save="handleSave"
           @delete="handleDelete"
         />
@@ -126,6 +127,7 @@ import { ref, computed } from 'vue'
 import { useNpcStore } from '../stores/npcStore.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
 import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
+import { useAdversaryStore } from '@modules/adversaries/stores/adversaryStore.js'
 import NpcCard from '../components/NpcCard.vue'
 import NpcFilters from '../components/NpcFilters.vue'
 import NpcSheet from '../components/NpcSheet.vue'
@@ -143,6 +145,7 @@ export default {
     const store = useNpcStore()
     const classHomebrewStore = useClassHomebrewStore()
     const domainHomebrewStore = useDomainHomebrewStore()
+    const adversaryStore = useAdversaryStore()
     const isCreating = ref(false)
     const importMessage = ref('')
 
@@ -174,6 +177,9 @@ export default {
         source: 'custom'
       }))
     )
+
+    // Tous les adversaires pour le combat panel
+    const allAdversaries = computed(() => adversaryStore.allItems)
 
     // PNJ actuellement affiché dans la fiche
     const currentNpc = computed(() => {
@@ -260,6 +266,7 @@ export default {
       importMessage,
       homebrewClasses,
       homebrewDomains,
+      allAdversaries,
       handleSelect,
       startCreate,
       closeSheet,

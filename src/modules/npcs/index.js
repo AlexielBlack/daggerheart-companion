@@ -45,6 +45,7 @@ export { default as NpcCard } from './components/NpcCard.vue'
 export { default as NpcFilters } from './components/NpcFilters.vue'
 export { default as NpcSheet } from './components/NpcSheet.vue'
 export { default as NpcBuildPanel } from './components/NpcBuildPanel.vue'
+export { default as NpcCombatPanel } from './components/NpcCombatPanel.vue'
 
 // Vue
 export { default as NpcManager } from './views/NpcManager.vue'

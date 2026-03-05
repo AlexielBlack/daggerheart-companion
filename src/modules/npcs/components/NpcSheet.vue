@@ -197,6 +197,15 @@
       @update:domain-cards="form.domainCards = $event"
     />
 
+    <!-- ── Combat ── -->
+    <NpcCombatPanel
+      :combat-enabled="form.combatEnabled"
+      :linked-adversary-id="form.linkedAdversaryId"
+      :all-adversaries="allAdversaries"
+      @update:combat-enabled="form.combatEnabled = $event"
+      @update:linked-adversary-id="form.linkedAdversaryId = $event"
+    />
+
     <!-- ── Relations PJ ── -->
     <fieldset class="npc-sheet__section">
       <legend>Relations avec les PJs</legend>
@@ -367,11 +376,12 @@ import {
 } from '../constants.js'
 
 import NpcBuildPanel from './NpcBuildPanel.vue'
+import NpcCombatPanel from './NpcCombatPanel.vue'
 
 export default {
   name: 'NpcSheet',
 
-  components: { NpcBuildPanel },
+  components: { NpcBuildPanel, NpcCombatPanel },
 
   props: {
     /** PNJ existant à éditer, ou null pour un nouveau */
@@ -385,7 +395,9 @@ export default {
     /** Classes homebrew */
     homebrewClasses: { type: Array, default: () => [] },
     /** Domaines homebrew */
-    homebrewDomains: { type: Array, default: () => [] }
+    homebrewDomains: { type: Array, default: () => [] },
+    /** Tous les adversaires (SRD + homebrew) */
+    allAdversaries: { type: Array, default: () => [] }
   },
 
   emits: ['save', 'delete'],
