@@ -607,7 +607,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         if (actual > 0) {
           const entry = {
             action: 'damage', pcId: activePcId.value || null, pcName: pc ? pc.name : '?',
-            instanceId, advName: adv.name, type: 'hp', amount: actual, timestamp: Date.now()
+            instanceId, advName: adv.name, type: 'hp', amount: actual, isAoE: true, timestamp: Date.now()
           }
           combatLog.value.push(entry)
           encounterLog.value.push({ ...entry })
@@ -627,12 +627,39 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         if (actual > 0) {
           const entry = {
             action: 'damage', pcId: activePcId.value || null, pcName: pc ? pc.name : '?',
-            instanceId, advName: adv.name, type: 'stress', amount: actual, timestamp: Date.now()
+            instanceId, advName: adv.name, type: 'stress', amount: actual, isAoE: true, timestamp: Date.now()
           }
           combatLog.value.push(entry)
           encounterLog.value.push({ ...entry })
         }
       }
+    }
+    persistState()
+  }
+
+  /**
+   * Applique des dégâts AoE à plusieurs PJs en un seul batch (un seul pushUndo).
+   * L'attaquant est l'adversaire actif.
+   */
+  function applyAoeDamageToPcs(pcIds, amount) {
+    if (!pcIds.length || amount <= 0) return
+    pushUndo()
+    const adv = liveAdversaries.value.find((a) => a.instanceId === activeAdversaryId.value)
+    for (const pcId of pcIds) {
+      const pc = participantPcs.value.find((p) => p.id === pcId)
+      if (!pc) continue
+      const entry = {
+        action: 'pc_hit',
+        pcId,
+        pcName: pc.name,
+        instanceId: adv ? adv.instanceId : null,
+        advName: adv ? adv.name : '?',
+        hpMarked: amount,
+        isAoE: true,
+        timestamp: Date.now()
+      }
+      combatLog.value.push(entry)
+      encounterLog.value.push({ ...entry })
     }
     persistState()
   }
@@ -785,6 +812,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     defeatAdversary, reviveAdversary,
     addReinforcement, setAdversaryNotes,
     applyAoeDamage,
+    applyAoeDamageToPcs,
 
     // Actions — Combat log & conditions (composable)
     removeCombatLogEntry,

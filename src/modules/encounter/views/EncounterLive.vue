@@ -154,16 +154,6 @@
           >
             +
           </button>
-          <!-- Bouton AoE -->
-          <button
-            class="enc-live__aoe-btn"
-            :class="{ 'enc-live__aoe-btn--open': aoeMode }"
-            title="Dégâts de zone (AoE)"
-            aria-label="Dégâts de zone"
-            @click="toggleAoeMode()"
-          >
-            💥 AoE
-          </button>
         </div>
       </div>
 
@@ -198,6 +188,44 @@
         </div>
       </div>
 
+      <!-- ── Battlefield — panels contextuels ── -->
+      <div class="enc-live__battlefield">
+        <PcLivePanel
+          v-if="store.activePc"
+          :pc="store.activePc"
+          :is-actor="isPcActor"
+          :scene-mode="store.sceneMode"
+          :primary-features="pcPrimary"
+          :secondary-features="pcSecondary"
+          :passive-features="pcPassive"
+          :reaction-features="pcReaction"
+          :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
+        />
+
+        <AdversaryTargetPanel
+          v-if="store.activeAdversary"
+          :adversary="store.activeAdversary"
+          :siblings="store.activeAdversarySiblings"
+          :scene-mode="store.sceneMode"
+          :is-actor="!isPcActor"
+          :pcs="store.participantPcs"
+          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
+        />
+
+        <!-- Bouton AoE — dans le panneau attaquant -->
+        <div class="enc-live__aoe-zone enc-live__panel--first">
+          <button
+            class="enc-live__aoe-btn"
+            :class="{ 'enc-live__aoe-btn--open': aoeMode }"
+            title="Dégâts de zone (AoE)"
+            aria-label="Dégâts de zone"
+            @click="toggleAoeMode()"
+          >
+            💥 AoE
+          </button>
+        </div>
+      </div>
+
       <!-- ── Panneau AoE (dégâts de zone) ── -->
       <div
         v-if="aoeMode"
@@ -205,6 +233,9 @@
       >
         <div class="enc-live__aoe-header">
           <span class="enc-live__aoe-title">💥 Dégâts de zone</span>
+          <span class="enc-live__aoe-attacker">
+            {{ aoeAttackerName }} attaque
+          </span>
           <button
             class="enc-live__aoe-close"
             aria-label="Fermer le mode AoE"
@@ -312,31 +343,6 @@
             Appliquer ({{ aoeTotalSelected }})
           </button>
         </div>
-      </div>
-
-      <!-- ── Battlefield — panels contextuels ── -->
-      <div class="enc-live__battlefield">
-        <PcLivePanel
-          v-if="store.activePc"
-          :pc="store.activePc"
-          :is-actor="isPcActor"
-          :scene-mode="store.sceneMode"
-          :primary-features="pcPrimary"
-          :secondary-features="pcSecondary"
-          :passive-features="pcPassive"
-          :reaction-features="pcReaction"
-          :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
-        />
-
-        <AdversaryTargetPanel
-          v-if="store.activeAdversary"
-          :adversary="store.activeAdversary"
-          :siblings="store.activeAdversarySiblings"
-          :scene-mode="store.sceneMode"
-          :is-actor="!isPcActor"
-          :pcs="store.participantPcs"
-          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
-        />
       </div>
 
       <!-- ── Résumé combat ── -->
@@ -569,6 +575,14 @@ export default {
       aoeSelectedIds.value.length + aoeSelectedPcIds.value.length
     )
 
+    /** Nom de l'attaquant AoE selon le mode de scène */
+    const aoeAttackerName = computed(() => {
+      if (isPcActor.value) {
+        return store.activePc ? store.activePc.name : '?'
+      }
+      return store.activeAdversary ? store.activeAdversary.name : '?'
+    })
+
     function toggleAoeMode() {
       aoeMode.value = !aoeMode.value
       if (aoeMode.value) {
@@ -617,15 +631,13 @@ export default {
 
     function applyAoe() {
       if (aoeTotalSelected.value === 0 || !aoeDamageAmount.value || aoeDamageAmount.value <= 0) return
-      // Appliquer aux adversaires
+      // Appliquer aux adversaires (store gère le log avec isAoE)
       if (aoeSelectedIds.value.length > 0) {
         store.applyAoeDamage(aoeSelectedIds.value, aoeDamageAmount.value, aoeDamageType.value)
       }
-      // Appliquer aux PJs (seul HP est pertinent pour les PJs)
+      // Appliquer aux PJs — log batché avec contexte attaquant correct
       if (aoeSelectedPcIds.value.length > 0) {
-        for (const pcId of aoeSelectedPcIds.value) {
-          store.logPcHit(pcId, aoeDamageAmount.value)
-        }
+        store.applyAoeDamageToPcs(aoeSelectedPcIds.value, aoeDamageAmount.value)
       }
       aoeDamageAmount.value = null
     }
@@ -799,6 +811,7 @@ export default {
       allAdvSelected,
       allPcSelected,
       aoeTotalSelected,
+      aoeAttackerName,
       toggleAoeMode,
       toggleAoeTarget,
       toggleAoePcTarget,
@@ -1290,6 +1303,12 @@ export default {
 
 /* ── Bouton AoE ── */
 
+.enc-live__aoe-zone {
+  display: flex;
+  align-items: flex-start;
+  padding-top: var(--space-xs);
+}
+
 .enc-live__aoe-btn {
   display: flex;
   align-items: center;
@@ -1345,6 +1364,14 @@ export default {
   color: var(--color-accent-warning);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+.enc-live__aoe-attacker {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-left: auto;
+  margin-right: var(--space-sm);
 }
 
 .enc-live__aoe-close {
