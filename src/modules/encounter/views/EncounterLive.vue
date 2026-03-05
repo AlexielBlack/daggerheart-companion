@@ -28,15 +28,15 @@
         <button
           class="live__mode-btn"
           :class="'live__mode-btn--' + store.sceneMode"
-          :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
-          aria-label="Inverser le projecteur"
+          :title="currentModeLabel + ' — Tab pour changer de mode'"
+          aria-label="Changer de mode de scène"
           @click="store.swapSpotlight()"
         >
-          {{ isPcActor ? '⚔️ PJ Attaque' : '💀 MJ Attaque' }}
+          {{ currentModeLabel }}
         </button>
 
         <span
-          v-if="store.adversaryCombatSummary.count > 0"
+          v-if="store.sceneMode !== 'social' && store.adversaryCombatSummary.count > 0"
           class="live__combat-sum"
         >
           {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
@@ -63,7 +63,9 @@
       <!-- ══ Grille 3 colonnes ══ -->
       <div
         class="live__grid"
-        :class="{ 'live__grid--social': !hasAdversaries }"
+        :class="{
+          'live__grid--social': isSocialMode && !hasAdversaries
+        }"
       >
         <!-- Colonne PJ -->
         <div class="live__col-pc">
@@ -387,6 +389,13 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
+    const isSocialMode = computed(() => store.sceneMode === 'social')
+
+    const currentModeLabel = computed(() => {
+      const meta = SCENE_MODE_META[store.sceneMode]
+      return meta ? meta.emoji + ' ' + meta.label : '⚔️ PJ Attaque'
+    })
+
     const hasAdversaries = computed(() => store.liveAdversaries.length > 0)
 
     // ── Sélection ──
@@ -559,7 +568,7 @@ export default {
     onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
     return {
-      store, isPcActor, hasAdversaries,
+      store, isPcActor, isSocialMode, currentModeLabel, hasAdversaries,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -601,6 +610,7 @@ export default {
 .live { display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s; }
 .live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
 .live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
+.live--social { background-color: rgba(8, 145, 178, 0.04); }
 .live__inactive { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); padding: var(--space-xl); min-height: 60vh; color: var(--color-text-muted); }
 .live__go-builder { padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--color-accent-hope); background: transparent; color: var(--color-accent-hope); cursor: pointer; }
 
@@ -611,6 +621,7 @@ export default {
 .live__mode-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); }
 .live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
 .live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
+.live__mode-btn--social { color: #0891b2; border-color: #0891b2; }
 .live__mode-btn:hover { background: var(--color-bg-elevated); }
 .live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-left: auto; }
 .live__undo-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; }

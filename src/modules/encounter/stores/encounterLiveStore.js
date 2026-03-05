@@ -26,6 +26,7 @@ import { getClassById } from '@data/classes'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
+  SCENE_MODE_SOCIAL,
   SCENE_MODE_META,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM,
@@ -387,6 +388,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (sceneMode.value === SCENE_MODE_PC_ATTACK) {
       sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
       spotlight.value = SPOTLIGHT_GM
+    } else if (sceneMode.value === SCENE_MODE_ADVERSARY_ATTACK) {
+      sceneMode.value = SCENE_MODE_SOCIAL
+      spotlight.value = SPOTLIGHT_PC
     } else {
       sceneMode.value = SCENE_MODE_PC_ATTACK
       spotlight.value = SPOTLIGHT_PC

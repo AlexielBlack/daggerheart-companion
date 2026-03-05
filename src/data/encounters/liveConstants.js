@@ -9,14 +9,16 @@
 //  Modes de scène
 // ═══════════════════════════════════════════════════════════
 
-/** Identifiants des 2 modes de scène */
+/** Identifiants des 3 modes de scène */
 export const SCENE_MODE_PC_ATTACK = 'pcAttack'
 export const SCENE_MODE_ADVERSARY_ATTACK = 'adversaryAttack'
+export const SCENE_MODE_SOCIAL = 'social'
 
 /** Liste des modes actifs pour itération / validation */
 export const SCENE_MODES = [
   SCENE_MODE_PC_ATTACK,
-  SCENE_MODE_ADVERSARY_ATTACK
+  SCENE_MODE_ADVERSARY_ATTACK,
+  SCENE_MODE_SOCIAL
 ]
 
 /** Métadonnées d'affichage et de filtrage par mode */
@@ -45,6 +47,18 @@ export const SCENE_MODE_META = {
     secondaryTags: ['offensif', 'utilitaire'],
     primaryActivation: ['reaction'],
     actorRole: 'adversary',
+    targetRole: 'pc'
+  },
+  [SCENE_MODE_SOCIAL]: {
+    label: 'Social',
+    emoji: '🗣️',
+    color: '#0891b2',
+    description: 'Scène sociale — négociation, persuasion, interaction',
+    primaryTags: ['social'],
+    secondaryTags: ['utilitaire', 'défensif'],
+    primaryActivation: ['action'],
+    /** En mode social, le PJ a le projecteur */
+    actorRole: 'pc',
     targetRole: 'pc'
   }
 }

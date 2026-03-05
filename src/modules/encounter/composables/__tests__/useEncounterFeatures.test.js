@@ -19,6 +19,7 @@ import {
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
+  SCENE_MODE_SOCIAL,
   SCENE_MODE_META
 } from '@data/encounters/liveConstants'
 
@@ -467,5 +468,49 @@ describe('classifyAdversaryFeatures', () => {
     const pcTurn = classifyAdversaryFeatures(shadow, SCENE_MODE_PC_ATTACK)
     expect(pcTurn.actionFeatures).toHaveLength(0)
     expect(pcTurn.passiveFeatures).toHaveLength(1)
+  })
+
+  it('en mode social, masque les actions adversaire (même tour PJ)', () => {
+    const result = classifyAdversaryFeatures(MOCK_ADVERSARY, SCENE_MODE_SOCIAL)
+    expect(result.actionFeatures).toHaveLength(0)
+    expect(result.passiveFeatures).toHaveLength(1)
+    expect(result.reactionFeatures).toHaveLength(1)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+//  Mode social — scoring de priorité
+// ═══════════════════════════════════════════════════════════
+
+describe('computePriorityScore — mode social', () => {
+  const socialMeta = SCENE_MODE_META[SCENE_MODE_SOCIAL]
+
+  it('feature social+action score le plus haut', () => {
+    const social = normalizeFeature(
+      { name: 'Charm', tags: ['social'], activationType: 'action' },
+      'class', 'Test'
+    )
+    const offensive = normalizeFeature(
+      { name: 'Strike', tags: ['offensif'], activationType: 'action' },
+      'class', 'Test'
+    )
+    expect(computePriorityScore(social, socialMeta)).toBeGreaterThan(
+      computePriorityScore(offensive, socialMeta)
+    )
+  })
+
+  it('feature utilitaire est secondaire en mode social', () => {
+    const util = normalizeFeature(
+      { name: 'Toolkit', tags: ['utilitaire'], activationType: 'action' },
+      'class', 'Test'
+    )
+    const score = computePriorityScore(util, socialMeta)
+    expect(score).toBeGreaterThan(0)
+    // Utilitaire < social en priorité
+    const social = normalizeFeature(
+      { name: 'Charm', tags: ['social'], activationType: 'action' },
+      'class', 'Test'
+    )
+    expect(computePriorityScore(social, socialMeta)).toBeGreaterThan(score)
   })
 })

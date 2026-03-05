@@ -7,6 +7,7 @@ import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
+  SCENE_MODE_SOCIAL,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM
 } from '@data/encounters/liveConstants'
@@ -152,8 +153,8 @@ describe('encounterLiveStore', () => {
       expect(store.currentSceneModeMeta.primaryTags).toContain('défensif')
     })
 
-    it('supporte les 2 modes actifs', () => {
-      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK]
+    it('supporte les 3 modes actifs', () => {
+      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK, SCENE_MODE_SOCIAL]
       for (const mode of modes) {
         store.setSceneMode(mode)
         expect(store.sceneMode).toBe(mode)
@@ -679,10 +680,12 @@ describe('encounterLiveStore', () => {
       expect(store.sceneMode).toBe(modeBefore)
     })
 
-    it('swapSpotlight reste le seul moyen d\'inverser', () => {
+    it('swapSpotlight cycle entre les 3 modes', () => {
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
       store.swapSpotlight()
       expect(store.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
+      store.swapSpotlight()
+      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
       store.swapSpotlight()
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
     })

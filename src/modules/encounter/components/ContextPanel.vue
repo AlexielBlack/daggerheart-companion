@@ -346,6 +346,7 @@ export default {
       const tag = meta.primaryTags[0]
       if (tag === 'offensif') return '⚔️ Offensif'
       if (tag === 'défensif') return '🛡️ Défensif'
+      if (tag === 'social') return '🗣️ Social'
       return '⚔️ Actions'
     })
 
