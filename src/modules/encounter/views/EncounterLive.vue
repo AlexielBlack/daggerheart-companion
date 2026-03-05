@@ -59,7 +59,6 @@
               title="À terre"
             >💀</span>
             <span class="enc-live__chip-name">{{ pc.name }}</span>
-            <span class="enc-live__chip-sub">{{ pc.className }}</span>
             <button
               class="enc-live__spot-btn"
               :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] >= 1 }"
