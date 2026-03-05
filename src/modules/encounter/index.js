@@ -27,6 +27,9 @@ export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 
 // Composables
 export { useEncounterFeatures, classifyAdversaryFeatures } from './composables/useEncounterFeatures'
+export { useUndoStack } from './composables/useUndoStack'
+export { useCombatLog } from './composables/useCombatLog'
+export { useSpotlights } from './composables/useSpotlights'
 
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'

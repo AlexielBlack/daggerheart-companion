@@ -41,6 +41,9 @@ describe('encounter module index', () => {
     const mod = await import('../index.js')
     expect(typeof mod.useEncounterFeatures).toBe('function')
     expect(typeof mod.classifyAdversaryFeatures).toBe('function')
+    expect(typeof mod.useUndoStack).toBe('function')
+    expect(typeof mod.useCombatLog).toBe('function')
+    expect(typeof mod.useSpotlights).toBe('function')
   })
 
   it('exporte les vues', async () => {
@@ -49,10 +52,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 20 éléments', async () => {
+  it('exporte exactement 23 éléments', async () => {
     const mod = await import('../index.js')
-    // 2 stores + 8 builder + 6 live + 2 composables + 2 vues = 20
+    // 2 stores + 8 builder + 6 live + 5 composables + 2 vues = 23
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(20)
+    expect(exportNames.length).toBe(23)
   })
 })
