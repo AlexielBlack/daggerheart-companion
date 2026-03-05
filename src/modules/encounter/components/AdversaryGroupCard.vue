@@ -48,6 +48,17 @@
         {{ firstInstance.difficulty }}
       </div>
 
+      <!-- Marqueur "a agi ce tour" -->
+      <button
+        class="adv-group__acted-btn"
+        :class="{ 'adv-group__acted-btn--on': hasActed }"
+        :title="hasActed ? 'A agi — cliquer pour annuler' : 'N\'a pas agi — cliquer pour marquer'"
+        :aria-label="hasActed ? 'A agi ce tour' : 'N\'a pas agi'"
+        @click.stop="$emit('toggle-acted', group.adversaryId)"
+      >
+        {{ hasActed ? '●' : '○' }}
+      </button>
+
       <!-- Bouton collapse dédié -->
       <button
         class="adv-group__collapse-btn"
@@ -77,6 +88,36 @@
         </span>
         <span class="adv-group__thresh-tag adv-group__thresh-tag--severe">
           ≥ {{ firstInstance.thresholds.severe }} → 3HP
+        </span>
+      </div>
+
+      <!-- Calculateur de seuil : le MJ tape les dégâts, le bon tier s'allume -->
+      <div
+        v-if="hasThresholds && group.activeCount > 0"
+        class="adv-group__dmg-calc"
+      >
+        <input
+          v-model="dmgInput"
+          class="adv-group__dmg-input"
+          type="number"
+          inputmode="numeric"
+          min="0"
+          placeholder="Dmg?"
+          aria-label="Dégâts pour calcul de seuil"
+          @click.stop
+        />
+        <span
+          class="adv-group__dmg-result"
+          :class="{
+            'adv-group__dmg-result--1': suggestedTier === 1,
+            'adv-group__dmg-result--2': suggestedTier === 2,
+            'adv-group__dmg-result--3': suggestedTier === 3
+          }"
+        >
+          <template v-if="suggestedTier === 1">→ 1HP</template>
+          <template v-else-if="suggestedTier === 2">→ 2HP</template>
+          <template v-else-if="suggestedTier === 3">→ 3HP</template>
+          <template v-else>&nbsp;</template>
         </span>
       </div>
 
@@ -182,25 +223,28 @@
             >
               <button
                 class="adv-group__thresh-btn adv-group__thresh-btn--minor"
+                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 1 }"
                 :title="'Mineur — marquer 1 HP'"
                 :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
+                @click.stop="applyDamageAndClear(inst.instanceId, 1)"
               >
                 1
               </button>
               <button
                 class="adv-group__thresh-btn adv-group__thresh-btn--major"
+                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 2 }"
                 :title="'Majeur — marquer 2 HP'"
                 :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
+                @click.stop="applyDamageAndClear(inst.instanceId, 2)"
               >
                 2
               </button>
               <button
                 class="adv-group__thresh-btn adv-group__thresh-btn--severe"
+                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 3 }"
                 :title="'Sévère — marquer 3 HP'"
                 :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
+                @click.stop="applyDamageAndClear(inst.instanceId, 3)"
               >
                 3
               </button>
@@ -311,13 +355,14 @@ export default {
   name: 'AdversaryGroupCard',
   props: {
     group: { type: Object, required: true },
-    isSelected: { type: Boolean, default: false }
+    isSelected: { type: Boolean, default: false },
+    hasActed: { type: Boolean, default: false }
   },
   emits: [
     'select-group',
     'apply-damage', 'mark-stress', 'clear-stress',
     'clear-hp', 'defeat', 'revive',
-    'toggle-condition'
+    'toggle-condition', 'toggle-acted'
   ],
   data() {
     return {
@@ -326,7 +371,8 @@ export default {
       swipedId: null,
       touchStartX: 0,
       touchStartY: 0,
-      touchInstId: null
+      touchInstId: null,
+      dmgInput: ''
     }
   },
   computed: {
@@ -366,6 +412,18 @@ export default {
       return this.group.instances
         .map((inst, idx) => ({ ...inst, originalIdx: idx }))
         .filter((inst) => inst.isDefeated)
+    },
+    /**
+     * Tier suggéré (1/2/3) basé sur le dégât saisi vs seuils.
+     * Retourne 0 si aucun dégât saisi ou pas de seuils.
+     */
+    suggestedTier() {
+      const dmg = parseInt(this.dmgInput)
+      if (!dmg || dmg <= 0 || !this.hasThresholds) return 0
+      const t = this.firstInstance.thresholds
+      if (dmg >= t.severe) return 3
+      if (dmg >= t.major) return 2
+      return 1
     }
   },
   watch: {
@@ -421,6 +479,11 @@ export default {
       } else {
         this.$emit('defeat', inst.instanceId)
       }
+    },
+    /** Applique les dégâts et vide le champ calculateur */
+    applyDamageAndClear(instanceId, hpToMark) {
+      this.$emit('apply-damage', { instanceId, hpToMark })
+      this.dmgInput = ''
     }
   }
 }
@@ -512,6 +575,31 @@ export default {
 
 .adv-group__collapse-btn:hover { background: var(--color-bg-elevated); }
 
+/* ── Marqueur "a agi" ── */
+
+.adv-group__acted-btn {
+  min-width: 2rem;
+  min-height: var(--touch-min);
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  touch-action: manipulation;
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.adv-group__acted-btn--on {
+  color: var(--color-accent-success);
+}
+
+.adv-group__acted-btn:hover { background: var(--color-bg-elevated); }
+
 /* ── Body ── */
 
 .adv-group__body {
@@ -539,6 +627,54 @@ export default {
 .adv-group__thresh-tag--minor { background: rgba(76, 175, 80, 0.1); }
 .adv-group__thresh-tag--major { background: rgba(255, 152, 0, 0.1); }
 .adv-group__thresh-tag--severe { background: rgba(244, 67, 54, 0.1); }
+
+/* ── Calculateur de seuil ── */
+
+.adv-group__dmg-calc {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.adv-group__dmg-input {
+  width: 4rem;
+  padding: var(--space-xs);
+  min-height: var(--touch-min);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-input);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+
+.adv-group__dmg-input:focus {
+  outline: none;
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.2);
+}
+
+.adv-group__dmg-input::placeholder {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.adv-group__dmg-result {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  min-width: 3rem;
+  transition: color 0.15s;
+}
+
+.adv-group__dmg-result--1 { color: var(--color-accent-success); }
+.adv-group__dmg-result--2 { color: var(--color-accent-warning); }
+.adv-group__dmg-result--3 { color: var(--color-accent-danger); }
 
 /* ── Attaque standard ── */
 
@@ -736,6 +872,13 @@ export default {
 .adv-group__thresh-btn--minor { background: rgba(76, 175, 80, 0.25); color: var(--color-accent-success); }
 .adv-group__thresh-btn--major { background: rgba(255, 152, 0, 0.25); color: var(--color-accent-warning); }
 .adv-group__thresh-btn--severe { background: rgba(244, 67, 54, 0.25); color: var(--color-accent-danger); }
+
+/* Surbrillance du seuil suggéré par le calculateur */
+.adv-group__thresh-btn--suggested {
+  box-shadow: 0 0 0 2px currentColor;
+  filter: brightness(1.15);
+  transform: scale(1.05);
+}
 
 /* Actions compactes */
 

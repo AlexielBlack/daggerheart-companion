@@ -104,6 +104,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Cross-projecteur ──────────────────────────────────
   const lastClickCategory = ref('pc')
 
+  // ── Marqueur "a agi ce tour" par groupe adversaire ────
+  /** Clé = adversaryId, valeur = true si le groupe a agi pendant ce spotlight MJ */
+  const advActedThisTurn = ref({})
+
   // ── Countdowns ─────────────────────────────────────────
   /** Liste des countdowns actifs { id, name, type, startValue, current, loop, loopDelta } */
   const countdowns = ref([])
@@ -381,6 +385,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (isValidSceneMode(mode)) {
       sceneMode.value = mode
       spotlight.value = mode === SCENE_MODE_PC_ATTACK ? SPOTLIGHT_PC : SPOTLIGHT_GM
+      advActedThisTurn.value = {}
       persistState()
     }
   }
@@ -421,7 +426,22 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       sceneMode.value = SCENE_MODE_PC_ATTACK
       spotlight.value = SPOTLIGHT_PC
     }
+    advActedThisTurn.value = {}
     persistState()
+  }
+
+  /**
+   * Toggle le marqueur "a agi ce tour" pour un groupe adversaire.
+   * @param {string} adversaryId
+   */
+  function toggleAdvActed(adversaryId) {
+    if (advActedThisTurn.value[adversaryId]) {
+      const copy = { ...advActedThisTurn.value }
+      delete copy[adversaryId]
+      advActedThisTurn.value = copy
+    } else {
+      advActedThisTurn.value = { ...advActedThisTurn.value, [adversaryId]: true }
+    }
   }
 
   function setActivePc(pcId) {
@@ -950,6 +970,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     participantPcIds, activePcId,
     liveAdversaries, activeAdversaryId,
     environmentId, lastClickCategory, countdowns,
+    advActedThisTurn,
     pcSpotlights, advSpotlights,
     combatLog, encounterLog, pcDownStatus, pcConditions,
 
@@ -967,7 +988,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Actions — Mode & Projecteur
     setSceneMode, setPlayerSpotlight, setGmSpotlight, toggleSpotlight,
     setActivePc, setActiveAdversary, setActiveAdversaryGroup,
-    selectPc, selectAdversaryGroup, swapSpotlight,
+    selectPc, selectAdversaryGroup, swapSpotlight, toggleAdvActed,
 
     // Actions — Adversaire live (HP/Stress/Défaite)
     markAdversaryHP, clearAdversaryHP,

@@ -156,11 +156,29 @@
           v-if="hasAdversaries"
           class="live__col-adv"
         >
+          <!-- Bandeau évasions PJ (visible en mode adversaryAttack) -->
+          <div
+            v-if="store.sceneMode === 'adversaryAttack' && store.participantPcs.length > 0"
+            class="live__evasion-bar"
+            aria-label="Évasions des PJ"
+          >
+            <span class="live__evasion-label">Évasions :</span>
+            <span
+              v-for="pc in store.participantPcs"
+              :key="pc.id"
+              class="live__evasion-chip"
+              :class="{ 'live__evasion-chip--selected': store.activePcId === pc.id }"
+            >
+              {{ pc.name }} <strong>{{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</strong>
+            </span>
+          </div>
+
           <AdversaryGroupCard
             v-for="group in store.groupedAdversaries"
             :key="group.adversaryId"
             :group="group"
             :is-selected="store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId"
+            :has-acted="!!store.advActedThisTurn[group.adversaryId]"
             @select-group="onSelectAdversaryGroup"
             @apply-damage="onApplyDamage"
             @mark-stress="onMarkStress"
@@ -169,6 +187,7 @@
             @defeat="onDefeat"
             @revive="onRevive"
             @toggle-condition="onToggleAdvCondition"
+            @toggle-acted="onToggleActed"
           />
         </div>
 
@@ -487,6 +506,12 @@ export default {
       store.toggleAdversaryCondition(instanceId, conditionId)
     }
 
+    // ── Marqueur "a agi" ──
+    function onToggleActed(adversaryId) {
+      haptic.tap()
+      store.toggleAdvActed(adversaryId)
+    }
+
     // ── Renforts ──
     const showReinforcementPanel = ref(false)
 
@@ -648,7 +673,7 @@ export default {
       pcAllFeatures: pcFeatures.allFeatures,
       onSelectPc, onSelectAdversaryGroup, onLongPressPc,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
-      onTogglePcCondition, onToggleAdvCondition,
+      onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       showReinforcementPanel, addReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
@@ -726,6 +751,45 @@ export default {
 .live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
+
+/* ══ Bandeau évasions PJ (mode adversaryAttack) ══ */
+.live__evasion-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(200, 75, 49, 0.06);
+  border: 1px solid rgba(200, 75, 49, 0.15);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.live__evasion-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.live__evasion-chip {
+  font-size: var(--font-size-xs);
+  padding: 2px var(--space-sm);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.live__evasion-chip strong {
+  color: var(--color-accent-hope);
+  font-variant-numeric: tabular-nums;
+}
+
+.live__evasion-chip--selected {
+  background: rgba(83, 168, 182, 0.15);
+  box-shadow: 0 0 0 1px var(--color-accent-hope);
+}
 
 /* Wrapper contexte — en desktop, simple colonne de grille */
 .live__col-ctx-wrapper { display: contents; }
