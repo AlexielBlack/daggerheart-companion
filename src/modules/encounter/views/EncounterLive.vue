@@ -190,31 +190,14 @@
 
       <!-- ── Battlefield — panels contextuels ── -->
       <div class="enc-live__battlefield">
-        <PcLivePanel
+        <!-- Wrapper PJ -->
+        <div
           v-if="store.activePc"
-          :pc="store.activePc"
-          :is-actor="isPcActor"
-          :scene-mode="store.sceneMode"
-          :primary-features="pcPrimary"
-          :secondary-features="pcSecondary"
-          :passive-features="pcPassive"
-          :reaction-features="pcReaction"
+          class="enc-live__panel-wrap"
           :class="{ 'enc-live__panel--first': isPcActor, 'enc-live__panel--second': !isPcActor }"
-        />
-
-        <AdversaryTargetPanel
-          v-if="store.activeAdversary"
-          :adversary="store.activeAdversary"
-          :siblings="store.activeAdversarySiblings"
-          :scene-mode="store.sceneMode"
-          :is-actor="!isPcActor"
-          :pcs="store.participantPcs"
-          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
-        />
-
-        <!-- Bouton AoE — dans le panneau attaquant -->
-        <div class="enc-live__aoe-zone enc-live__panel--first">
+        >
           <button
+            v-if="isPcActor"
             class="enc-live__aoe-btn"
             :class="{ 'enc-live__aoe-btn--open': aoeMode }"
             title="Dégâts de zone (AoE)"
@@ -223,6 +206,40 @@
           >
             💥 AoE
           </button>
+          <PcLivePanel
+            :pc="store.activePc"
+            :is-actor="isPcActor"
+            :scene-mode="store.sceneMode"
+            :primary-features="pcPrimary"
+            :secondary-features="pcSecondary"
+            :passive-features="pcPassive"
+            :reaction-features="pcReaction"
+          />
+        </div>
+
+        <!-- Wrapper Adversaire -->
+        <div
+          v-if="store.activeAdversary"
+          class="enc-live__panel-wrap"
+          :class="{ 'enc-live__panel--first': !isPcActor, 'enc-live__panel--second': isPcActor }"
+        >
+          <button
+            v-if="!isPcActor"
+            class="enc-live__aoe-btn"
+            :class="{ 'enc-live__aoe-btn--open': aoeMode }"
+            title="Dégâts de zone (AoE)"
+            aria-label="Dégâts de zone"
+            @click="toggleAoeMode()"
+          >
+            💥 AoE
+          </button>
+          <AdversaryTargetPanel
+            :adversary="store.activeAdversary"
+            :siblings="store.activeAdversarySiblings"
+            :scene-mode="store.sceneMode"
+            :is-actor="!isPcActor"
+            :pcs="store.participantPcs"
+          />
         </div>
       </div>
 
@@ -1303,29 +1320,30 @@ export default {
 
 /* ── Bouton AoE ── */
 
-.enc-live__aoe-zone {
-  display: flex;
-  align-items: flex-start;
-  padding-top: var(--space-xs);
+.enc-live__panel-wrap {
+  position: relative;
+  min-width: 0;
 }
 
 .enc-live__aoe-btn {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
   padding: var(--space-xs) var(--space-sm);
-  height: 32px;
+  height: 28px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--color-accent-warning);
-  background: transparent;
+  background: var(--color-bg-secondary);
   color: var(--color-accent-warning);
   font-size: var(--font-xs);
   font-weight: var(--font-bold);
   cursor: pointer;
   transition: all 0.15s;
-  flex-shrink: 0;
-  align-self: center;
   white-space: nowrap;
 }
 
