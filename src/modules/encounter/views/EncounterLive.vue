@@ -54,6 +54,17 @@
         </button>
 
         <button
+          v-if="hasAdversaries"
+          class="live__aoe-btn"
+          :class="{ 'live__aoe-btn--on': aoeMode }"
+          title="Dégâts de zone (AoE)"
+          aria-label="Dégâts de zone"
+          @click="aoeMode = !aoeMode"
+        >
+          💥 AoE
+        </button>
+
+        <button
           class="live__end-btn"
           @click="confirmEndEncounter"
         >
@@ -260,24 +271,42 @@
             class="live__aoe-row"
             :class="{ 'live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
           >
-            <span class="live__aoe-name">{{ inst.displayName }}</span>
+            <span class="live__aoe-name">
+              {{ inst.displayName }}
+            </span>
             <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-            <input
-              class="live__aoe-input"
-              type="number"
-              min="1"
-              placeholder="Dmg"
-              :aria-label="'Dégâts de zone pour ' + inst.displayName"
-              @click.stop
-              @keydown.enter.stop="aoeSetDamage(inst.instanceId, $event)"
-            />
+            <!-- Boutons seuils (comme sur les cartes) -->
+            <div class="live__aoe-thresh">
+              <button
+                class="live__aoe-th live__aoe-th--1"
+                title="1 HP (Mineur)"
+                @click="aoeSetHp(inst.instanceId, 1)"
+              >
+                1
+              </button>
+              <button
+                class="live__aoe-th live__aoe-th--2"
+                title="2 HP (Majeur)"
+                @click="aoeSetHp(inst.instanceId, 2)"
+              >
+                2
+              </button>
+              <button
+                class="live__aoe-th live__aoe-th--3"
+                title="3 HP (Sévère)"
+                @click="aoeSetHp(inst.instanceId, 3)"
+              >
+                3
+              </button>
+            </div>
             <span
               v-if="aoeDamage[inst.instanceId] > 0"
               class="live__aoe-dmg"
-            >−{{ aoeDamage[inst.instanceId] }}</span>
+            >−{{ aoeDamage[inst.instanceId] }}HP</span>
             <button
               v-if="aoeDamage[inst.instanceId] > 0"
               class="live__aoe-undo"
+              title="Annuler"
               @click="aoeUndoTarget(inst.instanceId)"
             >
               ↩
@@ -287,25 +316,41 @@
             v-for="pc in store.participantPcs"
             :key="'pc_' + pc.id"
             class="live__aoe-row"
+            :class="{ 'live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
           >
             <span class="live__aoe-name">🧑 {{ pc.name }}</span>
             <span class="live__aoe-hp">Évasion {{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</span>
-            <input
-              class="live__aoe-input"
-              type="number"
-              min="1"
-              placeholder="HP"
-              :aria-label="'Dégâts de zone pour ' + pc.name"
-              @click.stop
-              @keydown.enter.stop="aoeSetDamage('pc_' + pc.id, $event)"
-            />
+            <div class="live__aoe-thresh">
+              <button
+                class="live__aoe-th live__aoe-th--1"
+                title="1 HP"
+                @click="aoeSetHp('pc_' + pc.id, 1)"
+              >
+                1
+              </button>
+              <button
+                class="live__aoe-th live__aoe-th--2"
+                title="2 HP"
+                @click="aoeSetHp('pc_' + pc.id, 2)"
+              >
+                2
+              </button>
+              <button
+                class="live__aoe-th live__aoe-th--3"
+                title="3 HP"
+                @click="aoeSetHp('pc_' + pc.id, 3)"
+              >
+                3
+              </button>
+            </div>
             <span
               v-if="aoeDamage['pc_' + pc.id] > 0"
               class="live__aoe-dmg"
-            >−{{ aoeDamage['pc_' + pc.id] }}</span>
+            >−{{ aoeDamage['pc_' + pc.id] }}HP</span>
             <button
               v-if="aoeDamage['pc_' + pc.id] > 0"
               class="live__aoe-undo"
+              title="Annuler"
               @click="aoeUndoTarget('pc_' + pc.id)"
             >
               ↩
@@ -533,12 +578,12 @@ export default {
       })
     })
     const aoeTotalTargets = computed(() => Object.values(aoeDamage.value).filter((v) => v > 0).length)
-    function aoeSetDamage(targetId, event) {
-      const val = parseInt(event.target.value)
-      if (!val || val <= 0) return
-      aoeDamage.value = { ...aoeDamage.value, [targetId]: val }
-      event.target.value = ''
+
+    /** Pose directement les HP à marquer pour une cible AoE */
+    function aoeSetHp(targetId, hp) {
+      aoeDamage.value = { ...aoeDamage.value, [targetId]: hp }
     }
+
     function aoeUndoTarget(targetId) {
       const copy = { ...aoeDamage.value }
       delete copy[targetId]
@@ -613,7 +658,7 @@ export default {
       toggleTierFilter, toggleTypeFilter,
       toggleReinforcementPanel, addReinforcement,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
-      aoeSetDamage, aoeUndoTarget, applyAoe,
+      aoeSetHp, aoeUndoTarget, applyAoe,
       showCountdownBar,
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
@@ -660,6 +705,9 @@ export default {
 .live__undo-btn:hover { background: var(--color-bg-elevated); }
 .live__end-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: transparent; color: var(--color-accent-danger); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; }
 .live__end-btn:hover { background: rgba(244, 67, 54, 0.1); }
+.live__aoe-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-accent-warning); background: transparent; color: var(--color-accent-warning); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); }
+.live__aoe-btn:hover { background: rgba(255, 152, 0, 0.1); }
+.live__aoe-btn--on { background: rgba(255, 152, 0, 0.2); }
 .live__cd-btn { padding: var(--space-xs); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; }
 .live__cd-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
 
@@ -706,8 +754,12 @@ export default {
 .live__aoe-row--hit { background: rgba(244, 67, 54, 0.1); }
 .live__aoe-name { flex: 1; font-size: var(--font-size-xs); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .live__aoe-hp { font-size: var(--font-size-xs); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
-.live__aoe-input { width: 3.5rem; padding: 2px var(--space-xs); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg-input); color: var(--color-text-primary); font-size: var(--font-size-xs); text-align: center; }
-.live__aoe-input:focus { outline: none; border-color: var(--color-accent-fear); }
+.live__aoe-thresh { display: flex; gap: 2px; }
+.live__aoe-th { width: 1.8rem; height: 1.5rem; border: none; border-radius: var(--radius-sm); font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+.live__aoe-th:active { filter: brightness(1.3); transform: scale(0.95); }
+.live__aoe-th--1 { background: rgba(76, 175, 80, 0.25); color: var(--color-accent-success); }
+.live__aoe-th--2 { background: rgba(255, 152, 0, 0.25); color: var(--color-accent-warning); }
+.live__aoe-th--3 { background: rgba(244, 67, 54, 0.25); color: var(--color-accent-danger); }
 .live__aoe-dmg { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-accent-danger); }
 .live__aoe-undo { border: none; background: transparent; color: var(--color-text-muted); cursor: pointer; font-size: var(--font-size-xs); }
 .live__aoe-footer { display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-sm); border-top: 1px solid var(--color-border); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
