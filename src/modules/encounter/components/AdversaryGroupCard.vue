@@ -366,18 +366,20 @@ export default {
 }
 
 .adv-group__collapse-btn {
-  width: 1.5rem;
-  height: 1.5rem;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: none;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast);
+  touch-action: manipulation;
+  flex-shrink: 0;
 }
 
 .adv-group__collapse-btn:hover { background: var(--color-bg-elevated); }
@@ -501,11 +503,11 @@ export default {
 }
 
 .adv-group__thresh-btn {
-  width: 2rem;
-  height: 1.6rem;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: none;
   border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
   transition: filter 0.1s;
@@ -527,17 +529,19 @@ export default {
 /* Actions compactes */
 
 .adv-group__action-btn {
-  width: 1.6rem;
-  height: 1.6rem;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: transparent;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background var(--transition-fast);
+  touch-action: manipulation;
+  flex-shrink: 0;
 }
 
 .adv-group__action-btn:hover { background: var(--color-bg-elevated); }
@@ -563,18 +567,27 @@ export default {
 }
 
 .adv-group__micro-btn {
-  width: 1.2rem;
-  height: 1.2rem;
+  min-width: 2rem;
+  min-height: 2rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-text-secondary);
-  font-size: 0.65rem;
+  font-size: var(--font-size-xs);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
+  touch-action: manipulation;
+  position: relative;
+}
+
+/* Extension de la zone tactile sans agrandir le visuel */
+.adv-group__micro-btn::before {
+  content: '';
+  position: absolute;
+  inset: -0.4rem;
 }
 
 .adv-group__micro-btn:hover:not(:disabled) { background: var(--color-bg-elevated); }
@@ -587,18 +600,19 @@ export default {
 }
 
 .adv-group__cond {
-  width: 1.3rem;
-  height: 1.3rem;
+  min-width: 2rem;
+  min-height: 2rem;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: transparent;
-  font-size: 0.65rem;
+  font-size: var(--font-size-xs);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   transition: background var(--transition-fast);
+  touch-action: manipulation;
 }
 
 .adv-group__cond:hover { background: var(--color-bg-elevated); }

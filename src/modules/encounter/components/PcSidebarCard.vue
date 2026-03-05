@@ -198,16 +198,17 @@ export default {
 }
 
 .pc-sidebar__cond {
-  width: 1.5rem;
-  height: 1.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: var(--color-bg-input);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
   transition: background var(--transition-fast), border-color var(--transition-fast);
   padding: 0;
 }

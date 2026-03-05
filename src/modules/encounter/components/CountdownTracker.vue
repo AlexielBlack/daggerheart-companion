@@ -320,7 +320,8 @@ export default {
 }
 
 .cd-bar__btn {
-  padding: 1px var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: transparent;
@@ -328,6 +329,7 @@ export default {
   font-size: var(--font-size-xs);
   cursor: pointer;
   transition: background var(--transition-fast);
+  touch-action: manipulation;
 }
 
 .cd-bar__btn:hover { background: var(--color-bg-elevated); }
@@ -348,12 +350,13 @@ export default {
 /* ── Roll result buttons ── */
 
 .cd-bar__roll-btn {
-  padding: 1px var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-text-secondary);
-  font-size: 0.6rem;
+  font-size: var(--font-size-xs);
   cursor: pointer;
   transition: background var(--transition-fast);
   display: flex;
@@ -396,6 +399,7 @@ export default {
 
 .cd-bar__add-btn {
   padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
   background: transparent;
@@ -404,6 +408,7 @@ export default {
   cursor: pointer;
   white-space: nowrap;
   align-self: center;
+  touch-action: manipulation;
 }
 
 .cd-bar__add-btn:hover {
