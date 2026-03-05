@@ -372,28 +372,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function selectPc(pcId) {
     if (!participantPcIds.value.includes(pcId)) return
-    if (lastClickCategory.value === 'adversary') {
-      activePcId.value = pcId
-      sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
-      spotlight.value = SPOTLIGHT_GM
-      lastClickCategory.value = 'pc'
-    } else {
-      activePcId.value = pcId
-      lastClickCategory.value = 'pc'
-    }
+    activePcId.value = pcId
+    lastClickCategory.value = 'pc'
     persistState()
   }
 
   function selectAdversaryGroup(adversaryId) {
-    if (lastClickCategory.value === 'pc') {
-      setActiveAdversaryGroupInternal(adversaryId)
-      sceneMode.value = SCENE_MODE_PC_ATTACK
-      spotlight.value = SPOTLIGHT_PC
-      lastClickCategory.value = 'adversary'
-    } else {
-      setActiveAdversaryGroupInternal(adversaryId)
-      lastClickCategory.value = 'adversary'
-    }
+    setActiveAdversaryGroupInternal(adversaryId)
+    lastClickCategory.value = 'adversary'
     persistState()
   }
 
