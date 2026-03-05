@@ -25,9 +25,8 @@
         </h1>
         <span class="live__tier">T{{ store.encounterTier }}</span>
 
-        <!-- Swap PJ/MJ combat (désactivé en mode social) -->
+        <!-- Swap PJ/MJ -->
         <button
-          v-if="!isSocialMode"
           class="live__mode-btn"
           :class="'live__mode-btn--' + store.sceneMode"
           :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
@@ -37,19 +36,8 @@
           {{ isPcActor ? '⚔️ PJ Attaque' : '💀 MJ Attaque' }}
         </button>
 
-        <!-- Toggle social (bouton séparé) -->
-        <button
-          class="live__mode-btn live__mode-btn--social-toggle"
-          :class="{ 'live__mode-btn--social-on': isSocialMode }"
-          :title="isSocialMode ? 'Quitter le mode social' : 'Passer en mode social'"
-          aria-label="Mode social"
-          @click="store.toggleSocial()"
-        >
-          🗣️ Social
-        </button>
-
         <span
-          v-if="store.sceneMode !== 'social' && store.adversaryCombatSummary.count > 0"
+          v-if="store.adversaryCombatSummary.count > 0"
           class="live__combat-sum"
         >
           {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
@@ -74,12 +62,7 @@
       </header>
 
       <!-- ══ Grille 3 colonnes ══ -->
-      <div
-        class="live__grid"
-        :class="{
-          'live__grid--social': isSocialMode && !hasAdversaries
-        }"
-      >
+      <div class="live__grid">
         <!-- Colonne PJ -->
         <div class="live__col-pc">
           <PcSidebarCard
@@ -403,8 +386,6 @@ export default {
       return meta ? meta.actorRole === 'pc' : true
     })
 
-    const isSocialMode = computed(() => store.sceneMode === 'social')
-
     const hasAdversaries = computed(() => store.liveAdversaries.length > 0)
 
     // ── Sélection ──
@@ -551,13 +532,7 @@ export default {
         if (store.undoStack.length > 0) { e.preventDefault(); store.undo() }
         return
       }
-      if (e.key === 'Tab') {
-        if (store.sceneMode !== 'social') {
-          e.preventDefault()
-          store.swapSpotlight()
-        }
-        return
-      }
+      if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); return }
       if (e.key === 'Escape') {
         if (aoeMode.value) aoeMode.value = false
         if (showReinforcementPanel.value) showReinforcementPanel.value = false
@@ -583,7 +558,7 @@ export default {
     onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
     return {
-      store, isPcActor, isSocialMode, hasAdversaries,
+      store, isPcActor, hasAdversaries,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -626,7 +601,6 @@ export default {
 .live { display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s; }
 .live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
 .live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
-.live--social { background-color: rgba(8, 145, 178, 0.04); }
 .live__inactive { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); padding: var(--space-xl); min-height: 60vh; color: var(--color-text-muted); }
 .live__go-builder { padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--color-accent-hope); background: transparent; color: var(--color-accent-hope); cursor: pointer; }
 
@@ -637,10 +611,6 @@ export default {
 .live__mode-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); }
 .live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
 .live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
-.live__mode-btn--social { color: #0891b2; border-color: #0891b2; }
-.live__mode-btn--social-toggle { color: var(--color-text-muted); border-color: var(--color-border); }
-.live__mode-btn--social-toggle:hover { color: #0891b2; border-color: #0891b2; }
-.live__mode-btn--social-on { color: #0891b2; border-color: #0891b2; background: rgba(8, 145, 178, 0.15); }
 .live__mode-btn:hover { background: var(--color-bg-elevated); }
 .live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-left: auto; }
 .live__undo-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; }
@@ -650,7 +620,6 @@ export default {
 
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
 .live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; height: calc(100vh - 3rem); }
-.live__grid--social { grid-template-columns: minmax(200px, 1fr) minmax(280px, 1.5fr); }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
 .live__col-ctx { overflow-y: auto; overflow-x: hidden; }

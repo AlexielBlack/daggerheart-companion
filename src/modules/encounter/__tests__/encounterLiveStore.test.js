@@ -7,7 +7,6 @@ import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
-  SCENE_MODE_SOCIAL,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM
 } from '@data/encounters/liveConstants'
@@ -153,8 +152,8 @@ describe('encounterLiveStore', () => {
       expect(store.currentSceneModeMeta.primaryTags).toContain('défensif')
     })
 
-    it('supporte les 3 modes actifs', () => {
-      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK, SCENE_MODE_SOCIAL]
+    it('supporte les 2 modes de combat', () => {
+      const modes = [SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK]
       for (const mode of modes) {
         store.setSceneMode(mode)
         expect(store.sceneMode).toBe(mode)
@@ -685,22 +684,6 @@ describe('encounterLiveStore', () => {
       store.swapSpotlight()
       expect(store.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
       store.swapSpotlight()
-      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
-    })
-
-    it('swapSpotlight n\'a pas d\'effet en mode social', () => {
-      store.toggleSocial()
-      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
-      store.swapSpotlight()
-      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
-    })
-
-    it('toggleSocial bascule vers/depuis le mode social', () => {
-      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
-      store.toggleSocial()
-      expect(store.sceneMode).toBe(SCENE_MODE_SOCIAL)
-      expect(store.spotlight).toBe(SPOTLIGHT_PC)
-      store.toggleSocial()
       expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
     })
   })
