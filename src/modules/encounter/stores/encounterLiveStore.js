@@ -466,7 +466,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
         encounterLog.value.push({ ...entry })
       }
     }
-    if (adv.type === 'Minion' && adv.markedHP > 0) {
+    // Minion : défait dès le premier dégât ; autres : défait si tous les HP marqués
+    if ((adv.type === 'Minion' && adv.markedHP > 0) || adv.markedHP >= adv.maxHP) {
       adv.isDefeated = true
       const pcDown = participantPcs.value.find((p) => p.id === activePcId.value)
       encounterLog.value.push({
@@ -625,8 +626,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
           combatLog.value.push(entry)
           encounterLog.value.push({ ...entry })
         }
-        // Minion : défait dès le premier dégât
-        if (adv.type === 'Minion' && adv.markedHP > 0) {
+        // Minion : défait dès le premier dégât ; autres : défait si tous les HP marqués
+        if ((adv.type === 'Minion' && adv.markedHP > 0) || adv.markedHP >= adv.maxHP) {
           adv.isDefeated = true
           encounterLog.value.push({
             action: 'adv_down', instanceId, advName: adv.name,
