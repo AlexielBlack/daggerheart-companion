@@ -39,6 +39,22 @@
         <span class="adv-panel__stat-label">Diff</span>
         <span class="adv-panel__stat-value">{{ adversary.difficulty }}</span>
       </div>
+      <div
+        v-if="adversary.thresholds"
+        class="adv-panel__stat"
+        title="Seuil Majeur"
+      >
+        <span class="adv-panel__stat-label adv-panel__stat-label--major">Majeur</span>
+        <span class="adv-panel__stat-value adv-panel__stat-value--major">{{ adversary.thresholds.major || '—' }}</span>
+      </div>
+      <div
+        v-if="adversary.thresholds"
+        class="adv-panel__stat"
+        title="Seuil Sévère"
+      >
+        <span class="adv-panel__stat-label adv-panel__stat-label--severe">Sévère</span>
+        <span class="adv-panel__stat-value adv-panel__stat-value--severe">{{ adversary.thresholds.severe || '—' }}</span>
+      </div>
     </div>
 
     <!-- HP / Stress — barres individuelles par instance -->
@@ -114,15 +130,6 @@
               ></span>
             </div>
             <span class="adv-panel__bar-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-            <span
-              v-if="adversary.thresholds"
-              class="adv-panel__thresholds"
-              title="Seuils Majeur / Sévère"
-            >
-              <span class="adv-panel__thresh adv-panel__thresh--major">{{ adversary.thresholds.major || '—' }}</span>
-              <span class="adv-panel__thresh-sep">/</span>
-              <span class="adv-panel__thresh adv-panel__thresh--severe">{{ adversary.thresholds.severe || '—' }}</span>
-            </span>
             <button
               class="adv-panel__bar-btn"
               :disabled="inst.markedHP >= inst.maxHP || inst.isDefeated"
@@ -662,6 +669,11 @@ export default {
   font-variant-numeric: tabular-nums;
 }
 
+.adv-panel__stat-label--major { color: #f59e0b; }
+.adv-panel__stat-value--major { color: #f59e0b; }
+.adv-panel__stat-label--severe { color: #ef4444; }
+.adv-panel__stat-value--severe { color: #ef4444; }
+
 /* ── Instances (barres HP/Stress individuelles) ── */
 
 .adv-panel__instances {
@@ -806,26 +818,6 @@ export default {
   background: #ef4444;
   box-shadow: 0 0 3px rgba(239, 68, 68, 0.5);
 }
-
-/* ── Badges seuils inline à côté de HP ── */
-
-.adv-panel__thresholds {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  padding: 1px 4px;
-  border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated);
-  font-size: 0.65rem;
-  font-weight: var(--font-bold);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.adv-panel__thresh--major { color: #f59e0b; }
-.adv-panel__thresh--severe { color: #ef4444; }
-.adv-panel__thresh-sep { color: var(--color-text-muted); }
 
 .adv-panel__bar-val {
   font-size: var(--font-xs);
