@@ -38,6 +38,83 @@
       v-if="activeTab === 'pc' && pc"
       class="ctx-panel__content"
     >
+      <!-- Armes — info jet d'attaque + dégâts -->
+      <div
+        v-if="primaryWeapon || secondaryWeapon"
+        class="ctx-panel__weapons"
+      >
+        <!-- Arme principale -->
+        <div
+          v-if="primaryWeapon"
+          class="ctx-panel__weapon"
+        >
+          <div class="ctx-panel__weapon-header">
+            <span class="ctx-panel__weapon-name">
+              {{ primaryWeapon.name }}
+            </span>
+            <span class="ctx-panel__weapon-badge ctx-panel__weapon-badge--primary">
+              Principale
+            </span>
+          </div>
+          <div class="ctx-panel__weapon-stats">
+            <span
+              class="ctx-panel__weapon-stat"
+              title="Trait utilisé pour le jet d'attaque"
+            >🎯 {{ primaryWeapon.trait }}</span>
+            <span
+              class="ctx-panel__weapon-stat"
+              title="Dés de dégâts + Proficiency"
+            >🎲 {{ primaryWeapon.damage }}+{{ pcProficiency }}</span>
+            <span
+              class="ctx-panel__weapon-stat"
+              :title="'Type de dégâts : ' + (primaryWeapon.damageType === 'mag' ? 'Magique' : 'Physique')"
+            >{{ primaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
+            <span
+              class="ctx-panel__weapon-stat"
+              title="Portée"
+            >📏 {{ primaryWeapon.range }}</span>
+            <span
+              v-if="primaryWeapon.burden"
+              class="ctx-panel__weapon-stat"
+              title="Prise"
+            >✋ {{ primaryWeapon.burden }}</span>
+          </div>
+          <p
+            v-if="primaryWeapon.feature"
+            class="ctx-panel__weapon-feature"
+          >
+            {{ primaryWeapon.feature }}
+          </p>
+        </div>
+
+        <!-- Arme secondaire -->
+        <div
+          v-if="secondaryWeapon"
+          class="ctx-panel__weapon ctx-panel__weapon--secondary"
+        >
+          <div class="ctx-panel__weapon-header">
+            <span class="ctx-panel__weapon-name">
+              {{ secondaryWeapon.name }}
+            </span>
+            <span class="ctx-panel__weapon-badge">
+              Secondaire
+            </span>
+          </div>
+          <div class="ctx-panel__weapon-stats">
+            <span class="ctx-panel__weapon-stat">🎯 {{ secondaryWeapon.trait }}</span>
+            <span class="ctx-panel__weapon-stat">🎲 {{ secondaryWeapon.damage }}+{{ pcProficiency }}</span>
+            <span class="ctx-panel__weapon-stat">{{ secondaryWeapon.damageType === 'mag' ? '✨ mag' : '🗡️ phy' }}</span>
+            <span class="ctx-panel__weapon-stat">📏 {{ secondaryWeapon.range }}</span>
+          </div>
+          <p
+            v-if="secondaryWeapon.feature"
+            class="ctx-panel__weapon-feature"
+          >
+            {{ secondaryWeapon.feature }}
+          </p>
+        </div>
+      </div>
+
       <!-- Expériences -->
       <div
         v-if="pcExperiences.length > 0"
@@ -229,6 +306,7 @@
 import { computed, ref, watch } from 'vue'
 import { SCENE_MODE_META, SCENE_MODE_PC_ATTACK } from '@data/encounters/liveConstants'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
+import { getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import FeatureCard from './FeatureCard.vue'
 import EnvironmentPanel from './EnvironmentPanel.vue'
 
@@ -277,6 +355,22 @@ export default {
       return Array.isArray(props.pc.experiences) ? props.pc.experiences.filter((e) => e.name) : []
     })
 
+    // Armes PJ
+    const primaryWeapon = computed(() => {
+      if (!props.pc || !props.pc.primaryWeaponId) return null
+      return getPrimaryWeaponById(props.pc.primaryWeaponId) || null
+    })
+
+    const secondaryWeapon = computed(() => {
+      if (!props.pc || !props.pc.secondaryWeaponId) return null
+      return getSecondaryWeaponById(props.pc.secondaryWeaponId) || null
+    })
+
+    const pcProficiency = computed(() => {
+      if (!props.pc) return 0
+      return props.pc.proficiency || 1
+    })
+
     // Features adversaire classifiées
     const advClassified = computed(() => {
       if (!props.adversary) return { passiveFeatures: [], actionFeatures: [], reactionFeatures: [] }
@@ -291,6 +385,7 @@ export default {
       activeTab,
       primaryLabel,
       pcExperiences,
+      primaryWeapon, secondaryWeapon, pcProficiency,
       advPassives, advActions, advReactions
     }
   }
@@ -396,6 +491,73 @@ export default {
   padding: 0 var(--space-xs);
   border-radius: var(--radius-full);
   color: var(--color-text-muted);
+}
+
+/* ── Armes ── */
+
+.ctx-panel__weapons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.ctx-panel__weapon {
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.ctx-panel__weapon--secondary {
+  opacity: 0.8;
+}
+
+.ctx-panel__weapon-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.ctx-panel__weapon-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.ctx-panel__weapon-badge {
+  font-size: 0.6rem;
+  padding: 1px var(--space-xs);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-input);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ctx-panel__weapon-badge--primary {
+  background: rgba(83, 168, 182, 0.15);
+  color: var(--color-accent-hope);
+}
+
+.ctx-panel__weapon-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.ctx-panel__weapon-stat {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.ctx-panel__weapon-feature {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: var(--line-height-normal);
 }
 
 /* ── Expériences ── */
