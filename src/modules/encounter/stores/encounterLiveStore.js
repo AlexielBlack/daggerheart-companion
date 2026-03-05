@@ -29,7 +29,8 @@ import {
   SCENE_MODE_META,
   SPOTLIGHT_PC,
   SPOTLIGHT_GM,
-  isValidSceneMode
+  isValidSceneMode,
+  DYNAMIC_ADVANCEMENT
 } from '@data/encounters/liveConstants'
 import { useUndoStack } from '../composables/useUndoStack'
 import { useCombatLog } from '../composables/useCombatLog'
@@ -101,6 +102,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   // ── Cross-projecteur ──────────────────────────────────
   const lastClickCategory = ref('pc')
+
+  // ── Countdowns ─────────────────────────────────────────
+  /** Liste des countdowns actifs { id, name, type, startValue, current, loop, loopDelta } */
+  const countdowns = ref([])
 
   // ═══════════════════════════════════════════════════════
   //  Getters
@@ -253,6 +258,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       activeAdversaryId: activeAdversaryId.value,
       environmentId: environmentId.value,
       lastClickCategory: lastClickCategory.value,
+      countdowns: countdowns.value.map((c) => ({ ...c })),
       pcSpotlights: { ...pcSpotlights.value },
       advSpotlights: { ...advSpotlights.value },
       combatLog: [...combatLog.value],
@@ -701,6 +707,95 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
+  //  Actions — Countdowns
+  // ═══════════════════════════════════════════════════════
+
+  let _countdownId = 0
+
+  /**
+   * Ajoute un nouveau countdown.
+   * @param {string} name - Nom descriptif
+   * @param {string} type - 'standard' | 'progress' | 'consequence'
+   * @param {number} startValue - Valeur de départ
+   * @param {boolean} [loop=false] - Boucle après déclenchement
+   * @returns {string} ID du countdown
+   */
+  function addCountdown(name, type, startValue, loop = false) {
+    const id = 'cd_' + Date.now().toString(36) + '_' + (++_countdownId)
+    countdowns.value.push({
+      id,
+      name: name || 'Countdown',
+      type: type || 'standard',
+      startValue,
+      current: startValue,
+      loop,
+      triggered: false
+    })
+    persistState()
+    return id
+  }
+
+  function removeCountdown(countdownId) {
+    countdowns.value = countdowns.value.filter((c) => c.id !== countdownId)
+    persistState()
+  }
+
+  /**
+   * Avance un countdown de N (par défaut 1).
+   * @param {string} countdownId
+   * @param {number} [amount=1]
+   */
+  function tickCountdown(countdownId, amount = 1) {
+    const cd = countdowns.value.find((c) => c.id === countdownId)
+    if (!cd || cd.triggered) return
+    cd.current = Math.max(0, cd.current - amount)
+    if (cd.current <= 0) {
+      if (cd.loop) {
+        cd.current = cd.startValue
+      } else {
+        cd.triggered = true
+      }
+    }
+    persistState()
+  }
+
+  /**
+   * Recule un countdown de N (correction).
+   * @param {string} countdownId
+   * @param {number} [amount=1]
+   */
+  function untickCountdown(countdownId, amount = 1) {
+    const cd = countdowns.value.find((c) => c.id === countdownId)
+    if (!cd) return
+    cd.current = Math.min(cd.startValue, cd.current + amount)
+    if (cd.triggered) cd.triggered = false
+    persistState()
+  }
+
+  /**
+   * Avance un countdown dynamique selon le résultat d'un jet.
+   * @param {string} countdownId
+   * @param {string} rollResult - Clé de DYNAMIC_ADVANCEMENT
+   */
+  function advanceCountdownByResult(countdownId, rollResult) {
+    const cd = countdowns.value.find((c) => c.id === countdownId)
+    if (!cd || cd.triggered) return
+    const adv = DYNAMIC_ADVANCEMENT[rollResult]
+    if (!adv) return
+    const amount = cd.type === 'progress' ? adv.progress : adv.consequence
+    if (amount > 0) tickCountdown(countdownId, amount)
+  }
+
+  /** Remet un countdown à sa valeur de départ */
+  function resetCountdown(countdownId) {
+    const cd = countdowns.value.find((c) => c.id === countdownId)
+    if (!cd) return
+    cd.current = cd.startValue
+    cd.triggered = false
+    persistState()
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  Actions — Notes adversaires
   // ═══════════════════════════════════════════════════════
 
@@ -730,6 +825,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaryId.value = data.activeAdversaryId || null
     environmentId.value = data.environmentId || null
     lastClickCategory.value = data.lastClickCategory || 'pc'
+    countdowns.value = Array.isArray(data.countdowns) ? data.countdowns.map((c) => ({ ...c })) : []
     pcSpotlights.value = data.pcSpotlights && typeof data.pcSpotlights === 'object' ? { ...data.pcSpotlights } : {}
     advSpotlights.value = data.advSpotlights && typeof data.advSpotlights === 'object' ? { ...data.advSpotlights } : {}
     combatLog.value = Array.isArray(data.combatLog) ? [...data.combatLog] : []
@@ -753,6 +849,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeAdversaryId.value = null
     environmentId.value = null
     lastClickCategory.value = 'pc'
+    countdowns.value = []
     pcSpotlights.value = {}
     advSpotlights.value = {}
     combatLog.value = []
@@ -822,7 +919,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     sceneMode, spotlight,
     participantPcIds, activePcId,
     liveAdversaries, activeAdversaryId,
-    environmentId, lastClickCategory,
+    environmentId, lastClickCategory, countdowns,
     pcSpotlights, advSpotlights,
     combatLog, encounterLog, pcDownStatus, pcConditions,
 
@@ -850,6 +947,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     applyAoeDamage,
     applyAoeDamagePerTarget,
     applyAoeDamageToPcsPerTarget,
+
+    // Actions — Countdowns
+    addCountdown, removeCountdown, tickCountdown, untickCountdown,
+    advanceCountdownByResult, resetCountdown,
 
     // Actions — Combat log & conditions (composable)
     removeCombatLogEntry,

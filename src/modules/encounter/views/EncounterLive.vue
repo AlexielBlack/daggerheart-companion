@@ -59,7 +59,29 @@
         >
           Fin
         </button>
+
+        <button
+          v-if="store.countdowns.length === 0"
+          class="live__cd-btn"
+          title="Ajouter un countdown"
+          aria-label="Ajouter un countdown"
+          @click="showCountdownBar = true"
+        >
+          ⏱️
+        </button>
       </header>
+
+      <!-- ══ Countdowns ══ -->
+      <CountdownTracker
+        v-if="store.countdowns.length > 0 || showCountdownBar"
+        :countdowns="store.countdowns"
+        @add="onAddCountdown"
+        @remove="onRemoveCountdown"
+        @tick="onTickCountdown"
+        @untick="onUntickCountdown"
+        @advance-by-result="onAdvanceCountdownByResult"
+        @reset="onResetCountdown"
+      />
 
       <!-- ══ Grille 3 colonnes ══ -->
       <div class="live__grid">
@@ -369,10 +391,11 @@ import { allAdversaries, ADVERSARY_TYPES } from '@data/adversaries'
 import PcSidebarCard from '../components/PcSidebarCard.vue'
 import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
 import ContextPanel from '../components/ContextPanel.vue'
+import CountdownTracker from '../components/CountdownTracker.vue'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker },
   setup() {
     const store = useEncounterLiveStore()
 
@@ -480,6 +503,23 @@ export default {
 
     // ── AoE ──
     const aoeMode = ref(false)
+
+    // ── Countdowns ──
+    const showCountdownBar = ref(false)
+
+    function onAddCountdown({ name, type, startValue, loop }) {
+      store.addCountdown(name, type, startValue, loop)
+    }
+    function onRemoveCountdown(id) {
+      store.removeCountdown(id)
+      if (store.countdowns.length === 0) showCountdownBar.value = false
+    }
+    function onTickCountdown(id) { store.tickCountdown(id) }
+    function onUntickCountdown(id) { store.untickCountdown(id) }
+    function onAdvanceCountdownByResult({ countdownId, rollResult }) {
+      store.advanceCountdownByResult(countdownId, rollResult)
+    }
+    function onResetCountdown(id) { store.resetCountdown(id) }
     const aoeDamage = ref({})
     const aoeAvailableInstances = computed(() => {
       const active = store.liveAdversaries.filter((a) => !a.isDefeated)
@@ -574,6 +614,9 @@ export default {
       toggleReinforcementPanel, addReinforcement,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetDamage, aoeUndoTarget, applyAoe,
+      showCountdownBar,
+      onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
+      onAdvanceCountdownByResult, onResetCountdown,
       showEndSummary, endSummaryData
     }
   },
@@ -598,7 +641,7 @@ export default {
 
 <style scoped>
 /* ══ Racine ══ */
-.live { display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.3s; }
+.live { display: flex; flex-direction: column; height: 100vh; transition: background-color 0.3s; }
 .live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
 .live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
 .live__inactive { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); padding: var(--space-xl); min-height: 60vh; color: var(--color-text-muted); }
@@ -617,9 +660,11 @@ export default {
 .live__undo-btn:hover { background: var(--color-bg-elevated); }
 .live__end-btn { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: transparent; color: var(--color-accent-danger); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; }
 .live__end-btn:hover { background: rgba(244, 67, 54, 0.1); }
+.live__cd-btn { padding: var(--space-xs); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; }
+.live__cd-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
 
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
-.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; height: calc(100vh - 3rem); }
+.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
 .live__col-ctx { overflow-y: auto; overflow-x: hidden; }

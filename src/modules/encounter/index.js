@@ -21,6 +21,7 @@ export { default as SavedEncounterList } from './components/SavedEncounterList.v
 export { default as PcSidebarCard } from './components/PcSidebarCard.vue'
 export { default as AdversaryGroupCard } from './components/AdversaryGroupCard.vue'
 export { default as ContextPanel } from './components/ContextPanel.vue'
+export { default as CountdownTracker } from './components/CountdownTracker.vue'
 export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 

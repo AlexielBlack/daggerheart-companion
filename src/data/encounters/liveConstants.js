@@ -95,3 +95,35 @@ export const LIVE_CONDITIONS = [
   { id: 'vulnerable', emoji: '⚡', label: 'Vulnerable', description: 'All rolls targeting have advantage.' },
   { id: 'temporary', emoji: '⏳', label: 'Temporary', description: 'Can be cleared by making a move against it.' }
 ]
+
+// ═══════════════════════════════════════════════════════════
+//  Countdowns
+// ═══════════════════════════════════════════════════════════
+
+/** Types de countdown SRD */
+export const COUNTDOWN_TYPES = [
+  { id: 'standard', label: 'Standard', emoji: '⏱️', description: 'Avance de 1 à chaque jet d\'action.' },
+  { id: 'progress', label: 'Progrès', emoji: '🟢', description: 'Avance selon le résultat (Crit=3, Hope=2, Fear=1).' },
+  { id: 'consequence', label: 'Conséquence', emoji: '🔴', description: 'Avance selon le résultat (FailFear=3, FailHope=2, Fear=1).' }
+]
+
+/**
+ * Table d'avancement pour countdowns dynamiques (SRD p.67).
+ * Clé = résultat du jet, Valeur = { progress, consequence }
+ */
+export const DYNAMIC_ADVANCEMENT = {
+  criticalSuccess: { progress: 3, consequence: 0 },
+  successHope: { progress: 2, consequence: 0 },
+  successFear: { progress: 1, consequence: 1 },
+  failureHope: { progress: 0, consequence: 2 },
+  failureFear: { progress: 0, consequence: 3 }
+}
+
+/** Résultats de jet pour les boutons d'avancement dynamique */
+export const ROLL_RESULTS = [
+  { id: 'criticalSuccess', label: 'Critique', short: 'Crit', emoji: '✨' },
+  { id: 'successHope', label: 'Succès Hope', short: 'S+H', emoji: '☀️' },
+  { id: 'successFear', label: 'Succès Fear', short: 'S+F', emoji: '🌙' },
+  { id: 'failureHope', label: 'Échec Hope', short: 'É+H', emoji: '💫' },
+  { id: 'failureFear', label: 'Échec Fear', short: 'É+F', emoji: '💀' }
+]
