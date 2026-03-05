@@ -98,7 +98,7 @@
         </span>
       </div>
 
-      <!-- ══ Instances : UNE ligne par instance, boutons seuils intégrés ══ -->
+      <!-- ══ Instances : 2 lignes par instance pour surface tactile optimale ══ -->
       <div class="adv-group__instances">
         <div
           v-for="(inst, idx) in group.instances"
@@ -106,8 +106,8 @@
           class="adv-group__inst"
           :class="{ 'adv-group__inst--defeated': inst.isDefeated }"
         >
-          <!-- Ligne principale : identité + HP + boutons seuils -->
-          <div class="adv-group__inst-main">
+          <!-- Ligne 1 : identité + HP barre étendue + vaincre/réanimer -->
+          <div class="adv-group__inst-row1">
             <span
               v-if="group.instances.length > 1"
               class="adv-group__inst-num"
@@ -117,7 +117,7 @@
               class="adv-group__inst-status"
             >💀</span>
 
-            <!-- HP compteur + barre compacte intégrée -->
+            <!-- HP compteur + barre étendue -->
             <div
               v-if="!inst.isDefeated"
               class="adv-group__inst-hp"
@@ -131,48 +131,6 @@
               <span class="adv-group__hp-val">{{ inst.markedHP }}/{{ inst.maxHP }}</span>
             </div>
 
-            <!-- Boutons seuils (le geste principal) -->
-            <div
-              v-if="!inst.isDefeated && firstInstance.thresholds"
-              class="adv-group__thresh-btns"
-            >
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--minor"
-                :title="'Mineur — marquer 1 HP'"
-                :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
-              >
-                1
-              </button>
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--major"
-                :title="'Majeur — marquer 2 HP'"
-                :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
-              >
-                2
-              </button>
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--severe"
-                :title="'Sévère — marquer 3 HP'"
-                :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
-                @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
-              >
-                3
-              </button>
-            </div>
-
-            <!-- Actions compactes -->
-            <button
-              v-if="!inst.isDefeated"
-              class="adv-group__action-btn adv-group__action-btn--heal"
-              :disabled="inst.markedHP <= 0"
-              title="Retirer 1 HP"
-              aria-label="Retirer 1 HP"
-              @click.stop="$emit('clear-hp', inst.instanceId)"
-            >
-              −
-            </button>
             <button
               v-if="!inst.isDefeated"
               class="adv-group__action-btn adv-group__action-btn--defeat"
@@ -190,6 +148,46 @@
               @click.stop="$emit('revive', inst.instanceId)"
             >
               ↩
+            </button>
+          </div>
+
+          <!-- Ligne 2 : boutons seuils élargis + heal (seulement si vivant) -->
+          <div
+            v-if="!inst.isDefeated && firstInstance.thresholds"
+            class="adv-group__inst-row2"
+          >
+            <button
+              class="adv-group__thresh-btn adv-group__thresh-btn--minor"
+              :title="'Mineur — marquer 1 HP'"
+              :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 1 })"
+            >
+              1
+            </button>
+            <button
+              class="adv-group__thresh-btn adv-group__thresh-btn--major"
+              :title="'Majeur — marquer 2 HP'"
+              :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 2 })"
+            >
+              2
+            </button>
+            <button
+              class="adv-group__thresh-btn adv-group__thresh-btn--severe"
+              :title="'Sévère — marquer 3 HP'"
+              :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (idx + 1) : '')"
+              @click.stop="$emit('apply-damage', { instanceId: inst.instanceId, hpToMark: 3 })"
+            >
+              3
+            </button>
+            <button
+              class="adv-group__action-btn adv-group__action-btn--heal"
+              :disabled="inst.markedHP <= 0"
+              title="Retirer 1 HP"
+              aria-label="Retirer 1 HP"
+              @click.stop="$emit('clear-hp', inst.instanceId)"
+            >
+              −
             </button>
           </div>
 
@@ -428,7 +426,7 @@ export default {
 .adv-group__atk-mod { font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
 .adv-group__atk-dmg { font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-left: auto; }
 
-/* ══ Instances — une ligne par instance ══ */
+/* ══ Instances — 2 lignes par instance pour surface tactile optimale ══ */
 
 .adv-group__instances {
   padding: var(--space-xs);
@@ -441,13 +439,16 @@ export default {
   padding: var(--space-xs);
   border-radius: var(--radius-sm);
   background: var(--color-bg-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .adv-group__inst--defeated { opacity: 0.4; }
 
-/* Ligne principale : numéro + HP + boutons seuils + actions */
+/* Ligne 1 : numéro + HP barre étendue + bouton vaincre/réanimer */
 
-.adv-group__inst-main {
+.adv-group__inst-row1 {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -462,7 +463,7 @@ export default {
 
 .adv-group__inst-status { font-size: var(--font-size-sm); }
 
-/* HP compact : barre + valeur */
+/* HP compact : barre + valeur (prend toute la largeur disponible) */
 
 .adv-group__inst-hp {
   display: flex;
@@ -495,15 +496,17 @@ export default {
   white-space: nowrap;
 }
 
-/* Boutons seuils intégrés à la ligne */
+/* Ligne 2 : boutons seuils élargis + heal — occupent toute la largeur */
 
-.adv-group__thresh-btns {
+.adv-group__inst-row2 {
   display: flex;
-  gap: 2px;
+  gap: 3px;
 }
 
+/* Boutons seuils — flex:1 pour occuper la largeur disponible */
+
 .adv-group__thresh-btn {
-  min-width: var(--touch-min);
+  flex: 1;
   min-height: var(--touch-min);
   border: none;
   border-radius: var(--radius-sm);
@@ -519,7 +522,7 @@ export default {
 
 .adv-group__thresh-btn:active {
   filter: brightness(1.3);
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 .adv-group__thresh-btn--minor { background: rgba(76, 175, 80, 0.25); color: var(--color-accent-success); }

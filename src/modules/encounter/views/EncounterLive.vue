@@ -99,31 +99,19 @@
         @reset="onResetCountdown"
       />
 
-      <!-- ══ Tabs de navigation tablette (Adversaires ↔ Contexte) ══ -->
-      <nav
+      <!-- ══ Bouton flottant contexte (tablette uniquement) ══ -->
+      <button
         v-if="hasAdversaries"
-        class="live__tablet-tabs"
-        aria-label="Vue principale"
+        class="live__ctx-fab"
+        :class="{ 'live__ctx-fab--open': tabletCtxOpen }"
+        :aria-label="tabletCtxOpen ? 'Fermer le panneau contexte' : 'Ouvrir le panneau contexte'"
+        :title="tabletCtxOpen ? 'Fermer le contexte' : 'Voir le contexte'"
+        @click="tabletCtxOpen = !tabletCtxOpen"
       >
-        <button
-          class="live__tablet-tab"
-          :class="{ 'live__tablet-tab--active': tabletMainTab === 'adv' }"
-          aria-label="Voir les adversaires"
-          @click="tabletMainTab = 'adv'"
-        >
-          ⚔️ Adversaires
-        </button>
-        <button
-          class="live__tablet-tab"
-          :class="{ 'live__tablet-tab--active': tabletMainTab === 'ctx' }"
-          aria-label="Voir le contexte"
-          @click="tabletMainTab = 'ctx'"
-        >
-          📋 Contexte
-        </button>
-      </nav>
+        {{ tabletCtxOpen ? '✕' : '📋' }}
+      </button>
 
-      <!-- ══ Grille 3 colonnes ══ -->
+      <!-- ══ Grille 3 colonnes (desktop) / 2 colonnes + side-sheet (tablette) ══ -->
       <div class="live__grid">
         <!-- Colonne PJ -->
         <div class="live__col-pc">
@@ -140,11 +128,10 @@
           />
         </div>
 
-        <!-- Colonne Adversaires -->
+        <!-- Colonne Adversaires (toujours visible en tablette) -->
         <div
           v-if="hasAdversaries"
           class="live__col-adv"
-          :class="{ 'live__col--tablet-hidden': tabletMainTab !== 'adv' }"
         >
           <AdversaryGroupCard
             v-for="group in store.groupedAdversaries"
@@ -162,23 +149,28 @@
           />
         </div>
 
-        <!-- Colonne Contexte -->
+        <!-- Colonne Contexte (side-sheet en tablette) -->
+        <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
         <div
-          class="live__col-ctx"
-          :class="{ 'live__col--tablet-hidden': hasAdversaries && tabletMainTab !== 'ctx' }"
+          class="live__col-ctx-wrapper"
+          :class="{ 'live__col-ctx-wrapper--open': tabletCtxOpen }"
+          @click.self="tabletCtxOpen = false"
         >
-          <ContextPanel
-            :pc="store.activePc"
-            :adversary="store.activeAdversary"
-            :environment="store.activeEnvironment"
-            :scene-mode="store.sceneMode"
-            :last-click-category="store.lastClickCategory"
-            :primary-features="pcPrimary"
-            :secondary-features="pcSecondary"
-            :passive-features="pcPassive"
-            :reaction-features="pcReaction"
-            :all-features="pcAllFeatures"
-          />
+          <!-- eslint-enable -->
+          <div class="live__col-ctx">
+            <ContextPanel
+              :pc="store.activePc"
+              :adversary="store.activeAdversary"
+              :environment="store.activeEnvironment"
+              :scene-mode="store.sceneMode"
+              :last-click-category="store.lastClickCategory"
+              :primary-features="pcPrimary"
+              :secondary-features="pcSecondary"
+              :passive-features="pcPassive"
+              :reaction-features="pcReaction"
+              :all-features="pcAllFeatures"
+            />
+          </div>
         </div>
       </div>
 
@@ -373,7 +365,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
@@ -523,8 +515,23 @@ export default {
     const showEndSummary = ref(false)
     const endSummaryData = ref(null)
 
-    // ── Navigation tablette ──
-    const tabletMainTab = ref('adv')
+    // ── Navigation tablette : side-sheet contexte ──
+    const tabletCtxOpen = ref(false)
+
+    // Auto-ouvre le side-sheet contexte quand le MJ sélectionne un PJ ou un adversaire
+    // (uniquement en breakpoint tablette — détecté via matchMedia)
+    const tabletMQ = typeof window !== 'undefined'
+      ? window.matchMedia('(min-width: 768px) and (max-width: 1023px)')
+      : null
+
+    function onLastClickChange(newCat) {
+      if (tabletMQ && tabletMQ.matches && newCat) {
+        tabletCtxOpen.value = true
+      }
+    }
+
+    // Watcher pour auto-ouvrir le side-sheet au changement de sélection
+    watch(() => store.lastClickCategory, onLastClickChange)
 
     // ── Raccourcis clavier ──
     function onKeydown(e) {
@@ -537,6 +544,7 @@ export default {
       }
       if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); haptic.swap(); return }
       if (e.key === 'Escape') {
+        if (tabletCtxOpen.value) { tabletCtxOpen.value = false; return }
         if (aoeMode.value) aoeMode.value = false
         if (showReinforcementPanel.value) showReinforcementPanel.value = false
         if (showEndSummary.value) showEndSummary.value = false
@@ -578,7 +586,7 @@ export default {
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
       showEndSummary, endSummaryData,
-      tabletMainTab,
+      tabletCtxOpen,
       haptic
     }
   },
@@ -629,60 +637,107 @@ export default {
 .live__cd-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); min-width: var(--touch-min); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; touch-action: manipulation; }
 .live__cd-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
 
-/* ══ Tabs tablette (masquées par défaut, visibles uniquement en tablette) ══ */
+/* ══ Tabs tablette — supprimées, remplacées par le side-sheet ══ */
 .live__tablet-tabs { display: none; }
-.live__tablet-tab { flex: 1; padding: var(--space-sm) var(--space-md); min-height: var(--touch-min); border: none; border-bottom: 2px solid transparent; background: transparent; color: var(--color-text-muted); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); cursor: pointer; touch-action: manipulation; transition: color var(--transition-fast), border-color var(--transition-fast); }
-.live__tablet-tab:hover { color: var(--color-text-primary); }
-.live__tablet-tab--active { color: var(--color-text-primary); border-bottom-color: var(--color-accent-hope); font-weight: var(--font-weight-bold); }
 
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
 .live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
+
+/* Wrapper contexte — en desktop, simple colonne de grille */
+.live__col-ctx-wrapper { display: contents; }
 .live__col-ctx { overflow-y: auto; overflow-x: hidden; }
+
+/* Bouton flottant contexte — masqué par défaut (visible uniquement en tablette) */
+.live__ctx-fab { display: none; }
 
 /* ══ Breakpoint tablette : 768px – 1023px ══ */
 @media (min-width: 768px) and (max-width: 1023px) {
   /* Header : titre plus lisible */
   .live__title { font-size: var(--font-size-lg); max-width: 20rem; }
   .live__tier { font-size: var(--font-size-sm); }
-  .live__mode-btn { font-size: var(--font-size-sm); }
 
-  /* Grille 2 colonnes : PC sidebar | zone principale */
+  /* Grille 2 colonnes : PC sidebar | Adversaires (toujours visible) */
   .live__grid {
     grid-template-columns: minmax(180px, 220px) 1fr;
     grid-template-rows: 1fr;
+    position: relative;
   }
   .live__col-pc {
     grid-column: 1;
     grid-row: 1;
-    flex-direction: column;
     border-right: 1px solid var(--color-border);
     border-bottom: none;
     overflow-y: auto;
     padding: var(--space-sm);
     gap: var(--space-sm);
   }
-  /* Les 2 colonnes occupent le même slot de grille, l'une visible à la fois */
   .live__col-adv {
     grid-column: 2;
     grid-row: 1;
   }
-  .live__col-ctx {
-    grid-column: 2;
-    grid-row: 1;
-    max-height: none;
-    border-top: none;
-  }
-  /* Masquage de la colonne inactive via les tabs tablette */
-  .live__col--tablet-hidden { display: none; }
 
-  /* Tabs tablette visibles */
-  .live__tablet-tabs {
+  /* Side-sheet contexte — overlay coulissant depuis la droite */
+  .live__col-ctx-wrapper {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    transition: background 0.25s;
+  }
+  .live__col-ctx-wrapper--open {
+    background: rgba(0, 0, 0, 0.35);
+    pointer-events: auto;
+  }
+  .live__col-ctx {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(380px, 75vw);
+    background: var(--color-bg-primary);
+    border-left: 1px solid var(--color-border);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .live__col-ctx-wrapper--open .live__col-ctx {
+    transform: translateX(0);
+  }
+
+  /* Bouton flottant contexte visible en tablette */
+  .live__ctx-fab {
     display: flex;
-    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-md);
+    z-index: 60;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
     background: var(--color-bg-secondary);
-    flex-shrink: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .live__ctx-fab:hover { background: var(--color-bg-elevated); }
+  .live__ctx-fab:active { transform: scale(0.93); }
+  .live__ctx-fab--open {
+    background: var(--color-accent-hope);
+    color: white;
+    border-color: var(--color-accent-hope);
   }
 }
 
@@ -691,9 +746,10 @@ export default {
   .live__grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: auto; }
   .live__col-pc { flex-direction: row; overflow-x: auto; overflow-y: visible; border-right: none; border-bottom: 1px solid var(--color-border); padding: var(--space-xs) var(--space-sm); }
   .live__col-adv { min-height: 40vh; }
+  /* En mobile, le contexte est une colonne visible inline */
+  .live__col-ctx-wrapper { display: contents; }
   .live__col-ctx { border-top: 1px solid var(--color-border); max-height: 40vh; overflow-y: auto; }
-  /* En mobile, les tabs tablette restent masquées, les 2 colonnes sont toujours visibles */
-  .live__col--tablet-hidden { display: flex; }
+  .live__ctx-fab { display: none; }
 }
 
 /* ══ Bouton Renforts (header) ══ */
