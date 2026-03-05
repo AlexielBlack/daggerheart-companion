@@ -132,6 +132,32 @@
               +
             </button>
           </div>
+          <!-- Boutons HP rapides -->
+          <div
+            v-if="!inst.isDefeated"
+            class="adv-panel__quick-dmg"
+          >
+            <span class="adv-panel__quick-label">❤️ HP :</span>
+            <button
+              v-for="n in hpQuickButtons(inst)"
+              :key="'hp-' + n"
+              class="adv-panel__quick-btn adv-panel__quick-btn--hp"
+              :title="'Marquer ' + n + ' HP'"
+              @click.stop="markHP(inst.instanceId, n)"
+            >
+              {{ n }}
+            </button>
+            <input
+              class="adv-panel__quick-input"
+              type="number"
+              min="1"
+              :max="inst.maxHP - inst.markedHP"
+              placeholder="N"
+              aria-label="Dégâts HP personnalisés"
+              @click.stop
+              @keydown.enter.stop="applyCustomHP(inst.instanceId, $event)"
+            />
+          </div>
           <div class="adv-panel__bar-row">
             <span class="adv-panel__bar-label">ST</span>
             <button
@@ -157,6 +183,32 @@
             >
               +
             </button>
+          </div>
+          <!-- Boutons Stress rapides -->
+          <div
+            v-if="!inst.isDefeated && inst.maxStress > 0"
+            class="adv-panel__quick-dmg"
+          >
+            <span class="adv-panel__quick-label">💢 ST :</span>
+            <button
+              v-for="n in stressQuickButtons(inst)"
+              :key="'st-' + n"
+              class="adv-panel__quick-btn adv-panel__quick-btn--stress"
+              :title="'Marquer ' + n + ' Stress'"
+              @click.stop="markStress(inst.instanceId, n)"
+            >
+              {{ n }}
+            </button>
+            <input
+              class="adv-panel__quick-input"
+              type="number"
+              min="1"
+              :max="inst.maxStress - inst.markedStress"
+              placeholder="N"
+              aria-label="Dégâts Stress personnalisés"
+              @click.stop
+              @keydown.enter.stop="applyCustomStress(inst.instanceId, $event)"
+            />
           </div>
         </div>
 
@@ -351,20 +403,56 @@ export default {
       store.setActiveAdversary(instanceId)
     }
 
-    function markHP(instanceId) {
-      store.markAdversaryHP(instanceId, 1)
+    function markHP(instanceId, amount = 1) {
+      store.markAdversaryHP(instanceId, amount)
     }
 
     function clearHP(instanceId) {
       store.clearAdversaryHP(instanceId, 1)
     }
 
-    function markStress(instanceId) {
-      store.markAdversaryStress(instanceId, 1)
+    function markStress(instanceId, amount = 1) {
+      store.markAdversaryStress(instanceId, amount)
     }
 
     function clearStress(instanceId) {
       store.clearAdversaryStress(instanceId, 1)
+    }
+
+    /** Calcule les boutons rapides HP adaptés à l'adversaire */
+    function hpQuickButtons(inst) {
+      const remaining = inst.maxHP - inst.markedHP
+      const buttons = [1, 2, 3, 4]
+      if (inst.maxHP >= 10) buttons.push(5)
+      if (inst.maxHP >= 20) buttons.push(10)
+      return buttons.filter((n) => n <= remaining)
+    }
+
+    /** Calcule les boutons rapides Stress adaptés à l'adversaire */
+    function stressQuickButtons(inst) {
+      const remaining = inst.maxStress - inst.markedStress
+      const buttons = [1, 2, 3]
+      if (inst.maxStress >= 8) buttons.push(4)
+      if (inst.maxStress >= 12) buttons.push(5)
+      return buttons.filter((n) => n <= remaining)
+    }
+
+    /** Applique un montant HP personnalisé depuis l'input */
+    function applyCustomHP(instanceId, event) {
+      const val = parseInt(event.target.value)
+      if (val > 0) {
+        store.markAdversaryHP(instanceId, val)
+        event.target.value = ''
+      }
+    }
+
+    /** Applique un montant Stress personnalisé depuis l'input */
+    function applyCustomStress(instanceId, event) {
+      const val = parseInt(event.target.value)
+      if (val > 0) {
+        store.markAdversaryStress(instanceId, val)
+        event.target.value = ''
+      }
     }
 
     function defeat(instanceId) {
@@ -422,7 +510,11 @@ export default {
       logPcMiss,
       advConditions,
       toggleAdvCond,
-      updateNotes
+      updateNotes,
+      hpQuickButtons,
+      stressQuickButtons,
+      applyCustomHP,
+      applyCustomStress
     }
   },
   computed: {
@@ -774,6 +866,92 @@ export default {
 }
 
 /* ── Boutons défaite / réanimer ── */
+
+.adv-panel__quick-dmg {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 0;
+  flex-wrap: wrap;
+}
+
+.adv-panel__quick-label {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  font-weight: var(--font-semibold);
+  white-space: nowrap;
+  min-width: 38px;
+}
+
+.adv-panel__quick-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 var(--space-xs);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.adv-panel__quick-btn--hp {
+  color: var(--color-accent-danger);
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+.adv-panel__quick-btn--hp:hover {
+  background: rgba(244, 67, 54, 0.12);
+  border-color: var(--color-accent-danger);
+}
+
+.adv-panel__quick-btn--stress {
+  color: #8b5cf6;
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.adv-panel__quick-btn--stress:hover {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: #8b5cf6;
+}
+
+.adv-panel__quick-input {
+  width: 44px;
+  height: 26px;
+  padding: 0 var(--space-xs);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+  -moz-appearance: textfield;
+}
+
+.adv-panel__quick-input::-webkit-inner-spin-button,
+.adv-panel__quick-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.adv-panel__quick-input:focus {
+  outline: none;
+  border-style: solid;
+  border-color: var(--color-border-active);
+  background: var(--color-bg-primary);
+}
+
+.adv-panel__quick-input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: normal;
+  font-size: var(--font-xs);
+}
 
 .adv-panel__defeat-btn {
   padding: 2px var(--space-sm);

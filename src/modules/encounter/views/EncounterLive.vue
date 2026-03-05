@@ -73,20 +73,23 @@
               class="enc-live__spot-btn"
               :class="{ 'enc-live__spot-btn--on': store.pcSpotlights[pc.id] >= 1 }"
               :aria-label="(store.pcSpotlights[pc.id] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + pc.name"
-              :title="store.pcSpotlights[pc.id] >= 1 ? 'Clic: +1 · Clic droit: −1' : 'Marquer spotlight'"
-              @click.stop="store.togglePcSpotlight(pc.id)"
+              :title="store.pcSpotlights[pc.id] >= 1 ? 'Clic: +1 · Maintenir: −1' : 'Marquer spotlight'"
+              @click.stop="onPcSpotClick(pc.id)"
               @contextmenu.stop.prevent="store.decrementPcSpotlight(pc.id)"
+              @pointerdown.stop="spotLongPressDown(() => store.decrementPcSpotlight(pc.id))"
+              @pointerup.stop="spotLongPressUp()"
+              @pointerleave.stop="spotLongPressUp()"
             >
               ✦
             </button>
           </button>
         </div>
 
-        <!-- Flèche directionnelle -->
+        <!-- Indicateur de mode de scène central -->
         <div
-          class="enc-live__arrow"
-          :class="'enc-live__arrow--' + store.sceneMode"
-          :title="isPcActor ? 'PJ attaque →' : '← Adversaire attaque'"
+          class="enc-live__mode-indicator"
+          :class="'enc-live__mode-indicator--' + store.sceneMode"
+          :title="isPcActor ? 'PJ attaque — cliquer pour inverser' : 'Adversaire attaque — cliquer pour inverser'"
           role="button"
           tabindex="0"
           aria-label="Inverser le projecteur"
@@ -94,7 +97,9 @@
           @keydown.enter="store.swapSpotlight()"
           @keydown.space.prevent="store.swapSpotlight()"
         >
-          <span class="enc-live__arrow-icon">{{ isPcActor ? '⚔️ →' : '← 💀' }}</span>
+          <span class="enc-live__mode-label">{{ isPcActor ? 'PJ Attaque' : 'MJ Attaque' }}</span>
+          <span class="enc-live__mode-icon">{{ isPcActor ? '⚔️ →' : '← 💀' }}</span>
+          <span class="enc-live__mode-hint">Tab pour inverser</span>
         </div>
 
         <!-- Adversaire chips (groupés) -->
@@ -129,9 +134,12 @@
               class="enc-live__spot-btn"
               :class="{ 'enc-live__spot-btn--on': store.advSpotlights[group.adversaryId] >= 1 }"
               :aria-label="(store.advSpotlights[group.adversaryId] >= 1 ? 'Retirer' : 'Marquer') + ' spotlight ' + group.name"
-              :title="store.advSpotlights[group.adversaryId] >= 1 ? 'Clic: +1 · Clic droit: −1' : 'Marquer spotlight'"
-              @click.stop="store.toggleAdvSpotlight(group.adversaryId)"
+              :title="store.advSpotlights[group.adversaryId] >= 1 ? 'Clic: +1 · Maintenir: −1' : 'Marquer spotlight'"
+              @click.stop="onAdvSpotClick(group.adversaryId)"
               @contextmenu.stop.prevent="store.decrementAdvSpotlight(group.adversaryId)"
+              @pointerdown.stop="spotLongPressDown(() => store.decrementAdvSpotlight(group.adversaryId))"
+              @pointerup.stop="spotLongPressUp()"
+              @pointerleave.stop="spotLongPressUp()"
             >
               ✦
             </button>
@@ -145,6 +153,16 @@
             @click="toggleReinforcementPanel()"
           >
             +
+          </button>
+          <!-- Bouton AoE -->
+          <button
+            class="enc-live__aoe-btn"
+            :class="{ 'enc-live__aoe-btn--open': aoeMode }"
+            title="Dégâts de zone (AoE)"
+            aria-label="Dégâts de zone"
+            @click="toggleAoeMode()"
+          >
+            💥
           </button>
         </div>
       </div>
@@ -177,6 +195,83 @@
           >
             Aucun résultat
           </p>
+        </div>
+      </div>
+
+      <!-- ── Panneau AoE (dégâts de zone) ── -->
+      <div
+        v-if="aoeMode"
+        class="enc-live__aoe-panel"
+      >
+        <div class="enc-live__aoe-header">
+          <span class="enc-live__aoe-title">💥 Dégâts de zone</span>
+          <button
+            class="enc-live__aoe-close"
+            aria-label="Fermer le mode AoE"
+            @click="aoeMode = false"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="enc-live__aoe-targets">
+          <label
+            class="enc-live__aoe-select-all"
+          >
+            <input
+              type="checkbox"
+              :checked="aoeSelectedIds.length === aoeAvailableInstances.length"
+              @change="toggleAoeSelectAll"
+            />
+            <span>Tous ({{ aoeAvailableInstances.length }})</span>
+          </label>
+          <label
+            v-for="inst in aoeAvailableInstances"
+            :key="inst.instanceId"
+            class="enc-live__aoe-target"
+            :class="{ 'enc-live__aoe-target--selected': aoeSelectedIds.includes(inst.instanceId) }"
+          >
+            <input
+              type="checkbox"
+              :value="inst.instanceId"
+              :checked="aoeSelectedIds.includes(inst.instanceId)"
+              @change="toggleAoeTarget(inst.instanceId)"
+            />
+            <span class="enc-live__aoe-target-name">{{ inst.name }}</span>
+            <span class="enc-live__aoe-target-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+          </label>
+        </div>
+        <div class="enc-live__aoe-controls">
+          <input
+            v-model.number="aoeDamageAmount"
+            class="enc-live__aoe-input"
+            type="number"
+            min="1"
+            placeholder="Dégâts"
+            aria-label="Montant de dégâts AoE"
+          />
+          <div class="enc-live__aoe-type-btns">
+            <button
+              class="enc-live__aoe-type-btn"
+              :class="{ 'enc-live__aoe-type-btn--active': aoeDamageType === 'hp' }"
+              @click="aoeDamageType = 'hp'"
+            >
+              ❤️ HP
+            </button>
+            <button
+              class="enc-live__aoe-type-btn"
+              :class="{ 'enc-live__aoe-type-btn--active': aoeDamageType === 'stress' }"
+              @click="aoeDamageType = 'stress'"
+            >
+              💢 Stress
+            </button>
+          </div>
+          <button
+            class="enc-live__aoe-apply"
+            :disabled="aoeSelectedIds.length === 0 || !aoeDamageAmount || aoeDamageAmount <= 0"
+            @click="applyAoe"
+          >
+            Appliquer ({{ aoeSelectedIds.length }})
+          </button>
         </div>
       </div>
 
@@ -391,6 +486,51 @@ export default {
       store.addReinforcement(adversaryId, 1)
     }
 
+    // ── Panneau AoE (dégâts de zone) ──────────────────────
+    const aoeMode = ref(false)
+    const aoeSelectedIds = ref([])
+    const aoeDamageAmount = ref(null)
+    const aoeDamageType = ref('hp')
+
+    /** Instances adversaires non vaincues, disponibles pour l'AoE */
+    const aoeAvailableInstances = computed(() => {
+      return store.liveAdversaries.filter((a) => !a.isDefeated)
+    })
+
+    function toggleAoeMode() {
+      aoeMode.value = !aoeMode.value
+      if (aoeMode.value) {
+        // Présélectionner toutes les instances actives
+        aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
+        aoeDamageAmount.value = null
+        aoeDamageType.value = 'hp'
+        showReinforcementPanel.value = false
+      }
+    }
+
+    function toggleAoeTarget(instanceId) {
+      const idx = aoeSelectedIds.value.indexOf(instanceId)
+      if (idx >= 0) {
+        aoeSelectedIds.value.splice(idx, 1)
+      } else {
+        aoeSelectedIds.value.push(instanceId)
+      }
+    }
+
+    function toggleAoeSelectAll() {
+      if (aoeSelectedIds.value.length === aoeAvailableInstances.value.length) {
+        aoeSelectedIds.value = []
+      } else {
+        aoeSelectedIds.value = aoeAvailableInstances.value.map((a) => a.instanceId)
+      }
+    }
+
+    function applyAoe() {
+      if (aoeSelectedIds.value.length === 0 || !aoeDamageAmount.value || aoeDamageAmount.value <= 0) return
+      store.applyAoeDamage(aoeSelectedIds.value, aoeDamageAmount.value, aoeDamageType.value)
+      aoeDamageAmount.value = null
+    }
+
     // ── Résumé post-combat ────────────────────────────────
     const showEndSummary = ref(false)
     const endSummaryData = ref(null)
@@ -455,8 +595,11 @@ export default {
         return
       }
 
-      // Escape : fermer renforts / résumé
+      // Escape : fermer renforts / résumé / AoE
       if (e.key === 'Escape') {
+        if (aoeMode.value) {
+          aoeMode.value = false
+        }
         if (showReinforcementPanel.value) {
           showReinforcementPanel.value = false
         }
@@ -466,13 +609,23 @@ export default {
         return
       }
 
-      // 1-9 : sélection rapide PJ par index
+      // 1-9 : sélection rapide PJ / Shift+1-9 : adversaire
       const num = parseInt(e.key)
       if (num >= 1 && num <= 9 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const pcs = store.participantPcs
-        if (num <= pcs.length) {
-          e.preventDefault()
-          store.selectPc(pcs[num - 1].id)
+        if (e.shiftKey) {
+          // Shift+N : sélection rapide groupe adversaire par index
+          const groups = store.groupedAdversaries
+          if (num <= groups.length) {
+            e.preventDefault()
+            store.selectAdversaryGroup(groups[num - 1].adversaryId)
+          }
+        } else {
+          // N : sélection rapide PJ par index
+          const pcs = store.participantPcs
+          if (num <= pcs.length) {
+            e.preventDefault()
+            store.selectPc(pcs[num - 1].id)
+          }
         }
         return
       }
@@ -489,6 +642,41 @@ export default {
       window.removeEventListener('keydown', onKeydown)
     })
 
+    // ── Long press spotlights (alternative mobile au clic droit) ──
+    let _lpTimer = null
+    let _lpFired = false
+
+    function spotLongPressDown(callback) {
+      _lpFired = false
+      _lpTimer = setTimeout(() => {
+        _lpFired = true
+        callback()
+      }, 500)
+    }
+
+    function spotLongPressUp() {
+      if (_lpTimer) {
+        clearTimeout(_lpTimer)
+        _lpTimer = null
+      }
+    }
+
+    function spotLongPressFired() {
+      return _lpFired
+    }
+
+    /** Gère le clic sur le bouton spotlight PJ avec long-press */
+    function onPcSpotClick(pcId) {
+      if (_lpFired) { _lpFired = false; return }
+      store.togglePcSpotlight(pcId)
+    }
+
+    /** Gère le clic sur le bouton spotlight adversaire avec long-press */
+    function onAdvSpotClick(advId) {
+      if (_lpFired) { _lpFired = false; return }
+      store.toggleAdvSpotlight(advId)
+    }
+
     return {
       store,
       isPcActor,
@@ -502,6 +690,22 @@ export default {
       filteredAdversaries,
       toggleReinforcementPanel,
       addReinforcement,
+      // AoE
+      aoeMode,
+      aoeSelectedIds,
+      aoeDamageAmount,
+      aoeDamageType,
+      aoeAvailableInstances,
+      toggleAoeMode,
+      toggleAoeTarget,
+      toggleAoeSelectAll,
+      applyAoe,
+      // Long press spotlights
+      spotLongPressDown,
+      spotLongPressUp,
+      spotLongPressFired,
+      onPcSpotClick,
+      onAdvSpotClick,
       // Résumé
       showEndSummary,
       endSummaryData,
@@ -734,40 +938,66 @@ export default {
   text-shadow: 0 0 4px rgba(224, 165, 38, 0.6);
 }
 
-/* ── Flèche directionnelle ── */
+/* ── Indicateur de mode de scène central ── */
 
-.enc-live__arrow {
+.enc-live__mode-indicator {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
+  gap: 2px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
   border: 2px solid var(--color-border);
   background: var(--color-bg-secondary);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s;
   user-select: none;
+  min-width: 100px;
 }
 
-.enc-live__arrow:hover {
+.enc-live__mode-indicator:hover {
   background: var(--color-bg-elevated);
-  border-color: var(--color-border-active);
+  transform: scale(1.05);
 }
 
-.enc-live__arrow--pcAttack {
+.enc-live__mode-indicator--pcAttack {
   border-color: var(--color-accent-hope);
+  background: rgba(83, 168, 182, 0.08);
+}
+
+.enc-live__mode-indicator--adversaryAttack {
+  border-color: var(--color-accent-fear);
+  background: rgba(200, 75, 49, 0.08);
+}
+
+.enc-live__mode-label {
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.enc-live__mode-indicator--pcAttack .enc-live__mode-label {
   color: var(--color-accent-hope);
 }
 
-.enc-live__arrow--adversaryAttack {
-  border-color: var(--color-accent-fear);
+.enc-live__mode-indicator--adversaryAttack .enc-live__mode-label {
   color: var(--color-accent-fear);
 }
 
-.enc-live__arrow-icon {
-  font-size: var(--font-sm);
+.enc-live__mode-icon {
+  font-size: 1.3rem;
   font-weight: var(--font-bold);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.enc-live__mode-hint {
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
@@ -791,8 +1021,11 @@ export default {
     flex-direction: column;
   }
 
-  .enc-live__arrow {
-    transform: rotate(90deg);
+  .enc-live__mode-indicator {
+    transform: rotate(0deg);
+    flex-direction: row;
+    gap: var(--space-xs);
+    min-width: auto;
   }
 }
 
@@ -948,6 +1181,213 @@ export default {
   text-align: center;
   padding: var(--space-sm);
   margin: 0;
+}
+
+/* ── Bouton AoE ── */
+
+.enc-live__aoe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-accent-warning);
+  background: transparent;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.enc-live__aoe-btn:hover {
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.08);
+}
+
+.enc-live__aoe-btn--open {
+  border-style: solid;
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.12);
+}
+
+/* ── Panneau AoE ── */
+
+.enc-live__aoe-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-accent-warning);
+  border-radius: var(--radius-lg);
+}
+
+.enc-live__aoe-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enc-live__aoe-title {
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  color: var(--color-accent-warning);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.enc-live__aoe-close {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-md);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.enc-live__aoe-close:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.enc-live__aoe-targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.enc-live__aoe-select-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px var(--space-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+}
+
+.enc-live__aoe-select-all:hover {
+  border-color: var(--color-border-active);
+}
+
+.enc-live__aoe-target {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px var(--space-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-xs);
+  cursor: pointer;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.enc-live__aoe-target:hover {
+  border-color: var(--color-border-active);
+}
+
+.enc-live__aoe-target--selected {
+  border-color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.06);
+}
+
+.enc-live__aoe-target-name {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.enc-live__aoe-target-hp {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.enc-live__aoe-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.enc-live__aoe-input {
+  width: 70px;
+  height: 32px;
+  padding: 0 var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.enc-live__aoe-input::-webkit-inner-spin-button,
+.enc-live__aoe-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.enc-live__aoe-input:focus {
+  outline: none;
+  border-color: var(--color-accent-warning);
+}
+
+.enc-live__aoe-type-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.enc-live__aoe-type-btn {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.enc-live__aoe-type-btn:hover {
+  background: var(--color-bg-elevated);
+}
+
+.enc-live__aoe-type-btn--active {
+  border-color: var(--color-accent-warning);
+  color: var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.08);
+}
+
+.enc-live__aoe-apply {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-warning);
+  background: rgba(255, 152, 0, 0.1);
+  color: var(--color-accent-warning);
+  font-size: var(--font-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-left: auto;
+}
+
+.enc-live__aoe-apply:hover:not(:disabled) {
+  background: rgba(255, 152, 0, 0.2);
+}
+
+.enc-live__aoe-apply:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* ── Overlay résumé post-combat ── */

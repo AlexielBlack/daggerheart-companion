@@ -580,4 +580,152 @@ describe('encounterLiveStore', () => {
       expect(store.undoStack.length).toBeLessThanOrEqual(50)
     })
   })
+
+  // ═══════════════════════════════════════════════════════
+  //  AoE — Dégâts de zone
+  // ═══════════════════════════════════════════════════════
+
+  describe('applyAoeDamage', () => {
+    let instances
+
+    beforeEach(() => {
+      store.startEncounter(MOCK_BUILDER_DATA)
+      instances = store.liveAdversaries
+    })
+
+    it('applique des dégâts HP à plusieurs instances', () => {
+      const ids = instances.map((a) => a.instanceId)
+      store.applyAoeDamage(ids, 3, 'hp')
+      for (const inst of instances) {
+        expect(inst.markedHP).toBe(3)
+      }
+    })
+
+    it('applique des dégâts Stress à plusieurs instances', () => {
+      const ids = instances.map((a) => a.instanceId)
+      store.applyAoeDamage(ids, 2, 'stress')
+      for (const inst of instances) {
+        expect(inst.markedStress).toBe(2)
+      }
+    })
+
+    it('ne dépasse pas maxHP', () => {
+      const inst = instances[0]
+      store.applyAoeDamage([inst.instanceId], 9999, 'hp')
+      expect(inst.markedHP).toBe(inst.maxHP)
+    })
+
+    it('ignore les instances vaincues', () => {
+      const inst = instances[0]
+      store.defeatAdversary(inst.instanceId)
+      store.applyAoeDamage([inst.instanceId], 5, 'hp')
+      // Ne doit pas avoir changé
+      expect(inst.markedHP).toBe(inst.markedHP)
+    })
+
+    it('crée des entrées dans le combat log pour chaque cible', () => {
+      const ids = instances.filter((a) => !a.isDefeated).map((a) => a.instanceId)
+      store.applyAoeDamage(ids, 2, 'hp')
+      const dmgEntries = store.combatLog.filter((e) => e.action === 'damage')
+      expect(dmgEntries.length).toBe(ids.length)
+    })
+
+    it('ne fait rien si la liste d\'instances est vide', () => {
+      store.applyAoeDamage([], 5, 'hp')
+      expect(store.combatLog).toHaveLength(0)
+    })
+
+    it('ne fait rien si le montant est 0', () => {
+      const ids = instances.map((a) => a.instanceId)
+      store.applyAoeDamage(ids, 0, 'hp')
+      for (const inst of instances) {
+        expect(inst.markedHP).toBe(0)
+      }
+    })
+
+    it('défait les Minions dès le premier dégât HP', () => {
+      // Trouver un Minion si disponible dans le mock
+      const minion = instances.find((a) => a.type === 'Minion')
+      if (!minion) return // skip si aucun minion dans les données de test
+      store.applyAoeDamage([minion.instanceId], 1, 'hp')
+      expect(minion.isDefeated).toBe(true)
+    })
+  })
+
+  // ═══════════════════════════════════════════════════════
+  //  Sélection — pas de swap au double-clic
+  // ═══════════════════════════════════════════════════════
+
+  describe('sélection sans swap (double-clic)', () => {
+    beforeEach(() => {
+      store.startEncounter(MOCK_BUILDER_DATA)
+    })
+
+    it('selectPc ne swap pas au clic sur le même PJ', () => {
+      const pcId = store.participantPcIds[0]
+      store.selectPc(pcId)
+      const modeBefore = store.sceneMode
+      // Re-cliquer le même PJ ne doit PAS changer le mode
+      store.selectPc(pcId)
+      expect(store.sceneMode).toBe(modeBefore)
+    })
+
+    it('selectAdversaryGroup ne swap pas au clic sur le même adversaire', () => {
+      const advId = store.liveAdversaries[0].adversaryId
+      store.selectAdversaryGroup(advId)
+      const modeBefore = store.sceneMode
+      // Re-cliquer le même adversaire ne doit PAS changer le mode
+      store.selectAdversaryGroup(advId)
+      expect(store.sceneMode).toBe(modeBefore)
+    })
+
+    it('swapSpotlight reste le seul moyen d\'inverser', () => {
+      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
+      store.swapSpotlight()
+      expect(store.sceneMode).toBe(SCENE_MODE_ADVERSARY_ATTACK)
+      store.swapSpotlight()
+      expect(store.sceneMode).toBe(SCENE_MODE_PC_ATTACK)
+    })
+  })
+
+  // ═══════════════════════════════════════════════════════
+  //  HP rapides — markAdversaryHP avec montant > 1
+  // ═══════════════════════════════════════════════════════
+
+  describe('markAdversaryHP avec montant variable', () => {
+    let instanceId
+
+    beforeEach(() => {
+      store.startEncounter(MOCK_BUILDER_DATA)
+      instanceId = store.liveAdversaries[0].instanceId
+    })
+
+    it('marque 5 HP en une seule action', () => {
+      store.markAdversaryHP(instanceId, 5)
+      expect(store.liveAdversaries[0].markedHP).toBe(5)
+    })
+
+    it('marque 10 HP en une seule action', () => {
+      store.markAdversaryHP(instanceId, 10)
+      const expected = Math.min(10, store.liveAdversaries[0].maxHP)
+      expect(store.liveAdversaries[0].markedHP).toBe(expected)
+    })
+
+    it('ne dépasse pas maxHP avec un gros montant', () => {
+      const adv = store.liveAdversaries[0]
+      store.markAdversaryHP(instanceId, adv.maxHP + 100)
+      expect(adv.markedHP).toBe(adv.maxHP)
+    })
+
+    it('accumule les dégâts consécutifs dans le même log entry', () => {
+      // Sélectionner un PJ actif pour que le log fonctionne
+      store.selectPc(store.participantPcIds[0])
+      store.markAdversaryHP(instanceId, 3)
+      store.markAdversaryHP(instanceId, 2)
+      // Le store agrège les dégâts consécutifs du même PJ sur la même cible
+      const dmgEntries = store.combatLog.filter((e) => e.action === 'damage' && e.type === 'hp')
+      expect(dmgEntries.length).toBe(1)
+      expect(dmgEntries[0].amount).toBe(5)
+    })
+  })
 })

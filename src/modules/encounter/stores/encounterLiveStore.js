@@ -372,10 +372,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function selectPc(pcId) {
     if (!participantPcIds.value.includes(pcId)) return
-    const isSameEntity = activePcId.value === pcId && lastClickCategory.value === 'pc'
-    if (isSameEntity) {
-      swapSpotlight()
-    } else if (lastClickCategory.value === 'adversary') {
+    if (lastClickCategory.value === 'adversary') {
       activePcId.value = pcId
       sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
       spotlight.value = SPOTLIGHT_GM
@@ -388,11 +385,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function selectAdversaryGroup(adversaryId) {
-    const currentAdvId = activeAdversary.value?.adversaryId
-    const isSameEntity = currentAdvId === adversaryId && lastClickCategory.value === 'adversary'
-    if (isSameEntity) {
-      swapSpotlight()
-    } else if (lastClickCategory.value === 'pc') {
+    if (lastClickCategory.value === 'pc') {
       setActiveAdversaryGroupInternal(adversaryId)
       sceneMode.value = SCENE_MODE_PC_ATTACK
       spotlight.value = SPOTLIGHT_PC
@@ -603,6 +596,61 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   // ═══════════════════════════════════════════════════════
+  //  Actions — Dégâts de zone (AoE)
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Applique des dégâts à plusieurs instances adversaires en une seule action.
+   * @param {string[]} instanceIds - Identifiants des instances ciblées
+   * @param {number} amount - Montant de dégâts
+   * @param {'hp'|'stress'} type - Type de dégâts
+   */
+  function applyAoeDamage(instanceIds, amount, type = 'hp') {
+    if (!instanceIds.length || amount <= 0) return
+    pushUndo()
+    const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+    for (const instanceId of instanceIds) {
+      const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
+      if (!adv || adv.isDefeated) continue
+
+      if (type === 'hp') {
+        const prev = adv.markedHP
+        adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
+        const actual = adv.markedHP - prev
+        if (actual > 0) {
+          const entry = {
+            action: 'damage', pcId: activePcId.value || null, pcName: pc ? pc.name : '?',
+            instanceId, advName: adv.name, type: 'hp', amount: actual, timestamp: Date.now()
+          }
+          combatLog.value.push(entry)
+          encounterLog.value.push({ ...entry })
+        }
+        // Minion : défait dès le premier dégât
+        if (adv.type === 'Minion' && adv.markedHP > 0) {
+          adv.isDefeated = true
+          encounterLog.value.push({
+            action: 'adv_down', instanceId, advName: adv.name,
+            pcId: activePcId.value || null, pcName: pc ? pc.name : '?', timestamp: Date.now()
+          })
+        }
+      } else {
+        const prev = adv.markedStress
+        adv.markedStress = Math.min(adv.maxStress, adv.markedStress + amount)
+        const actual = adv.markedStress - prev
+        if (actual > 0) {
+          const entry = {
+            action: 'damage', pcId: activePcId.value || null, pcName: pc ? pc.name : '?',
+            instanceId, advName: adv.name, type: 'stress', amount: actual, timestamp: Date.now()
+          }
+          combatLog.value.push(entry)
+          encounterLog.value.push({ ...entry })
+        }
+      }
+    }
+    persistState()
+  }
+
+  // ═══════════════════════════════════════════════════════
   //  Actions — Notes adversaires
   // ═══════════════════════════════════════════════════════
 
@@ -749,6 +797,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     addAdversaryCondition, removeAdversaryCondition,
     defeatAdversary, reviveAdversary,
     addReinforcement, setAdversaryNotes,
+    applyAoeDamage,
 
     // Actions — Combat log & conditions (composable)
     removeCombatLogEntry,
