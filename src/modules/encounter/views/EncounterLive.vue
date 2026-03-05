@@ -20,66 +20,66 @@
     <template v-else>
       <!-- ══ Header ══ -->
       <header class="live__header">
-        <h1 class="live__title">
-          {{ store.encounterName || 'Rencontre' }}
-        </h1>
-        <span class="live__tier">T{{ store.encounterTier }}</span>
+        <!-- Groupe gauche : identité + mode scène -->
+        <div class="live__header-info">
+          <h1 class="live__title">
+            {{ store.encounterName || 'Rencontre' }}
+          </h1>
+          <span class="live__tier">T{{ store.encounterTier }}</span>
+          <button
+            class="live__mode-btn"
+            :class="'live__mode-btn--' + store.sceneMode"
+            :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
+            aria-label="Inverser PJ / MJ"
+            @click="store.swapSpotlight()"
+          >
+            {{ isPcActor ? '⚔️ PJ' : '💀 MJ' }}
+          </button>
+          <span
+            v-if="store.adversaryCombatSummary.count > 0"
+            class="live__combat-sum"
+          >
+            {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
+          </span>
+        </div>
 
-        <!-- Swap PJ/MJ -->
-        <button
-          class="live__mode-btn"
-          :class="'live__mode-btn--' + store.sceneMode"
-          :title="isPcActor ? 'PJ attaque — Tab pour inverser' : 'MJ attaque — Tab pour inverser'"
-          aria-label="Inverser PJ / MJ"
-          @click="store.swapSpotlight()"
-        >
-          {{ isPcActor ? '⚔️ PJ Attaque' : '💀 MJ Attaque' }}
-        </button>
-
-        <span
-          v-if="store.adversaryCombatSummary.count > 0"
-          class="live__combat-sum"
-        >
-          {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
-        </span>
-
-        <button
-          v-if="store.undoStack.length > 0"
-          class="live__undo-btn"
-          :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
-          aria-label="Annuler la dernière action"
-          @click="store.undo()"
-        >
-          ↩ {{ store.undoStack.length }}
-        </button>
-
-        <button
-          v-if="hasAdversaries"
-          class="live__aoe-btn"
-          :class="{ 'live__aoe-btn--on': aoeMode }"
-          title="Dégâts de zone (AoE)"
-          aria-label="Dégâts de zone"
-          @click="aoeMode = !aoeMode"
-        >
-          💥 AoE
-        </button>
-
-        <button
-          class="live__end-btn"
-          @click="confirmEndEncounter"
-        >
-          Fin
-        </button>
-
-        <button
-          v-if="store.countdowns.length === 0"
-          class="live__cd-btn"
-          title="Ajouter un countdown"
-          aria-label="Ajouter un countdown"
-          @click="showCountdownBar = true"
-        >
-          ⏱️
-        </button>
+        <!-- Groupe droit : actions rapides -->
+        <div class="live__header-actions">
+          <button
+            v-if="store.undoStack.length > 0"
+            class="live__undo-btn"
+            :title="'Annuler (Ctrl+Z) — ' + store.undoStack.length + ' action(s)'"
+            aria-label="Annuler la dernière action"
+            @click="store.undo()"
+          >
+            ↩ {{ store.undoStack.length }}
+          </button>
+          <button
+            v-if="hasAdversaries"
+            class="live__aoe-btn"
+            :class="{ 'live__aoe-btn--on': aoeMode }"
+            title="Dégâts de zone (AoE)"
+            aria-label="Dégâts de zone"
+            @click="aoeMode = !aoeMode"
+          >
+            💥 AoE
+          </button>
+          <button
+            v-if="store.countdowns.length === 0"
+            class="live__cd-btn"
+            title="Ajouter un countdown"
+            aria-label="Ajouter un countdown"
+            @click="showCountdownBar = true"
+          >
+            ⏱️
+          </button>
+          <button
+            class="live__end-btn"
+            @click="confirmEndEncounter"
+          >
+            Fin
+          </button>
+        </div>
       </header>
 
       <!-- ══ Countdowns ══ -->
@@ -93,6 +93,30 @@
         @advance-by-result="onAdvanceCountdownByResult"
         @reset="onResetCountdown"
       />
+
+      <!-- ══ Tabs de navigation tablette (Adversaires ↔ Contexte) ══ -->
+      <nav
+        v-if="hasAdversaries"
+        class="live__tablet-tabs"
+        aria-label="Vue principale"
+      >
+        <button
+          class="live__tablet-tab"
+          :class="{ 'live__tablet-tab--active': tabletMainTab === 'adv' }"
+          aria-label="Voir les adversaires"
+          @click="tabletMainTab = 'adv'"
+        >
+          ⚔️ Adversaires
+        </button>
+        <button
+          class="live__tablet-tab"
+          :class="{ 'live__tablet-tab--active': tabletMainTab === 'ctx' }"
+          aria-label="Voir le contexte"
+          @click="tabletMainTab = 'ctx'"
+        >
+          📋 Contexte
+        </button>
+      </nav>
 
       <!-- ══ Grille 3 colonnes ══ -->
       <div class="live__grid">
@@ -115,6 +139,7 @@
         <div
           v-if="hasAdversaries"
           class="live__col-adv"
+          :class="{ 'live__col--tablet-hidden': tabletMainTab !== 'adv' }"
         >
           <AdversaryGroupCard
             v-for="group in store.groupedAdversaries"
@@ -227,7 +252,10 @@
         </div>
 
         <!-- Colonne Contexte -->
-        <div class="live__col-ctx">
+        <div
+          class="live__col-ctx"
+          :class="{ 'live__col--tablet-hidden': hasAdversaries && tabletMainTab !== 'ctx' }"
+        >
           <ContextPanel
             :pc="store.activePc"
             :adversary="store.activeAdversary"
@@ -608,6 +636,9 @@ export default {
     const showEndSummary = ref(false)
     const endSummaryData = ref(null)
 
+    // ── Navigation tablette ──
+    const tabletMainTab = ref('adv')
+
     // ── Raccourcis clavier ──
     function onKeydown(e) {
       if (!store.isActive) return
@@ -662,7 +693,8 @@ export default {
       showCountdownBar,
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
-      showEndSummary, endSummaryData
+      showEndSummary, endSummaryData,
+      tabletMainTab
     }
   },
   methods: {
@@ -693,14 +725,16 @@ export default {
 .live__go-builder { padding: var(--space-sm) var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--color-accent-hope); background: transparent; color: var(--color-accent-hope); cursor: pointer; }
 
 /* ══ Header ══ */
-.live__header { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid var(--color-border); background: var(--color-bg-secondary); flex-wrap: wrap; flex-shrink: 0; }
-.live__title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; }
-.live__tier { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); background: rgba(224, 165, 38, 0.1); border-radius: var(--radius-sm); }
-.live__mode-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); touch-action: manipulation; }
+.live__header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid var(--color-border); background: var(--color-bg-secondary); flex-shrink: 0; min-height: var(--touch-min); }
+.live__header-info { display: flex; align-items: center; gap: var(--space-sm); flex: 1; min-width: 0; flex-wrap: wrap; }
+.live__header-actions { display: flex; align-items: center; gap: var(--space-xs); flex-shrink: 0; }
+.live__title { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 16rem; }
+.live__tier { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); padding: 1px var(--space-xs); background: rgba(224, 165, 38, 0.1); border-radius: var(--radius-sm); white-space: nowrap; }
+.live__mode-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; transition: background var(--transition-fast); touch-action: manipulation; white-space: nowrap; }
 .live__mode-btn--pcAttack { color: var(--color-accent-hope); border-color: var(--color-accent-hope); }
 .live__mode-btn--adversaryAttack { color: var(--color-accent-fear); border-color: var(--color-accent-fear); }
 .live__mode-btn:hover { background: var(--color-bg-elevated); }
-.live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-left: auto; }
+.live__combat-sum { font-size: var(--font-size-xs); color: var(--color-text-secondary); white-space: nowrap; }
 .live__undo-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-text-muted); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; font-variant-numeric: tabular-nums; touch-action: manipulation; }
 .live__undo-btn:hover { background: var(--color-bg-elevated); }
 .live__end-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-accent-danger); background: transparent; color: var(--color-accent-danger); font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); cursor: pointer; touch-action: manipulation; }
@@ -711,17 +745,71 @@ export default {
 .live__cd-btn { padding: var(--space-xs) var(--space-sm); min-height: var(--touch-min); min-width: var(--touch-min); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; font-size: var(--font-size-sm); cursor: pointer; touch-action: manipulation; }
 .live__cd-btn:hover { background: var(--color-bg-elevated); border-color: var(--color-border-active); }
 
+/* ══ Tabs tablette (masquées par défaut, visibles uniquement en tablette) ══ */
+.live__tablet-tabs { display: none; }
+.live__tablet-tab { flex: 1; padding: var(--space-sm) var(--space-md); min-height: var(--touch-min); border: none; border-bottom: 2px solid transparent; background: transparent; color: var(--color-text-muted); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); cursor: pointer; touch-action: manipulation; transition: color var(--transition-fast), border-color var(--transition-fast); }
+.live__tablet-tab:hover { color: var(--color-text-primary); }
+.live__tablet-tab--active { color: var(--color-text-primary); border-bottom-color: var(--color-accent-hope); font-weight: var(--font-weight-bold); }
+
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
 .live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
 .live__col-ctx { overflow-y: auto; overflow-x: hidden; }
 
-@media (max-width: 900px) {
+/* ══ Breakpoint tablette : 768px – 1023px ══ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Header : titre plus lisible */
+  .live__title { font-size: var(--font-size-lg); max-width: 20rem; }
+  .live__tier { font-size: var(--font-size-sm); }
+  .live__mode-btn { font-size: var(--font-size-sm); }
+
+  /* Grille 2 colonnes : PC sidebar | zone principale */
+  .live__grid {
+    grid-template-columns: minmax(180px, 220px) 1fr;
+    grid-template-rows: 1fr;
+  }
+  .live__col-pc {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+    border-right: 1px solid var(--color-border);
+    border-bottom: none;
+    overflow-y: auto;
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+  }
+  /* Les 2 colonnes occupent le même slot de grille, l'une visible à la fois */
+  .live__col-adv {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .live__col-ctx {
+    grid-column: 2;
+    grid-row: 1;
+    max-height: none;
+    border-top: none;
+  }
+  /* Masquage de la colonne inactive via les tabs tablette */
+  .live__col--tablet-hidden { display: none; }
+
+  /* Tabs tablette visibles */
+  .live__tablet-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    flex-shrink: 0;
+  }
+}
+
+/* ══ Breakpoint mobile : < 768px ══ */
+@media (max-width: 767px) {
   .live__grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: auto; }
   .live__col-pc { flex-direction: row; overflow-x: auto; overflow-y: visible; border-right: none; border-bottom: 1px solid var(--color-border); padding: var(--space-xs) var(--space-sm); }
   .live__col-adv { min-height: 40vh; }
   .live__col-ctx { border-top: 1px solid var(--color-border); max-height: 40vh; overflow-y: auto; }
+  /* En mobile, les tabs tablette restent masquées, les 2 colonnes sont toujours visibles */
+  .live__col--tablet-hidden { display: flex; }
 }
 
 /* ══ Renforts ══ */

@@ -546,6 +546,7 @@ export default {
 .ctx-panel__tab {
   flex: 1;
   padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   border: none;
   border-bottom: 2px solid transparent;
   background: transparent;
@@ -557,6 +558,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  touch-action: manipulation;
 }
 
 .ctx-panel__tab:hover {
