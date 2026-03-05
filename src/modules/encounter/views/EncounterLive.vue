@@ -256,6 +256,11 @@
             >
               <span class="enc-live__aoe-row-name">{{ inst.displayName }}</span>
               <span class="enc-live__aoe-row-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+              <span
+                v-if="inst.thresholds"
+                class="enc-live__aoe-row-thresh"
+                title="Seuils Majeur / Sévère"
+              >⚔️{{ inst.thresholds.major || '—' }}/{{ inst.thresholds.severe || '—' }}</span>
               <div class="enc-live__aoe-row-btns">
                 <button
                   v-for="n in 4"
@@ -297,6 +302,11 @@
             >
               <span class="enc-live__aoe-row-name">{{ pc.name }}</span>
               <span class="enc-live__aoe-row-hp">❤️{{ pc.maxHP }}</span>
+              <span
+                v-if="pc.armorBaseThresholds"
+                class="enc-live__aoe-row-thresh"
+                title="Seuils Majeur / Sévère"
+              >⚔️{{ pc.armorBaseThresholds.major || '—' }}/{{ pc.armorBaseThresholds.severe || '—' }}</span>
               <div class="enc-live__aoe-row-btns">
                 <button
                   v-for="n in 4"
@@ -1393,6 +1403,14 @@ export default {
 }
 
 .enc-live__aoe-row-hp {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.enc-live__aoe-row-thresh {
   font-size: var(--font-xs);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
