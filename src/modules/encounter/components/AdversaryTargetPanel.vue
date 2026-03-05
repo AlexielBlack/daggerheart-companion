@@ -212,7 +212,7 @@
           :aria-label="'Notes pour ' + inst.name + (hasSiblings ? ' #' + (idx + 1) : '')"
           @input="updateNotes(inst.instanceId, $event.target.value)"
           @click.stop
-        >
+        />
       </div>
     </div>
 
