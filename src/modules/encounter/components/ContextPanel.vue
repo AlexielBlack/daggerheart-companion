@@ -132,73 +132,150 @@
         </div>
       </div>
 
-      <!-- Features principales (filtrées par tag du mode de scène) -->
-      <div
-        v-if="primaryFeatures.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
-          {{ primaryLabel }}
-          <span class="ctx-panel__count">{{ primaryFeatures.length }}</span>
-        </h4>
-        <FeatureCard
-          v-for="f in primaryFeatures"
-          :key="f.name + f.source"
-          :feature="f"
-        />
+      <!-- ── Filtre par tag ── -->
+      <div class="ctx-panel__tag-filters">
+        <button
+          v-for="tf in TAG_FILTERS"
+          :key="tf.id"
+          class="ctx-panel__tag-btn"
+          :class="{
+            'ctx-panel__tag-btn--on': activeTagFilter === tf.id
+          }"
+          :title="tf.label"
+          :aria-label="'Filtrer par ' + tf.label"
+          @click="toggleTagFilter(tf.id)"
+        >
+          {{ tf.emoji }}
+        </button>
       </div>
 
-      <!-- Réactions -->
-      <div
-        v-if="reactionFeatures.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
-          🟠 Réactions
-          <span class="ctx-panel__count">{{ reactionFeatures.length }}</span>
-        </h4>
-        <FeatureCard
-          v-for="f in reactionFeatures"
-          :key="f.name + f.source"
-          :feature="f"
-        />
-      </div>
+      <!-- ══ Vue filtrée par tag ══ -->
+      <template v-if="activeTagFilter">
+        <div
+          v-if="tagFilteredTotal === 0"
+          class="ctx-panel__empty-filter"
+        >
+          <p>
+            Aucune feature {{ activeTagFilter }} pour ce PJ.
+          </p>
+        </div>
 
-      <!-- Features secondaires (atténuées) -->
-      <div
-        v-if="secondaryFeatures.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--secondary">
-          Secondaires
-          <span class="ctx-panel__count">{{ secondaryFeatures.length }}</span>
-        </h4>
-        <FeatureCard
-          v-for="f in secondaryFeatures"
-          :key="f.name + f.source"
-          :feature="f"
-          :dimmed="true"
-          :default-expanded="false"
-        />
-      </div>
+        <div
+          v-if="tagFilteredActions.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
+            Actions
+            <span class="ctx-panel__count">{{ tagFilteredActions.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in tagFilteredActions"
+            :key="f.name + f.source"
+            :feature="f"
+          />
+        </div>
 
-      <!-- Passives -->
-      <div
-        v-if="passiveFeatures.length > 0"
-        class="ctx-panel__section"
-      >
-        <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
-          🔵 Passives
-          <span class="ctx-panel__count">{{ passiveFeatures.length }}</span>
-        </h4>
-        <FeatureCard
-          v-for="f in passiveFeatures"
-          :key="f.name + f.source"
-          :feature="f"
-          :dimmed="true"
-          :default-expanded="false"
-        />
-      </div>
+        <div
+          v-if="tagFilteredReactions.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
+            🟠 Réactions
+            <span class="ctx-panel__count">{{ tagFilteredReactions.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in tagFilteredReactions"
+            :key="f.name + f.source"
+            :feature="f"
+          />
+        </div>
+
+        <div
+          v-if="tagFilteredPassives.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
+            🔵 Passives
+            <span class="ctx-panel__count">{{ tagFilteredPassives.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in tagFilteredPassives"
+            :key="f.name + f.source"
+            :feature="f"
+          />
+        </div>
+      </template>
+
+      <!-- ══ Vue classifiée par mode (quand pas de filtre tag) ══ -->
+      <template v-else>
+        <!-- Features principales -->
+        <div
+          v-if="primaryFeatures.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--primary">
+            {{ primaryLabel }}
+            <span class="ctx-panel__count">{{ primaryFeatures.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in primaryFeatures"
+            :key="f.name + f.source"
+            :feature="f"
+          />
+        </div>
+
+        <!-- Réactions -->
+        <div
+          v-if="reactionFeatures.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--reaction">
+            🟠 Réactions
+            <span class="ctx-panel__count">{{ reactionFeatures.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in reactionFeatures"
+            :key="f.name + f.source"
+            :feature="f"
+          />
+        </div>
+
+        <!-- Features secondaires (atténuées) -->
+        <div
+          v-if="secondaryFeatures.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--secondary">
+            Secondaires
+            <span class="ctx-panel__count">{{ secondaryFeatures.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in secondaryFeatures"
+            :key="f.name + f.source"
+            :feature="f"
+            :dimmed="true"
+            :default-expanded="false"
+          />
+        </div>
+
+        <!-- Passives -->
+        <div
+          v-if="passiveFeatures.length > 0"
+          class="ctx-panel__section"
+        >
+          <h4 class="ctx-panel__section-title ctx-panel__section-title--passive">
+            🔵 Passives
+            <span class="ctx-panel__count">{{ passiveFeatures.length }}</span>
+          </h4>
+          <FeatureCard
+            v-for="f in passiveFeatures"
+            :key="f.name + f.source"
+            :feature="f"
+            :dimmed="true"
+            :default-expanded="false"
+          />
+        </div>
+      </template>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════ -->
@@ -328,7 +405,9 @@ export default {
     primaryFeatures: { type: Array, default: () => [] },
     secondaryFeatures: { type: Array, default: () => [] },
     passiveFeatures: { type: Array, default: () => [] },
-    reactionFeatures: { type: Array, default: () => [] }
+    reactionFeatures: { type: Array, default: () => [] },
+    /** Toutes les features PJ (non classifiées, pour filtrage par tag) */
+    allFeatures: { type: Array, default: () => [] }
   },
   setup(props) {
     const activeTab = ref('pc')
@@ -348,6 +427,52 @@ export default {
       if (tag === 'défensif') return '🛡️ Défensif'
       if (tag === 'social') return '🗣️ Social'
       return '⚔️ Actions'
+    })
+
+    // ── Filtre par tag ──────────────────────────────────────
+    const TAG_FILTERS = [
+      { id: 'offensif', emoji: '⚔️', label: 'Offensif' },
+      { id: 'défensif', emoji: '🛡️', label: 'Défensif' },
+      { id: 'social', emoji: '🗣️', label: 'Social' },
+      { id: 'utilitaire', emoji: '🔧', label: 'Utilitaire' }
+    ]
+
+    /** Tag actif (null = classification par mode de scène) */
+    const activeTagFilter = ref(null)
+
+    function toggleTagFilter(tagId) {
+      activeTagFilter.value = activeTagFilter.value === tagId ? null : tagId
+    }
+
+    /** Features filtrées par le tag actif, groupées par type d'activation */
+    const tagFilteredActions = computed(() => {
+      if (!activeTagFilter.value) return []
+      return props.allFeatures.filter((f) =>
+        f.activationType === 'action' && f.tags.includes(activeTagFilter.value)
+      )
+    })
+
+    const tagFilteredReactions = computed(() => {
+      if (!activeTagFilter.value) return []
+      return props.allFeatures.filter((f) =>
+        f.activationType === 'reaction' && f.tags.includes(activeTagFilter.value)
+      )
+    })
+
+    const tagFilteredPassives = computed(() => {
+      if (!activeTagFilter.value) return []
+      return props.allFeatures.filter((f) =>
+        f.activationType === 'passive' && f.tags.includes(activeTagFilter.value)
+      )
+    })
+
+    const tagFilteredTotal = computed(() =>
+      tagFilteredActions.value.length + tagFilteredReactions.value.length + tagFilteredPassives.value.length
+    )
+
+    /** Reset le filtre quand le PJ change */
+    watch(() => props.pc, () => {
+      activeTagFilter.value = null
     })
 
     // Expériences PJ
@@ -385,6 +510,8 @@ export default {
     return {
       activeTab,
       primaryLabel,
+      TAG_FILTERS, activeTagFilter, toggleTagFilter,
+      tagFilteredActions, tagFilteredReactions, tagFilteredPassives, tagFilteredTotal,
       pcExperiences,
       primaryWeapon, secondaryWeapon, pcProficiency,
       advPassives, advActions, advReactions
@@ -559,6 +686,49 @@ export default {
   color: var(--color-text-muted);
   font-style: italic;
   line-height: var(--line-height-normal);
+}
+
+/* ── Tag filters ── */
+
+.ctx-panel__tag-filters {
+  display: flex;
+  gap: 4px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.ctx-panel__tag-btn {
+  flex: 1;
+  padding: var(--space-xs);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  text-align: center;
+}
+
+.ctx-panel__tag-btn:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
+}
+
+.ctx-panel__tag-btn--on {
+  background: rgba(83, 168, 182, 0.2);
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 1px var(--color-accent-hope);
+}
+
+.ctx-panel__empty-filter {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  text-align: center;
+  padding: var(--space-md);
+}
+
+.ctx-panel__empty-filter p {
+  margin: 0;
 }
 
 /* ── Expériences ── */

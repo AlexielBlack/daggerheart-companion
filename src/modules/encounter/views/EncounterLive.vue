@@ -222,6 +222,7 @@
             :secondary-features="pcSecondary"
             :passive-features="pcPassive"
             :reaction-features="pcReaction"
+            :all-features="pcAllFeatures"
           />
         </div>
       </div>
@@ -587,6 +588,7 @@ export default {
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
       pcReaction: pcFeatures.reactionFeatures,
+      pcAllFeatures: pcFeatures.allFeatures,
       onSelectPc, onSelectAdversaryGroup,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition,
