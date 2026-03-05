@@ -5,6 +5,13 @@
       'feat-card--' + feature.activationType,
       { 'feat-card--dimmed': dimmed }
     ]"
+    role="button"
+    tabindex="0"
+    :aria-expanded="expanded"
+    :aria-label="feature.name + (expanded ? ' — réduire' : ' — afficher détails')"
+    @click="expanded = !expanded"
+    @keydown.enter="expanded = !expanded"
+    @keydown.space.prevent="expanded = !expanded"
   >
     <!-- Ligne unique : nom + badges justifiés à droite -->
     <div class="feat-card__row">
@@ -41,14 +48,10 @@
           class="feat-card__badge feat-card__badge--freq"
           :title="frequencyLabel"
         >{{ frequencyLabel }}</span>
-        <button
+        <span
           class="feat-card__expand"
-          :aria-expanded="expanded"
-          :aria-label="expanded ? 'Réduire' : 'Détails'"
-          @click.stop="expanded = !expanded"
-        >
-          {{ expanded ? '▲' : '▼' }}
-        </button>
+          aria-hidden="true"
+        >{{ expanded ? '▲' : '▼' }}</span>
       </span>
     </div>
 
@@ -136,12 +139,15 @@ export default {
   border-radius: var(--radius-md);
   border-left: 3px solid var(--color-border);
   transition: opacity 0.15s, border-color 0.15s;
+  cursor: pointer;
+  user-select: none;
 }
 
 .feat-card--action  { border-left-color: #22c55e; }
 .feat-card--reaction { border-left-color: #f59e0b; }
 .feat-card--passive  { border-left-color: #3b82f6; }
 .feat-card--dimmed  { opacity: 0.55; }
+.feat-card:hover { border-color: var(--color-border-active); }
 
 .feat-card__row {
   display: flex;
@@ -221,18 +227,9 @@ export default {
 }
 
 .feat-card__expand {
-  background: none;
-  border: none;
   color: var(--color-text-muted);
   font-size: 0.6rem;
-  cursor: pointer;
   padding: 1px 3px;
   line-height: 1;
-  border-radius: var(--radius-sm);
-}
-
-.feat-card__expand:hover {
-  color: var(--color-text-secondary);
-  background: var(--color-bg-elevated);
 }
 </style>
