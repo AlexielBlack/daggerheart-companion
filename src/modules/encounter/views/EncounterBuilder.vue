@@ -245,8 +245,6 @@ export default {
 <style scoped>
 .encounter-builder {
   padding: var(--space-md);
-  max-width: 1200px;
-  margin: 0 auto;
   position: relative;
 }
 

@@ -35,8 +35,6 @@ export default {
 
 <style scoped>
 .sync-manager {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
   padding: var(--space-lg);
 }
 

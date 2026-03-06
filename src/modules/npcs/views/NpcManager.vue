@@ -260,8 +260,6 @@ export default {
 <style scoped>
 .npc-manager {
   padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .npc-manager__header {
