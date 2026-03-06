@@ -77,6 +77,16 @@ export {
   isValidProficiency
 } from './combatConstants.js'
 
+// Catalogue de combat features
+export {
+  ADVERSARY_FEATURES,
+  DOMAIN_CARD_FEATURES,
+  ALL_COMBAT_FEATURES,
+  getFeatureById,
+  filterFeatures,
+  groupByActivationType
+} from './combatFeatureCatalogue.js'
+
 // Composants
 export { default as NpcCard } from './components/NpcCard.vue'
 export { default as NpcFilters } from './components/NpcFilters.vue'
