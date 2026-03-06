@@ -21,11 +21,12 @@
           >
             {{ dialog.options.value.title }}
           </p>
-          <!-- eslint-disable-next-line vue/no-v-html -->
+          <!-- eslint-disable vue/no-v-html -->
           <p
             class="confirm-panel__message"
             v-html="dialog.options.value.message"
           ></p>
+          <!-- eslint-enable vue/no-v-html -->
           <div class="confirm-panel__actions">
             <button
               class="btn btn--ghost btn--sm"

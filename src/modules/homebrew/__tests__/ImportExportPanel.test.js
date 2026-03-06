@@ -3,8 +3,20 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ImportExportPanel from '../core/components/ImportExportPanel.vue'
 
+// ── Mock de useConfirmDialog ──
+let mockConfirmResolve = null
+vi.mock('@core/composables/useConfirmDialog.js', () => ({
+  useConfirmDialog: () => ({
+    confirm: (_opts) => {
+      mockConfirmResolve = null
+      return new Promise((resolve) => { mockConfirmResolve = resolve })
+    }
+  })
+}))
+
 describe('ImportExportPanel', () => {
   const mountPanel = (extras = {}) => {
+    mockConfirmResolve = null
     return mount(ImportExportPanel, {
       props: {
         label: 'Adversaires',
@@ -121,29 +133,29 @@ describe('ImportExportPanel', () => {
   })
 
   describe('suppression totale', () => {
-    it('demande confirmation avant clear-all', async () => {
+    it('appelle confirm() au clic sur clear-all', async () => {
       const wrapper = mountPanel({ showClearAll: true })
       await wrapper.find('.import-export__clear-btn').trigger('click')
-      expect(wrapper.find('.import-export__confirm').exists()).toBe(true)
-      expect(wrapper.text()).toContain('irréversible')
+      // confirm() a été appelé, mockConfirmResolve est prêt
+      expect(mockConfirmResolve).not.toBeNull()
     })
 
-    it('emet clear-all a la confirmation', async () => {
+    it('emet clear-all quand confirm() renvoie true', async () => {
       const wrapper = mountPanel({ showClearAll: true })
       await wrapper.find('.import-export__clear-btn').trigger('click')
-      await wrapper.find('.btn--danger').trigger('click')
+      // Résoudre la promise
+      mockConfirmResolve(true)
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
       expect(wrapper.emitted('clear-all')).toBeTruthy()
     })
 
-    it('annule la confirmation', async () => {
+    it('n\'emet pas clear-all quand confirm() renvoie false', async () => {
       const wrapper = mountPanel({ showClearAll: true })
       await wrapper.find('.import-export__clear-btn').trigger('click')
-      expect(wrapper.find('.import-export__confirm').exists()).toBe(true)
-
-      // Bouton annuler dans la confirmation
-      const cancelBtn = wrapper.findAll('.import-export__confirm-actions .btn')[1]
-      await cancelBtn.trigger('click')
-      expect(wrapper.find('.import-export__confirm').exists()).toBe(false)
+      mockConfirmResolve(false)
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
       expect(wrapper.emitted('clear-all')).toBeFalsy()
     })
   })
@@ -167,12 +179,6 @@ describe('ImportExportPanel', () => {
     it('a role region avec aria-label', () => {
       const wrapper = mountPanel()
       expect(wrapper.find('[role="region"]').attributes('aria-label')).toContain('Adversaires')
-    })
-
-    it('la confirmation a role alertdialog', async () => {
-      const wrapper = mountPanel({ showClearAll: true })
-      await wrapper.find('.import-export__clear-btn').trigger('click')
-      expect(wrapper.find('[role="alertdialog"]').exists()).toBe(true)
     })
 
     it('les messages ont role alert', async () => {
