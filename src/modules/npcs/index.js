@@ -2,15 +2,18 @@
  * @module npcs
  * @description Module PNJ — Gestion des personnages non-joueurs.
  * Fournit store, constantes et composants pour le CRUD des PNJs,
- * le système relationnel PNJ↔PJ et PNJ↔PNJ, et le filtrage avancé.
+ * le système relationnel PNJ↔PJ et PNJ↔PNJ, le filtrage avancé,
+ * et le système de combat (types adversaire, thèmes, conditions,
+ * proficiency, cooldowns, combat features).
  *
  * API publique :
- *  - useNpcStore      : Store Pinia CRUD + relations
- *  - constantes       : Statuts, dispositions, types de relation
- *  - NpcCard          : Carte compacte pour liste
- *  - NpcFilters       : Barre de filtres
- *  - NpcSheet         : Fiche complète avec édition
- *  - NpcManager       : Vue principale (liste + fiche)
+ *  - useNpcStore        : Store Pinia CRUD + relations
+ *  - constantes         : Statuts, dispositions, types de relation
+ *  - combatConstants    : Types adversaire, thèmes, conditions, proficiency
+ *  - NpcCard            : Carte compacte pour liste
+ *  - NpcFilters         : Barre de filtres
+ *  - NpcSheet           : Fiche complète avec édition
+ *  - NpcManager         : Vue principale (liste + fiche)
  */
 
 // Store
@@ -39,6 +42,40 @@ export {
   isValidRelationType,
   createDefaultNpc
 } from './constants.js'
+
+// Constantes combat
+export {
+  ALL_ADVERSARY_TYPES,
+  ADVERSARY_TYPE_META,
+  ALL_THEMES,
+  THEME_META,
+  ALL_CONDITIONS,
+  STANDARD_CONDITIONS,
+  SPECIAL_CONDITIONS,
+  CONDITION_META,
+  PROFICIENCY_BY_TIER,
+  TIER_BENCHMARKS,
+  ALL_COMBAT_PROFILES,
+  COMBAT_PROFILE_NONE,
+  COMBAT_PROFILE_LINKED,
+  COMBAT_PROFILE_CUSTOM,
+  COMBAT_PROFILE_META,
+  ALL_COOLDOWNS,
+  COOLDOWN_META,
+  computeAllyCooldown,
+  computeEnemyResolution,
+  createCountdown,
+  ALL_FEATURE_SOURCES,
+  createCombatFeature,
+  validateCombatFeature,
+  isValidAdversaryType,
+  isValidTheme,
+  isValidCondition,
+  isValidCombatProfile,
+  isValidCooldown,
+  isValidTier,
+  isValidProficiency
+} from './combatConstants.js'
 
 // Composants
 export { default as NpcCard } from './components/NpcCard.vue'

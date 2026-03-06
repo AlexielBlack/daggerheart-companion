@@ -138,10 +138,17 @@ export function createDefaultNpc(overrides = {}) {
     notes: '',
     pcRelations: [],
     npcRelations: [],
-    // Combat (futur : Phase 2)
-    combatEnabled: false,
+    // ── Profil combat ──
+    // Mode : 'none' | 'linked' | 'custom'
+    combatProfileMode: 'none',
+    // Mode linked : lié à un adversaire SRD/homebrew
     linkedAdversaryId: null,
-    // Build lite (futur : Phase 3)
+    // Mode custom : profil combat sur mesure
+    adversaryType: null,
+    tier: null,
+    proficiency: null,
+    combatFeatures: [],
+    // ── Build (identité narrative, optionnel) ──
     classId: null,
     subclassId: null,
     level: null,
