@@ -203,13 +203,10 @@ export default {
   flex-direction: column;
   gap: var(--space-md);
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-cla-list__detail {
   margin-top: var(--space-md);
-  max-width: 600px;
 }
 
 .hb-cla-list__detail-header {

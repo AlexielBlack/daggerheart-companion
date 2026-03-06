@@ -190,8 +190,6 @@ export default {
 <style scoped>
 .hb-env-editor {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-env-editor__breadcrumb {

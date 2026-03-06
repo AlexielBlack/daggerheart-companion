@@ -228,8 +228,6 @@ export default {
 <style scoped>
 .hb-adv-editor {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-adv-editor__breadcrumb {

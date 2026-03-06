@@ -229,7 +229,7 @@ export default {
 </script>
 
 <style scoped>
-.hb-cla-editor { padding: var(--space-md); max-width: var(--content-max-width); margin: 0 auto; }
+.hb-cla-editor { padding: var(--space-md); }
 .hb-cla-editor__breadcrumb { display: flex; align-items: center; gap: var(--space-xs); font-size: var(--font-size-sm); margin-bottom: var(--space-lg); }
 .hb-cla-editor__breadcrumb-link { color: var(--color-accent-hope); text-decoration: none; transition: color var(--transition-fast); }
 .hb-cla-editor__breadcrumb-link:hover { color: var(--color-accent-gold); }

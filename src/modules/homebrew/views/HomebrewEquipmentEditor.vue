@@ -193,8 +193,6 @@ export default {
 <style scoped>
 .hb-eq-editor {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-eq-editor__breadcrumb {

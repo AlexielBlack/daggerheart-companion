@@ -220,7 +220,7 @@ export default {
 </script>
 
 <style scoped>
-.hb-eq-list { padding: var(--space-md); max-width: var(--content-max-width); margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-lg); }
+.hb-eq-list { padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-lg); }
 .hb-eq-list__filter-group { border: none; padding: 0; margin: 0; }
 .hb-eq-list__filter-legend { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-xs); }
 .hb-eq-list__chips { display: flex; flex-wrap: wrap; gap: var(--space-xs); }

@@ -314,8 +314,6 @@ export default {
 <style scoped>
 .hb-env-list {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);

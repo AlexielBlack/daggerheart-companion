@@ -362,8 +362,6 @@ export default {
   flex-direction: column;
   gap: var(--space-lg);
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 /* En-tête */

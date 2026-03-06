@@ -201,7 +201,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
-  max-width: 800px;
 }
 
 .homebrew-form__header {

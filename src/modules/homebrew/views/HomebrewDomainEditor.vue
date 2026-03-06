@@ -139,7 +139,7 @@ export default {
 </script>
 
 <style scoped>
-.hb-dom-editor { padding: var(--space-md); max-width: var(--content-max-width); margin: 0 auto; }
+.hb-dom-editor { padding: var(--space-md); }
 .hb-dom-editor__breadcrumb { display: flex; align-items: center; gap: var(--space-xs); font-size: var(--font-size-sm); margin-bottom: var(--space-lg); }
 .hb-dom-editor__breadcrumb-link { color: var(--color-accent-hope); text-decoration: none; transition: color var(--transition-fast); }
 .hb-dom-editor__breadcrumb-link:hover { color: var(--color-accent-gold); }

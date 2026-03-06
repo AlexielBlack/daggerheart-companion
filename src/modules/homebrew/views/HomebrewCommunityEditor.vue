@@ -193,8 +193,6 @@ export default {
 <style scoped>
 .hb-com-editor {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-com-editor__breadcrumb {

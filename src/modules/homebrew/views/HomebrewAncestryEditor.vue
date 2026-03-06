@@ -193,8 +193,6 @@ export default {
 <style scoped>
 .hb-anc-editor {
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .hb-anc-editor__breadcrumb {
