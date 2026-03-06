@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 16:00 — Violet
+**Last updated:** 2026-03-06 17:00 — Violet
 
 ---
 
@@ -32,12 +32,13 @@
 | Session Timer | ✅ Complet | ✓ | Minuteur Date.now() anchoring + rounds, useSessionTimer composable (I-04) |
 | Quick Reference | ✅ Complet | ✓ | Panneau flottant 7 sections SRD, Teleport body (I-07) |
 | Encounter Templates | ✅ Complet | ✓ | 21 templates pré-construits, filtrage tier/tags (I-02) |
+| Combat Dashboard | ✅ Complet | ✓ | Fear/Hope tracker, battlefield overview, live stats (I-01) |
 
 ## Test Suite
-- 315 encounter tests (12 fichiers)
-- ~2,580+ tests totaux estimés
+- 376 encounter tests (17 fichiers)
+- ~2,640+ tests totaux estimés
 - ESLint clean
-- Build Vite: 367 modules, 2.17s
+- Build Vite: 375 modules, 2.15s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia

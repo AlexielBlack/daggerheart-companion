@@ -44,6 +44,22 @@ Append-only log of architectural and design decisions.
 
 ---
 
+## 2026-03-06 17:00 — Violet
+**Decision:** CombatDashboard panneau flottant GAUCHE, miroir du QuickReferencePanel (DROIT)
+**Context:** Le Combat Dashboard doit coexister avec le QuickReferencePanel pendant le mode live. Les deux panneaux peuvent être ouverts simultanément.
+**Rationale:** Panneau gauche (translateX(-100%), left:0, 380px) pour le Dashboard, panneau droit (translateX(100%), right:0, 340px) pour la Référence. Même z-index (200), même pattern Teleport+Escape. Pas de conflit visuel ni fonctionnel.
+**Alternatives considered:** Un seul panneau partagé (confusion UX), modal centré (bloque l'interaction live), tabs dans le même panneau (trop de contexte switching).
+
+---
+
+## 2026-03-06 17:00 — Violet
+**Decision:** Fear/Hope comme composable standalone avec useStorage, pas dans le store live
+**Context:** L'économie Fear/Hope persiste indépendamment de l'état de rencontre active. Un MJ peut vouloir conserver ses tokens entre les scènes.
+**Rationale:** useFearHope() composable autonome avec useStorage('fear-hope') — séparé du encounterLiveStore. Le composable est invoqué dans CombatDashboard.vue setup(), pas dans le store. Reset explicite au lieu d'auto-clear.
+**Alternatives considered:** Intégrer dans encounterLiveStore (couplage, perdu au endEncounter), store Pinia dédié (overkill pour 4 valeurs).
+
+---
+
 ## Pre-migration decisions (from project history)
 
 ### Options API vs Composition API

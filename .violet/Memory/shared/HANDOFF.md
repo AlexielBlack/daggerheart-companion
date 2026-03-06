@@ -36,3 +36,19 @@ Append-only cross-session continuity notes.
 - ESLint vuejs-accessibility contourné pour QuickReferencePanel via document.addEventListener
 - Commits: `262c53a5` (features) + `8c01fef4` (tests)
 - Innovation backlog restant : **I-01 (Combat Dashboard)** — seul item haute priorité restant
+
+## 2026-03-06 17:00 — Violet
+
+### I-01 Combat Dashboard implémenté — Brainstorm innovation terminé
+- **FEAR_HOPE_FROM_ROLL** : constante SRD p.18 dans liveConstants.js (5 résultats de jet → Hope/Fear)
+- **useFearHope.js** : composable Fear/Hope persisté (useStorage), add/spend/applyRollResult/reset
+- **useLiveStats.js** : stats live computed depuis encounterLiveStore (hitRatio, damageByPc, killsByPc, adversaryStatusSummary)
+- **FearHopeTracker.vue** : tokens visuels (cercles ●/○, max 12), boutons ±, 5 boutons de résultat de jet rapide
+- **BattlefieldOverview.vue** : barres HP groupées colorées (vert/jaune/rouge), PJs avec conditions, stats live grille 3×2
+- **CombatDashboard.vue** : panneau flottant GAUCHE (Teleport body, Escape, slide-in translateX(-100%), 380px, z-index 200)
+- Intégré dans EncounterLive.vue header-actions, bouton 📊 avant QuickReferencePanel 📖
+- 43 exports (38 → 43), 376 tests (315 → 376, 17 fichiers), build 375 modules
+- ESLint clean, build 2.15s
+- Commit: `08f79828`
+- **Tous les 7 items du brainstorm innovation sont terminés (I-01 à I-07)**
+- Backlog restant : H-01 (interface gameplay temps réel), H-02 (subclass rendering gameplay)

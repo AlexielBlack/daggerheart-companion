@@ -8,7 +8,7 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Agent | Status | Priority | Notes |
 |----|------|-------|--------|----------|-------|
-| I-01 | Combat Dashboard (Live Play) | Frontend | 📋 Backlog | High | Effort élevé — reste le seul item du brainstorm innovation |
+| — | Aucune tâche active | — | — | — | Tous les items du brainstorm innovation sont terminés |
 
 ## Backlog / On the Horizon
 
@@ -26,6 +26,7 @@ Cross-session task board. Updated at session start/end.
 | I-07 | Quick Reference Panel (7 sections SRD) | 2026-03-06 | Frontend + Data |
 | I-02 | Adversary Templates (21 templates) | 2026-03-06 | Frontend + Data |
 | I-03 | Encounter History & Statistics | 2026-03-06 | Frontend |
+| I-01 | Combat Dashboard (Fear/Hope, Overview, Stats) | 2026-03-06 | Frontend |
 | I-06 | Campaign Notes (Encounters) | 2026-03-06 | Frontend |
 | D-01 | Tag system (4 tags multi-assignables) | 2026-03 | Data + Frontend |
 | D-02 | Module NPC complet | 2026-03 | Frontend + Data |
@@ -35,4 +36,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-06 16:00 — Violet*
+*Updated: 2026-03-06 17:00 — Violet*
