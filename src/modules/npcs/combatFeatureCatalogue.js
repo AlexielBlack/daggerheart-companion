@@ -25,31 +25,37 @@ const _loaded = ref(false)
 const _loading = ref(false)
 const _indexById = new Map()
 
+let _loadPromise = null
+
 /**
  * Charge les données JSON de manière asynchrone (une seule fois).
+ * Les appels concurrents partagent la même promise.
  * @returns {Promise<void>}
  */
-async function _loadData() {
-  if (_loaded.value || _loading.value) return
-  _loading.value = true
+function _loadData() {
+  if (_loaded.value) return Promise.resolve()
+  if (_loadPromise) return _loadPromise
 
-  const [advModule, domModule] = await Promise.all([
+  _loading.value = true
+  _loadPromise = Promise.all([
     import('./data/adversaryFeatures.json'),
     import('./data/domainCardFeatures.json')
-  ])
+  ]).then(([advModule, domModule]) => {
+    _adversaryFeatures.value = advModule.default
+    _domainCardFeatures.value = domModule.default
+    _allFeatures.value = [...advModule.default, ...domModule.default]
 
-  _adversaryFeatures.value = advModule.default
-  _domainCardFeatures.value = domModule.default
-  _allFeatures.value = [...advModule.default, ...domModule.default]
+    // Construire l'index
+    _indexById.clear()
+    for (const f of _allFeatures.value) {
+      _indexById.set(f.id, f)
+    }
 
-  // Construire l'index
-  _indexById.clear()
-  for (const f of _allFeatures.value) {
-    _indexById.set(f.id, f)
-  }
+    _loading.value = false
+    _loaded.value = true
+  })
 
-  _loading.value = false
-  _loaded.value = true
+  return _loadPromise
 }
 
 // ═══════════════════════════════════════════════════════════

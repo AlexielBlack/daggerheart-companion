@@ -4,13 +4,12 @@
  * intégrité des données, filtrage, recherche, groupement.
  *
  * Phase 4 : catalogue complet (265 adversaire + 129 domaine).
+ * Phase perf : chargement lazy via useCombatCatalogue().
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import {
-  ADVERSARY_FEATURES,
-  DOMAIN_CARD_FEATURES,
-  ALL_COMBAT_FEATURES,
+  useCombatCatalogue,
   getFeatureById,
   filterFeatures,
   groupByActivationType
@@ -19,6 +18,19 @@ import {
   ALL_THEMES,
   ALL_FEATURE_SOURCES
 } from '../combatConstants.js'
+
+// ── Chargement unique avant tous les tests ──
+let ALL_COMBAT_FEATURES
+let ADVERSARY_FEATURES
+let DOMAIN_CARD_FEATURES
+
+beforeAll(async () => {
+  const catalogue = useCombatCatalogue()
+  await catalogue.load()
+  ALL_COMBAT_FEATURES = catalogue.features.value
+  ADVERSARY_FEATURES = catalogue.adversaryFeatures.value
+  DOMAIN_CARD_FEATURES = catalogue.domainCardFeatures.value
+})
 
 // ═══════════════════════════════════════════════════════════
 //  Intégrité des données
