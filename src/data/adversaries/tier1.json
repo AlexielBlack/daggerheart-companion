@@ -1212,6 +1212,104 @@
     "source": "incredible-creatures-12"
   },
   {
+    "id": "buggane",
+    "name": "Buggane",
+    "tier": 1,
+    "type": "Solo",
+    "description": "A hulking, boar-headed ogre of the Isle of Man, the Buggane bursts from earth or cave when roused. Hairy, clawed, and bristling with hatred for holy places, he is a brute of storm and stone, feared for tearing down what mortals build.",
+    "motives": [
+      "Tear down",
+      "Destroy",
+      "Burst from earth"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 10,
+      "severe": 15
+    },
+    "hp": 8,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Fist",
+      "range": "Very Close",
+      "damage": "1d12+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Destroy",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Buggane can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bone Breaker",
+        "description": "The Buggane's attacks deal direct damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Earthen Burst",
+        "description": "While the Buggane is Hidden under the earth, spend a Fear to erupt from ground or wall. All creatures within Close range must make an Agility or Strength Reaction Roll. On a failure, they take 2d8 direct physical damage and become temporarily Vulnerable. On a success, they mark 1 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Burrowed Terror",
+        "description": "When a target enters Close range of the Buggane, mark a Stress to vanish into the earth. The Buggane is Hidden and has resistance against all damage until they emerge again.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A target enters Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "morrgans-celtic"
+  },
+  {
     "id": "burroska-doll",
     "name": "Burroska Doll",
     "tier": 1,
@@ -2310,6 +2408,90 @@
       "highPresence": 0,
       "highGold": 0
     }
+  },
+  {
+    "id": "deer-woman-boundary-warden",
+    "name": "Deer Woman, Boundary-Warden",
+    "tier": 1,
+    "type": "Social",
+    "description": "Hooves like polished onyx, eyes that see the line between welcome and harm.",
+    "motives": [
+      "Test respect",
+      "Punish broken oaths",
+      "Protect the vulnerable"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 4,
+      "severe": 8
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": -1,
+      "name": "Thorned Hoof",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Oathkeeper",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Mirror of Conduct",
+        "description": "The first time each scene a PC acts with flagrant disrespect (cruel taunt, broken promise to an NPC, etc.) within Close, increase this adversary's Difficulty by +2 against that PC for the scene.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "At The Crossroads",
+        "description": "Invite a target within Close into a ring marked of hoof-prints. The target must succeed on a Presence Reaction Roll (11) or become Entranced. While Entranced, they choose: confess a recent harm they have done (clear 1 Stress and gain advantage on their next roll against Deer Woman) or remain Entranced and become Vulnerable.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Thorns for Liars",
+        "description": "When a creature within Very Close breaks a promise made in this scene, mark a Stress to make a standard attack against them with advantage.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Very Close breaks a promise made in this scene"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 1,
+      "control": 1,
+      "support": 1,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "dire-wolf",
@@ -4982,6 +5164,103 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "ishkitini-screech-omen",
+    "name": "Ishkitini, Screech-Omen",
+    "tier": 1,
+    "type": "Ranged",
+    "description": "A Choctaw death-owl whose cry stirs the hair on your arms before the wind arrives.",
+    "motives": [
+      "Harrow with omens",
+      "Strike from the eaves",
+      "Scatter courage"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Night Scream",
+      "range": "Far",
+      "damage": "1d8+2",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Grave Winds",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Gravewind",
+        "description": "Choose a point within Far. All targets within Close of that point must succeed on an Instinct Reaction Roll (11) or mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Omen's Shadow",
+        "description": "The first time each round a PC spends Hope within Far of Ishkitini, they must mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Feather Drift",
+        "description": "When targeted by an attack beyond Close, move to Far after the roll resolves; your next attack has advantage.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Close"
+      },
+      {
+        "name": "Thorns for Liars",
+        "description": "When a creature within Very Close breaks a promise made in this scene, mark a Stress to make a standard attack against them with advantage.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Very Close breaks a promise made in this scene"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "jagged-knife-bandit",
     "name": "Jagged Knife Bandit",
     "tier": 1,
@@ -5574,6 +5853,88 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "kelpie-bridle-taker",
+    "name": "Kelpie Bridle-Taker",
+    "tier": 1,
+    "type": "Bruiser",
+    "description": "A river-horse glossy with weeds, eyes like peat lights.",
+    "motives": [
+      "Offer a ride",
+      "Drag to the deep",
+      "Smash the shore-line"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Drowning Hooves",
+      "range": "Very Close",
+      "damage": "2d10+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Blackwater Geas",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Take the Bit",
+        "description": "On a hit against a target within Very Close, place a Bridled condition. While Bridled, the target cannot voluntarily move farther than Close from the Kelpie and suffers disadvantage to escape grapples or restraints from the Kelpie. Breaking Bridled requires a Strength or Finesse Roll (14) as an action.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Slick Wake",
+        "description": "The ground within Very Close of the Kelpie becomes Slippery; creatures entering it must succeed on an Agility Reaction Roll (14) or fall prone.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "River Claim",
+        "description": "When the Kelpie is hit by a ranged attack, surge to Close with the attacker; if water is within Close, knock the attacker back to the water's edge.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "The Kelpie is hit by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "kobold-slinger",
     "name": "Kobold Slinger",
     "tier": 1,
@@ -5699,6 +6060,90 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "kushtaka-drowned-voice",
+    "name": "Kushtaka, Drowned-Voice",
+    "tier": 1,
+    "type": "Support",
+    "description": "A Tlingit river-otter shapeshifter whose echo sounds like a cousin calling for help.",
+    "motives": [
+      "Lure to water",
+      "Split the group",
+      "Strike and slip"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Kelp-Claw",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "River Cunning",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Echo of Kin",
+        "description": "A target within Close hears a familiar voice. They must succeed on an Instinct Reaction Roll (11) or slide up to Very Close toward the nearest water and become Vulnerable.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Otter Shape",
+        "description": "While in or adjacent to water, gain resistance to physical damage and advantage on Agility Reaction Rolls.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Cold Embrace",
+        "description": "When hit by a melee attack, mark a Stress to pull the attacker to Very Close of the nearest water and both become Restrained until the attacker succeeds on a Strength Roll (11) or spends a Hope.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a melee attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 1,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "leafcutter-spriggant",
     "name": "Leafcutter Spriggant",
     "tier": 1,
@@ -5771,6 +6216,179 @@
       "social": 0
     },
     "source": "incredible-creatures-12"
+  },
+  {
+    "id": "leprechaun",
+    "name": "Leprechaun",
+    "tier": 1,
+    "type": "Social",
+    "description": "A sly trickster of the fae, the Leprechaun barters in lies and lures the greedy with promises of gold. Quick-tongued and quicker to vanish, he delights in turning bargains into traps.",
+    "motives": [
+      "Bargain for gold",
+      "Twist words",
+      "Mislead travelers",
+      "Trick the greedy"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 4,
+      "severe": 8
+    },
+    "hp": 3,
+    "stress": 4,
+    "attack": {
+      "modifier": -4,
+      "name": "Shillelagh",
+      "range": "Melee",
+      "damage": "1d4+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Greed",
+        "modifier": 3
+      },
+      {
+        "name": "Trickery",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Clever Bargain",
+        "description": "When a PC negotiates with the Leprechaun and fails a Presence Roll, they are bound by his trickster's bargain: they must either mark 1d4 Stress or accept unfavorable terms decided by the GM.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Vanishing Trick",
+        "description": "Mark a Stress to vanish in a puff of laughter and reappear in another spot within Far range.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "False Fortune",
+        "description": "When a PC interacts socially with the Leprechaun (such as bargaining, threatening, or demanding a favor), you can spend a Fear to tempt them with a chest of gold. The PC must immediately make an Instinct or Knowledge Reaction Roll (16). On a failure, they gain the gold - but only as long as they keep their full attention on it. If they look away, speak a lie, or when the scene ends, the gold vanishes. On a success they are not fooled and see through the trickery and illusions of the Leprechaun.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "PC interacts socially with the Leprechaun"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 3
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "leprechaun-covenant-keeper",
+    "name": "Leprechaun Covenant-Keeper",
+    "tier": 1,
+    "type": "Social",
+    "description": "A pocket-lawyer of the sidhe who can notarize a deal with a wink.",
+    "motives": [
+      "Entangle with wording",
+      "Bait greed",
+      "Vanish through loopholes"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Oath-Cane",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Binding Words",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Geas Coin",
+        "description": "Hand (or flick) a shimmering coin to a target within Close. Until they return the coin or discard it publicly, the Leprechaun's attacks against them have advantage; if they willingly break a promise while holding it, they immediately become Vulnerable and mark a Stress.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Clause in Fine Print",
+        "description": "When a PC spends Hope within Close, you may mark a Stress to force them to choose: their roll resolves normally, or they succeed but mark 1 HP.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Between Lines",
+        "description": "When targeted by an attack beyond Very Close, step between the letters—move to Far after the roll resolves.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Very Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
   },
   {
     "id": "living-tentacle",
@@ -6100,6 +6718,87 @@
       "highGold": 0
     },
     "source": "archibalds-almanac"
+  },
+  {
+    "id": "mannegishi-bridge-saboteur",
+    "name": "Mannegishi Bridge-Saboteur",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A six-fingered Cree trickster of timbers and twine, giggling from the underside of planks.",
+    "motives": [
+      "Trip boats",
+      "Spring snares",
+      "Tease then flee"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 6,
+      "severe": 10
+    },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Flint Knife",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Little Engineer",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Twig Tripline",
+        "description": "Arm a tripline at a point within Close. The first creature to cross must succeed on an Instinct Reaction Roll (11) or become Restrained.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Undercut the Keel",
+        "description": "Target a creature on a raft, bridge, or bank within Close. The ground or craft becomes Slippery; that target must succeed on an Agility Reaction Roll (11) or fall prone.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Skitter & Cackle",
+        "description": "When a trap you set triggers, move to Far and become Hidden.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "A trap you set triggers"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "merchant",
@@ -7220,6 +7919,170 @@
     "source": "incredible-creatures-12"
   },
   {
+    "id": "puca-way-maker",
+    "name": "Púca Way-Maker",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A moonlit trickster who leaves cloven tracks that point everywhere but truth. Their laugh sounds like a bell heard underwater.",
+    "motives": [
+      "Lead astray",
+      "Swap places",
+      "Vanish on a dare"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Hoof-kick",
+      "range": "Very Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Tricky Paths",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Gleam of Elsewhere",
+        "description": "Creatures beyond Very Close have disadvantage on Instinct Rolls to track or pursue the Púca.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Crossroads Coin",
+        "description": "Toss a fae coin between you and a target within Close; place a Coin token there. Until the coin is picked up, you can spend a Fear to swap positions with any creature within Very Close of the token. A creature who picks it up marks a Stress.",
+        "tags": [
+          "utilitaire",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Hollow Whinny",
+        "description": "When you're missed by an attack within Close, become Hidden and move to Far.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Missed by an attack within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "pukwudgie-needle-path",
+    "name": "Pukwudgie Needle-Path",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A knee-high mischief-maker of the Wampanoag wood, spines like hawthorn, lantern-moss winking in its fist.",
+    "motives": [
+      "Lead astray",
+      "Prick pride",
+      "Vanish between stumps"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Thrown-Dart",
+      "range": "Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Swampcraft",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Foxfire Tangle",
+        "description": "Place a foxfire within Close. Creatures who move toward it must succeed on an Instinct Reaction Roll (11) or become Lost until they clear a Stress (treat allies as one range farther).",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Quill Cloud",
+        "description": "Make an attack against a target within Close. On a success, deal 1d6+2 physical and Dizzy the target. Dizzied targets have disadvantage on their next action roll, then clear the condition.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Between the Roots",
+        "description": "When missed by an attack, become Hidden and move to any point within Far.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Missed by an attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "rabble-mawb",
     "name": "Rabble Mawb",
     "tier": 1,
@@ -7416,6 +8279,77 @@
     }
   },
   {
+    "id": "redcap",
+    "name": "Redcap",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A murderous goblin of ruined towers and border keeps, clad in iron boots and a cap that must be dyed in blood to keep him alive. Redcaps attack with vicious glee, their speed and cruelty belying their size.",
+    "motives": [
+      "Spill blood",
+      "Strike swiftly",
+      "Guard their lair"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 6,
+      "severe": 10
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 1,
+      "name": "Iron Pike",
+      "range": "Very Close",
+      "damage": "1d8+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Bring Terror",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Horrifying",
+        "description": "Targets who mark HP from the Redcap's attacks must also mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bloody Sprint",
+        "description": "Mark a Stress to surge forward with supernatural speed. Move up to Far range and make a standard attack against a target at the end of this movement. This attack has advantage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "morrgans-celtic"
+  },
+  {
     "id": "redcap-butcher",
     "name": "Redcap Butcher",
     "tier": 1,
@@ -7571,6 +8505,89 @@
       "highGold": 0
     },
     "source": "the-void"
+  },
+  {
+    "id": "redcap-millkeeper",
+    "name": "Redcap Millkeeper",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A stump-limbed goblin in iron boots, cap forever wet with someone else's work.",
+    "motives": [
+      "Strike from rafters",
+      "Stomp fingers",
+      "Dye the cap"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Rust Sickle",
+      "range": "Very Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Blood Dye",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Cap-Soaked",
+        "description": "Track Soak (0-3). When the Redcap causes a target to mark HP, increase Soak by 1 (max 3). For each Soak, reduce physical damage taken by 1 (to a minimum of 1). Clearing all Stress wrings the cap dry (Soak 0).",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Iron Stomp",
+        "description": "Leap to a point within Very Close from above (beam, sill, railing). All targets within Very Close must succeed on an Agility Reaction Roll (11) or be knocked prone.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Red Rise",
+        "description": "When you mark HP, you may mark a Stress to immediately move to Very Close of a different target and make a standard attack with disadvantage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "You mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
   },
   {
     "id": "rotlord",
@@ -7930,6 +8947,90 @@
     "source": "undead-adversaries"
   },
   {
+    "id": "selkie-tide-post",
+    "name": "Selkie Tide-Post",
+    "tier": 1,
+    "type": "Support",
+    "description": "A seal-souled courier with braided kelp sigils.",
+    "motives": [
+      "Warn clans",
+      "Fold foes into surf",
+      "Escape by undertow"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Salt Sling",
+      "range": "Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Song of Tides",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Kelp-Lashing",
+        "description": "Cast a ribbon of weed at a target within Close. On a success, slide them up to Very Close toward the nearest water. The target marks 1 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Seal Skin",
+        "description": "While in water or sprayed surf, gain resistance to physical damage and advantage on Agility Reaction Rolls.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Undertow Step",
+        "description": "When hit by a melee attack, mark a Stress to slip beneath—move to Close (into water if possible) and become Hidden until your next attack.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a melee attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 1,
+      "support": 2,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "sellsword",
     "name": "Sellsword",
     "tier": 1,
@@ -8006,6 +9107,75 @@
       "highPresence": 0,
       "highGold": 0
     }
+  },
+  {
+    "id": "shellycoat",
+    "name": "Shellycoat",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A mischievous water spirit clad in clattering shells, the Shellycoat haunts riverbanks and marshes, deceiving travelers with false cries and leading them astray into fear and mire.",
+    "motives": [
+      "Confuse",
+      "Lure the unwary",
+      "Strike from water's edge"
+    ],
+    "difficulty": 10,
+    "thresholds": {
+      "major": 7,
+      "severe": 10
+    },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 2,
+      "name": "Clattering Strike",
+      "range": "Very Close",
+      "damage": "1d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Trickster",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Backstab",
+        "description": "When the Shellycoat succeeds on a standard attack that has advantage, they deal 1d10+5 physical damage instead of their standard damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Clattering Shells",
+        "description": "The Shellycoat's shell coat rattles unnervingly. Targets within Close range must make a Presence Reaction Roll. Targets who fail must mark a Stress and become temporarily Vulnerable. Targets who succeed lose a Hope.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
   },
   {
     "id": "skeleton-archer",
@@ -8390,6 +9560,90 @@
       "highPresence": 0,
       "highGold": 0
     }
+  },
+  {
+    "id": "spriggan-hedger",
+    "name": "Spriggan Hedger",
+    "tier": 1,
+    "type": "Standard",
+    "description": "Knotted as hawthorn, thin as a rake, swelling to wagon-size when roused.",
+    "motives": [
+      "Wall the way",
+      "Bristle and jab",
+      "Swell and pin"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Thorn-Pike",
+      "range": "Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Hedgecraft",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Bramble Crown",
+        "description": "Creatures who start their turn within Very Close must succeed on a Finesse Roll (11) or be Restrained until they clear a Stress or leave Very Close.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Field-Wide",
+        "description": "Grow enormous until the end of the scene. While large, your standard attack becomes 1d12+4 and you count as impassable terrain to creatures without Flight.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Root-Trip",
+        "description": "When a creature within Close moves away from you, mark a Stress to force an Agility Reaction Roll (11). On a failure, the creature is knocked back to Very Close and temporarily Vulnerable.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Close moves away from you"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
   },
   {
     "id": "swarm-of-animated-objects",

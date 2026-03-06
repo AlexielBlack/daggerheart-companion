@@ -256,6 +256,6 @@ describe('Tags — Équipement', () => {
       (sum, tier) => sum + tier.reduce((s, adv) => s + (adv.features || []).length, 0),
       0
     )
-    expect(total).toBe(2307)
+    expect(total).toBe(2515)
   })
 })

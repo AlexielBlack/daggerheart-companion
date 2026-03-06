@@ -81,6 +81,89 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "adlet-sled-raiders",
+    "name": "Adlet Sled-Raiders",
+    "tier": 2,
+    "type": "Horde",
+    "description": "Dog-people of snow-hard trails, charging in a spray of grit and breath.",
+    "motives": [
+      "Run down",
+      "Hamstring",
+      "Drag from the line"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 0,
+      "name": "Gnash & Spear",
+      "range": "Close",
+      "damage": "2d6+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Tundra Paths",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d4+2)",
+        "description": "When the Raiders have marked half or more of their HP, their standard attack deals 2d4+2 physical instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Sledge Charge",
+        "description": "Mark a Stress to sweep in a straight line from Far to Close, making an attack against all in your path; targets you succeed against take 2d6+3 physical and are knocked to Far unless they succeed on an Agility Reaction Roll (14).",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Harness Drag",
+        "description": "When your attack causes a target to mark HP, they become Restrained until they clear a Stress or succeed on a Strength Roll (14).",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Your attack causes a target to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "aether-magus",
     "name": "Aether Magus",
     "tier": 2,
@@ -461,6 +544,89 @@
       "highGold": 0
     },
     "source": "archibalds-almanac"
+  },
+  {
+    "id": "amarok-lone-howl",
+    "name": "Amarok, Lone-Howl",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "The great wolf of the Inuit night, hunting alone where the snow sparks under its paws.",
+    "motives": [
+      "Cull the straggler",
+      "Pounce and pin",
+      "Punish hubris"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Winter Fangs",
+      "range": "Very Close",
+      "damage": "2d10+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ice Hunter",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Hunts Alone",
+        "description": "If no other adversary is within Close, your standard attack has advantage and deals +1d6 damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Whiteout Lunge",
+        "description": "Move to Very Close and make a standard attack. On a success, the target must succeed on a Strength Reaction Roll (14) or be knocked prone and Restrained.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Midnight Howl",
+        "description": "When a PC spends Hope within Far, mark a Stress to force that PC to make an Instinct Reaction Roll (14) or become Vulnerable.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC spends Hope within Far"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "animated-shadow",
@@ -1337,6 +1503,263 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "banshee",
+    "name": "Banshee",
+    "tier": 2,
+    "type": "Support",
+    "description": "Known in Irish as Bean Sí or Bean Sidhe, this ghostly omen of death lets loose a wailing cry that heralds the end. Drifting unseen through mist and moonlight, the banshee is ever present at the final breath of the doomed.",
+    "motives": [
+      "Haunt the living",
+      "Sow dread"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 4,
+    "stress": 6,
+    "attack": {
+      "modifier": 2,
+      "name": "Piercing Wail",
+      "range": "Very Far",
+      "damage": "2d4+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Mournful Singing",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Ghost",
+        "description": "The Banshee has resistance to physical damage. Mark a Stress to move up to Close range through solid objects.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Omen's Keening",
+        "description": "Spend a Fear to make a soul-piercing keening scream. All targets within Close range must make an Instinct or Presence Reaction Roll. If they succeed, they must mark a Stress. If they fail, they are temporarily Staggered. While Staggered, all attack rolls they make are at disadvantage, unless they spend a Hope before they make the attack roll. A target is Staggered until the next turn.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Death's Rebuke",
+        "description": "When the Banshee takes damage from a creature within Close range, she can mark a Stress to make a standard attack against that creature. If she succeeds, the target is hurled back to Far range and temporarily Vulnerable.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Takes damage from a creature within Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 2,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "baobhan-sith-dance-of-needles",
+    "name": "Baobhan Sìth, Dance of Needles",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "Perfume like crushed ivy, steps like falling leaves. Her shadow pirouettes a heartbeat out of time.",
+    "motives": [
+      "Lure into the circle",
+      "Drink without stain",
+      "Leave a ribbon"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Needle-Nails",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Courtly Measures",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "White Ribbon",
+        "description": "Place a Ribbon circle (Very Close radius) within Close. Creatures who enter or start in the circle must succeed on a Presence Reaction Roll (14) or step toward the dancer (up to Very Close) and become Charmed. Charmed creatures have disadvantage on all Presence Reaction Rolls until they mark 2 Stress to break free.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Hollow Waltz",
+        "description": "While inside the Ribbon circle, Baobhan Sìth is semi-corporeal (resistance to physical damage).",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Sanguine Courtesy",
+        "description": "When she causes a target within Very Close to mark HP, clear 1 Stress and the target must spend a Hope or become Vulnerable until their next action.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "She causes a target within Very Close to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 1,
+      "social": 2
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "barghest",
+    "name": "Barghest",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A barghest (also barguest) is a massive, jet-black hound with eyes like burning coals, its appearance a harbinger of death. It haunts lonely crossroads and shadowed lanes, vanishing into the dark as swiftly as it strikes.",
+    "motives": [
+      "Harbinger of death",
+      "Isolate and strike",
+      "Vanish before retaliation"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 14,
+      "severe": 25
+    },
+    "hp": 7,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Bite",
+      "range": "Melee",
+      "damage": "2d10+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Shadow Stalker",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Death Omen",
+        "description": "The first time a PC sees a Barghest, it must make an Instinct or Presence Reaction Roll. On a failure, the PC loses a Hope and must mark a Stress. This effect can only occur once per PC per scene.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Rip and Tear",
+        "description": "When the Barghest makes a successful standard attack, you can mark a Stress to temporarily Restrain the target and force them to mark 2 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Makes a successful standard attack"
+      },
+      {
+        "name": "Drag into Darkness",
+        "description": "Spend a Fear to disappear from where you are and reappear inside another shadow within Far range. When you have a target Restrained by Rip and Tear, you can take the target with you. The Barghest and the Restrained target are Hidden from other creatures.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
+  },
+  {
     "id": "basilisk",
     "name": "Basilisk",
     "tier": 2,
@@ -1787,6 +2210,117 @@
       "highGold": 0
     },
     "source": "menagerie-of-mayhem"
+  },
+  {
+    "id": "black-annis",
+    "name": "Black Annis",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A dreadful blue-skinned hag with iron claws and a single blazing eye, Black Annis stalks the night from her cave in the hills. She snatches children and wanderers alike, drags them into her lair, and wears their flayed skins as trophies of terror.",
+    "motives": [
+      "Feed on fear",
+      "Harvest skins",
+      "Strike from shadow"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 15,
+      "severe": 26
+    },
+    "hp": 9,
+    "stress": 2,
+    "attack": {
+      "modifier": 4,
+      "name": "Iron Claws",
+      "range": "Very Close",
+      "damage": "2d8+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Kidnap",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "Black Annis can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Rend and Crush",
+        "description": "If a target damaged by Black Annis doesn't mark an Armor Slot to reduce the damage, they must mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Rend the Flesh",
+        "description": "Mark a Stress to lash out and attack all targets in Very Close range at advantage. Any you are successful against take 2d8+4 phy damage and are Vulnerable until they heal at least one Hit Point.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Terrible Howl",
+        "description": "Spend a Fear to unleash Black Annis' dreadful scream. All enemies within Close range must make an Instinct or Knowledge Reaction Roll. On a failure, a target loses 1d4 Hope. On a success, a target marks 1 Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Momentum",
+        "description": "When Black Annis makes a successful attack against a PC, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Makes a successful attack against a PC"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 1,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
   },
   {
     "id": "blasphemous-angel-evelyar",
@@ -2645,6 +3179,90 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "bukwus-bone-beggar",
+    "name": "Bukwus, Bone-Beggar",
+    "tier": 2,
+    "type": "Social",
+    "description": "A Kwakwaka'wakw wild man of the cedar gloom, offering ghost food in a palm of wind.",
+    "motives": [
+      "Tempt the isolated",
+      "Veil with forest",
+      "Feed on misfortune"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Bone-Spoon",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Cedar Lore",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Food of the Dead",
+        "description": "Offer unseen delicacies to all targets within Close. Each target chooses: partake (mark a Stress and gain advantage on their next action, but you count them as In a Wake: your attacks against them deal an additional +1d6) or refuse and become Vulnerable until they mark a Stress.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Between Cedar Shadows",
+        "description": "While within forest, you have resistance to physical damage and advantage on Instinct Reactions.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hollow Invitation",
+        "description": "When a PC has no ally within Close, mark a Stress to move adjacent and become Hidden.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC has no ally within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "bunyip",
     "name": "Bunyip",
     "tier": 2,
@@ -3448,6 +4066,94 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "clurichaun-toastmaster-of-chaos",
+    "name": "Clurichaun, Toastmaster of Chaos",
+    "tier": 2,
+    "type": "Social",
+    "description": "Wine-wet whiskers, a corkscrew in the belt, a laugh that sets chairs on their hind legs.",
+    "motives": [
+      "Start a fight with a cheer",
+      "Defend the cellar",
+      "Leave unpaid tabs in your name"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Green-Glass Shiv",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "House of Merriment",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "A Cursed Toast!",
+        "description": "Offer a toast to all within Close. Each target must choose: drink (mark a Stress and gain advantage on their next attack) or abstain (gain disadvantage on their next action). You gain a Fear for every two who drink.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Rolling Barrel",
+        "description": "Mark a Stress to set a barrel rolling from Close to Far in a straight line, knocking back all in its path to Very Far unless they succeed on an Agility Reaction Roll (14).",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Last Call",
+        "description": "When reduced to 1 HP, you may spend a Fear to shatter every unattended bottle within Close; a fog of spirits fills the area (Lightly Obscured), creatures entering must succeed on an Instinct Reaction Roll or become temporarily Vulnerable.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Reduced to 1 HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "cockatrice",
     "name": "Cockatrice",
     "tier": 2,
@@ -3874,6 +4580,88 @@
       "lowEvasion": 0,
       "highThreat": 0
     }
+  },
+  {
+    "id": "cu-sith-hills-shadow",
+    "name": "Cù Sìth, Hill's Shadow",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "Green-furred as moss, paws that make no sound, breath like heather smoke. It barks thrice when doom comes.",
+    "motives": [
+      "Stalk in silence",
+      "Pounce on the lagging",
+      "Scatter with terror"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 22
+    },
+    "hp": 7,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Barrow-Bite",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Threefold Omen",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Three Barks (Countdown 3)",
+        "description": "When first spotlighted, begin a Barks countdown that ticks down whenever a PC rolls with Fear. When it triggers, all targets within Close must succeed on a Presence Reaction Roll (14) or lose a Hope and become Vulnerable until they clear a Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Heather Lurch",
+        "description": "Erupt from cover; move to Very Close and make a standard attack. On a success, also knock the target back to Close.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Grass-Wisp",
+        "description": "When hit by a ranged attack, vanish into a flank—move to Close to the attacker and the attacker becomes Dizzied. Dizzied targets have disadvantage on their next action roll, then clear the condition.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
   },
   {
     "id": "cult-adept",
@@ -5975,6 +6763,91 @@
       "highGold": 0
     },
     "source": "archibalds-almanac"
+  },
+  {
+    "id": "fear-gorta-hollow-mouth",
+    "name": "Fear Gorta, Hollow-Mouth",
+    "tier": 2,
+    "type": "Social",
+    "description": "A famine saint and curse in the same coat. Crows perch on his shoulders to hear who is spared.",
+    "motives": [
+      "Beg mercy",
+      "Starve pride",
+      "Blight stores"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Famine Touch",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Hunger's Witness",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Empty Pantry",
+        "description": "Choose a point within Close. Until cleared, that area becomes Withered: rations spoil, conjured food fails, and creatures who start there must mark a Stress unless they spend a Hope.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Alms or Ashes",
+        "description": "The first time a PC refuses meaningful aid to a helpless NPC in the scene, increase this adversary's Difficulty by +2 until end of scene.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eyes Like Winter",
+        "description": "When a PC refuses aid or hoards supplies, mark a Stress to give that PC disadvantage on their next Presence or Instinct roll.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC refuses aid or hoards supplies"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
   },
   {
     "id": "fellborn-berserker",
@@ -10151,6 +11024,89 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "kelpie",
+    "name": "Kelpie",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A shapeshifting water spirit that haunts rivers and lochs, most often taking the form of a glistening black horse. To the unwary, it seems beautiful and harmless, but once touched its skin clings like glue, dragging the victim into the depths.",
+    "motives": [
+      "Lure the innocent",
+      "Seize the unwary",
+      "Drown beneath the waters"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 8,
+      "severe": 17
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 4,
+      "name": "Bite",
+      "range": "Melee",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "False Beauty",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Fatal Embrace",
+        "description": "Make a standard attack against a target within Very Close range. On a success, mark a Stress to Restrain the target until they break free with a successful attack, Finesse Roll, or Strength Roll.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Drown Them",
+        "description": "Spend a Fear to drown a target that is Restrained by Kelpie. The target takes 3d8+3 direct physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Luring Form",
+        "description": "The Kelpie shifts shape into a human guise or a fine horse. All PCs within Close range must succeed on a Presence Reaction Roll or be Charmed. While Charmed a PC is unable to attack the Kelpie until it attacks them or an ally.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 2
+    },
+    "source": "morrgans-celtic"
+  },
+  {
     "id": "knight-of-the-realm",
     "name": "Knight of the Realm",
     "tier": 2,
@@ -12966,6 +13922,90 @@
       "highGold": 0
     },
     "source": "archibalds-almanac"
+  },
+  {
+    "id": "nalusa-falaya-shadow-bent",
+    "name": "Nalusa Falaya, Shadow-Bent",
+    "tier": 2,
+    "type": "Social",
+    "description": "A Choctaw shadow that bends like smoke and speaks in the voice you use inside your head.",
+    "motives": [
+      "Seed spite",
+      "Isolate with whispers",
+      "Slide inside silhouettes"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Shade-Finger",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Whispered Temptation",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Lay the Shadow",
+        "description": "Cast a living shadow that tethers between you and a target within Close. While the tether persists, that target has disadvantage on Presence and Instinct rolls and marks 1 Stress if they move through bright light. The tether ends if you mark HP.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Bad Thoughts",
+        "description": "The first time each PC indulges in cruel mockery or mean-spirited sabotage, increase this adversary's Difficulty by +2 until end of scene.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hide in Another",
+        "description": "When targeted by an attack beyond Very Close, mark a Stress to become a shifting stain on a creature within Close until your next turn. While attached, you can't be targeted; the host is Vulnerable.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Very Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "narwhal",
@@ -18067,6 +19107,93 @@
       "highGold": 0
     },
     "source": "era-of-shadows"
+  },
+  {
+    "id": "wampus-cat-night-prowler",
+    "name": "Wampus Cat, Night-Prowler",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "Green-gold eyes in the pine dark; a hunter whose veil of whiskers drinks moonlight.",
+    "motives": [
+      "Punish cruelty",
+      "Ambush",
+      "Harry the rear"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Veiled-Claw",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Forest Stalker",
+        "modifier": 2
+      },
+      {
+        "name": "Into The Night",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Mask of the Cat",
+        "description": "While Hidden, your standard attack has advantage and deals +1d6 damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Moon-Pace",
+        "description": "Erupt from cover to Very Close and make a standard attack. On a success, also Dizzy the target and knock them to Close. Dizzied targets have disadvantage on their next action roll, and then clear the condition.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Whisker-Shade",
+        "description": "When targeted by a ranged attack, mark a Stress to impose disadvantage on that attack. If it misses, become Hidden.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "war-wizard",

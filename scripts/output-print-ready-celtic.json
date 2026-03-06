@@ -1,0 +1,1258 @@
+[
+  {
+    "id": "spriggan-hedger",
+    "name": "Spriggan Hedger",
+    "tier": 1,
+    "type": "Standard",
+    "description": "Knotted as hawthorn, thin as a rake, swelling to wagon-size when roused.",
+    "motives": ["Wall the way", "Bristle and jab", "Swell and pin"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Thorn-Pike",
+      "range": "Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Hedgecraft", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Bramble Crown",
+        "description": "Creatures who start their turn within Very Close must succeed on a Finesse Roll (11) or be Restrained until they clear a Stress or leave Very Close.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Field-Wide",
+        "description": "Grow enormous until the end of the scene. While large, your standard attack becomes 1d12+4 and you count as impassable terrain to creatures without Flight.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Root-Trip",
+        "description": "When a creature within Close moves away from you, mark a Stress to force an Agility Reaction Roll (11). On a failure, the creature is knocked back to Very Close and temporarily Vulnerable.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Close moves away from you"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "redcap-millkeeper",
+    "name": "Redcap Millkeeper",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A stump-limbed goblin in iron boots, cap forever wet with someone else's work.",
+    "motives": ["Strike from rafters", "Stomp fingers", "Dye the cap"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Rust Sickle",
+      "range": "Very Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Blood Dye", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Cap-Soaked",
+        "description": "Track Soak (0-3). When the Redcap causes a target to mark HP, increase Soak by 1 (max 3). For each Soak, reduce physical damage taken by 1 (to a minimum of 1). Clearing all Stress wrings the cap dry (Soak 0).",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Iron Stomp",
+        "description": "Leap to a point within Very Close from above (beam, sill, railing). All targets within Very Close must succeed on an Agility Reaction Roll (11) or be knocked prone.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Red Rise",
+        "description": "When you mark HP, you may mark a Stress to immediately move to Very Close of a different target and make a standard attack with disadvantage.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "You mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "puca-way-maker",
+    "name": "P\u00faca Way-Maker",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A moonlit trickster who leaves cloven tracks that point everywhere but truth. Their laugh sounds like a bell heard underwater.",
+    "motives": ["Lead astray", "Swap places", "Vanish on a dare"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Hoof-kick",
+      "range": "Very Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Tricky Paths", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Gleam of Elsewhere",
+        "description": "Creatures beyond Very Close have disadvantage on Instinct Rolls to track or pursue the P\u00faca.",
+        "tags": ["utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Crossroads Coin",
+        "description": "Toss a fae coin between you and a target within Close; place a Coin token there. Until the coin is picked up, you can spend a Fear to swap positions with any creature within Very Close of the token. A creature who picks it up marks a Stress.",
+        "tags": ["utilitaire", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Hollow Whinny",
+        "description": "When you're missed by an attack within Close, become Hidden and move to Far.",
+        "tags": ["d\u00e9fensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Missed by an attack within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "leprechaun-covenant-keeper",
+    "name": "Leprechaun Covenant-Keeper",
+    "tier": 1,
+    "type": "Social",
+    "description": "A pocket-lawyer of the sidhe who can notarize a deal with a wink.",
+    "motives": ["Entangle with wording", "Bait greed", "Vanish through loopholes"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Oath-Cane",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Binding Words", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Geas Coin",
+        "description": "Hand (or flick) a shimmering coin to a target within Close. Until they return the coin or discard it publicly, the Leprechaun's attacks against them have advantage; if they willingly break a promise while holding it, they immediately become Vulnerable and mark a Stress.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Clause in Fine Print",
+        "description": "When a PC spends Hope within Close, you may mark a Stress to force them to choose: their roll resolves normally, or they succeed but mark 1 HP.",
+        "tags": ["social"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Between Lines",
+        "description": "When targeted by an attack beyond Very Close, step between the letters\u2014move to Far after the roll resolves.",
+        "tags": ["d\u00e9fensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Very Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "kelpie-bridle-taker",
+    "name": "Kelpie Bridle-Taker",
+    "tier": 1,
+    "type": "Bruiser",
+    "description": "A river-horse glossy with weeds, eyes like peat lights.",
+    "motives": ["Offer a ride", "Drag to the deep", "Smash the shore-line"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Drowning Hooves",
+      "range": "Very Close",
+      "damage": "2d10+3",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Blackwater Geas", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Take the Bit",
+        "description": "On a hit against a target within Very Close, place a Bridled condition. While Bridled, the target cannot voluntarily move farther than Close from the Kelpie and suffers disadvantage to escape grapples or restraints from the Kelpie. Breaking Bridled requires a Strength or Finesse Roll (14) as an action.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Slick Wake",
+        "description": "The ground within Very Close of the Kelpie becomes Slippery; creatures entering it must succeed on an Agility Reaction Roll (14) or fall prone.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "River Claim",
+        "description": "When the Kelpie is hit by a ranged attack, surge to Close with the attacker; if water is within Close, knock the attacker back to the water's edge.",
+        "tags": ["d\u00e9fensif", "offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "The Kelpie is hit by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "selkie-tide-post",
+    "name": "Selkie Tide-Post",
+    "tier": 1,
+    "type": "Support",
+    "description": "A seal-souled courier with braided kelp sigils.",
+    "motives": ["Warn clans", "Fold foes into surf", "Escape by undertow"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Salt Sling",
+      "range": "Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Song of Tides", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Kelp-Lashing",
+        "description": "Cast a ribbon of weed at a target within Close. On a success, slide them up to Very Close toward the nearest water. The target marks 1 Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Seal Skin",
+        "description": "While in water or sprayed surf, gain resistance to physical damage and advantage on Agility Reaction Rolls.",
+        "tags": ["d\u00e9fensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Undertow Step",
+        "description": "When hit by a melee attack, mark a Stress to slip beneath\u2014move to Close (into water if possible) and become Hidden until your next attack.",
+        "tags": ["d\u00e9fensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a melee attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 1,
+      "support": 2,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "baobhan-sith-dance-of-needles",
+    "name": "Baobhan S\u00ecth, Dance of Needles",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "Perfume like crushed ivy, steps like falling leaves. Her shadow pirouettes a heartbeat out of time.",
+    "motives": ["Lure into the circle", "Drink without stain", "Leave a ribbon"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Needle-Nails",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Courtly Measures", "modifier": 3 }],
+    "features": [
+      {
+        "name": "White Ribbon",
+        "description": "Place a Ribbon circle (Very Close radius) within Close. Creatures who enter or start in the circle must succeed on a Presence Reaction Roll (14) or step toward the dancer (up to Very Close) and become Charmed. Charmed creatures have disadvantage on all Presence Reaction Rolls until they mark 2 Stress to break free.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Hollow Waltz",
+        "description": "While inside the Ribbon circle, Baobhan S\u00ecth is semi-corporeal (resistance to physical damage).",
+        "tags": ["d\u00e9fensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Sanguine Courtesy",
+        "description": "When she causes a target within Very Close to mark HP, clear 1 Stress and the target must spend a Hope or become Vulnerable until their next action.",
+        "tags": ["offensif", "d\u00e9fensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "She causes a target within Very Close to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 1,
+      "social": 2
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "fear-gorta-hollow-mouth",
+    "name": "Fear Gorta, Hollow-Mouth",
+    "tier": 2,
+    "type": "Social",
+    "description": "A famine saint and curse in the same coat. Crows perch on his shoulders to hear who is spared.",
+    "motives": ["Beg mercy", "Starve pride", "Blight stores"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Famine Touch",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Hunger's Witness", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Empty Pantry",
+        "description": "Choose a point within Close. Until cleared, that area becomes Withered: rations spoil, conjured food fails, and creatures who start there must mark a Stress unless they spend a Hope.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Alms or Ashes",
+        "description": "The first time a PC refuses meaningful aid to a helpless NPC in the scene, increase this adversary's Difficulty by +2 until end of scene.",
+        "tags": ["social"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eyes Like Winter",
+        "description": "When a PC refuses aid or hoards supplies, mark a Stress to give that PC disadvantage on their next Presence or Instinct roll.",
+        "tags": ["social", "offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC refuses aid or hoards supplies"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "cu-sith-hills-shadow",
+    "name": "C\u00f9 S\u00ecth, Hill's Shadow",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "Green-furred as moss, paws that make no sound, breath like heather smoke. It barks thrice when doom comes.",
+    "motives": ["Stalk in silence", "Pounce on the lagging", "Scatter with terror"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 22 },
+    "hp": 7,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Barrow-Bite",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Threefold Omen", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Three Barks (Countdown 3)",
+        "description": "When first spotlighted, begin a Barks countdown that ticks down whenever a PC rolls with Fear. When it triggers, all targets within Close must succeed on a Presence Reaction Roll (14) or lose a Hope and become Vulnerable until they clear a Stress.",
+        "tags": ["offensif", "social"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Heather Lurch",
+        "description": "Erupt from cover; move to Very Close and make a standard attack. On a success, also knock the target back to Close.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Grass-Wisp",
+        "description": "When hit by a ranged attack, vanish into a flank\u2014move to Close to the attacker and the attacker becomes Dizzied. Dizzied targets have disadvantage on their next action roll, then clear the condition.",
+        "tags": ["d\u00e9fensif", "offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "clurichaun-toastmaster-of-chaos",
+    "name": "Clurichaun, Toastmaster of Chaos",
+    "tier": 2,
+    "type": "Social",
+    "description": "Wine-wet whiskers, a corkscrew in the belt, a laugh that sets chairs on their hind legs.",
+    "motives": ["Start a fight with a cheer", "Defend the cellar", "Leave unpaid tabs in your name"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Green-Glass Shiv",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "House of Merriment", "modifier": 3 }],
+    "features": [
+      {
+        "name": "A Cursed Toast!",
+        "description": "Offer a toast to all within Close. Each target must choose: drink (mark a Stress and gain advantage on their next attack) or abstain (gain disadvantage on their next action). You gain a Fear for every two who drink.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Rolling Barrel",
+        "description": "Mark a Stress to set a barrel rolling from Close to Far in a straight line, knocking back all in its path to Very Far unless they succeed on an Agility Reaction Roll (14).",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Last Call",
+        "description": "When reduced to 1 HP, you may spend a Fear to shatter every unattended bottle within Close; a fog of spirits fills the area (Lightly Obscured), creatures entering must succeed on an Instinct Reaction Roll or become temporarily Vulnerable.",
+        "tags": ["d\u00e9fensif", "offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Reduced to 1 HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "sluagh-window-swarm",
+    "name": "Sluagh, Window-Swarm",
+    "tier": 3,
+    "type": "Horde",
+    "description": "A black storm of small souls that slip along lintels and eaves, pecking warmth from breath.",
+    "motives": ["Enter via cracks", "Carry off courage", "Darken the lamps"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 8,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Clawing Gale",
+      "range": "Close",
+      "damage": "3d8+4",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Draught Hunters", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Horde (2d8+4)",
+        "description": "When the Swarm has marked half or more of its HP, its standard attack deals 2d8+4 magic damage instead.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Through the Lintel",
+        "description": "While at least one open window/door exists in the scene, the Sluagh may be spotlighted twice this GM turn, but the second spotlight can only move or use their standard attack.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Carry the Breath",
+        "description": "When the Sluagh causes a target to mark HP, they may mark a Stress to also steal a gasp\u2014target must spend a Hope or mark 1 Stress.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "The Sluagh causes a target to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "each-uisge-lakes-devourer",
+    "name": "Each-Uisge, Lake's Devourer",
+    "tier": 3,
+    "type": "Bruiser",
+    "description": "Black as a windless lake, mane of eel-slick, mouth a cave of nails.",
+    "motives": ["Break the line by the shore", "Shove", "Drown"],
+    "difficulty": 17,
+    "thresholds": { "major": 22, "severe": 34 },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Undertow Maul",
+      "range": "Very Close",
+      "damage": "3d12+4",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Cold Current", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Mirror-Wake",
+        "description": "When the Each-Uisge moves, it may leave behind a Mirror (Very Close pool) at its starting space. A creature who enters a Mirror must succeed on an Instinct Reaction Roll (17) or be knocked to Very Close of the Each-Uisge.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Saddle of Doom",
+        "description": "On a hit against a target within Very Close, that target becomes Mounted unwillingly; while Mounted, they move with the Each-Uisge and are Restrained. Breaking free requires a Strength Roll (17) or spending 2 Hope.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Drag Below",
+        "description": "When you cause a target to mark HP while you are in or adjacent to water, you may spend a Fear to deal an additional 1d10 direct magic damage.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "You cause a target to mark HP while you are in or adjacent to water"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "dullahan-lantern-of-names",
+    "name": "Dullahan, Lantern of Names",
+    "tier": 3,
+    "type": "Leader",
+    "description": "A rider whose head watches from the saddle-bag, lantern light catching the true name in a throat.",
+    "motives": ["Speak the name", "Break courage", "Marshal the grave-road"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 7,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Spine-Whip",
+      "range": "Close",
+      "damage": "3d8+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "Book of the Dead", "modifier": 3 },
+      { "name": "Road Marshal", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Lantern Ledger",
+        "description": "Track Names (0-3). When a PC fails a Presence or Instinct roll within Close, add 1 Name (max 3). When you make a standard attack, you may remove 1 Name to gain advantage and deal +1d6 damage.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Speak Doom",
+        "description": "Choose a PC within Far and start a countdown (3). It ticks down each time any PC spends Hope. When it triggers, that PC takes Major damage unless the lantern is covered (a PC spends an action and marks a Stress within Very Close).",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Ride the Barrow-Road",
+        "description": "When you take damage, mark a Stress to switch places with a friendly Minion within Far (if any); that Minion takes the damage instead and is defeated.",
+        "tags": ["d\u00e9fensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "You take damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "dearg-due-grave-bride",
+    "name": "Dearg Due, Grave-Bride",
+    "tier": 3,
+    "type": "Skulk",
+    "description": "A lover's promise unkept, veiled in grave-dirt lace. Her ring is a circle no one should step inside.",
+    "motives": ["Isolate", "Bind in vows of hunger", "Leave hearts silent"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 7,
+    "stress": 3,
+    "attack": {
+      "modifier": 3,
+      "name": "Bridal Clutch",
+      "range": "Very Close",
+      "damage": "3d8+4",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Grave Vow", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Ring of Earth",
+        "description": "Scribe a grave-ring (Very Close radius) on the ground within Close. Creatures inside the ring count as In a Wake: the Dearg Due's attacks against them deal an additional +1d6 damage and she has resistance to physical damage from them. Leaving the ring requires spending a Hope or succeeding on a Strength Roll (17).",
+        "tags": ["offensif", "d\u00e9fensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Taste of Promise",
+        "description": "When she causes a target within Very Close to mark HP, she clears 1 HP.",
+        "tags": ["d\u00e9fensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Kiss Goodnight",
+        "description": "When a target within Very Close becomes Vulnerable, make a standard attack with advantage against that target.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "A target within Very Close becomes Vulnerable"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 1,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "banshee-keener-of-tumbled-stones",
+    "name": "Banshee, Keener of Tumbled Stones",
+    "tier": 3,
+    "type": "Ranged",
+    "description": "Her hair is the grass that grows on cairns; her mouth is a winter valley. She sings the order of dying.",
+    "motives": ["Name the next fall", "Scatter formations", "Echo within walls"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 34 },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Keening Bolt",
+      "range": "Far",
+      "damage": "3d10+3",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Death's Chorus", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Foretold Cry",
+        "description": "Choose a point within Far and begin a countdown (2). It ticks down when a PC moves toward that point. When it triggers, unleash a cone from that point (Close) that makes an attack against all in the area; targets you succeed against take 3d8+4 magic and are knocked to Far.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Stone-Quiet",
+        "description": "While adjacent to natural stone, the Banshee has advantage on attacks and Instinct Reactions.",
+        "tags": ["offensif", "d\u00e9fensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Echo Among the Cairns",
+        "description": "When attacked from beyond Close, mark a Stress to reappear adjacent to a different stone feature within Far (if any) and the attack targets your former space.",
+        "tags": ["d\u00e9fensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Attacked from beyond Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "aos-si-high-lord-bearer-of-glamour",
+    "name": "Aos S\u00ed High Lord, Bearer of Glamour",
+    "tier": 4,
+    "type": "Leader",
+    "description": "A blade like sunlight in water, a cloak like a dusk moth's wing.",
+    "motives": ["Command the court", "Rewrite the dance", "Duel heroes"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Glimmerblade",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      { "name": "Sovereign Glamour", "modifier": 3 },
+      { "name": "Duelist's Pride", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Royal Decree",
+        "description": "Spend a Fear to reorder the battlefield: spotlight up to 1d4 allies within Far and place each anywhere within Close of their current position; each gains advantage on their next attack.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Court Summons",
+        "description": "Summon Minions equal to the party size within Close; if any end a turn within Very Close of the High Lord, he clears 1 Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Circle of Challenge",
+        "description": "When a PC deals Major or greater damage to an ally within Close, mark a Stress to draw a Duel Circle around the PC and High Lord (Very Close). Until the end of the PC's next turn, attacks that don't include either duelist have disadvantage.",
+        "tags": ["offensif", "social"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC deals Major or greater damage to an ally within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "cailleach-winters-hand",
+    "name": "Cailleach, Winter's Hand",
+    "tier": 4,
+    "type": "Solo",
+    "description": "Old as the first frost on stone, she carries cairn-stones in a shawl and counts the years in broken rivers.",
+    "motives": ["Lay winter over the field", "Punish haste", "Move stones that move armies"],
+    "difficulty": 20,
+    "thresholds": { "major": 24, "severe": 48 },
+    "hp": 12,
+    "stress": 6,
+    "attack": {
+      "modifier": 4,
+      "name": "Storm Staff",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Cairn-Lore", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Cailleach can be spotlighted up to two times per GM turn. Spend Fear as usual.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Freeze the Breath",
+        "description": "Spend a Fear to attack all targets within Close. On success, targets take 4d6 magic and must choose: lose a Hope or be Restrained in rime until they clear a Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "The Year Turns",
+        "description": "When reduced below half HP the first time, begin Slow Winter: while active, you must be spotlighted twice before each action (place/clear a token), but your standard attack deals +1d10.",
+        "tags": ["offensif", "d\u00e9fensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Reduced below half HP the first time"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "balor-the-blighted-eye",
+    "name": "Balor, The Blighted Eye",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A titan in rusted bronze. The chained eye under his brow is a sunrise no land survives.",
+    "motives": ["Open the eye", "Sweep ranks", "Stride through ruin"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Smolder-Greatsword",
+      "range": "Close",
+      "damage": "4d12+15",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "World-Scour", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Relentless (3)",
+        "description": "Balor can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Seal Strains (Countdown 3)",
+        "description": "Each time Balor takes damage from Far or a PC spends Hope, tick the countdown. When it triggers, immediately use Open the Eye. Reset the countdown.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Open the Eye",
+        "description": "Spend a Fear to project a Far line. Make an attack against all along the line; targets you succeed against take 4d10+10 magic and are knocked to Very Far. Squares scorched become Ash Furrows (Dangerous).",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Chain-Drag",
+        "description": "When a creature ends their turn at Far, drag the chain: move Balor up to Close toward them and knock them to Close of Balor.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature ends their turn at Far"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "morrigans-phantom-host",
+    "name": "Morr\u00edgan's Phantom Host",
+    "tier": 4,
+    "type": "Horde",
+    "description": "A cycling murder of crows and war-shades, armor made from tomorrow's carrion.",
+    "motives": ["Descend in omen", "Turn fear to blades", "Leave a field of choices no one wanted"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Ravenstorm",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Omen-Weaver", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Horde (2d10+10)",
+        "description": "When the Host marks half or more HP, their standard attack becomes 2d10+10 magic.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bad Omen",
+        "description": "Whenever a PC within Far rolls a failure with Fear, place an Omen on them. When the Host next attacks, you may remove any Omen to gain +1d6 damage per Omen and knock those targets back to Far.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Carrion Augury",
+        "description": "When a PC is reduced to 0 HP or loses their last Hope, you may mark a Stress to immediately spotlight the Host again.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC is reduced to 0 HP or loses their last Hope"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "fomorian-curse-reaver-eye-of-spite",
+    "name": "Fomorian Curse-Reaver, Eye of Spite",
+    "tier": 4,
+    "type": "Bruiser",
+    "description": "A giant whose breath smells of bad iron and storm graves. One eye curses; the other pities and never wins.",
+    "motives": ["Smash anchors", "Hex champions", "Unmake shelter"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Ruin-Maul",
+      "range": "Close",
+      "damage": "4d10+12",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Black Hex", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Ruin-Field",
+        "description": "The first time the Reaver strikes a target each round, choose ground within Very Close; it becomes Rubble: difficult and hazardous (entering creatures make an Agility Reaction Roll (18) or mark a Stress).",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eye-Bite",
+        "description": "Spend a Fear to curse a target within Far until the end of the scene. While cursed, whenever that target spends Hope, they also mark a Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Smash the Sigil",
+        "description": "When a PC critically succeeds within Close, the Reaver marks a Stress to shatter an ongoing magical effect or summoned minion in Close (GM adjudication).",
+        "tags": ["offensif", "d\u00e9fensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC critically succeeds within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  }
+]

@@ -298,6 +298,97 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "aos-si-high-lord-bearer-of-glamour",
+    "name": "Aos Sí High Lord, Bearer of Glamour",
+    "tier": 4,
+    "type": "Leader",
+    "description": "A blade like sunlight in water, a cloak like a dusk moth's wing.",
+    "motives": [
+      "Command the court",
+      "Rewrite the dance",
+      "Duel heroes"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Glimmerblade",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Sovereign Glamour",
+        "modifier": 3
+      },
+      {
+        "name": "Duelist's Pride",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Royal Decree",
+        "description": "Spend a Fear to reorder the battlefield: spotlight up to 1d4 allies within Far and place each anywhere within Close of their current position; each gains advantage on their next attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Court Summons",
+        "description": "Summon Minions equal to the party size within Close; if any end a turn within Very Close of the High Lord, he clears 1 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Circle of Challenge",
+        "description": "When a PC deals Major or greater damage to an ally within Close, mark a Stress to draw a Duel Circle around the PC and High Lord (Very Close). Until the end of the PC's next turn, attacks that don't include either duelist have disadvantage.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC deals Major or greater damage to an ally within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "arch-necromancer",
     "name": "Arch-Necromancer",
     "tier": 4,
@@ -1636,6 +1727,186 @@
     "source": "baba-yagas-folio"
   },
   {
+    "id": "balor-the-blighted-eye",
+    "name": "Balor, The Blighted Eye",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A titan in rusted bronze. The chained eye under his brow is a sunrise no land survives.",
+    "motives": [
+      "Open the eye",
+      "Sweep ranks",
+      "Stride through ruin"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Smolder-Greatsword",
+      "range": "Close",
+      "damage": "4d12+15",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "World-Scour",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (3)",
+        "description": "Balor can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Seal Strains (Countdown 3)",
+        "description": "Each time Balor takes damage from Far or a PC spends Hope, tick the countdown. When it triggers, immediately use Open the Eye. Reset the countdown.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Open the Eye",
+        "description": "Spend a Fear to project a Far line. Make an attack against all along the line; targets you succeed against take 4d10+10 magic and are knocked to Very Far. Squares scorched become Ash Furrows (Dangerous).",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Chain-Drag",
+        "description": "When a creature ends their turn at Far, drag the chain: move Balor up to Close toward them and knock them to Close of Balor.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature ends their turn at Far"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "cailleach-winters-hand",
+    "name": "Cailleach, Winter's Hand",
+    "tier": 4,
+    "type": "Solo",
+    "description": "Old as the first frost on stone, she carries cairn-stones in a shawl and counts the years in broken rivers.",
+    "motives": [
+      "Lay winter over the field",
+      "Punish haste",
+      "Move stones that move armies"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 24,
+      "severe": 48
+    },
+    "hp": 12,
+    "stress": 6,
+    "attack": {
+      "modifier": 4,
+      "name": "Storm Staff",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Cairn-Lore",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Cailleach can be spotlighted up to two times per GM turn. Spend Fear as usual.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Freeze the Breath",
+        "description": "Spend a Fear to attack all targets within Close. On success, targets take 4d6 magic and must choose: lose a Hope or be Restrained in rime until they clear a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "The Year Turns",
+        "description": "When reduced below half HP the first time, begin Slow Winter: while active, you must be spotlighted twice before each action (place/clear a token), but your standard attack deals +1d10.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Reduced below half HP the first time"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "cavalry-troop",
     "name": "Cavalry Troop",
     "tier": 4,
@@ -2528,6 +2799,100 @@
       "highGold": 0
     },
     "source": "the-void"
+  },
+  {
+    "id": "cwn-annwn-pack",
+    "name": "Cŵn Annwn Pack",
+    "tier": 4,
+    "type": "Horde",
+    "description": "A ghostly pack of white-furred hounds with burning red eyes and ears, their eerie, distant baying heralding death. No mortal weapon can halt their relentless pursuit, and those they fell are dragged into the Otherworld.",
+    "motives": [
+      "Drive prey toward the pack",
+      "Run down the weakest first"
+    ],
+    "difficulty": 17,
+    "thresholds": {
+      "major": 20,
+      "severe": 40
+    },
+    "hp": 7,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Bite",
+      "range": "Melee",
+      "damage": "4d8+8",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Hunt",
+        "modifier": 4
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d8+4)",
+        "description": "When the Pack has marked half or more of their HP, their standard attack deals 2d8+4 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Ghost",
+        "description": "The Pack has resistance to physical damage. Mark a Stress to move up to Close range through solid objects.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "The Pack can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hobbling",
+        "description": "Mark a Stress to make a standard attack against a target within Melee range. On a success, deal direct physical damage and make them Vulnerable until they clear at least 1 HP.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Melee",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "morrgans-celtic"
   },
   {
     "id": "demigod",
@@ -3946,6 +4311,375 @@
     "source": "incredible-creatures"
   },
   {
+    "id": "flying-head-hunger-wheel",
+    "name": "Flying Head, Hunger-Wheel",
+    "tier": 4,
+    "type": "Horde",
+    "description": "An Iroquois terror--a storm of gnashing, wing-tendoned heads that batter windows and fires both.",
+    "motives": [
+      "Swarm the firelit",
+      "Drink breath",
+      "Batter doors"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Gnashing Gale",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Night Siege",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d10+10)",
+        "description": "When the Horde has marked half or more of its HP, its standard attack becomes 2d10+10 magic instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Through the Lintel",
+        "description": "While at least one open door or window exists in the scene, the Sluagh may be spotlighted twice this GM turn. The second spotlight can only move or use the standard attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Cursed Bite",
+        "description": "When your attack causes a target to mark HP, you may mark a Stress to force that target to spend a Hope or mark 1 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Your attack causes a target to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "fomorian-curse-reaver-eye-of-spite",
+    "name": "Fomorian Curse-Reaver, Eye of Spite",
+    "tier": 4,
+    "type": "Bruiser",
+    "description": "A giant whose breath smells of bad iron and storm graves. One eye curses; the other pities and never wins.",
+    "motives": [
+      "Smash anchors",
+      "Hex champions",
+      "Unmake shelter"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Ruin-Maul",
+      "range": "Close",
+      "damage": "4d10+12",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Black Hex",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Ruin-Field",
+        "description": "The first time the Reaver strikes a target each round, choose ground within Very Close; it becomes Rubble: difficult and hazardous (entering creatures make an Agility Reaction Roll (18) or mark a Stress).",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eye-Bite",
+        "description": "Spend a Fear to curse a target within Far until the end of the scene. While cursed, whenever that target spends Hope, they also mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Smash the Sigil",
+        "description": "When a PC critically succeeds within Close, the Reaver marks a Stress to shatter an ongoing magical effect or summoned minion in Close (GM adjudication).",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC critically succeeds within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-celtic"
+  },
+  {
+    "id": "fomorian-host",
+    "name": "Fomorian Host",
+    "tier": 4,
+    "type": "Horde",
+    "description": "A host of twisted giants and sea-born demons, the Fomorians rise from storm and shadow. Misshapen of form - some one-eyed, some one-armed, some part beast - they are the enemies of gods and mortals alike. They demand cruel tribute, spread blight across the land, and bring chaos where they march.",
+    "motives": [
+      "Crush the weak",
+      "Demand tribute",
+      "Spread chaos"
+    ],
+    "difficulty": 18,
+    "thresholds": {
+      "major": 30,
+      "severe": 45
+    },
+    "hp": 8,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Crude Weapons",
+      "range": "Very Close",
+      "damage": "4d8+8",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Bring Chaos",
+        "modifier": 4
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d8+4)",
+        "description": "When the Host has marked half or more of their HP, their standard attack deals 2d8+4 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "The Host can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Storm-Born Onslaught",
+        "description": "Spend a Fear to let the Host surge forward like a crashing wave. Move to a point in a straight line within Far range and make a standard attack against all targets within Very Close range upon arrival.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Overwhelm",
+        "description": "When the Host takes Minor damage from an attack within Melee range, you can mark a Stress to make a standard attack with advantage against the attacker.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Takes Minor damage from an attack within Melee range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "gaasyendietha-meteor-serpent",
+    "name": "Gaasyendietha, Meteor Serpent",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A Seneca flaming serpent, tail full of falling stars; it writes its name across lakes at night.",
+    "motives": [
+      "Burn waterways",
+      "Strafe lines",
+      "Break up the sky"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Comet-Flame",
+      "range": "Far",
+      "damage": "4d12+15",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Celestial Fire",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "Spotlight up to two times per GM turn.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Meteor Wake",
+        "description": "When you move, leave a burning trail of rock and flame (length of a Very Close line). Creatures entering must succeed on an Agility Reaction Roll (20) or mark a Stress.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Skyfall",
+        "description": "Spend a Fear to project a blazing line to Very Far. Make an attack against all along the line; targets you succeed against take 4d10+12 magic and are knocked to Very Far.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Far",
+        "trigger": null
+      },
+      {
+        "name": "Molten Scales",
+        "description": "When you take Major or greater damage, mark a Stress to shed a scale at your space. The next time a PC ends their spotlight within Very Close of it, it explodes and deals 3d8+8 magic damage to all within Very Close.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "You take Major or greater damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "general",
     "name": "General",
     "tier": 4,
@@ -4258,6 +4992,234 @@
       "highGold": 0
     },
     "source": "incredible-creatures"
+  },
+  {
+    "id": "gwyllgi",
+    "name": "Gwyllgi",
+    "tier": 4,
+    "type": "Skulk",
+    "description": "A towering black hound with eyes burning like embers, known as the \"Dog of Darkness.\" Appearing from the shadows without sound, it vanishes just as swiftly, leaving only terror and the certainty that doom follows in its wake.",
+    "motives": [
+      "Sow fear",
+      "Strike from shadow",
+      "Vanish before retribution"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 23,
+      "severe": 39
+    },
+    "hp": 6,
+    "stress": 5,
+    "attack": {
+      "modifier": 7,
+      "name": "Bite",
+      "range": "Melee",
+      "damage": "4d10+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Hunt",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Death Omen",
+        "description": "The first time a PC sees a Gwyllgi, it must make an Instinct or Presence Reaction Roll. On a failure, the PC loses a Hope and must mark a Stress. This effect can only occur once per PC per scene.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Backstab",
+        "description": "When the Gwyllgi succeeds on a standard attack that has advantage, they deal 4d12+8 physical damage instead of their standard damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Terrifying Gaze",
+        "description": "Spend a Fear to target one creature within Far range and lock eyes with it. The target must make an Instinct or Presence Reaction Roll. On a failure, it loses 1d4 Hope and becomes temporarily Restrained and Vulnerable. On a success, it must mark a Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Shadow Vanish",
+        "description": "After a successful attack, mark a Stress to disappear from where you are and reappear inside another shadow within Far range, and become Hidden until after the Gwyllgi's next attack. Attacks made while Hidden from this feature have advantage.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "After a successful attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "gwyn-ap-nudd",
+    "name": "Gwyn Ap Nudd",
+    "tier": 4,
+    "type": "Leader",
+    "description": "The radiant yet dread king of the Tylwyth Teg rides at the head of the Wild Hunt, beautiful as moonlit frost and terrible as the grave. He holds the boundary between worlds, and marks the souls for the Otherworld.",
+    "motives": [
+      "Claim souls",
+      "Lead the Hunt",
+      "Maintain the balance of worlds"
+    ],
+    "difficulty": 19,
+    "thresholds": {
+      "major": 37,
+      "severe": 68
+    },
+    "hp": 9,
+    "stress": 7,
+    "attack": {
+      "modifier": 8,
+      "name": "Otherworldly Blade",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Lord of the Hunt",
+        "modifier": 3
+      },
+      {
+        "name": "Warden of the Otherworld",
+        "modifier": 4
+      }
+    ],
+    "features": [
+      {
+        "name": "Arcane Steel",
+        "description": "Damage dealt by Gwyn's standard attack is considered both physical and magic.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Fey Steed",
+        "description": "While Gwyn is on a mount, they gain a +2 bonus to their Difficulty. When they take Severe damage, they're knocked from their mount and lose this benefit until they're next spotlighted. When mounted, mark a Stress to move up to Far range.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "Gwyn can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Claim of Annwn",
+        "description": "Make a target Claimed by Annwn until Gwyn is defeated or the scene ends. When an adversary of The Wild Hunt succeeds on an attack against a Claimed target, the target must mark a Stress. If they mark their last HP while Claimed, their soul is dragged into Annwn. Gwyn can only Claim one target at a time.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "King of the Otherworld",
+        "description": "Mark a Stress to spotlight 1d4+1 allies. Attacks they make while spotlighted in this way deal half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hounds of Annwn",
+        "description": "Once per scene, when Gwyn marks 2 or more HP, you can mark a Stress to summon a Cŵn Annwn Pack, which appears at Close range and is immediately spotlighted.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": "Gwyn marks 2 or more HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 1,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
   },
   {
     "id": "hallowed-archer",
@@ -6124,6 +7086,480 @@
     "source": "baba-yagas-folio"
   },
   {
+    "id": "morrigan-the-omen-crow",
+    "name": "Morrígan: The Omen-Crow",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A dread goddess of battle and fate, Morrígan circles the battlefield as a crow. She is prophecy given voice, terror given wings - her cry seals the doom of heroes, and her presence turns war into carnage.",
+    "motives": [
+      "Foretell slaughter",
+      "Weaken morale",
+      "Strike and vanish"
+    ],
+    "difficulty": 21,
+    "thresholds": {
+      "major": 30,
+      "severe": 60
+    },
+    "hp": 8,
+    "stress": 6,
+    "attack": {
+      "modifier": 10,
+      "name": "Talon",
+      "range": "Melee",
+      "damage": "4d8+12",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Battlefield Prophecy",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Omen-Crow can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Harrier's Flight",
+        "description": "While flying, the Omen-Crow may move up to Far range before or after taking an action.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Dark Omen",
+        "description": "When a PC rolls with Fear while within Far range of the Omen-Crow, you gain an additional Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Crow Swarm",
+        "description": "Spend a Fear to summon a swarm of phantom crows. Choose a point. Targets within Close range of that point must make an Agility or Strength Reaction Roll. Targets who fail mark 1d4 Stress. Targets who succeed mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Pronounce Fate",
+        "description": "Spend a Fear to present a target within Far range with a vision of their personal nightmare. The target must make a Knowledge Reaction Roll. On a failure, they lose all Hope and take 2d20+4 direct magic damage. On a success, they take half damage and lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Prophecy Unveiled",
+        "description": "Mark a Stress to force a target within Close range to reroll an action roll and choose the result, \"as fate was foretold.\"",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Target within Close range makes an action roll"
+      },
+      {
+        "name": "Blood-Crow's Ascension",
+        "description": "When the Omen-Crow marks their last HP, replace them with the War-Queen and immediately spotlight them.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Marks last HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "morrigan-the-phantom-sovereign",
+    "name": "Morrígan: The Phantom Sovereign",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A spectral queen draped in night, Morrígan rules from the veil between worlds. She is the echo of every dying cry, the shadow of every broken king—an undying sovereign whose dominion is terror and fate.",
+    "motives": [
+      "Crush hope",
+      "Harvest souls",
+      "Rule the slain"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 34,
+      "severe": 64
+    },
+    "hp": 9,
+    "stress": 6,
+    "attack": {
+      "modifier": 9,
+      "name": "Scythe Of Shadows",
+      "range": "Very Close",
+      "damage": "4d12+15",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Battlefield Prophecy",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (3)",
+        "description": "The Phantom Sovereign can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "No Hope",
+        "description": "When a PC rolls with Fear while within Far range of the Phantom Sovereign, they lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Sovereign of Death",
+        "description": "Whenever a PC within Close range marks their last HP, the Phantom Sovereign clears 1d4 HP.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Doom of Prophecy",
+        "description": "Countdown (Loop 1d6). When the countdown triggers, choose one PC: they must make a Presence Reaction Roll. On a failure, they mark all remaining Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Whirl of Shadows",
+        "description": "Spend a Fear to whirl, making an attack against all targets within Very Close range. Targets the Phantom Sovereign succeeds against take 5d8 direct magical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Flickering Form",
+        "description": "When the Phantom Sovereign takes damage from an attack within Close range, you can mark a Stress to take half damage.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Takes damage from an attack within Close range"
+      },
+      {
+        "name": "Death's Final Cry",
+        "description": "When Morrígan would be destroyed, she instead becomes a crow swarm and vanishes into the Otherworld. All PCs within Far range must make a Presence Reaction Roll or mark a HP as her curse lingers.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Would be destroyed"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "morrigan-the-war-queen",
+    "name": "Morrígan: The War-Queen",
+    "tier": 4,
+    "type": "Solo",
+    "description": "Crowned in blood and shadow, Morrígan strides the battlefield as sovereign of carnage. She bends the clash of armies to her will, exalting slaughter as law and crowning death itself as queen.",
+    "motives": [
+      "Seduce the doomed",
+      "Drown the field in blood",
+      "Exult in chaos"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 38,
+      "severe": 68
+    },
+    "hp": 9,
+    "stress": 7,
+    "attack": {
+      "modifier": 10,
+      "name": "Spear Of Shadows",
+      "range": "Close",
+      "damage": "4d10+10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "War",
+        "modifier": 4
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (3)",
+        "description": "The War-Queen can be spotlighted up to three times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Never Misses",
+        "description": "When the War-Queen makes an attack, the target's Evasion is halved against the attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bloodied Ground",
+        "description": "When a PC marks one or more HP within Close range, they must also mark a Stress as the battlefield drinks their fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Shattering Strike",
+        "description": "Mark a Stress to make a standard attack against all targets within Very Close range. PCs the War-Queen succeeds against lose a number of Hope equal to the HP they marked from this attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Momentum",
+        "description": "When the War-Queen makes a successful attack against a PC, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Makes a successful attack against a PC"
+      },
+      {
+        "name": "Ascension of the Veil",
+        "description": "When the War-Queen marks their last HP, replace them with the Phantom Sovereign and immediately spotlight them.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Marks last HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
+  },
+  {
+    "id": "morrigans-phantom-host",
+    "name": "Morrígan's Phantom Host",
+    "tier": 4,
+    "type": "Horde",
+    "description": "A cycling murder of crows and war-shades, armor made from tomorrow's carrion.",
+    "motives": [
+      "Descend in omen",
+      "Turn fear to blades",
+      "Leave a field of choices no one wanted"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Ravenstorm",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Omen-Weaver",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d10+10)",
+        "description": "When the Host marks half or more HP, their standard attack becomes 2d10+10 magic.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bad Omen",
+        "description": "Whenever a PC within Far rolls a failure with Fear, place an Omen on them. When the Host next attacks, you may remove any Omen to gain +1d6 damage per Omen and knock those targets back to Far.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Carrion Augury",
+        "description": "When a PC is reduced to 0 HP or loses their last Hope, you may mark a Stress to immediately spotlight the Host again.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC is reduced to 0 HP or loses their last Hope"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-celtic"
+  },
+  {
     "id": "ophanim",
     "name": "Ophanim",
     "tier": 4,
@@ -7965,6 +9401,80 @@
     "source": "incredible-creatures"
   },
   {
+    "id": "restless-dead",
+    "name": "Restless Dead",
+    "tier": 4,
+    "type": "Minion",
+    "description": "Drawn into Gwyn ap Nudd's Wild Hunt, the Restless Dead are the souls of mortals who never found peace. Ragged wraiths or ghostly riders, they are bound to chase the living into Annwn - both punishment and warning of what awaits the unquiet.",
+    "motives": [
+      "Drag the living into Annwn",
+      "Enforce Gwyn's will"
+    ],
+    "difficulty": 18,
+    "thresholds": null,
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": 2,
+      "name": "Spectral Weapon",
+      "range": "Very Close",
+      "damage": "12",
+      "damageType": "mag"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Minion (12)",
+        "description": "The Restless Dead is defeated when they take any damage. For every 12 damage a PC deals to the Restless Dead, defeat an additional Minion within range the attack would succeed against.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Aura of Doom",
+        "description": "When a PC marks HP from an attack by the Restless Dead, they lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Group Attack",
+        "description": "Spend a Fear to choose a target and spotlight all Restless Dead within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 12 magical damage each. Combine this damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "morrgans-celtic"
+  },
+  {
     "id": "roc",
     "name": "Roc",
     "tier": 4,
@@ -8492,6 +10002,96 @@
     "source": "incredible-creatures"
   },
   {
+    "id": "thunderbird-storm-judge",
+    "name": "Thunderbird, Storm-Judge",
+    "tier": 4,
+    "type": "Leader",
+    "description": "Wings like continents turning, eyes full of verdict; thunder walks where it looks.",
+    "motives": [
+      "Try the proud",
+      "Break sieges",
+      "Call the storm"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Sky-Talons",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Sovereign of the Storm",
+        "modifier": 3
+      },
+      {
+        "name": "Sky Marshal",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Royal Thunder",
+        "description": "Spend a Fear to call a strike at a point within Far. Make an attack against all within Close of that point. Targets you succeed against take 4d10+10 magic and are knocked to Far. Place a Storm token there. Ranged attacks through that area have disadvantage until the effect is cleared.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Call the Stormclutch",
+        "description": "Summon Minions equal to party size (storm spirits in avian shapes) within Close. If any end their move within Very Close of the Thunderbird, clear 1 Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Charged Decree",
+        "description": "When a PC critically succeeds, mark a Stress to mark them Charged. The next time they move or make an attack, they must spend a Hope or take 3d10 magic damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC critically succeeds"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 1,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "time-wraith",
     "name": "Time Wraith",
     "tier": 4,
@@ -8581,6 +10181,106 @@
     "source": "archibalds-almanac"
   },
   {
+    "id": "tlanuwa-cliff-king",
+    "name": "Tla'Nuwa, Cliff-King",
+    "tier": 4,
+    "type": "Leader",
+    "description": "A Cherokee eagle of the red rock bluffs; talons like grapnels, cry like bronze torn in half.",
+    "motives": [
+      "Rule the heights",
+      "Pluck and drop",
+      "Rally the aerie"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Granite Beak",
+      "range": "Close",
+      "damage": "4d10+10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "High Aerie",
+        "modifier": 3
+      },
+      {
+        "name": "Commander",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Nest on the Red Ledge",
+        "description": "While adjacent to a cliff or ledge feature, gain resistance to physical damage.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eagle Warcry",
+        "description": "Spend a Fear to spotlight up to 1d4 allies within Far and place each on higher ground within Close. Each ally targetted gains advantage on their next attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Drop to the River",
+        "description": "On a successful attack, you may grapple the target and carry them to Far, then force an Agility Reaction Roll (20). On a failure, they take 4d8+10 physical and are knocked to Very Far.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Feather Storm",
+        "description": "When you mark HP, razor feathers lash all within Very Close for 2d6 magic.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": "You mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 1,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
     "id": "tortured-soul",
     "name": "Tortured Soul",
     "tier": 4,
@@ -8644,6 +10344,101 @@
       "highGold": 0
     },
     "source": "incredible-creatures"
+  },
+  {
+    "id": "tylwyth-teg-riders",
+    "name": "Tylwyth Teg Riders",
+    "tier": 4,
+    "type": "Horde",
+    "description": "An otherworldly cavalcade of faerie knights astride white steeds, beautiful beyond mortal measure yet terrible in their charge. Their laughter is as sharp as their lances, and their songs lure mortals into endless dances, never to return from the shadowed realms of Annwn.",
+    "motives": [
+      "Encircle prey",
+      "Entice with beauty",
+      "Drag mortals into the Otherworld"
+    ],
+    "difficulty": 16,
+    "thresholds": {
+      "major": 21,
+      "severe": 38
+    },
+    "hp": 8,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Lance",
+      "range": "Very Close",
+      "damage": "4d6+10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Glamour of Annwn",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d6+5)",
+        "description": "When the Riders have marked half or more of their HP, their standard attack deals 2d6+5 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Ghost",
+        "description": "The Riders have resistance to physical damage. Mark a Stress to move up to Close range through solid objects.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "The Riders can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Enchanted Volley",
+        "description": "Mark a Stress to let the Riders loose a rain of faerie arrows at a target within Far range. All creatures within Very Close range of that target must make an Agility Reaction Roll. On a failure, a creature takes 4d10+4 (or half of that if the Riders have marked half or more of their HP) magic damage. On a success, it takes half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "morrgans-celtic"
   },
   {
     "id": "undying-sovereign",
@@ -9314,6 +11109,106 @@
       "highGold": 0
     },
     "source": "incredible-creatures"
+  },
+  {
+    "id": "windigo-winter-hunger",
+    "name": "Windigo, Winter-Hunger",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A gauntness that learned to walk, eyes like old ice, breath that smells of empty cupboards.",
+    "motives": [
+      "Freeze",
+      "Isolate",
+      "Feed on despair"
+    ],
+    "difficulty": 20,
+    "thresholds": {
+      "major": 25,
+      "severe": 45
+    },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Rime-Claws",
+      "range": "Close",
+      "damage": "4d10+12",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Hunger's Lesson",
+        "modifier": 3
+      },
+      {
+        "name": "Cannibalism",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Windigo can be spotlighted up to two times per GM turn. Spend Fear as usual.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Gnaw Hope",
+        "description": "The first time each round a PC within Far marks Stress, they also lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hungry Wind",
+        "description": "Spend a Fear to rake all targets within Close with a freezing gale. Targets you succeed against take 4d8+10 magic and must mark a Stress; targets already at max Stress become Vulnerable and Restrained.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Cold Misty Step",
+        "description": "When you take damage, move to Far in a swirl of snow and shadow; the attacker marks a Stress.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "You take damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
   },
   {
     "id": "winter-eternal-blizzard",

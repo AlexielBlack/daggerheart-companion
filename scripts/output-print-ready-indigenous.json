@@ -1,0 +1,1296 @@
+[
+  {
+    "id": "ishkitini-screech-omen",
+    "name": "Ishkitini, Screech-Omen",
+    "tier": 1,
+    "type": "Ranged",
+    "description": "A Choctaw death-owl whose cry stirs the hair on your arms before the wind arrives.",
+    "motives": ["Harrow with omens", "Strike from the eaves", "Scatter courage"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Night Scream",
+      "range": "Far",
+      "damage": "1d8+2",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Grave Winds", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Gravewind",
+        "description": "Choose a point within Far. All targets within Close of that point must succeed on an Instinct Reaction Roll (11) or mark a Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Omen's Shadow",
+        "description": "The first time each round a PC spends Hope within Far of Ishkitini, they must mark a Stress.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Feather Drift",
+        "description": "When targeted by an attack beyond Close, move to Far after the roll resolves; your next attack has advantage.",
+        "tags": ["défensif", "offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Close"
+      },
+      {
+        "name": "Thorns for Liars",
+        "description": "When a creature within Very Close breaks a promise made in this scene, mark a Stress to make a standard attack against them with advantage.",
+        "tags": ["offensif", "social"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Very Close breaks a promise made in this scene"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "deer-woman-boundary-warden",
+    "name": "Deer Woman, Boundary-Warden",
+    "tier": 1,
+    "type": "Social",
+    "description": "Hooves like polished onyx, eyes that see the line between welcome and harm.",
+    "motives": ["Test respect", "Punish broken oaths", "Protect the vulnerable"],
+    "difficulty": 11,
+    "thresholds": { "major": 4, "severe": 8 },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": -1,
+      "name": "Thorned Hoof",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Oathkeeper", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Mirror of Conduct",
+        "description": "The first time each scene a PC acts with flagrant disrespect (cruel taunt, broken promise to an NPC, etc.) within Close, increase this adversary's Difficulty by +2 against that PC for the scene.",
+        "tags": ["social"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "At The Crossroads",
+        "description": "Invite a target within Close into a ring marked of hoof-prints. The target must succeed on a Presence Reaction Roll (11) or become Entranced. While Entranced, they choose: confess a recent harm they have done (clear 1 Stress and gain advantage on their next roll against Deer Woman) or remain Entranced and become Vulnerable.",
+        "tags": ["social"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Thorns for Liars",
+        "description": "When a creature within Very Close breaks a promise made in this scene, mark a Stress to make a standard attack against them with advantage.",
+        "tags": ["offensif", "social"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Very Close breaks a promise made in this scene"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 1,
+      "control": 1,
+      "support": 1,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "kushtaka-drowned-voice",
+    "name": "Kushtaka, Drowned-Voice",
+    "tier": 1,
+    "type": "Support",
+    "description": "A Tlingit river-otter shapeshifter whose echo sounds like a cousin calling for help.",
+    "motives": ["Lure to water", "Split the group", "Strike and slip"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Kelp-Claw",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "River Cunning", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Echo of Kin",
+        "description": "A target within Close hears a familiar voice. They must succeed on an Instinct Reaction Roll (11) or slide up to Very Close toward the nearest water and become Vulnerable.",
+        "tags": ["social"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Otter Shape",
+        "description": "While in or adjacent to water, gain resistance to physical damage and advantage on Agility Reaction Rolls.",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Cold Embrace",
+        "description": "When hit by a melee attack, mark a Stress to pull the attacker to Very Close of the nearest water and both become Restrained until the attacker succeeds on a Strength Roll (11) or spends a Hope.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a melee attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 1,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "pukwudgie-needle-path",
+    "name": "Pukwudgie Needle-Path",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A knee-high mischief-maker of the Wampanoag wood, spines like hawthorn, lantern-moss winking in its fist.",
+    "motives": ["Lead astray", "Prick pride", "Vanish between stumps"],
+    "difficulty": 11,
+    "thresholds": { "major": 7, "severe": 12 },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Thrown-Dart",
+      "range": "Close",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Swampcraft", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Foxfire Tangle",
+        "description": "Place a foxfire within Close. Creatures who move toward it must succeed on an Instinct Reaction Roll (11) or become Lost until they clear a Stress (treat allies as one range farther).",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Quill Cloud",
+        "description": "Make an attack against a target within Close. On a success, deal 1d6+2 physical and Dizzy the target. Dizzied targets have disadvantage on their next action roll, then clear the condition.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Between the Roots",
+        "description": "When missed by an attack, become Hidden and move to any point within Far.",
+        "tags": ["défensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Missed by an attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "mannegishi-bridge-saboteur",
+    "name": "Mannegishi Bridge-Saboteur",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A six-fingered Cree trickster of timbers and twine, giggling from the underside of planks.",
+    "motives": ["Trip boats", "Spring snares", "Tease then flee"],
+    "difficulty": 11,
+    "thresholds": { "major": 6, "severe": 10 },
+    "hp": 4,
+    "stress": 2,
+    "attack": {
+      "modifier": 1,
+      "name": "Flint Knife",
+      "range": "Very Close",
+      "damage": "1d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Little Engineer", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Twig Tripline",
+        "description": "Arm a tripline at a point within Close. The first creature to cross must succeed on an Instinct Reaction Roll (11) or become Restrained.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Undercut the Keel",
+        "description": "Target a creature on a raft, bridge, or bank within Close. The ground or craft becomes Slippery; that target must succeed on an Agility Reaction Roll (11) or fall prone.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Skitter & Cackle",
+        "description": "When a trap you set triggers, move to Far and become Hidden.",
+        "tags": ["utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "A trap you set triggers"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "adlet-sled-raiders",
+    "name": "Adlet Sled-Raiders",
+    "tier": 2,
+    "type": "Horde",
+    "description": "Dog-people of snow-hard trails, charging in a spray of grit and breath.",
+    "motives": ["Run down", "Hamstring", "Drag from the line"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 0,
+      "name": "Gnash & Spear",
+      "range": "Close",
+      "damage": "2d6+4",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Tundra Paths", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Horde (2d4+2)",
+        "description": "When the Raiders have marked half or more of their HP, their standard attack deals 2d4+2 physical instead.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Sledge Charge",
+        "description": "Mark a Stress to sweep in a straight line from Far to Close, making an attack against all in your path; targets you succeed against take 2d6+3 physical and are knocked to Far unless they succeed on an Agility Reaction Roll (14).",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Harness Drag",
+        "description": "When your attack causes a target to mark HP, they become Restrained until they clear a Stress or succeed on a Strength Roll (14).",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "Your attack causes a target to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "wampus-cat-night-prowler",
+    "name": "Wampus Cat, Night-Prowler",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "Green-gold eyes in the pine dark; a hunter whose veil of whiskers drinks moonlight.",
+    "motives": ["Punish cruelty", "Ambush", "Harry the rear"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Veiled-Claw",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "Forest Stalker", "modifier": 2 },
+      { "name": "Into The Night", "modifier": 3 }
+    ],
+    "features": [
+      {
+        "name": "Mask of the Cat",
+        "description": "While Hidden, your standard attack has advantage and deals +1d6 damage.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Moon-Pace",
+        "description": "Erupt from cover to Very Close and make a standard attack. On a success, also Dizzy the target and knock them to Close. Dizzied targets have disadvantage on their next action roll, and then clear the condition.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Whisker-Shade",
+        "description": "When targeted by a ranged attack, mark a Stress to impose disadvantage on that attack. If it misses, become Hidden.",
+        "tags": ["défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "amarok-lone-howl",
+    "name": "Amarok, Lone-Howl",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "The great wolf of the Inuit night, hunting alone where the snow sparks under its paws.",
+    "motives": ["Cull the straggler", "Pounce and pin", "Punish hubris"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Winter Fangs",
+      "range": "Very Close",
+      "damage": "2d10+3",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Ice Hunter", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Hunts Alone",
+        "description": "If no other adversary is within Close, your standard attack has advantage and deals +1d6 damage.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Whiteout Lunge",
+        "description": "Move to Very Close and make a standard attack. On a success, the target must succeed on a Strength Reaction Roll (14) or be knocked prone and Restrained.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Midnight Howl",
+        "description": "When a PC spends Hope within Far, mark a Stress to force that PC to make an Instinct Reaction Roll (14) or become Vulnerable.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC spends Hope within Far"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "nalusa-falaya-shadow-bent",
+    "name": "Nalusa Falaya, Shadow-Bent",
+    "tier": 2,
+    "type": "Social",
+    "description": "A Choctaw shadow that bends like smoke and speaks in the voice you use inside your head.",
+    "motives": ["Seed spite", "Isolate with whispers", "Slide inside silhouettes"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Shade-Finger",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Whispered Temptation", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Lay the Shadow",
+        "description": "Cast a living shadow that tethers between you and a target within Close. While the tether persists, that target has disadvantage on Presence and Instinct rolls and marks 1 Stress if they move through bright light. The tether ends if you mark HP.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Bad Thoughts",
+        "description": "The first time each PC indulges in cruel mockery or mean-spirited sabotage, increase this adversary's Difficulty by +2 until end of scene.",
+        "tags": ["social"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hide in Another",
+        "description": "When targeted by an attack beyond Very Close, mark a Stress to become a shifting stain on a creature within Close until your next turn. While attached, you can't be targeted; the host is Vulnerable.",
+        "tags": ["défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Targeted by an attack beyond Very Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "bukwus-bone-beggar",
+    "name": "Bukwus, Bone-Beggar",
+    "tier": 2,
+    "type": "Social",
+    "description": "A Kwakwaka'wakw wild man of the cedar gloom, offering ghost food in a palm of wind.",
+    "motives": ["Tempt the isolated", "Veil with forest", "Feed on misfortune"],
+    "difficulty": 14,
+    "thresholds": { "major": 10, "severe": 20 },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Bone-Spoon",
+      "range": "Very Close",
+      "damage": "2d6+3",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Cedar Lore", "modifier": 2 }],
+    "features": [
+      {
+        "name": "Food of the Dead",
+        "description": "Offer unseen delicacies to all targets within Close. Each target chooses: partake (mark a Stress and gain advantage on their next action, but you count them as In a Wake: your attacks against them deal an additional +1d6) or refuse and become Vulnerable until they mark a Stress.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Between Cedar Shadows",
+        "description": "While within forest, you have resistance to physical damage and advantage on Instinct Reactions.",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hollow Invitation",
+        "description": "When a PC has no ally within Close, mark a Stress to move adjacent and become Hidden.",
+        "tags": ["utilitaire"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC has no ally within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 3
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "mishipeshu-river-claws",
+    "name": "Mishipeshu, River-Claws",
+    "tier": 3,
+    "type": "Bruiser",
+    "description": "The Underwater Panther of the Anishinaabe lakes, copper-bright horns cutting the current.",
+    "motives": ["Guard crossings", "Drown arrogance", "Break boats"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 8,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Copper Horns",
+      "range": "Very Close",
+      "damage": "3d12+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "Cold Currents", "modifier": 3 },
+      { "name": "Thick Skinned", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Copper Hide",
+        "description": "Reduce physical damage you take by 3 (minimum 1).",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Undertow Spiral",
+        "description": "Target a creature within Close in or adjacent to water. On a success, deal 3d8+4 magic damage. The target must succeed on a Strength Reaction Roll (17) or become Restrained and slide to Far into the water.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Way of The Water Shatter",
+        "description": "When hit by a ranged attack, mark a Stress to lash the surface and shove it towards the attacker. The attacker must succeed on an Instinct Reaction Roll (17) or take 2d6+4 magic damage.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Hit by a ranged attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 3,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "baykok-hollow-bow",
+    "name": "Baykok, Hollow-Bow",
+    "tier": 3,
+    "type": "Ranged",
+    "description": "A gaunt Ojibwe hunter of bones; arrows hum like teeth chattering in deep winter.",
+    "motives": ["Punish waste", "Strike the solitary", "Fade to the treeline"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Bone Arrows",
+      "range": "Far",
+      "damage": "3d10+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      { "name": "Silent Hunter", "modifier": 3 },
+      { "name": "Of Bone & Soil", "modifier": 3 }
+    ],
+    "features": [
+      {
+        "name": "Death Whistle",
+        "description": "Choose a point within Far and begin a countdown (2). It ticks down whenever a PC moves toward that point. When it triggers, make an attack against all targets within Close of the point; those you succeed against lose a Hope and take 3d8+4 magic.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Skinner's Hook",
+        "description": "When a target within Far becomes Vulnerable, mark a Stress to yank them to Close and make a standard attack.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A target within Far becomes Vulnerable"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "uktena-crystal-crest",
+    "name": "Uktena, Crystal-Crest",
+    "tier": 3,
+    "type": "Leader",
+    "description": "A Cherokee horned serpent, scales black as stormwater, a blaze of Ulunsuti glittering at its brow.",
+    "motives": ["Dazzle", "Command the coils", "Flood the tunnel"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 7,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Venom Lash",
+      "range": "Close",
+      "damage": "3d8+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "River Caves", "modifier": 3 },
+      { "name": "Awe & Wonder", "modifier": 3 }
+    ],
+    "features": [
+      {
+        "name": "Hypnotic Crest",
+        "description": "Unleash a prismatic flare in a cone within Close. Targets must succeed on a Presence Reaction Roll (17) or become Entranced (target cannot move away from you) until they clear a Stress.",
+        "tags": ["social", "offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Shedlings",
+        "description": "Summon 1d4 Horned Serpent Minions within Close (they act as Tier-1 Minions; name and looks match your table).",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Tunnel Flood",
+        "description": "When you take Major or greater damage while water is within Close, mark a Stress to surge; all creatures within Very Close are knocked into the nearest water, and become Entranced (target cannot move away from you) until they clear another Stress.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "You take Major or greater damage while water is within Close"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 3,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "stonecoat-flint-shroud",
+    "name": "Stonecoat, Flint-Shroud",
+    "tier": 3,
+    "type": "Bruiser",
+    "description": "A Genonskwa giant whose body is jacketed in plates of razor flint; sparks spit when it moves.",
+    "motives": ["Smash shelters", "Herd rubble", "Tear lines"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 8,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Flint Talons",
+      "range": "Close",
+      "damage": "3d10+4",
+      "damageType": "phy"
+    },
+    "experiences": [{ "name": "Mountain Strider", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Stone Hide",
+        "description": "Reduce physical damage you take by 2. Once per scene, you can reduce the physical damage by 5 and mark a Stress.",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Boulder Stride",
+        "description": "Plow a rocky line up to Close. Make an attack against all in your path. Targets you succeed against take 3d8+4 physical and are knocked to Far.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Shard Spray",
+        "description": "When you take Major or greater damage, all creatures within Very Close take 1d8 magic damage.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "You take Major or greater damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 3,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "pamola-gale-warden-of-katahdin",
+    "name": "Pamola, Gale-Warden of Katahdin",
+    "tier": 3,
+    "type": "Ranged",
+    "description": "Abenaki storm spirit with the head of a moose and the wings of night; breath like rime.",
+    "motives": ["Freeze rash travelers", "Rule the heights", "Blow them from the ledge"],
+    "difficulty": 17,
+    "thresholds": { "major": 20, "severe": 32 },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Ice-Wind Bolt",
+      "range": "Far",
+      "damage": "3d10+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      { "name": "High Places", "modifier": 3 },
+      { "name": "Element of The Wind", "modifier": 3 }
+    ],
+    "features": [
+      {
+        "name": "Mountain's Claim",
+        "description": "While airborne or adjacent to a cliff or peak feature, you have resistance to physical damage and advantage on Instinct Reactions.",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Whiteout Wall Blizzard",
+        "description": "Spend a Fear to create a ferocious Close-radius blizzard within Far. Terrain inside is Lightly Obscured. Creatures entering must succeed on a Strength Reaction Roll (17) or are unable to pass and are pushed back.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Talon Draft",
+        "description": "When a creature within Far moves toward higher ground, mark a Stress to shove them one range band backward and knock them prone.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A creature within Far moves toward higher ground"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 3,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "thunderbird-storm-judge",
+    "name": "Thunderbird, Storm-Judge",
+    "tier": 4,
+    "type": "Leader",
+    "description": "Wings like continents turning, eyes full of verdict; thunder walks where it looks.",
+    "motives": ["Try the proud", "Break sieges", "Call the storm"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 10,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Sky-Talons",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [
+      { "name": "Sovereign of the Storm", "modifier": 3 },
+      { "name": "Sky Marshal", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Royal Thunder",
+        "description": "Spend a Fear to call a strike at a point within Far. Make an attack against all within Close of that point. Targets you succeed against take 4d10+10 magic and are knocked to Far. Place a Storm token there. Ranged attacks through that area have disadvantage until the effect is cleared.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Call the Stormclutch",
+        "description": "Summon Minions equal to party size (storm spirits in avian shapes) within Close. If any end their move within Very Close of the Thunderbird, clear 1 Stress.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Charged Decree",
+        "description": "When a PC critically succeeds, mark a Stress to mark them Charged. The next time they move or make an attack, they must spend a Hope or take 3d10 magic damage.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "A PC critically succeeds"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 2,
+      "support": 1,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "gaasyendietha-meteor-serpent",
+    "name": "Gaasyendietha, Meteor Serpent",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A Seneca flaming serpent, tail full of falling stars; it writes its name across lakes at night.",
+    "motives": ["Burn waterways", "Strafe lines", "Break up the sky"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Comet-Flame",
+      "range": "Far",
+      "damage": "4d12+15",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Celestial Fire", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "Spotlight up to two times per GM turn.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Meteor Wake",
+        "description": "When you move, leave a burning trail of rock and flame (length of a Very Close line). Creatures entering must succeed on an Agility Reaction Roll (20) or mark a Stress.",
+        "tags": ["offensif", "utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Skyfall",
+        "description": "Spend a Fear to project a blazing line to Very Far. Make an attack against all along the line; targets you succeed against take 4d10+12 magic and are knocked to Very Far.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Very Far",
+        "trigger": null
+      },
+      {
+        "name": "Molten Scales",
+        "description": "When you take Major or greater damage, mark a Stress to shed a scale at your space. The next time a PC ends their spotlight within Very Close of it, it explodes and deals 3d8+8 magic damage to all within Very Close.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "You take Major or greater damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "flying-head-hunger-wheel",
+    "name": "Flying Head, Hunger-Wheel",
+    "tier": 4,
+    "type": "Horde",
+    "description": "An Iroquois terror--a storm of gnashing, wing-tendoned heads that batter windows and fires both.",
+    "motives": ["Swarm the firelit", "Drink breath", "Batter doors"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Gnashing Gale",
+      "range": "Close",
+      "damage": "4d8+10",
+      "damageType": "mag"
+    },
+    "experiences": [{ "name": "Night Siege", "modifier": 3 }],
+    "features": [
+      {
+        "name": "Horde (2d10+10)",
+        "description": "When the Horde has marked half or more of its HP, its standard attack becomes 2d10+10 magic instead.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Through the Lintel",
+        "description": "While at least one open door or window exists in the scene, the Sluagh may be spotlighted twice this GM turn. The second spotlight can only move or use the standard attack.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Cursed Bite",
+        "description": "When your attack causes a target to mark HP, you may mark a Stress to force that target to spend a Hope or mark 1 Stress.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": { "type": "stress", "amount": 1 },
+        "frequency": null,
+        "range": null,
+        "trigger": "Your attack causes a target to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "windigo-winter-hunger",
+    "name": "Windigo, Winter-Hunger",
+    "tier": 4,
+    "type": "Solo",
+    "description": "A gauntness that learned to walk, eyes like old ice, breath that smells of empty cupboards.",
+    "motives": ["Freeze", "Isolate", "Feed on despair"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 12,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Rime-Claws",
+      "range": "Close",
+      "damage": "4d10+12",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "Hunger's Lesson", "modifier": 3 },
+      { "name": "Cannibalism", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Windigo can be spotlighted up to two times per GM turn. Spend Fear as usual.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Gnaw Hope",
+        "description": "The first time each round a PC within Far marks Stress, they also lose a Hope.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hungry Wind",
+        "description": "Spend a Fear to rake all targets within Close with a freezing gale. Targets you succeed against take 4d8+10 magic and must mark a Stress; targets already at max Stress become Vulnerable and Restrained.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Cold Misty Step",
+        "description": "When you take damage, move to Far in a swirl of snow and shadow; the attacker marks a Stress.",
+        "tags": ["défensif", "utilitaire"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "You take damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  },
+  {
+    "id": "tlanuwa-cliff-king",
+    "name": "Tla'Nuwa, Cliff-King",
+    "tier": 4,
+    "type": "Leader",
+    "description": "A Cherokee eagle of the red rock bluffs; talons like grapnels, cry like bronze torn in half.",
+    "motives": ["Rule the heights", "Pluck and drop", "Rally the aerie"],
+    "difficulty": 20,
+    "thresholds": { "major": 25, "severe": 45 },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Granite Beak",
+      "range": "Close",
+      "damage": "4d10+10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "High Aerie", "modifier": 3 },
+      { "name": "Commander", "modifier": 2 }
+    ],
+    "features": [
+      {
+        "name": "Nest on the Red Ledge",
+        "description": "While adjacent to a cliff or ledge feature, gain resistance to physical damage.",
+        "tags": ["défensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eagle Warcry",
+        "description": "Spend a Fear to spotlight up to 1d4 allies within Far and place each on higher ground within Close. Each ally targetted gains advantage on their next attack.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": { "type": "fear", "amount": 1 },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Drop to the River",
+        "description": "On a successful attack, you may grapple the target and carry them to Far, then force an Agility Reaction Roll (20). On a failure, they take 4d8+10 physical and are knocked to Very Far.",
+        "tags": ["offensif"],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Feather Storm",
+        "description": "When you mark HP, razor feathers lash all within Very Close for 2d6 magic.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": "You mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 1,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "print-ready-indigenous"
+  }
+]

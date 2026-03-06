@@ -110,7 +110,10 @@ const sources = [
   { file: 'output-the-void.json', label: 'The Void', fixes: null },
   { file: 'output-age-umbra.json', label: 'Age of Umbra', fixes: null },
   { file: 'output-creatures-12.json', label: 'Incredible Creatures (Vol 1-2)', fixes: null },
-  { file: 'output-red-death.json', label: 'Red Death Party', fixes: null }
+  { file: 'output-red-death.json', label: 'Red Death Party', fixes: null },
+  { file: 'output-morrgans.json', label: "Morrígan's Memories (Celtic)", fixes: null },
+  { file: 'output-print-ready-indigenous.json', label: 'Print Ready (Indigenous)', fixes: null },
+  { file: 'output-print-ready-celtic.json', label: 'Print Ready (Celtic Variants)', fixes: null }
 ]
 
 let allNew = []
