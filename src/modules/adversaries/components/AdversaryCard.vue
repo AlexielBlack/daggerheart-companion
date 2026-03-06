@@ -52,7 +52,10 @@
       </span>
     </div>
 
-    <div class="adversary-card__attack">
+    <div
+      v-if="adversary.attack"
+      class="adversary-card__attack"
+    >
       <span class="adversary-card__attack-text">
         {{ adversary.attack.name }}:
         {{ adversary.attack.damage }}

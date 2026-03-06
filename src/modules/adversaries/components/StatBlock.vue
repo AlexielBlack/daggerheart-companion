@@ -100,6 +100,7 @@
 
     <!-- Attack -->
     <section
+      v-if="adversary.attack"
       class="stat-block__section"
       aria-label="Attaque standard"
     >
