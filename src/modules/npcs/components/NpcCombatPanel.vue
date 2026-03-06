@@ -183,7 +183,7 @@
 
       <!-- Stats de combat (éditables, pré-remplies depuis benchmarks) -->
       <div
-        v-if="currentBenchmarks"
+        v-if="normalizedBench"
         class="combat-stats"
         aria-label="Stats de combat"
       >
@@ -205,11 +205,11 @@
               id="cs-diff"
               type="number"
               :value="combatStats.difficulty"
-              :min="currentBenchmarks.difficulty.min"
-              :max="currentBenchmarks.difficulty.max + 5"
+              :min="normalizedBench.difficulty.min"
+              :max="normalizedBench.difficulty.max + 5"
               @input="updateStat('difficulty', Number($event.target.value))"
             />
-            <span class="stat-range">{{ currentBenchmarks.difficulty.min }}–{{ currentBenchmarks.difficulty.max }}</span>
+            <span class="stat-range">{{ normalizedBench.difficulty.min }}–{{ normalizedBench.difficulty.max }}</span>
           </div>
 
           <div class="stat-field">
@@ -218,11 +218,11 @@
               id="cs-hp"
               type="number"
               :value="combatStats.hp"
-              :min="currentBenchmarks.hp.min"
-              :max="currentBenchmarks.hp.max + 5"
+              :min="normalizedBench.hp.min"
+              :max="normalizedBench.hp.max + 5"
               @input="updateStat('hp', Number($event.target.value))"
             />
-            <span class="stat-range">{{ currentBenchmarks.hp.min }}–{{ currentBenchmarks.hp.max }}</span>
+            <span class="stat-range">{{ normalizedBench.hp.min }}–{{ normalizedBench.hp.max }}</span>
           </div>
 
           <div class="stat-field">
@@ -231,35 +231,44 @@
               id="cs-stress"
               type="number"
               :value="combatStats.stress"
-              :min="currentBenchmarks.stress.min"
-              :max="currentBenchmarks.stress.max + 3"
+              :min="normalizedBench.stress.min"
+              :max="normalizedBench.stress.max + 3"
               @input="updateStat('stress', Number($event.target.value))"
             />
-            <span class="stat-range">{{ currentBenchmarks.stress.min }}–{{ currentBenchmarks.stress.max }}</span>
+            <span class="stat-range">{{ normalizedBench.stress.min }}–{{ normalizedBench.stress.max }}</span>
           </div>
 
-          <div class="stat-field">
-            <label for="cs-thMajor">Seuil Majeur</label>
-            <input
-              id="cs-thMajor"
-              type="number"
-              :value="combatStats.thresholdMajor"
-              :min="currentBenchmarks.thresholds.major.min"
-              @input="updateStat('thresholdMajor', Number($event.target.value))"
-            />
-            <span class="stat-range">{{ currentBenchmarks.thresholds.major.min }}–{{ currentBenchmarks.thresholds.major.max }}</span>
-          </div>
+          <template v-if="normalizedBench.thresholds">
+            <div class="stat-field">
+              <label for="cs-thMajor">Seuil Majeur</label>
+              <input
+                id="cs-thMajor"
+                type="number"
+                :value="combatStats.thresholdMajor"
+                :min="normalizedBench.thresholds.major.min"
+                @input="updateStat('thresholdMajor', Number($event.target.value))"
+              />
+              <span class="stat-range">{{ normalizedBench.thresholds.major.min }}–{{ normalizedBench.thresholds.major.max }}</span>
+            </div>
 
-          <div class="stat-field">
-            <label for="cs-thSevere">Seuil Sévère</label>
-            <input
-              id="cs-thSevere"
-              type="number"
-              :value="combatStats.thresholdSevere"
-              :min="currentBenchmarks.thresholds.severe.min"
-              @input="updateStat('thresholdSevere', Number($event.target.value))"
-            />
-            <span class="stat-range">{{ currentBenchmarks.thresholds.severe.min }}–{{ currentBenchmarks.thresholds.severe.max }}</span>
+            <div class="stat-field">
+              <label for="cs-thSevere">Seuil Sévère</label>
+              <input
+                id="cs-thSevere"
+                type="number"
+                :value="combatStats.thresholdSevere"
+                :min="normalizedBench.thresholds.severe.min"
+                @input="updateStat('thresholdSevere', Number($event.target.value))"
+              />
+              <span class="stat-range">{{ normalizedBench.thresholds.severe.min }}–{{ normalizedBench.thresholds.severe.max }}</span>
+            </div>
+          </template>
+
+          <div
+            v-else
+            class="stat-field stat-field--info"
+          >
+            <span class="stat-range">Pas de seuils (Minion)</span>
           </div>
 
           <div class="stat-field">
@@ -268,11 +277,11 @@
               id="cs-atk"
               type="number"
               :value="combatStats.attackModifier"
-              :min="currentBenchmarks.attack.modifier.min"
-              :max="currentBenchmarks.attack.modifier.max + 3"
+              :min="normalizedBench.attack.modifier.min"
+              :max="normalizedBench.attack.modifier.max + 3"
               @input="updateStat('attackModifier', Number($event.target.value))"
             />
-            <span class="stat-range">{{ currentBenchmarks.attack.modifier.min }}–{{ currentBenchmarks.attack.modifier.max }}</span>
+            <span class="stat-range">{{ normalizedBench.attack.modifier.min }}–{{ normalizedBench.attack.modifier.max }}</span>
           </div>
 
           <div class="stat-field">
@@ -284,7 +293,7 @@
               placeholder="Ex: 2d8+3"
               @input="updateStat('attackDamage', $event.target.value)"
             />
-            <span class="stat-range">réf: {{ currentBenchmarks.attack.damage }}</span>
+            <span class="stat-range">réf: {{ normalizedBench.attack.damage }}</span>
           </div>
 
           <div class="stat-field">
@@ -326,7 +335,7 @@
                 Très Loin
               </option>
             </select>
-            <span class="stat-range">réf: {{ currentBenchmarks.attack.range }}</span>
+            <span class="stat-range">réf: {{ normalizedBench.attack.range }}</span>
           </div>
         </div>
       </div>
@@ -1076,6 +1085,37 @@ export default {
       }
     })
 
+    /**
+     * Benchmarks normalisés pour le template.
+     * Chaque stat est garantie sous forme { min, max, default } ou null.
+     */
+    const normalizedBench = computed(() => {
+      const b = currentBenchmarks.value
+      if (!b) return null
+
+      function norm(val) {
+        if (val === null || val === undefined) return null
+        if (typeof val === 'number') return { min: val, max: val, default: val }
+        return val
+      }
+
+      return {
+        difficulty: norm(b.difficulty),
+        hp: norm(b.hp),
+        stress: norm(b.stress),
+        thresholds: b.thresholds ? {
+          major: norm(b.thresholds.major),
+          severe: norm(b.thresholds.severe)
+        } : null,
+        attack: {
+          modifier: norm(b.attack.modifier),
+          damage: b.attack.damage,
+          damageType: b.attack.damageType,
+          range: b.attack.range
+        }
+      }
+    })
+
     // ── Mode linked : adversaires groupés par tier ──
     const groupedAdversaries = computed(() => {
       const groups = {}
@@ -1191,12 +1231,16 @@ export default {
       const bench = getBenchmarkForTypeTier(typeKey, tier)
       if (!bench) return
 
+      // hp peut être un nombre brut (Minion) ou {min,max,default}
+      const hp = typeof bench.hp === 'number' ? bench.hp : bench.hp.default
+      const stress = typeof bench.stress === 'number' ? bench.stress : bench.stress.default
+
       emit('update:combatStats', {
         difficulty: bench.difficulty.default,
-        hp: bench.hp.default,
-        stress: bench.stress.default,
-        thresholdMajor: bench.thresholds.major.default,
-        thresholdSevere: bench.thresholds.severe.default,
+        hp,
+        stress,
+        thresholdMajor: bench.thresholds ? bench.thresholds.major.default : null,
+        thresholdSevere: bench.thresholds ? bench.thresholds.severe.default : null,
         attackModifier: bench.attack.modifier.default,
         attackDamage: bench.attack.damage,
         attackDamageType: bench.attack.damageType,
@@ -1258,6 +1302,7 @@ export default {
       themes,
       proficiencyRange,
       currentBenchmarks,
+      normalizedBench,
       typeInfo,
       groupedAdversaries,
       linkedAdversary,
@@ -1466,6 +1511,12 @@ export default {
   font-size: 0.6rem;
   color: var(--color-text-muted, #6b7280);
   font-style: italic;
+}
+
+.stat-field--info {
+  display: flex;
+  align-items: center;
+  grid-column: span 2;
 }
 
 .type-info {
