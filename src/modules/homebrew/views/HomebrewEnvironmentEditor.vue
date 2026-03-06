@@ -215,7 +215,7 @@ export default {
 
 .hb-env-editor__layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: var(--space-xl);
   align-items: start;
 }

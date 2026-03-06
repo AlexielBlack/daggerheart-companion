@@ -145,7 +145,7 @@ export default {
 .hb-dom-editor__breadcrumb-link:hover { color: var(--color-accent-gold); }
 .hb-dom-editor__breadcrumb-sep { color: var(--color-text-muted); }
 .hb-dom-editor__breadcrumb-current { color: var(--color-text-secondary); }
-.hb-dom-editor__layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: start; }
+.hb-dom-editor__layout { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-xl); align-items: start; }
 .hb-dom-editor__preview-sticky { position: sticky; top: calc(var(--header-height) + var(--space-md)); }
 .hb-dom-editor__preview-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--space-sm); }
 @media (max-width: 900px) {

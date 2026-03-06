@@ -235,7 +235,7 @@ export default {
 .hb-cla-editor__breadcrumb-link:hover { color: var(--color-accent-gold); }
 .hb-cla-editor__breadcrumb-sep { color: var(--color-text-muted); }
 .hb-cla-editor__breadcrumb-current { color: var(--color-text-secondary); }
-.hb-cla-editor__layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: start; }
+.hb-cla-editor__layout { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-xl); align-items: start; }
 .hb-cla-editor__preview-sticky { position: sticky; top: calc(var(--header-height) + var(--space-md)); }
 .hb-cla-editor__preview-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--space-sm); }
 @media (max-width: 900px) {

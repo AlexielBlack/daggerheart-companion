@@ -267,7 +267,7 @@ export default {
 
 .builder-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 360px;
   gap: var(--space-lg);
   align-items: start;
 }

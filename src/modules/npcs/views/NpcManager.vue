@@ -290,7 +290,7 @@ export default {
 
 .npc-manager__layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 360px 1fr;
   gap: 1rem;
   min-height: 60vh;
 }

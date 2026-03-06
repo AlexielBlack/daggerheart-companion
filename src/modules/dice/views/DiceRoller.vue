@@ -92,7 +92,7 @@ export default {
 
 .roller-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 320px;
   gap: var(--space-lg);
   align-items: start;
 }
