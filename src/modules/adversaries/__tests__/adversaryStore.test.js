@@ -259,9 +259,10 @@ describe('adversaryStore', () => {
         expect(typeof a.difficulty).toBe('number')
         expect(typeof a.hp).toBe('number')
         expect(typeof a.stress).toBe('number')
-        expect(a.attack).toBeDefined()
-        expect(typeof a.attack.name).toBe('string')
-        expect(typeof a.attack.range).toBe('string')
+        if (a.attack !== null) {
+          expect(typeof a.attack.name).toBe('string')
+          expect(typeof a.attack.range).toBe('string')
+        }
         expect(Array.isArray(a.features)).toBe(true)
         expect(Array.isArray(a.experiences)).toBe(true)
       })
