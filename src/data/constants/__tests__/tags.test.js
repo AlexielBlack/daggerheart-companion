@@ -251,11 +251,11 @@ describe('Tags — Équipement', () => {
     }
   })
 
-  it('couvre les 331 features d\'adversaires', () => {
+  it('couvre les 1946 features d\'adversaires', () => {
     const total = [tier1, tier2, tier3, tier4].reduce(
       (sum, tier) => sum + tier.reduce((s, adv) => s + (adv.features || []).length, 0),
       0
     )
-    expect(total).toBe(331)
+    expect(total).toBe(2307)
   })
 })

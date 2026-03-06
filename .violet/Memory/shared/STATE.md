@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 23:45 — Violet
+**Last updated:** 2026-03-07 02:00 — Violet
 
 ---
 
@@ -38,6 +38,8 @@
 | **Session Module (Phase 2)** | ✅ Complet | ✓ | sessionStore, SessionHome, 6 sous-composants, hub MJ mode Jeu (3M-P2) |
 | **PcGroupPanel v2** | ✅ Complet | ✓ | Fiche PJ enrichie : resolveCharacterDisplay pure function, stats/seuils/armes/cartes/capacités/inventaire, 4 sections dépliables, 20 tests |
 | **Gestion interactive stats** | ✅ Complet | ✓ | patchCharacterById, boutons +/− HP/Stress/Armure/Espoir — mode Table (PcGroupPanel) + mode Combat (PcSidebarCard + ContextPanel), 7 tests |
+| **Tier Scaling** | ✅ Complet | ✓ | tierScaling.js (5 fonctions pures), scaling stats delta-based via benchmarks SRD, select tier par slot, 50 tests |
+| **BP Tier-Adjusted Cost** | ✅ Complet | ✓ | calculateTierAdjustedCost, coût unitaire ±1 BP/tier delta, Minions exemptés, scalés=0, warning ≥2 tiers, lower-tier→manuel, 15 tests |
 
 ## Architecture 3 Modes
 
@@ -62,12 +64,12 @@
 - **MODE_NAV.jeu** : 3 items (Table, Combat, Dés)
 
 ## Test Suite
-- 392 encounter tests (18 fichiers)
+- 392+ encounter tests (18 fichiers) — dont 68 encounterStore, 50 tierScaling
 - 31 session tests (1 fichier)
 - 20 useCharacterComputed tests (1 fichier)
-- 2,718 tests totaux (97 fichiers)
+- 2,783+ tests totaux (97+ fichiers)
 - ESLint clean
-- Build Vite: 406 modules, 2.56s
+- Build Vite: 407 modules, 2.76s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia
@@ -79,6 +81,7 @@
 ## Known Issues
 - Aucun bug connu actuellement
 - **FIX appliqué** : calcul BP Minions corrigé — `Math.ceil(quantity / pcCount)` au lieu de `1 * quantity` (règle SRD : pcCount minions = 1 groupe = 1 BP)
+- **BP tier-adjusted** : le coût unitaire de chaque adversaire non-Minion est ajusté par `max(1, baseCost + tierDelta)` — les adversaires scalés (tierOverride) ont tierDelta=0
 
 ## Repository
 - Main branch: `main`

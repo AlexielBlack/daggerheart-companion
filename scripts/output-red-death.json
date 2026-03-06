@@ -1,0 +1,108 @@
+[
+  {
+    "id": "lady-of-the-red-death",
+    "name": "Lady of the Red Death",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A masked lady dancing ecstatically to resist a deadly contagion, going berserk if unable to dance.",
+    "motives": ["Dance", "infect", "lacerate"],
+    "difficulty": 15,
+    "thresholds": { "major": 12, "severe": 24 },
+    "hp": 8,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Claws",
+      "range": "Melee",
+      "damage": "2d10",
+      "damageType": "phy"
+    },
+    "experiences": [
+      { "name": "Aristocrat socialite", "modifier": 3 },
+      { "name": "Containment suit", "modifier": 3 },
+      { "name": "Desperate survival", "modifier": 3 }
+    ],
+    "features": [
+      {
+        "name": "Curse of the Red Death",
+        "description": "The \"Red Death\" Tier 2 Event is active, which includes the rules for the Red Death condition. If the Lady dies, the Red Death starts spreading from her body, activating the \"Red Death Mist\" Tier 2 Environment.",
+        "tags": ["utilitaire"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Infected Claws",
+        "description": "Targets taking Major or greater damage from the Lady's claws make a Strength Reaction Roll (14) to avoid contracting Red Death (1).",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "The Lady can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight her.",
+        "tags": ["offensif"],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Draining Dance",
+        "description": "Countdown (Loop 3). While Dancing and not Restrained, the Lady feeds on the life force of nearby living creatures, activating this countdown. It ticks down when a PC takes an action. When it triggers, all targets within the ballroom (or within Far range while in the open) must make a Strength Reaction Roll. Targets who fail take 2d10 direct magic damage and mark a Stress. If one or more targets fail, roll 1d6 + their amount. On a 6+, the Lady clears 1 HP and 1 Stress.",
+        "tags": ["offensif", "défensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": "While Dancing, countdown triggers"
+      },
+      {
+        "name": "Latent Threat",
+        "description": "When a PC rolls a success against the Lady or somehow affects her, you gain a Fear.",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC rolls success against the Lady"
+      },
+      {
+        "name": "Plagued Body",
+        "description": "If the Lady takes any damage that breaks her skin and isn't fire, the wound sprays infected red vapors. Living targets within Very Close range take 1d10 direct physical damage. Targets taking Major or greater damage make a Strength Reaction Roll (13) to avoid contracting Red Death (1).",
+        "tags": ["offensif"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": "Takes non-fire damage that breaks skin"
+      },
+      {
+        "name": "Rapture Dance",
+        "description": "Countdown (4). While hearing any kind of music, the Lady is Dancing and can't take any action. Tick the countdown down when the Lady marks HP, becomes Restrained, or is spotlighted after being harmed or made unable to dance. The countdown instantly triggers if the Lady can't hear any music. When it triggers, the Lady stops Dancing and clears 1d4 Stress. If the Lady hears music again, you can spend up to 8 Fear to reset the countdown to a number equal to half the Fear spent.",
+        "tags": ["défensif", "social"],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "While hearing music"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 2,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "red-death-party"
+  }
+]

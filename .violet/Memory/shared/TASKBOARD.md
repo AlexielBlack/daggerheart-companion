@@ -20,6 +20,7 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| BP-TIER-COST | Coût BP ajusté par différentiel de tier — calculateTierAdjustedCost, lower-tier→manuel, warning ≥2 tiers, 15 tests | 2026-03-07 | Data + Frontend |
 | TIER-SCALE | Tier Scaling adversaires — tierScaling.js + encounterStore + encounterLiveStore + UI select + 50 tests | 2026-03-06 | Frontend + Data |
 | FIX-ROUND | Fix arrondi moitiés au supérieur — bone-untouchable Math.ceil | 2026-03-06 | Data |
 | FIX-BP | Fix calcul BP Minions — Math.ceil(quantity/pcCount), 5 fichiers, +2 tests | 2026-03-06 | Frontend + Data |
@@ -44,4 +45,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-07 01:00 — Violet*
+*Updated: 2026-03-07 02:00 — Violet*

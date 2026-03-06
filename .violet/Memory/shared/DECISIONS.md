@@ -145,3 +145,19 @@ Append-only log of architectural and design decisions.
 **Context:** Avec le module session, le hub MJ (SessionHome) est le point d'entrée naturel du mode Jeu. Le combat live est un état transitoire, pas un point de départ.
 **Rationale:** `/` → `/jeu/table` car le MJ commence par sa table (voir PJs, charger env/PNJs, lancer rencontre). Le combat est accessible via le lanceur ou la bannière de reprise. MODE_NAV.jeu met "Table" en première position.
 **Alternatives considered:** Garder `/jeu/combat` comme défaut (confus sans rencontre active), page d'accueil dédiée hors du mode (complexité inutile).
+
+---
+
+## 2026-03-07 01:00 — Violet
+**Decision:** Tier Scaling adversaires — approche delta-based via benchmarks SRD
+**Context:** Les adversaires d'un tier différent de la rencontre ne sont pas adaptés. Besoin de pouvoir les utiliser à un tier cible sans fausser l'équilibre.
+**Rationale:** `statScalée = statOriginale + (benchmarkCible - benchmarkSource)` — utilise les benchmarks SRD existants (ADVERSARY_TYPE_BENCHMARKS). Les features textuelles ne sont pas scalées (narratives). Les Minions gardent HP=1.
+**Alternatives considered:** Remplacement complet par un adversaire du bon tier (perte d'identité), multiplicateurs (non linéaire, difficile à calibrer).
+
+---
+
+## 2026-03-07 02:00 — Violet
+**Decision:** Coût BP ajusté par différentiel de tier — Approche C (coût unitaire ±1 BP/palier)
+**Context:** L'ajustement `lower-tier` SRD était binaire (+1 BP budget si au moins 1 adversaire de tier inférieur). Trop grossier — pas de proportionnalité, et les tiers supérieurs ignorés.
+**Rationale:** `effectiveCost = max(1, baseCost + tierDelta) × quantity`. Le coût est ajusté par unité, proportionnellement au nombre d'adversaires et à l'écart de tier. Les Minions sont exemptés (coût groupe fixe 1 BP). Les adversaires scalés (tierOverride) ont tierDelta=0 car leurs stats correspondent déjà au tier cible. Warning pour écarts ≥ 2 tiers. `lower-tier` conservé en manuel pour les MJ préférant l'heuristique SRD simple.
+**Alternatives considered:** Approche A — multiplicateur per-slot (trop volatile, un Solo passe de 5 à 2.5 BP), Approche B — ajustement progressif du budget total (manque de granularité, n'affecte pas les coûts individuels).

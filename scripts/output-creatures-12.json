@@ -1,0 +1,3989 @@
+[
+  {
+    "id": "young-earth-drake",
+    "name": "Young Earth Drake",
+    "tier": 1,
+    "type": "Bruiser",
+    "description": "A wingless dragon-like creature whose scales resemble dirt clods that occasionally crackle with static electricity.",
+    "motives": [
+      "Eat",
+      "grow",
+      "defend territory",
+      "sleep"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 7,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Claws",
+      "range": "Melee",
+      "damage": "1d8+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "I'm Bigger Than You",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Tough Hide",
+        "description": "When the Drake takes physical damage, reduce it by 3.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Chomp",
+        "description": "Make a standard attack against a target within Melee range. On a success, spend a Fear to deal an additional 1d12 physical damage and the target must mark an Armor Slot without receiving its benefits (they can still use armor to reduce the damage). If they can't mark an Armor Slot, they must mark an additional HP and you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Stomp",
+        "description": "Spend a Fear to slam the ground with the Drake's powerful legs, creating a shockwave. All targets within Close range must make a Strength or Agility Reaction Roll. On a failure, they take 1d10 magic damage and are Vulnerable until they clear a Stress. On a success they take half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Dug In",
+        "description": "If the Drake is hit by an attack or ability that would force it to move, you can mark 2 Stress to remain in position.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 2
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "hit by attack/ability that forces movement"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "sand-sprite",
+    "name": "Sand Sprite",
+    "tier": 1,
+    "type": "Ranged",
+    "description": "A small, fairy-like creature made of sand and dirt.",
+    "motives": [
+      "Prank",
+      "torment",
+      "evade"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 4,
+      "severe": 8
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Spit Sand",
+      "range": "Far",
+      "damage": "1d12+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Joke's on You",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Flying",
+        "description": "While flying, the Sand Sprite gains a +2 bonus to their Difficulty.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Spray Sand",
+        "description": "Spend a Fear to cover all targets within Close range with fine sand. Targets must make an Agility or Instinct Reaction Roll. On a failure, the target takes 1d6+4 physical damage, marks a Stress, and is Vulnerable until they clear a Stress. On a success, they take half damage and have disadvantage on their next Action Roll.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Evade",
+        "description": "When a PC fails a roll targeting the Sprite, it can move to a point within Close range.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC fails a roll targeting the Sprite"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "minor-earth-elemental",
+    "name": "Minor Earth Elemental",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A collection of rocks and stones that move as a cohesive unit.",
+    "motives": [
+      "Slam",
+      "grind",
+      "hide",
+      "exist"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 7,
+      "severe": 12
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Slam",
+      "range": "Melee",
+      "damage": "1d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Like a Rock",
+        "description": "Before they make their first attack in a fight or after they become Hidden, the Elemental is indistinguishable from other rocks until their next attack or a PC succeeds on an Instinct Roll to identify them.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Rolling Thunder",
+        "description": "Spend a Fear to roll and tumble in a straight line to a point in Far range. Every PC within Melee range of the line must make an Agility Reaction Roll. On a failure, they take 1d12+4 physical damage and mark a Stress. On a success, they take half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Surprise Slam",
+        "description": "If a PC moves within Very Close range of the Elemental while it is Hidden, it can move and make a standard attack with advantage against that PC.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC moves within Very Close range while Hidden"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "sparkflies",
+    "name": "Sparkflies",
+    "tier": 1,
+    "type": "Horde",
+    "description": "A swarm of sparkling insects who consume electricity.",
+    "motives": [
+      "Chase the sparks",
+      "feed",
+      "cavort"
+    ],
+    "difficulty": 10,
+    "thresholds": {
+      "major": 5,
+      "severe": 10
+    },
+    "hp": 5,
+    "stress": 2,
+    "attack": {
+      "modifier": -1,
+      "name": "Shock",
+      "range": "Melee",
+      "damage": "1d12+2",
+      "damageType": "mag"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Horde (1d6+1)",
+        "description": "When the Sparkflies have marked half or more of their HP, their standard attack deals 1d6+1 magic damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Flying",
+        "description": "While flying, the Sparkflies gain a +2 bonus to their Difficulty.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Crackle",
+        "description": "Spend a Fear to expel electricity within Close range. All targets in the area must succeed on an Agility Reaction Roll or take 1d6+1 magic damage and mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "amphiptere",
+    "name": "Amphiptere",
+    "tier": 1,
+    "type": "Minion",
+    "description": "A sleek, snake-like reptile with feathered wings and a draconic face.",
+    "motives": [
+      "Ambush from above",
+      "swarm",
+      "obey their master"
+    ],
+    "difficulty": 10,
+    "thresholds": null,
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": -1,
+      "name": "Bite",
+      "range": "Melee",
+      "damage": "2",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Minion (3)",
+        "description": "The Amphiptere is defeated when they take any damage. For every 3 damage a PC deals to the Amphiptere, defeat an additional Minion within range the attack would succeed against.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Discouraging Bites",
+        "description": "A PC that marks HP from an Amphiptere's \"Group Attack\" loses a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Group Attack",
+        "description": "Spend a Fear to choose a target and spotlight all Amphiptere within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 2 physical damage each. Combine this damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "ashkadavar",
+    "name": "Ashkadavar",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A wizard's familiar, created from the bodies of several woodland creatures.",
+    "motives": [
+      "Consume magic",
+      "prolong life",
+      "grovel",
+      "get revenge",
+      "strength in numbers"
+    ],
+    "difficulty": 10,
+    "thresholds": {
+      "major": 6,
+      "severe": 10
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Magic Breath",
+      "range": "Very Close",
+      "damage": "1d4+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Magical Knowledge",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Magical Hunger",
+        "description": "Spellcast rolls that target the Ashkadavar have disadvantage. If a PC makes a spellcast roll within Far range and fails, the Ashkadavar can mark a Stress to summon an identical Ashkadavar within Very Close range.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Unreal Existence",
+        "description": "The Ashkadavar has resistance to physical damage. Additionally, it can mark a Stress to teleport to a location within Far range.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Magic Connection",
+        "description": "Make a standard attack against a target. On a Success, spend a Fear. The Ashkadavar gains a +2 bonus to its damage for each other Ashkadavar within Very Close range of the target.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "ashkadavar-swarm",
+    "name": "Ashkadavar Swarm",
+    "tier": 1,
+    "type": "Horde",
+    "description": "A group of replicating chimeric creations made from the bodies of several woodland creatures.",
+    "motives": [
+      "Consume magic",
+      "prolong life",
+      "strength in numbers"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 8,
+      "severe": 12
+    },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": -1,
+      "name": "Magic Breath",
+      "range": "Melee",
+      "damage": "1d8+4",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Think Tank",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (1d4+2)",
+        "description": "When the Swarm has marked half or more of their HP, their standard attack deals 1d4+2 magic damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Magical Hunger",
+        "description": "Spellcast rolls that target the Swarm have disadvantage. If a PC makes a spellcast roll within Far range and fails, the Swarm can mark a Stress and clear 1 HP.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Magic Surge",
+        "description": "Make a standard attack against a target. On a success, spend a Fear to gain a bonus to the damage roll equal to the number of the Swarm's unmarked HP.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "hedge-wizard",
+    "name": "Hedge Wizard",
+    "tier": 1,
+    "type": "Social",
+    "description": "A mystic who has learned the ways of magic by learning the ways of life.",
+    "motives": [
+      "Live away from others",
+      "make potions",
+      "commune with the natural world"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 8,
+      "severe": 12
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": -2,
+      "name": "Staff",
+      "range": "Far",
+      "damage": "1d6+1",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Ancestral Wisdom",
+        "modifier": 2
+      },
+      {
+        "name": "Herbology",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Dubious Dealings",
+        "description": "The Hedge Wizard must be offered a gift such as a fine wine or a magic trinket before speaking openly with the PCs. PCs that do not extend this hospitality have disadvantage on all social actions made against the Hedge Wizard.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Hex",
+        "description": "Mark a Stress to force a PC to make a Knowledge Reaction Roll. On a failure, the PC must speak the truth until the end of the scene. If they knowingly tell a lie, they must mark 3 Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Whispering Wanderers",
+        "description": "If a PC threatens the Hedge Wizard with violence, spend a Fear to summon 1 Sylvan Soldier (or similar Tier 1 Standard adversary) for every 2 PCs, who appear at Close range and are immediately spotlighted.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "PC threatens with violence"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "hippogriff",
+    "name": "Hippogriff",
+    "tier": 1,
+    "type": "Support",
+    "description": "A flying creature with the forelegs and head of an eagle and the hindquarters of a horse trained to accept riders.",
+    "motives": [
+      "Protect rider",
+      "obey",
+      "feed"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 12
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Beak",
+      "range": "Melee",
+      "damage": "1d6+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Keen Eyes",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Mount",
+        "description": "A creature that is riding the Hippogriff can cause the Hippogriff to mark a Stress to move to a Far range when they act.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Protective",
+        "description": "A creature riding the Hippogriff can mark a Stress to add a +2 to their Difficulty (Or evasion if a PC) when targeted by an attack. If the attack would still be successful, the Hippogriff takes the damage instead.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "rider targeted by attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 0,
+      "support": 2,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "mad-mage",
+    "name": "Mad Mage",
+    "tier": 1,
+    "type": "Leader",
+    "description": "A wizard commanding creatures made by stitching together disparate parts.",
+    "motives": [
+      "Experiment",
+      "create life",
+      "make creatures"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 8,
+      "severe": 14
+    },
+    "hp": 6,
+    "stress": 6,
+    "attack": {
+      "modifier": 3,
+      "name": "Wrathful Wand",
+      "range": "Far",
+      "damage": "1d8+4",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Dubious Magic",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Bait Beacon",
+        "description": "Make a standard attack against a target. On a success, mark a Stress to make the target Vulnerable until they make a successful Finesse Roll to clear the condition.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Come My Pet!",
+        "description": "Once per scene, summon a Manticore under the Mage's control. The Manticore appears at Close range and is immediately spotlighted.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": "once_per_scene",
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Familiar Friend",
+        "description": "When an ally within Close range makes an attack, the Mage can mark a Stress to give the ally advantage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "ally within Close range attacks"
+      },
+      {
+        "name": "Chaotic Swarm",
+        "description": "Consequence Countdown (5). When the Mage is in the spotlight for the first time, activate the countdown. When it triggers, an Ashkadavar Swarm appears at a point within Far range.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "first spotlight"
+      },
+      {
+        "name": "Well Done, My Minions!",
+        "description": "When an ally causes a PC to mark HP, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "ally causes PC to mark HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 2,
+      "support": 2,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "manticore",
+    "name": "Manticore",
+    "tier": 1,
+    "type": "Ranged",
+    "description": "A lion with cinnabar-red fur, wings of a bat, the tail of a giant scorpion, and the wide face of a man.",
+    "motives": [
+      "Lurk above",
+      "feast on humanoids",
+      "fly evasively",
+      "retreat to a distance"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 5,
+      "severe": 9
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Triple Bite",
+      "range": "Melee",
+      "damage": "1d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Man-eater",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Flying",
+        "description": "While flying, the Manticore gains a +2 bonus to their Difficulty.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Poison Barbs",
+        "description": "When the Manticore makes an attack with \"Poison Sting\" or \"Barb Fling\" you can spend a Fear to add 1d6 bonus to the damage roll and Poison the target until their next rest or they succeed on a Knowledge Roll (15). While Poisoned, the target must roll a d6 before they make an action roll. On a result of 4 or lower, they must mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Poison Sting",
+        "description": "Make an attack against a target within Very Close range. On a success, the target takes 1d6+4 physical damage. If they mark HP, they lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Barb Fling",
+        "description": "Mark a Stress to make an attack against a target within Far range. On a success, the target takes 1d8+3 physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "urstrix",
+    "name": "Urstrix",
+    "tier": 1,
+    "type": "Bruiser",
+    "description": "A bear with a feathered upper body and the head of a large owl.",
+    "motives": [
+      "Stalk the forest",
+      "find meat",
+      "catch prey",
+      "sleep"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 7,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Beak and Claws",
+      "range": "Melee",
+      "damage": "1d12+3",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Hunter",
+        "modifier": 2
+      },
+      {
+        "name": "Ambusher",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Silent Stalker",
+        "description": "If an Urstrix is Hidden when they make a successful standard attack against a target, they deal 1d20+3 physical damage instead of their standard damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Heavy Swipe",
+        "description": "Mark a Stress to make an attack against all targets in front of the Urstrix within Very Close range. Targets the Urstrix succeeds against take 1d10+2 physical damage and are knocked back to Close range. If you instead spend a Fear to use this feature, the damage becomes direct.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Piercing Screech",
+        "description": "When the Urstrix takes Major or greater damage, spend a Fear to let out a furious hoot. All targets within Close range must mark 1d4 Stress and the Urstrix becomes Hidden until their next attack or a PC succeeds on an Instinct Roll (14) to find them.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Major or greater damage"
+      },
+      {
+        "name": "Momentum",
+        "description": "When the Urstrix makes a successful attack against a PC, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "successful attack against PC"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "untamed-experiment",
+    "name": "Untamed Experiment",
+    "tier": 1,
+    "type": "Solo",
+    "description": "A creature whose body is made through the whims of its creator. Some have the body of lions or the hindquarters of horses, others are goats that breathe fire.",
+    "motives": [
+      "Break things",
+      "go berserk",
+      "threaten villages"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 9,
+      "severe": 15
+    },
+    "hp": 9,
+    "stress": 6,
+    "attack": {
+      "modifier": 3,
+      "name": "Claws",
+      "range": "Melee",
+      "damage": "1d10+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Two Heads are Better",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Mad Creation",
+        "description": "When the Experiment appears, put 8 tokens on this stat block. Spend these tokens to add features to the Experiment when it appears or during its spotlight. These are one time costs.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Relentless (2)",
+        "description": "The Experiment can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Flying",
+        "description": "The Experiment has wings that can support flight. While Flying, the Experiment gains a +2 bonus to their Difficulty.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Ophidian Charm",
+        "description": "When a PC makes an attack against the Experiment within Melee range they must roll a d6. On a 3 or lower, the creature has disadvantage on their next attack roll and must mark a Stress.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Terrifying Roar",
+        "description": "Once per scene, mark a Stress to roar loudly, intimidating all foes nearby. All targets within Close range must succeed on a Presence Reaction Roll. Targets who fail are Shaken until they roll with Hope. While Shaken, a target's Hope die is reduced to a d10.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": "once_per_scene",
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Double Swipe",
+        "description": "When the Experiment makes a standard attack, mark a Stress to make another against a different target within Melee range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Ramming Charge",
+        "description": "Mark a Stress to charge through a group within Close range and make an attack against all targets in the Experiment's path. Targets the Experiment succeeds against take 2d6+10 physical damage and are knocked back to Far range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Powerful Kick",
+        "description": "When the Experiment takes Major or greater damage, mark a Stress to make an attack against a target within Melee range. On a success, the target takes 1d12+2 physical damage and is knocked back to Far range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Major or greater damage"
+      },
+      {
+        "name": "Burning Breath",
+        "description": "Countdown (Loop 1d4). When the Experiment sees a hostile target, activate the countdown. When it triggers, the Experiment breathes flames at all targets in front of them within a Very Close range. All targets in the area must succeed on an Agility Reaction Roll or take 1d8+3 magic damage. For each target that marks HP, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "sees hostile target"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "blooming-cockatrice",
+    "name": "Blooming Cockatrice",
+    "tier": 1,
+    "type": "Leader",
+    "description": "A green, dragon-like creature with a moss-covered rooster's neck and bright flower petal wings.",
+    "motives": [
+      "Encourage nature",
+      "create new growth",
+      "protect the young"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 7,
+      "severe": 15
+    },
+    "hp": 5,
+    "stress": 5,
+    "attack": {
+      "modifier": 2,
+      "name": "Beak",
+      "range": "Melee",
+      "damage": "1d10+2",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Nature's Friend",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Flying",
+        "description": "While flying, the Cockatrice gains a +2 bonus to their Difficulty.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Eyes of Leaf and Stem",
+        "description": "Before a PC within Close range makes an action roll that would affect the Cockatrice, they must succeed on a Presence Reaction Roll (10). On a failure, the PC marks a Stress as they begin to turn into a tree and start an Arborization Countdown (4). It ticks down when any PC in the scene rolls with Fear. When it triggers, the target is Restrained and Unconscious; they can't make action rolls, can't speak, and automatically fail all reaction rolls. All creatures that the Cockatrice has turned into trees clear both conditions when the Cockatrice is defeated.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Penetrating Peck",
+        "description": "Make a standard attack against a target. On a success, spend a Fear to force the target to mark an Armor Slot without receiving its benefits (they can still use armor to reduce the damage). If they have an Arborization Countdown, tick it down by 1. If they can't mark an Armor Slot, they must mark an additional HP.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Baleful Crow",
+        "description": "Spend a Fear to spotlight 1d4+1 allies. Attacks they make while spotlighted in this way have advantage but deal half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Mama Hen",
+        "description": "When a Budding Cockatrice Clutch marks HP, you can mark a Stress to fly into Melee range of the attacker and make a \"Penetrating Peck\" attack against them without spending a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "Budding Cockatrice Clutch marks HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 2,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "budding-cockatrice-clutch",
+    "name": "Budding Cockatrice Clutch",
+    "tier": 1,
+    "type": "Horde",
+    "description": "A group of young dragon-like creatures with green fuzzy scales and tightly wrapped buds for wings waiting to bloom.",
+    "motives": [
+      "Grow strong",
+      "seek food",
+      "keep close to the nest"
+    ],
+    "difficulty": 10,
+    "thresholds": {
+      "major": 6,
+      "severe": 11
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": -1,
+      "name": "Beaks",
+      "range": "Melee",
+      "damage": "1d8+2",
+      "damageType": "mag"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Horde (1d4+1)",
+        "description": "When the Clutch have marked half or more of their HP, their standard attack deals 1d4+1 magic damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Thicket Sprout",
+        "description": "When the Clutch have marked half or more of their HP, mark a Stress to create a bramble thicket around the Clutch in a Very Close range. All targets within the area must make a Finesse Reaction Roll (12). Targets who fail take 2d8 physical damage and are temporarily Restrained. Targets who succeed take half damage and are knocked out of the area. The Clutch can move through this area unimpeded and has a +3 bonus to its Difficulty while in the bramble thicket.",
+        "tags": [
+          "défensif",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "half or more HP marked"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "burroska-doll",
+    "name": "Burroska Doll",
+    "tier": 1,
+    "type": "Ranged",
+    "description": "A wooden humanoid the size of a doll. They are dressed in leaves and have spiky growths all over their bodies.",
+    "motives": [
+      "Hide in tall grass",
+      "drop from trees",
+      "attack in numbers"
+    ],
+    "difficulty": 10,
+    "thresholds": {
+      "major": 5,
+      "severe": null
+    },
+    "hp": 2,
+    "stress": 3,
+    "attack": {
+      "modifier": -1,
+      "name": "Spine Spear",
+      "range": "Close",
+      "damage": "1d6+4",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Spine Explosion",
+        "description": "When the Doll marks its last HP, all creatures within Close range must succeed on an Agility Reaction Roll. Targets who fail take 1d6 physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "marks last HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "fungril-gladeservant",
+    "name": "Fungril Gladeservant",
+    "tier": 1,
+    "type": "Solo",
+    "description": "A towering fungril dressed in what nature provides with a wooden blade arm and a network of vines which serve as fingers.",
+    "motives": [
+      "Encourage growth",
+      "adhere to the forest's will",
+      "cut away disease"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 9,
+      "severe": 15
+    },
+    "hp": 8,
+    "stress": 5,
+    "attack": {
+      "modifier": 3,
+      "name": "Wooden Blade",
+      "range": "Very Close",
+      "damage": "1d10+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Prune",
+        "modifier": 3
+      },
+      {
+        "name": "Forest Knowledge",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Entranced By Song",
+        "description": "When a PC within Close range sings a lullaby they can make a Presence Roll (15) to cause the Gladeservant to fall Asleep until the Gladeservant marks HP or the GM spends a Fear to awaken them. While Asleep, the Gladeservant cannot act.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Blade Swing",
+        "description": "Mark a Stress to make an attack against all targets in front of the Gladeservant. Targets the Gladeservant succeeds against take 1d8+3 physical damage and mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Grasping Vine",
+        "description": "Spend a Fear to choose a target within Close range to make a Strength Reaction Roll. On a failure, the Gladeservant Envelops them and the target must mark 2 Stress. While Enveloped, the target is Restrained and must mark an additional Stress every time they make an action roll. When the Gladeservant takes Severe damage, falls Asleep, or is defeated, all Enveloped targets are freed and the condition is cleared.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Stone's Throw",
+        "description": "Mark a Stress to throw a heavy object at a point within Far range. All targets within a Very Close range of that point must succeed on an Agility Reaction Roll. Targets who fail take 3d6 physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Rage of the Trees",
+        "description": "When the Gladeservant takes damage from an attack within Close range, you can spend a Fear to make a standard attack against the attacker at advantage. On a success, clear a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes damage from attack within Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "leafcutter-spriggant",
+    "name": "Leafcutter Spriggant",
+    "tier": 1,
+    "type": "Standard",
+    "description": "An insect the size of a large dog with wooden armor plates taken from the bark of various trees.",
+    "motives": [
+      "Fashion armor",
+      "cut through dead growth",
+      "dissolve metal"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 7,
+      "severe": 11
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Mandibles",
+      "range": "Melee",
+      "damage": "1d6+1",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Bark and Bite",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Acidic Bite",
+        "description": "Make a standard attack against a target. On a success, spend a Fear to do 2d6+2 physical damage and the target must mark an Armor Slot without gaining its benefit (they can still use armor to reduce the damage).",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bark Block",
+        "description": "When the Spriggant takes physical damage, mark a Stress to reduce it by 3.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes physical damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "sylvan-warden",
+    "name": "Sylvan Warden",
+    "tier": 1,
+    "type": "Support",
+    "description": "A faerie wreathed in the bounty of the forest, wielding a wooden shield and gnarled staff.",
+    "motives": [
+      "Watch the forest",
+      "tend to flowers",
+      "guard faerie realms"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 6,
+      "severe": 12
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 0,
+      "name": "Staff",
+      "range": "Far",
+      "damage": "1d4+2",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Forest Protector",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Fire Flies",
+        "description": "Spend a Fear and choose a point within Far range. A Close area around that point is swarmed by glowing insects. All targets within the area must succeed on an Agility Reaction Roll. Targets who fail glow brightly, can't become Hidden and are Vulnerable until they make a Finesse Roll to clear the condition.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Dance of Memories",
+        "description": "Spend a Fear to call upon the forest's fae nature. All targets within Far range must succeed on a Presence Reaction Roll. Targets who fail become Forgetful until they succeed on a Knowledge Roll (10). While Forgetful, a target can't use their Experiences and have disadvantage on attacks.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Evasive Flight",
+        "description": "When the Warden is attacked, mark a Stress to give them a +2 bonus to their Thresholds.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "attacked"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 2,
+      "support": 2,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "prickleboar",
+    "name": "Prickleboar",
+    "tier": 1,
+    "type": "Bruiser",
+    "description": "A carnivorous boar-like creature grown from a plant; it has thorny horns and a tough, watermelon colored hide.",
+    "motives": [
+      "Charge",
+      "make a mess",
+      "seek out sources of food"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 7,
+      "severe": 15
+    },
+    "hp": 6,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Thorny Tusks",
+      "range": "Melee",
+      "damage": "1d12+3",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Heightened Senses",
+        "description": "A PC who has marked HP can't become Hidden from the Prickleboar.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bleeding Strike",
+        "description": "Make a standard attack against a target. On a success, if the target marked HP, mark a Stress to make them Bloodied until they clear 1 HP or take a moment to bandage the wound with a Finesse Roll (10). While Bloodied, they can only move within Very Close range as their normal movement.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Thorn Charge",
+        "description": "When the Prickleboar takes Severe damage, move them in a straight line to a point within Far range and make an attack against all targets in their path. Targets the Prickleboar succeeds against take 1d10+1 physical damage. You can spend a Fear to activate this reaction when the Prickleboar takes Major damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Severe damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "woad-stalker",
+    "name": "Woad Stalker",
+    "tier": 1,
+    "type": "Skulk",
+    "description": "A spirit that has animated the detritus and plants that cover the forest floor into the shape of an animal. It has a golden glow from within.",
+    "motives": [
+      "Hide in plain sight",
+      "strike quickly",
+      "lure foes into traps"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 5,
+      "severe": 9
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 2,
+      "name": "Oak Claws",
+      "range": "Melee",
+      "damage": "1d8+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ambusher",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Spirit Form",
+        "description": "The Stalker is resistant to physical damage.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Fall Apart",
+        "description": "The Stalker can mark a Stress to become Hidden until their next attack. Attacks made while the Stalker is Hidden have advantage.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Reclamate",
+        "description": "Spend a Fear to rebuild parts of the Stalker's animated exterior, clearing 1 HP. The Stalker can mark a Stress to take the spotlight a second time this GM turn.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 3,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "animated-toy",
+    "name": "Animated Toy",
+    "tier": 1,
+    "type": "Minion",
+    "description": "A toy or other small object animated by an infusion of magic.",
+    "motives": [
+      "Protect children",
+      "injure adults"
+    ],
+    "difficulty": 10,
+    "thresholds": null,
+    "hp": 1,
+    "stress": 1,
+    "attack": {
+      "modifier": -2,
+      "name": "Bonk",
+      "range": "Melee",
+      "damage": "1",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Minion (4)",
+        "description": "The Toy is defeated when they take any damage. For every 4 damage a PC deals to the Toy, defeat an additional Minion within range the attack would succeed against.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Group Attack",
+        "description": "Spend a Fear to choose a target and spotlight all Toys within Close range of them. Those Minions move into Melee range of the target and make one shared attack roll. On a success, they deal 1 physical damage each. Combine this damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Underfoot",
+        "description": "When a PC makes an attack within Very Close range of a Toy, the Toy can move into Melee range and make a standard attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC attacks within Very Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "dolliglop",
+    "name": "Dolliglop",
+    "tier": 1,
+    "type": "Leader",
+    "description": "A small, ooze-like creature that inhabits a child's doll or other toy and feeds off emotion.",
+    "motives": [
+      "Devour youthful innocence",
+      "remain hidden",
+      "eliminate grown-ups"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 14
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 3,
+      "name": "Tentacle Slap",
+      "range": "Melee",
+      "damage": "1d6+4",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Straight to the Heart",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Pay the Price",
+        "description": "When a PC spends Hope within Far range of the Dolliglop, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Island of Misfits",
+        "description": "Twice per scene, spend a Fear to summon a number of Animated Toys equal to twice the number of PCs. They appear within Far range and make a \"Group Attack\" against a chosen target.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "twice_per_scene",
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Outgrown and Discarded",
+        "description": "Spend a Fear to emanate a wave of loss and sadness from the Dolliglop. Each target within Far range must make an Instinct or Presence Reaction Roll. On a failure, the target vividly recalls a memory of a lost toy or keepsake and they have disadvantage on all action rolls until they roll with Hope. Targets who succeed mark a Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Feed on Hope",
+        "description": "If a PC rolls with Hope within Far range of the Dolliglop, you can mark a Stress and roll a d20. If the result is equal to or lower than the number on the PC's Hope die, the Dolliglop clears 1 HP and you gain a Fear.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "PC rolls with Hope within Far range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 1,
+      "social": 2
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "forlorn-spirit",
+    "name": "Forlorn Spirit",
+    "tier": 1,
+    "type": "Standard",
+    "description": "A distraught or displaced soul, seeking either redemption or solace.",
+    "motives": [
+      "Express emotion",
+      "crave physicality",
+      "bewilderment"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 8,
+      "severe": 13
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Clinging Grasp",
+      "range": "Melee",
+      "damage": "1d6+2",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Anguish",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Ghost",
+        "description": "The Spirit has resistance to physical damage. Mark a Stress to move up to Close range through solid objects.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Forlorn Wail",
+        "description": "Spend a Fear to howl at all targets within Far range, forcing them to make an Instinct or Presence Reaction Roll. On a failure, the target must use a d10 for their Hope die until they roll with Hope or the scene ends. On a success, the target marks a Stress, but gleans a course of action that might put the Spirit to rest.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Feel Your Pain",
+        "description": "When a PC marks HP within Close range of the Spirit, mark a Stress to have the Spirit immediately move into Melee range of that PC and make a standard attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "PC marks HP within Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 2,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "wish-spirit",
+    "name": "Wish Spirit",
+    "tier": 2,
+    "type": "Social",
+    "description": "A primal spirit of creation drawn to the emotional power of a genuine wish, seeking to make mortals' desires come true.",
+    "motives": [
+      "Avoid danger",
+      "bring wishes to life",
+      "kindle hope",
+      "read hearts"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 8,
+      "severe": 16
+    },
+    "hp": 4,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Chill Touch",
+      "range": "Melee",
+      "damage": "2d6",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Inspiration",
+        "modifier": 2
+      },
+      {
+        "name": "Intuition",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Ephemeral",
+        "description": "The Wish Spirit is resistant to physical damage.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Flickering Dream",
+        "description": "Wish Spirits possess incredible power, but only within the realm of making mortals' wishes come true. Mark a Stress to bring a mortal's wish to life within the bounds of the current environment until the end of the scene. At the end of the scene, the Wish Spirit must mark another Stress or the wish dissipates, leaving the mortal with just the memory of its brief appearance.",
+        "tags": [
+          "social",
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Heart's Desire",
+        "description": "The Wish Spirit reads the emotions and intentions of a creature within Close range. The target may allow the spirit to read their emotions or make a Presence Reaction Roll to conceal their desires. If they allow the spirit to read them, they gain a Hope.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Tenuous Hope",
+        "description": "When a Wish Spirit marks its last Stress to sustain a wish, ask the player that made the wish to roll a Hope die (if the wish is especially large in scale or requires substantial changes to the lives of others, roll two Hope dice and take the lower result). If the result is higher than the current Fear count, the Wish Spirit gives up the last of its life force to make the wish permanent. If the result is equal to or lower than the current Fear count, the Wish Spirit cannot maintain its magic and the dream dissipates. All present must succeed on a Presence Reaction Roll or lose 1d4 Hope.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "marks last Stress to sustain a wish"
+      }
+    ],
+    "focusProfile": {
+      "offense": 0,
+      "defense": 1,
+      "control": 0,
+      "support": 3,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "wish-spirit-knot",
+    "name": "Wish Spirit Knot",
+    "tier": 2,
+    "type": "Horde",
+    "description": "A cluster of confused Wish Spirits, their tethers to wish tokens tangled and knotted together in a confounding muddle of contradictory wishes and desires.",
+    "motives": [
+      "Gather up wish tokens",
+      "make contradictory changes",
+      "give people what the knot thinks they want"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 10,
+      "severe": 20
+    },
+    "hp": 5,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Frozen Embrace",
+      "range": "Melee",
+      "damage": "2d12",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Inspiration",
+        "modifier": 2
+      },
+      {
+        "name": "Intuition",
+        "modifier": 2
+      },
+      {
+        "name": "Overbearing",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d6)",
+        "description": "When the Wish Spirit Knot has marked half or more of their HP, their standard attack deals 2d6 magical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Confused Wishseekers",
+        "description": "The Knot approaches mortals as they make wishes, eagerly adding those wish tokens to their collection and trying to satisfy multiple wishes at once.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Disentangle",
+        "description": "A PC can attempt a roll to disentangle the Wish Spirit Knot, physically using Finesse, socially using Presence, or magically using their Spellcast Trait. On a success, replace the Wish Spirit Knot with a number of Wish Spirits equal to the Knot's unmarked HP. Each of these resulting spirits marks a Stress and the GM loses a Fear.",
+        "tags": [
+          "social",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Ephemeral",
+        "description": "The Wish Spirit Knot is resistant to physical damage.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Contradictory Dreams",
+        "description": "Mark a Stress as the Knot tries to grant several contradictory wishes at once, warping reality around the Knot. All creatures within Far range must succeed on a Strength Reaction Roll or mark a Stress as reality shifts to try to accommodate mutually-exclusive dreams. If half or more of the PCs fail the roll, gain a Fear.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Shattered Hopes",
+        "description": "When an attack succeeds against the Wish Spirit Knot, force the attacker to make an Instinct Reaction Roll. On a failure, ask the player to share one of their character's wishes, then describe how it would feel to have that wish thwarted forever and lose a Hope.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "attack succeeds against Knot"
+      },
+      {
+        "name": "Broken Knot",
+        "description": "When the Wish Spirit Knot marks their last Stress, ask the nearest player to roll their Hope die. If the result is higher than the current Fear count, the strands connecting the Wish Spirit Knot come loose. Replace the Knot with a number of Wish Spirits equal to the Knot's remaining unmarked HP. Each PC within Far range gains 2 Hope.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "marks last Stress"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 1,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "demanding-crowd",
+    "name": "Demanding Crowd",
+    "tier": 2,
+    "type": "Horde",
+    "description": "A group of tourists from across the region, here to make wishes and be seen participating in the local custom. Demanding, incurious, and unwittingly making everything worse.",
+    "motives": [
+      "Demand satisfaction",
+      "make their dreams everyone's problem",
+      "rush into danger"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 9,
+      "severe": 17
+    },
+    "hp": 5,
+    "stress": 3,
+    "attack": {
+      "modifier": 0,
+      "name": "Clubs and Knives",
+      "range": "Melee",
+      "damage": "2d8",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Insistent",
+        "modifier": 2
+      },
+      {
+        "name": "Tourist",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Horde (2d4)",
+        "description": "When the Demanding Crowd has marked half or more of their HP, their standard attack deals 2d4 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Antisocial Entitlement",
+        "description": "The members of this crowd believe that they're owed fulfillment of their wishes. Rolls to convince them to disperse or give up on making wishes in the glade are made with disadvantage.",
+        "tags": [
+          "social"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Heckling & Harassment",
+        "description": "Spend a Fear to force all targets within Far range to make a Presence Reaction Roll or mark 2 Stress. If the Demanding Crowd has half or more of their HP marked or all their Stress marked, targets that fail only mark 1 Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Panicked Trampling",
+        "description": "When Demanding Crowd marks HP or Stress, they move a Far distance around the scene, trampling over any target in their way. Anyone they move past/through must succeed on a Strength Reaction Roll or be knocked over and trampled, taking 2d6 physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "marks HP or Stress"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 0,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "alraune-queen",
+    "name": "Alraune Queen",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A walking plant covered in rose blooms and dagger-sized thorns. It grows by consuming the blood of its victims.",
+    "motives": [
+      "Cause bleeding",
+      "gain strength",
+      "command children"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 13,
+      "severe": 25
+    },
+    "hp": 7,
+    "stress": 6,
+    "attack": {
+      "modifier": 3,
+      "name": "Thorn Whip",
+      "range": "Very Close",
+      "damage": "2d8",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Sharp as a Whip",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Watered By Blood",
+        "description": "The Queen enters the scene with 2d4 blood tokens. For each token the Queen has they gain a +1 bonus to damage. If a target marks HP within Close range of the Queen, she gains another token. If the Queen takes Severe damage, she loses 1d4 tokens.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "See How My Garden Grows",
+        "description": "Spend a Fear to Summon 1d4 Young Alraune that appear within Close range and immediately take the spotlight.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Feed, My Children",
+        "description": "Spend a Fear to spotlight 1d4+1 allies. Attacks they make while spotlighted in this way deal half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Thorn Cage",
+        "description": "Mark a Stress to make an attack against a target within Far range. On a success, deal 2d10 physical damage and the target must succeed on a Strength Reaction Roll or become Restrained. If the target is flying they take an additional 1d10 damage (combine the damage). The target can break free with a successful Strength or Finesse Roll.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Momentum",
+        "description": "When the Queen makes a successful attack against a PC, you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "successful attack against PC"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 1,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "young-alraune",
+    "name": "Young Alraune",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "An immature alraune that hides in the dirt, only exposing its large flowering head when it is ready to strike.",
+    "motives": [
+      "Follow the queen",
+      "draw blood",
+      "burrow and hide"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 7,
+      "severe": 15
+    },
+    "hp": 3,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Claws",
+      "range": "Melee",
+      "damage": "2d6+4",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Confusing Scent",
+        "description": "Before a PC within Very Close range would make an action roll, they must succeed on an Instinct Reaction Roll or mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Pack Tactics",
+        "description": "If the Alraune makes a successful standard attack and another Young Alraune is within Melee range of the target, deal 2d10+4 physical damage instead of their standard damage and you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Burrow",
+        "description": "If an attack misses the Alraune, you can mark a Stress to become Hidden until the Alraune's next attack or a PC succeeds on an Instinct Roll (14) to find them.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "attack misses"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "boggart",
+    "name": "Boggart",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "An apparition that haunts homes with violent pranks and theft of possessions.",
+    "motives": [
+      "Scare",
+      "torment",
+      "steal",
+      "possess"
+    ],
+    "difficulty": 11,
+    "thresholds": {
+      "major": 9,
+      "severe": 20
+    },
+    "hp": 3,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Prank",
+      "range": "Close",
+      "damage": "2d4+6",
+      "damageType": "mag"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Harmed By ...",
+        "description": "The Boggart is immune to physical and magical damage unless they are made Vulnerable. Only a specific material can damage them as determined by the GM. Some examples might be salt, iron, fire, or appeasement. In such cases, the Boggart marks all Stress and becomes Vulnerable.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Get Out!",
+        "description": "Mark a Stress to make an attack against all targets within Very Close range. Targets the Boggart succeeds against take no damage, but become Vulnerable until the end of the scene.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 3,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 2,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "bunyip",
+    "name": "Bunyip",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A frog-like creature that stands three stories tall. Its immense jaws can swallow a person whole.",
+    "motives": [
+      "Lurk in swamps",
+      "swallow whole",
+      "grapple",
+      "submerge"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 14,
+      "severe": 26
+    },
+    "hp": 8,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Tentacle",
+      "range": "Very Close",
+      "damage": "2d10+6",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Bunyip can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Bellowing Roar",
+        "description": "Spend 2 Fear to let out a reverberating call. All targets in the scene must succeed on a Strength or Instinct Reaction Roll. Targets who fail become Hopeless. While Hopeless a target cannot gain Hope until the Bunyip is defeated.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 2
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Tentacle Grab",
+        "description": "Make a standard attack against a target. On a success, mark a Stress to pull the target into Melee range of the Bunyip. The target is temporarily Restrained.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Tentacle Swing",
+        "description": "Mark a Stress to make an attack against all targets in front of the Bunyip at Very Close range. Targets the Bunyip succeeds against take 2d8+6 physical damage and you gain a Fear for each.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Devour",
+        "description": "Force a target the Bunyip has Restrained to make a Strength Reaction Roll. On a failure, the target takes 2d8 direct physical damage and is Devoured. While Devoured, the target is also Hidden and must mark a Stress to make an action roll. When the Bunyip takes Severe damage, all Devoured targets are freed and the condition is cleared.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Digest",
+        "description": "Spend a Fear to cause all Devoured targets to take 2d8 direct physical damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 3,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "dullahan",
+    "name": "Dullahan",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A headless centaur in fae armor with a flaming spine whip who is trailed by the flying heads of those it has killed.",
+    "motives": [
+      "Arbitrate death",
+      "follow those who are doomed",
+      "chop off heads"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 14,
+      "severe": 26
+    },
+    "hp": 12,
+    "stress": 6,
+    "attack": {
+      "modifier": 4,
+      "name": "Burning Spine",
+      "range": "Very Close",
+      "damage": "2d10+8",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Head Taker",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Dullahan can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Geis",
+        "description": "Choose a target within Far range to make a Presence Reaction Roll. On a failure, the target is Cursed until the Dullahan is defeated. While Cursed, the target's Fear die is a d20. On a roll with Fear, the target loses a Hope.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Death's Head",
+        "description": "Spend a Fear to make an attack against three targets within Far range. If the target is Cursed, the Dullahan has advantage. On a success, the target takes 2d6+10 magic damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Nightshod Hooves",
+        "description": "Mark a Stress to make an attack against all targets behind the Dullahan within Very Close range. Targets the Dullahan succeeds against take 2d20 physical damage and are knocked back to Far range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Stag Charge",
+        "description": "Countdown (Loop 1d6). When the Dullahan is in the spotlight for the first time, activate the countdown. When it triggers, move the Dullahan in a straight line to a point within Far range. All targets within its path must make an Agility Reaction Roll. Targets who fail take 2d8+4 magic damage. Targets who succeed take half damage.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "first spotlight"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 3,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "lindwyrm",
+    "name": "Lindwyrm",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A lanky reptile with green scales and avian legs that crawls through the canopies, dropping down on unsuspecting prey.",
+    "motives": [
+      "Protect its hoard",
+      "guard",
+      "restrain"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 12,
+      "severe": 25
+    },
+    "hp": 9,
+    "stress": 5,
+    "attack": {
+      "modifier": 2,
+      "name": "Bite",
+      "range": "Very Close",
+      "damage": "2d12+3",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Forest Climber",
+        "description": "The Lindwyrm climbs just as easily as they run. When attacking from above, the Lindwyrm has advantage.",
+        "tags": [
+          "offensif",
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Savage Slam",
+        "description": "Spend a Fear and target a group within Close range. All targets must succeed on an Agility Reaction Roll. Targets who fail take 2d6+10 physical damage must mark a stress. All targets are knocked back to Far range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "Entangling Tail",
+        "description": "Make an attack against a target within Close range. On a success, the target takes 2d8+3 physical damage and is Restrained. While Restrained the target moves with the Lindwyrm and each time the Lindwyrm takes an action, the target must mark a Stress. A target can break free with a successful Strength Roll.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 2,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "mandrake-knot",
+    "name": "Mandrake Knot",
+    "tier": 2,
+    "type": "Horde",
+    "description": "A group of mandrake roots tied together by their stems. They howl and scream, causing death in those that hear them.",
+    "motives": [
+      "Burrow",
+      "scream",
+      "kill"
+    ],
+    "difficulty": 12,
+    "thresholds": {
+      "major": 12,
+      "severe": 18
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": -1,
+      "name": "Screech",
+      "range": "Very Close",
+      "damage": "2d12+4",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Horde (2d6+2)",
+        "description": "When the Mandrake Knot has marked half or more of their HP, their standard attack deals 2d6+2 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Howl of Impending Doom",
+        "description": "Spend a Fear to cause the Mandrake Knot to scream. All targets within Very Close range of the Mandrake Knot must succeed on a Strength or Instinct Reaction Roll or take 1d12 direct magic damage and start a Death Countdown (4). All countdowns tick down when any PC within the scene rolls with Fear. When it triggers, the target makes a death move. If the Mandrake Knot is defeated, all Death Countdowns end.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 2,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "revel-lord",
+    "name": "Revel Lord",
+    "tier": 2,
+    "type": "Support",
+    "description": "A faun dressed in bright clothes with a shepherd's crook tied with an amphora of wine.",
+    "motives": [
+      "Encourage others",
+      "cheer",
+      "intoxicate"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 10,
+      "severe": 18
+    },
+    "hp": 5,
+    "stress": 5,
+    "attack": {
+      "modifier": 1,
+      "name": "Shepherd's Crook",
+      "range": "Melee",
+      "damage": "2d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Life of the Party",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Party Foul",
+        "description": "When the Revel Lord marks HP, all creatures within Very Close range mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Drunken Haze",
+        "description": "Mark a Stress to choose a point within Far range. A Very Close area around that point swirls with a faint mist. All targets within the area Swoon. Swooning targets are Vulnerable and have disadvantage on their next action roll, then clear the condition.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Cheers!",
+        "description": "When an ally misses an attack within Very Close range of the Revel Lord, mark a Stress to allow them to reroll the attack.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "ally misses attack within Very Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 2,
+      "support": 2,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "dollmaker-hag",
+    "name": "Dollmaker Hag",
+    "tier": 2,
+    "type": "Support",
+    "description": "A hunched-over faerie with large, chitinous clawed hands and a terrifying grin with rows of sharp teeth.",
+    "motives": [
+      "Make deals",
+      "create minions",
+      "obscure the truth"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 12,
+      "severe": 20
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Claws",
+      "range": "Melee",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Ancient Knowledge",
+        "modifier": 3
+      },
+      {
+        "name": "Arts and Crafts",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Disturbing Presence",
+        "description": "PCs that roll with Fear within Close range of the Hag must mark a Stress.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Stitch You Right Up",
+        "description": "When the Hag is within Melee range of an ally, mark a Stress and the ally clears a HP.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Not This Time",
+        "description": "When the hag takes Major or greater damage, mark a Stress to reduce the damage by 1d8.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Major or greater damage"
+      },
+      {
+        "name": "How Dreadful! (Phase Change)",
+        "description": "When the Dollmaker marks their last HP, replace them with the Puppetmaster Hag and immediately spotlight them.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "marks last HP"
+      }
+    ],
+    "focusProfile": {
+      "offense": 1,
+      "defense": 2,
+      "control": 0,
+      "support": 2,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "puppetmaster-hag",
+    "name": "Puppetmaster Hag",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A tall faerie with massive claws and multiple smaller arms used to control the strings of her minions.",
+    "motives": [
+      "Control others",
+      "manipulate",
+      "humiliate"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 15,
+      "severe": 23
+    },
+    "hp": 5,
+    "stress": 6,
+    "attack": {
+      "modifier": 4,
+      "name": "Claws",
+      "range": "Very Close",
+      "damage": "2d8+3",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Pull the Puppet Strings",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Hag can be spotlighted up to two times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Let's Play",
+        "description": "Twice per scene, spend a Fear to summon a Living Doll Horde, which appears within Close range.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "twice_per_scene",
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Dance, Little Puppet!",
+        "description": "Spend a Fear and choose a target within Far range to make an Instinct Reaction Roll. On a failure, the target begins to Dance. While Dancing the target is Vulnerable and cannot make action rolls other than to break free with a successful Strength or Presence Roll. If they fail to break free, the target marks 2 Stress.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Far",
+        "trigger": null
+      },
+      {
+        "name": "Snip Snip",
+        "description": "Mark a Stress to make an attack against all targets in Very Close range. Targets the Hag succeeds against take 2d6+3 magic damage and their hope die is reduced to a d10 until they roll with Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Strawman Defense",
+        "description": "When the Hag would take Major or greater damage from an attack, mark a Stress to cause a Living Doll Horde within Close range to mark a HP and reduce the number of HP marked by 1.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Major or greater damage"
+      },
+      {
+        "name": "Incompetence Is Contagious",
+        "description": "When a PC rolls a Failure with Fear within Close range of the Hag, all PCs within Far range lose a Hope.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC rolls Failure with Fear within Close range"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 3,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 2
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "living-doll-horde",
+    "name": "Living Doll Horde",
+    "tier": 2,
+    "type": "Horde",
+    "description": "A small, broken-looking doll with features that resemble humanoids with an unswerving loyalty to their creator.",
+    "motives": [
+      "Obey the creator",
+      "hide intentions",
+      "kill"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 11,
+      "severe": 18
+    },
+    "hp": 6,
+    "stress": 3,
+    "attack": {
+      "modifier": 1,
+      "name": "Dirty Mitts",
+      "range": "Melee",
+      "damage": "2d8+6",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "Horde (2d4+3)",
+        "description": "When the Horde has marked half or more of their HP, their standard attack deals 2d4+3 physical damage instead.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Empty Vessel",
+        "description": "Once per scene, when the Horde makes a successful attack, mark 1 HP and summon a Totem of Fear. Describe how the doll takes on traits of the target.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": "once_per_scene",
+        "range": null,
+        "trigger": "successful attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "totem-of-fear",
+    "name": "Totem of Fear",
+    "tier": 2,
+    "type": "Standard",
+    "description": "A small, broken-looking doll with features that resemble humanoids and an unswerving loyalty to their creator.",
+    "motives": [
+      "Obey the creator",
+      "hide intentions",
+      "take over the life of the doppelganger"
+    ],
+    "difficulty": 13,
+    "thresholds": {
+      "major": 9,
+      "severe": null
+    },
+    "hp": 2,
+    "stress": 1,
+    "attack": {
+      "modifier": 1,
+      "name": "Dirty Mitts",
+      "range": "Melee",
+      "damage": "2d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [],
+    "features": [
+      {
+        "name": "A Terrible Likeness",
+        "description": "When the Totem of Fear enters the scene, designate the PC that they appear to look like as the doppelganger. When the Totem of Fear attacks the doppelganger, they have advantage on their attacks.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 1,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "hakturi",
+    "name": "Hakturi",
+    "tier": 2,
+    "type": "Skulk",
+    "description": "A doe-eyed creature of the wood in desperate need of your help.",
+    "motives": [
+      "Befriend",
+      "gain trust",
+      "lure",
+      "consume"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 8,
+      "severe": 17
+    },
+    "hp": 4,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Tear and Bite",
+      "range": "Melee",
+      "damage": "2d6+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Fawning",
+        "modifier": 3
+      },
+      {
+        "name": "Vicious",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Leech",
+        "description": "When a PC encounters a Hakturi for the first time, all PCs within Close range gain a Hope. If PCs complete a long rest within Close range of a Hakturi, they must mark 1d4 Stress and their Hope die becomes a d10 until the Hakturi is defeated or the PCs rest again outside of its presence. For each Stress the PCs mark while in Close range of the Hakturi, the Hakturi gains a friend token.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Romp",
+        "description": "Make a standard attack against a target within Very Close range. On a success, deal 2d4+2 physical damage and the target must succeed on a Presence Reaction Roll or become temporarily Vulnerable. If the target fails, you can spend a friend token to immediately spotlight another Hakturi within Close range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": null,
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Empathy",
+        "description": "When a befriended Hakturi takes damage from a once friendly PC, spend a Fear and all targets within Close range must succeed on an Instinct Reaction Roll. On a failure, the target must mark 2 Stress and their next attack is made at disadvantage.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "takes damage from friendly PC"
+      },
+      {
+        "name": "Evolve (Phase Change)",
+        "description": "When the Hakturi accumulates 12 friend tokens, replace them with the Hakturi Mother and immediately spotlight them.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "accumulates 12 friend tokens"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 1,
+      "support": 0,
+      "mobility": 0,
+      "stealth": 1,
+      "social": 3
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "hakturi-mother",
+    "name": "Hakturi Mother",
+    "tier": 2,
+    "type": "Leader",
+    "description": "A beachball-sized fluffy forest creature that uses its adorable nature to subdue prey.",
+    "motives": [
+      "Be cute",
+      "encourage trust",
+      "betray mercilessly",
+      "overwhelm"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 13,
+      "severe": 24
+    },
+    "hp": 5,
+    "stress": 4,
+    "attack": {
+      "modifier": 2,
+      "name": "Bite and Claws",
+      "range": "Melee",
+      "damage": "2d8+6",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Manipulation",
+        "modifier": 3
+      },
+      {
+        "name": "Vicious",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "Hypnotic Pollen",
+        "description": "Spend a Fear to force all targets within Very Close range to succeed on an Instinct Reaction Roll (15). Targets that fail are Infatuated and see all Hakturi as allies. A target that is Infatuated must mark a Stress if any Hakturi marks HP within Far range of them. This effect lasts until the target succeeds on a Presence or Knowledge Roll. PCs who have been Infatuated during the scene have disadvantage on action rolls that target the Hakturi Mother.",
+        "tags": [
+          "social",
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Very Close",
+        "trigger": null
+      },
+      {
+        "name": "Overwhelming Odds",
+        "description": "Mark a Stress to spotlight a number of Hakturi equal to the Hakturi Mother's unmarked HP.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Pack of Lies",
+        "description": "Twice per scene, spend a Fear to summon 2 Hakturi that appear within Close range.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": "twice_per_scene",
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Demure Disposition",
+        "description": "When a target that has disadvantage fails a roll against the Hakturi Mother, they mark a Stress and you gain a Fear.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "disadvantaged target fails roll"
+      }
+    ],
+    "focusProfile": {
+      "offense": 2,
+      "defense": 0,
+      "control": 2,
+      "support": 1,
+      "mobility": 0,
+      "stealth": 0,
+      "social": 3
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "plurodin",
+    "name": "Plurodin",
+    "tier": 2,
+    "type": "Solo",
+    "description": "A highly intelligent, human-sized amphibian with multiple dextrous appendages and folds of skin which act as pockets.",
+    "motives": [
+      "Experiment",
+      "concoct",
+      "damn the consequences"
+    ],
+    "difficulty": 15,
+    "thresholds": {
+      "major": 12,
+      "severe": 25
+    },
+    "hp": 8,
+    "stress": 5,
+    "attack": {
+      "modifier": 4,
+      "name": "Alchemist Fire",
+      "range": "Far",
+      "damage": "2d8+6",
+      "damageType": "mag"
+    },
+    "experiences": [
+      {
+        "name": "Many Hands",
+        "modifier": 3
+      }
+    ],
+    "features": [
+      {
+        "name": "Relentless (2)",
+        "description": "The Plurodin can be spotlighted up to 2 times per GM turn. Spend Fear as usual to spotlight them.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Slimy",
+        "description": "The Plurodin's skin is coated in slippery mucus preventing it from being Restrained.",
+        "tags": [
+          "défensif"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Chugalug",
+        "description": "Mark a Stress to drink one of the potions the Plurodin has stashed on their body. Mark it as used on the \"Breaking Things\" table below.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Breaking Things",
+        "description": "When the Plurodin takes Major damage, one of the potion vials tucked in its skin pockets breaks. Roll a d12. The Plurodin is affected by the potion based on a table (Minor Health Potion clears 1 HP, Minor Stamina Potion clears 1 Stress, Stride Potion allows Far movement, Bolster Potion adds extra die, Control Potion gives +1 Difficulty, Attune Potion gives Opportunity Attack Reaction, Charm Potion clears a condition). Once all instances of a potion have been used, that result becomes null going forward.",
+        "tags": [
+          "défensif",
+          "utilitaire"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "takes Major damage"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 2,
+      "control": 0,
+      "support": 0,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 0
+    },
+    "source": "incredible-creatures-12"
+  },
+  {
+    "id": "hulking-bodyguard",
+    "name": "Hulking Bodyguard",
+    "tier": 2,
+    "type": "Bruiser",
+    "description": "A giant, muscled creature who is paid handsomely to protect their client.",
+    "motives": [
+      "Hit it",
+      "hit it harder",
+      "don't question the boss",
+      "profit"
+    ],
+    "difficulty": 14,
+    "thresholds": {
+      "major": 14,
+      "severe": 28
+    },
+    "hp": 7,
+    "stress": 4,
+    "attack": {
+      "modifier": 3,
+      "name": "Fist",
+      "range": "Very Close",
+      "damage": "2d10+2",
+      "damageType": "phy"
+    },
+    "experiences": [
+      {
+        "name": "Pugilist",
+        "modifier": 2
+      }
+    ],
+    "features": [
+      {
+        "name": "You Da Boss",
+        "description": "When the Bodyguard enters the scene, designate one adversary to be their boss.",
+        "tags": [
+          "utilitaire"
+        ],
+        "activationType": "passive",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": null
+      },
+      {
+        "name": "Outta My Way!",
+        "description": "Spend a Fear to make an attack against all targets within Close range. Targets the Bodyguard succeeds against take 2d12+6 physical damage and are knocked back to Far range.",
+        "tags": [
+          "offensif"
+        ],
+        "activationType": "action",
+        "cost": {
+          "type": "fear",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": "Close",
+        "trigger": null
+      },
+      {
+        "name": "I Got You, Boss!",
+        "description": "When the Bodyguard's boss marks HP from an attacker in Close range of the Bodyguard, mark a Stress to move into Very Close range of the attacker and make a standard attack against them.",
+        "tags": [
+          "offensif",
+          "défensif"
+        ],
+        "activationType": "reaction",
+        "cost": {
+          "type": "stress",
+          "amount": 1
+        },
+        "frequency": null,
+        "range": null,
+        "trigger": "boss marks HP from attacker in Close range"
+      },
+      {
+        "name": "Intimidating Presence",
+        "description": "When a PC attacks the Bodyguard and misses, they lose a Hope.",
+        "tags": [
+          "offensif",
+          "social"
+        ],
+        "activationType": "reaction",
+        "cost": null,
+        "frequency": null,
+        "range": null,
+        "trigger": "PC misses attack"
+      }
+    ],
+    "focusProfile": {
+      "offense": 3,
+      "defense": 1,
+      "control": 1,
+      "support": 1,
+      "mobility": 1,
+      "stealth": 0,
+      "social": 1
+    },
+    "source": "incredible-creatures-12"
+  }
+]

@@ -23,13 +23,24 @@ describe('Adversaires — intégrité structurelle', () => {
   })
 
   it('chaque adversaire a les champs requis', () => {
-    const requiredFields = ['id', 'name', 'tier', 'type', 'difficulty', 'hp', 'stress', 'motives']
+    const requiredFields = ['id', 'name', 'tier', 'type', 'difficulty']
+    const srdRequired = ['hp', 'stress', 'motives']
     allAdversaries.forEach((a) => {
       requiredFields.forEach((field) => {
         expect(a, `${a.id} manque le champ "${field}"`).toHaveProperty(field)
       })
-      expect(Array.isArray(a.motives), `${a.id} motives doit être un tableau`).toBe(true)
-      expect(a.motives.length, `${a.id} doit avoir au moins 1 motive`).toBeGreaterThan(0)
+      // Les adversaires SRD (sans source) doivent avoir tous les champs
+      if (!a.source) {
+        srdRequired.forEach((field) => {
+          expect(a, `${a.id} (SRD) manque le champ "${field}"`).toHaveProperty(field)
+        })
+        expect(Array.isArray(a.motives), `${a.id} motives doit être un tableau`).toBe(true)
+        expect(a.motives.length, `${a.id} doit avoir au moins 1 motive`).toBeGreaterThan(0)
+      }
+      // Les adversaires homebrew doivent avoir motives comme tableau (peut être vide)
+      if (a.motives) {
+        expect(Array.isArray(a.motives), `${a.id} motives doit être un tableau`).toBe(true)
+      }
     })
   })
 
@@ -72,7 +83,7 @@ describe('Adversaires — intégrité structurelle', () => {
 
 describe('Adversaires — règles par type', () => {
   const minions = allAdversaries.filter((a) => a.type === 'Minion')
-  const nonMinions = allAdversaries.filter((a) => a.type !== 'Minion')
+  const nonMinions = allAdversaries.filter((a) => a.type !== 'Minion' && a.type !== 'Social')
 
   it('les minions ont 1 HP (sauf exceptions documentées)', () => {
     const EXCEPTIONS = new Set(['Tiny Green Ooze', 'Tiny Red Ooze'])

@@ -200,3 +200,18 @@ Append-only cross-session continuity notes.
 - 50 tests tierScaling, 2768+ tests totaux, 0 régression
 - Build: 407 modules, 2.58s — ESLint clean
 - **Limites** : features non scalées (narratives), builder uniquement (pas en combat live), BP cost inchangé (lié au type pas au tier)
+
+## 2026-03-07 02:00 — Violet
+
+### FEATURE : Coût BP ajusté par différentiel de tier (Approche C)
+- **Formule** : `effectiveCost = max(1, baseCost + tierDelta) × quantity` où `tierDelta = adversaryTier − encounterTier`
+- **Minions exemptés** : toujours `ceil(quantity/pcCount)` — coût groupe fixe indépendant du tier
+- **Adversaires scalés** (tierOverride actif) : `tierDelta = 0` — stats ajustées au tier cible, coût normal
+- **constants.js** : `calculateTierAdjustedCost()` fonction pure ajoutée, `lower-tier` passé de `autoDetect: true` à `autoDetect: false`
+- **encounterStore.js** : `adversarySlotsDetailed` enrichi avec `tierDelta`, `adjustedUnitCost`, utilise `calculateTierAdjustedCost`, warning ≥2 tiers, `calculateAdversaryCost` retiré des imports
+- **EncounterSlotList.vue** : affichage coût ajusté + base, indicateurs ↓ vert / ↑ rouge, tooltip math détaillée
+- **15 nouveaux tests** : 6 calculateTierAdjustedCost + 6 store integration + 3 warning
+- Tests `lower-tier` existants mis à jour (auto → manuel)
+- 68 tests encounterStore, 50 tests tierScaling, build 407 modules 2.76s
+- Commit: `6dbb4caf`, pushé sur origin/main
+- **Résout** la dernière limite du TIER-SCALE : le coût BP reflète maintenant le différentiel de tier
