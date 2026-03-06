@@ -162,13 +162,13 @@ describe('computeStatBonuses — passifs purs', () => {
     expect(bonuses.sources).toContain('Untouchable (+2 Évasion)')
   })
 
-  it('Untouchable : agilité impaire arrondie vers le bas', () => {
+  it('Untouchable : agilité impaire arrondie au supérieur', () => {
     const char = makeChar({
       traits: { agility: 3, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
       domainCards: { loadout: ['bone-untouchable'], vault: [] }
     })
     const bonuses = computeStatBonuses(char)
-    expect(bonuses.evasion).toBe(1)
+    expect(bonuses.evasion).toBe(2)
   })
 
   it('Untouchable : agilité 0 → pas de bonus', () => {

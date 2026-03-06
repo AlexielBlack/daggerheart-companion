@@ -54,14 +54,14 @@ export const DOMAIN_CARD_MODIFIERS = {
     domain: 'bone',
     type: 'passive',
     icon: '💨',
-    description: 'Évasion +½ Agilité (arrondi inf.)',
+    description: 'Évasion +½ Agilité (arrondi sup.)',
     /**
      * @param {Object} char - Personnage
      * @returns {{ evasion?: number, source: string }}
      */
     compute(char) {
       const agility = char.traits?.agility || 0
-      const bonus = Math.floor(agility / 2)
+      const bonus = Math.ceil(agility / 2)
       return bonus > 0
         ? { evasion: bonus, source: `Untouchable (+${bonus} Évasion)` }
         : { source: 'Untouchable (Agilité trop basse)' }
