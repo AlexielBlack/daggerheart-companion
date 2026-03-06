@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 15:00 — Violet
+**Last updated:** 2026-03-06 16:00 — Violet
 
 ---
 
@@ -28,12 +28,16 @@
 | Combat Features | ✅ Complet | ✓ | 394 features, catalogue SRD+homebrew |
 | Encounter Notes | ✅ Complet | ✓ | Notes libres sur rencontres (I-06) |
 | Encounter History | ✅ Complet | ✓ | Historique persisté, stats agrégées (I-03) |
+| Encounter Sharing | ✅ Complet | ✓ | Export JSON, import fichier, copie presse-papier (I-05) |
+| Session Timer | ✅ Complet | ✓ | Minuteur Date.now() anchoring + rounds, useSessionTimer composable (I-04) |
+| Quick Reference | ✅ Complet | ✓ | Panneau flottant 7 sections SRD, Teleport body (I-07) |
+| Encounter Templates | ✅ Complet | ✓ | 21 templates pré-construits, filtrage tier/tags (I-02) |
 
 ## Test Suite
-- 2,472+ passing tests
-- 84 test files
+- 315 encounter tests (12 fichiers)
+- ~2,580+ tests totaux estimés
 - ESLint clean
-- Build Vite: 356 modules, 2.11s
+- Build Vite: 367 modules, 2.17s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia

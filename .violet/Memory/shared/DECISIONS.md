@@ -20,6 +20,30 @@ Append-only log of architectural and design decisions.
 
 ---
 
+## 2026-03-06 16:00 — Violet
+**Decision:** Date.now() anchoring pour le minuteur de session (useSessionTimer)
+**Context:** Besoin d'un minuteur qui survive aux rechargements de page. setInterval-based counting dérive et perd le temps au reload.
+**Rationale:** Ancrage absolu via Date.now() + useStorage pour la persistence. setInterval(1000) uniquement pour l'update visuel. Au reload, recalcul précis depuis startedAt + accumulatedMs.
+**Alternatives considered:** setInterval counting (imprécis, perd au reload), requestAnimationFrame (overkill pour 1s résolution).
+
+---
+
+## 2026-03-06 16:00 — Violet
+**Decision:** Templates d'encounters comme données statiques dans @data/encounters/templates.js
+**Context:** 21 templates pré-construits pour faciliter la création de rencontres. Format identique à serializeEncounter().
+**Rationale:** Pas de store nécessaire — données en lecture seule. Format compatible direct avec loadEncounter(). adversaryIds vérifiés contre les fichiers SRD tier1-4.json.
+**Alternatives considered:** Stocker dans encounterStore (couplage inutile), base de données externe (surdimensionné).
+
+---
+
+## 2026-03-06 16:00 — Violet
+**Decision:** Teleport to body + document.addEventListener pour QuickReferencePanel
+**Context:** Panneau flottant en overlay pendant le mode live. ESLint vuejs-accessibility/no-static-element-interactions bloque @keydown sur div.
+**Rationale:** Teleport body évite les problèmes de z-index/overflow. document.addEventListener('keydown') dans watch + beforeUnmount contourne la règle ESLint sans la désactiver. role="dialog" pour l'accessibilité.
+**Alternatives considered:** @keydown.escape inline (bloqué ESLint), portail dans un slot (complexité inutile).
+
+---
+
 ## Pre-migration decisions (from project history)
 
 ### Options API vs Composition API
