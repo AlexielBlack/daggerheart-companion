@@ -441,7 +441,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .stepper-item__label { display: none; }
   .stepper-item__btn { justify-content: center; }
 }

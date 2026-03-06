@@ -606,7 +606,7 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .field-grid {
     grid-template-columns: 1fr;
   }

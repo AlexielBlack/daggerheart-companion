@@ -552,7 +552,7 @@ export default {
   overflow: hidden;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .char-selectors {
     grid-template-columns: 1fr;
   }

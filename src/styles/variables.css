@@ -69,4 +69,20 @@
   --nav-width: 240px;
   --header-height: 56px;
   --content-max-width: 1200px;
+
+  /*
+   * Breakpoints (responsive)
+   * ────────────────────────
+   * Les custom properties CSS ne fonctionnent pas dans @media.
+   * Utiliser ces valeurs constantes dans les media queries :
+   *
+   *   480px  — bp-sm  — petit mobile (grilles compactes, stacking)
+   *   600px  — bp-md  — grand mobile (browsers, listes → 1 colonne)
+   *   768px  — bp-lg  — tablette portrait (nav overlay, split → stack)
+   *   900px  — bp-xl  — tablette paysage (éditeurs homebrew)
+   *  1024px  — bp-2xl — desktop (encounter live 3 colonnes)
+   *  1280px  — bp-3xl — grand écran (encounter live sidebar)
+   *
+   * Convention : @media (max-width: 768px) { … }
+   */
 }

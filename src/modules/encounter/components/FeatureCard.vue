@@ -213,7 +213,7 @@ export default {
 .feat-card__tag--utilitaire { background: rgba(5, 150, 105, 0.1); }
 
 /* Tablette : badges et tags plus lisibles à distance */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .feat-card__badge { font-size: 0.8rem; padding: 3px 7px; }
   .feat-card__tag { font-size: 0.8rem; padding: 3px 6px; }
   .feat-card__tag-lbl { font-size: 0.7rem; }

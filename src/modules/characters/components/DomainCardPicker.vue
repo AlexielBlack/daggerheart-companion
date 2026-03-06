@@ -620,7 +620,7 @@ export default {
   border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .dp-catalog { grid-template-columns: 1fr; }
   .dp-filters { flex-direction: column; }
 }

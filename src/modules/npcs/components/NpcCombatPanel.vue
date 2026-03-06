@@ -1445,7 +1445,7 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .custom-grid {
     grid-template-columns: 1fr;
   }
@@ -1499,7 +1499,7 @@ export default {
   gap: 0.4rem 0.6rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }

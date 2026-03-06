@@ -1146,7 +1146,7 @@ export default {
   gap: var(--space-sm);
 }
 
-@media (max-width: 500px) { .identity-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .identity-grid { grid-template-columns: 1fr; } }
 
 .field { display: flex; flex-direction: column; gap: 2px; }
 
@@ -1235,7 +1235,7 @@ export default {
   margin-bottom: var(--space-sm);
 }
 
-@media (max-width: 500px) { .combat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .combat-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .combat-stat {
   display: flex;
@@ -1289,7 +1289,7 @@ export default {
   gap: var(--space-md);
 }
 
-@media (max-width: 500px) { .health-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .health-grid { grid-template-columns: 1fr; } }
 
 .health-cell {
   display: flex;

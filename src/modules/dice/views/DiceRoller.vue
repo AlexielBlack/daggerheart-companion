@@ -103,7 +103,7 @@ export default {
   align-items: start;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   .roller-layout { grid-template-columns: 1fr; }
 }
 

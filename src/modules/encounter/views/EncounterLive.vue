@@ -631,7 +631,7 @@ export default {
     // Auto-ouvre le side-sheet contexte quand le MJ sélectionne un PJ ou un adversaire
     // (uniquement en breakpoint tablette — détecté via matchMedia)
     const tabletMQ = typeof window !== 'undefined'
-      ? window.matchMedia('(min-width: 768px) and (max-width: 1023px)')
+      ? window.matchMedia('(min-width: 768px) and (max-width: 1024px)')
       : null
 
     function onLastClickChange(newCat) {
@@ -816,7 +816,7 @@ export default {
 .live__ctx-fab { display: none; }
 
 /* ══ Breakpoint tablette : 768px – 1023px ══ */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   /* Header : titre plus lisible */
   .live__title { font-size: var(--font-size-lg); max-width: 20rem; }
   .live__tier { font-size: var(--font-size-sm); }
@@ -905,7 +905,7 @@ export default {
 }
 
 /* ══ Breakpoint mobile : < 768px ══ */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .live__grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: auto; }
   .live__col-pc { flex-direction: row; overflow-x: auto; overflow-y: visible; border-right: none; border-bottom: 1px solid var(--color-border); padding: var(--space-xs) var(--space-sm); }
   .live__col-adv { min-height: 40vh; }
@@ -916,7 +916,7 @@ export default {
 }
 
 /* ══ Paysage tablette / petit laptop (768–1279px landscape) ══ */
-@media (orientation: landscape) and (min-width: 768px) and (max-width: 1279px) {
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
   .live__grid {
     grid-template-columns: 200px 2fr 1.5fr;
   }
