@@ -6,6 +6,9 @@
 // Store
 export { useCharacterStore } from './stores/characterStore'
 
+// Composables
+export { resolveCharacterDisplay, useCharacterComputed } from './composables/useCharacterComputed'
+
 // Composants
 export { default as CharacterList } from './components/CharacterList.vue'
 export { default as CharacterSelectors } from './components/CharacterSelectors.vue'
