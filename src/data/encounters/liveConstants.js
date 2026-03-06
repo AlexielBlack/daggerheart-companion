@@ -119,6 +119,18 @@ export const DYNAMIC_ADVANCEMENT = {
   failureFear: { progress: 0, consequence: 3 }
 }
 
+/**
+ * Table Fear/Hope générée par chaque résultat de jet de dualité (SRD p.18).
+ * Chaque jet produit soit du Hope (joueur) soit du Fear (MJ).
+ */
+export const FEAR_HOPE_FROM_ROLL = {
+  criticalSuccess: { hope: 2, fear: 0 },
+  successHope:     { hope: 1, fear: 0 },
+  successFear:     { hope: 0, fear: 1 },
+  failureHope:     { hope: 0, fear: 0 },
+  failureFear:     { hope: 0, fear: 1 }
+}
+
 /** Résultats de jet pour les boutons d'avancement dynamique */
 export const ROLL_RESULTS = [
   { id: 'criticalSuccess', label: 'Critique', short: 'Crit', emoji: '✨' },

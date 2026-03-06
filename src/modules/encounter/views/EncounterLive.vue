@@ -96,6 +96,7 @@
             >
               ⏱️
             </button>
+            <CombatDashboard />
             <QuickReferencePanel />
             <button
               class="live__log-btn"
@@ -446,13 +447,14 @@ import CombatLogDrawer from '../components/CombatLogDrawer.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
+import CombatDashboard from '../components/CombatDashboard.vue'
 import { useHaptic } from '../composables/useHaptic'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel },
+  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard },
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()

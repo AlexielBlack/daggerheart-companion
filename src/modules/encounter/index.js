@@ -32,6 +32,9 @@ export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 export { default as CombatLogDrawer } from './components/CombatLogDrawer.vue'
 export { default as SessionTimer } from './components/SessionTimer.vue'
 export { default as QuickReferencePanel } from './components/QuickReferencePanel.vue'
+export { default as CombatDashboard } from './components/CombatDashboard.vue'
+export { default as FearHopeTracker } from './components/FearHopeTracker.vue'
+export { default as BattlefieldOverview } from './components/BattlefieldOverview.vue'
 
 // Composants — Live (legacy, conservés pour compatibilité)
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
@@ -46,6 +49,8 @@ export { useCombatLog } from './composables/useCombatLog'
 export { useSpotlights } from './composables/useSpotlights'
 export { useHaptic, HAPTIC_PATTERNS } from './composables/useHaptic'
 export { useSessionTimer } from './composables/useSessionTimer'
+export { useFearHope } from './composables/useFearHope'
+export { useLiveStats } from './composables/useLiveStats'
 
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'
