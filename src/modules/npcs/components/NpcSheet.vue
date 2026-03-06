@@ -202,6 +202,7 @@
       :tier="form.tier"
       :proficiency="form.proficiency"
       :combat-features="form.combatFeatures"
+      :combat-stats="form.combatStats"
       :all-adversaries="allAdversaries"
       :class-id="form.classId"
       @update:combat-profile-mode="form.combatProfileMode = $event"
@@ -210,6 +211,7 @@
       @update:tier="form.tier = $event"
       @update:proficiency="form.proficiency = $event"
       @update:combat-features="form.combatFeatures = $event"
+      @update:combat-stats="form.combatStats = $event"
     />
 
     <!-- ── Relations PJ ── -->

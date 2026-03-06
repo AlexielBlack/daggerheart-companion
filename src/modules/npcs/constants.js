@@ -148,6 +148,18 @@ export function createDefaultNpc(overrides = {}) {
     tier: null,
     proficiency: null,
     combatFeatures: [],
+    // Stats combat custom (pré-remplies depuis les benchmarks)
+    combatStats: {
+      difficulty: null,
+      hp: null,
+      stress: null,
+      thresholdMajor: null,
+      thresholdSevere: null,
+      attackModifier: null,
+      attackDamage: '',
+      attackDamageType: 'phy',
+      attackRange: 'Melee'
+    },
     // ── Build (identité narrative, optionnel) ──
     classId: null,
     subclassId: null,

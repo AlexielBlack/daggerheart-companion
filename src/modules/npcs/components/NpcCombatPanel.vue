@@ -124,7 +124,7 @@
           <select
             id="npc-adv-type"
             :value="adversaryType || ''"
-            @change="$emit('update:adversaryType', $event.target.value || null)"
+            @change="onTypeChange($event.target.value)"
           >
             <option value="">
               — Choisir —
@@ -181,24 +181,153 @@
         </div>
       </div>
 
-      <!-- Benchmarks du type+tier -->
+      <!-- Stats de combat (éditables, pré-remplies depuis benchmarks) -->
       <div
         v-if="currentBenchmarks"
-        class="tier-benchmarks"
-        aria-label="Stats de référence"
+        class="combat-stats"
+        aria-label="Stats de combat"
       >
-        <div class="tier-benchmarks__row">
-          <span><strong>Diff:</strong> {{ currentBenchmarks.difficulty.default }} <small>({{ currentBenchmarks.difficulty.min }}–{{ currentBenchmarks.difficulty.max }})</small></span>
-          <span><strong>PV:</strong> {{ currentBenchmarks.hp.default }} <small>({{ currentBenchmarks.hp.min }}–{{ currentBenchmarks.hp.max }})</small></span>
-          <span><strong>Stress:</strong> {{ currentBenchmarks.stress.default }} <small>({{ currentBenchmarks.stress.min }}–{{ currentBenchmarks.stress.max }})</small></span>
-        </div>
-        <div class="tier-benchmarks__row">
-          <span><strong>ATK:</strong> +{{ currentBenchmarks.attack.modifier.default }} <small>({{ currentBenchmarks.attack.modifier.min }}–{{ currentBenchmarks.attack.modifier.max }})</small></span>
-          <span><strong>Dégâts:</strong> {{ currentBenchmarks.attack.damage }} {{ currentBenchmarks.attack.damageType }}</span>
-          <span><strong>Portée:</strong> {{ currentBenchmarks.attack.range }}</span>
-        </div>
-        <div class="tier-benchmarks__row">
-          <span><strong>Seuils:</strong> {{ currentBenchmarks.thresholds.major.default }}/{{ currentBenchmarks.thresholds.severe.default }} <small>({{ currentBenchmarks.thresholds.major.min }}–{{ currentBenchmarks.thresholds.major.max }}/{{ currentBenchmarks.thresholds.severe.min }}–{{ currentBenchmarks.thresholds.severe.max }})</small></span>
+        <h5 class="section-title">
+          📊 Stats de combat
+          <button
+            class="btn btn--small btn--ghost"
+            title="Réinitialiser aux valeurs par défaut"
+            @click="applyBenchmarkDefaults(adversaryType, tier)"
+          >
+            ↻ Reset
+          </button>
+        </h5>
+
+        <div class="stats-grid">
+          <div class="stat-field">
+            <label for="cs-diff">Difficulté</label>
+            <input
+              id="cs-diff"
+              type="number"
+              :value="combatStats.difficulty"
+              :min="currentBenchmarks.difficulty.min"
+              :max="currentBenchmarks.difficulty.max + 5"
+              @input="updateStat('difficulty', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.difficulty.min }}–{{ currentBenchmarks.difficulty.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-hp">PV</label>
+            <input
+              id="cs-hp"
+              type="number"
+              :value="combatStats.hp"
+              :min="currentBenchmarks.hp.min"
+              :max="currentBenchmarks.hp.max + 5"
+              @input="updateStat('hp', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.hp.min }}–{{ currentBenchmarks.hp.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-stress">Stress</label>
+            <input
+              id="cs-stress"
+              type="number"
+              :value="combatStats.stress"
+              :min="currentBenchmarks.stress.min"
+              :max="currentBenchmarks.stress.max + 3"
+              @input="updateStat('stress', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.stress.min }}–{{ currentBenchmarks.stress.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-thMajor">Seuil Majeur</label>
+            <input
+              id="cs-thMajor"
+              type="number"
+              :value="combatStats.thresholdMajor"
+              :min="currentBenchmarks.thresholds.major.min"
+              @input="updateStat('thresholdMajor', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.thresholds.major.min }}–{{ currentBenchmarks.thresholds.major.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-thSevere">Seuil Sévère</label>
+            <input
+              id="cs-thSevere"
+              type="number"
+              :value="combatStats.thresholdSevere"
+              :min="currentBenchmarks.thresholds.severe.min"
+              @input="updateStat('thresholdSevere', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.thresholds.severe.min }}–{{ currentBenchmarks.thresholds.severe.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-atk">Mod. Attaque</label>
+            <input
+              id="cs-atk"
+              type="number"
+              :value="combatStats.attackModifier"
+              :min="currentBenchmarks.attack.modifier.min"
+              :max="currentBenchmarks.attack.modifier.max + 3"
+              @input="updateStat('attackModifier', Number($event.target.value))"
+            />
+            <span class="stat-range">{{ currentBenchmarks.attack.modifier.min }}–{{ currentBenchmarks.attack.modifier.max }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-dmg">Dégâts</label>
+            <input
+              id="cs-dmg"
+              type="text"
+              :value="combatStats.attackDamage"
+              placeholder="Ex: 2d8+3"
+              @input="updateStat('attackDamage', $event.target.value)"
+            />
+            <span class="stat-range">réf: {{ currentBenchmarks.attack.damage }}</span>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-dmgType">Type dég.</label>
+            <select
+              id="cs-dmgType"
+              :value="combatStats.attackDamageType"
+              @change="updateStat('attackDamageType', $event.target.value)"
+            >
+              <option value="phy">
+                Physiques
+              </option>
+              <option value="mag">
+                Magiques
+              </option>
+            </select>
+          </div>
+
+          <div class="stat-field">
+            <label for="cs-range">Portée</label>
+            <select
+              id="cs-range"
+              :value="combatStats.attackRange"
+              @change="updateStat('attackRange', $event.target.value)"
+            >
+              <option value="Melee">
+                Mêlée
+              </option>
+              <option value="Very Close">
+                Très Proche
+              </option>
+              <option value="Close">
+                Proche
+              </option>
+              <option value="Far">
+                Loin
+              </option>
+              <option value="Very Far">
+                Très Loin
+              </option>
+            </select>
+            <span class="stat-range">réf: {{ currentBenchmarks.attack.range }}</span>
+          </div>
         </div>
       </div>
 
@@ -747,6 +876,8 @@ export default {
     tier: { type: Number, default: null },
     proficiency: { type: Number, default: null },
     combatFeatures: { type: Array, default: () => [] },
+    /** Stats combat éditables */
+    combatStats: { type: Object, default: () => ({}) },
     /** Liste complète des adversaires (SRD + homebrew) */
     allAdversaries: { type: Array, default: () => [] },
     /** Classe sélectionnée dans le build (pour filtrer les domaines) */
@@ -759,7 +890,8 @@ export default {
     'update:adversaryType',
     'update:tier',
     'update:proficiency',
-    'update:combatFeatures'
+    'update:combatFeatures',
+    'update:combatStats'
   ],
 
   setup(props, { emit }) {
@@ -1038,6 +1170,38 @@ export default {
       } else {
         emit('update:proficiency', null)
       }
+      // Auto-fill stats depuis benchmarks
+      applyBenchmarkDefaults(props.adversaryType, tier)
+    }
+
+    function onTypeChange(value) {
+      emit('update:adversaryType', value || null)
+      // Auto-fill stats depuis benchmarks
+      applyBenchmarkDefaults(value, props.tier)
+    }
+
+    function updateStat(key, value) {
+      const newStats = { ...props.combatStats, [key]: value }
+      emit('update:combatStats', newStats)
+    }
+
+    function applyBenchmarkDefaults(type, tier) {
+      if (!type || !tier) return
+      const typeKey = type.charAt(0).toUpperCase() + type.slice(1)
+      const bench = getBenchmarkForTypeTier(typeKey, tier)
+      if (!bench) return
+
+      emit('update:combatStats', {
+        difficulty: bench.difficulty.default,
+        hp: bench.hp.default,
+        stress: bench.stress.default,
+        thresholdMajor: bench.thresholds.major.default,
+        thresholdSevere: bench.thresholds.severe.default,
+        attackModifier: bench.attack.modifier.default,
+        attackDamage: bench.attack.damage,
+        attackDamageType: bench.attack.damageType,
+        attackRange: bench.attack.range
+      })
     }
 
     function truncate(text, max) {
@@ -1128,6 +1292,9 @@ export default {
       addFeature,
       removeFeature,
       onTierChange,
+      onTypeChange,
+      updateStat,
+      applyBenchmarkDefaults,
       truncate,
       activationEmoji,
       tagEmoji,
@@ -1237,31 +1404,68 @@ export default {
   font-family: inherit;
 }
 
-/* ── Tier benchmarks ── */
-.tier-benchmarks {
-  font-size: 0.75rem;
-  color: var(--color-text-muted, #9ca3af);
-  padding: 0.5rem 0.6rem;
-  background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
+/* ── Combat stats (éditable) ── */
+.combat-stats {
   border: 1px solid var(--color-border, #374151);
   border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
   margin-bottom: 0.5rem;
 }
 
-.tier-benchmarks__row {
+.combat-stats .section-title {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 0.15rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 0.4rem;
 }
 
-.tier-benchmarks__row:last-child {
-  margin-bottom: 0;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem 0.6rem;
 }
 
-.tier-benchmarks small {
-  color: var(--color-text-muted, #6b7280);
+@media (max-width: 500px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.stat-field label {
   font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-field input,
+.stat-field select {
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 4px;
+  background: var(--color-surface, #1f2937);
+  color: var(--color-text, #f9fafb);
+  font-size: 0.85rem;
+  font-family: inherit;
+  width: 100%;
+}
+
+.stat-field input[type="number"] {
+  width: 100%;
+}
+
+.stat-range {
+  font-size: 0.6rem;
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
 }
 
 .type-info {

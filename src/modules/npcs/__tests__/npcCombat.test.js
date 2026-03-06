@@ -51,6 +51,33 @@ describe('NPC Combat', () => {
       expect(npc.combatFeatures).toEqual(['feat-tactician', 'feat-momentum'])
     })
 
+    it('crée un PNJ en mode custom avec combatStats', () => {
+      const result = store.create({
+        name: 'Garde Vétéran',
+        combatProfileMode: 'custom',
+        adversaryType: 'bruiser',
+        tier: 1,
+        proficiency: 1,
+        combatStats: {
+          difficulty: 13,
+          hp: 6,
+          stress: 3,
+          thresholdMajor: 8,
+          thresholdSevere: 15,
+          attackModifier: 1,
+          attackDamage: '1d10+4',
+          attackDamageType: 'phy',
+          attackRange: 'Melee'
+        }
+      })
+
+      expect(result.success).toBe(true)
+      const npc = store.getById(result.id)
+      expect(npc.combatStats.difficulty).toBe(13)
+      expect(npc.combatStats.hp).toBe(6)
+      expect(npc.combatStats.attackDamage).toBe('1d10+4')
+    })
+
     it('crée un PNJ sans combat par défaut (mode none)', () => {
       const result = store.create({ name: 'Marchand' })
 
