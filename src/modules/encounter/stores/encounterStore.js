@@ -17,7 +17,8 @@ import {
   HEAVY_HITTER_TYPES,
   PC_COUNT_MIN,
   PC_COUNT_MAX,
-  calculateBaseBattlePoints
+  calculateBaseBattlePoints,
+  calculateAdversaryCost
 } from '@data/encounters/constants'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
@@ -85,12 +86,15 @@ export const useEncounterStore = defineStore('encounter', () => {
       .map((slot) => {
         const adversary = allAdversaries.find((a) => a.id === slot.adversaryId)
         if (!adversary) return null
-        const cost = (BATTLE_POINT_COSTS[adversary.type] ?? 2) * slot.quantity
+        const isMinion = adversary.type === 'Minion'
+        const cost = calculateAdversaryCost(adversary.type, slot.quantity, pcCount.value)
         return {
           ...slot,
           adversary,
           unitCost: BATTLE_POINT_COSTS[adversary.type] ?? 2,
-          totalCost: cost
+          totalCost: cost,
+          /** Taille d'un groupe Minion (= pcCount) ; null pour les autres types */
+          minionGroupSize: isMinion ? pcCount.value : null
         }
       })
       .filter(Boolean)

@@ -46,8 +46,7 @@ describe('encounterStore', () => {
   })
 
   describe('calculateAdversaryCost', () => {
-    it('retourne le coût correct par type', () => {
-      expect(calculateAdversaryCost('Minion', 1)).toBe(1)
+    it('retourne le coût correct par type (non-Minion)', () => {
       expect(calculateAdversaryCost('Standard', 2)).toBe(4)
       expect(calculateAdversaryCost('Solo', 1)).toBe(5)
       expect(calculateAdversaryCost('Bruiser', 3)).toBe(12)
@@ -55,6 +54,24 @@ describe('encounterStore', () => {
 
     it('utilise 2 par défaut pour les types inconnus', () => {
       expect(calculateAdversaryCost('Unknown', 1)).toBe(2)
+    })
+
+    it('Minion : 1 groupe (= pcCount) = 1 BP', () => {
+      // 4 PJ : 4 minions = 1 groupe = 1 BP
+      expect(calculateAdversaryCost('Minion', 4, 4)).toBe(1)
+      // 4 PJ : 8 minions = 2 groupes = 2 BP
+      expect(calculateAdversaryCost('Minion', 8, 4)).toBe(2)
+      // 3 PJ : 3 minions = 1 groupe = 1 BP
+      expect(calculateAdversaryCost('Minion', 3, 3)).toBe(1)
+      // 4 PJ : 5 minions = ceil(5/4) = 2 BP (groupe partiel)
+      expect(calculateAdversaryCost('Minion', 5, 4)).toBe(2)
+      // 4 PJ : 1 minion = ceil(1/4) = 1 BP
+      expect(calculateAdversaryCost('Minion', 1, 4)).toBe(1)
+    })
+
+    it('Minion : pcCount par défaut = 4', () => {
+      expect(calculateAdversaryCost('Minion', 4)).toBe(1)
+      expect(calculateAdversaryCost('Minion', 8)).toBe(2)
     })
   })
 

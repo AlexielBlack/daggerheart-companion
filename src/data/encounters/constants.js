@@ -148,12 +148,18 @@ export function calculateBaseBattlePoints(pcCount) {
 /**
  * Calcule le coût en Battle Points d'un adversaire.
  * Les Minions coûtent 1 BP par groupe (1 groupe = pcCount minions).
+ * Pour les autres types : coût unitaire × quantité.
  *
  * @param {string} type - Type d'adversaire
- * @param {number} quantity - Nombre d'unités/groupes ajoutés
+ * @param {number} quantity - Nombre d'individus ajoutés
+ * @param {number} [pcCount=4] - Nombre de PJ (utilisé pour les Minions uniquement)
  * @returns {number}
  */
-export function calculateAdversaryCost(type, quantity) {
+export function calculateAdversaryCost(type, quantity, pcCount = 4) {
+  if (type === 'Minion') {
+    // SRD : 1 groupe = pcCount minions = 1 BP
+    return Math.ceil(quantity / pcCount)
+  }
   const cost = BATTLE_POINT_COSTS[type] ?? 2
   return cost * quantity
 }

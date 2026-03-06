@@ -43,7 +43,7 @@
           >T{{ adv.tier }}</span>
           <span class="picker-item__name">{{ adv.name }}</span>
           <span class="picker-item__type">{{ adv.type }}</span>
-          <span class="picker-item__cost">{{ getCost(adv.type) }} BP</span>
+          <span class="picker-item__cost">{{ getCost(adv.type) }} BP{{ adv.type === 'Minion' ? '/grp' : '' }}</span>
         </div>
         <div class="picker-item__actions">
           <span

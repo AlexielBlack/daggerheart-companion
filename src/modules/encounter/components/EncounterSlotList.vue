@@ -32,7 +32,8 @@
           <div class="slot-item__details">
             <span class="slot-item__name">{{ slot.adversary.name }}</span>
             <span class="slot-item__meta">
-              {{ slot.adversary.type }} · {{ slot.unitCost }} BP/u
+              {{ slot.adversary.type }}
+              · {{ slot.minionGroupSize ? '1 BP/' + slot.minionGroupSize + ' min' : slot.unitCost + ' BP/u' }}
               · HP {{ slot.adversary.hp }} · Stress {{ slot.adversary.stress }}
             </span>
           </div>
@@ -41,7 +42,9 @@
         <div class="slot-item__controls">
           <span
             class="slot-item__cost"
-            :title="`${slot.quantity} × ${slot.unitCost} = ${slot.totalCost} BP`"
+            :title="slot.minionGroupSize
+              ? `${slot.quantity} minions ÷ ${slot.minionGroupSize} PJ = ${slot.totalCost} BP`
+              : `${slot.quantity} × ${slot.unitCost} = ${slot.totalCost} BP`"
           >
             {{ slot.totalCost }} BP
           </span>

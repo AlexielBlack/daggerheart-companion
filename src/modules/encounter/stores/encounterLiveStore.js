@@ -34,7 +34,7 @@ import {
   isValidSceneMode,
   DYNAMIC_ADVANCEMENT
 } from '@data/encounters/liveConstants'
-import { calculateBaseBattlePoints, BATTLE_POINT_COSTS } from '@data/encounters/constants'
+import { calculateBaseBattlePoints, calculateAdversaryCost } from '@data/encounters/constants'
 import { useUndoStack } from '../composables/useUndoStack'
 import { useCombatLog } from '../composables/useCombatLog'
 import { useSpotlights } from '../composables/useSpotlights'
@@ -250,15 +250,16 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Battle Points live ─────────────────────────────────
   const liveBpTotal = computed(() => calculateBaseBattlePoints(participantPcIds.value.length))
   const liveBpSpent = computed(() => {
-    // Comptage par adversaryId : chaque type coûte selon BATTLE_POINT_COSTS
+    // Comptage par type : chaque type coûte selon calculateAdversaryCost
     const byType = {}
     for (const adv of liveAdversaries.value) {
       const key = adv.type
       byType[key] = (byType[key] || 0) + 1
     }
+    const pcCt = participantPcIds.value.length || 4
     let total = 0
     for (const [type, count] of Object.entries(byType)) {
-      total += (BATTLE_POINT_COSTS[type] ?? 2) * count
+      total += calculateAdversaryCost(type, count, pcCt)
     }
     return total
   })
