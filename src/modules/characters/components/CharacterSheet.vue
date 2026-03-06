@@ -555,138 +555,12 @@
     </section>
 
     <!-- ═══ Armes ═══ -->
-    <section class="sheet-section">
-      <h3 class="section-heading">
-        Armes
-      </h3>
-
-      <!-- Arme Principale -->
-      <div class="weapon-block">
-        <label
-          class="weapon-label"
-          for="sheet-primary-weapon"
-        >Principale</label>
-        <select
-          id="sheet-primary-weapon"
-          class="weapon-select"
-          :value="char.primaryWeaponId"
-          aria-label="Choisir une arme principale"
-          @change="emit('applySelection', 'primaryWeaponId', $event.target.value)"
-        >
-          <option value="">
-            — Choisir —
-          </option>
-          <optgroup
-            v-if="recommendedPrimaryWeapons.length"
-            label="★ Recommandé"
-          >
-            <option
-              v-for="w in recommendedPrimaryWeapons"
-              :key="'rec-' + w.id"
-              :value="w.id"
-            >
-              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
-            </option>
-          </optgroup>
-          <optgroup
-            v-for="tier in primaryWeaponTiers"
-            :key="tier.label"
-            :label="tier.label"
-          >
-            <option
-              v-for="w in tier.items"
-              :key="w.id"
-              :value="w.id"
-            >
-              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
-            </option>
-          </optgroup>
-        </select>
-        <div
-          v-if="char.primaryWeapon && char.primaryWeapon.name"
-          class="weapon-details"
-        >
-          <span class="weapon-stat">{{ char.primaryWeapon.trait }}</span>
-          <span class="weapon-stat">{{ char.primaryWeapon.range }}</span>
-          <span class="weapon-stat weapon-stat--dmg">{{ char.primaryWeapon.damage }}</span>
-          <span
-            v-if="char.primaryWeapon.burden === 'Two-Handed'"
-            class="weapon-stat weapon-stat--burden"
-          >⚔ Deux mains</span>
-          <span
-            v-if="char.primaryWeapon.feature"
-            class="weapon-stat weapon-stat--feature"
-          >{{ char.primaryWeapon.feature }}</span>
-        </div>
-      </div>
-
-      <!-- Arme Secondaire -->
-      <div
-        class="weapon-block"
-        :class="{ 'weapon-block--disabled': primaryIsTwoHanded }"
-      >
-        <label
-          class="weapon-label"
-          for="sheet-secondary-weapon"
-        >Secondaire</label>
-        <select
-          v-if="!primaryIsTwoHanded"
-          id="sheet-secondary-weapon"
-          class="weapon-select"
-          :value="char.secondaryWeaponId"
-          aria-label="Choisir une arme secondaire"
-          @change="emit('applySelection', 'secondaryWeaponId', $event.target.value)"
-        >
-          <option value="">
-            — Choisir —
-          </option>
-          <optgroup
-            v-if="recommendedSecondaryWeapons.length"
-            label="★ Recommandé"
-          >
-            <option
-              v-for="w in recommendedSecondaryWeapons"
-              :key="'rec-' + w.id"
-              :value="w.id"
-            >
-              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
-            </option>
-          </optgroup>
-          <optgroup
-            v-for="tier in secondaryWeaponTiers"
-            :key="tier.label"
-            :label="tier.label"
-          >
-            <option
-              v-for="w in tier.items"
-              :key="w.id"
-              :value="w.id"
-            >
-              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
-            </option>
-          </optgroup>
-        </select>
-        <p
-          v-else
-          class="weapon-twohanded-notice"
-          aria-live="polite"
-        >
-          ⚔ Slot occupé — arme principale à deux mains
-        </p>
-        <div
-          v-if="!primaryIsTwoHanded && char.secondaryWeapon && char.secondaryWeapon.name"
-          class="weapon-details"
-        >
-          <span class="weapon-stat">{{ char.secondaryWeapon.trait }}</span>
-          <span class="weapon-stat">{{ char.secondaryWeapon.range }}</span>
-          <span class="weapon-stat weapon-stat--dmg">{{ char.secondaryWeapon.damage }}</span>
-          <span
-            v-if="char.secondaryWeapon.feature"
-            class="weapon-stat weapon-stat--feature"
-          >{{ char.secondaryWeapon.feature }}</span>
-        </div>
-      </div>
-    </section>
+    <WeaponsPanel
+      :char="char"
+      :primary-weapons="primaryWeapons"
+      :secondary-weapons="secondaryWeapons"
+      @select="(field, value) => emit('applySelection', field, value)"
+    />
 
     <!-- ═══ Inventaire ═══ -->
     <section class="sheet-section">
@@ -842,10 +716,11 @@ import CharacterSelectors from './CharacterSelectors.vue'
 import DomainCardPicker from './DomainCardPicker.vue'
 import ActiveModifiersPanel from './ActiveModifiersPanel.vue'
 import InventoryPanel from './InventoryPanel.vue'
+import WeaponsPanel from './WeaponsPanel.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel, InventoryPanel },
+  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel, InventoryPanel, WeaponsPanel },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
@@ -913,29 +788,13 @@ export default {
         .map((t) => ({ label: TIER_LABELS[t] || `Tier ${t}`, items: tiers[t] }))
     }
 
-    // ── Armes groupées par tier ──
-    const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
-    const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
-
-    /** L'arme principale est-elle à deux mains ? */
+    // ── Arme à deux mains ? (utilisé dans le résumé des choix) ──
     const primaryIsTwoHanded = computed(() =>
       props.char?.primaryWeapon?.burden === 'Two-Handed'
     )
 
     // ── Armures groupées par tier ──
     const armorTiers = computed(() => groupByTier(props.armor))
-
-    // ── Recommandations armes par classe ──
-    const recommendedPrimaryWeapons = computed(() =>
-      getRecommendedIds(props.char?.classId || '', 'primaryWeapon')
-        .map(getPrimaryWeaponById)
-        .filter(Boolean)
-    )
-    const recommendedSecondaryWeapons = computed(() =>
-      getRecommendedIds(props.char?.classId || '', 'secondaryWeapon')
-        .map(getSecondaryWeaponById)
-        .filter(Boolean)
-    )
 
     // ── Recommandations armure par classe ──
     const recommendedArmors = computed(() =>
@@ -1007,8 +866,7 @@ export default {
     return {
       conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
       resolveArmorName, resolvePrimaryName, resolveSecondaryName,
-      primaryWeaponTiers, secondaryWeaponTiers, primaryIsTwoHanded, armorTiers,
-      recommendedPrimaryWeapons, recommendedSecondaryWeapons, recommendedArmors,
+      primaryIsTwoHanded, armorTiers, recommendedArmors,
       hpSources, stressSources, armorSources
     }
   }
