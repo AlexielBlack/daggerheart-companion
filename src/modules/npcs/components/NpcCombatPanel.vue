@@ -537,8 +537,15 @@
                 {{ costLabel(feat.cost) }}
               </span>
             </div>
-            <p class="catalogue__item-desc">
-              {{ truncate(feat.description, 140) }}
+            <p
+              role="button"
+              tabindex="0"
+              class="catalogue__item-desc"
+              :class="{ 'catalogue__item-desc--expanded': expandedFeatureId === feat.id }"
+              @click="expandedFeatureId = expandedFeatureId === feat.id ? null : feat.id"
+              @keydown.enter="expandedFeatureId = expandedFeatureId === feat.id ? null : feat.id"
+            >
+              {{ feat.description }}
             </p>
             <div class="catalogue__item-meta">
               <span class="catalogue__item-source">
@@ -914,6 +921,7 @@ export default {
     const filterTheme = ref('')
     const filterDomain = ref('')
     const filterAdvType = ref('')
+    const expandedFeatureId = ref(null)
 
     // ── Domaines disponibles pour le filtre ──
     const domainOptions = computed(() => {
@@ -1314,6 +1322,7 @@ export default {
       filterTheme,
       filterDomain,
       filterAdvType,
+      expandedFeatureId,
       domainOptions,
       // Homebrew
       homebrewStore,
@@ -1755,6 +1764,16 @@ export default {
   color: var(--color-text-muted, #9ca3af);
   margin: 0 0 0.25rem;
   line-height: 1.35;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.catalogue__item-desc--expanded {
+  -webkit-line-clamp: unset;
+  overflow: visible;
 }
 
 .catalogue__item-meta {
