@@ -181,16 +181,34 @@
         </div>
       </div>
 
-      <!-- Benchmarks du tier -->
+      <!-- Benchmarks du type+tier -->
       <div
         v-if="currentBenchmarks"
         class="tier-benchmarks"
-        aria-label="Benchmarks du tier sélectionné"
+        aria-label="Stats de référence"
       >
-        <span><strong>ATK:</strong> +{{ currentBenchmarks.attackModifier }}</span>
-        <span><strong>Diff:</strong> {{ currentBenchmarks.difficulty }}</span>
-        <span><strong>Seuils:</strong> {{ currentBenchmarks.thresholds.major }}/{{ currentBenchmarks.thresholds.severe }}</span>
+        <div class="tier-benchmarks__row">
+          <span><strong>Diff:</strong> {{ currentBenchmarks.difficulty.default }} <small>({{ currentBenchmarks.difficulty.min }}–{{ currentBenchmarks.difficulty.max }})</small></span>
+          <span><strong>PV:</strong> {{ currentBenchmarks.hp.default }} <small>({{ currentBenchmarks.hp.min }}–{{ currentBenchmarks.hp.max }})</small></span>
+          <span><strong>Stress:</strong> {{ currentBenchmarks.stress.default }} <small>({{ currentBenchmarks.stress.min }}–{{ currentBenchmarks.stress.max }})</small></span>
+        </div>
+        <div class="tier-benchmarks__row">
+          <span><strong>ATK:</strong> +{{ currentBenchmarks.attack.modifier.default }} <small>({{ currentBenchmarks.attack.modifier.min }}–{{ currentBenchmarks.attack.modifier.max }})</small></span>
+          <span><strong>Dégâts:</strong> {{ currentBenchmarks.attack.damage }} {{ currentBenchmarks.attack.damageType }}</span>
+          <span><strong>Portée:</strong> {{ currentBenchmarks.attack.range }}</span>
+        </div>
+        <div class="tier-benchmarks__row">
+          <span><strong>Seuils:</strong> {{ currentBenchmarks.thresholds.major.default }}/{{ currentBenchmarks.thresholds.severe.default }} <small>({{ currentBenchmarks.thresholds.major.min }}–{{ currentBenchmarks.thresholds.major.max }}/{{ currentBenchmarks.thresholds.severe.min }}–{{ currentBenchmarks.thresholds.severe.max }})</small></span>
+        </div>
       </div>
+
+      <!-- Info type -->
+      <p
+        v-if="typeInfo"
+        class="type-info"
+      >
+        {{ typeInfo.description }}
+      </p>
 
       <!-- ── Features sélectionnées ── -->
       <div class="selected-features">
@@ -695,7 +713,6 @@ import {
   ALL_ADVERSARY_TYPES,
   ADVERSARY_TYPE_META,
   PROFICIENCY_BY_TIER,
-  TIER_BENCHMARKS,
   ALL_THEMES,
   THEME_META,
   COOLDOWN_META,
@@ -715,6 +732,10 @@ import {
 } from '@data/constants/featureSchema.js'
 import { DOMAINS } from '@data/domains'
 import { CLASSES } from '@data/classes'
+import {
+  ADVERSARY_TYPE_BENCHMARKS,
+  getBenchmarkForTypeTier
+} from '@modules/homebrew/data/adversaryTypeBenchmarks.js'
 
 export default {
   name: 'NpcCombatPanel',
@@ -902,10 +923,25 @@ export default {
       return result
     })
 
-    // ── Benchmarks du tier sélectionné ──
+    // ── Benchmarks du type+tier sélectionné ──
     const currentBenchmarks = computed(() => {
       if (!props.tier) return null
-      return TIER_BENCHMARKS[props.tier] || null
+      if (!props.adversaryType) return null
+      // Convertir lowercase → PascalCase pour lookup
+      const typeKey = props.adversaryType.charAt(0).toUpperCase() + props.adversaryType.slice(1)
+      return getBenchmarkForTypeTier(typeKey, props.tier)
+    })
+
+    const typeInfo = computed(() => {
+      if (!props.adversaryType) return null
+      const typeKey = props.adversaryType.charAt(0).toUpperCase() + props.adversaryType.slice(1)
+      const data = ADVERSARY_TYPE_BENCHMARKS[typeKey]
+      if (!data) return null
+      return {
+        description: data.description,
+        battlePoints: data.battlePoints,
+        guidelines: data.guidelines
+      }
     })
 
     // ── Mode linked : adversaires groupés par tier ──
@@ -1058,6 +1094,7 @@ export default {
       themes,
       proficiencyRange,
       currentBenchmarks,
+      typeInfo,
       groupedAdversaries,
       linkedAdversary,
       availableFeatures,
@@ -1202,14 +1239,36 @@ export default {
 
 /* ── Tier benchmarks ── */
 .tier-benchmarks {
-  display: flex;
-  gap: 1rem;
   font-size: 0.75rem;
   color: var(--color-text-muted, #9ca3af);
-  padding: 0.35rem 0.5rem;
+  padding: 0.5rem 0.6rem;
   background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
-  border-radius: 4px;
-  margin-bottom: 0.75rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.tier-benchmarks__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.tier-benchmarks__row:last-child {
+  margin-bottom: 0;
+}
+
+.tier-benchmarks small {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.65rem;
+}
+
+.type-info {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #9ca3af);
+  font-style: italic;
+  margin: 0 0 0.75rem;
 }
 
 /* ── Stat preview (linked) ── */
