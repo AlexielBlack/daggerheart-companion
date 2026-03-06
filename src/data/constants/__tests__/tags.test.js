@@ -8,7 +8,7 @@
 
 import { describe, it, expect } from 'vitest'
 import { ALL_TAGS, validateTags, TAG_META } from '@data/constants/tags.js'
-import { tier1, tier2, tier3, tier4 } from '@data/adversaries/index.js'
+import { tier1, tier2, tier3, tier4, ADVERSARY_GENRES, GENRE_META, validateGenres } from '@data/adversaries/index.js'
 import { CLASSES } from '@data/classes/index.js'
 import { SUBCLASSES } from '@data/subclasses/index.js'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@data/ancestries/index.js'
@@ -61,6 +61,39 @@ describe('Constantes de tags', () => {
     expect(validateTags(['invalide'])).toBe(false)
     expect(validateTags('offensif')).toBe(false)
     expect(validateTags(null)).toBe(false)
+  })
+})
+
+// ═══════════════════════════════════════════════════════════
+//  Constantes de genres adversaires
+// ═══════════════════════════════════════════════════════════
+
+describe('Constantes de genres adversaires', () => {
+  it('définit exactement 12 genres', () => {
+    expect(ADVERSARY_GENRES).toHaveLength(12)
+  })
+
+  it('chaque genre a des métadonnées complètes', () => {
+    for (const genre of ADVERSARY_GENRES) {
+      const meta = GENRE_META[genre]
+      expect(meta, `${genre} devrait avoir des métadonnées`).toBeDefined()
+      expect(meta.label).toBeTruthy()
+      expect(meta.emoji).toBeTruthy()
+      expect(meta.color).toMatch(/^#[0-9a-f]{6}$/)
+    }
+  })
+
+  it('validateGenres accepte les genres valides', () => {
+    expect(validateGenres(['humanoide'])).toBe(true)
+    expect(validateGenres(['bete', 'dragon'])).toBe(true)
+    expect(validateGenres(ADVERSARY_GENRES)).toBe(true)
+  })
+
+  it('validateGenres rejette les valeurs invalides', () => {
+    expect(validateGenres(['invalide'])).toBe(false)
+    expect(validateGenres('humanoide')).toBe(false)
+    expect(validateGenres(null)).toBe(false)
+    expect(validateGenres([])).toBe(false)
   })
 })
 

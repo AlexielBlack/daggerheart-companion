@@ -64,6 +64,26 @@
       </div>
     </fieldset>
 
+    <!-- Genre filters -->
+    <fieldset class="adversary-filters__group">
+      <legend class="adversary-filters__legend">
+        Genre
+      </legend>
+      <div class="adversary-filters__chips">
+        <button
+          v-for="genre in genres"
+          :key="genre"
+          class="adversary-filters__chip"
+          :class="{ 'adversary-filters__chip--active': selectedGenres.includes(genre) }"
+          :style="selectedGenres.includes(genre) ? { backgroundColor: genreMeta[genre]?.color, borderColor: genreMeta[genre]?.color, color: '#fff' } : {}"
+          :aria-pressed="selectedGenres.includes(genre)"
+          @click="$emit('toggle-genre', genre)"
+        >
+          {{ genreMeta[genre]?.emoji }} {{ genreMeta[genre]?.label || genre }}
+        </button>
+      </div>
+    </fieldset>
+
     <!-- Sort + Clear -->
     <div class="adversary-filters__actions">
       <div class="adversary-filters__sort">
@@ -130,7 +150,7 @@
 </template>
 
 <script>
-import { ADVERSARY_TYPE_LABELS } from '@data/adversaries'
+import { ADVERSARY_TYPE_LABELS, GENRE_META } from '@data/adversaries'
 
 /**
  * @component AdversaryFilters
@@ -142,25 +162,31 @@ export default {
     searchQuery: { type: String, default: '' },
     selectedTiers: { type: Array, default: () => [] },
     selectedTypes: { type: Array, default: () => [] },
+    selectedGenres: { type: Array, default: () => [] },
     sortField: { type: String, default: 'name' },
     sortDirection: { type: String, default: 'asc' },
     hasActiveFilters: { type: Boolean, default: false },
     filteredCount: { type: Number, default: 0 },
     totalCount: { type: Number, default: 0 },
     tiers: { type: Array, required: true },
-    types: { type: Array, required: true }
+    types: { type: Array, required: true },
+    genres: { type: Array, required: true }
   },
   emits: [
     'update:searchQuery',
     'update:sortField',
     'toggle-tier',
     'toggle-type',
+    'toggle-genre',
     'toggle-sort-direction',
     'clear-filters'
   ],
   computed: {
     typeLabels() {
       return ADVERSARY_TYPE_LABELS
+    },
+    genreMeta() {
+      return GENRE_META
     }
   }
 }

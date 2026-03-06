@@ -32,6 +32,14 @@
         >
           ({{ adversary.hordeRatio }})
         </span>
+        <span
+          v-for="genre in (adversary.genres || [])"
+          :key="genre"
+          class="stat-block__genre-tag"
+          :style="{ borderColor: genreMeta[genre]?.color, color: genreMeta[genre]?.color }"
+        >
+          {{ genreMeta[genre]?.emoji }} {{ genreMeta[genre]?.label }}
+        </span>
       </div>
       <p class="stat-block__description">
         {{ adversary.description }}
@@ -177,7 +185,7 @@
 
 <script>
 import FeatureBlock from './FeatureBlock.vue'
-import { DAMAGE_TYPE_LABELS, ADVERSARY_TYPE_LABELS, RANGE_LABELS } from '@data/adversaries'
+import { DAMAGE_TYPE_LABELS, ADVERSARY_TYPE_LABELS, RANGE_LABELS, GENRE_META } from '@data/adversaries'
 
 /**
  * @component StatBlock
@@ -209,6 +217,9 @@ export default {
     },
     rangeLabel() {
       return RANGE_LABELS[this.adversary.attack?.range] || this.adversary.attack?.range || ''
+    },
+    genreMeta() {
+      return GENRE_META
     }
   },
   methods: {
@@ -273,6 +284,17 @@ export default {
 .stat-block__horde-ratio {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
+}
+
+.stat-block__genre-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--font-size-xs);
+  padding: 1px var(--space-xs);
+  border: 1px solid;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
 }
 
 .stat-block__description {

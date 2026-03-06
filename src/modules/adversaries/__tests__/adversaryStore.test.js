@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useAdversaryStore } from '../stores/adversaryStore.js'
-import { allAdversaries, ADVERSARY_TYPES, TIERS } from '@data/adversaries'
+import { allAdversaries, ADVERSARY_TYPES, ADVERSARY_GENRES, TIERS } from '@data/adversaries'
 
 describe('adversaryStore', () => {
   let store
@@ -24,8 +24,9 @@ describe('adversaryStore', () => {
       expect(store.totalCount).toBe(allAdversaries.length)
     })
 
-    it('expose les types et tiers disponibles', () => {
+    it('expose les types, genres et tiers disponibles', () => {
       expect(store.availableTypes).toEqual(ADVERSARY_TYPES)
+      expect(store.availableGenres).toEqual(ADVERSARY_GENRES)
       expect(store.availableTiers).toEqual(TIERS)
     })
 
@@ -125,6 +126,58 @@ describe('adversaryStore', () => {
     })
   })
 
+  // ── Filtres par Genre ──────────────────────────────────
+
+  describe('filtres par genre', () => {
+    it('filtre par un genre (OR)', () => {
+      store.toggleGenre('dragon')
+      expect(store.selectedGenres).toEqual(['dragon'])
+      store.filteredAdversaries.forEach((a) => {
+        expect(a.genres).toContain('dragon')
+      })
+      expect(store.filteredCount).toBeGreaterThan(0)
+      expect(store.filteredCount).toBeLessThan(store.totalCount)
+    })
+
+    it('filtre par plusieurs genres (OR)', () => {
+      store.toggleGenre('dragon')
+      store.toggleGenre('fee')
+      store.filteredAdversaries.forEach((a) => {
+        const hasMatchingGenre = a.genres.some((g) => ['dragon', 'fee'].includes(g))
+        expect(hasMatchingGenre).toBe(true)
+      })
+    })
+
+    it('désactive un genre en re-cliquant', () => {
+      store.toggleGenre('dragon')
+      store.toggleGenre('dragon')
+      expect(store.selectedGenres).toEqual([])
+      expect(store.filteredCount).toBe(store.totalCount)
+    })
+
+    it('combine tier + type + genre', () => {
+      store.toggleTier(1)
+      store.toggleType('Solo')
+      store.toggleGenre('bete')
+      store.filteredAdversaries.forEach((a) => {
+        expect(a.tier).toBe(1)
+        expect(a.type).toBe('Solo')
+        expect(a.genres).toContain('bete')
+      })
+    })
+
+    it('clearFilters efface aussi les genres', () => {
+      store.toggleGenre('demon')
+      store.clearFilters()
+      expect(store.selectedGenres).toEqual([])
+    })
+
+    it('hasActiveFilters détecte les genres', () => {
+      store.toggleGenre('elementaire')
+      expect(store.hasActiveFilters).toBe(true)
+    })
+  })
+
   // ── Tri ─────────────────────────────────────────────────
 
   describe('tri', () => {
@@ -218,23 +271,27 @@ describe('adversaryStore', () => {
       store.setSearch('bear')
       store.toggleTier(1)
       store.toggleType('Solo')
+      store.toggleGenre('bete')
       store.selectAdversary(allAdversaries[0].id)
       store.clearFilters()
       expect(store.searchQuery).toBe('')
       expect(store.selectedTiers).toEqual([])
       expect(store.selectedTypes).toEqual([])
+      expect(store.selectedGenres).toEqual([])
       expect(store.selectedAdversaryId).toBe(allAdversaries[0].id)
     })
 
     it('resetAll remet tout à zéro', () => {
       store.setSearch('bear')
       store.toggleTier(1)
+      store.toggleGenre('demon')
       store.setSort('hp')
       store.selectAdversary(allAdversaries[0].id)
       store.resetAll()
       expect(store.searchQuery).toBe('')
       expect(store.selectedTiers).toEqual([])
       expect(store.selectedTypes).toEqual([])
+      expect(store.selectedGenres).toEqual([])
       expect(store.selectedAdversaryId).toBeNull()
       expect(store.sortField).toBe('name')
       expect(store.sortDirection).toBe('asc')
@@ -280,6 +337,16 @@ describe('adversaryStore', () => {
           expect(['passive', 'action', 'reaction']).toContain(f.activationType)
           expect(typeof f.name).toBe('string')
           expect(typeof f.description).toBe('string')
+        })
+      })
+    })
+
+    it('tous les adversaires ont un tableau genres non-vide avec valeurs valides', () => {
+      allAdversaries.forEach((a) => {
+        expect(Array.isArray(a.genres), `${a.name} devrait avoir un array genres`).toBe(true)
+        expect(a.genres.length, `${a.name} devrait avoir au moins un genre`).toBeGreaterThan(0)
+        a.genres.forEach((g) => {
+          expect(ADVERSARY_GENRES, `${a.name} a un genre invalide "${g}"`).toContain(g)
         })
       })
     })

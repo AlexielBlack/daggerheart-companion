@@ -39,6 +39,44 @@ export const ADVERSARY_TYPE_LABELS = {
   Support: 'Soutien'
 }
 
+/** Identifiants des 12 genres d'adversaires (clés sans accents pour JSON) */
+export const ADVERSARY_GENRES = [
+  'humanoide',
+  'bete',
+  'mort-vivant',
+  'demon',
+  'fee',
+  'dragon',
+  'construction',
+  'elementaire',
+  'aberration',
+  'plante',
+  'geant',
+  'monstruosite'
+]
+
+/** Métadonnées d'affichage des genres (label FR, emoji, couleur) */
+export const GENRE_META = {
+  humanoide: { label: 'Humanoïde', emoji: '🧑', color: '#6b7280' },
+  bete: { label: 'Bête', emoji: '🐾', color: '#92400e' },
+  'mort-vivant': { label: 'Mort-vivant', emoji: '💀', color: '#6b21a8' },
+  demon: { label: 'Démon', emoji: '😈', color: '#dc2626' },
+  fee: { label: 'Fée', emoji: '🧚', color: '#16a34a' },
+  dragon: { label: 'Dragon', emoji: '🐉', color: '#ea580c' },
+  construction: { label: 'Construction', emoji: '🏗️', color: '#78716c' },
+  elementaire: { label: 'Élémentaire', emoji: '🌪️', color: '#0284c7' },
+  aberration: { label: 'Aberration', emoji: '👁️', color: '#7c3aed' },
+  plante: { label: 'Plante', emoji: '🌿', color: '#15803d' },
+  geant: { label: 'Géant', emoji: '🗿', color: '#a16207' },
+  monstruosite: { label: 'Monstruosité', emoji: '🐲', color: '#be123c' }
+}
+
+/** Valide qu'un tableau de genres ne contient que des valeurs autorisées */
+export function validateGenres(genres) {
+  if (!Array.isArray(genres)) return false
+  return genres.length > 0 && genres.every((g) => ADVERSARY_GENRES.includes(g))
+}
+
 /** Définitions des tiers avec plages de niveaux */
 export const TIERS = [
   { value: 1, label: 'Tier 1', levels: '1' },

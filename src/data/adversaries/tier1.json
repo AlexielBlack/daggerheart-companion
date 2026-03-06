@@ -4,6 +4,9 @@
     "name": "Acid Burrower",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "Un insecte de la taille d’un cheval avec des griffes fouisseuses et du sang acide.",
     "motives": [
       "Creuser",
@@ -103,6 +106,10 @@
     "name": "Amphiptere",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "bete",
+      "dragon"
+    ],
     "description": "A sleek, snake-like reptile with feathered wings and a draconic face.",
     "motives": [
       "Ambush from above",
@@ -178,6 +185,9 @@
     "name": "Animated Rug",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "construction"
+    ],
     "description": "A rug animated with magic.",
     "motives": [
       "Animate",
@@ -244,6 +254,9 @@
     "name": "Animated Toy",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "construction"
+    ],
     "description": "A toy or other small object animated by an infusion of magic.",
     "motives": [
       "Protect children",
@@ -318,6 +331,9 @@
     "name": "Arcanist Guard",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A magic-wielding guard with a ward-covered coat using magic to enhance their comrades.",
     "motives": [
       "Create wards",
@@ -418,6 +434,9 @@
     "name": "Archer Guard",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un grand garde portant un arc long et un carquois aux flèches empennées aux couleurs de la colonie.",
     "motives": [
       "Arrêter",
@@ -476,6 +495,10 @@
     "name": "Ashen Deathweaver",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "elementaire",
+      "mort-vivant"
+    ],
     "description": "A necromancer wearing ancient, tattered robes",
     "motives": [
       "Judge opponents",
@@ -601,6 +624,9 @@
     "name": "Ashkadavar",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A wizard's familiar, created from the bodies of several woodland creatures.",
     "motives": [
       "Consume magic",
@@ -688,6 +714,9 @@
     "name": "Ashkadavar Swarm",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A group of replicating chimeric creations made from the bodies of several woodland creatures.",
     "motives": [
       "Consume magic",
@@ -771,6 +800,9 @@
     "name": "Barrow Gaunt",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A ghoulish undead with a semblance of intelligence and a hunger for flesh",
     "motives": [
       "Hunt for flesh",
@@ -837,6 +869,9 @@
     "name": "Bear",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "Un grand ours au pelage épais et aux griffes puissantes.",
     "motives": [
       "Grimper",
@@ -926,6 +961,10 @@
     "name": "Bladed Guard",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "construction",
+      "humanoide"
+    ],
     "description": "Un garde en armure portant une épée et un bouclier peint aux couleurs de la colonie.",
     "motives": [
       "Arrêter",
@@ -997,6 +1036,11 @@
     "name": "Blooming Cockatrice",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "dragon",
+      "monstruosite",
+      "plante"
+    ],
     "description": "A green, dragon-like creature with a moss-covered rooster's neck and bright flower petal wings.",
     "motives": [
       "Encourage nature",
@@ -1111,6 +1155,10 @@
     "name": "Brawny Zombie",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "demon",
+      "mort-vivant"
+    ],
     "description": "Un zombie imposant doté d’une force surnaturelle.",
     "motives": [
       "Écraser",
@@ -1149,6 +1197,11 @@
     "name": "Budding Cockatrice Clutch",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "dragon",
+      "monstruosite",
+      "plante"
+    ],
     "description": "A group of young dragon-like creatures with green fuzzy scales and tightly wrapped buds for wings waiting to bloom.",
     "motives": [
       "Grow strong",
@@ -1216,6 +1269,11 @@
     "name": "Buggane",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "fee",
+      "geant"
+    ],
     "description": "A hulking, boar-headed ogre of the Isle of Man, the Buggane bursts from earth or cave when roused. Hairy, clawed, and bristling with hatred for holy places, he is a brute of storm and stone, feared for tearing down what mortals build.",
     "motives": [
       "Tear down",
@@ -1314,6 +1372,9 @@
     "name": "Burroska Doll",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A wooden humanoid the size of a doll. They are dressed in leaves and have spiky growths all over their bodies.",
     "motives": [
       "Hide in tall grass",
@@ -1365,6 +1426,9 @@
     "name": "Busybody",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A meddling civilian determined to meddle with other peopleʼs business.",
     "motives": [
       "Exaggerate the truth",
@@ -1453,6 +1517,10 @@
     "name": "Cairnshade",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "A ghoulish undead thief with a long tongue and sharp teeth",
     "motives": [
       "Devour flesh",
@@ -1532,6 +1600,9 @@
     "name": "Canid Jackal",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A jackal-like humanoid with dozens of criminal connections.",
     "motives": [
       "Scheme",
@@ -1678,6 +1749,9 @@
     "name": "Canid Rover",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "bete"
+    ],
     "description": "A dog-like humanoid transient worker.",
     "motives": [
       "Patrol",
@@ -1751,6 +1825,10 @@
     "name": "Caustic Fungus",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "aberration",
+      "plante"
+    ],
     "description": "The underbrush of the Screaming Forest has a hive mind of",
     "motives": [
       "Swarm",
@@ -1801,6 +1879,9 @@
     "name": "Cave Ogre",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "geant"
+    ],
     "description": "Un humanoïde massif qui considère toute vie intelligente comme de la nourriture.",
     "motives": [
       "Arracher des têtes",
@@ -1899,6 +1980,10 @@
     "name": "Chort",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "demon"
+    ],
     "description": "A whispering devil cloaked in charm and malice, the Chort offers what you desire most—then watches you unravel. His bargains are binding, his flattery venom, and his grin never quite reaches his eyes.",
     "motives": [
       "Corrupt the willing",
@@ -1985,6 +2070,9 @@
     "name": "Clank Petard",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A humanoid clank with a compartment containing explosives. Motives & Tactics: Infiltrate, set charges, detonate",
     "motives": [],
     "difficulty": 11,
@@ -2067,6 +2155,9 @@
     "name": "Construct",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "construction"
+    ],
     "description": "Un être grossièrement humanoïde de pierre et d’acier, assemblé et animé par la magie.",
     "motives": [
       "Détruire l’environnement",
@@ -2171,6 +2262,9 @@
     "name": "Courtier",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Un mondain ambitieux et ostensiblement vêtu.",
     "motives": [
       "Discréditer",
@@ -2243,6 +2337,9 @@
     "name": "Cryptwight",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A rotted corpse weaving terror with its shadowy spells",
     "motives": [
       "Pin down",
@@ -2342,6 +2439,9 @@
     "name": "Deeproot Defender",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "plante"
+    ],
     "description": "Une personne-végétale robuste aux lianes agrippantes.",
     "motives": [
       "Embusquer",
@@ -2414,6 +2514,12 @@
     "name": "Deer Woman, Boundary-Warden",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "aberration",
+      "bete",
+      "humanoide",
+      "monstruosite"
+    ],
     "description": "Hooves like polished onyx, eyes that see the line between welcome and harm.",
     "motives": [
       "Test respect",
@@ -2498,6 +2604,9 @@
     "name": "Dire Wolf",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "Un grand loup aux crocs menaçants, rarement rencontré seul.",
     "motives": [
       "Défendre son territoire",
@@ -2570,6 +2679,9 @@
     "name": "Dolliglop",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "aberration"
+    ],
     "description": "A small, ooze-like creature that inhabits a child's doll or other toy and feeds off emotion.",
     "motives": [
       "Devour youthful innocence",
@@ -2672,6 +2784,9 @@
     "name": "Drakona Berserker",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A scarred drakona who fights for money.",
     "motives": [
       "Find opening",
@@ -2751,6 +2866,9 @@
     "name": "Drekavac",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A twisted echo of an unbaptized soul, the Drekavac haunts graveyards and dark woods, its piercing scream shattering sleep, sanity, and spirit. It is both a curse left behind and a warning yet to come.",
     "motives": [
       "Disrupt rest",
@@ -2836,6 +2954,9 @@
     "name": "Eryn (Limb Wreath)",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Eryn has become something of nightmares, a host for",
     "motives": [
       "Multiply tentacles",
@@ -2903,6 +3024,9 @@
     "name": "Faerie Socialite",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "fee"
+    ],
     "description": "A trendy faerie with an appearance matching the season.",
     "motives": [
       "Gossip",
@@ -2974,6 +3098,9 @@
     "name": "Forlorn Spirit",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A distraught or displaced soul, seeking either redemption or solace.",
     "motives": [
       "Express emotion",
@@ -3062,6 +3189,10 @@
     "name": "Fungril Gladeservant",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "geant",
+      "plante"
+    ],
     "description": "A towering fungril dressed in what nature provides with a wooden blade arm and a network of vines which serve as fingers.",
     "motives": [
       "Encourage growth",
@@ -3182,6 +3313,9 @@
     "name": "Gang Hideout",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "bete"
+    ],
     "description": "A gathering point used by a gang as a base of operations and to shift goods, often attached to a legitimate business.",
     "motives": [
       "Conduct illegal activities",
@@ -3274,6 +3408,9 @@
     "name": "Ghast Hollowheart",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A multi-limbed corpse with a cruel flail and spines that thrust from its body",
     "motives": [
       "Obey the master",
@@ -3387,6 +3524,9 @@
     "name": "Ghost",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A restless spirited soul who haunts an area, driven by one final desire.",
     "motives": [
       "Haunt",
@@ -3459,6 +3599,9 @@
     "name": "Ghoul Pack",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A pack of long limbed, flesh-eating undead, dripping in blood and gore",
     "motives": [
       "Eat",
@@ -3524,6 +3667,9 @@
     "name": "Giant Mosquitoes",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "geant"
+    ],
     "hordeRatio": "5/HP",
     "description": "Des dizaines de moustiques gros comme le poing, volant ensemble pour se protéger.",
     "motives": [
@@ -3606,6 +3752,10 @@
     "name": "Giant Rat",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "bete",
+      "geant"
+    ],
     "description": "Un rongeur de la taille d’un chat, doué pour fouiller et survivre.",
     "motives": [
       "Creuser",
@@ -3676,6 +3826,10 @@
     "name": "Giant Scorpion",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "geant"
+    ],
     "description": "Un arachnide de taille humaine avec des pinces déchirantes et une queue venimeuse.",
     "motives": [
       "Embusquer",
@@ -3762,6 +3916,10 @@
     "name": "Giant Snake",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "geant"
+    ],
     "description": "A snake large enough to swallow a small humanoid.",
     "motives": [
       "Camouflage",
@@ -3829,6 +3987,9 @@
     "name": "Giant Toad",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "geant"
+    ],
     "description": "A large toad with a mouth big enough to swallow a person whole.",
     "motives": [
       "Leap",
@@ -3897,6 +4058,10 @@
     "name": "Glass Snake",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "dragon"
+    ],
     "description": "Un serpent transparent à la tête massive qui laisse une traînée d’éclats de verre partout où il passe.",
     "motives": [
       "Grimper",
@@ -3977,6 +4142,9 @@
     "name": "Goblin Archer",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A small goblinoid with large ears and big mouth.",
     "motives": [
       "Track",
@@ -4035,6 +4203,9 @@
     "name": "Goblin Mage",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A goblinoid with glowing skin granting magical powers.",
     "motives": [
       "Accumulate arcana",
@@ -4101,6 +4272,9 @@
     "name": "Grand Feast",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "bete"
+    ],
     "description": "A community-wide celebration featuring way too much drink, food, and fun.",
     "motives": [
       "Bring everyone together",
@@ -4184,6 +4358,10 @@
     "name": "Gravescourge",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "geant",
+      "mort-vivant"
+    ],
     "description": "A giant’s body rotted from the inside, holding a cleaver.",
     "motives": [
       "Attack",
@@ -4264,6 +4442,9 @@
     "name": "Green Ooze",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "aberration"
+    ],
     "description": "Un blob vert translucide d’acide.",
     "motives": [
       "Se camoufler",
@@ -4308,6 +4489,9 @@
     "name": "Grinning Legion Mob",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An unruly mob of nihilistic ruffians from smaller- statured ancestries – goblin, halfling, goblin, and more.",
     "motives": [
       "Find humor in horror",
@@ -4378,6 +4562,10 @@
     "name": "Grinning Wolfrider",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "A Grinning Legion warrior with a bird-skull mask wielding a short spear and riding a cackling wolf.",
     "motives": [
       "Cause panic",
@@ -4468,6 +4656,9 @@
     "name": "Harrier",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete"
+    ],
     "description": "Un combattant agile armé de javelots.",
     "motives": [
       "Flanquer",
@@ -4540,6 +4731,9 @@
     "name": "Head Guard",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un garde expérimenté avec une masse, un sifflet et une voix tonitruante.",
     "motives": [
       "Arrêter",
@@ -4631,6 +4825,9 @@
     "name": "Hedge Wizard",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A mystic who has learned the ways of magic by learning the ways of life.",
     "motives": [
       "Live away from others",
@@ -4722,6 +4919,9 @@
     "name": "Hippogriff",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "bete"
+    ],
     "description": "A flying creature with the forelegs and head of an eagle and the hindquarters of a horse trained to accept riders.",
     "motives": [
       "Protect rider",
@@ -4793,6 +4993,9 @@
     "name": "Hive Collector",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Seekers for Mother, they collect what might please her.",
     "motives": [
       "Envenom",
@@ -4839,6 +5042,9 @@
     "name": "Hobblin",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A tall fur-covered goblinoid with long muscular arms.",
     "motives": [
       "Ambush",
@@ -4924,6 +5130,9 @@
     "name": "Hobgoblin Chief",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A tall goblinoid with an intense demeanor.",
     "motives": [
       "Train",
@@ -5023,6 +5232,11 @@
     "name": "Hobgoblin Raider",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "geant",
+      "humanoide"
+    ],
     "description": "A large goblinoid riding a giant boar that makes an ill-tempered mount.",
     "motives": [
       "Wrangle beast",
@@ -5102,6 +5316,9 @@
     "name": "Human Student",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "An apprentice mage with raw but unrefined talent.",
     "motives": [
       "Learn magic",
@@ -5168,6 +5385,9 @@
     "name": "Ishkitini, Screech-Omen",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "bete"
+    ],
     "description": "A Choctaw death-owl whose cry stirs the hair on your arms before the wind arrives.",
     "motives": [
       "Harrow with omens",
@@ -5265,6 +5485,10 @@
     "name": "Jagged Knife Bandit",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "Un criminel rusé en cape portant l’un des couteaux emblématiques du gang.",
     "motives": [
       "Fuir",
@@ -5333,6 +5557,10 @@
     "name": "Jagged Knife Hexer",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "Un bandit portant un bâton et une cape ornée d’accessoires magiques, utilisant des malédictions pour tourmenter ses ennemis.",
     "motives": [
       "Commander",
@@ -5404,6 +5632,9 @@
     "name": "Jagged Knife Kneebreaker",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "demon"
+    ],
     "description": "Un bagarreur imposant portant un gros gourdin.",
     "motives": [
       "Lutter",
@@ -5478,6 +5709,9 @@
     "name": "Jagged Knife Lackey",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "demon"
+    ],
     "description": "Un voleur en vêtements simples avec de petites dagues, désireux de faire ses preuves.",
     "motives": [
       "Fuir",
@@ -5547,6 +5781,9 @@
     "name": "Jagged Knife Lieutenant",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un bandit aguerri en cuir de qualité, à la voix forte et au regard rusé.",
     "motives": [
       "Intimider",
@@ -5647,6 +5884,9 @@
     "name": "Jagged Knife Shadow",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Un vaurien agile portant un couteau vicieux et utilisant la magie des ombres pour isoler ses cibles.",
     "motives": [
       "Embusquer",
@@ -5716,6 +5956,9 @@
     "name": "Jagged Knife Sniper",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un bandit dégingandé frappant depuis une position dissimulée avec un arc court.",
     "motives": [
       "Embusquer",
@@ -5772,6 +6015,9 @@
     "name": "Katari Witch",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A female katari wearing a pointy hat with ear holes.",
     "motives": [
       "Develop potions",
@@ -5857,6 +6103,12 @@
     "name": "Kelpie Bridle-Taker",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "aberration",
+      "bete",
+      "fee",
+      "plante"
+    ],
     "description": "A river-horse glossy with weeds, eyes like peat lights.",
     "motives": [
       "Offer a ride",
@@ -5939,6 +6191,9 @@
     "name": "Kobold Slinger",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "dragon"
+    ],
     "description": "A small and cowardly draconic humanoid armed with a sling.",
     "motives": [
       "Throw",
@@ -5992,6 +6247,9 @@
     "name": "Kobold Trapper",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "dragon"
+    ],
     "description": "A small and cowardly draconic humanoid armed with a dagger.",
     "motives": [
       "Trap",
@@ -6064,6 +6322,9 @@
     "name": "Kushtaka, Drowned-Voice",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "bete"
+    ],
     "description": "A Tlingit river-otter shapeshifter whose echo sounds like a cousin calling for help.",
     "motives": [
       "Lure to water",
@@ -6148,6 +6409,12 @@
     "name": "Leafcutter Spriggant",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction",
+      "fee",
+      "plante"
+    ],
     "description": "An insect the size of a large dog with wooden armor plates taken from the bark of various trees.",
     "motives": [
       "Fashion armor",
@@ -6222,6 +6489,9 @@
     "name": "Leprechaun",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "fee"
+    ],
     "description": "A sly trickster of the fae, the Leprechaun barters in lies and lures the greedy with promises of gold. Quick-tongued and quicker to vanish, he delights in turning bargains into traps.",
     "motives": [
       "Bargain for gold",
@@ -6313,6 +6583,10 @@
     "name": "Leprechaun Covenant-Keeper",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "fee",
+      "humanoide"
+    ],
     "description": "A pocket-lawyer of the sidhe who can notarize a deal with a wink.",
     "motives": [
       "Entangle with wording",
@@ -6395,6 +6669,10 @@
     "name": "Living Tentacle",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "aberration",
+      "humanoide"
+    ],
     "description": "A part of the Limb Wreath is severed, twitching and moving",
     "motives": [
       "Rush",
@@ -6445,6 +6723,9 @@
     "name": "Lone Spectre",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A ghostly entity of pure malice",
     "motives": [
       "Move through solid objects",
@@ -6529,6 +6810,10 @@
     "name": "Mad Mage",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "A wizard commanding creatures made by stitching together disparate parts.",
     "motives": [
       "Experiment",
@@ -6639,6 +6924,10 @@
     "name": "Mandrake",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "dragon",
+      "plante"
+    ],
     "description": "A sentient mass of roots in the form of a small humanoid.",
     "motives": [
       "Grow",
@@ -6724,6 +7013,9 @@
     "name": "Mannegishi Bridge-Saboteur",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete"
+    ],
     "description": "A six-fingered Cree trickster of timbers and twine, giggling from the underside of planks.",
     "motives": [
       "Trip boats",
@@ -6805,6 +7097,9 @@
     "name": "Merchant",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un marchand itinérant avec des marchandises de contrées lointaines.",
     "motives": [
       "Marchander",
@@ -6847,6 +7142,9 @@
     "name": "Minor Chaos Elemental",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "elementaire"
+    ],
     "description": "Une entité instable d’énergie chaotique pure.",
     "motives": [
       "Semer le désordre",
@@ -6885,6 +7183,9 @@
     "name": "Minor Demon",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "demon"
+    ],
     "description": "Une petite entité démoniaque des Royaumes Extérieurs.",
     "motives": [
       "Corrompre",
@@ -6923,6 +7224,9 @@
     "name": "Minor Earth Elemental",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "elementaire"
+    ],
     "description": "A collection of rocks and stones that move as a cohesive unit.",
     "motives": [
       "Slam",
@@ -7002,6 +7306,9 @@
     "name": "Minor Fire Elemental",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "elementaire"
+    ],
     "description": "Un petit être de flamme vivante.",
     "motives": [
       "Brûler",
@@ -7040,6 +7347,9 @@
     "name": "Minor Treant",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "plante"
+    ],
     "description": "Un petit arbre animé, gardien de la forêt.",
     "motives": [
       "Défendre la forêt",
@@ -7082,6 +7392,9 @@
     "name": "Minotaur Bully",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A bull-headed bully who preys on new faces and weaklings.",
     "motives": [
       "Pick on the weak",
@@ -7168,6 +7481,10 @@
     "name": "Mountain Troll",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "construction",
+      "geant"
+    ],
     "description": "A hideous, twisted giant born out of a rock wearing purloined armor and a belt of severed heads.",
     "motives": [
       "Ambush from behind",
@@ -7267,6 +7584,10 @@
     "name": "Mystic Hag",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "fee",
+      "humanoide"
+    ],
     "description": "A mysterious crone with green skin, warts, and a witch's hat.",
     "motives": [
       "Brew potions",
@@ -7380,6 +7701,9 @@
     "name": "Noxious Zombie",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A walking corpse emitting a cloud of toxic gas from various holes in its body.",
     "motives": [
       "Consume flesh",
@@ -7466,6 +7790,9 @@
     "name": "Pain Beast",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "Mutated, feral predators covered in patchy fur and scales,",
     "motives": [
       "Pounce",
@@ -7528,6 +7855,9 @@
     "name": "Patchwork Zombie Hulk",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "Un zombie massif cousu à partir de multiples cadavres.",
     "motives": [
       "Écraser",
@@ -7579,6 +7909,10 @@
     "name": "Petty Noble",
     "tier": 1,
     "type": "Social",
+    "genres": [
+      "demon",
+      "humanoide"
+    ],
     "description": "Un noble mineur à l’importance de soi démesurée.",
     "motives": [
       "Commander",
@@ -7622,6 +7956,10 @@
     "name": "Pirate Captain",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "Un chef charismatique d’équipage pirate.",
     "motives": [
       "Commander",
@@ -7669,6 +8007,10 @@
     "name": "Pirate Raiders",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "hordeRatio": "3/HP",
     "description": "Un groupe turbulent de pirates attaquant ensemble.",
     "motives": [
@@ -7721,6 +8063,10 @@
     "name": "Pirate Tough",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "Un pirate costaud et intimidant faisant office de gros bras.",
     "motives": [
       "Se bagarrer",
@@ -7763,6 +8109,11 @@
     "name": "Possessed Townsfolk",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "aberration",
+      "geant",
+      "mort-vivant"
+    ],
     "description": "Everyday people possessed by malevolent spirits or mind-controlled by a magic-user.",
     "motives": [
       "Destroy the living",
@@ -7845,6 +8196,10 @@
     "name": "Prickleboar",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "plante"
+    ],
     "description": "A carnivorous boar-like creature grown from a plant; it has thorny horns and a tough, watermelon colored hide.",
     "motives": [
       "Charge",
@@ -7923,6 +8278,9 @@
     "name": "Púca Way-Maker",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "fee"
+    ],
     "description": "A moonlit trickster who leaves cloven tracks that point everywhere but truth. Their laugh sounds like a bell heard underwater.",
     "motives": [
       "Lead astray",
@@ -8005,6 +8363,11 @@
     "name": "Pukwudgie Needle-Path",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "humanoide",
+      "plante"
+    ],
     "description": "A knee-high mischief-maker of the Wampanoag wood, spines like hawthorn, lantern-moss winking in its fist.",
     "motives": [
       "Lead astray",
@@ -8087,6 +8450,9 @@
     "name": "Rabble Mawb",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "These cat-sized balls of hair, limbs, and teeth travel in a \"mawb\" of about a dozen.",
     "motives": [
       "Chitter and chew",
@@ -8158,6 +8524,10 @@
     "name": "Ravenous Ghoul",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A pale, long limbed, eater of flesh, dripping in blood and gore",
     "motives": [
       "Ambush",
@@ -8246,6 +8616,9 @@
     "name": "Red Ooze",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "aberration"
+    ],
     "description": "Un blob rougeâtre et agressif de vase corrosive.",
     "motives": [
       "Consumer",
@@ -8283,6 +8656,9 @@
     "name": "Redcap",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "fee"
+    ],
     "description": "A murderous goblin of ruined towers and border keeps, clad in iron boots and a cap that must be dyed in blood to keep him alive. Redcaps attack with vicious glee, their speed and cruelty belying their size.",
     "motives": [
       "Spill blood",
@@ -8354,6 +8730,10 @@
     "name": "Redcap Butcher",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "demon",
+      "fee"
+    ],
     "description": "A halfling-sized fey creature who hacks their victims apart with a variety of cutting implements.",
     "motives": [
       "Give them the runaround",
@@ -8427,6 +8807,9 @@
     "name": "Redcap Candlemaker",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "fee"
+    ],
     "description": "A pale, gaunt cult leader holding a seven-foot-tall rod with a candle made from a hanged man's hand atop it.",
     "motives": [
       "Cast long shadows",
@@ -8511,6 +8894,10 @@
     "name": "Redcap Millkeeper",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "fee",
+      "humanoide"
+    ],
     "description": "A stump-limbed goblin in iron boots, cap forever wet with someone else's work.",
     "motives": [
       "Strike from rafters",
@@ -8594,6 +8981,9 @@
     "name": "Rotlord",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A massive nexus of forest will and dark magic, this tower of",
     "motives": [
       "Charge",
@@ -8661,6 +9051,9 @@
     "name": "Rotted Zombie",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "Un zombie décomposé tenant à peine debout.",
     "motives": [
       "Dévorer",
@@ -8711,6 +9104,9 @@
     "name": "Rusalka",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A drowned maiden spirit, the Rusalka lures the living with beauty and sorrow, then drags them beneath still waters.",
     "motives": [
       "Pull them under",
@@ -8783,6 +9179,9 @@
     "name": "Sand Sprite",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "fee"
+    ],
     "description": "A small, fairy-like creature made of sand and dirt.",
     "motives": [
       "Prank",
@@ -8866,6 +9265,10 @@
     "name": "Scarecrow",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A Scarecrow possessed by an Evil spirit.",
     "motives": [
       "Scare",
@@ -8951,6 +9354,11 @@
     "name": "Selkie Tide-Post",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "bete",
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A seal-souled courier with braided kelp sigils.",
     "motives": [
       "Warn clans",
@@ -9035,6 +9443,9 @@
     "name": "Sellsword",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "bete"
+    ],
     "description": "Un mercenaire endurci par les batailles, disponible au plus offrant.",
     "motives": [
       "Gagner de l’or",
@@ -9075,6 +9486,9 @@
     "name": "Shambling Zombie",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "Un cadavre lent et putréfié animé par la magie noire.",
     "motives": [
       "Dévorer",
@@ -9113,6 +9527,11 @@
     "name": "Shellycoat",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "demon",
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A mischievous water spirit clad in clattering shells, the Shellycoat haunts riverbanks and marshes, deceiving travelers with false cries and leading them astray into fear and mire.",
     "motives": [
       "Confuse",
@@ -9182,6 +9601,10 @@
     "name": "Skeleton Archer",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "Un squelette animé maniant un arc avec une précision sinistre.",
     "motives": [
       "Détruire",
@@ -9219,6 +9642,9 @@
     "name": "Skeleton Bonewright",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A skeleton medic preserving and restoring its allies to keep up the pressure.",
     "motives": [
       "Assemble skeletons",
@@ -9319,6 +9745,9 @@
     "name": "Skeleton Dredge",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "Un squelette à peine assemblé griffant les vivants.",
     "motives": [
       "Détruire",
@@ -9369,6 +9798,11 @@
     "name": "Skeleton Knight",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "construction",
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "Un squelette en armure brandissant une arme lourde.",
     "motives": [
       "Détruire",
@@ -9407,6 +9841,10 @@
     "name": "Skeleton Warrior",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "Un squelette animé brandissant une lame rouillée.",
     "motives": [
       "Détruire",
@@ -9445,6 +9883,9 @@
     "name": "Sparkflies",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A swarm of sparkling insects who consume electricity.",
     "motives": [
       "Chase the sparks",
@@ -9523,6 +9964,9 @@
     "name": "Spellblade",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Un guerrier qui canalise la magie à travers sa lame.",
     "motives": [
       "Combattre en duel",
@@ -9566,6 +10010,10 @@
     "name": "Spriggan Hedger",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "fee",
+      "plante"
+    ],
     "description": "Knotted as hawthorn, thin as a rake, swelling to wagon-size when roused.",
     "motives": [
       "Wall the way",
@@ -9650,6 +10098,10 @@
     "name": "Swarm of Animated Objects",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "construction"
+    ],
     "description": "A swirling tornado of objects.",
     "motives": [
       "Animate",
@@ -9717,6 +10169,9 @@
     "name": "Swarm of Barnaclemites",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A collection of barnacle-like creatures that eat the wood of a ship.",
     "motives": [
       "Cover hull",
@@ -9769,6 +10224,9 @@
     "name": "Swarm of Piranhas",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A swarm of bloodthirsty fish with razor-sharp teeth.",
     "motives": [
       "Sense blood",
@@ -9839,6 +10297,9 @@
     "name": "Swarm of Rats",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "hordeRatio": "10/HP",
     "description": "Une masse grouillante de rats poussés par la faim.",
     "motives": [
@@ -9890,6 +10351,9 @@
     "name": "Sylvan Soldier",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "Un guerrier elfique défendant les bois.",
     "motives": [
       "Défendre",
@@ -9933,6 +10397,10 @@
     "name": "Sylvan Warden",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "fee",
+      "humanoide"
+    ],
     "description": "A faerie wreathed in the bounty of the forest, wielding a wooden shield and gnarled staff.",
     "motives": [
       "Watch the forest",
@@ -10023,6 +10491,9 @@
     "name": "Tangle Bramble",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "plante"
+    ],
     "description": "Une plante épineuse animée qui fouette les intrus.",
     "motives": [
       "Défendre son territoire",
@@ -10058,6 +10529,10 @@
     "name": "Tangle Bramble Swarm",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "plante"
+    ],
     "hordeRatio": "3/HP",
     "description": "Une masse grouillante de lianes épineuses.",
     "motives": [
@@ -10110,6 +10585,9 @@
     "name": "The Gate Guardian",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "An ancient warrior, buried with the gate to protect entry;",
     "motives": [
       "Push into groups",
@@ -10164,6 +10642,9 @@
     "name": "Tiny Green Ooze",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "aberration"
+    ],
     "description": "Un petit blob vert engendré par une gelée plus grande.",
     "motives": [
       "Dissoudre",
@@ -10215,6 +10696,9 @@
     "name": "Tiny Red Ooze",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "aberration"
+    ],
     "description": "Un petit blob rouge engendré par une gelée plus grande.",
     "motives": [
       "Dissoudre",
@@ -10265,6 +10749,10 @@
     "name": "Umbral Hound",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A shadow-drenched canine skeleton, always hungry for the shadows of the living.",
     "motives": [
       "Consume shadows",
@@ -10351,6 +10839,10 @@
     "name": "Umbral Howler",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A loud canine skeleton draped in shadow, with a howl that shatters the spirit.",
     "motives": [
       "Consume shadows",
@@ -10422,6 +10914,9 @@
     "name": "Umbral Huntmaster",
     "tier": 1,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A living shadow commanding shadowy canines like a hunting pack.",
     "motives": [
       "Claim shadow trophies"
@@ -10525,6 +11020,9 @@
     "name": "Umbral Mastiff",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A large, shadow-drenched skeletal canine with soul- rending claws, always hungry and never satisfied.",
     "motives": [
       "Protect pack",
@@ -10611,6 +11109,10 @@
     "name": "Undead Wyvern",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "dragon",
+      "mort-vivant"
+    ],
     "description": "A flying drake that has lost most of its scales",
     "motives": [
       "Eat flesh",
@@ -10705,6 +11207,9 @@
     "name": "Untamed Experiment",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A creature whose body is made through the whims of its creator. Some have the body of lions or the hindquarters of horses, others are goats that breathe fire.",
     "motives": [
       "Break things",
@@ -10870,6 +11375,9 @@
     "name": "Urstrix",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A bear with a feathered upper body and the head of a large owl.",
     "motives": [
       "Stalk the forest",
@@ -10974,6 +11482,9 @@
     "name": "Velk the Forsaken",
     "tier": 1,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "Velk Dravenmoor, wounded and corrupted by dark powers,",
     "motives": [
       "Focus fire",
@@ -11049,6 +11560,10 @@
     "name": "Watchling",
     "tier": 1,
     "type": "Ranged",
+    "genres": [
+      "aberration",
+      "plante"
+    ],
     "description": "A levitating mushroom creature with a central eye and a few small tentacles and eyes on stalks protruding from their body.",
     "motives": [
       "Keep watch",
@@ -11122,6 +11637,9 @@
     "name": "Weaponmaster",
     "tier": 1,
     "type": "Standard",
+    "genres": [
+      "bete"
+    ],
     "description": "Un combattant compétent maîtrisant de nombreuses armes.",
     "motives": [
       "Défier",
@@ -11165,6 +11683,12 @@
     "name": "Woad Stalker",
     "tier": 1,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "construction",
+      "mort-vivant",
+      "plante"
+    ],
     "description": "A spirit that has animated the detritus and plants that cover the forest floor into the shape of an animal. It has a golden glow from within.",
     "motives": [
       "Hide in plain sight",
@@ -11251,6 +11775,9 @@
     "name": "Yoblin",
     "tier": 1,
     "type": "Minion",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A vicious goblin with no sense of self-preservation.",
     "motives": [
       "Run into fray",
@@ -11318,6 +11845,9 @@
     "name": "Young Dryad",
     "tier": 1,
     "type": "Support",
+    "genres": [
+      "fee"
+    ],
     "description": "Un jeune esprit de la nature sous forme humanoïde.",
     "motives": [
       "Cultiver",
@@ -11361,6 +11891,9 @@
     "name": "Young Earth Drake",
     "tier": 1,
     "type": "Bruiser",
+    "genres": [
+      "dragon"
+    ],
     "description": "A wingless dragon-like creature whose scales resemble dirt clods that occasionally crackle with static electricity.",
     "motives": [
       "Eat",
@@ -11463,6 +11996,9 @@
     "name": "Zombie Pack",
     "tier": 1,
     "type": "Horde",
+    "genres": [
+      "mort-vivant"
+    ],
     "hordeRatio": "3/HP",
     "description": "Un groupe titubant de morts-vivants, dangereux en nombre.",
     "motives": [

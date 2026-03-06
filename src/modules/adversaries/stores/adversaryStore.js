@@ -6,7 +6,7 @@
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { allAdversaries, ADVERSARY_TYPES, TIERS } from '@data/adversaries'
+import { allAdversaries, ADVERSARY_TYPES, ADVERSARY_GENRES, TIERS } from '@data/adversaries'
 import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 
 export { useAdversaryHomebrewStore }
@@ -16,6 +16,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   const searchQuery = ref('')
   const selectedTiers = ref([])
   const selectedTypes = ref([])
+  const selectedGenres = ref([])
   const sortField = ref('name')
   const sortDirection = ref('asc')
   const selectedAdversaryId = ref(null)
@@ -25,6 +26,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
 
   // ── Constantes exposées ────────────────────────────────
   const availableTypes = ADVERSARY_TYPES
+  const availableGenres = ADVERSARY_GENRES
   const availableTiers = TIERS
 
   // ── Getters ────────────────────────────────────────────
@@ -62,6 +64,13 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     // Filtre par types
     if (selectedTypes.value.length > 0) {
       result = result.filter((a) => selectedTypes.value.includes(a.type))
+    }
+
+    // Filtre par genres (OR : l'adversaire passe s'il a au moins un genre sélectionné)
+    if (selectedGenres.value.length > 0) {
+      result = result.filter((a) =>
+        (a.genres || []).some((g) => selectedGenres.value.includes(g))
+      )
     }
 
     // Tri
@@ -108,7 +117,8 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   const hasActiveFilters = computed(() =>
     searchQuery.value.trim().length > 0 ||
     selectedTiers.value.length > 0 ||
-    selectedTypes.value.length > 0
+    selectedTypes.value.length > 0 ||
+    selectedGenres.value.length > 0
   )
 
   // ── Actions ────────────────────────────────────────────
@@ -135,6 +145,15 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     }
   }
 
+  function toggleGenre(genre) {
+    const idx = selectedGenres.value.indexOf(genre)
+    if (idx === -1) {
+      selectedGenres.value.push(genre)
+    } else {
+      selectedGenres.value.splice(idx, 1)
+    }
+  }
+
   function setSort(field) {
     if (sortField.value === field) {
       sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
@@ -156,6 +175,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     searchQuery.value = ''
     selectedTiers.value = []
     selectedTypes.value = []
+    selectedGenres.value = []
   }
 
   function resetAll() {
@@ -175,11 +195,13 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     searchQuery,
     selectedTiers,
     selectedTypes,
+    selectedGenres,
     sortField,
     sortDirection,
     selectedAdversaryId,
     // Constants
     availableTypes,
+    availableGenres,
     availableTiers,
     // Getters
     allItems,
@@ -192,6 +214,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     setSearch,
     toggleTier,
     toggleType,
+    toggleGenre,
     setSort,
     selectAdversary,
     clearSelection,

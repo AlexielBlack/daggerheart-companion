@@ -4,6 +4,9 @@
     "name": "Abbadon Wasp",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A massive wasp with two pairs of spindly legs and long chitinous arms with the face of a tortured human.",
     "motives": [
       "Devour",
@@ -116,6 +119,10 @@
     "name": "Abhartach",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A cruel petty king cursed to rise from the grave again and again, Abhartach drinks the blood of the living to fuel his unholy power. Small in stature but great in sorcery, he commands the restless dead and bends lesser wills to his own. Only through ancient rites can his tyranny be broken.",
     "motives": [
       "Command the dead",
@@ -226,6 +233,9 @@
     "name": "Adult Flickerfly",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "Un insecte massif aux écailles iridescentes et aux ailes cristallines se déplaçant plus vite que l’œil ne peut suivre.",
     "motives": [
       "Collecter des objets brillants",
@@ -361,6 +371,9 @@
     "name": "Aithon",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A massive, rust-colored horse creature with a bushy mane used as a beast of burden by god-like entities.",
     "motives": [
       "Stomp",
@@ -462,6 +475,9 @@
     "name": "Amphisbaena",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "bete"
+    ],
     "description": "A flying two-headed lizard that spits burning fire and freezing ice.",
     "motives": [
       "Stay at a distance",
@@ -569,6 +585,9 @@
     "name": "Angel",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A beautiful being of solid light that acts as messenger of a God. Motives & Tactics: Travel to beleaguered, bring hope, dispel darkness",
     "motives": [],
     "difficulty": 16,
@@ -670,6 +689,9 @@
     "name": "Anger Scourged",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A person overcome with anger, surrounded by anger spirits in the form of floating spectral skulls.",
     "motives": [
       "Spread anger",
@@ -762,6 +784,10 @@
     "name": "Ankylosaurus",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction"
+    ],
     "description": "An armored quadrupedal dinosaur with a clubbed tai!.",
     "motives": [
       "Use instincts",
@@ -842,6 +868,9 @@
     "name": "Aquatic Basilisk",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An aquatic creature with blue stripes, fins and a deadly gaze.",
     "motives": [
       "Calcify",
@@ -928,6 +957,10 @@
     "name": "Ashen Fawn",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "bete",
+      "elementaire"
+    ],
     "description": "A lanky deer-like creature with a mottled coat whose body is beginning to ignite like their sire.",
     "motives": [
       "Stay close to the stag",
@@ -994,6 +1027,11 @@
     "name": "Ashen Stag",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "elementaire",
+      "geant"
+    ],
     "description": "A towering quadruped beast with flaming antlers and molten scars. Its body emits searing heat, and its howl curdles courage.",
     "motives": [
       "Devour",
@@ -1095,6 +1133,10 @@
     "name": "Baihu Dragon Turtle",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "dragon"
+    ],
     "description": "A tiger-like humanoid watching over a jungle.",
     "motives": [
       "Protect jungle",
@@ -1208,6 +1250,10 @@
     "name": "Banshee, Keener of Tumbled Stones",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "fee",
+      "mort-vivant"
+    ],
     "description": "Her hair is the grass that grows on cairns; her mouth is a winter valley. She sings the order of dying.",
     "motives": [
       "Name the next fall",
@@ -1292,6 +1338,10 @@
     "name": "Baykok, Hollow-Bow",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "A gaunt Ojibwe hunter of bones; arrows hum like teeth chattering in deep winter.",
     "motives": [
       "Punish waste",
@@ -1367,6 +1417,10 @@
     "name": "Belligerent Sister",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "construction",
+      "humanoide"
+    ],
     "description": "A raider that lives for the kill, dressed in scavenged armor, a vile-looking mask and dirty clothes.",
     "motives": [
       "Rob",
@@ -1444,6 +1498,9 @@
     "name": "Blood Cleric",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A cultist wearing blood-stained robes.",
     "motives": [
       "Lead ritual",
@@ -1542,6 +1599,9 @@
     "name": "Blood Hunter",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A cultist who uses blood magic to hunt foes.",
     "motives": [
       "Hunt foes",
@@ -1626,6 +1686,9 @@
     "name": "Blood Mage",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A cultist who has studied the power of blood magic.",
     "motives": [
       "Sacrifice vitality",
@@ -1698,6 +1761,9 @@
     "name": "Blood Zealot",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A cultist who enters a blood rage, often sacrificing much of their health to do so.",
     "motives": [
       "Sacrifice vitality",
@@ -1765,6 +1831,9 @@
     "name": "Bloodborn",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A vile creature of blood born from a dark ritual.",
     "motives": [
       "Revel in new life",
@@ -1845,6 +1914,9 @@
     "name": "Brutalon",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A squat, tanky lizard with three flanged, mace-like bone clubs at the end of its tail, a long, flat horn and large scoop-like claws.",
     "motives": [
       "Turtle up",
@@ -1925,6 +1997,10 @@
     "name": "Canid Bodyguard",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "A dog-like humanoid that is loyal to a master.",
     "motives": [
       "Command",
@@ -1968,6 +2044,9 @@
     "name": "Captured Thrall",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A humanoid with a nest of larvae on their back, using them as a source of food.",
     "motives": [
       "Obey the queen"
@@ -2046,6 +2125,9 @@
     "name": "Carnivorous Plant",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "plante"
+    ],
     "description": "A large plant with a mouth full of razor sharp teeth, surrounded by a mass of thick, flowering vines.",
     "motives": [
       "Grow",
@@ -2146,6 +2228,12 @@
     "name": "Chimera",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "dragon",
+      "geant",
+      "monstruosite"
+    ],
     "description": "A giant, fire-breathing monster with a lion's head, a goat's body, and a serpent's tail.",
     "motives": [
       "Play with their food",
@@ -2246,6 +2334,10 @@
     "name": "Chosen Transformed",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "humanoide",
+      "plante"
+    ],
     "description": "A divine warrior bestowed with more power than they can control.",
     "motives": [
       "Please deity",
@@ -2348,6 +2440,9 @@
     "name": "Chromatic Eel",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A large astral eel whose coloration shifts based on its surroundings and mood.",
     "motives": [
       "Slither",
@@ -2427,6 +2522,11 @@
     "name": "Cilrathi Queensguard",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "fee",
+      "humanoide"
+    ],
     "description": "A lithe faerie with chitinous skin and multiple arms, each wielding a weapon.",
     "motives": [
       "Control the drones",
@@ -2526,6 +2626,10 @@
     "name": "Cinder Ant",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "plante"
+    ],
     "description": "A dog-sized insect that smoulders with smoke and ash, its insides burning with divine magic.",
     "motives": [
       "Feed on divine crystals",
@@ -2607,6 +2711,9 @@
     "name": "Circles Below: Dis",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "demon"
+    ],
     "description": "A city in the Circles Below populated with demons.",
     "motives": [
       "Encourage lives of sin",
@@ -2712,6 +2819,9 @@
     "name": "Clank Juggernaut",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A large clank with one sword arm and one magical cannon arm.",
     "motives": [
       "Box in",
@@ -2811,6 +2921,10 @@
     "name": "Cloud Giant",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "geant"
+    ],
     "description": "A giant that rides atop a winged beast.",
     "motives": [
       "Shape air",
@@ -2906,6 +3020,9 @@
     "name": "Congregation of the End",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Hopeless masses given over to the doctrine of the end, welcoming the death of the world to end their suffering.",
     "motives": [
       "Erode hope",
@@ -2976,6 +3093,9 @@
     "name": "Contract Killer",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A veteran criminal and murderer working for a crime syndicate.",
     "motives": [
       "Get in and get out",
@@ -3088,6 +3208,9 @@
     "name": "Corrupted Piranha School",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A school of plate-sized carnivorous fish who have been twisted by dark magics.",
     "motives": [
       "Hunt",
@@ -3222,6 +3345,9 @@
     "name": "Darkheart Sister",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A dangerous humanoid that has accepted the shadows and become enveloped in rage.",
     "motives": [
       "Fight",
@@ -3308,6 +3434,9 @@
     "name": "Deadeye Sister",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "aberration"
+    ],
     "description": "A figure in leathers with a heavy crossbow and a masked helmet.",
     "motives": [
       "Take the shot",
@@ -3377,6 +3506,10 @@
     "name": "Dearg Due, Grave-Bride",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A lover's promise unkept, veiled in grave-dirt lace. Her ring is a circle no one should step inside.",
     "motives": [
       "Isolate",
@@ -3458,6 +3591,9 @@
     "name": "Death Wraith",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A floating shadow being with wisps of smoke drifting off its body.",
     "motives": [
       "Locate abnormal life",
@@ -3539,6 +3675,9 @@
     "name": "Demon of Avarice",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "demon"
+    ],
     "description": "Une monstruosité royale encapuchonnée aux cornes circulaires ornées de trésors.",
     "motives": [
       "Consumer",
@@ -3619,6 +3758,9 @@
     "name": "Demon of Despair",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "demon"
+    ],
     "description": "Un démon-créature encapuchonné aux longs membres, suintant les ombres.",
     "motives": [
       "Rendre la peur contagieuse",
@@ -3719,6 +3861,9 @@
     "name": "Demon of Hubris",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "demon"
+    ],
     "description": "Un démon d’une beauté parfaite et d’une cruauté infinie, armé d’une lance étincelante et vêtu de robes élégantes.",
     "motives": [
       "Condescendre",
@@ -3831,6 +3976,9 @@
     "name": "Demon of Jealousy",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "demon"
+    ],
     "description": "Une créature capricieuse aux membres grêles et aux désirs insatiables.",
     "motives": [
       "S’approprier le succès des autres",
@@ -3931,6 +4079,10 @@
     "name": "Demon of Wrath",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "demon"
+    ],
     "description": "Un démon imposant aux poings gros comme des rochers, animé par une rage sans fin.",
     "motives": [
       "Attiser la colère",
@@ -4030,6 +4182,9 @@
     "name": "Devil Dealmaker",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "demon"
+    ],
     "description": "An imposing humanoid demon known for striking binding deals with punishments for failure.",
     "motives": [
       "Make bargains",
@@ -4119,6 +4274,9 @@
     "name": "Devil Planeswalker",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "demon"
+    ],
     "description": "A realm-traveling humanoid demon with horns and a devilish smirk.",
     "motives": [
       "Spread sin",
@@ -4214,6 +4372,9 @@
     "name": "Devil Punisher",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "demon"
+    ],
     "description": "A brutish humanoid demon with horns and a love of violence.",
     "motives": [
       "Beat out spirit",
@@ -4327,6 +4488,10 @@
     "name": "Dire Bat",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "Une chauve-souris aux larges ailes, éternellement loyale à son maître vampire.",
     "motives": [
       "Bombarder en piqué",
@@ -4412,6 +4577,10 @@
     "name": "Drake",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "bete",
+      "dragon"
+    ],
     "description": "A small flying draconic beast.",
     "motives": [
       "Gather strength of numbers",
@@ -4478,6 +4647,9 @@
     "name": "Drakona Monk",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A drakona skilled in martial arts.",
     "motives": [
       "Channel energy",
@@ -4563,6 +4735,9 @@
     "name": "Dryad",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "fee"
+    ],
     "description": "Un esprit de la nature sous la forme d’un arbre humanoïde.",
     "motives": [
       "Commander",
@@ -4651,6 +4826,11 @@
     "name": "Dullahan, Lantern of Names",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A rider whose head watches from the saddle-bag, lantern light catching the true name in a throat.",
     "motives": [
       "Speak the name",
@@ -4738,6 +4918,9 @@
     "name": "Each-Uisge, Lake's Devourer",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "fee"
+    ],
     "description": "Black as a windless lake, mane of eel-slick, mouth a cave of nails.",
     "motives": [
       "Break the line by the shore",
@@ -4822,6 +5005,9 @@
     "name": "Earth Giant",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "geant"
+    ],
     "description": "A giant capable of moving and shaking the earth.",
     "motives": [
       "Carve earth",
@@ -4929,6 +5115,9 @@
     "name": "Ekoko",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A large winged beast that relies on echolocation.",
     "motives": [
       "Screech",
@@ -5028,6 +5217,9 @@
     "name": "Elemental Spark",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "elementaire"
+    ],
     "description": "Un éclat flamboyant de feu élémentaire.",
     "motives": [
       "Exploser",
@@ -5092,6 +5284,9 @@
     "name": "Elf Spellblade",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An elf who combines skill with magic and swordplay.",
     "motives": [
       "Challenge to duel",
@@ -5191,6 +5386,10 @@
     "name": "Eyeball Aberration",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A monstrous spherical arcane beast with one huge eye, mouths on stalks, and a long, lolling tongue.",
     "motives": [
       "Confound logic",
@@ -5307,6 +5506,9 @@
     "name": "Faerie Godmother",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "fee"
+    ],
     "description": "A faerie with thick-rimmed glasses and a magic wand.",
     "motives": [
       "Run business",
@@ -5386,6 +5588,10 @@
     "name": "Faerie Spider",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "fee"
+    ],
     "description": "A large spicier that catches Faerie and can become invisible.",
     "motives": [
       "Spin webs",
@@ -5485,6 +5691,11 @@
     "name": "Faerie Wrathwing",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "bete",
+      "fee",
+      "humanoide"
+    ],
     "description": "A faerie mage thralled by the queen’s power and influence.",
     "motives": [
       "Protect the hive",
@@ -5598,6 +5809,9 @@
     "name": "False God",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A cult leader who is empowered through worship of them.",
     "motives": [
       "Lead cult",
@@ -5697,6 +5911,9 @@
     "name": "Fatespinner Hag",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "fee"
+    ],
     "description": "A tall, stooped crone with elongated arms, who can pull and influence invisible threads of fate.",
     "motives": [
       "Read futures",
@@ -5823,6 +6040,9 @@
     "name": "Fear Scourged",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A person overcome with fear, surrounded by fear spirits in the form of floating spectral skulls.",
     "motives": [
       "Spread fear",
@@ -5931,6 +6151,9 @@
     "name": "Fellmounted Shadow King",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "The shade of a forgotten ruler, cursed to patrol the skies atop a winged eel in the service of an evil demiurge.",
     "motives": [
       "Acquire magical items for master",
@@ -6029,6 +6252,9 @@
     "name": "Feral Vampire",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A cursed humanoid with a frothing mouth behind their sharp teeth.",
     "motives": [
       "Evade hunters",
@@ -6126,6 +6352,9 @@
     "name": "Ferryman",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A cloaked skeletal guide to newly formed souls.",
     "motives": [
       "Guide souls",
@@ -6212,6 +6441,10 @@
     "name": "Fire Beetles",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "plante"
+    ],
     "description": "A swarm of fist-sized red beetles which feed on burning coals and hibernate in the ground or trees until awakened by an active blaze.",
     "motives": [
       "Stoke the flames",
@@ -6283,6 +6516,9 @@
     "name": "Fire Giant",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "geant"
+    ],
     "description": "A giant wielding precise control over fire.",
     "motives": [
       "Batter",
@@ -6378,6 +6614,11 @@
     "name": "Flame Fanner",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete",
+      "demon",
+      "elementaire"
+    ],
     "description": "A small, imp-like creature often seen in proximity to Ignocerouses.",
     "motives": [
       "Feed the fire",
@@ -6464,6 +6705,11 @@
     "name": "Fossil",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction",
+      "mort-vivant"
+    ],
     "description": "The animated skeleton of a formerly great beast.",
     "motives": [
       "Awaken",
@@ -6532,6 +6778,10 @@
     "name": "Frost Bear",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "elementaire"
+    ],
     "description": "A large polar bear surrounded by a cloud of frost.",
     "motives": [
       "Hunt",
@@ -6627,6 +6877,10 @@
     "name": "Frost Giant",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "elementaire",
+      "geant"
+    ],
     "description": "A giant who thrives in frigid environments.",
     "motives": [
       "Batter",
@@ -6723,6 +6977,11 @@
     "name": "Frost Spirits",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "construction",
+      "elementaire",
+      "mort-vivant"
+    ],
     "description": "A collection of animated motes of cold energy.",
     "motives": [
       "Gather strength in numbers",
@@ -6794,6 +7053,9 @@
     "name": "Galapa Chronomancer",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A galapa wielding a wooden staff with a glowing crystal at the tip.",
     "motives": [
       "Control time",
@@ -6879,6 +7141,9 @@
     "name": "Genie",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A humanoid with a gaseous body, dressed in fine silks and jewelry. Motives & Tactics: Create home, defend master, grant wishes",
     "motives": [],
     "difficulty": 17,
@@ -6982,6 +7247,9 @@
     "name": "Ghostly Legion",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A restless group of spirited souls driven by one final collective desire.",
     "motives": [
       "Haunt",
@@ -7064,6 +7332,9 @@
     "name": "Giant Tortoise",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "geant"
+    ],
     "description": "A huge tortoise as tall as a building.",
     "motives": [
       "Carry load",
@@ -7144,6 +7415,9 @@
     "name": "Gnome Alchemist",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A gnome wearing a face mask who specializes in creating chemical concoctions.",
     "motives": [
       "Mix concoctions",
@@ -7245,6 +7519,11 @@
     "name": "Gorge Buzzard",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "An enormous carrion raptor with stark plumage and a voracious appetite.",
     "motives": [
       "Search for prey",
@@ -7356,6 +7635,9 @@
     "name": "Greater Earth Elemental",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "elementaire"
+    ],
     "description": "Un glissement de terrain vivant fait de rochers et de poussière, grand comme une maison.",
     "motives": [
       "Provoquer une avalanche",
@@ -7458,6 +7740,10 @@
     "name": "Greater Water Elemental",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete",
+      "elementaire"
+    ],
     "description": "Une immense vague vivante qui s’abat sur les ennemis.",
     "motives": [
       "Submerger par un déluge",
@@ -7539,6 +7825,9 @@
     "name": "Gulch Salamander: Burning Lizard",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A long, multi-legged lizard with fire that burns from its back during the day and smoulders at night.",
     "motives": [
       "Absorb heat",
@@ -7619,6 +7908,9 @@
     "name": "Gulch Salamander: Sluggish Lizard",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A long, multi-legged lizard with fire that burns from its back during the day and smoulders at night.",
     "motives": [
       "Absorb heat",
@@ -7699,6 +7991,9 @@
     "name": "Halfling Underlord",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A suave halfling criminal boss.",
     "motives": [
       "Lead gang",
@@ -7797,6 +8092,10 @@
     "name": "Head Vampire",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "Un mort-vivant captivant vêtu de fines parures aristocratiques.",
     "motives": [
       "Créer des serviteurs",
@@ -7911,6 +8210,9 @@
     "name": "Herald of Conquest",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A majestic messenger adorned in menacing finery, delivering news of imminent conquest to a nervous populace.",
     "motives": [
       "Cow civilians",
@@ -8026,6 +8328,9 @@
     "name": "Huge Golden Ooze",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration"
+    ],
     "description": "A large moving mound of golden slime with a treasure visible at the center.",
     "motives": [
       "Find shiny things",
@@ -8146,6 +8451,9 @@
     "name": "Huge Green Ooze",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration"
+    ],
     "description": "Un monticule vert translucide d’acide plus grand que la plupart des humains.",
     "motives": [
       "Se camoufler",
@@ -8242,6 +8550,9 @@
     "name": "Human Supervillain",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A masked, cape-wearing flying villain out for revenge.",
     "motives": [
       "Scheme",
@@ -8366,6 +8677,10 @@
     "name": "Hungering Darkness",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A black silhouette of a great beast, with glowing eyes and a large maw.",
     "motives": [
       "Hunger",
@@ -8460,6 +8775,9 @@
     "name": "Hydra",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Une bête écailleuse quadrupède à multiples têtes au long cou, chacune remplie de crocs menaçants.",
     "motives": [
       "Dévorer",
@@ -8564,6 +8882,9 @@
     "name": "Ignocerous",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A large, aggressive beast, bathed in fire and brimstone.",
     "motives": [
       "Protect territory",
@@ -8676,6 +8997,11 @@
     "name": "Illumi Paladin",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction",
+      "humanoide"
+    ],
     "description": "An illumi dedicated to an oath, heavily armored and wielding a blade of light.",
     "motives": [
       "Uphold oath",
@@ -8761,6 +9087,9 @@
     "name": "Illumi Schemer",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "demon"
+    ],
     "description": "A charismatic politician working in a minor position of power, with control over an important resource.",
     "motives": [
       "Scheme",
@@ -8844,6 +9173,9 @@
     "name": "Illumi Solar",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An illumi with light-based angelic powers.",
     "motives": [
       "Blind",
@@ -8930,6 +9262,9 @@
     "name": "Inferni Diabolist",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "demon"
+    ],
     "description": "An inferni adept at summoning demons.",
     "motives": [
       "Lead rituals",
@@ -9034,6 +9369,11 @@
     "name": "Jelloon",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "bete",
+      "geant"
+    ],
     "description": "A giant jellyfish-like creature that floats in the air.",
     "motives": [
       "Sting",
@@ -9142,6 +9482,10 @@
     "name": "Jorogumo",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A beautiful woman dressed in fine silks who shapeshifts into a bloodthirsty half-human and half-spider abomination.",
     "motives": [
       "Seduce",
@@ -9240,6 +9584,10 @@
     "name": "Kalimari Grenadier",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A humanoid with the lower body of an octopus, armed with explosives in each tentacle.",
     "motives": [
       "Tinker",
@@ -9327,6 +9675,10 @@
     "name": "Kalimari Oozeslinger",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A humanoid with the lower body of an octopus, armed with oversized pistols containing brightly colored cartridges.",
     "motives": [
       "Biohack",
@@ -9406,6 +9758,10 @@
     "name": "Kalimari Seasoned Fighter",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A humanoid with the lower body of an octopus, armed with knives in each tentacle.",
     "motives": [
       "Defend",
@@ -9473,6 +9829,9 @@
     "name": "Katari Pit Fighter",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A brutal kata ri fighter with the feline features of a big cat who fights in front of a crowd.",
     "motives": [
       "Chase",
@@ -9586,6 +9945,9 @@
     "name": "Kikimora",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A silent presence in forgotten homes, the Kikimora slips through cracks and weaves sleep into snares. She punishes the guilty with dread and feeds on disorder, grief, and shame.",
     "motives": [
       "Disturb the restless",
@@ -9685,6 +10047,9 @@
     "name": "Lamplight Beguiler",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A huge mer-creature who lures unwary prey into eating range with their dangling, shapeshifting head stalk.",
     "motives": [
       "Entice with secret knowledge",
@@ -9785,6 +10150,9 @@
     "name": "Large Nesting",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration"
+    ],
     "description": "A large mass of writhing tentacles.",
     "motives": [
       "Cultivate",
@@ -9866,6 +10234,10 @@
     "name": "Leshy",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A trickster spirit of the forest, the Leshy bends paths, commands beasts, and punishes those who disrespect the wild.",
     "motives": [
       "Call the beasts",
@@ -9978,6 +10350,9 @@
     "name": "Masked Queen",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A masked warrior that leads groups of bandits.",
     "motives": [
       "Plan",
@@ -10107,6 +10482,10 @@
     "name": "Master Elementalist",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "elementaire",
+      "humanoide"
+    ],
     "description": "A powerful sorcerer drawing upon the elements, clad in robes from different regions representing their travel and studies.",
     "motives": [
       "Dance like air",
@@ -10205,6 +10584,9 @@
     "name": "Maven of Despair",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction"
+    ],
     "description": "An ancient metal and stone statue brought to life, its divinity shattered, but its purpose retained.",
     "motives": [
       "Continue its purpose",
@@ -10288,6 +10670,9 @@
     "name": "Maven of Grief",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction"
+    ],
     "description": "An ancient metal and stone statue brought to life, its divinity shattered, but its purpose retained.",
     "motives": [
       "Continue its purpose",
@@ -10373,6 +10758,9 @@
     "name": "Maven of Regret",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction"
+    ],
     "description": "An ancient metal and stone statue brought to life, its divinity shattered, but its purpose retained.",
     "motives": [
       "Continue its purpose",
@@ -10471,6 +10859,9 @@
     "name": "Maven of Sorrow",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction"
+    ],
     "description": "An ancient metal and stone statue brought to life, its divinity shattered, but its purpose retained.",
     "motives": [
       "Continue its purpose",
@@ -10555,6 +10946,9 @@
     "name": "Medium Nesting",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "aberration"
+    ],
     "description": "A medium mass of writhing tentacles.",
     "motives": [
       "Grow",
@@ -10663,6 +11057,9 @@
     "name": "Megalodon",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "An enormous shark that seeks out wounded creatures in the water to make its prey.",
     "motives": [
       "Swim swiftly",
@@ -10761,6 +11158,9 @@
     "name": "Mentalist",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A person with augmented mental capabilities.",
     "motives": [
       "Perceive",
@@ -10840,6 +11240,10 @@
     "name": "Mishipeshu, River-Claws",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "The Underwater Panther of the Anishinaabe lakes, copper-bright horns cutting the current.",
     "motives": [
       "Guard crossings",
@@ -10928,6 +11332,9 @@
     "name": "Monarch",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "Le souverain d’une nation, auréolé du privilège de la tradition et maniant un pouvoir inégalé dans son domaine.",
     "motives": [
       "Contrôler les vassaux",
@@ -11017,6 +11424,9 @@
     "name": "Murder Mystery",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An ally of the PCs was murdered, and it is up to the PCs to find the culprit.",
     "motives": [
       "Sow distrust",
@@ -11107,6 +11517,9 @@
     "name": "Mutagenist Sister",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A humanoid in a heavy coat with several syringes and flasks",
     "motives": [
       "Empower others",
@@ -11191,6 +11604,9 @@
     "name": "Mutater Hag",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "fee"
+    ],
     "description": "An elderly crone with large daws, capable of altering faces and memories.",
     "motives": [
       "Affect memories",
@@ -11277,6 +11693,9 @@
     "name": "Naga Empress",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A huge snake with a humanoid face that rules over a colony of nagas.",
     "motives": [
       "Rule",
@@ -11390,6 +11809,9 @@
     "name": "Naga Oracle",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete"
+    ],
     "description": "A half-snake, half-human hybrid armed with two curved blades.",
     "motives": [
       "Predict",
@@ -11488,6 +11910,9 @@
     "name": "Naga Shapeshifter",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A humanoid with a snake head capable of altering their appearance. Motives & Tactics: Infiltrate settlements, poison leaders, kidnap powerful",
     "motives": [],
     "difficulty": 15,
@@ -11581,6 +12006,9 @@
     "name": "Naiad",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A female humanoid with pale blue skin, watching over a lake.",
     "motives": [
       "Protect lake",
@@ -11694,6 +12122,11 @@
     "name": "Nuckelavee",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "demon",
+      "fee"
+    ],
     "description": "A skinless nightmare from the sea, the Nuckelavee rises with storms and foul winds. Horse and rider fused into one grotesque demon, its veins bulge black, its breath spreads plague, and no mortal can outrun its grasp. Only fresh water holds it at bay, for no stream will suffer its touch.",
     "motives": [
       "Corrupt the land",
@@ -11805,6 +12238,9 @@
     "name": "Oak Treant",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "plante"
+    ],
     "description": "Un vieux chêne animé robuste et ancien.",
     "motives": [
       "Se cacher à la vue de tous",
@@ -11888,6 +12324,10 @@
     "name": "Omara, the Grave Hallowed",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "mort-vivant",
+      "plante"
+    ],
     "description": "A shadow-cursed vampire, once touched by the divine and left to languish, feral and enraged",
     "motives": [
       "Rage",
@@ -12013,6 +12453,10 @@
     "name": "Omara, the Shadow Cursed",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "construction",
+      "humanoide"
+    ],
     "description": "A sanguine hunter of the shadows who calls death her friend. She is dressed in dark clothes and red armor",
     "motives": [
       "Drink Blood",
@@ -12170,6 +12614,11 @@
     "name": "Oni",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "geant",
+      "mort-vivant"
+    ],
     "description": "An ogre-like malevolent shapeshifting spirit.",
     "motives": [
       "Suffocate",
@@ -12282,6 +12731,9 @@
     "name": "Orc Nemesis",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "An angry orc looking to trash the reputation of their rivals.",
     "motives": [
       "Hold grudges",
@@ -12381,6 +12833,12 @@
     "name": "Pamola, Gale-Warden of Katahdin",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "bete",
+      "elementaire",
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "Abenaki storm spirit with the head of a moose and the wings of night; breath like rime.",
     "motives": [
       "Freeze rash travelers",
@@ -12472,6 +12930,9 @@
     "name": "Pegasus",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete"
+    ],
     "description": "A majestic, winged horse sometimes used as a mount by powerful beings.",
     "motives": [
       "Flyby",
@@ -12556,6 +13017,9 @@
     "name": "Phoenix",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "elementaire"
+    ],
     "description": "A large bird made of elemental energy.",
     "motives": [
       "Soar",
@@ -12665,6 +13129,9 @@
     "name": "Priest of Decay",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A fungril sworn to the power of decay, preaching the inevitability of death for all things. Priest of Decay",
     "motives": [
       "Erode hope",
@@ -12783,6 +13250,9 @@
     "name": "Primordial Basilisk",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A six-legged lizard the size of a small house with strong scales and hundreds of spikes on its hide.",
     "motives": [
       "Seek prey",
@@ -12906,6 +13376,9 @@
     "name": "Quetzalcoatlus",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A winged reptile with huge wingspan and long beak.",
     "motives": [
       "Use instincts",
@@ -13000,6 +13473,10 @@
     "name": "Reaper",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A cloaked skeletal figure armed with a scythe.",
     "motives": [
       "Track",
@@ -13071,6 +13548,10 @@
     "name": "Rhino Beetle",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete",
+      "construction"
+    ],
     "description": "An armored beetle the size of a rhino.",
     "motives": [
       "Gore",
@@ -13165,6 +13646,11 @@
     "name": "Ribbet Leaper Knight",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction",
+      "humanoide"
+    ],
     "description": "An acrobatic armored ribbet wielding a spear.",
     "motives": [
       "Stay mobile",
@@ -13237,6 +13723,9 @@
     "name": "Ribbet Skulk",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A small ribbet that hides in the shadows, using toxin-infused darts to distract their foes.",
     "motives": [
       "Hide",
@@ -13337,6 +13826,9 @@
     "name": "Riftheart",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A huge beating heart which powers a rift between realms.",
     "motives": [
       "Create rifts",
@@ -13444,6 +13936,10 @@
     "name": "Rolling Eye",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "aberration",
+      "mort-vivant"
+    ],
     "description": "The remains of a Soul Flower’s eyestalk, which seeks more of its own kind.",
     "motives": [
       "Seek",
@@ -13525,6 +14021,9 @@
     "name": "Rott",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A floating skull surrounded by black wispy tendrils.",
     "motives": [
       "Decay land",
@@ -13634,6 +14133,9 @@
     "name": "Rottree",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "plante"
+    ],
     "description": "A warped and blackened awakened tree.",
     "motives": [
       "Blacken landscape",
@@ -13701,6 +14203,12 @@
     "name": "Scythicant Sentinel",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "aberration",
+      "construction",
+      "demon",
+      "fee"
+    ],
     "description": "A corrupted faerie infused with the blood of devils, mindless in its pursuit of trespassers.",
     "motives": [
       "Protect the hive",
@@ -13787,6 +14295,10 @@
     "name": "Sea Giant",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "geant"
+    ],
     "description": "A giant who tames underwater beasts.",
     "motives": [
       "Defend territory",
@@ -13873,6 +14385,10 @@
     "name": "Selachi Ghostfin",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A shark-like humanoid with translucent skin.",
     "motives": [
       "Infiltrate",
@@ -13959,6 +14475,9 @@
     "name": "Selachi Megalodon",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A hulking shark-like humanoid with numerous scars across their body.",
     "motives": [
       "Intimidate",
@@ -14071,6 +14590,9 @@
     "name": "Selachi Warband",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete"
+    ],
     "description": "A pack of shark-like humanoids.",
     "motives": [
       "Raid",
@@ -14147,6 +14669,9 @@
     "name": "Sheriff",
     "tier": 3,
     "type": "Social",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A trigger-happy lawman armed with a revolver and badge.",
     "motives": [
       "Shoot",
@@ -14236,6 +14761,9 @@
     "name": "Shrieking Stalk",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "aberration"
+    ],
     "description": "A hideous fleshy growth with multiple eyes that creates a blood-curdling cry when creatures approach.",
     "motives": [
       "Alert",
@@ -14303,6 +14831,9 @@
     "name": "Skeletal Monstrosity",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A collection of bones that have taken a monstrous humanoid form.",
     "motives": [
       "Supplement skeleton",
@@ -14397,6 +14928,9 @@
     "name": "Skeleton King",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A skeleton monarch ruling over the undead.",
     "motives": [
       "Command",
@@ -14511,6 +15045,11 @@
     "name": "Sluagh Swarm",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "fee",
+      "mort-vivant"
+    ],
     "description": "The Sluagh are a cursed host of the restless dead, flying like a storm of shadow through the night sky. They descend upon the dying to snatch their souls, or drag the living screaming into Annwn, their numbers never truly ending.",
     "motives": [
       "Consume the dying",
@@ -14607,6 +15146,11 @@
     "name": "Sluagh, Window-Swarm",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "fee",
+      "mort-vivant"
+    ],
     "description": "A black storm of small souls that slip along lintels and eaves, pecking warmth from breath.",
     "motives": [
       "Enter via cracks",
@@ -14690,6 +15234,9 @@
     "name": "Small Nesting",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration"
+    ],
     "description": "A small mass of writhing tentacles.",
     "motives": [
       "Grow",
@@ -14784,6 +15331,9 @@
     "name": "Sorrow Scourged",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A person overcome with sorrow, surrounded by sorrow spirits in the form of floating spectral skulls.",
     "motives": [
       "Spread sorrow",
@@ -14877,6 +15427,11 @@
     "name": "Soul Flower",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration",
+      "mort-vivant",
+      "plante"
+    ],
     "description": "A horrific amalgam of tentacles, plant life, and alien intentions.",
     "motives": [
       "Drain essence",
@@ -14990,6 +15545,10 @@
     "name": "Sphinx",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete",
+      "monstruosite"
+    ],
     "description": "A creature with a lion's body and human head, watching over a desert.",
     "motives": [
       "Protect desert",
@@ -15104,6 +15663,9 @@
     "name": "Spikeback Fire-Eater",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A hairless anteater the size of a horse with spikes all over its body.",
     "motives": [
       "Search for food",
@@ -15185,6 +15747,9 @@
     "name": "Spitfire Rattler",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A spike-covered snake that hides in brush or sand waiting to strike.",
     "motives": [
       "Stay motionless",
@@ -15265,6 +15830,11 @@
     "name": "Stag Knight",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "bete",
+      "construction",
+      "humanoide"
+    ],
     "description": "Un chevalier aux immenses bois majestueux portant une armure faite d’épines dangereuses.",
     "motives": [
       "Isoler",
@@ -15351,6 +15921,9 @@
     "name": "Steel Golem",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction"
+    ],
     "description": "A steel construct etched with runes.",
     "motives": [
       "Serve creator",
@@ -15458,6 +16031,9 @@
     "name": "Stonecoat, Flint-Shroud",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "geant"
+    ],
     "description": "A Genonskwa giant whose body is jacketed in plates of razor flint; sparks spit when it moves.",
     "motives": [
       "Smash shelters",
@@ -15539,6 +16115,10 @@
     "name": "Storm Giant",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "elementaire",
+      "geant"
+    ],
     "description": "A giant that brings stormy weather and flies upon a bolt of lightning.",
     "motives": [
       "Shape weather",
@@ -15634,6 +16214,9 @@
     "name": "Strzyga",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A restless, half-dead woman cursed with two souls—one buried, one returned. She feeds not just on blood, but on memory, breath, and hope, haunting those who leave the past unfinished.",
     "motives": [
       "Drain the living",
@@ -15732,6 +16315,9 @@
     "name": "Supersoldier",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A person with enhanced physical capabilities.",
     "motives": [
       "Leap long distances",
@@ -15845,6 +16431,10 @@
     "name": "Swarm of Ashen Wasps",
     "tier": 3,
     "type": "Horde",
+    "genres": [
+      "bete",
+      "elementaire"
+    ],
     "description": "A swarm of large wasps with wings that burn as they fly.",
     "motives": [
       "Torment",
@@ -15911,6 +16501,11 @@
     "name": "Swarm Watcher",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "bete",
+      "fee"
+    ],
     "description": "A faerie with multiple sets of eyes all over their body",
     "motives": [
       "Keep watch",
@@ -15997,6 +16592,9 @@
     "name": "Terran Gaia",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A charismatic and revered humanoid made of stone.",
     "motives": [
       "Command",
@@ -16108,6 +16706,9 @@
     "name": "Terran Scree",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A humanoid made of stone with quick reflexes.",
     "motives": [
       "Scramble",
@@ -16188,6 +16789,9 @@
     "name": "Terran Sorcerer",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A humanoid made of stone with magical abilities.",
     "motives": [
       "Carve earth",
@@ -16273,6 +16877,9 @@
     "name": "Terran Tuff",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A large humanoid made of stone with dense, bulky limbs.",
     "motives": [
       "Heave",
@@ -16366,6 +16973,11 @@
     "name": "Terror of the Depths",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration",
+      "bete",
+      "plante"
+    ],
     "description": "A squid-like primordial monstrosity with treetrunk- thick tentacles, from the deepest parts of the sea.",
     "motives": [
       "Consume all life",
@@ -16482,6 +17094,9 @@
     "name": "The Shadow of Dawn’s Fury",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A being of shadow and light, ordained by the absent gods and charged with the death of all people.",
     "motives": [
       "Extinguish the light",
@@ -16636,6 +17251,9 @@
     "name": "Thorn Thrower Vine",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "plante"
+    ],
     "description": "A knot of thorn-covered vines which wrap themselves around large trees, forming a symbiotic relationship.",
     "motives": [
       "Protect the host",
@@ -16730,6 +17348,10 @@
     "name": "Thundering Behemoth",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "geant",
+      "monstruosite"
+    ],
     "description": "A giant lizard with curled claws tucked into its sides and wide feet capable of creating tremors.",
     "motives": [
       "Roar to intimidate",
@@ -16810,6 +17432,9 @@
     "name": "Tiger",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A large striped feline beast.",
     "motives": [
       "Stalk",
@@ -16897,6 +17522,9 @@
     "name": "Towerback",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A large machine with a crumbling wizard's tower upon their back. Motives & Tactics: Roam, accumulate arcana, belch smoke",
     "motives": [],
     "difficulty": 18,
@@ -17016,6 +17644,9 @@
     "name": "Treant Sapling",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "plante"
+    ],
     "description": "Un petit arbrisseau doué de conscience.",
     "motives": [
       "Se fondre dans le décor",
@@ -17081,6 +17712,9 @@
     "name": "Triceratops",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A three-horned quadrupedal dinosaur with a bony frill.",
     "motives": [
       "Use instincts",
@@ -17162,6 +17796,9 @@
     "name": "Tyrannosaurus Rex",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "bete"
+    ],
     "description": "A large bipedal dinosaur with a big head and little arms.",
     "motives": [
       "Use instincts",
@@ -17242,6 +17879,9 @@
     "name": "Tyrinadon",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "bete"
+    ],
     "description": "A gigantic acid spitting dinosaur with a toothy maw and vestigial wings.",
     "motives": [
       "Hunt for prey",
@@ -17364,6 +18004,9 @@
     "name": "Uktena, Crystal-Crest",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "dragon"
+    ],
     "description": "A Cherokee horned serpent, scales black as stormwater, a blaze of Ulunsuti glittering at its brow.",
     "motives": [
       "Dazzle",
@@ -17453,6 +18096,9 @@
     "name": "Unicorn",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete"
+    ],
     "description": "A magical white horse with a single spiraled horn on their head.",
     "motives": [
       "Heal",
@@ -17548,6 +18194,10 @@
     "name": "Valkyrie",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "humanoide"
+    ],
     "description": "A fierce female warrior of the Hallows Above, who often rides atop a winged horse.",
     "motives": [
       "Summon steed",
@@ -17633,6 +18283,9 @@
     "name": "Vampire",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "Un mort-vivant intelligent aux lèvres tachées de sang et au sourire de prédateur.",
     "motives": [
       "Mordre",
@@ -17706,6 +18359,10 @@
     "name": "Vampire Mage",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "humanoide",
+      "mort-vivant"
+    ],
     "description": "A suave and elegantly dressed undead with long incisors.",
     "motives": [
       "Bite",
@@ -17798,6 +18455,10 @@
     "name": "Vampire Squid",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "A large squid with sharp teeth, and a thirst for blood.",
     "motives": [
       "Reel",
@@ -17893,6 +18554,11 @@
     "name": "Vault Guardian Gaoler",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete",
+      "construction",
+      "humanoide"
+    ],
     "description": "Un constructe trapu et poussiéreux avec d’épaisses portes métalliques battantes sur le torse.",
     "motives": [
       "Emporter",
@@ -17959,6 +18625,10 @@
     "name": "Vault Guardian Sentinel",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction",
+      "humanoide"
+    ],
     "description": "Un constructe doré et poussiéreux aux membres carrés et une immense masse en guise de main.",
     "motives": [
       "Détruire à tout prix",
@@ -18052,6 +18722,10 @@
     "name": "Vault Guardian Turret",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "construction",
+      "humanoide"
+    ],
     "description": "Une tourelle vivante massive à l’armure renforcée et douze pattes mécaniques à pistons.",
     "motives": [
       "Concentrer le feu",
@@ -18148,6 +18822,9 @@
     "name": "Veiled Sister",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A raider that excels at assassinations and is covered in a hooded cloak and mask.",
     "motives": [
       "Rob",
@@ -18239,6 +18916,9 @@
     "name": "Veilseer Apparition",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A ghastly figure that lives between the present and possible futures, hidden behind the veil of time.",
     "motives": [
       "Rewrite reality",
@@ -18381,6 +19061,9 @@
     "name": "Velociraptor",
     "tier": 3,
     "type": "Minion",
+    "genres": [
+      "bete"
+    ],
     "description": "A bipedal dinosaur that works intelligently to hunt prey.",
     "motives": [
       "Gain strength of numbers",
@@ -18448,6 +19131,9 @@
     "name": "Veloraptid",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A tall lizard with a frilled headplate and powerful hind legs that allow it to move very quickly. They move in packs; some are trained to be mounts and are known to be skittish.",
     "motives": [
       "Move fast",
@@ -18534,6 +19220,11 @@
     "name": "Vine Behemoth",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "construction",
+      "monstruosite",
+      "plante"
+    ],
     "description": "A brutish construct of vines and other plants formed into a hulking humanoid.",
     "motives": [
       "Serve the creator",
@@ -18633,6 +19324,13 @@
     "name": "Vine Serpent",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "bete",
+      "construction",
+      "dragon",
+      "plante"
+    ],
     "description": "A construct of vines and other plants formed in the shape of a large snake with flowers or bulbs for eyes.",
     "motives": [
       "Serve the creator",
@@ -18713,6 +19411,10 @@
     "name": "Void Wraith",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "aberration",
+      "mort-vivant"
+    ],
     "description": "A shadow being with a floating black hole for a head, that draws in nearby light.",
     "motives": [
       "Locate spatial anomalies",
@@ -18806,6 +19508,10 @@
     "name": "Volkolak",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A cursed wolf-being born of rage and dark magic. Neither man nor beast, the Volkolak stalks the night in search of blood, its eyes gleaming with ancient hatred.",
     "motives": [
       "Hunt the weak",
@@ -18905,6 +19611,9 @@
     "name": "Warlord",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "A charismatic and skilled fighter seeking domination, riches, and the ruination of their foes. Adorned with trophies of their bloody conquests and wielding a massive hammer that is always bleeding.",
     "motives": [
       "Convert defeated foes",
@@ -19011,6 +19720,11 @@
     "name": "Wasp Queen",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "bete",
+      "demon",
+      "fee"
+    ],
     "description": "A large demonically infused faerie with wasp-like features and bladed forearms.",
     "motives": [
       "Lay eggs",
@@ -19130,6 +19844,10 @@
     "name": "Waspwyrm",
     "tier": 3,
     "type": "Support",
+    "genres": [
+      "bete",
+      "dragon"
+    ],
     "description": "A bloated, flying insect with an unnerving presence.",
     "motives": [
       "Drone",
@@ -19212,6 +19930,10 @@
     "name": "Watcher",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "aberration",
+      "plante"
+    ],
     "description": "A levitating mushroom creature with a central eye and numerous tentacles and eyestalks protruding from their body.",
     "motives": [
       "Keep watch",
@@ -19312,6 +20034,9 @@
     "name": "Weredragon",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "dragon"
+    ],
     "description": "A hybrid dragon humanoid with draconic wings.",
     "motives": [
       "Hunt",
@@ -19424,6 +20149,9 @@
     "name": "Weretiger",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "bete"
+    ],
     "description": "A hybrid tiger humanoid with orange striped fur.",
     "motives": [
       "Stalk",
@@ -19522,6 +20250,9 @@
     "name": "Whale",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A huge mammal with flippers and tail.",
     "motives": [
       "Swim",
@@ -19595,6 +20326,10 @@
     "name": "Whisper Wraith",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "bete",
+      "mort-vivant"
+    ],
     "description": "The echoes of broken promises and dreams unfulfilled, these wraiths appear as floating, translucent shrouds of tattered black velvet in a vaguely humanoid shape.",
     "motives": [
       "Bind limbs",
@@ -19681,6 +20416,9 @@
     "name": "Wight",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "mort-vivant"
+    ],
     "description": "A sentient corpse of a person since brought back to life.",
     "motives": [
       "Recall past self",
@@ -19792,6 +20530,9 @@
     "name": "Winged Basilisk",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "monstruosite"
+    ],
     "description": "A winged creature with a blue striped body and a deadly gaze.",
     "motives": [
       "Vaporize",
@@ -19892,6 +20633,9 @@
     "name": "Woods Witch",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "humanoide"
+    ],
     "description": "An elderly crone with slightly feral appearance.",
     "motives": [
       "Grow the forest",
@@ -19994,6 +20738,9 @@
     "name": "Wyvern",
     "tier": 3,
     "type": "Skulk",
+    "genres": [
+      "dragon"
+    ],
     "description": "A draconic creature with a poisonous tail, often used as a mount.",
     "motives": [
       "Hunt",
@@ -20065,6 +20812,9 @@
     "name": "Xeralyth Concubine",
     "tier": 3,
     "type": "Bruiser",
+    "genres": [
+      "aberration"
+    ],
     "description": "A Xeralyth Dragoon who has caught the attention of the Queen and grown in size and strength.",
     "motives": [
       "Honor the Queen",
@@ -20179,6 +20929,10 @@
     "name": "Xeralyth Dragoon",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "aberration",
+      "humanoide"
+    ],
     "description": "Spiky, tentacled guard who phases across planes, seeking and destroying in service to their queen.",
     "motives": [
       "Seek",
@@ -20267,6 +21021,10 @@
     "name": "Xeralyth Queen",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "An astral, jellyfish-like monarch with shimmering psychic membranes, who shifts across planes to prey and conquer.",
     "motives": [
       "Subjugate",
@@ -20387,6 +21145,9 @@
     "name": "Xolothi Mage",
     "tier": 3,
     "type": "Ranged",
+    "genres": [
+      "humanoide"
+    ],
     "description": "An axolotl-like humanoid wielding a wooden staff.",
     "motives": [
       "Channel energy",
@@ -20467,6 +21228,10 @@
     "name": "Xolothi Shaman",
     "tier": 3,
     "type": "Leader",
+    "genres": [
+      "elementaire",
+      "humanoide"
+    ],
     "description": "An axolotl-like humanoid shimmering with energy from the aether. Motives & Tactics: Cleanse corruption, channel energy, sacrifice",
     "motives": [],
     "difficulty": 17,
@@ -20561,6 +21326,9 @@
     "name": "Xolothi Warrior",
     "tier": 3,
     "type": "Standard",
+    "genres": [
+      "humanoide"
+    ],
     "description": "An axolotl-like humanoid armed with a sword and shield.",
     "motives": [
       "Defend",
@@ -20653,6 +21421,9 @@
     "name": "Young Ice Dragon",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "dragon"
+    ],
     "description": "Un dragon bleu glacier aux quatre membres puissants et aux ailes givrées.",
     "motives": [
       "Provoquer une avalanche",
@@ -20793,6 +21564,10 @@
     "name": "Zaxian",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration",
+      "bete"
+    ],
     "description": "A flying octopus-like creature with tentacles and bat wings.",
     "motives": [
       "Shift reality",
@@ -20901,6 +21676,9 @@
     "name": "Zhar-Ptitsa",
     "tier": 3,
     "type": "Solo",
+    "genres": [
+      "aberration"
+    ],
     "description": "A radiant firebird from distant legends, the Zhar-Ptitsa blazes with beauty and doom alike. Its feathers shine with otherworldly light, offering fortune—or cursing those who seek to claim it.",
     "motives": [
       "Burn away corruption",

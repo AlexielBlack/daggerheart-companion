@@ -79,6 +79,11 @@ const VALID_TYPES = [
   'Skulk', 'Social', 'Solo', 'Standard', 'Support'
 ]
 
+const VALID_GENRES = [
+  'humanoide', 'bete', 'mort-vivant', 'demon', 'fee', 'dragon',
+  'construction', 'elementaire', 'aberration', 'plante', 'geant', 'monstruosite'
+]
+
 function validateAdversary(adv, source) {
   const issues = []
   for (const f of REQUIRED_FIELDS) {
@@ -89,6 +94,18 @@ function validateAdversary(adv, source) {
   }
   if (adv.type && !VALID_TYPES.includes(adv.type)) {
     issues.push(`invalid type "${adv.type}"`)
+  }
+  // Validation permissive des genres (warn, pas reject)
+  if (adv.genres) {
+    if (!Array.isArray(adv.genres)) {
+      console.warn(`  ⚠️  [${source}] "${adv.name}" — genres is not an array`)
+    } else {
+      for (const g of adv.genres) {
+        if (!VALID_GENRES.includes(g)) {
+          console.warn(`  ⚠️  [${source}] "${adv.name}" — invalid genre "${g}"`)
+        }
+      }
+    }
   }
   if (issues.length > 0) {
     console.warn(`  ⚠️  [${source}] "${adv.name || adv.id}" — ${issues.join(', ')}`)

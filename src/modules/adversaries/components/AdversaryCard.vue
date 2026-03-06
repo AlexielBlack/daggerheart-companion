@@ -14,6 +14,12 @@
         T{{ adversary.tier }}
       </span>
       <span class="adversary-card__type">{{ typeLabel }}</span>
+      <span
+        v-for="genre in (adversary.genres || [])"
+        :key="genre"
+        class="adversary-card__genre"
+        :title="genreMeta[genre]?.label"
+      >{{ genreMeta[genre]?.emoji }}</span>
     </div>
 
     <h3 class="adversary-card__name">
@@ -73,7 +79,7 @@
 </template>
 
 <script>
-import { ADVERSARY_TYPE_LABELS } from '@data/adversaries'
+import { ADVERSARY_TYPE_LABELS, GENRE_META } from '@data/adversaries'
 
 /**
  * @component AdversaryCard
@@ -98,6 +104,9 @@ export default {
   computed: {
     typeLabel() {
       return ADVERSARY_TYPE_LABELS[this.adversary.type] || this.adversary.type
+    },
+    genreMeta() {
+      return GENRE_META
     }
   }
 }
@@ -134,6 +143,11 @@ export default {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+.adversary-card__genre {
+  font-size: var(--font-size-xs);
+  cursor: default;
 }
 
 .adversary-card__name {
