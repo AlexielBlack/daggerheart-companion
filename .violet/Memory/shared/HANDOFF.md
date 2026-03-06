@@ -101,3 +101,21 @@ Append-only cross-session continuity notes.
 - ESLint clean, build 405 modules 2.30s
 - **Architecture 3 modes complète** — Phase 1 + Phase 2 terminées
 - **Backlog vide** — aucune tâche en attente, direction de 2J requise
+
+## 2026-03-06 21:00 — Violet
+
+### PcGroupPanel v2 — Fiche PJ enrichie pour le mode Table
+- **useCharacterComputed.js** : `resolveCharacterDisplay(pc)` pure function — résout stats effectives, seuils, données classe/ascendance/communauté/armes/cartes pour n'importe quel PJ (contourne la limitation du selectedCharacterIdx du characterStore)
+- **Formules stats** : effectiveMaxHP, effectiveMaxStress, effectiveEvasion, effectiveArmorScore, thresholds major/severe — identiques au characterStore
+- **Homebrew fallback** : resolveClass() cherche SRD puis useClassHomebrewStore (même pattern characterStore lignes 91-99)
+- **PcGroupPanel.vue** : réécriture complète (98 → 1115 lignes)
+  - Header toujours visible : identité + HP/Stress bars + Armure/Hope + Évasion/Seuils + Conditions + 6 Traits compact
+  - 4 sections `<details>/<summary>` : ⚔️ Armes, 🃏 Cartes Loadout, ✨ Capacités (Hope+Class+Ancestry+Community+Subclass par tier), 🎒 Inventaire & Or
+  - Bouton global "Tout déplier / Tout replier" avec nextTick + querySelectorAll
+  - Grid `repeat(auto-fill, minmax(340px, 1fr))` — 2 colonnes tablette, 1 mobile
+  - Touch targets 44px, ARIA, responsive 768px breakpoint
+- **characters/index.js** : export ajouté pour resolveCharacterDisplay + useCharacterComputed
+- 20 tests unitaires (stats, ancestry bonuses, thresholds, data resolution, null-safety, reactive wrapper)
+- Build: 406 modules, 2.28s — SessionHome chunk 31.13 kB
+- 2709 tests totaux (97 fichiers), 0 régression
+- Commit: `4868f2c4`, pushé sur origin/main

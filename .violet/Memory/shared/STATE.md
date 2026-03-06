@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 20:00 — Violet
+**Last updated:** 2026-03-06 21:00 — Violet
 
 ---
 
@@ -36,6 +36,7 @@
 | Player Actions Gameplay | ✅ Complet | ✓ | spellcastTrait intégré, badges Sort/Trait, features enrichies (H-01+H-02) |
 | **3 Modes Phase 1** | ✅ Complet | ✓ | Routing /lecture/* /edition/* /jeu/*, ModeSelector, AppNav mode-aware, 36 redirections legacy |
 | **Session Module (Phase 2)** | ✅ Complet | ✓ | sessionStore, SessionHome, 6 sous-composants, hub MJ mode Jeu (3M-P2) |
+| **PcGroupPanel v2** | ✅ Complet | ✓ | Fiche PJ enrichie : resolveCharacterDisplay pure function, stats/seuils/armes/cartes/capacités/inventaire, 4 sections dépliables, 20 tests |
 
 ## Architecture 3 Modes
 
@@ -50,7 +51,7 @@
 ### Phase 2 — Session Module (Mode Jeu)
 - **SessionHome.vue** : hub MJ — vue PJs, chargement environnement/PNJs, lanceur de rencontres
 - **sessionStore** : Pinia Composition API, stocke uniquement des IDs (env, NPCs, notes), résout via stores existants
-- **PcGroupPanel** : grille lecture seule des PJs (HP/Stress/Evasion/Armor/Conditions)
+- **PcGroupPanel v2** : fiche PJ enrichie (resolveCharacterDisplay), header compact + 4 sections dépliables (Armes/Cartes/Capacités/Inventaire)
 - **EnvironmentLoader** : sélecteur environnement SRD+homebrew (via environmentStore.allItems)
 - **NpcLoader** : multi-select PNJs avec chips colorées par statut
 - **EncounterLauncher** : rencontres sauvegardées + templates, injection contexte session
@@ -62,9 +63,10 @@
 ## Test Suite
 - 392 encounter tests (18 fichiers)
 - 31 session tests (1 fichier)
-- 2,689 tests totaux (96 fichiers)
+- 20 useCharacterComputed tests (1 fichier)
+- 2,709 tests totaux (97 fichiers)
 - ESLint clean
-- Build Vite: 405 modules, 2.30s
+- Build Vite: 406 modules, 2.28s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia
