@@ -225,6 +225,7 @@ export default {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   cursor: pointer;
+  min-height: var(--touch-min);
   transition: all var(--transition-fast);
   white-space: nowrap;
 }

@@ -115,12 +115,12 @@ export default {
 .slot-tracker__slots {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px;
+  gap: 4px;
 }
 
 .slot-btn {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 3px;
   border: 2px solid var(--color-border, #3a3a5a);
   background: transparent;

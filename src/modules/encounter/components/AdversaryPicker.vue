@@ -173,6 +173,7 @@ export default {
   color: var(--color-text-secondary);
   font-size: 0.75rem;
   cursor: pointer;
+  min-height: var(--touch-min);
   transition: all var(--transition-fast, 150ms);
 }
 

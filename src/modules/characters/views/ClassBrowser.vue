@@ -416,6 +416,7 @@ export default {
   color: var(--color-text-secondary);
   font-size: var(--font-size-xs);
   cursor: pointer;
+  min-height: var(--touch-min);
   transition: all var(--transition-fast);
 }
 .filter-chip:hover { border-color: var(--color-accent-hope); color: var(--color-accent-hope); }
