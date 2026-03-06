@@ -506,6 +506,13 @@
               {{ at.emoji }} {{ at.label }}{{ adversaryType === at.value ? ' ★' : '' }}
             </option>
           </select>
+          <label class="catalogue__unlock-tier">
+            <input
+              v-model="unlockAllTiers"
+              type="checkbox"
+            />
+            <span>Tous tiers</span>
+          </label>
         </div>
 
         <div class="catalogue__list">
@@ -535,6 +542,13 @@
                 class="cost-badge"
               >
                 {{ costLabel(feat.cost) }}
+              </span>
+              <span
+                v-if="tier && feat.tier > tier"
+                class="tier-warning"
+                :title="`Feature de Tier ${feat.tier} (PNJ Tier ${tier})`"
+              >
+                ⚠️ T{{ feat.tier }}
               </span>
             </div>
             <p
@@ -922,6 +936,7 @@ export default {
     const filterDomain = ref('')
     const filterAdvType = ref('')
     const expandedFeatureId = ref(null)
+    const unlockAllTiers = ref(false)
 
     // ── Domaines disponibles pour le filtre ──
     const domainOptions = computed(() => {
@@ -1160,7 +1175,7 @@ export default {
       if (filterTheme.value) {
         result = result.filter(f => f.themes.some(t => t === filterTheme.value))
       }
-      if (props.tier) {
+      if (props.tier && !unlockAllTiers.value) {
         result = result.filter(f => f.tier <= props.tier)
       }
       if (searchText.value.trim()) {
@@ -1323,6 +1338,7 @@ export default {
       filterDomain,
       filterAdvType,
       expandedFeatureId,
+      unlockAllTiers,
       domainOptions,
       // Homebrew
       homebrewStore,
@@ -1673,6 +1689,28 @@ export default {
   font-size: 0.7rem;
   color: var(--color-text-muted, #9ca3af);
   flex-shrink: 0;
+}
+
+.tier-warning {
+  font-size: 0.65rem;
+  color: #f59e0b;
+  flex-shrink: 0;
+  cursor: help;
+}
+
+/* ── Unlock tier checkbox ── */
+.catalogue__unlock-tier {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #9ca3af);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalogue__unlock-tier input {
+  width: auto;
 }
 
 /* ── Catalogue ── */
