@@ -177,6 +177,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
     availableTypes,
     availableTiers,
     // Getters
+    allItems,
     filteredEnvironments,
     totalCount,
     filteredCount,
