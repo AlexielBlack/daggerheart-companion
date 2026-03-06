@@ -18,7 +18,8 @@ describe('encounter module index', () => {
     const builderComponents = [
       'AdversaryPicker', 'BattlePointsBar', 'EncounterConfig',
       'EncounterSlotList', 'EncounterSummary', 'EnvironmentPicker',
-      'PcPicker', 'SavedEncounterList', 'EncounterHistory'
+      'PcPicker', 'SavedEncounterList', 'EncounterHistory',
+      'EncounterSharePanel', 'EncounterTemplatePicker'
     ]
     for (const name of builderComponents) {
       expect(mod[name]).toBeDefined()
@@ -32,7 +33,8 @@ describe('encounter module index', () => {
       'PcSidebarCard', 'AdversaryGroupCard', 'ContextPanel', 'CountdownTracker',
       'FeatureCard', 'EnvironmentPanel',
       'SceneModeSelector', 'AdversaryLiveCard', 'PcLivePanel', 'AdversaryTargetPanel',
-      'SpotlightToggle', 'CombatLogDrawer'
+      'SpotlightToggle', 'CombatLogDrawer',
+      'SessionTimer', 'QuickReferencePanel'
     ]
     for (const name of liveComponents) {
       expect(mod[name]).toBeDefined()
@@ -49,6 +51,7 @@ describe('encounter module index', () => {
     expect(typeof mod.useSpotlights).toBe('function')
     expect(typeof mod.useHaptic).toBe('function')
     expect(mod.HAPTIC_PATTERNS).toBeDefined()
+    expect(typeof mod.useSessionTimer).toBe('function')
   })
 
   it('exporte les vues', async () => {
@@ -57,10 +60,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 33 éléments', async () => {
+  it('exporte exactement 38 éléments', async () => {
     const mod = await import('../index.js')
-    // 3 stores + 9 builder + 12 live + 7 composables + 2 vues = 33
+    // 3 stores + 11 builder + 14 live + 8 composables + 2 vues = 38
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(33)
+    expect(exportNames.length).toBe(38)
   })
 })

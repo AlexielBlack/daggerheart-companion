@@ -12,6 +12,14 @@ Append-only log of architectural and design decisions.
 
 ---
 
+## 2026-03-06 15:00 — Violet
+**Decision:** Persister l'historique des rencontres via useStorage('encounter-history')
+**Context:** Les résumés de combat (generateSummary) étaient éphémères — perdus au reload. Besoin de traçabilité pour les campagnes longues.
+**Rationale:** useStorage + localStorage = pattern existant, pas de backend nécessaire. Store dédié encounterHistoryStore pour séparation des responsabilités.
+**Alternatives considered:** Stocker dans encounterStore (trop couplé), IndexedDB (surdimensionné pour ce volume).
+
+---
+
 ## Pre-migration decisions (from project history)
 
 ### Options API vs Composition API

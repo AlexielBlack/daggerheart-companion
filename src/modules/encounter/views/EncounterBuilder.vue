@@ -123,6 +123,19 @@
           <div class="sidebar-section">
             <details>
               <summary class="section-title section-title--clickable">
+                📝 Templates de rencontres
+              </summary>
+              <EncounterTemplatePicker
+                :current-tier="store.selectedTier"
+                :current-pc-count="store.pcCount"
+                @load-template="handleLoadTemplate"
+              />
+            </details>
+          </div>
+
+          <div class="sidebar-section">
+            <details>
+              <summary class="section-title section-title--clickable">
                 📋 Rencontres sauvegardées
                 <span
                   v-if="savedEncounters.length > 0"
@@ -136,6 +149,19 @@
               />
             </details>
           </div>
+          <div class="sidebar-section">
+            <details>
+              <summary class="section-title section-title--clickable">
+                📤 Partager / Importer
+              </summary>
+              <EncounterSharePanel
+                :encounter-data="store.serializeEncounter()"
+                :is-valid="store.isValid"
+                @import="handleImportEncounter"
+              />
+            </details>
+          </div>
+
           <div class="sidebar-section">
             <details>
               <summary class="section-title section-title--clickable">
@@ -184,6 +210,8 @@ import EnvironmentPicker from '../components/EnvironmentPicker.vue'
 import EncounterSummary from '../components/EncounterSummary.vue'
 import SavedEncounterList from '../components/SavedEncounterList.vue'
 import EncounterHistory from '../components/EncounterHistory.vue'
+import EncounterSharePanel from '../components/EncounterSharePanel.vue'
+import EncounterTemplatePicker from '../components/EncounterTemplatePicker.vue'
 
 export default {
   name: 'EncounterBuilder',
@@ -196,7 +224,9 @@ export default {
     EnvironmentPicker,
     EncounterSummary,
     SavedEncounterList,
-    EncounterHistory
+    EncounterHistory,
+    EncounterSharePanel,
+    EncounterTemplatePicker
   },
   setup() {
     const store = useEncounterStore()
@@ -250,6 +280,16 @@ export default {
       router.push('/encounters/live')
     }
 
+    function handleImportEncounter(data) {
+      store.loadEncounter(data)
+      showNotification(`"${data.name || 'Sans nom'}" importée.`, 'success')
+    }
+
+    function handleLoadTemplate(template) {
+      store.loadEncounter(template)
+      showNotification(`Template "${template.name}" chargé.`, 'success')
+    }
+
     return {
       store,
       historyStore,
@@ -260,7 +300,9 @@ export default {
       handleReset,
       handleLoad,
       handleDelete,
-      handleLaunch
+      handleLaunch,
+      handleImportEncounter,
+      handleLoadTemplate
     }
   }
 }

@@ -18,6 +18,8 @@ export { default as EnvironmentPicker } from './components/EnvironmentPicker.vue
 export { default as PcPicker } from './components/PcPicker.vue'
 export { default as SavedEncounterList } from './components/SavedEncounterList.vue'
 export { default as EncounterHistory } from './components/EncounterHistory.vue'
+export { default as EncounterSharePanel } from './components/EncounterSharePanel.vue'
+export { default as EncounterTemplatePicker } from './components/EncounterTemplatePicker.vue'
 
 // Composants — Live (nouveau layout 3 colonnes)
 export { default as PcSidebarCard } from './components/PcSidebarCard.vue'
@@ -28,6 +30,8 @@ export { default as FeatureCard } from './components/FeatureCard.vue'
 export { default as EnvironmentPanel } from './components/EnvironmentPanel.vue'
 export { default as SpotlightToggle } from './components/SpotlightToggle.vue'
 export { default as CombatLogDrawer } from './components/CombatLogDrawer.vue'
+export { default as SessionTimer } from './components/SessionTimer.vue'
+export { default as QuickReferencePanel } from './components/QuickReferencePanel.vue'
 
 // Composants — Live (legacy, conservés pour compatibilité)
 export { default as SceneModeSelector } from './components/SceneModeSelector.vue'
@@ -41,6 +45,7 @@ export { useUndoStack } from './composables/useUndoStack'
 export { useCombatLog } from './composables/useCombatLog'
 export { useSpotlights } from './composables/useSpotlights'
 export { useHaptic, HAPTIC_PATTERNS } from './composables/useHaptic'
+export { useSessionTimer } from './composables/useSessionTimer'
 
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'

@@ -34,6 +34,7 @@
               :scene-mode="store.sceneMode"
               @update:scene-mode="onSetSceneMode"
             />
+            <SessionTimer />
             <span
               v-if="store.adversaryCombatSummary.count > 0"
               class="live__combat-sum"
@@ -95,6 +96,7 @@
             >
               ⏱️
             </button>
+            <QuickReferencePanel />
             <button
               class="live__log-btn"
               :class="{ 'live__log-btn--has': store.encounterLog.length > 0 }"
@@ -442,13 +444,15 @@ import CountdownTracker from '../components/CountdownTracker.vue'
 import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
 import CombatLogDrawer from '../components/CombatLogDrawer.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
+import SessionTimer from '../components/SessionTimer.vue'
+import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import { useHaptic } from '../composables/useHaptic'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle },
+  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel },
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()

@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 14:00 — Violet
+**Last updated:** 2026-03-06 15:00 — Violet
 
 ---
 
@@ -26,12 +26,14 @@
 | Tag System | ✅ Complet | ✓ | 4 tags: Offensif/Défensif/Social/Utilitaire |
 | NPC Module | ✅ Complet | ✓ | CRUD, relations PJ/PNJ, combat profile, 35 PNJs campagne |
 | Combat Features | ✅ Complet | ✓ | 394 features, catalogue SRD+homebrew |
+| Encounter Notes | ✅ Complet | ✓ | Notes libres sur rencontres (I-06) |
+| Encounter History | ✅ Complet | ✓ | Historique persisté, stats agrégées (I-03) |
 
 ## Test Suite
-- 2,452 passing tests
-- 83 test files
+- 2,472+ passing tests
+- 84 test files
 - ESLint clean
-- Build Vite: 353 modules, 4.75s
+- Build Vite: 356 modules, 2.11s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia

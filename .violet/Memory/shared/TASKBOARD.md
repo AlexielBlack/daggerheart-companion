@@ -8,7 +8,8 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Agent | Status | Priority | Notes |
 |----|------|-------|--------|----------|-------|
-| — | Aucune tâche active | — | — | — | Projet en transition vers Claude Code |
+| I-03 | Encounter History & Statistics | Frontend | ✅ Done | High | encounterHistoryStore + EncounterHistory.vue |
+| I-06 | Campaign Notes (Encounters) | Frontend | ✅ Done | High | Notes dans encounterStore + EncounterConfig |
 
 ## Backlog / On the Horizon
 
@@ -29,4 +30,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-06 12:00 — Violet*
+*Updated: 2026-03-06 15:00 — Violet*
