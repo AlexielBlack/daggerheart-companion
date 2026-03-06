@@ -90,146 +90,13 @@
         Spellcast : {{ selectedSubclass.spellcastTrait }}
       </span>
     </div>
-
-    <!-- ── Cartes de domaine ── -->
-    <div
-      v-if="classId && level"
-      class="build-cards"
-    >
-      <h5 class="build-cards__title">
-        🎴 Cartes de domaine
-        <span class="build-cards__count">({{ domainCards.length }} sélectionnée{{ domainCards.length > 1 ? 's' : '' }})</span>
-      </h5>
-
-      <!-- Cartes sélectionnées -->
-      <ul
-        v-if="domainCards.length > 0"
-        class="card-list card-list--selected"
-        aria-label="Cartes sélectionnées"
-      >
-        <li
-          v-for="card in resolvedSelectedCards"
-          :key="card.id"
-          class="card-item card-item--selected"
-        >
-          <span class="card-item__level">Lv.{{ card.level }}</span>
-          <span class="card-item__name">{{ card.name }}</span>
-          <span class="card-item__domain">{{ card.domainEmoji }} {{ card.domainName }}</span>
-          <button
-            class="btn btn--icon btn--danger"
-            :aria-label="`Retirer ${card.name}`"
-            @click="removeCard(card.id)"
-          >
-            ✕
-          </button>
-        </li>
-      </ul>
-
-      <!-- Catalogue filtré -->
-      <details class="build-catalogue">
-        <summary class="build-catalogue__toggle">
-          📖 Catalogue ({{ eligibleCards.length }} cartes disponibles)
-        </summary>
-
-        <div class="build-catalogue__filters">
-          <label
-            for="npc-domain-filter"
-            class="sr-only"
-          >Filtrer par domaine</label>
-          <select
-            id="npc-domain-filter"
-            v-model="catalogueDomainFilter"
-          >
-            <option value="">
-              Tous les domaines
-            </option>
-            <option
-              v-for="d in availableDomains"
-              :key="d.id"
-              :value="d.id"
-            >
-              {{ d.emoji }} {{ d.name }}
-            </option>
-          </select>
-
-          <label
-            for="npc-level-filter"
-            class="sr-only"
-          >Filtrer par niveau</label>
-          <select
-            id="npc-level-filter"
-            v-model.number="catalogueLevelFilter"
-          >
-            <option :value="0">
-              Tous les niveaux
-            </option>
-            <option
-              v-for="l in level"
-              :key="l"
-              :value="l"
-            >
-              Niveau {{ l }}
-            </option>
-          </select>
-        </div>
-
-        <ul
-          v-if="filteredCatalogue.length > 0"
-          class="card-list"
-          aria-label="Cartes disponibles"
-        >
-          <li
-            v-for="card in filteredCatalogue"
-            :key="card.id"
-            class="card-item"
-            :class="{ 'card-item--owned': domainCards.includes(card.id) }"
-          >
-            <span class="card-item__level">Lv.{{ card.level }}</span>
-            <span class="card-item__name">{{ card.name }}</span>
-            <span class="card-item__domain">{{ card.domainEmoji }} {{ card.domainName }}</span>
-            <span
-              v-if="card.type === 'spell' || card.type === 'grimoire'"
-              class="card-item__type"
-            >✨ {{ card.type }}</span>
-            <button
-              v-if="!domainCards.includes(card.id)"
-              class="btn btn--icon btn--add"
-              :aria-label="`Ajouter ${card.name}`"
-              @click="addCard(card.id)"
-            >
-              +
-            </button>
-            <span
-              v-else
-              class="card-item__check"
-              aria-label="Déjà sélectionnée"
-            >✓</span>
-          </li>
-        </ul>
-
-        <p
-          v-else
-          class="build-catalogue__empty"
-        >
-          Aucune carte disponible pour ces filtres.
-        </p>
-      </details>
-    </div>
-
-    <p
-      v-else-if="classId && !level"
-      class="build-hint"
-    >
-      Choisissez un niveau pour accéder aux cartes de domaine.
-    </p>
   </fieldset>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { CLASSES } from '@data/classes'
 import { getSubclassesForClass, getSubclassById } from '@data/subclasses'
-import { DOMAINS } from '@data/domains'
 
 export default {
   name: 'NpcBuildPanel',
@@ -238,25 +105,17 @@ export default {
     classId: { type: String, default: null },
     subclassId: { type: String, default: null },
     level: { type: Number, default: null },
-    domainCards: { type: Array, default: () => [] },
     /** Classes homebrew (injectées depuis le parent) */
-    homebrewClasses: { type: Array, default: () => [] },
-    /** Domaines homebrew (injectés depuis le parent) */
-    homebrewDomains: { type: Array, default: () => [] }
+    homebrewClasses: { type: Array, default: () => [] }
   },
 
   emits: [
     'update:classId',
     'update:subclassId',
-    'update:level',
-    'update:domainCards'
+    'update:level'
   ],
 
   setup(props, { emit }) {
-    // ── Filtres du catalogue ──
-    const catalogueDomainFilter = ref('')
-    const catalogueLevelFilter = ref(0)
-
     // ── Toutes les classes (SRD + homebrew) ──
     const allClasses = computed(() => [
       ...CLASSES,
@@ -281,64 +140,6 @@ export default {
       return getSubclassById(props.classId, props.subclassId) || null
     })
 
-    // ── Domaines disponibles (issus de la classe) ──
-    const availableDomains = computed(() => {
-      if (!selectedClass.value) return []
-      const domainNames = selectedClass.value.domains || []
-      const resolved = []
-      for (const name of domainNames) {
-        // SRD d'abord
-        const srd = DOMAINS.find((d) => d.name === name)
-        if (srd) {
-          resolved.push(srd)
-          continue
-        }
-        // Homebrew
-        const hb = props.homebrewDomains.find((d) => d.name === name)
-        if (hb) resolved.push(hb)
-      }
-      return resolved
-    })
-
-    // ── Cartes éligibles (domaines de la classe + niveau ≤ niveau PNJ) ──
-    const eligibleCards = computed(() => {
-      if (!props.level || availableDomains.value.length === 0) return []
-      const results = []
-      for (const domain of availableDomains.value) {
-        for (const card of domain.cards) {
-          if (card.level <= props.level) {
-            results.push({
-              ...card,
-              domainId: domain.id,
-              domainName: domain.name,
-              domainEmoji: domain.emoji || '🃏',
-              domainColor: domain.color || '#7c3aed'
-            })
-          }
-        }
-      }
-      return results.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
-    })
-
-    // ── Catalogue filtré ──
-    const filteredCatalogue = computed(() => {
-      let cards = eligibleCards.value
-      if (catalogueDomainFilter.value) {
-        cards = cards.filter((c) => c.domainId === catalogueDomainFilter.value)
-      }
-      if (catalogueLevelFilter.value > 0) {
-        cards = cards.filter((c) => c.level === catalogueLevelFilter.value)
-      }
-      return cards
-    })
-
-    // ── Cartes sélectionnées résolues (avec métadonnées domaine) ──
-    const resolvedSelectedCards = computed(() => {
-      return props.domainCards
-        .map((cardId) => eligibleCards.value.find((c) => c.id === cardId))
-        .filter(Boolean)
-    })
-
     // ── Helpers ──
     function getTier(level) {
       if (level <= 1) return 1
@@ -350,35 +151,12 @@ export default {
     function onClassChange(value) {
       const newClassId = value || null
       emit('update:classId', newClassId)
-      // Reset sous-classe et cartes quand la classe change
       emit('update:subclassId', null)
-      emit('update:domainCards', [])
-      catalogueDomainFilter.value = ''
-      catalogueLevelFilter.value = 0
     }
 
     function onLevelChange(value) {
       const newLevel = value ? Number(value) : null
       emit('update:level', newLevel)
-      // Retirer les cartes dont le niveau dépasse le nouveau niveau
-      if (newLevel && props.domainCards.length > 0) {
-        const stillValid = props.domainCards.filter((cardId) => {
-          const card = eligibleCards.value.find((c) => c.id === cardId)
-          return card && card.level <= newLevel
-        })
-        if (stillValid.length !== props.domainCards.length) {
-          emit('update:domainCards', stillValid)
-        }
-      }
-    }
-
-    function addCard(cardId) {
-      if (props.domainCards.includes(cardId)) return
-      emit('update:domainCards', [...props.domainCards, cardId])
-    }
-
-    function removeCard(cardId) {
-      emit('update:domainCards', props.domainCards.filter((id) => id !== cardId))
     }
 
     return {
@@ -386,17 +164,9 @@ export default {
       selectedClass,
       availableSubclasses,
       selectedSubclass,
-      availableDomains,
-      eligibleCards,
-      filteredCatalogue,
-      resolvedSelectedCards,
-      catalogueDomainFilter,
-      catalogueLevelFilter,
       getTier,
       onClassChange,
-      onLevelChange,
-      addCard,
-      removeCard
+      onLevelChange
     }
   }
 }

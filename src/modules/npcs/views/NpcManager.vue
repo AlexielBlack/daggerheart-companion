@@ -96,7 +96,6 @@
           :factions="store.allFactions"
           :locations="store.allLocations"
           :homebrew-classes="homebrewClasses"
-          :homebrew-domains="homebrewDomains"
           :all-adversaries="allAdversaries"
           @save="handleSave"
           @delete="handleDelete"
@@ -126,7 +125,6 @@
 import { ref, computed } from 'vue'
 import { useNpcStore } from '../stores/npcStore.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
-import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
 import { useAdversaryStore } from '@modules/adversaries/stores/adversaryStore.js'
 import NpcCard from '../components/NpcCard.vue'
 import NpcFilters from '../components/NpcFilters.vue'
@@ -144,7 +142,6 @@ export default {
   setup() {
     const store = useNpcStore()
     const classHomebrewStore = useClassHomebrewStore()
-    const domainHomebrewStore = useDomainHomebrewStore()
     const adversaryStore = useAdversaryStore()
     const isCreating = ref(false)
     const importMessage = ref('')
@@ -156,24 +153,6 @@ export default {
         name: item.name,
         emoji: item.emoji || '🛠️',
         domains: item.domains || [],
-        source: 'custom'
-      }))
-    )
-
-    const homebrewDomains = computed(() =>
-      domainHomebrewStore.items.map((item) => ({
-        id: item.id,
-        name: item.name,
-        emoji: item.emoji || '🃏',
-        color: item.color || '#7c3aed',
-        cards: (item.cards || []).map((card, i) => ({
-          id: card.id || `${item.id}-card-${i}`,
-          name: card.name || `Carte ${i + 1}`,
-          level: card.level || 1,
-          type: card.type || 'ability',
-          recallCost: card.recallCost ?? 0,
-          feature: card.feature || ''
-        })),
         source: 'custom'
       }))
     )
@@ -265,7 +244,6 @@ export default {
       isCreating,
       importMessage,
       homebrewClasses,
-      homebrewDomains,
       allAdversaries,
       handleSelect,
       startCreate,

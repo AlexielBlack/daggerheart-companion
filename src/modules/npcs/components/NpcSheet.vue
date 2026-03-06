@@ -188,13 +188,10 @@
       :class-id="form.classId"
       :subclass-id="form.subclassId"
       :level="form.level"
-      :domain-cards="form.domainCards"
       :homebrew-classes="homebrewClasses"
-      :homebrew-domains="homebrewDomains"
       @update:class-id="form.classId = $event"
       @update:subclass-id="form.subclassId = $event"
       @update:level="form.level = $event"
-      @update:domain-cards="form.domainCards = $event"
     />
 
     <!-- ── Combat ── -->
@@ -206,6 +203,7 @@
       :proficiency="form.proficiency"
       :combat-features="form.combatFeatures"
       :all-adversaries="allAdversaries"
+      :class-id="form.classId"
       @update:combat-profile-mode="form.combatProfileMode = $event"
       @update:linked-adversary-id="form.linkedAdversaryId = $event"
       @update:adversary-type="form.adversaryType = $event"
@@ -402,8 +400,6 @@ export default {
     locations: { type: Array, default: () => [] },
     /** Classes homebrew */
     homebrewClasses: { type: Array, default: () => [] },
-    /** Domaines homebrew */
-    homebrewDomains: { type: Array, default: () => [] },
     /** Tous les adversaires (SRD + homebrew) */
     allAdversaries: { type: Array, default: () => [] }
   },

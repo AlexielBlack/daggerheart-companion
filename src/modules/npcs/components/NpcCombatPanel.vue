@@ -318,6 +318,22 @@
               {{ th.emoji }} {{ th.label }}
             </option>
           </select>
+          <select
+            v-model="filterDomain"
+            class="catalogue__filter"
+            aria-label="Filtrer par domaine"
+          >
+            <option value="">
+              Tous domaines
+            </option>
+            <option
+              v-for="d in domainOptions"
+              :key="d.value"
+              :value="d.value"
+            >
+              {{ d.emoji }} {{ d.label }}{{ d.ofClass ? ' ★' : '' }}
+            </option>
+          </select>
         </div>
 
         <div class="catalogue__list">
@@ -681,6 +697,8 @@ import {
   COST_META, COST_TYPES,
   ACTIVATION_META, ACTIVATION_TYPES
 } from '@data/constants/featureSchema.js'
+import { DOMAINS } from '@data/domains'
+import { CLASSES } from '@data/classes'
 
 export default {
   name: 'NpcCombatPanel',
@@ -693,7 +711,9 @@ export default {
     proficiency: { type: Number, default: null },
     combatFeatures: { type: Array, default: () => [] },
     /** Liste complète des adversaires (SRD + homebrew) */
-    allAdversaries: { type: Array, default: () => [] }
+    allAdversaries: { type: Array, default: () => [] },
+    /** Classe sélectionnée dans le build (pour filtrer les domaines) */
+    classId: { type: String, default: null }
   },
 
   emits: [
@@ -714,6 +734,21 @@ export default {
     const filterSource = ref('')
     const filterActivation = ref('')
     const filterTheme = ref('')
+    const filterDomain = ref('')
+
+    // ── Domaines disponibles pour le filtre ──
+    const domainOptions = computed(() => {
+      const selectedCls = props.classId
+        ? CLASSES.find(c => c.id === props.classId) : null
+      const classDomainNames = selectedCls ? (selectedCls.domains || []) : []
+
+      return DOMAINS.map(d => ({
+        value: d.id,
+        label: d.name,
+        emoji: d.emoji || '🃏',
+        ofClass: classDomainNames.includes(d.name)
+      }))
+    })
 
     // ── Formulaire homebrew ──
     const showHomebrewForm = ref(false)
@@ -903,6 +938,13 @@ export default {
         )
       }
 
+      if (filterDomain.value) {
+        result = result.filter(f => {
+          if (f.source !== 'domain_card') return false
+          return f.sourceRef && f.sourceRef.startsWith(filterDomain.value + '-')
+        })
+      }
+
       return result
     })
 
@@ -1000,6 +1042,8 @@ export default {
       filterSource,
       filterActivation,
       filterTheme,
+      filterDomain,
+      domainOptions,
       // Homebrew
       homebrewStore,
       showHomebrewForm,
