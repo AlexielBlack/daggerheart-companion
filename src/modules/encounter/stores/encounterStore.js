@@ -18,7 +18,7 @@ import {
   PC_COUNT_MIN,
   PC_COUNT_MAX,
   calculateBaseBattlePoints,
-  calculateAdversaryCost
+  calculateTierAdjustedCost
 } from '@data/encounters/constants'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
@@ -89,16 +89,22 @@ export const useEncounterStore = defineStore('encounter', () => {
         if (!baseAdversary) return null
         const originalTier = baseAdversary.tier
         // Appliquer le scaling si tierOverride présent et différent
-        const adversary = (slot.tierOverride && slot.tierOverride !== baseAdversary.tier)
+        const isScaled = slot.tierOverride && slot.tierOverride !== baseAdversary.tier
+        const adversary = isScaled
           ? scaleAdversaryToTier(baseAdversary, slot.tierOverride)
           : baseAdversary
         const isMinion = adversary.type === 'Minion'
-        const cost = calculateAdversaryCost(adversary.type, slot.quantity, pcCount.value)
+        // Coût ajusté par tier : delta = 0 si scalé (stats matchent le tier cible)
+        const tierDelta = isScaled ? 0 : (adversary.tier - selectedTier.value)
+        const baseCost = BATTLE_POINT_COSTS[adversary.type] ?? 2
+        const cost = calculateTierAdjustedCost(adversary.type, slot.quantity, pcCount.value, tierDelta)
         return {
           ...slot,
           adversary,
           originalTier,
-          unitCost: BATTLE_POINT_COSTS[adversary.type] ?? 2,
+          tierDelta,
+          unitCost: baseCost,
+          adjustedUnitCost: isMinion ? null : Math.max(1, baseCost + tierDelta),
           totalCost: cost,
           /** Taille d'un groupe Minion (= pcCount) ; null pour les autres types */
           minionGroupSize: isMinion ? pcCount.value : null
@@ -225,10 +231,9 @@ export const useEncounterStore = defineStore('encounter', () => {
       result.push('multi-solo')
     }
 
-    // Adversaire(s) de tier inférieur → +1 BP
-    if (lowerTierInfo.value.count > 0) {
-      result.push('lower-tier')
-    }
+    // Note : lower-tier retiré de l'auto-détection.
+    // Le coût par tier est désormais intégré au coût unitaire
+    // de chaque adversaire via calculateTierAdjustedCost.
 
     // Pas de Bruiser / Horde / Leader / Solo → +1 BP
     if (!hasHeavyHitters.value) {
@@ -283,6 +288,18 @@ export const useEncounterStore = defineStore('encounter', () => {
       result.push({
         type: 'warning',
         message: `Adversaires de tier${tiers.length > 1 ? 's' : ''} ${tiers.join(', ')} dans une rencontre tier ${selectedTier.value}. Ajustez la difficulté si nécessaire.`
+      })
+    }
+
+    // Warning pour écart de tier important (≥2) sur adversaires non-scalés
+    const largeTierGap = adversarySlotsDetailed.value.filter(
+      (slot) => Math.abs(slot.tierDelta) >= 2
+    )
+    if (largeTierGap.length > 0) {
+      const names = largeTierGap.map((s) => s.adversary.name).join(', ')
+      result.push({
+        type: 'warning',
+        message: `Écart de tier important (≥2) : ${names}. Les coûts BP sont ajustés mais la puissance réelle peut varier significativement.`
       })
     }
 

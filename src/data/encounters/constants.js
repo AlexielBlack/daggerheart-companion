@@ -53,10 +53,10 @@ export const BP_ADJUSTMENTS = [
   },
   {
     id: 'lower-tier',
-    label: 'Adversaire(s) de tier inférieur',
+    label: 'Adversaire(s) de tier inférieur (heuristique SRD)',
     value: 1,
-    description: 'Ajoute 1 point si un adversaire provient d\'un tier inférieur.',
-    autoDetect: true
+    description: 'Ajoute 1 point si un adversaire provient d\'un tier inférieur. Heuristique SRD simple — le coût par tier est désormais intégré au coût unitaire de chaque adversaire.',
+    autoDetect: false
   },
   {
     id: 'no-heavy-hitters',
@@ -162,4 +162,30 @@ export function calculateAdversaryCost(type, quantity, pcCount = 4) {
   }
   const cost = BATTLE_POINT_COSTS[type] ?? 2
   return cost * quantity
+}
+
+/**
+ * Calcule le coût BP ajusté selon le différentiel de tier.
+ * Approche : ±1 BP par palier d'écart entre le tier de l'adversaire
+ * et le tier de la rencontre.
+ *
+ * - Tier inférieur → coût réduit (adversaire plus faible)
+ * - Tier supérieur → coût augmenté (adversaire plus fort)
+ * - Minions exemptés (coût groupe fixe, toujours trivial)
+ * - Plancher : 1 BP par unité minimum
+ *
+ * @param {string} type - Type d'adversaire
+ * @param {number} quantity - Nombre d'individus
+ * @param {number} [pcCount=4] - Nombre de PJ (Minions uniquement)
+ * @param {number} [tierDelta=0] - adversaryTier − encounterTier
+ * @returns {number}
+ */
+export function calculateTierAdjustedCost(type, quantity, pcCount = 4, tierDelta = 0) {
+  // Minions : coût groupe fixe, le tier n'affecte pas le prix
+  if (type === 'Minion') {
+    return Math.ceil(quantity / pcCount)
+  }
+  const baseCost = BATTLE_POINT_COSTS[type] ?? 2
+  const adjustedUnit = Math.max(1, baseCost + tierDelta)
+  return adjustedUnit * quantity
 }

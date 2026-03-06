@@ -8,7 +8,8 @@ import {
   AUTO_DETECTABLE_ADJUSTMENTS,
   SCENE_INTENSITY,
   calculateBaseBattlePoints,
-  calculateAdversaryCost
+  calculateAdversaryCost,
+  calculateTierAdjustedCost
 } from '@data/encounters/constants'
 
 // Mock localStorage
@@ -93,11 +94,11 @@ describe('encounterStore', () => {
       })
     })
 
-    it('a 3 ajustements auto-détectables', () => {
-      expect(AUTO_DETECTABLE_ADJUSTMENTS).toHaveLength(3)
+    it('a 2 ajustements auto-détectables (lower-tier est désormais manuel)', () => {
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).toHaveLength(2)
       expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('multi-solo')
-      expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('lower-tier')
       expect(AUTO_DETECTABLE_ADJUSTMENTS).toContain('no-heavy-hitters')
+      expect(AUTO_DETECTABLE_ADJUSTMENTS).not.toContain('lower-tier')
     })
 
     it('a 5 niveaux d\'intensité', () => {
@@ -194,6 +195,12 @@ describe('encounterStore', () => {
 
       store.toggleAdjustment('no-heavy-hitters')
       expect(store.activeAdjustments).not.toContain('no-heavy-hitters')
+    })
+
+    it('permet le toggle manuel de lower-tier (heuristique SRD)', () => {
+      store.toggleAdjustment('lower-tier')
+      expect(store.activeAdjustments).toContain('lower-tier')
+      expect(store.adjustmentTotal).toBe(1)
 
       store.toggleAdjustment('lower-tier')
       expect(store.activeAdjustments).not.toContain('lower-tier')
@@ -247,18 +254,9 @@ describe('encounterStore', () => {
       }
     })
 
-    it('détecte lower-tier quand un adversaire est de tier inférieur', () => {
+    it('ne détecte plus lower-tier automatiquement (remplacé par coût ajusté par tier)', () => {
       store.setTier(2)
       const t1 = allAdversaries.find((a) => a.tier === 1)
-      if (t1) {
-        store.addAdversary(t1.id)
-        expect(store.autoAdjustments).toContain('lower-tier')
-      }
-    })
-
-    it('ne détecte pas lower-tier si tous les adversaires sont du même tier', () => {
-      store.setTier(1)
-      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type === 'Standard')
       if (t1) {
         store.addAdversary(t1.id)
         expect(store.autoAdjustments).not.toContain('lower-tier')
@@ -540,6 +538,155 @@ describe('encounterStore', () => {
       expect(store.selectedEnvironmentId).toBeNull()
       expect(store.activeAdjustments).toHaveLength(0)
       expect(store.selectedIntensity).toBe('standard')
+    })
+  })
+
+  // ── Coût BP ajusté par tier ─────────────────────────
+
+  describe('calculateTierAdjustedCost', () => {
+    it('identique à calculateAdversaryCost quand tierDelta = 0', () => {
+      expect(calculateTierAdjustedCost('Standard', 2, 4, 0)).toBe(4)
+      expect(calculateTierAdjustedCost('Solo', 1, 4, 0)).toBe(5)
+      expect(calculateTierAdjustedCost('Bruiser', 3, 4, 0)).toBe(12)
+    })
+
+    it('réduit le coût pour tierDelta négatif', () => {
+      // Bruiser (base 4) avec delta -2 → adjustedUnit = max(1, 4-2) = 2
+      expect(calculateTierAdjustedCost('Bruiser', 1, 4, -2)).toBe(2)
+      expect(calculateTierAdjustedCost('Bruiser', 2, 4, -2)).toBe(4) // 2 × 2
+      // Standard (base 2) avec delta -1 → adjustedUnit = max(1, 2-1) = 1
+      expect(calculateTierAdjustedCost('Standard', 3, 4, -1)).toBe(3)
+    })
+
+    it('plancher à 1 BP/unité minimum', () => {
+      // Standard (base 2) avec delta -3 → max(1, 2-3) = max(1, -1) = 1
+      expect(calculateTierAdjustedCost('Standard', 2, 4, -3)).toBe(2) // 1 × 2
+      // Solo (base 5) avec delta -10 → max(1, -5) = 1
+      expect(calculateTierAdjustedCost('Solo', 1, 4, -10)).toBe(1)
+    })
+
+    it('augmente le coût pour tierDelta positif', () => {
+      // Bruiser (base 4) avec delta +2 → adjustedUnit = 6
+      expect(calculateTierAdjustedCost('Bruiser', 1, 4, 2)).toBe(6)
+      // Leader (base 3) avec delta +1 → adjustedUnit = 4
+      expect(calculateTierAdjustedCost('Leader', 2, 4, 1)).toBe(8) // 4 × 2
+    })
+
+    it('Minion exempt : coût groupe fixe quel que soit le delta', () => {
+      // 4 PJ, 4 minions = 1 groupe = 1 BP, même avec delta -2
+      expect(calculateTierAdjustedCost('Minion', 4, 4, -2)).toBe(1)
+      expect(calculateTierAdjustedCost('Minion', 4, 4, 2)).toBe(1)
+      expect(calculateTierAdjustedCost('Minion', 8, 4, -3)).toBe(2)
+    })
+
+    it('utilise 2 par défaut pour les types inconnus', () => {
+      expect(calculateTierAdjustedCost('Unknown', 1, 4, 0)).toBe(2)
+      expect(calculateTierAdjustedCost('Unknown', 1, 4, -1)).toBe(1)
+    })
+  })
+
+  describe('coût ajusté par tier dans le store', () => {
+    it('tierDelta = 0 quand adversaire même tier que rencontre', () => {
+      store.setTier(1)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type !== 'Minion')
+      if (t1) {
+        store.addAdversary(t1.id)
+        const slot = store.adversarySlotsDetailed[0]
+        expect(slot.tierDelta).toBe(0)
+        expect(slot.adjustedUnitCost).toBe(slot.unitCost)
+      }
+    })
+
+    it('tierDelta négatif quand adversaire de tier inférieur', () => {
+      store.setTier(3)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type === 'Bruiser')
+      if (t1) {
+        store.addAdversary(t1.id)
+        const slot = store.adversarySlotsDetailed[0]
+        expect(slot.tierDelta).toBe(-2) // tier 1 - tier 3
+        expect(slot.adjustedUnitCost).toBe(Math.max(1, 4 + (-2))) // max(1, 2) = 2
+        expect(slot.totalCost).toBe(2) // 1 × 2
+      }
+    })
+
+    it('tierDelta positif quand adversaire de tier supérieur', () => {
+      store.setTier(1)
+      const t3 = allAdversaries.find((a) => a.tier === 3 && a.type !== 'Minion')
+      if (t3) {
+        store.addAdversary(t3.id)
+        const slot = store.adversarySlotsDetailed[0]
+        expect(slot.tierDelta).toBe(2) // tier 3 - tier 1
+        const expectedUnit = Math.max(1, (BATTLE_POINT_COSTS[t3.type] ?? 2) + 2)
+        expect(slot.adjustedUnitCost).toBe(expectedUnit)
+      }
+    })
+
+    it('tierDelta = 0 pour adversaire scalé (tierOverride)', () => {
+      store.setTier(3)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type === 'Bruiser')
+      if (t1) {
+        store.addAdversary(t1.id)
+        store.setSlotTierOverride(t1.id, 3) // scale to T3
+        const slot = store.adversarySlotsDetailed[0]
+        // Scalé → tierDelta = 0, coût normal du type
+        expect(slot.tierDelta).toBe(0)
+        expect(slot.totalCost).toBe(BATTLE_POINT_COSTS[t1.type])
+      }
+    })
+
+    it('adjustedUnitCost null pour les Minions', () => {
+      const minion = allAdversaries.find((a) => a.type === 'Minion')
+      if (minion) {
+        store.setTier(3) // Tier 3, Minion T1 → tierDelta = -2
+        store.addAdversary(minion.id, 4)
+        const slot = store.adversarySlotsDetailed[0]
+        expect(slot.adjustedUnitCost).toBeNull()
+        // Coût toujours 1 BP/groupe même avec tierDelta
+        expect(slot.totalCost).toBe(1)
+      }
+    })
+
+    it('le spentBattlePoints reflète le coût ajusté', () => {
+      store.setTier(3)
+      const t1Bruiser = allAdversaries.find((a) => a.tier === 1 && a.type === 'Bruiser')
+      if (t1Bruiser) {
+        store.addAdversary(t1Bruiser.id, 2) // base 4, delta -2 → 2/u → 2×2=4
+        expect(store.spentBattlePoints).toBe(4)
+      }
+    })
+  })
+
+  describe('warning écart de tier important', () => {
+    it('avertit pour un écart ≥ 2 tiers (non-scalé)', () => {
+      store.setTier(3)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type !== 'Minion')
+      if (t1) {
+        store.addAdversary(t1.id) // delta = -2
+        const tierWarns = store.warnings.filter((w) => w.message.includes('Écart de tier'))
+        expect(tierWarns).toHaveLength(1)
+        expect(tierWarns[0].message).toContain(t1.name)
+      }
+    })
+
+    it('pas de warning si écart < 2', () => {
+      store.setTier(2)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type !== 'Minion')
+      if (t1) {
+        store.addAdversary(t1.id) // delta = -1
+        const tierWarns = store.warnings.filter((w) => w.message.includes('Écart de tier'))
+        expect(tierWarns).toHaveLength(0)
+      }
+    })
+
+    it('pas de warning si adversaire scalé (tierDelta = 0)', () => {
+      store.setTier(3)
+      const t1 = allAdversaries.find((a) => a.tier === 1 && a.type === 'Bruiser')
+      if (t1) {
+        store.addAdversary(t1.id)
+        store.setSlotTierOverride(t1.id, 3) // scale → tierDelta = 0
+        const tierWarns = store.warnings.filter((w) => w.message.includes('Écart de tier'))
+        expect(tierWarns).toHaveLength(0)
+      }
     })
   })
 })

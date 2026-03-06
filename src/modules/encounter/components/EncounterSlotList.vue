@@ -53,7 +53,9 @@
             </span>
             <span class="slot-item__meta">
               {{ slot.adversary.type }}
-              · {{ slot.minionGroupSize ? '1 BP/' + slot.minionGroupSize + ' min' : slot.unitCost + ' BP/u' }}
+              · <template v-if="slot.minionGroupSize">1 BP/{{ slot.minionGroupSize }} min</template>
+              <template v-else-if="slot.tierDelta !== 0">{{ slot.adjustedUnitCost }} BP/u <span class="slot-item__base-cost">(base {{ slot.unitCost }})</span></template>
+              <template v-else>{{ slot.unitCost }} BP/u</template>
               · HP {{ slot.adversary.hp }} · Stress {{ slot.adversary.stress }}
             </span>
           </div>
@@ -62,11 +64,22 @@
         <div class="slot-item__controls">
           <span
             class="slot-item__cost"
+            :class="{
+              'slot-item__cost--reduced': slot.tierDelta < 0,
+              'slot-item__cost--increased': slot.tierDelta > 0
+            }"
             :title="slot.minionGroupSize
               ? `${slot.quantity} minions ÷ ${slot.minionGroupSize} PJ = ${slot.totalCost} BP`
-              : `${slot.quantity} × ${slot.unitCost} = ${slot.totalCost} BP`"
+              : slot.tierDelta !== 0
+                ? `${slot.quantity} × ${slot.adjustedUnitCost} (base ${slot.unitCost}, tier ${slot.tierDelta > 0 ? '+' : ''}${slot.tierDelta}) = ${slot.totalCost} BP`
+                : `${slot.quantity} × ${slot.unitCost} = ${slot.totalCost} BP`"
           >
             {{ slot.totalCost }} BP
+            <span
+              v-if="slot.tierDelta && slot.tierDelta !== 0"
+              class="slot-item__tier-indicator"
+              :aria-label="slot.tierDelta < 0 ? 'Coût réduit (tier inférieur)' : 'Coût augmenté (tier supérieur)'"
+            >{{ slot.tierDelta < 0 ? '↓' : '↑' }}</span>
           </span>
           <div
             class="slot-item__stepper"
@@ -235,6 +248,19 @@ export default {
   font-variant-numeric: tabular-nums;
   min-width: 36px;
   text-align: right;
+}
+
+.slot-item__cost--reduced { color: #22c55e; }
+.slot-item__cost--increased { color: var(--color-accent-fear, #c84b31); }
+
+.slot-item__tier-indicator {
+  font-size: 0.7rem;
+  margin-left: 1px;
+}
+
+.slot-item__base-cost {
+  font-size: 0.6rem;
+  opacity: 0.7;
 }
 
 .slot-item__stepper {
