@@ -264,7 +264,7 @@ export default {
       const homebrewStore = useDomainHomebrewStore()
       const result = homebrewStore.createFromTemplate(domain)
       if (result.success) {
-        router.push(`/homebrew/domain/${result.id}`)
+        router.push(`/edition/homebrew/domain/${result.id}`)
       }
     }
 

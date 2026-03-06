@@ -130,7 +130,7 @@ export default {
       const homebrewStore = useEnvironmentHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        this.$router.push(`/homebrew/environment/${result.id}`)
+        this.$router.push(`/edition/homebrew/environment/${result.id}`)
       }
     }
   }

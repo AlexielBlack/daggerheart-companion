@@ -9,7 +9,7 @@
         aria-label="Fil d Ariane"
       >
         <router-link
-          to="/homebrew/class"
+          to="/edition/homebrew/class"
           class="hb-cla-editor__breadcrumb-link"
         >
           &#x2190; Classes custom
@@ -200,7 +200,7 @@ export default {
             return
           }
         }
-        router.push('/homebrew/class')
+        router.push('/edition/homebrew/class')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -217,7 +217,7 @@ export default {
       } else { reset() }
     }
 
-    function onCancel() { router.push('/homebrew/class') }
+    function onCancel() { router.push('/edition/homebrew/class') }
 
     return {
       classSchema: enrichedSchema, formData, isDirty, isEditMode,

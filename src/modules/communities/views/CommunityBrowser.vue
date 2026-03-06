@@ -128,7 +128,7 @@ export default {
       const homebrewStore = useCommunityHomebrewStore()
       const result = homebrewStore.createFromTemplate(community)
       if (result.success) {
-        router.push(`/homebrew/community/${result.id}`)
+        router.push(`/edition/homebrew/community/${result.id}`)
       }
     }
 

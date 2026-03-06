@@ -5,7 +5,7 @@
   >
     <div class="hb-anc-list">
       <HomebrewList
-        back-route="/homebrew"
+        back-route="/edition/homebrew"
         :items="store.filteredItems"
         label="Ascendances custom"
         label-singular="ascendance"
@@ -126,11 +126,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/homebrew/ancestry/new')
+      router.push('/edition/homebrew/ancestry/new')
     }
 
     function goEdit(id) {
-      router.push(`/homebrew/ancestry/${id}`)
+      router.push(`/edition/homebrew/ancestry/${id}`)
     }
 
     function onSelect(id) {

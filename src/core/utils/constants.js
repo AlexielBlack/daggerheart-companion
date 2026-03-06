@@ -122,3 +122,41 @@ export const NAV_ITEMS = [
   },
   { id: 'sync', label: 'Synchronisation', icon: '🔄', route: '/sync' }
 ]
+
+/**
+ * Navigation par mode. Chaque mode contient ses items de navigation.
+ */
+export const MODE_NAV = {
+  lecture: [
+    { id: 'lecture-adversaires', label: 'Adversaires', icon: '⚔️', route: '/lecture/adversaires' },
+    { id: 'lecture-environnements', label: 'Environnements', icon: '🌍', route: '/lecture/environnements' },
+    { id: 'lecture-classes', label: 'Classes', icon: '🛡️', route: '/lecture/classes' },
+    { id: 'lecture-domaines', label: 'Domaines', icon: '🃏', route: '/lecture/domaines' },
+    { id: 'lecture-ascendances', label: 'Ascendances', icon: '🧬', route: '/lecture/ascendances' },
+    { id: 'lecture-communautes', label: 'Communautés', icon: '🏘️', route: '/lecture/communautes' },
+    { id: 'lecture-equipement', label: 'Équipement', icon: '🗡️', route: '/lecture/equipement' }
+  ],
+  edition: [
+    { id: 'edition-personnages', label: 'Personnages', icon: '🧙', route: '/edition/personnages' },
+    { id: 'edition-rencontres', label: 'Rencontres', icon: '🗺️', route: '/edition/rencontres' },
+    { id: 'edition-pnjs', label: 'PNJs', icon: '🎭', route: '/edition/pnjs' },
+    {
+      id: 'edition-homebrew', label: 'Homebrew', icon: '✎', route: '/edition/homebrew',
+      children: [
+        { id: 'edition-homebrew-hub', label: 'Hub', icon: '🏠', route: '/edition/homebrew' },
+        { id: 'edition-homebrew-adversary', label: 'Adversaires', icon: '⚔️', route: '/edition/homebrew/adversary' },
+        { id: 'edition-homebrew-ancestry', label: 'Ascendances', icon: '🧬', route: '/edition/homebrew/ancestry' },
+        { id: 'edition-homebrew-class', label: 'Classes', icon: '🛡️', route: '/edition/homebrew/class' },
+        { id: 'edition-homebrew-community', label: 'Communautés', icon: '🏘️', route: '/edition/homebrew/community' },
+        { id: 'edition-homebrew-domain', label: 'Domaines', icon: '🃏', route: '/edition/homebrew/domain' },
+        { id: 'edition-homebrew-environment', label: 'Environnements', icon: '🏔️', route: '/edition/homebrew/environment' },
+        { id: 'edition-homebrew-equipment', label: 'Équipement', icon: '🗡️', route: '/edition/homebrew/equipment' }
+      ]
+    },
+    { id: 'edition-sync', label: 'Sync', icon: '🔄', route: '/edition/sync' }
+  ],
+  jeu: [
+    { id: 'jeu-combat', label: 'Combat', icon: '⚔️', route: '/jeu/combat' },
+    { id: 'jeu-des', label: 'Dés', icon: '🎲', route: '/jeu/des' }
+  ]
+}

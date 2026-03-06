@@ -9,7 +9,7 @@
         aria-label="Fil d'Ariane"
       >
         <router-link
-          to="/homebrew/environment"
+          to="/edition/homebrew/environment"
           class="hb-env-editor__breadcrumb-link"
         >
           ← Environnements custom
@@ -147,7 +147,7 @@ export default {
             return
           }
         }
-        router.push('/homebrew/environment')
+        router.push('/edition/homebrew/environment')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -167,7 +167,7 @@ export default {
     }
 
     function onCancel() {
-      router.push('/homebrew/environment')
+      router.push('/edition/homebrew/environment')
     }
 
     return {

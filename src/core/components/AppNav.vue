@@ -85,9 +85,9 @@
 </template>
 
 <script>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { NAV_ITEMS } from '@core/utils/constants.js'
+import { MODE_NAV } from '@core/utils/constants.js'
 
 export default {
   name: 'AppNav',
@@ -103,7 +103,8 @@ export default {
 
   setup(props, { emit }) {
     const route = useRoute()
-    const navItems = NAV_ITEMS
+    const currentMode = computed(() => route.meta?.mode || 'lecture')
+    const navItems = computed(() => MODE_NAV[currentMode.value] || [])
     const openGroupIds = ref([])
 
     const openGroups = {
@@ -111,7 +112,7 @@ export default {
     }
 
     function autoOpenParent() {
-      for (const item of navItems) {
+      for (const item of navItems.value) {
         if (item.children) {
           const isChildActive = item.children.some((c) =>
             route.path.startsWith(c.route)
@@ -125,6 +126,12 @@ export default {
 
     autoOpenParent()
     watch(() => route.path, autoOpenParent)
+
+    // Réinitialiser les groupes ouverts lors d'un changement de mode
+    watch(currentMode, () => {
+      openGroupIds.value = []
+      nextTick(autoOpenParent)
+    })
 
     function toggleGroup(id) {
       if (openGroupIds.value.includes(id)) {
@@ -171,6 +178,7 @@ export default {
 
     return {
       navItems,
+      currentMode,
       openGroups,
       openGroupIds,
       toggleGroup,

@@ -130,7 +130,7 @@ export default {
       const homebrewStore = useAdversaryHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        this.$router.push(`/homebrew/adversary/${result.id}`)
+        this.$router.push(`/edition/homebrew/adversary/${result.id}`)
       }
     }
   }

@@ -277,7 +277,7 @@ export default {
     function handleLaunch() {
       const data = store.serializeEncounter()
       liveStore.startEncounter(data)
-      router.push('/encounters/live')
+      router.push('/jeu/combat')
     }
 
     function handleImportEncounter(data) {

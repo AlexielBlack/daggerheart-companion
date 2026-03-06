@@ -15,7 +15,7 @@
         <p>Aucune rencontre en cours.</p>
         <button
           class="live__go-builder"
-          @click="$router.push('/encounters')"
+          @click="$router.push('/edition/rencontres')"
         >
           Retour au builder de rencontres
         </button>
@@ -728,7 +728,7 @@ export default {
       this.showEndSummary = false
       this.endSummaryData = null
       this.store.endEncounter()
-      this.$router.push('/encounters')
+      this.$router.push('/edition/rencontres')
     },
     cancelEndEncounter() {
       this.showEndSummary = false

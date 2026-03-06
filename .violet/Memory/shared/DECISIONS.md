@@ -105,3 +105,19 @@ Append-only log of architectural and design decisions.
 ### PWA Strategy
 **Decision:** Service Worker v2 avec three-level navigation fallback + custom Vite plugin precaching
 **Rationale:** Support offline robuste sans dépendance à Workbox
+
+---
+
+## 2026-03-06 19:00 — Violet
+**Decision:** Architecture 3 modes via route.meta.mode — Phase 1 routing-only
+**Context:** L'app avait 27 routes plates sans concept de mode. Le refactor restructure en 3 modes (Lecture/Édition/Jeu) pour améliorer la navigation et préparer les futures features session.
+**Rationale:** route.meta.mode sur chaque route + computed dans ModeSelector/AppNav. Pas de store global nécessaire — le router est la source de vérité. 36 redirections legacy pour backward-compat. Phase 1 = routing+nav seulement, zéro changement logique métier.
+**Alternatives considered:** Store global mode (couplage inutile, désynchronisation possible avec le router), guards de navigation (trop restrictif, empêche la navigation cross-mode pour les browsers→homebrew).
+
+---
+
+## 2026-03-06 19:00 — Violet
+**Decision:** Chemins hybrides FR/EN — top-level en français, homebrew sous-chemins en anglais
+**Context:** Les routes top-level utilisent le français (/lecture/adversaires, /edition/personnages) mais les sous-chemins homebrew restent en anglais (/edition/homebrew/adversary).
+**Rationale:** Cohérence avec le schéma de données homebrew (clés anglaises dans les stores et localStorage). Les utilisateurs ne voient pas les sous-chemins homebrew dans la navigation principale. Évite une migration de données complexe.
+**Alternatives considered:** Tout en français (nécessite migration localStorage), tout en anglais (incohérent avec le reste de l'app).

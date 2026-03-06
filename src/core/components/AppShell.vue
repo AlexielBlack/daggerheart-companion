@@ -27,11 +27,22 @@
         </router-link>
       </h1>
 
+      <ModeSelector @navigate="closeNav" />
+
       <AppNav
         id="main-nav"
         :is-open="navOpen"
         @navigate="closeNav"
       />
+
+      <router-link
+        to="/jeu/des"
+        class="app-shell__dice-shortcut"
+        aria-label="Lanceur de dés"
+        @click="closeNav"
+      >
+        <span aria-hidden="true">🎲</span>
+      </router-link>
     </header>
 
     <main
@@ -70,11 +81,12 @@
 <script>
 import { ref } from 'vue'
 import AppNav from './AppNav.vue'
+import ModeSelector from './ModeSelector.vue'
 import { useNotification } from '@core/composables/useNotification.js'
 
 export default {
   name: 'AppShell',
-  components: { AppNav },
+  components: { AppNav, ModeSelector },
   setup() {
     const navOpen = ref(false)
     const { notifications, dismiss } = useNotification()
@@ -142,6 +154,25 @@ export default {
 
 .app-shell__title-link:hover {
   color: var(--color-accent-hope);
+}
+
+.app-shell__dice-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.app-shell__dice-shortcut:hover {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
 }
 
 /* ── Contenu full width ── */

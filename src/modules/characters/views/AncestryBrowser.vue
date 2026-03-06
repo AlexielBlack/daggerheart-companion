@@ -321,7 +321,7 @@ export default {
       const homebrewStore = useAncestryHomebrewStore()
       const result = homebrewStore.createFromTemplate(ancestry)
       if (result.success) {
-        router.push(`/homebrew/ancestry/${result.id}`)
+        router.push(`/edition/homebrew/ancestry/${result.id}`)
       }
     }
 

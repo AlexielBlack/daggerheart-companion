@@ -342,7 +342,7 @@ export default {
 
       const result = homebrewStore.createFromTemplate(data)
       if (result.success) {
-        router.push(`/homebrew/class/${result.id}`)
+        router.push(`/edition/homebrew/class/${result.id}`)
       }
     }
 

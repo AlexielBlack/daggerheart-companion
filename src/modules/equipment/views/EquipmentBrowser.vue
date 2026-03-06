@@ -612,7 +612,7 @@ export default {
       const homebrewStore = useEquipmentHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        router.push(`/homebrew/equipment/${result.id}`)
+        router.push(`/edition/homebrew/equipment/${result.id}`)
       }
     }
 

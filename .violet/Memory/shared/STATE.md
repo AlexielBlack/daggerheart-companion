@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 18:00 — Violet
+**Last updated:** 2026-03-06 19:00 — Violet
 
 ---
 
@@ -34,17 +34,28 @@
 | Encounter Templates | ✅ Complet | ✓ | 21 templates pré-construits, filtrage tier/tags (I-02) |
 | Combat Dashboard | ✅ Complet | ✓ | Fear/Hope tracker, battlefield overview, live stats (I-01) |
 | Player Actions Gameplay | ✅ Complet | ✓ | spellcastTrait intégré, badges Sort/Trait, features enrichies (H-01+H-02) |
+| **3 Modes Phase 1** | ✅ Complet | ✓ | Routing /lecture/* /edition/* /jeu/*, ModeSelector, AppNav mode-aware, 36 redirections legacy |
+
+## Architecture 3 Modes (Phase 1 — Routing & Navigation)
+- **📖 Lecture** : 7 browsers SRD sous `/lecture/*` (adversaires, environnements, classes, domaines, ascendances, communautés, équipement)
+- **✏️ Édition** : personnages, rencontres, PNJs, homebrew (7 catégories CRUD), sync sous `/edition/*`
+- **🎮 Jeu** : combat live + dés sous `/jeu/*`
+- **ModeSelector.vue** : tablist ARIA dans le header (3 onglets avec icônes)
+- **AppNav.vue** : filtrage dynamique par `route.meta.mode`
+- **36 redirections legacy** : backward-compat pour toutes les anciennes URLs
+- **Phase 2 à venir** : SessionHome.vue, sessionStore (pas encore commencé)
 
 ## Test Suite
 - 392 encounter tests (18 fichiers)
-- ~2,660+ tests totaux estimés
+- 2,658 tests totaux
 - ESLint clean
-- Build Vite: 376 modules, 2.50s
+- Build Vite: 378 modules, 2.27s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia
 - Options API (components) / Composition API (stores/views)
 - Path aliases: @core, @modules, @data
+- 3-mode routing: route.meta.mode ('lecture'|'edition'|'jeu')
 - GitHub Pages deployment
 
 ## Known Issues

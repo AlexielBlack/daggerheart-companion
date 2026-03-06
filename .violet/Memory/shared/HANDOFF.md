@@ -66,3 +66,19 @@ Append-only cross-session continuity notes.
 - ESLint clean, build 2.50s
 - Normalisation casing : spellcastTrait 'Instinct' → traits['instinct'] via .toLowerCase()
 - **Tous les items horizon sont terminés — aucun backlog restant**
+
+## 2026-03-06 19:00 — Violet
+
+### Phase 1 — Architecture 3 modes (Routing & Navigation) implémentée
+- **ModeSelector.vue** : nouveau composant (tablist ARIA, 3 tabs 📖/✏️/🎮, router-link vers defaultRoute par mode)
+- **MODE_NAV** : ajouté dans constants.js (lecture: 7 items, edition: 5 items dont homebrew avec 8 children, jeu: 2 items)
+- **router/index.js** : réécriture complète — 7 routes Lecture, 26 routes Édition, 2 routes Jeu, 36 redirections legacy, 404
+- **AppNav.vue** : filtrage par mode via computed navItems + watch currentMode pour reset openGroups
+- **AppShell.vue** : intégration ModeSelector dans header + bouton 🎲 raccourci dés
+- **67+ chemins programmatiques** mis à jour dans 26 fichiers (HomebrewHub, 7 Lists, 7 Editors, 7 Browsers, EncounterBuilder, EncounterLive)
+- **HomebrewHub.test.js** : assertions mises à jour pour les nouveaux chemins /edition/homebrew/*
+- Vérification complète : ESLint clean, build 378 modules, 2658 tests OK, grep audit clean
+- **NAV_ITEMS** conservé dans constants.js pour référence (non utilisé par le code actif)
+- Commit: `241482a1`
+- **Phase 2 à venir** : SessionHome.vue + sessionStore (pas encore commencé, attend direction de 2J)
+- **Étude détaillée** : `.violet/Memory/shared/STUDY-3MODES.md` contient l'analyse complète et le plan Phase 2

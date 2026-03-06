@@ -5,7 +5,7 @@
   >
     <div class="hb-eq-list">
       <HomebrewList
-        back-route="/homebrew"
+        back-route="/edition/homebrew"
         :items="store.filteredItems"
         label="Équipement custom"
         label-singular="équipement"
@@ -150,8 +150,8 @@ export default {
       store.filterCriteria = {}
     }
 
-    function goCreate() { router.push('/homebrew/equipment/new') }
-    function goEdit(id) { router.push(`/homebrew/equipment/${id}`) }
+    function goCreate() { router.push('/edition/homebrew/equipment/new') }
+    function goEdit(id) { router.push(`/edition/homebrew/equipment/${id}`) }
     function onSelect(id) { selectedId.value = selectedId.value === id ? null : id }
     function onDuplicate(id) { store.duplicate(id) }
     async function onDelete(id) {
