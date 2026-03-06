@@ -200,8 +200,8 @@ export default {
 }
 
 .stepper-btn {
-  width: 26px;
-  height: 26px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   background: var(--color-bg-tertiary, #2a2a4a);
   border: none;
   color: var(--color-text-primary);
@@ -225,8 +225,8 @@ export default {
 }
 
 .slot-item__remove {
-  width: 24px;
-  height: 24px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;

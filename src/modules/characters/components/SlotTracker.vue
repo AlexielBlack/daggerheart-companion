@@ -151,8 +151,8 @@ export default {
 }
 
 .action-btn {
-  width: 26px;
-  height: 22px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 3px;
   background: var(--color-bg-tertiary, #2a2a4a);

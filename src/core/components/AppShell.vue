@@ -194,6 +194,11 @@ export default {
   cursor: pointer;
   font-size: 1rem;
   padding: var(--space-xs);
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0.8;
 }
 

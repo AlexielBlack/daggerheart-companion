@@ -281,8 +281,8 @@ export default {
 }
 
 .stepper__btn {
-  width: 32px;
-  height: 32px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   background: var(--color-bg-tertiary, #2a2a4a);
   border: none;
   color: var(--color-text-primary);

@@ -136,6 +136,7 @@ export default {
 .damage-input {
   flex: 1;
   padding: 6px 10px;
+  min-height: var(--touch-min);
   background: var(--color-bg-tertiary, #2a2a4a);
   border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
@@ -161,6 +162,7 @@ export default {
 
 .roll-btn {
   padding: 6px 14px;
+  min-height: var(--touch-min);
   border: none;
   border-radius: 6px;
   font-weight: 600;

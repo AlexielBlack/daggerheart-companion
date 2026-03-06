@@ -537,7 +537,7 @@ export default {
   gap: 4px;
   margin-left: auto;
   padding: var(--space-xs) var(--space-sm);
-  height: 28px;
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: 1px dashed var(--color-accent-warning);
   background: transparent;
@@ -571,8 +571,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-bg-primary);
@@ -743,8 +743,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-accent-fear);
   background: transparent;
@@ -860,8 +860,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-accent-hope);
   background: transparent;

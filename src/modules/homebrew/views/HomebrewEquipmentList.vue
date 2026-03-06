@@ -229,7 +229,7 @@ export default {
 .hb-eq-list__filter-group { border: none; padding: 0; margin: 0; }
 .hb-eq-list__filter-legend { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-xs); }
 .hb-eq-list__chips { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-.hb-eq-list__chip { padding: 4px 10px; border-radius: var(--radius-full); border: 1px solid var(--color-border); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; transition: all var(--transition-fast); }
+.hb-eq-list__chip { padding: 4px 10px; min-height: var(--touch-min); border-radius: var(--radius-full); border: 1px solid var(--color-border); background: transparent; color: var(--color-text-secondary); font-size: var(--font-size-xs); cursor: pointer; transition: all var(--transition-fast); display: inline-flex; align-items: center; }
 .hb-eq-list__chip:hover { border-color: var(--color-accent-hope); color: var(--color-text-primary); }
 .hb-eq-list__chip--active { background: var(--color-accent-hope); color: var(--color-bg-primary); border-color: var(--color-accent-hope); font-weight: var(--font-weight-bold); }
 .hb-eq-list__detail { background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-md); }

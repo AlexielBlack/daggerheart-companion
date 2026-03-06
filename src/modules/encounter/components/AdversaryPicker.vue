@@ -266,8 +266,8 @@ export default {
 }
 
 .picker-btn {
-  width: 24px;
-  height: 24px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: 4px;
   border: 1px solid var(--color-border, #3a3a5a);
   background: var(--color-bg-tertiary, #2a2a4a);

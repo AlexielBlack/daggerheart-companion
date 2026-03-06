@@ -237,11 +237,14 @@ export default {
 }
 
 .array-editor__remove-btn {
-  padding: 2px var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   border-radius: var(--radius-sm);
   transition: color var(--transition-fast), background-color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
 }
 
 .array-editor__remove-btn:hover {

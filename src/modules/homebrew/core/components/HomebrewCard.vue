@@ -288,11 +288,13 @@ export default {
 }
 
 .homebrew-card__action-btn {
-  padding: 2px var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  min-height: var(--touch-min);
   font-size: var(--font-size-sm);
   border-radius: var(--radius-sm);
   transition: background-color var(--transition-fast);
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
 }
 
 .homebrew-card__action-btn:hover {

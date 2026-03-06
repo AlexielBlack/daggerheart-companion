@@ -230,6 +230,7 @@ export default {
 
 .roll-btn {
   padding: 6px 16px;
+  min-height: var(--touch-min);
   border: none;
   border-radius: 6px;
   font-weight: 700;

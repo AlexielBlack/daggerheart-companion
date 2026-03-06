@@ -1321,8 +1321,8 @@ export default {
 }
 
 .hope-btn {
-  width: 28px;
-  height: 28px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 50%;
   background: var(--color-bg-tertiary, #2a2a4a);
@@ -1395,8 +1395,8 @@ export default {
 .exp-row > .field-input:first-child { flex: 1; }
 
 .add-btn, .remove-btn {
-  width: 24px;
-  height: 24px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: var(--color-bg-tertiary, #2a2a4a);

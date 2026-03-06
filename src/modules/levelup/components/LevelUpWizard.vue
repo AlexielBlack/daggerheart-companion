@@ -386,6 +386,7 @@ export default {
 
 .stepper-item__btn {
   width: 100%;
+  min-height: var(--touch-min);
   display: flex;
   align-items: center;
   gap: var(--space-xs);

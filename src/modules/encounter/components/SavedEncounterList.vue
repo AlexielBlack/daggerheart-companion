@@ -130,8 +130,8 @@ export default {
 }
 
 .saved-item__delete {
-  width: 28px;
-  height: 28px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;

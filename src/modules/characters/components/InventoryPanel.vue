@@ -653,8 +653,8 @@ export default {
 }
 
 .gold-btn {
-  width: 22px;
-  height: 22px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid rgba(234, 179, 8, 0.3);
   border-radius: 50%;
   background: transparent;
@@ -787,8 +787,8 @@ export default {
 
 /* ── Supprimer ── */
 .inv-remove-btn {
-  width: 22px;
-  height: 22px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: transparent;

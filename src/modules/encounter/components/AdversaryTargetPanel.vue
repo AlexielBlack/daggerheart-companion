@@ -695,7 +695,7 @@ export default {
   gap: 4px;
   margin-left: auto;
   padding: var(--space-xs) var(--space-sm);
-  height: 28px;
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: 1px dashed var(--color-accent-warning);
   background: transparent;
@@ -780,8 +780,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
@@ -877,8 +877,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: var(--color-bg-secondary);
@@ -923,8 +923,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 26px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
   padding: 0 var(--space-xs);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
@@ -957,7 +957,7 @@ export default {
 
 .adv-panel__quick-input {
   width: 44px;
-  height: 26px;
+  min-height: var(--touch-min);
   padding: 0 var(--space-xs);
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
