@@ -121,3 +121,27 @@ Append-only log of architectural and design decisions.
 **Context:** Les routes top-level utilisent le français (/lecture/adversaires, /edition/personnages) mais les sous-chemins homebrew restent en anglais (/edition/homebrew/adversary).
 **Rationale:** Cohérence avec le schéma de données homebrew (clés anglaises dans les stores et localStorage). Les utilisateurs ne voient pas les sous-chemins homebrew dans la navigation principale. Évite une migration de données complexe.
 **Alternatives considered:** Tout en français (nécessite migration localStorage), tout en anglais (incohérent avec le reste de l'app).
+
+---
+
+## 2026-03-06 20:00 — Violet
+**Decision:** sessionStore stocke uniquement des IDs, résolution via stores existants
+**Context:** Le module session a besoin de référencer des environnements, PNJs et rencontres. Ces entités sont déjà gérées par environmentStore, npcStore et encounterStore.
+**Rationale:** Stocker des IDs (pas des objets) évite la duplication de données et les désynchronisations. Les getters computed (`loadedEnvironment`, `loadedNpcs`) résolvent en O(1) via les stores existants. Si un PNJ est supprimé, le getter filtre automatiquement les IDs orphelins.
+**Alternatives considered:** Copier les objets dans sessionStore (duplication, désynchronisation), store commun encounter+session (couplage excessif).
+
+---
+
+## 2026-03-06 20:00 — Violet
+**Decision:** EnvironmentLoader custom au lieu de réutiliser EnvironmentPicker existant
+**Context:** L'EnvironmentPicker existant importe `allEnvironments` (SRD uniquement) en dur. Le SessionHome a besoin de SRD + homebrew.
+**Rationale:** EnvironmentLoader lit `environmentStore.allItems` qui fusionne SRD + homebrew. Modifier EnvironmentPicker aurait impacté EncounterBuilder et ses tests. Un nouveau composant simple (select + search) est plus propre qu'un refactor transversal.
+**Alternatives considered:** Refactorer EnvironmentPicker pour accepter une source configurable (impact EncounterBuilder), passer les items en prop (API lourde).
+
+---
+
+## 2026-03-06 20:00 — Violet
+**Decision:** `/jeu/table` comme route par défaut de l'app (remplace `/jeu/combat`)
+**Context:** Avec le module session, le hub MJ (SessionHome) est le point d'entrée naturel du mode Jeu. Le combat live est un état transitoire, pas un point de départ.
+**Rationale:** `/` → `/jeu/table` car le MJ commence par sa table (voir PJs, charger env/PNJs, lancer rencontre). Le combat est accessible via le lanceur ou la bannière de reprise. MODE_NAV.jeu met "Table" en première position.
+**Alternatives considered:** Garder `/jeu/combat` comme défaut (confus sans rencontre active), page d'accueil dédiée hors du mode (complexité inutile).

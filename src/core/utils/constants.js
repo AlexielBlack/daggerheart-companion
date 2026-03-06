@@ -156,6 +156,7 @@ export const MODE_NAV = {
     { id: 'edition-sync', label: 'Sync', icon: '🔄', route: '/edition/sync' }
   ],
   jeu: [
+    { id: 'jeu-table', label: 'Table', icon: '🎮', route: '/jeu/table' },
     { id: 'jeu-combat', label: 'Combat', icon: '⚔️', route: '/jeu/combat' },
     { id: 'jeu-des', label: 'Dés', icon: '🎲', route: '/jeu/des' }
   ]

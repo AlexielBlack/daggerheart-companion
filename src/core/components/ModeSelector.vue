@@ -40,7 +40,7 @@ export default {
     const modes = [
       { id: 'lecture', label: 'Lecture', icon: '📖', defaultRoute: '/lecture/adversaires' },
       { id: 'edition', label: 'Édition', icon: '✏️', defaultRoute: '/edition/personnages' },
-      { id: 'jeu', label: 'Jeu', icon: '🎮', defaultRoute: '/jeu/combat' }
+      { id: 'jeu', label: 'Jeu', icon: '🎮', defaultRoute: '/jeu/table' }
     ]
 
     // Mode actif déterminé par route.meta.mode

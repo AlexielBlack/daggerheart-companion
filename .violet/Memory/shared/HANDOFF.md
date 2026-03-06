@@ -82,3 +82,22 @@ Append-only cross-session continuity notes.
 - Commit: `241482a1`
 - **Phase 2 à venir** : SessionHome.vue + sessionStore (pas encore commencé, attend direction de 2J)
 - **Étude détaillée** : `.violet/Memory/shared/STUDY-3MODES.md` contient l'analyse complète et le plan Phase 2
+
+## 2026-03-06 20:00 — Violet
+
+### Phase 2 — Session Module (Mode Jeu) implémenté
+- **sessionStore.js** : Pinia Composition API, useStorage pour persistence (4 clés localStorage: dh-session-env/npcs/notes/last-encounter)
+- **SessionHome.vue** : vue hub MJ, layout 2 colonnes (main+sidebar sticky), responsive 768px breakpoint
+- **PcGroupPanel.vue** : grille lecture seule PJs (HP/Stress bars colorées, Evasion, Armor, Conditions)
+- **EnvironmentLoader.vue** : sélecteur env SRD+homebrew via environmentStore.allItems (PAS le EnvironmentPicker existant)
+- **NpcLoader.vue** : multi-select PNJs avec chips colorées par statut (allié/hostile/neutre/mort/disparu)
+- **EncounterLauncher.vue** : rencontres sauvegardées + templates, injection contexte session (env+PCs) avant lancement
+- **CombatResumeBanner.vue** : bannière conditionnelle "combat en cours" → /jeu/combat (role="alert")
+- **SessionHistoryPanel.vue** : wrapper EncounterHistory (API: historyStore.all, pas entries)
+- **Route** : `/jeu/table` (défaut), `/jeu` → redirect, `/` → `/jeu/table`
+- **MODE_NAV.jeu** : 3 items (Table/Combat/Dés), ModeSelector defaultRoute → `/jeu/table`
+- **Module index** : 9 exports (1 store + 1 vue + 7 composants)
+- 10 fichiers créés, 3 modifiés, 31 tests sessionStore, 2689 tests totaux
+- ESLint clean, build 405 modules 2.30s
+- **Architecture 3 modes complète** — Phase 1 + Phase 2 terminées
+- **Backlog vide** — aucune tâche en attente, direction de 2J requise

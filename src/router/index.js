@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  // Racine — redirige vers le combat en cours
+  // Racine — redirige vers la table de jeu
   {
     path: '/',
-    redirect: '/jeu/combat'
+    redirect: '/jeu/table'
   },
 
   // ─────────────────────────────────────────────
@@ -233,6 +233,12 @@ const routes = [
   // MODE JEU
   // ─────────────────────────────────────────────
   {
+    path: '/jeu/table',
+    name: 'jeu-table',
+    component: () => import('@modules/session/views/SessionHome.vue'),
+    meta: { mode: 'jeu', title: 'Table de jeu', module: 'session' }
+  },
+  {
     path: '/jeu/combat',
     name: 'jeu-combat',
     component: () => import('@modules/encounter/views/EncounterLive.vue'),
@@ -248,6 +254,7 @@ const routes = [
   // ─────────────────────────────────────────────
   // REDIRECTIONS LEGACY
   // ─────────────────────────────────────────────
+  { path: '/jeu', redirect: '/jeu/table' },
   { path: '/adversaries', redirect: '/lecture/adversaires' },
   { path: '/environments', redirect: '/lecture/environnements' },
   { path: '/characters', redirect: '/edition/personnages' },

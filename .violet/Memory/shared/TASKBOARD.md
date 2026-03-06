@@ -8,18 +8,19 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Agent | Status | Priority | Notes |
 |----|------|-------|--------|----------|-------|
-| 3M-P2 | Phase 2 — SessionHome + sessionStore | Frontend | Backlog | Moyenne | Dépend de la direction de 2J |
+| — | Aucune tâche active | — | — | — | Backlog vide — attente direction de 2J |
 
 ## Backlog / On the Horizon
 
 | ID | Task | Domain | Priority | Notes |
 |----|------|--------|----------|-------|
-| 3M-P2 | Phase 2 : SessionHome.vue, sessionStore, PcGroupPanel, sous-composants session | Frontend | Moyenne | Voir STUDY-3MODES.md §Phase 2 |
+| — | Aucun item en attente | — | — | — |
 
 ## Completed (Recent)
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| 3M-P2 | Phase 2 — Session Module (SessionHome + sessionStore + 6 composants) | 2026-03-06 | Frontend |
 | 3M-P1 | Phase 1 — Architecture 3 modes (routing & navigation) | 2026-03-06 | Frontend |
 | H-01+H-02 | Interface gameplay enrichie + spellcastTrait intégration | 2026-03-06 | Frontend |
 | I-05 | Encounter Sharing (Export/Import) | 2026-03-06 | Frontend |
@@ -37,4 +38,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-06 19:00 — Violet*
+*Updated: 2026-03-06 20:00 — Violet*
