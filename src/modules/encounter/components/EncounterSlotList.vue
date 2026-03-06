@@ -100,13 +100,13 @@ export default {
 .slot-list__empty {
   padding: var(--space-lg);
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
 }
 
 .slot-list__empty .text-muted {
   font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   margin-top: var(--space-xs);
 }
 
@@ -124,14 +124,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 8px 10px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   transition: all var(--transition-fast, 150ms);
 }
 
 .slot-item:hover {
-  border-color: var(--text-muted, #6b7280);
+  border-color: var(--color-text-muted, #6b7280);
 }
 
 .slot-item__info {
@@ -164,7 +164,7 @@ export default {
 .slot-item__name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,7 +172,7 @@ export default {
 
 .slot-item__meta {
   font-size: 0.7rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .slot-item__controls {
@@ -185,7 +185,7 @@ export default {
 .slot-item__cost {
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   font-variant-numeric: tabular-nums;
   min-width: 36px;
   text-align: right;
@@ -194,7 +194,7 @@ export default {
 .slot-item__stepper {
   display: flex;
   align-items: center;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -202,9 +202,9 @@ export default {
 .stepper-btn {
   width: 26px;
   height: 26px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border: none;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 1rem;
   cursor: pointer;
   display: flex;
@@ -213,7 +213,7 @@ export default {
 }
 
 .stepper-btn:hover {
-  background: var(--bg-hover, #3a3a5a);
+  background: var(--color-bg-hover, #3a3a5a);
 }
 
 .stepper-value {
@@ -230,7 +230,7 @@ export default {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.8rem;
   cursor: pointer;
   display: flex;
@@ -240,8 +240,8 @@ export default {
 }
 
 .slot-item__remove:hover {
-  color: var(--accent-fear, #c84b31);
-  border-color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
   background: rgba(200, 75, 49, 0.1);
 }
 

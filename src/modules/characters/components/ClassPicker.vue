@@ -118,8 +118,8 @@ export default {
 <style scoped>
 .class-picker {
   padding: var(--space-md);
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
 }
 
@@ -127,12 +127,12 @@ export default {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.1rem;
   margin: 0 0 var(--space-xs);
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .picker-subtitle {
   font-size: 0.85rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   margin: 0 0 var(--space-md);
 }
 
@@ -150,8 +150,8 @@ export default {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
@@ -159,11 +159,11 @@ export default {
 
 .class-card:hover,
 .class-card:focus-visible {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.08);
 }
 
-.class-card:focus-visible { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 2px; }
+.class-card:focus-visible { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 2px; }
 
 .class-card--homebrew {
   border-left: 3px solid #eab308;
@@ -179,13 +179,13 @@ export default {
 
 .class-card__name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.95rem;
 }
 
 .class-card__domains {
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .class-card__stats {
@@ -196,9 +196,9 @@ export default {
 .stat-badge {
   font-size: 0.75rem;
   padding: 2px 6px;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
   border-radius: 4px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   white-space: nowrap;
 }
 
@@ -219,13 +219,13 @@ export default {
   width: 100%;
   margin-top: var(--space-md);
   padding: var(--space-xs) var(--space-md);
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   cursor: pointer;
   font-size: 0.85rem;
 }
 
-.cancel-btn:hover { border-color: var(--text-secondary); }
+.cancel-btn:hover { border-color: var(--color-text-secondary); }
 </style>

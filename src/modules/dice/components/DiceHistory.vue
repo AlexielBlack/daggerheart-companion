@@ -128,8 +128,8 @@ export default {
 
 <style scoped>
 .dice-history {
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
   padding: var(--space-md);
   max-height: 500px;
@@ -147,34 +147,34 @@ export default {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   flex: 1;
 }
 
 .history-count {
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
-  background: var(--bg-tertiary, #2a2a4a);
+  color: var(--color-text-muted, #6b7280);
+  background: var(--color-bg-tertiary, #2a2a4a);
   padding: 1px 6px;
   border-radius: 8px;
 }
 
 .clear-btn {
   padding: 2px 8px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: transparent;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.7rem;
   cursor: pointer;
 }
 
-.clear-btn:hover { color: var(--accent-fear, #c84b31); border-color: var(--accent-fear, #c84b31); }
+.clear-btn:hover { color: var(--color-accent-fear, #c84b31); border-color: var(--color-accent-fear, #c84b31); }
 
 .history-empty {
   text-align: center;
   padding: var(--space-md);
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.85rem;
 }
 
@@ -189,14 +189,14 @@ export default {
 
 .history-entry {
   padding: var(--space-xs) var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 4px;
-  border-left: 3px solid var(--border-color, #3a3a5a);
+  border-left: 3px solid var(--color-border, #3a3a5a);
 }
 
-.history-entry--duality { border-left-color: var(--accent-hope, #53a8b6); }
+.history-entry--duality { border-left-color: var(--color-accent-hope, #53a8b6); }
 .history-entry--gm-d20 { border-left-color: #ef4444; }
-.history-entry--damage { border-left-color: var(--accent-fear, #c84b31); }
+.history-entry--damage { border-left-color: var(--color-accent-fear, #c84b31); }
 .history-entry--quick { border-left-color: #a855f7; }
 
 .entry-header {
@@ -208,12 +208,12 @@ export default {
 .entry-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .entry-time {
   font-size: 0.65rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-variant-numeric: tabular-nums;
 }
 
@@ -234,20 +234,20 @@ export default {
 
 .entry-badge--crit { background: #eab308; color: #000; }
 .entry-badge--hit { background: #22c55e; color: #000; }
-.entry-badge--miss { background: var(--accent-fear, #c84b31); }
+.entry-badge--miss { background: var(--color-accent-fear, #c84b31); }
 
 .entry-total {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
-.entry-total--damage { color: var(--accent-fear, #c84b31); }
+.entry-total--damage { color: var(--color-accent-fear, #c84b31); }
 
 .entry-detail {
   font-size: 0.7rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-family: monospace;
 }
 

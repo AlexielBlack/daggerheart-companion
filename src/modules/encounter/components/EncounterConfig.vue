@@ -251,7 +251,7 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .config-label--clickable {
@@ -261,21 +261,21 @@ export default {
 
 .config-input {
   padding: 6px 10px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
 }
 
-.config-input::placeholder { color: var(--text-muted, #6b7280); }
-.config-input:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.config-input::placeholder { color: var(--color-text-muted, #6b7280); }
+.config-input:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
 .stepper {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -283,9 +283,9 @@ export default {
 .stepper__btn {
   width: 32px;
   height: 32px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border: none;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 1.1rem;
   cursor: pointer;
   display: flex;
@@ -294,7 +294,7 @@ export default {
   transition: background var(--transition-fast, 150ms);
 }
 
-.stepper__btn:hover:not(:disabled) { background: var(--bg-hover, #3a3a5a); }
+.stepper__btn:hover:not(:disabled) { background: var(--color-bg-hover, #3a3a5a); }
 .stepper__btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .stepper__value {
@@ -303,7 +303,7 @@ export default {
   font-weight: 700;
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
   height: 32px;
   line-height: 32px;
 }
@@ -317,19 +317,19 @@ export default {
 .chip {
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid var(--border-color, #3a3a5a);
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-secondary);
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
 }
 
-.chip:hover { border-color: var(--text-secondary); }
+.chip:hover { border-color: var(--color-text-secondary); }
 
 .chip--active {
-  border-color: var(--accent-hope, #53a8b6);
-  color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.1);
 }
 
@@ -345,7 +345,7 @@ export default {
 }
 
 .config-adjustments {
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   padding: var(--space-sm);
 }
@@ -360,8 +360,8 @@ export default {
   text-align: center;
   font-size: 0.7rem;
   font-weight: 700;
-  background: var(--accent-hope, #53a8b6);
-  color: var(--bg-primary, #1a1a2e);
+  background: var(--color-accent-hope, #53a8b6);
+  color: var(--color-bg-primary, #1a1a2e);
   border-radius: 9px;
   margin-left: 6px;
 }
@@ -386,7 +386,7 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   margin-bottom: var(--space-xs);
 }
 
@@ -427,13 +427,13 @@ export default {
 }
 
 .adjustment-indicator--off {
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-muted, #6b7280);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .adjustment-meta {
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-weight: 400;
 }
 
@@ -447,12 +447,12 @@ export default {
 }
 
 .adjustment-item input[type="checkbox"] {
-  accent-color: var(--accent-hope, #53a8b6);
+  accent-color: var(--color-accent-hope, #53a8b6);
 }
 
 .adjustment-label {
   flex: 1;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .adjustment-value {
@@ -463,6 +463,6 @@ export default {
 }
 
 .adjustment-value--positive { color: #22c55e; }
-.adjustment-value--negative { color: var(--accent-fear, #c84b31); }
+.adjustment-value--negative { color: var(--color-accent-fear, #c84b31); }
 .adjustment-value--inactive { opacity: 0.4; }
 </style>

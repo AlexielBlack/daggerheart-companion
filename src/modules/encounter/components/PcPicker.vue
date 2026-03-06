@@ -149,7 +149,7 @@ export default {
 
 .pc-picker__empty {
   font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-style: italic;
   margin: 0;
 }
@@ -169,9 +169,9 @@ export default {
   gap: 6px;
   padding: 5px 10px;
   border-radius: 20px;
-  border: 1px solid var(--border-color, #3a3a5a);
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-secondary);
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
@@ -179,18 +179,18 @@ export default {
 }
 
 .pc-chip:hover {
-  border-color: var(--text-secondary);
+  border-color: var(--color-text-secondary);
 }
 
 .pc-chip:focus-visible {
-  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
   outline-offset: 2px;
 }
 
 .pc-chip--selected {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.12);
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .pc-chip__name {
@@ -207,7 +207,7 @@ export default {
   font-weight: 700;
   padding: 1px 5px;
   border-radius: 8px;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
 }
 
 .pc-chip__tier--t1 { color: #22c55e; }
@@ -218,7 +218,7 @@ export default {
 .pc-picker__summary {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   margin: 0;
 }
 </style>

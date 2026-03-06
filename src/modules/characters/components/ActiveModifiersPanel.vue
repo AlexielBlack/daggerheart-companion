@@ -224,7 +224,7 @@ export default {
 .mp-title {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
   margin: 0 0 var(--space-xs, 4px);
 }
 
@@ -240,8 +240,8 @@ export default {
 .mp-item {
   padding: 6px 8px;
   border-radius: 6px;
-  border: 1px solid var(--border-color, #3a3a5a);
-  background: var(--bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   transition: border-color 150ms, opacity 150ms;
 }
 
@@ -267,16 +267,16 @@ export default {
 .mp-item__name {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
 }
 
 .mp-item__type {
   font-size: 0.6rem;
   padding: 1px 4px;
   border-radius: 3px;
-  background: var(--bg-secondary, #1f1f3a);
-  color: var(--text-muted, #6b7280);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  color: var(--color-text-muted, #6b7280);
+  border: 1px solid var(--color-border, #3a3a5a);
   margin-left: auto;
 }
 
@@ -288,7 +288,7 @@ export default {
 
 .mp-item__desc {
   font-size: 0.72rem;
-  color: var(--text-secondary, #9ca3af);
+  color: var(--color-text-secondary, #9ca3af);
   margin: 0 0 4px;
   line-height: 1.4;
 }
@@ -313,7 +313,7 @@ export default {
 }
 
 .mp-status--off {
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   background: rgba(107, 114, 128, 0.1);
 }
 
@@ -325,7 +325,7 @@ export default {
 
 .mp-freq {
   font-size: 0.6rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-style: italic;
 }
 
@@ -352,18 +352,18 @@ export default {
 }
 
 .mp-toggle-btn--off {
-  color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
   border-color: rgba(200, 75, 49, 0.4);
   background: rgba(200, 75, 49, 0.08);
 }
 
 .mp-toggle-btn--off:hover {
   background: rgba(200, 75, 49, 0.18);
-  border-color: var(--accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
 }
 
 .mp-toggle-btn:focus-visible {
-  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
   outline-offset: 1px;
 }
 
@@ -379,7 +379,7 @@ export default {
 .mp-permanent__label {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .mp-permanent__badge {
@@ -399,12 +399,12 @@ export default {
   padding: 4px 8px;
   margin-top: 2px;
   background: rgba(83, 168, 182, 0.06);
-  border-left: 2px solid var(--accent-hope, #53a8b6);
+  border-left: 2px solid var(--color-accent-hope, #53a8b6);
   border-radius: 0 4px 4px 0;
 }
 
 .mp-summary__icon {
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   font-size: 0.8rem;
   flex-shrink: 0;
 }
@@ -418,7 +418,7 @@ export default {
 .mp-bonus {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   padding: 0 4px;
   background: rgba(83, 168, 182, 0.08);
   border-radius: 3px;

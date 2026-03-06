@@ -98,19 +98,19 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .slot-tracker__count {
   font-size: 0.8rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .slot-tracker__count--warning { color: #eab308; }
 .slot-tracker__count--danger { color: #f97316; }
-.slot-tracker__count--critical { color: var(--accent-fear, #c84b31); }
+.slot-tracker__count--critical { color: var(--color-accent-fear, #c84b31); }
 
 .slot-tracker__slots {
   display: flex;
@@ -122,17 +122,17 @@ export default {
   width: 22px;
   height: 22px;
   border-radius: 3px;
-  border: 2px solid var(--border-color, #3a3a5a);
+  border: 2px solid var(--color-border, #3a3a5a);
   background: transparent;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
 }
 
-.slot-btn:hover { border-color: var(--text-secondary); }
+.slot-btn:hover { border-color: var(--color-text-secondary); }
 
 .slot-btn--hp.slot-btn--marked {
-  background: var(--accent-fear, #c84b31);
-  border-color: var(--accent-fear, #c84b31);
+  background: var(--color-accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
 }
 
 .slot-btn--stress.slot-btn--marked {
@@ -141,8 +141,8 @@ export default {
 }
 
 .slot-btn--armor.slot-btn--marked {
-  background: var(--accent-hope, #53a8b6);
-  border-color: var(--accent-hope, #53a8b6);
+  background: var(--color-accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
 }
 
 .slot-tracker__actions {
@@ -153,10 +153,10 @@ export default {
 .action-btn {
   width: 26px;
   height: 22px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 3px;
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-primary);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   cursor: pointer;
   display: flex;
@@ -164,6 +164,6 @@ export default {
   justify-content: center;
 }
 
-.action-btn:hover:not(:disabled) { border-color: var(--text-secondary); }
+.action-btn:hover:not(:disabled) { border-color: var(--color-text-secondary); }
 .action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 </style>

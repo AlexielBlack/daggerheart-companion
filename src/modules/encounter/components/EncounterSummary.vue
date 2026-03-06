@@ -136,7 +136,7 @@ export default {
 .summary-title {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.1rem;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -151,7 +151,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 6px;
 }
 
@@ -159,21 +159,21 @@ export default {
   font-size: 1.4rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .stat-card__label {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .summary-env {
   padding: var(--space-sm);
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
 }
 
 .summary-env__header {
@@ -187,7 +187,7 @@ export default {
 
 .summary-env__name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
 }
 
@@ -205,7 +205,7 @@ export default {
 
 .summary-env__desc {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   margin: 0 0 var(--space-xs);
   line-height: 1.4;
 }
@@ -222,9 +222,9 @@ export default {
 .summary-env__impulses li {
   font-size: 0.75rem;
   padding: 2px 8px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 10px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-style: italic;
 }
 
@@ -298,9 +298,9 @@ export default {
 }
 
 .btn--primary {
-  background: var(--accent-hope, #53a8b6);
-  color: var(--bg-primary, #1a1a2e);
-  border-color: var(--accent-hope, #53a8b6);
+  background: var(--color-accent-hope, #53a8b6);
+  color: var(--color-bg-primary, #1a1a2e);
+  border-color: var(--color-accent-hope, #53a8b6);
 }
 
 .btn--primary:hover:not(:disabled) {
@@ -314,12 +314,12 @@ export default {
 
 .btn--ghost {
   background: transparent;
-  color: var(--text-secondary);
-  border-color: var(--border-color, #3a3a5a);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border, #3a3a5a);
 }
 
 .btn--ghost:hover {
-  border-color: var(--accent-fear, #c84b31);
-  color: var(--accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
 }
 </style>

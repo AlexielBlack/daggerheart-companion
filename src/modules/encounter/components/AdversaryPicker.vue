@@ -144,21 +144,21 @@ export default {
   position: sticky;
   top: 0;
   z-index: 1;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
   padding-bottom: var(--space-xs);
 }
 
 .picker-search {
   padding: 6px 10px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.85rem;
 }
 
-.picker-search::placeholder { color: var(--text-muted, #6b7280); }
-.picker-search:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.picker-search::placeholder { color: var(--color-text-muted, #6b7280); }
+.picker-search:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
 .picker-filters {
   display: flex;
@@ -168,15 +168,15 @@ export default {
 .filter-chip {
   padding: 2px 8px;
   border-radius: 12px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
 }
 
-.filter-chip:hover { border-color: var(--text-secondary); }
+.filter-chip:hover { border-color: var(--color-text-secondary); }
 
 .filter-chip--tier-1.filter-chip--active { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
 .filter-chip--tier-2.filter-chip--active { border-color: #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
@@ -203,7 +203,7 @@ export default {
 }
 
 .picker-item:hover {
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
 }
 
 .picker-item__info {
@@ -230,7 +230,7 @@ export default {
 .picker-item__name {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -238,14 +238,14 @@ export default {
 
 .picker-item__type {
   font-size: 0.7rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   flex-shrink: 0;
 }
 
 .picker-item__cost {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   flex-shrink: 0;
 }
 
@@ -259,7 +259,7 @@ export default {
 .picker-item__qty {
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   min-width: 24px;
   text-align: center;
 }
@@ -268,9 +268,9 @@ export default {
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  border: 1px solid var(--border-color, #3a3a5a);
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-primary);
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-primary);
   font-size: 1rem;
   cursor: pointer;
   display: flex;
@@ -280,12 +280,12 @@ export default {
 }
 
 .picker-btn--add:hover { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
-.picker-btn--remove:hover { border-color: var(--accent-fear, #c84b31); color: var(--accent-fear, #c84b31); background: rgba(200, 75, 49, 0.1); }
+.picker-btn--remove:hover { border-color: var(--color-accent-fear, #c84b31); color: var(--color-accent-fear, #c84b31); background: rgba(200, 75, 49, 0.1); }
 
 .picker-empty {
   padding: var(--space-md);
   text-align: center;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.85rem;
 }
 </style>

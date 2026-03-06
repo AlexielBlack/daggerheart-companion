@@ -75,7 +75,7 @@ export default {
 .saved-list__empty {
   padding: var(--space-md);
   text-align: center;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.85rem;
 }
 
@@ -93,13 +93,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 8px 10px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   transition: border-color var(--transition-fast, 150ms);
 }
 
-.saved-item:hover { border-color: var(--accent-hope, #53a8b6); }
+.saved-item:hover { border-color: var(--color-accent-hope, #53a8b6); }
 
 .saved-item__info {
   display: flex;
@@ -113,7 +113,7 @@ export default {
 .saved-item__name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -121,12 +121,12 @@ export default {
 
 .saved-item__meta {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .saved-item__date {
   font-size: 0.7rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .saved-item__delete {
@@ -135,7 +135,7 @@ export default {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.85rem;
   cursor: pointer;
   display: flex;
@@ -146,8 +146,8 @@ export default {
 }
 
 .saved-item__delete:hover {
-  color: var(--accent-fear, #c84b31);
-  border-color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
   background: rgba(200, 75, 49, 0.1);
 }
 </style>

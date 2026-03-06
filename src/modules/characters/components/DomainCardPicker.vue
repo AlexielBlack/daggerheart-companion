@@ -391,15 +391,15 @@ export default {
 }
 
 .dp-section {
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
   padding: var(--space-sm, 8px);
 }
 
 .dp-section--catalog {
   background: transparent;
-  border: 1px dashed var(--border-color, #3a3a5a);
+  border: 1px dashed var(--color-border, #3a3a5a);
 }
 
 .dp-section__header {
@@ -412,19 +412,19 @@ export default {
 .dp-section__title {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
   margin: 0;
 }
 
 .dp-count {
   font-size: 0.75rem;
   font-weight: 400;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .dp-empty {
   font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   text-align: center;
   padding: var(--space-sm, 8px);
   font-style: italic;
@@ -451,27 +451,27 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .dp-filter-select {
   padding: 4px 6px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
   font-size: 0.8rem;
   cursor: pointer;
 }
 
 .dp-filter-select:focus {
-  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
   outline-offset: 1px;
 }
 
 .dp-filter-select option {
-  background: var(--bg-secondary, #1f1f3a);
-  color: var(--text-primary, #e5e7eb);
+  background: var(--color-bg-secondary, #1f1f3a);
+  color: var(--color-text-primary, #e5e7eb);
 }
 
 /* ── Cartes (loadout / vault) ── */
@@ -485,9 +485,9 @@ export default {
 }
 
 .dp-card {
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
-  border-left: 3px solid var(--domain-color, var(--accent-hope, #53a8b6));
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
+  border-left: 3px solid var(--domain-color, var(--color-accent-hope, #53a8b6));
   border-radius: 4px;
   padding: var(--space-xs, 4px) var(--space-sm, 8px);
 }
@@ -507,17 +507,17 @@ export default {
 .dp-card__level {
   font-size: 0.6rem;
   font-weight: bold;
-  color: var(--domain-color, var(--text-muted, #6b7280));
+  color: var(--domain-color, var(--color-text-muted, #6b7280));
   text-transform: uppercase;
 }
 
 .dp-card__type {
   font-size: 0.6rem;
   padding: 1px 4px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 3px;
-  color: var(--text-muted, #6b7280);
-  border: 1px solid var(--border-color, #3a3a5a);
+  color: var(--color-text-muted, #6b7280);
+  border: 1px solid var(--color-border, #3a3a5a);
 }
 
 .dp-card__type--spell { color: #a78bfa; border-color: rgba(139, 92, 246, 0.3); }
@@ -533,12 +533,12 @@ export default {
   gap: var(--space-xs, 4px);
 }
 
-.dp-card__name { font-size: 0.82rem; color: var(--text-primary, #e5e7eb); }
-.dp-card__domain { font-size: 0.65rem; color: var(--text-muted, #6b7280); white-space: nowrap; }
+.dp-card__name { font-size: 0.82rem; color: var(--color-text-primary, #e5e7eb); }
+.dp-card__domain { font-size: 0.65rem; color: var(--color-text-muted, #6b7280); white-space: nowrap; }
 
 .dp-card__feature {
   font-size: 0.73rem;
-  color: var(--text-secondary, #9ca3af);
+  color: var(--color-text-secondary, #9ca3af);
   margin: 4px 0;
   line-height: 1.5;
 }
@@ -563,15 +563,15 @@ export default {
 }
 
 .dp-catalog-card {
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
-  border-top: 2px solid var(--domain-color, var(--accent-hope, #53a8b6));
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
+  border-top: 2px solid var(--domain-color, var(--color-accent-hope, #53a8b6));
   border-radius: 4px;
   padding: var(--space-xs, 4px) var(--space-sm, 8px);
   transition: border-color 150ms ease;
 }
 
-.dp-catalog-card:hover { border-color: var(--domain-color, var(--accent-hope, #53a8b6)); }
+.dp-catalog-card:hover { border-color: var(--domain-color, var(--color-accent-hope, #53a8b6)); }
 .dp-catalog-card--acquired { opacity: 0.5; }
 
 /* ── Boutons ── */
@@ -579,10 +579,10 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: transparent;
-  color: var(--text-secondary, #9ca3af);
+  color: var(--color-text-secondary, #9ca3af);
   cursor: pointer;
   font-size: 0.7rem;
   padding: 2px 6px;
@@ -590,18 +590,18 @@ export default {
   white-space: nowrap;
 }
 
-.dp-btn:hover:not(:disabled) { border-color: var(--text-secondary, #9ca3af); }
+.dp-btn:hover:not(:disabled) { border-color: var(--color-text-secondary, #9ca3af); }
 .dp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.dp-btn:focus-visible { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.dp-btn:focus-visible { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
-.dp-btn--primary { color: var(--accent-hope, #53a8b6); border-color: rgba(83, 168, 182, 0.3); }
-.dp-btn--primary:hover:not(:disabled) { background: rgba(83, 168, 182, 0.1); border-color: var(--accent-hope, #53a8b6); }
+.dp-btn--primary { color: var(--color-accent-hope, #53a8b6); border-color: rgba(83, 168, 182, 0.3); }
+.dp-btn--primary:hover:not(:disabled) { background: rgba(83, 168, 182, 0.1); border-color: var(--color-accent-hope, #53a8b6); }
 
 .dp-btn--secondary { color: #a78bfa; border-color: rgba(139, 92, 246, 0.3); }
 .dp-btn--secondary:hover:not(:disabled) { background: rgba(139, 92, 246, 0.1); border-color: #a78bfa; }
 
-.dp-btn--danger { color: var(--accent-fear, #c84b31); border-color: rgba(200, 75, 49, 0.3); }
-.dp-btn--danger:hover:not(:disabled) { background: rgba(200, 75, 49, 0.1); border-color: var(--accent-fear, #c84b31); }
+.dp-btn--danger { color: var(--color-accent-fear, #c84b31); border-color: rgba(200, 75, 49, 0.3); }
+.dp-btn--danger:hover:not(:disabled) { background: rgba(200, 75, 49, 0.1); border-color: var(--color-accent-fear, #c84b31); }
 
 .dp-btn--ghost { border-color: transparent; }
 .dp-btn--ghost:hover:not(:disabled) { background: rgba(255, 255, 255, 0.05); }

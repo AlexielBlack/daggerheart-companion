@@ -98,18 +98,18 @@ export default {
 
 .env-picker__search {
   padding: 6px 10px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.85rem;
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-.env-picker__search::placeholder { color: var(--text-muted, #6b7280); }
-.env-picker__search:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.env-picker__search::placeholder { color: var(--color-text-muted, #6b7280); }
+.env-picker__search:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
 .env-picker__list {
   list-style: none;
@@ -130,12 +130,12 @@ export default {
 }
 
 .env-picker__item:hover {
-  background: var(--bg-tertiary, #2a2a4a);
-  border-color: var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border-color: var(--color-border, #3a3a5a);
 }
 
 .env-picker__item--selected {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.08);
 }
 
@@ -162,20 +162,20 @@ export default {
 .env-picker__name {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .env-picker__desc {
   margin: 4px 0 0;
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   line-height: 1.3;
 }
 
 .env-picker__empty {
   padding: var(--space-md);
   text-align: center;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.85rem;
 }
 </style>

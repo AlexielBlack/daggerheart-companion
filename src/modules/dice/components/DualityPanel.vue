@@ -192,8 +192,8 @@ export default {
 <style scoped>
 .duality-panel {
   padding: var(--space-md);
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
 }
 
@@ -201,7 +201,7 @@ export default {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
   margin: 0 0 var(--space-sm);
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .config-row {
@@ -217,21 +217,21 @@ export default {
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .config-input {
   width: 64px;
   padding: 5px 8px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   text-align: center;
 }
 
-.config-input:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.config-input:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 .config-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .config-input[type="number"] { -moz-appearance: textfield; }
 
@@ -239,25 +239,25 @@ export default {
 
 .toggle-btn {
   padding: 4px 8px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 150ms;
 }
 
 .toggle-btn--active {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.15);
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
 }
 
 .toggle-btn--fear.toggle-btn--active {
-  border-color: var(--accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
   background: rgba(200, 75, 49, 0.15);
-  color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
 }
 
 /* ── Roll button ── */
@@ -274,7 +274,7 @@ export default {
 }
 
 .roll-btn--duality {
-  background: linear-gradient(135deg, var(--accent-hope, #53a8b6), var(--accent-fear, #c84b31));
+  background: linear-gradient(135deg, var(--color-accent-hope, #53a8b6), var(--color-accent-fear, #c84b31));
   color: #fff;
 }
 
@@ -302,8 +302,8 @@ export default {
 .duality-result {
   margin-top: var(--space-md);
   padding: var(--space-md);
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 2px solid var(--outcome-color, var(--border-color));
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 2px solid var(--outcome-color, var(--color-border));
   border-radius: 8px;
   text-align: center;
 }
@@ -333,27 +333,27 @@ export default {
   font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .die__value {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
-.die--hope .die__value { color: var(--accent-hope, #53a8b6); }
-.die--fear .die__value { color: var(--accent-fear, #c84b31); }
+.die--hope .die__value { color: var(--color-accent-hope, #53a8b6); }
+.die--fear .die__value { color: var(--color-accent-fear, #c84b31); }
 
 .result-math {
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-sm);
 }
 
 .result-vs {
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-style: italic;
 }
 
@@ -373,7 +373,7 @@ export default {
 .outcome-desc {
   margin: var(--space-xs) 0 0;
   font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 /* ── Transitions ── */

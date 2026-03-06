@@ -300,16 +300,16 @@ export default {
 .empty-state {
   text-align: center;
   padding: var(--space-xl) var(--space-md);
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .empty-state__emoji { font-size: 3rem; margin: 0; }
-.empty-state__title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: var(--space-sm) 0 var(--space-xs); }
+.empty-state__title { font-size: 1.1rem; font-weight: 600; color: var(--color-text-primary); margin: var(--space-sm) 0 var(--space-xs); }
 .empty-state__text { margin: 0 0 var(--space-md); font-size: 0.9rem; }
 
 .empty-state__btn {
   padding: var(--space-sm) var(--space-lg);
-  background: var(--accent-hope, #53a8b6);
+  background: var(--color-accent-hope, #53a8b6);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -335,8 +335,8 @@ export default {
 }
 
 .toast--success { background: #166534; color: #fff; }
-.toast--error { background: var(--accent-fear, #c84b31); color: #fff; }
-.toast--info { background: var(--accent-hope, #53a8b6); color: #fff; }
+.toast--error { background: var(--color-accent-fear, #c84b31); color: #fff; }
+.toast--info { background: var(--color-accent-hope, #53a8b6); color: #fff; }
 
 .toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(10px); }
@@ -353,8 +353,8 @@ export default {
 }
 
 .confirm-dialog {
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
   padding: var(--space-lg);
   max-width: 400px;
@@ -364,7 +364,7 @@ export default {
 .confirm-dialog__text {
   margin: 0 0 var(--space-md);
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   line-height: 1.5;
 }
 
@@ -379,20 +379,20 @@ export default {
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
 }
 
 .dialog-btn--cancel {
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
-.dialog-btn--cancel:hover { border-color: var(--text-secondary); }
+.dialog-btn--cancel:hover { border-color: var(--color-text-secondary); }
 
 .dialog-btn--danger {
-  background: var(--accent-fear, #c84b31);
+  background: var(--color-accent-fear, #c84b31);
   color: #fff;
-  border-color: var(--accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
 }
 
 .dialog-btn--danger:hover { opacity: 0.9; }

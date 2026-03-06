@@ -87,7 +87,7 @@ export default {
 
 .bp-bar__label {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .bp-bar__numbers {
@@ -101,7 +101,7 @@ export default {
 
 .bp-bar__track {
   height: 10px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 5px;
   overflow: hidden;
 }
@@ -112,15 +112,15 @@ export default {
   transition: width var(--transition-normal, 250ms) ease, background var(--transition-normal, 250ms) ease;
 }
 
-.bp-bar--under .bp-bar__fill { background: var(--accent-hope, #53a8b6); }
+.bp-bar--under .bp-bar__fill { background: var(--color-accent-hope, #53a8b6); }
 .bp-bar--almost .bp-bar__fill { background: #eab308; }
 .bp-bar--exact .bp-bar__fill { background: #22c55e; }
-.bp-bar--over .bp-bar__fill { background: var(--accent-fear, #c84b31); }
+.bp-bar--over .bp-bar__fill { background: var(--color-accent-fear, #c84b31); }
 
-.bp-bar--under { color: var(--accent-hope, #53a8b6); }
+.bp-bar--under { color: var(--color-accent-hope, #53a8b6); }
 .bp-bar--almost { color: #eab308; }
 .bp-bar--exact { color: #22c55e; }
-.bp-bar--over { color: var(--accent-fear, #c84b31); }
+.bp-bar--over { color: var(--color-accent-fear, #c84b31); }
 
 .bp-bar__breakdown {
   display: flex;
@@ -132,14 +132,14 @@ export default {
 .bp-bar__segment {
   font-size: 0.75rem;
   padding: 2px 6px;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
   border-radius: 4px;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .bp-bar__cost {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   margin-left: 4px;
 }
 </style>

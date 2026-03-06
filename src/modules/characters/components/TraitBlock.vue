@@ -259,7 +259,7 @@ export default {
   text-align: center;
   padding: 8px;
   background: rgba(83, 168, 182, 0.06);
-  border: 1px dashed var(--accent-hope, #53a8b6);
+  border: 1px dashed var(--color-accent-hope, #53a8b6);
   border-radius: 6px;
 }
 
@@ -279,7 +279,7 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   margin-bottom: 6px;
 }
 
@@ -300,9 +300,9 @@ export default {
   font-size: 1rem;
   font-weight: 700;
   cursor: grab;
-  border: 2px solid var(--border-color, #3a3a5a);
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-primary, #e5e7eb);
+  border: 2px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-primary, #e5e7eb);
   transition: transform 150ms, border-color 150ms, box-shadow 150ms;
   user-select: none;
 }
@@ -311,12 +311,12 @@ export default {
 .pool-chip:hover { transform: scale(1.1); }
 
 .pool-chip--positive { color: #4ade80; border-color: rgba(74, 222, 128, 0.4); }
-.pool-chip--negative { color: var(--accent-fear, #c84b31); border-color: rgba(200, 75, 49, 0.4); }
+.pool-chip--negative { color: var(--color-accent-fear, #c84b31); border-color: rgba(200, 75, 49, 0.4); }
 
 .pool-chip--selected {
   transform: scale(1.15);
-  box-shadow: 0 0 0 3px var(--accent-hope, #53a8b6);
-  border-color: var(--accent-hope, #53a8b6);
+  box-shadow: 0 0 0 3px var(--color-accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
 }
 
 /* ── Actions rapides ── */
@@ -332,17 +332,17 @@ export default {
   font-weight: 600;
   border-radius: 4px;
   cursor: pointer;
-  border: 1px solid var(--accent-hope, #53a8b6);
+  border: 1px solid var(--color-accent-hope, #53a8b6);
   background: transparent;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   transition: background 150ms;
 }
 
 .trait-action-btn:hover { background: rgba(83, 168, 182, 0.1); }
 
 .trait-action-btn--reset {
-  border-color: var(--text-muted, #6b7280);
-  color: var(--text-muted, #6b7280);
+  border-color: var(--color-text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .trait-action-btn--reset:hover { background: rgba(107, 114, 128, 0.1); }
@@ -364,7 +364,7 @@ export default {
   align-items: center;
   gap: 3px;
   padding: 10px 6px 8px;
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border: 2px solid transparent;
   border-radius: 8px;
   transition: border-color 150ms, background 150ms, box-shadow 150ms;
@@ -378,7 +378,7 @@ export default {
 
 .trait-card--droppable:hover,
 .trait-card--dragover {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   background: rgba(83, 168, 182, 0.08);
   box-shadow: 0 0 8px rgba(83, 168, 182, 0.15);
 }
@@ -392,28 +392,28 @@ export default {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
 }
 
 .trait-card__value {
   font-size: 1.4rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
   line-height: 1;
 }
 
 .trait-card__value--positive { color: #4ade80; }
-.trait-card__value--negative { color: var(--accent-fear, #c84b31); }
+.trait-card__value--negative { color: var(--color-accent-fear, #c84b31); }
 .trait-card__value--empty {
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   opacity: 0.5;
 }
 
 .trait-card__recommended {
   font-size: 0.6rem;
   font-weight: 600;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   opacity: 0.7;
 }
 
@@ -424,7 +424,7 @@ export default {
 
 .trait-card__skills {
   font-size: 0.6rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   text-align: center;
   line-height: 1.3;
 }

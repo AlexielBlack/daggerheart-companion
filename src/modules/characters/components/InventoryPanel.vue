@@ -643,7 +643,7 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .gold-controls {
@@ -674,8 +674,8 @@ export default {
   width: 36px;
   text-align: center;
   padding: 2px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   color: #eab308;
   font-size: 0.85rem;
@@ -699,19 +699,19 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   padding: var(--space-xs);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 4px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
 }
 
 .inv-type-select {
   width: 130px;
   flex-shrink: 0;
   padding: 4px 6px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.78rem;
   cursor: pointer;
 }
@@ -720,10 +720,10 @@ export default {
   flex: 1;
   min-width: 140px;
   padding: 4px 6px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.78rem;
   cursor: pointer;
   text-overflow: ellipsis;
@@ -732,27 +732,27 @@ export default {
 .inv-item-select option,
 .inv-item-select optgroup,
 .inv-type-select option {
-  background: var(--bg-secondary, #1f1f3a);
-  color: var(--text-primary);
+  background: var(--color-bg-secondary, #1f1f3a);
+  color: var(--color-text-primary);
 }
 
 .inv-custom-input {
   flex: 1;
   min-width: 140px;
   padding: 4px 8px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.78rem;
 }
 
-.inv-custom-input::placeholder { color: var(--text-muted, #6b7280); }
+.inv-custom-input::placeholder { color: var(--color-text-muted, #6b7280); }
 
 .inv-custom-input:focus,
 .inv-item-select:focus,
 .inv-type-select:focus {
-  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
   outline-offset: 1px;
 }
 
@@ -766,7 +766,7 @@ export default {
 
 .inv-qty-label {
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-weight: 600;
 }
 
@@ -774,10 +774,10 @@ export default {
   width: 38px;
   text-align: center;
   padding: 3px;
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.78rem;
 }
 
@@ -789,10 +789,10 @@ export default {
 .inv-remove-btn {
   width: 22px;
   height: 22px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
   background: transparent;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.75rem;
   cursor: pointer;
   display: flex;
@@ -803,8 +803,8 @@ export default {
 }
 
 .inv-remove-btn:hover {
-  border-color: var(--accent-fear, #c84b31);
-  color: var(--accent-fear, #c84b31);
+  border-color: var(--color-accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
 }
 
 /* ── Description ── */
@@ -813,7 +813,7 @@ export default {
   margin: 2px 0 0;
   padding: 4px 8px;
   font-size: 0.72rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   line-height: 1.35;
   background: rgba(83, 168, 182, 0.04);
   border-radius: 3px;
@@ -860,9 +860,9 @@ export default {
 .inv-add-btn {
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px dashed var(--border-color, #3a3a5a);
+  border: 1px dashed var(--color-border, #3a3a5a);
   background: transparent;
-  color: var(--text-secondary, #a0a0b8);
+  color: var(--color-text-secondary, #a0a0b8);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
@@ -870,8 +870,8 @@ export default {
 }
 
 .inv-add-btn:hover {
-  border-color: var(--accent-hope, #53a8b6);
-  color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
 }
 
 .inv-add-btn--consumable:hover {

@@ -114,8 +114,8 @@ export default {
 <style scoped>
 .damage-panel {
   padding: var(--space-md);
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
 }
 
@@ -123,7 +123,7 @@ export default {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
   margin: 0 0 var(--space-sm);
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
 .damage-row {
@@ -136,15 +136,15 @@ export default {
 .damage-input {
   flex: 1;
   padding: 6px 10px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   font-family: monospace;
 }
 
-.damage-input:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.damage-input:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
 .crit-toggle {
   display: flex;
@@ -169,7 +169,7 @@ export default {
 }
 
 .roll-btn--damage {
-  background: var(--accent-fear, #c84b31);
+  background: var(--color-accent-fear, #c84b31);
   color: #fff;
 }
 
@@ -185,25 +185,25 @@ export default {
 
 .preset-btn {
   padding: 3px 8px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 3px;
   background: transparent;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-size: 0.7rem;
   font-family: monospace;
   cursor: pointer;
 }
 
 .preset-btn:hover {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-secondary);
 }
 
 /* Result */
 .damage-result {
   margin-top: var(--space-sm);
   padding: var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 6px;
   text-align: center;
 }
@@ -220,27 +220,27 @@ export default {
 
 .damage-die {
   padding: 3px 8px;
-  background: var(--bg-secondary, #1f1f3a);
+  background: var(--color-bg-secondary, #1f1f3a);
   border-radius: 4px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
-.damage-mod { color: var(--text-secondary); font-weight: 600; }
+.damage-mod { color: var(--color-text-secondary); font-weight: 600; }
 .damage-crit-bonus { color: #eab308; font-weight: 700; }
 
 .damage-total {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
 }
 
 .damage-total--crit { color: #eab308; }
 
 .damage-expr {
   font-size: 0.75rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .result-pop-enter-active { animation: popIn 0.3s ease; }

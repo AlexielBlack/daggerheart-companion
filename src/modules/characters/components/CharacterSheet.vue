@@ -1024,8 +1024,8 @@ export default {
 
 .sheet-section {
   padding: var(--space-md);
-  background: var(--bg-secondary, #1f1f3a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-secondary, #1f1f3a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -1033,7 +1033,7 @@ export default {
 .section-heading {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.95rem;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   margin: 0 0 var(--space-sm);
 }
 
@@ -1048,7 +1048,7 @@ export default {
 
 /* ── Choix du personnage (verrouillage) ── */
 .sheet-section--choices {
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
   border-width: 1px 1px 1px 3px;
 }
 
@@ -1067,14 +1067,14 @@ export default {
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   transition: background 150ms, border-color 150ms, opacity 150ms;
 }
 
 .choices-toggle-btn--edit {
   background: transparent;
-  color: var(--accent-hope, #53a8b6);
-  border-color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
 }
 
 .choices-toggle-btn--edit:hover {
@@ -1082,9 +1082,9 @@ export default {
 }
 
 .choices-toggle-btn--validate {
-  background: var(--accent-hope, #53a8b6);
+  background: var(--color-accent-hope, #53a8b6);
   color: #fff;
-  border-color: var(--accent-hope, #53a8b6);
+  border-color: var(--color-accent-hope, #53a8b6);
 }
 
 .choices-toggle-btn--validate:hover {
@@ -1110,7 +1110,7 @@ export default {
   padding: 4px 8px;
   background: rgba(83, 168, 182, 0.06);
   border-radius: 4px;
-  border-left: 2px solid var(--accent-hope, #53a8b6);
+  border-left: 2px solid var(--color-accent-hope, #53a8b6);
 }
 
 .choices-summary__label {
@@ -1118,13 +1118,13 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .choices-summary__value {
   font-size: 0.82rem;
   font-weight: 500;
-  color: var(--text-primary, #e5e7eb);
+  color: var(--color-text-primary, #e5e7eb);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1133,7 +1133,7 @@ export default {
 .choices-summary__empty {
   grid-column: 1 / -1;
   font-size: 0.82rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-style: italic;
   margin: 0;
   padding: 4px 0;
@@ -1155,20 +1155,20 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .field-input {
   padding: 5px 8px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.85rem;
 }
 
-.field-input:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
-.field-input::placeholder { color: var(--text-muted, #6b7280); }
+.field-input:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
+.field-input::placeholder { color: var(--color-text-muted, #6b7280); }
 .field-input--lg { font-size: 1rem; font-weight: 600; }
 .field-input--sm { width: 60px; text-align: center; }
 .field-input--xs { width: 44px; text-align: center; }
@@ -1177,7 +1177,7 @@ export default {
 .field-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .field-input[type="number"] { -moz-appearance: textfield; }
 
-.field-value { font-size: 0.9rem; color: var(--text-primary); padding: 5px 0; }
+.field-value { font-size: 0.9rem; color: var(--color-text-primary); padding: 5px 0; }
 .field-value--class { font-weight: 600; }
 
 .field--level-actions { justify-content: flex-end; }
@@ -1200,32 +1200,32 @@ export default {
 .level-btn:hover { opacity: 0.9; }
 
 .level-btn--up {
-  background: var(--accent-hope, #53a8b6);
+  background: var(--color-accent-hope, #53a8b6);
   color: #fff;
 }
 
 .level-btn--rollback {
   background: transparent;
-  border: 1px solid var(--border-color, #3a3a5a);
-  color: var(--text-secondary, #a0a0b8);
+  border: 1px solid var(--color-border, #3a3a5a);
+  color: var(--color-text-secondary, #a0a0b8);
   font-size: 0.7rem;
 }
 
-.level-btn--rollback:hover { border-color: var(--accent-fear, #c84b31); color: var(--accent-fear, #c84b31); }
+.level-btn--rollback:hover { border-color: var(--color-accent-fear, #c84b31); color: var(--color-accent-fear, #c84b31); }
 
 .field-textarea {
   width: 100%;
   padding: 8px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.85rem;
   resize: vertical;
   font-family: inherit;
 }
 
-.field-textarea:focus { outline: 2px solid var(--accent-hope, #53a8b6); outline-offset: 1px; }
+.field-textarea:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
 
 /* ── Combat ── */
 .combat-grid {
@@ -1242,7 +1242,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 6px;
 }
 
@@ -1251,23 +1251,23 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .combat-stat__value {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
 .combat-stat__detail {
   font-size: 0.65rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
 }
 
 .bonus-indicator {
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   font-weight: 600;
 }
 
@@ -1299,7 +1299,7 @@ export default {
 
 .health-detail {
   font-size: 0.65rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   line-height: 1.3;
 }
 
@@ -1323,10 +1323,10 @@ export default {
 .hope-btn {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 50%;
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-primary);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-primary);
   font-size: 1rem;
   cursor: pointer;
   display: flex;
@@ -1350,7 +1350,7 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 /* ── Conditions ── */
@@ -1363,15 +1363,15 @@ export default {
 .condition-chip {
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
   cursor: pointer;
   transition: all var(--transition-fast, 150ms);
 }
 
-.condition-chip:hover { border-color: var(--text-secondary); }
+.condition-chip:hover { border-color: var(--color-text-secondary); }
 
 .condition-chip--active {
   border-color: #f97316;
@@ -1397,10 +1397,10 @@ export default {
 .add-btn, .remove-btn {
   width: 24px;
   height: 24px;
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  background: var(--bg-tertiary, #2a2a4a);
-  color: var(--text-primary);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   cursor: pointer;
   display: flex;
@@ -1409,7 +1409,7 @@ export default {
 }
 
 .add-btn:hover { border-color: #22c55e; color: #22c55e; }
-.remove-btn:hover { border-color: var(--accent-fear, #c84b31); color: var(--accent-fear, #c84b31); }
+.remove-btn:hover { border-color: var(--color-accent-fear, #c84b31); color: var(--color-accent-fear, #c84b31); }
 
 /* ── Weapons ── */
 .weapon-block {
@@ -1421,7 +1421,7 @@ export default {
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   margin-bottom: 2px;
 }
 
@@ -1437,24 +1437,24 @@ export default {
 .weapon-select {
   width: 100%;
   padding: 5px 8px;
-  background: var(--bg-tertiary, #2a2a4a);
-  border: 1px solid var(--border-color, #3a3a5a);
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 4px;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   font-size: 0.85rem;
   cursor: pointer;
   box-sizing: border-box;
 }
 
 .weapon-select:focus {
-  outline: 2px solid var(--accent-hope, #53a8b6);
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
   outline-offset: 1px;
 }
 
 .weapon-select option,
 .weapon-select optgroup {
-  background: var(--bg-secondary, #1f1f3a);
-  color: var(--text-primary);
+  background: var(--color-bg-secondary, #1f1f3a);
+  color: var(--color-text-primary);
 }
 
 .weapon-details {
@@ -1468,13 +1468,13 @@ export default {
   font-size: 0.75rem;
   padding: 2px 8px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color, #3a3a5a);
+  border: 1px solid var(--color-border, #3a3a5a);
   border-radius: 3px;
-  color: var(--text-secondary, #9ca3af);
+  color: var(--color-text-secondary, #9ca3af);
 }
 
 .weapon-stat--dmg {
-  color: var(--accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
   border-color: rgba(200, 75, 49, 0.3);
   background: rgba(200, 75, 49, 0.06);
   font-weight: 600;
@@ -1483,7 +1483,7 @@ export default {
 .weapon-stat--feature {
   flex-basis: 100%;
   font-style: italic;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   background: transparent;
   border: none;
   padding: 0;
@@ -1516,7 +1516,7 @@ export default {
 /* ── Class Features ── */
 .class-features {
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
@@ -1541,7 +1541,7 @@ export default {
 
 .feature-block {
   padding: var(--space-xs) var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 4px;
 }
 
@@ -1549,27 +1549,27 @@ export default {
   display: block;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
   margin-bottom: 2px;
 }
 
 .feature-desc {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   line-height: 1.45;
   margin: 0;
 }
 
 .community-adjectives {
   font-size: 0.8rem;
-  color: var(--text-muted, #6b7280);
+  color: var(--color-text-muted, #6b7280);
   font-style: italic;
 }
 
 .adjective-label {
   font-style: normal;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .spellcast-trait {
@@ -1579,13 +1579,13 @@ export default {
   border-left: 3px solid #8b5cf6;
   border-radius: 0 4px 4px 0;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .subclass-tier-block {
   margin-bottom: var(--space-sm);
   padding: var(--space-xs) var(--space-sm);
-  background: var(--bg-tertiary, #2a2a4a);
+  background: var(--color-bg-tertiary, #2a2a4a);
   border-radius: 4px;
 }
 
