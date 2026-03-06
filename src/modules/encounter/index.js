@@ -6,6 +6,7 @@
 // Stores
 export { useEncounterStore } from './stores/encounterStore'
 export { useEncounterLiveStore } from './stores/encounterLiveStore'
+export { useEncounterHistoryStore } from './stores/encounterHistoryStore'
 
 // Composants — Builder
 export { default as AdversaryPicker } from './components/AdversaryPicker.vue'
@@ -16,6 +17,7 @@ export { default as EncounterSummary } from './components/EncounterSummary.vue'
 export { default as EnvironmentPicker } from './components/EnvironmentPicker.vue'
 export { default as PcPicker } from './components/PcPicker.vue'
 export { default as SavedEncounterList } from './components/SavedEncounterList.vue'
+export { default as EncounterHistory } from './components/EncounterHistory.vue'
 
 // Composants — Live (nouveau layout 3 colonnes)
 export { default as PcSidebarCard } from './components/PcSidebarCard.vue'

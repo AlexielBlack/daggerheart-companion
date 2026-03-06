@@ -19,6 +19,7 @@
           <div class="builder-section">
             <EncounterConfig
               :name="store.encounterName"
+              :notes="store.encounterNotes"
               :pc-count="store.pcCount"
               :tier="store.selectedTier"
               :intensity="store.selectedIntensity"
@@ -30,6 +31,7 @@
               :characters="store.availableCharacters"
               :selected-pc-ids="store.selectedPcIds"
               @update:name="store.encounterName = $event"
+              @update:notes="store.encounterNotes = $event"
               @update:pc-count="store.setPcCount($event)"
               @update:tier="store.setTier($event)"
               @update:intensity="store.setIntensity($event)"
@@ -134,6 +136,23 @@
               />
             </details>
           </div>
+          <div class="sidebar-section">
+            <details>
+              <summary class="section-title section-title--clickable">
+                📜 Historique de campagne
+                <span
+                  v-if="historyStore.count > 0"
+                  class="count-badge"
+                >{{ historyStore.count }}</span>
+              </summary>
+              <EncounterHistory
+                :entries="historyStore.all"
+                :stats="historyStore.stats"
+                @remove="historyStore.remove($event)"
+                @clear="historyStore.clear()"
+              />
+            </details>
+          </div>
         </aside>
       </div>
 
@@ -156,6 +175,7 @@ import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useEncounterStore } from '../stores/encounterStore'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { useEncounterHistoryStore } from '../stores/encounterHistoryStore'
 import EncounterConfig from '../components/EncounterConfig.vue'
 import BattlePointsBar from '../components/BattlePointsBar.vue'
 import EncounterSlotList from '../components/EncounterSlotList.vue'
@@ -163,6 +183,7 @@ import AdversaryPicker from '../components/AdversaryPicker.vue'
 import EnvironmentPicker from '../components/EnvironmentPicker.vue'
 import EncounterSummary from '../components/EncounterSummary.vue'
 import SavedEncounterList from '../components/SavedEncounterList.vue'
+import EncounterHistory from '../components/EncounterHistory.vue'
 
 export default {
   name: 'EncounterBuilder',
@@ -174,11 +195,13 @@ export default {
     AdversaryPicker,
     EnvironmentPicker,
     EncounterSummary,
-    SavedEncounterList
+    SavedEncounterList,
+    EncounterHistory
   },
   setup() {
     const store = useEncounterStore()
     const liveStore = useEncounterLiveStore()
+    const historyStore = useEncounterHistoryStore()
     const router = useRouter()
     const pickerAdversaryOpen = ref(false)
     const notification = ref(null)
@@ -229,6 +252,7 @@ export default {
 
     return {
       store,
+      historyStore,
       pickerAdversaryOpen,
       notification,
       savedEncounters,

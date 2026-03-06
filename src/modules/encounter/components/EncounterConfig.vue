@@ -18,6 +18,22 @@
       />
     </div>
 
+    <div class="config-row">
+      <label
+        class="config-label"
+        for="encounter-notes"
+      >Notes</label>
+      <textarea
+        id="encounter-notes"
+        class="config-input config-textarea"
+        :value="notes"
+        rows="3"
+        placeholder="Notes de session, contexte narratif, rappels…"
+        aria-label="Notes de la rencontre"
+        @input="$emit('update:notes', $event.target.value)"
+      ></textarea>
+    </div>
+
     <div class="config-row config-row--inline">
       <div class="config-field">
         <label
@@ -190,6 +206,7 @@ export default {
   components: { PcPicker },
   props: {
     name: { type: String, default: '' },
+    notes: { type: String, default: '' },
     pcCount: { type: Number, required: true },
     tier: { type: Number, required: true },
     intensity: { type: String, required: true },
@@ -201,7 +218,7 @@ export default {
     characters: { type: Array, default: () => [] },
     selectedPcIds: { type: Array, default: () => [] }
   },
-  emits: ['update:name', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment', 'update:selectedPcIds'],
+  emits: ['update:name', 'update:notes', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment', 'update:selectedPcIds'],
   setup() {
     return {
       intensityOptions: SCENE_INTENSITY
@@ -270,6 +287,12 @@ export default {
 
 .config-input::placeholder { color: var(--color-text-muted, #6b7280); }
 .config-input:focus { outline: 2px solid var(--color-accent-hope, #53a8b6); outline-offset: 1px; }
+
+.config-textarea {
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+}
 
 .stepper {
   display: inline-flex;

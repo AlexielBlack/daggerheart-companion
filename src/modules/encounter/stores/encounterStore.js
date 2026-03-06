@@ -50,6 +50,9 @@ export const useEncounterStore = defineStore('encounter', () => {
   /** IDs des PJ sélectionnés depuis le module personnages */
   const selectedPcIds = ref([])
 
+  /** Notes libres du MJ pour cette rencontre */
+  const encounterNotes = ref('')
+
   // ── Composition ────────────────────────────────────────
   /**
    * Slots d'adversaires ajoutés à la rencontre.
@@ -414,6 +417,7 @@ export const useEncounterStore = defineStore('encounter', () => {
    */
   function resetEncounter() {
     encounterName.value = ''
+    encounterNotes.value = ''
     adversarySlots.value = []
     selectedEnvironmentId.value = null
     activeAdjustments.value = []
@@ -436,6 +440,7 @@ export const useEncounterStore = defineStore('encounter', () => {
       adversarySlots: adversarySlots.value.map((s) => ({ ...s })),
       environmentId: selectedEnvironmentId.value,
       selectedPcIds: [...selectedPcIds.value],
+      notes: encounterNotes.value,
       createdAt: new Date().toISOString()
     }
   }
@@ -456,6 +461,7 @@ export const useEncounterStore = defineStore('encounter', () => {
       : []
     selectedEnvironmentId.value = data.environmentId || null
     selectedPcIds.value = Array.isArray(data.selectedPcIds) ? [...data.selectedPcIds] : []
+    encounterNotes.value = data.notes || ''
   }
 
   /**
@@ -512,7 +518,7 @@ export const useEncounterStore = defineStore('encounter', () => {
 
   // Auto-save brouillon sur changement (debounced via watch)
   watch(
-    [adversarySlots, encounterName, selectedEnvironmentId, pcCount, selectedTier, selectedIntensity, activeAdjustments, selectedPcIds],
+    [adversarySlots, encounterName, encounterNotes, selectedEnvironmentId, pcCount, selectedTier, selectedIntensity, activeAdjustments, selectedPcIds],
     () => { saveDraft() },
     { deep: true }
   )
@@ -522,6 +528,7 @@ export const useEncounterStore = defineStore('encounter', () => {
     pcCount,
     selectedTier,
     encounterName,
+    encounterNotes,
     selectedIntensity,
     activeAdjustments,
     adversarySlots,

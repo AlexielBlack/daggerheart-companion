@@ -10,6 +10,7 @@ describe('encounter module index', () => {
     const mod = await import('../index.js')
     expect(mod.useEncounterStore).toBeDefined()
     expect(mod.useEncounterLiveStore).toBeDefined()
+    expect(mod.useEncounterHistoryStore).toBeDefined()
   })
 
   it('exporte les composants Builder', async () => {
@@ -17,7 +18,7 @@ describe('encounter module index', () => {
     const builderComponents = [
       'AdversaryPicker', 'BattlePointsBar', 'EncounterConfig',
       'EncounterSlotList', 'EncounterSummary', 'EnvironmentPicker',
-      'PcPicker', 'SavedEncounterList'
+      'PcPicker', 'SavedEncounterList', 'EncounterHistory'
     ]
     for (const name of builderComponents) {
       expect(mod[name]).toBeDefined()
@@ -56,10 +57,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 31 éléments', async () => {
+  it('exporte exactement 33 éléments', async () => {
     const mod = await import('../index.js')
-    // 2 stores + 8 builder + 12 live + 7 composables + 2 vues = 31
+    // 3 stores + 9 builder + 12 live + 7 composables + 2 vues = 33
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(31)
+    expect(exportNames.length).toBe(33)
   })
 })

@@ -21,6 +21,7 @@ import { allAdversaries } from '@data/adversaries'
 import { allEnvironments } from '@data/environments'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { useEncounterHistoryStore } from './encounterHistoryStore'
 import { computeStatBonuses } from '@data/statModifiers'
 import { getClassById } from '@data/classes'
 import {
@@ -956,6 +957,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function endEncounter() {
     lastEncounterSummary.value = generateSummary()
+    // Persiste dans l'historique
+    const historyStore = useEncounterHistoryStore()
+    historyStore.add(lastEncounterSummary.value)
     resetLive()
   }
 
