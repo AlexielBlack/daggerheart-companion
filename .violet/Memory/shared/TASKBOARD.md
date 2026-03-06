@@ -20,6 +20,9 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| TIER-SCALE | Tier Scaling adversaires — tierScaling.js + encounterStore + encounterLiveStore + UI select + 50 tests | 2026-03-06 | Frontend + Data |
+| FIX-ROUND | Fix arrondi moitiés au supérieur — bone-untouchable Math.ceil | 2026-03-06 | Data |
+| FIX-BP | Fix calcul BP Minions — Math.ceil(quantity/pcCount), 5 fichiers, +2 tests | 2026-03-06 | Frontend + Data |
 | STAT-CMB | Gestion interactive PVs/Stress/Armure/Espoir en combat — PcSidebarCard + ContextPanel + encounterLiveStore | 2026-03-06 | Frontend |
 | STAT-INT | Gestion interactive PVs/Stress/Armure/Espoir — patchCharacterById + boutons +/− | 2026-03-06 | Frontend |
 | PG-v2 | PcGroupPanel v2 — fiche PJ enrichie (resolveCharacterDisplay + 4 sections dépliables) | 2026-03-06 | Frontend |
@@ -41,4 +44,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-06 23:00 — Violet*
+*Updated: 2026-03-07 01:00 — Violet*

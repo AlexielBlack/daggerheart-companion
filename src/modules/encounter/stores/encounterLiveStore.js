@@ -35,6 +35,7 @@ import {
   DYNAMIC_ADVANCEMENT
 } from '@data/encounters/liveConstants'
 import { calculateBaseBattlePoints, calculateAdversaryCost } from '@data/encounters/constants'
+import { scaleAdversaryToTier } from '../utils/tierScaling'
 import { useUndoStack } from '../composables/useUndoStack'
 import { useCombatLog } from '../composables/useCombatLog'
 import { useSpotlights } from '../composables/useSpotlights'
@@ -370,8 +371,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (Array.isArray(builderData.adversarySlots)) {
       const instances = []
       for (const slot of builderData.adversarySlots) {
-        const adversaryData = allAdversaries.find((a) => a.id === slot.adversaryId)
+        let adversaryData = allAdversaries.find((a) => a.id === slot.adversaryId)
         if (!adversaryData) continue
+        // Appliquer le tier override si présent (scaling du builder)
+        if (slot.tierOverride && slot.tierOverride !== adversaryData.tier) {
+          adversaryData = scaleAdversaryToTier(adversaryData, slot.tierOverride)
+        }
         for (let i = 0; i < slot.quantity; i++) {
           instances.push(createLiveAdversary(adversaryData, i))
         }

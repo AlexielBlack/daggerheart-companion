@@ -25,12 +25,32 @@
         class="slot-item"
       >
         <div class="slot-item__info">
-          <span
-            class="slot-item__tier"
-            :class="`tier--${slot.adversary.tier}`"
-          >T{{ slot.adversary.tier }}</span>
+          <select
+            class="slot-item__tier-select"
+            :class="[
+              `tier--${slot.adversary.tier}`,
+              { 'slot-item__tier-select--scaled': slot.tierOverride && slot.tierOverride !== slot.originalTier }
+            ]"
+            :value="slot.tierOverride || slot.originalTier"
+            :aria-label="`Tier de ${slot.adversary.name}`"
+            @change="$emit('setTierOverride', { adversaryId: slot.adversaryId, tier: parseInt($event.target.value) })"
+          >
+            <option
+              v-for="t in 4"
+              :key="t"
+              :value="t"
+            >
+              T{{ t }}
+            </option>
+          </select>
           <div class="slot-item__details">
-            <span class="slot-item__name">{{ slot.adversary.name }}</span>
+            <span class="slot-item__name">
+              {{ slot.adversary.name }}
+              <span
+                v-if="slot.tierOverride && slot.tierOverride !== slot.originalTier"
+                class="slot-item__scaled-badge"
+              >T{{ slot.originalTier }}→T{{ slot.tierOverride }}</span>
+            </span>
             <span class="slot-item__meta">
               {{ slot.adversary.type }}
               · {{ slot.minionGroupSize ? '1 BP/' + slot.minionGroupSize + ' min' : slot.unitCost + ' BP/u' }}
@@ -90,7 +110,7 @@ export default {
     /** Slots détaillés avec adversary, unitCost, totalCost */
     slots: { type: Array, default: () => [] }
   },
-  emits: ['increment', 'decrement', 'removeAll']
+  emits: ['increment', 'decrement', 'removeAll', 'setTierOverride']
 }
 </script>
 
@@ -145,12 +165,35 @@ export default {
   flex: 1;
 }
 
-.slot-item__tier {
+.slot-item__tier-select {
   font-size: 0.7rem;
   font-weight: 700;
-  padding: 2px 6px;
+  padding: 2px 4px;
   border-radius: 3px;
   flex-shrink: 0;
+  border: 1px solid transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+  min-width: 34px;
+  min-height: var(--touch-min, 44px);
+}
+
+.slot-item__tier-select--scaled {
+  border-color: #a855f7;
+  box-shadow: 0 0 4px rgba(168, 85, 247, 0.3);
+}
+
+.slot-item__scaled-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: rgba(168, 85, 247, 0.2);
+  color: #a855f7;
+  margin-left: 4px;
+  white-space: nowrap;
 }
 
 .tier--1 { background: rgba(34, 197, 94, 0.2); color: #22c55e; }

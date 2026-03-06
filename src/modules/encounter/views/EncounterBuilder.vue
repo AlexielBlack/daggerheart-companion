@@ -59,6 +59,7 @@
               @increment="store.addAdversary($event)"
               @decrement="store.removeAdversary($event)"
               @remove-all="store.setAdversaryQuantity($event, 0)"
+              @set-tier-override="store.setSlotTierOverride($event.adversaryId, $event.tier)"
             />
           </div>
 

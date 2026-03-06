@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 23:00 — Violet
+**Last updated:** 2026-03-06 23:45 — Violet
 
 ---
 
@@ -65,7 +65,7 @@
 - 392 encounter tests (18 fichiers)
 - 31 session tests (1 fichier)
 - 20 useCharacterComputed tests (1 fichier)
-- 2,716 tests totaux (97 fichiers)
+- 2,718 tests totaux (97 fichiers)
 - ESLint clean
 - Build Vite: 406 modules, 2.56s
 
@@ -78,6 +78,7 @@
 
 ## Known Issues
 - Aucun bug connu actuellement
+- **FIX appliqué** : calcul BP Minions corrigé — `Math.ceil(quantity / pcCount)` au lieu de `1 * quantity` (règle SRD : pcCount minions = 1 groupe = 1 BP)
 
 ## Repository
 - Main branch: `main`

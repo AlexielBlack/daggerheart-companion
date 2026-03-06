@@ -64,10 +64,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 44 éléments', async () => {
+  it('exporte exactement 45 éléments', async () => {
     const mod = await import('../index.js')
-    // 3 stores + 11 builder + 17 live + 11 composables + 2 vues = 44
+    // 3 stores + 11 builder + 17 live + 1 utilitaire + 11 composables + 2 vues = 45
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(44)
+    expect(exportNames.length).toBe(45)
   })
 })

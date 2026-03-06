@@ -45,3 +45,8 @@ Append-only log of errors found and corrections applied.
 **Error:** Only 2 cards appearing at level 1 due to filtering bug
 **Correction:** Bug resolved (details in project history)
 **Prevention:** Data agent verifies filter logic against expected card counts
+
+### Arrondi moitiés : floor → ceil (règle SRD par défaut)
+**Error:** `bone-untouchable` utilisait `Math.floor(agility / 2)` alors que la règle SRD par défaut est d'arrondir au supérieur
+**Correction:** Changé en `Math.ceil(agility / 2)`. Le SRD ne mentionne pas explicitement "arrondi inférieur" pour cette carte.
+**Prevention:** Toute division par 2 pour un bonus/malus doit utiliser `Math.ceil` sauf mention contraire explicite dans le texte SRD. Audit réalisé : 1 calcul corrigé, 6 textes narratifs non-impactés.

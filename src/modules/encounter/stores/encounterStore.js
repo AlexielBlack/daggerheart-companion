@@ -22,6 +22,7 @@ import {
 } from '@data/encounters/constants'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { scaleAdversaryToTier } from '../utils/tierScaling'
 
 /**
  * Calcule le tier d'un personnage selon son niveau.
@@ -80,17 +81,23 @@ export const useEncounterStore = defineStore('encounter', () => {
     return Math.max(0, baseBattlePoints.value + adjustmentTotal.value)
   })
 
-  /** Détail des slots avec données complètes d'adversaire */
+  /** Détail des slots avec données complètes d'adversaire (scalées si tierOverride) */
   const adversarySlotsDetailed = computed(() => {
     return adversarySlots.value
       .map((slot) => {
-        const adversary = allAdversaries.find((a) => a.id === slot.adversaryId)
-        if (!adversary) return null
+        const baseAdversary = allAdversaries.find((a) => a.id === slot.adversaryId)
+        if (!baseAdversary) return null
+        const originalTier = baseAdversary.tier
+        // Appliquer le scaling si tierOverride présent et différent
+        const adversary = (slot.tierOverride && slot.tierOverride !== baseAdversary.tier)
+          ? scaleAdversaryToTier(baseAdversary, slot.tierOverride)
+          : baseAdversary
         const isMinion = adversary.type === 'Minion'
         const cost = calculateAdversaryCost(adversary.type, slot.quantity, pcCount.value)
         return {
           ...slot,
           adversary,
+          originalTier,
           unitCost: BATTLE_POINT_COSTS[adversary.type] ?? 2,
           totalCost: cost,
           /** Taille d'un groupe Minion (= pcCount) ; null pour les autres types */
@@ -267,8 +274,9 @@ export const useEncounterStore = defineStore('encounter', () => {
       })
     }
 
+    // Ignorer les slots avec tierOverride (le MJ a choisi explicitement)
     const tierMismatch = adversarySlotsDetailed.value.filter(
-      (slot) => slot.adversary.tier !== selectedTier.value
+      (slot) => !slot.tierOverride && slot.adversary.tier !== selectedTier.value
     )
     if (tierMismatch.length > 0) {
       const tiers = [...new Set(tierMismatch.map((s) => s.adversary.tier))].sort()
@@ -389,6 +397,24 @@ export const useEncounterStore = defineStore('encounter', () => {
       existing.quantity = quantity
     } else {
       adversarySlots.value.push({ adversaryId, quantity })
+    }
+  }
+
+  /**
+   * Définit un override de tier pour un slot d'adversaire.
+   * Permet de scaler un adversaire vers un tier différent de son tier original.
+   * @param {string} adversaryId
+   * @param {number|null} tier - Tier cible (1-4) ou null pour réinitialiser
+   */
+  function setSlotTierOverride(adversaryId, tier) {
+    const slot = adversarySlots.value.find((s) => s.adversaryId === adversaryId)
+    if (!slot) return
+    const adversary = allAdversaries.find((a) => a.id === adversaryId)
+    if (!adversary) return
+    if (tier === null || tier === adversary.tier) {
+      delete slot.tierOverride
+    } else if (tier >= 1 && tier <= 4) {
+      slot.tierOverride = tier
     }
   }
 
@@ -577,6 +603,7 @@ export const useEncounterStore = defineStore('encounter', () => {
     addAdversary,
     removeAdversary,
     setAdversaryQuantity,
+    setSlotTierOverride,
     setEnvironment,
     setSelectedPcIds,
     resetEncounter,

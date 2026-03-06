@@ -156,3 +156,47 @@ Append-only cross-session continuity notes.
 - 2716 tests totaux (97 fichiers), 0 régression
 - Build: 406 modules, 2.56s
 - **Stats interactives disponibles en mode Table ET en mode Combat** — feature complète
+
+## 2026-03-06 23:45 — Violet
+
+### FIX : Calcul BP des Minions corrigé (règle SRD)
+- **Règle SRD** : 1 groupe de minions = pcCount individus = 1 BP (avant : chaque minion comptait 1 BP)
+- **constants.js** : `calculateAdversaryCost(type, quantity, pcCount=4)` — Minion : `Math.ceil(quantity / pcCount)`, autres types inchangés
+- **encounterStore.js** : `adversarySlotsDetailed` utilise `calculateAdversaryCost()` + `minionGroupSize` ajouté aux slots
+- **encounterLiveStore.js** : `liveBpSpent` utilise `calculateAdversaryCost()` avec pcCount dynamique
+- **EncounterSlotList.vue** : affichage "1 BP/X min" pour minions, tooltip "X minions ÷ Y PJ = Z BP"
+- **AdversaryPicker.vue** : affichage "1 BP/grp" pour minions
+- **Tests** : +2 tests Minion spécifiques (groupes complets/partiels, pcCount par défaut)
+- 2718 tests totaux (97 fichiers), 0 régression
+- Build: 406 modules, 2.43s
+- Commit: `b7cdabfa`, pushé sur origin/main
+
+## 2026-03-06 24:00 — Violet
+
+### FIX : Arrondi moitiés au supérieur (règle SRD par défaut)
+- **Audit complet** : recherche de toutes les divisions par 2 dans le codebase (calculs, narratifs, UI)
+- **1 calcul corrigé** : `bone-untouchable` — `Math.floor(agility / 2)` → `Math.ceil(agility / 2)`
+  - SRD : "Gagnez un bonus à votre Évasion égal à la moitié de votre Agilité." — pas de mention explicite d'arrondi inférieur
+  - Impact : Agilité impaire donne +1 de plus (ex: Agilité 3 → +2 Évasion au lieu de +1)
+- **6 textes narratifs** mentionnent "la moitié" mais ne sont pas calculés en code (half damage sur saves, half proficiency, half card level)
+- Test mis à jour : "arrondie vers le bas" → "arrondie au supérieur", attendu 2 au lieu de 1
+- 2718 tests totaux, 0 régression
+- Commit: `7967d5cf`, pushé sur origin/main
+
+## 2026-03-06 25:00 — Violet
+
+### FEATURE : Système de modulation de tier des adversaires (Tier Scaling)
+- **Approche delta-based** : `statScalée = statOriginale + (benchmarkCible - benchmarkSource)` — utilise les benchmarks SRD existants (`ADVERSARY_TYPE_BENCHMARKS`)
+- **tierScaling.js** (CRÉÉ) : 5 fonctions pures — `parseDamage`, `buildDamage`, `scaleStat`, `scaleDamage`, `scaleAdversaryToTier`
+  - Scale : difficulty, thresholds, hp, stress, attack.modifier, attack.damage
+  - Ne touche PAS : features, motives, experiences, description, focusProfile, attack.name/range/damageType
+  - Minion : HP toujours 1, thresholds toujours null
+  - Damage : count=targetTier (pattern SRD 1d→2d→3d→4d), die size=préservée, bonus+=delta
+- **encounterStore.js** : `setSlotTierOverride(adversaryId, tier)`, `adversarySlotsDetailed` enrichi avec `originalTier` + scaling, `warnings` ignore tier mismatch si override
+- **encounterLiveStore.js** : `startEncounter` applique le tierOverride avant `createLiveAdversary`
+- **EncounterSlotList.vue** : sélecteur `<select>` tier (T1-T4) par slot, badge `T1→T3` violet si override, styles + CSS
+- **EncounterBuilder.vue** : wiring `@set-tier-override`
+- **encounter/index.js** : export `scaleAdversaryToTier` (45 exports total)
+- 50 tests tierScaling, 2768+ tests totaux, 0 régression
+- Build: 407 modules, 2.58s — ESLint clean
+- **Limites** : features non scalées (narratives), builder uniquement (pas en combat live), BP cost inchangé (lié au type pas au tier)
