@@ -144,3 +144,15 @@ Append-only cross-session continuity notes.
 - 4 tests patchCharacterById (mutation par ID, updatedAt, no-op invalide, persistance)
 - 2713 tests totaux (97 fichiers), 0 régression
 - Build: 406 modules, 2.48s — SessionHome chunk 39.73 kB
+
+## 2026-03-06 23:30 — Violet
+
+### Gestion interactive PVs / Stress / Armure / Espoir en mode Combat
+- **encounterLiveStore.js** : +4 champs dans participantPcs computed — `currentHP`, `currentStress`, `armorSlotsMarked`, `hope` (lus depuis charStore.characters réactif)
+- **PcSidebarCard.vue** : +HP/Stress compacts avec mini-boutons ±, `@click.stop` pour éviter la propagation vers la sélection PJ, 1.75rem touch targets
+- **ContextPanel.vue** : +4 stats interactives avec barres de progression (HP rouge, Stress jaune) + Armure/Espoir compacts, 8 helpers increment/decrement, 3 helpers fillPercent, boutons 44px touch-min et 2rem compacts
+- **Chaîne réactivité identique** : clic → helper → characterStore.patchCharacterById → persist → encounterLiveStore.participantPcs recomputed → template re-rendu
+- 3 tests ajoutés (currentHP/currentStress/armorSlotsMarked/hope exposés, valeurs par défaut 0, réactivité via patchCharacterById)
+- 2716 tests totaux (97 fichiers), 0 régression
+- Build: 406 modules, 2.56s
+- **Stats interactives disponibles en mode Table ET en mode Combat** — feature complète

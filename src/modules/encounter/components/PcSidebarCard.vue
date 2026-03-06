@@ -48,6 +48,57 @@
       </div>
     </div>
 
+    <!-- HP / Stress compacts -->
+    <div
+      class="pc-sidebar__hp-row"
+      :aria-label="'PV : ' + (pc.currentHP || 0) + ' marques sur ' + pc.maxHP"
+    >
+      <button
+        class="pc-sidebar__mini-btn"
+        :disabled="(pc.currentHP || 0) <= 0"
+        aria-label="Soigner 1 PV"
+        @click.stop="decrementHP()"
+      >
+        &minus;
+      </button>
+      <span class="pc-sidebar__hp-text">
+        &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.maxHP }}
+      </span>
+      <button
+        class="pc-sidebar__mini-btn"
+        :disabled="(pc.currentHP || 0) >= pc.maxHP"
+        aria-label="Marquer 1 degat"
+        @click.stop="incrementHP()"
+      >
+        +
+      </button>
+    </div>
+
+    <div
+      class="pc-sidebar__stress-row"
+      :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.maxStress"
+    >
+      <button
+        class="pc-sidebar__mini-btn"
+        :disabled="(pc.currentStress || 0) <= 0"
+        aria-label="Reduire 1 stress"
+        @click.stop="decrementStress()"
+      >
+        &minus;
+      </button>
+      <span class="pc-sidebar__stress-text">
+        &#x1F4A2; {{ pc.currentStress || 0 }}/{{ pc.maxStress }}
+      </span>
+      <button
+        class="pc-sidebar__mini-btn"
+        :disabled="(pc.currentStress || 0) >= pc.maxStress"
+        aria-label="Marquer 1 stress"
+        @click.stop="incrementStress()"
+      >
+        +
+      </button>
+    </div>
+
     <!-- Résumé compact des conditions actives (visible quand non sélectionné) -->
     <div
       v-if="!isSelected && activeConditions.length > 0"
@@ -85,6 +136,7 @@
 <script>
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 import { useLongPress } from '../composables/useLongPress'
+import { useCharacterStore } from '@modules/characters'
 
 export default {
   name: 'PcSidebarCard',
@@ -108,7 +160,41 @@ export default {
       }
     }
 
-    return { lp, onClick }
+    // ── Gestion interactive HP / Stress ──
+    const characterStore = useCharacterStore()
+
+    /** Marquer 1 degat */
+    function incrementHP() {
+      const newVal = Math.min(props.pc.maxHP, (props.pc.currentHP || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { currentHP: newVal })
+    }
+
+    /** Soigner 1 PV */
+    function decrementHP() {
+      const newVal = Math.max(0, (props.pc.currentHP || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { currentHP: newVal })
+    }
+
+    /** Marquer 1 stress */
+    function incrementStress() {
+      const newVal = Math.min(props.pc.maxStress, (props.pc.currentStress || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { currentStress: newVal })
+    }
+
+    /** Reduire 1 stress */
+    function decrementStress() {
+      const newVal = Math.max(0, (props.pc.currentStress || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { currentStress: newVal })
+    }
+
+    return {
+      lp,
+      onClick,
+      incrementHP,
+      decrementHP,
+      incrementStress,
+      decrementStress
+    }
   },
   computed: {
     effectiveEvasion() {
@@ -277,5 +363,54 @@ export default {
 .pc-sidebar__cond--on {
   background: rgba(244, 67, 54, 0.2);
   border-color: var(--color-accent-danger);
+}
+
+/* ── HP / Stress compacts ── */
+
+.pc-sidebar__hp-row,
+.pc-sidebar__stress-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pc-sidebar__hp-text,
+.pc-sidebar__stress-text {
+  flex: 1;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.pc-sidebar__mini-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-input);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+  padding: 0;
+  line-height: 1;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pc-sidebar__mini-btn:hover:not(:disabled) {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
+}
+
+.pc-sidebar__mini-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 </style>

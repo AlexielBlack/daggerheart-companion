@@ -4,6 +4,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { useCharacterStore } from '@modules/characters'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
@@ -218,6 +219,72 @@ describe('encounterLiveStore', () => {
       const originalId = store.activeAdversaryId
       store.setActiveAdversary('nonexistent')
       expect(store.activeAdversaryId).toBe(originalId)
+    })
+  })
+
+  // ═══════════════════════════════════════════════════════
+  //  participantPcs — valeurs courantes depuis characterStore
+  // ═══════════════════════════════════════════════════════
+
+  describe('participantPcs — valeurs courantes', () => {
+    it('expose currentHP, currentStress, armorSlotsMarked, hope depuis characterStore', () => {
+      const charStore = useCharacterStore()
+      // Créer un personnage de test avec des valeurs courantes
+      charStore.createCharacter('guardian')
+      const char = charStore.characters[0]
+      charStore.patchCharacterById(char.id, {
+        name: 'Testeur Combat',
+        currentHP: 3,
+        currentStress: 2,
+        armorSlotsMarked: 1,
+        hope: 4
+      })
+
+      // Démarrer un combat avec ce PJ
+      store.startEncounter({
+        ...MOCK_BUILDER_DATA,
+        selectedPcIds: [char.id]
+      })
+
+      const pcs = store.participantPcs
+      expect(pcs).toHaveLength(1)
+      expect(pcs[0].currentHP).toBe(3)
+      expect(pcs[0].currentStress).toBe(2)
+      expect(pcs[0].armorSlotsMarked).toBe(1)
+      expect(pcs[0].hope).toBe(4)
+    })
+
+    it('les valeurs par défaut sont 0 si non définies', () => {
+      const charStore = useCharacterStore()
+      charStore.createCharacter('guardian')
+      const char = charStore.characters[0]
+
+      store.startEncounter({
+        ...MOCK_BUILDER_DATA,
+        selectedPcIds: [char.id]
+      })
+
+      const pcs = store.participantPcs
+      expect(pcs).toHaveLength(1)
+      expect(pcs[0].currentHP).toBe(0)
+      expect(pcs[0].currentStress).toBe(0)
+      expect(pcs[0].armorSlotsMarked).toBe(0)
+      expect(pcs[0].hope).toBe(0)
+    })
+
+    it('réagit aux mutations via patchCharacterById', () => {
+      const charStore = useCharacterStore()
+      charStore.createCharacter('guardian')
+      const char = charStore.characters[0]
+
+      store.startEncounter({
+        ...MOCK_BUILDER_DATA,
+        selectedPcIds: [char.id]
+      })
+
+      expect(store.participantPcs[0].currentHP).toBe(0)
+      charStore.patchCharacterById(char.id, { currentHP: 5 })
+      expect(store.participantPcs[0].currentHP).toBe(5)
     })
   })
 

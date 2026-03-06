@@ -59,6 +59,131 @@
         v-if="activeTab === 'pc' && pc"
         class="ctx-panel__content"
       >
+        <!-- Stats interactives PJ -->
+        <div class="ctx-panel__pc-stats">
+          <!-- Barre HP -->
+          <div
+            class="ctx-panel__bar"
+            :aria-label="'PV : ' + (pc.currentHP || 0) + ' marques sur ' + pc.maxHP"
+          >
+            <button
+              class="ctx-panel__bar-btn"
+              :disabled="(pc.currentHP || 0) <= 0"
+              aria-label="Soigner 1 PV"
+              @click="decrementHP()"
+            >
+              &minus;
+            </button>
+            <div class="ctx-panel__bar-track">
+              <div
+                class="ctx-panel__bar-fill"
+                :style="{ width: hpFillPercent() + '%', backgroundColor: hpColor() }"
+              ></div>
+            </div>
+            <span class="ctx-panel__bar-text">
+              &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.maxHP }}
+            </span>
+            <button
+              class="ctx-panel__bar-btn"
+              :disabled="(pc.currentHP || 0) >= pc.maxHP"
+              aria-label="Marquer 1 degat"
+              @click="incrementHP()"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Barre Stress -->
+          <div
+            class="ctx-panel__bar"
+            :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.maxStress"
+          >
+            <button
+              class="ctx-panel__bar-btn"
+              :disabled="(pc.currentStress || 0) <= 0"
+              aria-label="Reduire 1 stress"
+              @click="decrementStress()"
+            >
+              &minus;
+            </button>
+            <div class="ctx-panel__bar-track">
+              <div
+                class="ctx-panel__bar-fill"
+                :style="{ width: stressFillPercent() + '%', backgroundColor: stressColor() }"
+              ></div>
+            </div>
+            <span class="ctx-panel__bar-text">
+              &#x1F4A2; {{ pc.currentStress || 0 }}/{{ pc.maxStress }}
+            </span>
+            <button
+              class="ctx-panel__bar-btn"
+              :disabled="(pc.currentStress || 0) >= pc.maxStress"
+              aria-label="Marquer 1 stress"
+              @click="incrementStress()"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Armure + Espoir (ligne compacte) -->
+          <div class="ctx-panel__bar-row">
+            <div
+              class="ctx-panel__bar ctx-panel__bar--half"
+              :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + (pc.armorScore || 0)"
+            >
+              <button
+                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
+                :disabled="(pc.armorSlotsMarked || 0) <= 0"
+                aria-label="Restaurer 1 armure"
+                @click="decrementArmor()"
+              >
+                &minus;
+              </button>
+              <div class="ctx-panel__bar-track">
+                <div
+                  class="ctx-panel__bar-fill ctx-panel__bar-fill--armor"
+                  :style="{ width: armorFillPercent() + '%' }"
+                ></div>
+              </div>
+              <span class="ctx-panel__bar-text ctx-panel__bar-text--sm">
+                &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.armorScore || 0 }}
+              </span>
+              <button
+                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
+                :disabled="(pc.armorSlotsMarked || 0) >= (pc.armorScore || 0)"
+                aria-label="Utiliser 1 armure"
+                @click="incrementArmor()"
+              >
+                +
+              </button>
+            </div>
+            <div
+              class="ctx-panel__bar ctx-panel__bar--half"
+              :aria-label="'Espoir : ' + (pc.hope || 0)"
+            >
+              <button
+                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
+                :disabled="(pc.hope || 0) <= 0"
+                aria-label="Depenser 1 espoir"
+                @click="decrementHope()"
+              >
+                &minus;
+              </button>
+              <span class="ctx-panel__bar-text ctx-panel__bar-text--sm">
+                &#x2728; {{ pc.hope || 0 }}
+              </span>
+              <button
+                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
+                :disabled="(pc.hope || 0) >= 6"
+                aria-label="Gagner 1 espoir"
+                @click="incrementHope()"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Armes — info jet d'attaque + dégâts -->
         <div
           v-if="primaryWeapon || secondaryWeapon"
@@ -431,6 +556,7 @@ import { SCENE_MODE_META, SCENE_MODE_PC_ATTACK } from '@data/encounters/liveCons
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
 import { useSwipe } from '../composables/useSwipe'
 import { getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
+import { useCharacterStore } from '@modules/characters'
 import FeatureCard from './FeatureCard.vue'
 import EnvironmentPanel from './EnvironmentPanel.vue'
 
@@ -605,6 +731,105 @@ export default {
       return props.pc.proficiency || 1
     })
 
+    // ══════════════════════════════════════════════
+    //  Gestion interactive HP / Stress / Armure / Espoir
+    // ══════════════════════════════════════════════
+
+    const characterStore = useCharacterStore()
+
+    /** Marquer 1 degat */
+    function incrementHP() {
+      if (!props.pc) return
+      const newVal = Math.min(props.pc.maxHP, (props.pc.currentHP || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { currentHP: newVal })
+    }
+
+    /** Soigner 1 PV */
+    function decrementHP() {
+      if (!props.pc) return
+      const newVal = Math.max(0, (props.pc.currentHP || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { currentHP: newVal })
+    }
+
+    /** Marquer 1 stress */
+    function incrementStress() {
+      if (!props.pc) return
+      const newVal = Math.min(props.pc.maxStress, (props.pc.currentStress || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { currentStress: newVal })
+    }
+
+    /** Reduire 1 stress */
+    function decrementStress() {
+      if (!props.pc) return
+      const newVal = Math.max(0, (props.pc.currentStress || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { currentStress: newVal })
+    }
+
+    /** Utiliser 1 slot d'armure */
+    function incrementArmor() {
+      if (!props.pc) return
+      const newVal = Math.min(props.pc.armorScore || 0, (props.pc.armorSlotsMarked || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { armorSlotsMarked: newVal })
+    }
+
+    /** Restaurer 1 slot d'armure */
+    function decrementArmor() {
+      if (!props.pc) return
+      const newVal = Math.max(0, (props.pc.armorSlotsMarked || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { armorSlotsMarked: newVal })
+    }
+
+    /** Gagner 1 espoir */
+    function incrementHope() {
+      if (!props.pc) return
+      const newVal = Math.min(6, (props.pc.hope || 0) + 1)
+      characterStore.patchCharacterById(props.pc.id, { hope: newVal })
+    }
+
+    /** Depenser 1 espoir */
+    function decrementHope() {
+      if (!props.pc) return
+      const newVal = Math.max(0, (props.pc.hope || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { hope: newVal })
+    }
+
+    /** Pourcentage de remplissage barre HP */
+    function hpFillPercent() {
+      if (!props.pc || !props.pc.maxHP) return 0
+      return Math.round(((props.pc.currentHP || 0) / props.pc.maxHP) * 100)
+    }
+
+    /** Pourcentage de remplissage barre Stress */
+    function stressFillPercent() {
+      if (!props.pc || !props.pc.maxStress) return 0
+      return Math.round(((props.pc.currentStress || 0) / props.pc.maxStress) * 100)
+    }
+
+    /** Pourcentage de remplissage barre Armure */
+    function armorFillPercent() {
+      if (!props.pc || !props.pc.armorScore) return 0
+      return Math.round(((props.pc.armorSlotsMarked || 0) / props.pc.armorScore) * 100)
+    }
+
+    /** Couleur dynamique HP (vert/jaune/rouge selon PV restants) */
+    function hpColor() {
+      if (!props.pc || !props.pc.maxHP) return 'var(--color-text-muted)'
+      const remaining = props.pc.maxHP - (props.pc.currentHP || 0)
+      const ratio = remaining / props.pc.maxHP
+      if (ratio > 0.5) return 'var(--color-accent-success)'
+      if (ratio > 0.25) return 'var(--color-accent-warning)'
+      return 'var(--color-accent-danger)'
+    }
+
+    /** Couleur dynamique Stress (vert/jaune/rouge selon stress) */
+    function stressColor() {
+      if (!props.pc || !props.pc.maxStress) return 'var(--color-text-muted)'
+      const ratio = (props.pc.currentStress || 0) / props.pc.maxStress
+      if (ratio < 0.5) return 'var(--color-accent-success)'
+      if (ratio < 0.75) return 'var(--color-accent-warning)'
+      return 'var(--color-accent-danger)'
+    }
+
     // Features adversaire classifiées
     const advClassified = computed(() => {
       if (!props.adversary) return { passiveFeatures: [], actionFeatures: [], reactionFeatures: [] }
@@ -624,7 +849,14 @@ export default {
       tagFilteredActions, tagFilteredReactions, tagFilteredPassives, tagFilteredTotal,
       pcExperiences,
       primaryWeapon, secondaryWeapon, pcProficiency,
-      advPassives, advActions, advReactions
+      advPassives, advActions, advReactions,
+      // Gestion interactive stats PJ
+      incrementHP, decrementHP,
+      incrementStress, decrementStress,
+      incrementArmor, decrementArmor,
+      incrementHope, decrementHope,
+      hpFillPercent, stressFillPercent, armorFillPercent,
+      hpColor, stressColor
     }
   }
 }
@@ -940,5 +1172,107 @@ export default {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   text-align: center;
+}
+
+/* ══════════════════════════════════════════════
+   STATS INTERACTIVES PJ
+   ══════════════════════════════════════════════ */
+
+.ctx-panel__pc-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.ctx-panel__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.ctx-panel__bar-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.ctx-panel__bar--half {
+  flex: 1;
+}
+
+.ctx-panel__bar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+  padding: 0;
+  line-height: 1;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.ctx-panel__bar-btn--sm {
+  min-width: 2rem;
+  min-height: 2rem;
+  font-size: var(--font-size-sm);
+}
+
+.ctx-panel__bar-btn:hover:not(:disabled) {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-active);
+}
+
+.ctx-panel__bar-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.ctx-panel__bar-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ctx-panel__bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--color-bg-elevated);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ctx-panel__bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.ctx-panel__bar-fill--armor {
+  background: var(--color-accent-gold);
+}
+
+.ctx-panel__bar-text {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 4rem;
+  text-align: center;
+}
+
+.ctx-panel__bar-text--sm {
+  min-width: 3rem;
+  font-size: 0.7rem;
 }
 </style>

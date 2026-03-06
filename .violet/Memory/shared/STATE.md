@@ -37,7 +37,7 @@
 | **3 Modes Phase 1** | ✅ Complet | ✓ | Routing /lecture/* /edition/* /jeu/*, ModeSelector, AppNav mode-aware, 36 redirections legacy |
 | **Session Module (Phase 2)** | ✅ Complet | ✓ | sessionStore, SessionHome, 6 sous-composants, hub MJ mode Jeu (3M-P2) |
 | **PcGroupPanel v2** | ✅ Complet | ✓ | Fiche PJ enrichie : resolveCharacterDisplay pure function, stats/seuils/armes/cartes/capacités/inventaire, 4 sections dépliables, 20 tests |
-| **Gestion interactive stats** | ✅ Complet | ✓ | patchCharacterById, boutons +/− HP/Stress/Armure/Espoir, clamping composant, 44px touch targets, 4 tests |
+| **Gestion interactive stats** | ✅ Complet | ✓ | patchCharacterById, boutons +/− HP/Stress/Armure/Espoir — mode Table (PcGroupPanel) + mode Combat (PcSidebarCard + ContextPanel), 7 tests |
 
 ## Architecture 3 Modes
 
@@ -65,9 +65,9 @@
 - 392 encounter tests (18 fichiers)
 - 31 session tests (1 fichier)
 - 20 useCharacterComputed tests (1 fichier)
-- 2,713 tests totaux (97 fichiers)
+- 2,716 tests totaux (97 fichiers)
 - ESLint clean
-- Build Vite: 406 modules, 2.28s
+- Build Vite: 406 modules, 2.56s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia

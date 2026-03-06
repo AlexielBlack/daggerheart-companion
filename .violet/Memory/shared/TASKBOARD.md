@@ -20,6 +20,7 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| STAT-CMB | Gestion interactive PVs/Stress/Armure/Espoir en combat — PcSidebarCard + ContextPanel + encounterLiveStore | 2026-03-06 | Frontend |
 | STAT-INT | Gestion interactive PVs/Stress/Armure/Espoir — patchCharacterById + boutons +/− | 2026-03-06 | Frontend |
 | PG-v2 | PcGroupPanel v2 — fiche PJ enrichie (resolveCharacterDisplay + 4 sections dépliables) | 2026-03-06 | Frontend |
 | 3M-P2 | Phase 2 — Session Module (SessionHome + sessionStore + 6 composants) | 2026-03-06 | Frontend |

@@ -179,7 +179,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
             experiences: Array.isArray(c.experiences) ? c.experiences.filter((e) => e.name) : [],
             subclassProgression: c.subclassProgression || 'foundation',
             traits: c.traits || { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
-            spellcastTrait: sub?.spellcastTrait || null
+            spellcastTrait: sub?.spellcastTrait || null,
+            // Valeurs courantes (modifiables via characterStore.patchCharacterById)
+            currentHP: c.currentHP || 0,
+            currentStress: c.currentStress || 0,
+            armorSlotsMarked: c.armorSlotsMarked || 0,
+            hope: c.hope || 0
           }
         })
         .filter(Boolean)
