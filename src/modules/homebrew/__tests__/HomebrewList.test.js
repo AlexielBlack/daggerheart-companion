@@ -23,6 +23,9 @@ describe('HomebrewList', () => {
         filteredCount: items.length,
         totalCount: items.length,
         ...extras
+      },
+      global: {
+        stubs: { 'router-link': { template: '<a><slot /></a>' } }
       }
     })
   }

@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 12:00 — Violet
+**Last updated:** 2026-03-06 14:00 — Violet
 
 ---
 
@@ -28,9 +28,10 @@
 | Combat Features | ✅ Complet | ✓ | 394 features, catalogue SRD+homebrew |
 
 ## Test Suite
-- ~1,934+ passing tests
-- 25+ test files
+- 2,452 passing tests
+- 83 test files
 - ESLint clean
+- Build Vite: 353 modules, 4.75s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia
