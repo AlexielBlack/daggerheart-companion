@@ -1,24 +1,38 @@
 <!--
   NpcCombatPanel.vue — Panneau combat d'un PNJ.
-  Permet d'activer le profil combat et de lier un adversaire existant.
-  Affiche un aperçu du stat block lié.
+  3 modes : aucun, lié à un adversaire, profil custom.
+  Le mode custom permet de choisir un type d'adversaire, tier,
+  proficiency, et de piocher des features dans le catalogue.
 -->
 <template>
   <fieldset class="npc-combat">
     <legend>Combat</legend>
 
-    <!-- ── Toggle ── -->
-    <label class="combat-toggle">
-      <input
-        type="checkbox"
-        :checked="combatEnabled"
-        @change="$emit('update:combatEnabled', $event.target.checked)"
-      />
-      <span>Activer le profil combat</span>
-    </label>
+    <!-- ── Mode selector ── -->
+    <div class="combat-mode">
+      <label
+        v-for="mode in modes"
+        :key="mode.value"
+        class="combat-mode__option"
+        :class="{ 'combat-mode__option--active': combatProfileMode === mode.value }"
+      >
+        <input
+          type="radio"
+          :value="mode.value"
+          :checked="combatProfileMode === mode.value"
+          name="combat-mode"
+          class="sr-only"
+          @change="$emit('update:combatProfileMode', mode.value)"
+        />
+        <span class="combat-mode__emoji">{{ mode.emoji }}</span>
+        <span class="combat-mode__label">{{ mode.label }}</span>
+      </label>
+    </div>
 
-    <template v-if="combatEnabled">
-      <!-- ── Sélecteur d'adversaire ── -->
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  MODE LINKED                                    -->
+    <!-- ════════════════════════════════════════════════ -->
+    <template v-if="combatProfileMode === 'linked'">
       <div class="field">
         <label for="npc-adversary">Lier un adversaire</label>
         <select
@@ -27,7 +41,7 @@
           @change="$emit('update:linkedAdversaryId', $event.target.value || null)"
         >
           <option value="">
-            — Aucun (stat block custom) —
+            — Choisir —
           </option>
           <optgroup
             v-for="group in groupedAdversaries"
@@ -45,7 +59,7 @@
         </select>
       </div>
 
-      <!-- ── Aperçu stat block ── -->
+      <!-- Aperçu stat block -->
       <div
         v-if="linkedAdversary"
         class="stat-preview"
@@ -56,24 +70,21 @@
           </h5>
           <span class="stat-preview__tier">Tier {{ linkedAdversary.tier }} {{ linkedAdversary.type }}</span>
         </div>
-
         <p
           v-if="linkedAdversary.description"
           class="stat-preview__desc"
         >
           {{ truncate(linkedAdversary.description, 120) }}
         </p>
-
         <div class="stat-preview__stats">
           <span><strong>Diff:</strong> {{ linkedAdversary.difficulty }}</span>
           <span v-if="linkedAdversary.thresholds">
             <strong>Seuils:</strong>
-            {{ linkedAdversary.thresholds.minor || '—' }}/{{ linkedAdversary.thresholds.major || '—' }}/{{ linkedAdversary.thresholds.severe || '—' }}
+            {{ linkedAdversary.thresholds.major || '—' }}/{{ linkedAdversary.thresholds.severe || '—' }}
           </span>
           <span><strong>PV:</strong> {{ linkedAdversary.hp }}</span>
           <span><strong>Stress:</strong> {{ linkedAdversary.stress }}</span>
         </div>
-
         <div
           v-if="linkedAdversary.attack"
           class="stat-preview__attack"
@@ -83,53 +94,390 @@
           | {{ linkedAdversary.attack.name }} : {{ linkedAdversary.attack.range }}
           | {{ linkedAdversary.attack.damage }}
         </div>
-
         <div
           v-if="linkedAdversary.features && linkedAdversary.features.length > 0"
           class="stat-preview__features"
         >
           <strong>Features ({{ linkedAdversary.features.length }}):</strong>
           <span
-            v-for="f in linkedAdversary.features.slice(0, 3)"
+            v-for="f in linkedAdversary.features.slice(0, 4)"
             :key="f.name"
-            class="stat-preview__feature-tag"
+            class="feature-chip"
           >
-            {{ f.name }} ({{ f.type }})
+            {{ f.name }}
           </span>
-          <span v-if="linkedAdversary.features.length > 3">
-            +{{ linkedAdversary.features.length - 3 }} autres
+          <span v-if="linkedAdversary.features.length > 4">
+            +{{ linkedAdversary.features.length - 4 }}
           </span>
         </div>
       </div>
+    </template>
 
-      <p
-        v-else-if="!linkedAdversaryId"
-        class="combat-hint"
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  MODE CUSTOM                                    -->
+    <!-- ════════════════════════════════════════════════ -->
+    <template v-if="combatProfileMode === 'custom'">
+      <!-- Type + Tier + Proficiency -->
+      <div class="custom-grid">
+        <div class="field">
+          <label for="npc-adv-type">Type d'adversaire</label>
+          <select
+            id="npc-adv-type"
+            :value="adversaryType || ''"
+            @change="$emit('update:adversaryType', $event.target.value || null)"
+          >
+            <option value="">
+              — Choisir —
+            </option>
+            <option
+              v-for="t in adversaryTypes"
+              :key="t.value"
+              :value="t.value"
+            >
+              {{ t.emoji }} {{ t.label }} ({{ t.labelEn }})
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="npc-tier">Tier</label>
+          <select
+            id="npc-tier"
+            :value="tier || ''"
+            @change="onTierChange($event.target.value)"
+          >
+            <option value="">
+              —
+            </option>
+            <option
+              v-for="t in 4"
+              :key="t"
+              :value="t"
+            >
+              Tier {{ t }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="npc-proficiency">Proficiency</label>
+          <select
+            id="npc-proficiency"
+            :value="proficiency || ''"
+            :disabled="!tier"
+            @change="$emit('update:proficiency', Number($event.target.value) || null)"
+          >
+            <option value="">
+              —
+            </option>
+            <option
+              v-for="p in proficiencyRange"
+              :key="p"
+              :value="p"
+            >
+              {{ p }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Benchmarks du tier -->
+      <div
+        v-if="currentBenchmarks"
+        class="tier-benchmarks"
+        aria-label="Benchmarks du tier sélectionné"
       >
-        Liez un adversaire existant (SRD ou homebrew) pour utiliser son stat block,
-        ou laissez vide pour définir un stat block custom ultérieurement.
-      </p>
+        <span><strong>ATK:</strong> +{{ currentBenchmarks.attackModifier }}</span>
+        <span><strong>Diff:</strong> {{ currentBenchmarks.difficulty }}</span>
+        <span><strong>Seuils:</strong> {{ currentBenchmarks.thresholds.major }}/{{ currentBenchmarks.thresholds.severe }}</span>
+      </div>
+
+      <!-- ── Features sélectionnées ── -->
+      <div class="selected-features">
+        <h5 class="section-title">
+          Features ({{ combatFeatures.length }})
+        </h5>
+
+        <div
+          v-if="combatFeatures.length === 0"
+          class="empty-hint"
+        >
+          Aucune feature sélectionnée. Ajoutez-en depuis le catalogue ci-dessous.
+        </div>
+
+        <div
+          v-for="fId in combatFeatures"
+          :key="fId"
+          class="selected-feature"
+        >
+          <div
+            v-if="getFeature(fId)"
+            class="selected-feature__info"
+          >
+            <span
+              class="selected-feature__type-badge"
+              :data-type="getFeature(fId).activationType"
+            >
+              {{ activationEmoji(getFeature(fId).activationType) }}
+            </span>
+            <span class="selected-feature__name">{{ getFeature(fId).name }}</span>
+            <span
+              v-for="tag in getFeature(fId).tags"
+              :key="tag"
+              class="tag-chip"
+            >
+              {{ tagEmoji(tag) }}
+            </span>
+            <span
+              v-if="getFeature(fId).allyCooldown && getFeature(fId).allyCooldown !== 'none'"
+              class="cooldown-badge"
+              :title="cooldownLabel(getFeature(fId).allyCooldown)"
+            >
+              ⏳
+            </span>
+          </div>
+          <span
+            v-else
+            class="selected-feature__unknown"
+          >
+            {{ fId }} (introuvable)
+          </span>
+          <button
+            class="btn btn--icon btn--danger"
+            :aria-label="`Retirer la feature ${fId}`"
+            @click="removeFeature(fId)"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Catalogue / Picker ── -->
+      <details class="catalogue">
+        <summary class="catalogue__toggle">
+          📖 Catalogue de features
+        </summary>
+
+        <div class="catalogue__filters">
+          <input
+            v-model="searchText"
+            type="text"
+            placeholder="Rechercher…"
+            class="catalogue__search"
+            aria-label="Rechercher une feature"
+          />
+          <select
+            v-model="filterSource"
+            class="catalogue__filter"
+            aria-label="Filtrer par source"
+          >
+            <option value="">
+              Toutes sources
+            </option>
+            <option value="adversary">
+              ⚔️ Adversaires
+            </option>
+            <option value="domain_card">
+              🃏 Cartes de domaine
+            </option>
+          </select>
+          <select
+            v-model="filterActivation"
+            class="catalogue__filter"
+            aria-label="Filtrer par type"
+          >
+            <option value="">
+              Tous types
+            </option>
+            <option value="passive">
+              ♾️ Passives
+            </option>
+            <option value="action">
+              ⚡ Actions
+            </option>
+            <option value="reaction">
+              🔄 Réactions
+            </option>
+          </select>
+          <select
+            v-model="filterTheme"
+            class="catalogue__filter"
+            aria-label="Filtrer par thème"
+          >
+            <option value="">
+              Tous thèmes
+            </option>
+            <option
+              v-for="th in themes"
+              :key="th.value"
+              :value="th.value"
+            >
+              {{ th.emoji }} {{ th.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="catalogue__list">
+          <div
+            v-for="feat in availableFeatures"
+            :key="feat.id"
+            class="catalogue__item"
+            :class="{ 'catalogue__item--selected': combatFeatures.includes(feat.id) }"
+          >
+            <div class="catalogue__item-header">
+              <span
+                class="catalogue__item-type"
+                :data-type="feat.activationType"
+              >
+                {{ activationEmoji(feat.activationType) }}
+              </span>
+              <strong class="catalogue__item-name">{{ feat.name }}</strong>
+              <span
+                v-for="tag in feat.tags"
+                :key="tag"
+                class="tag-chip"
+              >
+                {{ tagEmoji(tag) }}
+              </span>
+              <span
+                v-if="feat.cost && feat.cost.type !== 'free'"
+                class="cost-badge"
+              >
+                {{ costLabel(feat.cost) }}
+              </span>
+            </div>
+            <p class="catalogue__item-desc">
+              {{ truncate(feat.description, 140) }}
+            </p>
+            <div class="catalogue__item-meta">
+              <span class="catalogue__item-source">
+                {{ feat.source === 'adversary' ? '⚔️' : '🃏' }}
+                {{ feat.sourceRef }}
+              </span>
+              <span
+                v-if="feat.range"
+                class="catalogue__item-range"
+              >
+                📏 {{ rangeLabel(feat.range) }}
+              </span>
+            </div>
+            <button
+              v-if="!combatFeatures.includes(feat.id)"
+              class="btn btn--small btn--ghost"
+              @click="addFeature(feat.id)"
+            >
+              + Ajouter
+            </button>
+            <button
+              v-else
+              class="btn btn--small btn--danger"
+              @click="removeFeature(feat.id)"
+            >
+              ✕ Retirer
+            </button>
+          </div>
+
+          <p
+            v-if="availableFeatures.length === 0"
+            class="empty-hint"
+          >
+            Aucune feature ne correspond aux filtres.
+          </p>
+        </div>
+      </details>
     </template>
   </fieldset>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+import {
+  ALL_ADVERSARY_TYPES,
+  ADVERSARY_TYPE_META,
+  PROFICIENCY_BY_TIER,
+  TIER_BENCHMARKS,
+  ALL_THEMES,
+  THEME_META,
+  COOLDOWN_META,
+  COMBAT_PROFILE_META,
+  ALL_COMBAT_PROFILES
+} from '../combatConstants.js'
+import {
+  getFeatureById,
+  filterFeatures
+} from '../combatFeatureCatalogue.js'
+import { TAG_META } from '@data/constants/tags.js'
+import { RANGE_META, COST_META, ACTIVATION_META } from '@data/constants/featureSchema.js'
 
 export default {
   name: 'NpcCombatPanel',
 
   props: {
-    combatEnabled: { type: Boolean, default: false },
+    combatProfileMode: { type: String, default: 'none' },
     linkedAdversaryId: { type: String, default: null },
+    adversaryType: { type: String, default: null },
+    tier: { type: Number, default: null },
+    proficiency: { type: Number, default: null },
+    combatFeatures: { type: Array, default: () => [] },
     /** Liste complète des adversaires (SRD + homebrew) */
     allAdversaries: { type: Array, default: () => [] }
   },
 
-  emits: ['update:combatEnabled', 'update:linkedAdversaryId'],
+  emits: [
+    'update:combatProfileMode',
+    'update:linkedAdversaryId',
+    'update:adversaryType',
+    'update:tier',
+    'update:proficiency',
+    'update:combatFeatures'
+  ],
 
-  setup(props) {
-    // Grouper les adversaires par tier pour l'optgroup
+  setup(props, { emit }) {
+    // ── État local filtres catalogue ──
+    const searchText = ref('')
+    const filterSource = ref('')
+    const filterActivation = ref('')
+    const filterTheme = ref('')
+
+    // ── Modes de combat ──
+    const modes = ALL_COMBAT_PROFILES.map(m => ({
+      value: m,
+      label: COMBAT_PROFILE_META[m].label,
+      emoji: COMBAT_PROFILE_META[m].emoji
+    }))
+
+    // ── Types d'adversaire ──
+    const adversaryTypes = ALL_ADVERSARY_TYPES.map(t => ({
+      value: t,
+      label: ADVERSARY_TYPE_META[t].label,
+      labelEn: ADVERSARY_TYPE_META[t].labelEn,
+      emoji: ADVERSARY_TYPE_META[t].emoji
+    }))
+
+    // ── Thèmes ──
+    const themes = ALL_THEMES.map(t => ({
+      value: t,
+      label: THEME_META[t].label,
+      emoji: THEME_META[t].emoji
+    }))
+
+    // ── Proficiency range basé sur le tier ──
+    const proficiencyRange = computed(() => {
+      if (!props.tier) return []
+      const range = PROFICIENCY_BY_TIER[props.tier]
+      if (!range) return []
+      const result = []
+      for (let i = range.min; i <= range.max; i++) result.push(i)
+      return result
+    })
+
+    // ── Benchmarks du tier sélectionné ──
+    const currentBenchmarks = computed(() => {
+      if (!props.tier) return null
+      return TIER_BENCHMARKS[props.tier] || null
+    })
+
+    // ── Mode linked : adversaires groupés par tier ──
     const groupedAdversaries = computed(() => {
       const groups = {}
       for (const adv of props.allAdversaries) {
@@ -137,27 +485,109 @@ export default {
         if (!groups[tier]) groups[tier] = { tier, items: [] }
         groups[tier].items.push(adv)
       }
-
-      // Trier chaque groupe par nom
       for (const group of Object.values(groups)) {
         group.items.sort((a, b) => a.name.localeCompare(b.name))
       }
-
       return Object.values(groups).sort((a, b) => a.tier - b.tier)
     })
 
-    // Adversaire lié résolu
     const linkedAdversary = computed(() => {
       if (!props.linkedAdversaryId) return null
-      return props.allAdversaries.find((a) => a.id === props.linkedAdversaryId) || null
+      return props.allAdversaries.find(a => a.id === props.linkedAdversaryId) || null
     })
+
+    // ── Catalogue filtré ──
+    const availableFeatures = computed(() => {
+      const filters = {}
+      if (filterSource.value) filters.source = filterSource.value
+      if (filterActivation.value) filters.activationType = filterActivation.value
+      if (filterTheme.value) filters.themes = [filterTheme.value]
+      if (props.tier) filters.tier = props.tier
+      if (searchText.value.trim()) filters.search = searchText.value.trim()
+
+      return filterFeatures(filters)
+    })
+
+    // ── Helpers ──
+    function getFeature(id) {
+      return getFeatureById(id)
+    }
+
+    function addFeature(id) {
+      if (!props.combatFeatures.includes(id)) {
+        emit('update:combatFeatures', [...props.combatFeatures, id])
+      }
+    }
+
+    function removeFeature(id) {
+      emit('update:combatFeatures', props.combatFeatures.filter(f => f !== id))
+    }
+
+    function onTierChange(value) {
+      const tier = Number(value) || null
+      emit('update:tier', tier)
+      // Auto-set proficiency au default du tier
+      if (tier && PROFICIENCY_BY_TIER[tier]) {
+        emit('update:proficiency', PROFICIENCY_BY_TIER[tier].default)
+      } else {
+        emit('update:proficiency', null)
+      }
+    }
 
     function truncate(text, max) {
       if (!text || text.length <= max) return text
       return text.slice(0, max).trimEnd() + '…'
     }
 
-    return { groupedAdversaries, linkedAdversary, truncate }
+    function activationEmoji(type) {
+      return ACTIVATION_META[type]?.emoji || '?'
+    }
+
+    function tagEmoji(tag) {
+      return TAG_META[tag]?.emoji || tag
+    }
+
+    function costLabel(cost) {
+      if (!cost || cost.type === 'free') return ''
+      const meta = COST_META[cost.type]
+      return `${cost.amount} ${meta?.emoji || cost.type}`
+    }
+
+    function rangeLabel(range) {
+      return RANGE_META[range]?.label || range
+    }
+
+    function cooldownLabel(cd) {
+      return COOLDOWN_META[cd]?.label || cd
+    }
+
+    return {
+      // Données
+      modes,
+      adversaryTypes,
+      themes,
+      proficiencyRange,
+      currentBenchmarks,
+      groupedAdversaries,
+      linkedAdversary,
+      availableFeatures,
+      // Filtres catalogue
+      searchText,
+      filterSource,
+      filterActivation,
+      filterTheme,
+      // Méthodes
+      getFeature,
+      addFeature,
+      removeFeature,
+      onTierChange,
+      truncate,
+      activationEmoji,
+      tagEmoji,
+      costLabel,
+      rangeLabel,
+      cooldownLabel
+    }
   }
 }
 </script>
@@ -177,26 +607,64 @@ export default {
   padding: 0 0.5rem;
 }
 
-.combat-toggle {
+/* ── Mode selector ── */
+.combat-mode {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.combat-mode__option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--color-text, #f9fafb);
+  gap: 0.3rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+  background: transparent;
+  transition: all 0.15s;
+}
+
+.combat-mode__option:hover {
+  border-color: var(--color-primary, #60a5fa);
+  color: var(--color-text, #f9fafb);
+}
+
+.combat-mode__option--active {
+  border-color: var(--color-primary, #2563eb);
+  background: rgba(37, 99, 235, 0.15);
+  color: var(--color-text, #f9fafb);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ── Custom grid ── */
+.custom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.combat-toggle input {
-  width: auto;
+@media (max-width: 500px) {
+  .custom-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.combat-hint {
-  font-size: 0.8rem;
-  color: var(--color-text-muted, #6b7280);
-  margin: 0.5rem 0 0;
-}
-
+/* ── Fields ── */
 .field {
   margin-bottom: 0.5rem;
 }
@@ -209,7 +677,8 @@ export default {
   margin-bottom: 0.2rem;
 }
 
-.field select {
+.field select,
+.field input {
   width: 100%;
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--color-border, #374151);
@@ -220,7 +689,19 @@ export default {
   font-family: inherit;
 }
 
-/* ── Stat preview ── */
+/* ── Tier benchmarks ── */
+.tier-benchmarks {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #9ca3af);
+  padding: 0.35rem 0.5rem;
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Stat preview (linked) ── */
 .stat-preview {
   border: 1px solid var(--color-border, #374151);
   border-radius: 6px;
@@ -275,12 +756,223 @@ export default {
   color: var(--color-text-muted, #9ca3af);
 }
 
-.stat-preview__feature-tag {
+/* ── Section title ── */
+.section-title {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 0.85rem;
+  color: var(--color-text, #f9fafb);
+}
+
+.empty-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #6b7280);
+  margin: 0.3rem 0;
+}
+
+/* ── Selected features ── */
+.selected-features {
+  margin-bottom: 0.5rem;
+}
+
+.selected-feature {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 5px;
+  margin-bottom: 0.25rem;
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
+}
+
+.selected-feature__info {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.selected-feature__name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text, #f9fafb);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-feature__type-badge {
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.selected-feature__unknown {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
+}
+
+/* ── Chips & badges ── */
+.feature-chip {
   display: inline-block;
   margin-left: 0.3rem;
   padding: 0.05rem 0.3rem;
   border-radius: 3px;
   background: var(--color-tag-bg, #374151);
   font-size: 0.7rem;
+}
+
+.tag-chip {
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.cooldown-badge {
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  cursor: help;
+}
+
+.cost-badge {
+  font-size: 0.7rem;
+  color: var(--color-text-muted, #9ca3af);
+  flex-shrink: 0;
+}
+
+/* ── Catalogue ── */
+.catalogue {
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.catalogue__toggle {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text, #f9fafb);
+  cursor: pointer;
+}
+
+.catalogue__toggle:hover {
+  color: var(--color-primary, #60a5fa);
+}
+
+.catalogue__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0 0.75rem 0.5rem;
+}
+
+.catalogue__search {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 4px;
+  background: var(--color-surface, #1f2937);
+  color: var(--color-text, #f9fafb);
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+.catalogue__filter {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 4px;
+  background: var(--color-surface, #1f2937);
+  color: var(--color-text, #f9fafb);
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+.catalogue__list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.catalogue__item {
+  border: 1px solid var(--color-border, #374151);
+  border-radius: 5px;
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.35rem;
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.02));
+}
+
+.catalogue__item--selected {
+  border-color: var(--color-primary, #2563eb);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.catalogue__item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.2rem;
+}
+
+.catalogue__item-type {
+  font-size: 0.7rem;
+}
+
+.catalogue__item-name {
+  font-size: 0.85rem;
+  color: var(--color-text, #f9fafb);
+}
+
+.catalogue__item-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #9ca3af);
+  margin: 0 0 0.25rem;
+  line-height: 1.35;
+}
+
+.catalogue__item-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  color: var(--color-text-muted, #6b7280);
+  margin-bottom: 0.3rem;
+}
+
+/* ── Boutons ── */
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.btn--small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px dashed var(--color-border, #374151);
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-primary, #60a5fa);
+  color: var(--color-text, #f9fafb);
+}
+
+.btn--danger {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.btn--icon {
+  padding: 0.2rem 0.35rem;
+  font-size: 0.7rem;
+  line-height: 1;
 }
 </style>

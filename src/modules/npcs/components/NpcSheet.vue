@@ -199,11 +199,19 @@
 
     <!-- ── Combat ── -->
     <NpcCombatPanel
-      :combat-enabled="form.combatEnabled"
+      :combat-profile-mode="form.combatProfileMode"
       :linked-adversary-id="form.linkedAdversaryId"
+      :adversary-type="form.adversaryType"
+      :tier="form.tier"
+      :proficiency="form.proficiency"
+      :combat-features="form.combatFeatures"
       :all-adversaries="allAdversaries"
-      @update:combat-enabled="form.combatEnabled = $event"
+      @update:combat-profile-mode="form.combatProfileMode = $event"
       @update:linked-adversary-id="form.linkedAdversaryId = $event"
+      @update:adversary-type="form.adversaryType = $event"
+      @update:tier="form.tier = $event"
+      @update:proficiency="form.proficiency = $event"
+      @update:combat-features="form.combatFeatures = $event"
     />
 
     <!-- ── Relations PJ ── -->
