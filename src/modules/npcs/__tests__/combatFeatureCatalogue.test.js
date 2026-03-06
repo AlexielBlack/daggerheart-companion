@@ -113,6 +113,12 @@ describe('Intégrité du catalogue', () => {
     }
   })
 
+  it('chaque feature adversaire a au moins un adversaryType', () => {
+    for (const f of ADVERSARY_FEATURES) {
+      expect(f.adversaryTypes.length, `${f.id} n'a pas d'adversaryType`).toBeGreaterThanOrEqual(1)
+    }
+  })
+
   it('chaque feature a un sourceRef non vide', () => {
     for (const f of ALL_COMBAT_FEATURES) {
       expect(f.sourceRef, `${f.id} manque sourceRef`).toBeTruthy()
@@ -142,6 +148,24 @@ describe('Couverture thématique', () => {
       const count = ADVERSARY_FEATURES.filter(f => f.tier === tier).length
       expect(count, `Tier ${tier} non couvert`).toBeGreaterThan(0)
     }
+  })
+})
+
+describe('Couverture par type d\'adversaire', () => {
+  const types = ['bruiser', 'horde', 'leader', 'minion', 'ranged', 'skulk', 'social', 'solo', 'standard', 'support']
+
+  it('les 10 types d\'adversaire sont couverts', () => {
+    for (const type of types) {
+      const count = ADVERSARY_FEATURES.filter(f =>
+        f.adversaryTypes && f.adversaryTypes.includes(type)
+      ).length
+      expect(count, `Type ${type} non couvert`).toBeGreaterThan(0)
+    }
+  })
+
+  it('Momentum est associé à plusieurs types', () => {
+    const f = getFeatureById('adv-momentum')
+    expect(f.adversaryTypes.length).toBeGreaterThan(1)
   })
 })
 

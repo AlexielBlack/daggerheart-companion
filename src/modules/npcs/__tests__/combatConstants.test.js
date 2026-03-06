@@ -417,6 +417,7 @@ describe('createCombatFeature', () => {
     expect(f.tier).toBe(1)
     expect(f.tags).toEqual([])
     expect(f.themes).toEqual([])
+    expect(f.adversaryTypes).toEqual([])
     expect(f.cost).toEqual({ type: 'free', amount: 0 })
     expect(f.frequency).toBeNull()
     expect(f.allyCooldown).toBeNull()

@@ -13,6 +13,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -40,6 +43,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "free",
@@ -69,6 +75,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -96,6 +105,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -129,6 +141,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -156,6 +171,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -185,6 +203,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -213,6 +234,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -240,6 +264,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -273,6 +300,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -304,6 +334,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "free",
@@ -337,6 +370,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -364,6 +400,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "stress",
@@ -397,6 +436,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -424,6 +466,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -457,6 +502,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -486,6 +534,11 @@
       "bestial",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "horde",
+      "skulk",
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -514,6 +567,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -541,6 +597,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "fear",
@@ -574,6 +633,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -606,6 +668,9 @@
       "elemental",
       "undead"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -633,6 +698,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -662,6 +730,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -689,6 +760,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "stress",
@@ -721,6 +795,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -756,6 +833,9 @@
       "bestial",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -785,6 +865,9 @@
       "bestial",
       "humanoid"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -813,6 +896,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -840,6 +926,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -873,6 +962,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -901,6 +993,9 @@
     "themes": [
       "bestial",
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "minion"
     ],
     "cost": {
       "type": "free",
@@ -931,6 +1026,9 @@
       "undead",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -959,6 +1057,9 @@
     "themes": [
       "undead",
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "minion"
     ],
     "cost": {
       "type": "free",
@@ -989,6 +1090,9 @@
     "themes": [
       "humanoid",
       "socialIntrigue"
+    ],
+    "adversaryTypes": [
+      "social"
     ],
     "cost": {
       "type": "stress",
@@ -1026,6 +1130,13 @@
       "elemental",
       "undead"
     ],
+    "adversaryTypes": [
+      "bruiser",
+      "leader",
+      "solo",
+      "horde",
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1054,6 +1165,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1081,6 +1195,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -1114,6 +1231,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1143,6 +1263,10 @@
       "undead",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "horde",
+      "standard"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1170,6 +1294,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -1199,6 +1326,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1226,6 +1356,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -1255,6 +1388,10 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo",
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1282,6 +1419,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -1311,6 +1451,9 @@
     "themes": [
       "monstrous",
       "undead"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -1343,6 +1486,10 @@
       "undead",
       "humanoid"
     ],
+    "adversaryTypes": [
+      "solo",
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1372,6 +1519,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -1399,6 +1549,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "free",
@@ -1428,6 +1581,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1455,6 +1611,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -1484,6 +1643,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -1511,6 +1673,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -1540,6 +1705,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1567,6 +1735,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -1600,6 +1771,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -1627,6 +1801,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -1656,6 +1833,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -1683,6 +1863,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "fear",
@@ -1712,6 +1895,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1739,6 +1925,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -1769,6 +1958,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -1796,6 +1988,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -1825,6 +2020,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1852,6 +2050,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -1881,6 +2082,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1908,6 +2112,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -1937,6 +2144,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -1964,6 +2174,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -1993,6 +2206,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2020,6 +2236,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "stress",
@@ -2053,6 +2272,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2081,6 +2303,9 @@
     "themes": [
       "humanoid",
       "socialIntrigue"
+    ],
+    "adversaryTypes": [
+      "social"
     ],
     "cost": {
       "type": "free",
@@ -2111,6 +2336,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2138,6 +2366,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "fear",
@@ -2171,6 +2402,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2201,6 +2435,10 @@
       "humanoid",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "ranged",
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2229,6 +2467,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "stress",
@@ -2264,6 +2505,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2293,6 +2537,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2321,6 +2568,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2348,6 +2598,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -2379,6 +2632,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2406,6 +2662,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "horde"
     ],
     "cost": {
       "type": "fear",
@@ -2435,6 +2694,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2463,6 +2725,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -2497,6 +2762,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2526,6 +2794,11 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "ranged",
+      "leader",
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2553,6 +2826,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -2582,6 +2858,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -2609,6 +2888,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -2643,6 +2925,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2670,6 +2955,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -2699,6 +2987,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2726,6 +3017,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "horde"
     ],
     "cost": {
       "type": "free",
@@ -2756,6 +3050,9 @@
       "bestial",
       "elemental"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2784,6 +3081,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2811,6 +3111,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -2844,6 +3147,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2872,6 +3178,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -2899,6 +3208,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -2929,6 +3241,9 @@
       "humanoid",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -2956,6 +3271,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "minion"
     ],
     "cost": {
       "type": "free",
@@ -2986,6 +3304,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3013,6 +3334,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -3046,6 +3370,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3073,6 +3400,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "horde"
     ],
     "cost": {
       "type": "stress",
@@ -3102,6 +3432,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3130,6 +3463,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -3157,6 +3493,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "stress",
@@ -3190,6 +3529,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -3217,6 +3559,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "stress",
@@ -3250,6 +3595,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3278,6 +3626,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3305,6 +3656,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -3339,6 +3693,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3366,6 +3723,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "stress",
@@ -3395,6 +3755,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3422,6 +3785,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "stress",
@@ -3458,6 +3824,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3491,6 +3860,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 2
@@ -3518,6 +3890,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "fear",
@@ -3551,6 +3926,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3578,6 +3956,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "stress",
@@ -3607,6 +3988,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -3634,6 +4018,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -3667,6 +4054,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3695,6 +4085,9 @@
     "themes": [
       "humanoid",
       "socialIntrigue"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -3727,6 +4120,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -3761,6 +4157,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3788,6 +4187,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -3825,6 +4227,11 @@
       "undead",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "leader",
+      "bruiser",
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3854,6 +4261,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -3881,6 +4291,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -3914,6 +4327,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -3942,6 +4358,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 2
@@ -3969,6 +4388,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "stress",
@@ -3999,6 +4421,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4026,6 +4451,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -4055,6 +4483,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4082,6 +4513,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -4115,6 +4549,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4143,6 +4580,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4170,6 +4610,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "fear",
@@ -4203,6 +4646,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -4231,6 +4677,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -4258,6 +4707,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "fear",
@@ -4291,6 +4743,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4318,6 +4773,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -4347,6 +4805,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -4375,6 +4836,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "stress",
@@ -4406,6 +4870,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4433,6 +4900,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "stress",
@@ -4463,6 +4933,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -4490,6 +4963,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -4519,6 +4995,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4546,6 +5025,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "skulk"
     ],
     "cost": {
       "type": "free",
@@ -4575,6 +5057,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4602,6 +5087,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -4631,6 +5119,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4658,6 +5149,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "fear",
@@ -4692,6 +5186,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4721,6 +5218,9 @@
       "humanoid",
       "socialIntrigue"
     ],
+    "adversaryTypes": [
+      "social"
+    ],
     "cost": {
       "type": "fearPerPC",
       "amount": 1
@@ -4748,6 +5248,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -4778,6 +5281,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4805,6 +5311,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -4835,6 +5344,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -4862,6 +5374,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "stress",
@@ -4891,6 +5406,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4918,6 +5436,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "free",
@@ -4951,6 +5472,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -4979,6 +5503,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5006,6 +5533,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "stress",
@@ -5039,6 +5569,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5066,6 +5599,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -5099,6 +5635,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -5126,6 +5665,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -5155,6 +5697,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "fear",
@@ -5188,6 +5733,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5215,6 +5763,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "standard"
     ],
     "cost": {
       "type": "fear",
@@ -5244,6 +5795,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5271,6 +5825,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "free",
@@ -5300,6 +5857,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5327,6 +5887,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -5356,6 +5919,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5383,6 +5949,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "free",
@@ -5412,6 +5981,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -5439,6 +6011,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -5468,6 +6043,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5495,6 +6073,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -5524,6 +6105,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -5551,6 +6135,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -5584,6 +6171,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -5611,6 +6201,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -5641,6 +6234,10 @@
       "elemental",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser",
+      "skulk"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5668,6 +6265,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -5697,6 +6297,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -5724,6 +6327,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "bruiser"
     ],
     "cost": {
       "type": "stress",
@@ -5758,6 +6364,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -5786,6 +6395,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 2
@@ -5813,6 +6425,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -5843,6 +6458,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "standard"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -5870,6 +6488,9 @@
     ],
     "themes": [
       "bestial"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -5899,6 +6520,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -5926,6 +6550,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -5955,6 +6582,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -5982,6 +6612,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -6011,6 +6644,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "ranged"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6039,6 +6675,9 @@
     "themes": [
       "bestial"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6066,6 +6705,9 @@
     ],
     "themes": [
       "elemental"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",
@@ -6096,6 +6738,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -6125,6 +6770,9 @@
     "themes": [
       "elemental"
     ],
+    "adversaryTypes": [
+      "skulk"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6152,6 +6800,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6190,6 +6841,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6217,6 +6871,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6247,6 +6904,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6276,6 +6936,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6303,6 +6966,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -6336,6 +7002,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 2
@@ -6368,6 +7037,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6396,6 +7068,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6423,6 +7098,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6460,6 +7138,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6487,6 +7168,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6516,6 +7200,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6543,6 +7230,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "stress",
@@ -6572,6 +7262,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -6599,6 +7292,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "stress",
@@ -6628,6 +7324,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6655,6 +7354,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -6684,6 +7386,10 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "minion",
+      "leader"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6711,6 +7417,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "stress",
@@ -6741,6 +7450,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6768,6 +7480,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "fear",
@@ -6797,6 +7512,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6824,6 +7542,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6853,6 +7574,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -6880,6 +7604,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -6914,6 +7641,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "horde"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -6941,6 +7671,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -6971,6 +7704,9 @@
     "themes": [
       "humanoid"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -6998,6 +7734,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -7027,6 +7766,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7054,6 +7796,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "minion"
     ],
     "cost": {
       "type": "free",
@@ -7084,6 +7829,9 @@
       "humanoid",
       "monstrous"
     ],
+    "adversaryTypes": [
+      "minion"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7112,6 +7860,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "stress",
@@ -7147,6 +7898,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "leader"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -7174,6 +7928,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -7204,6 +7961,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7231,6 +7991,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -7261,6 +8024,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -7288,6 +8054,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "ranged"
     ],
     "cost": {
       "type": "free",
@@ -7318,6 +8087,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "fear",
       "amount": 1
@@ -7345,6 +8117,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -7374,6 +8149,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "support"
     ],
     "cost": {
       "type": "free",
@@ -7407,6 +8185,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -7434,6 +8215,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "stress",
@@ -7463,6 +8247,9 @@
     "themes": [
       "undead"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7490,6 +8277,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "fear",
@@ -7519,6 +8309,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "bruiser"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7547,6 +8340,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "stress",
       "amount": 1
@@ -7574,6 +8370,9 @@
     ],
     "themes": [
       "monstrous"
+    ],
+    "adversaryTypes": [
+      "solo"
     ],
     "cost": {
       "type": "free",
@@ -7607,6 +8406,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "solo"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7634,6 +8436,9 @@
     ],
     "themes": [
       "humanoid"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "fear",
@@ -7664,6 +8469,9 @@
     "themes": [
       "monstrous"
     ],
+    "adversaryTypes": [
+      "support"
+    ],
     "cost": {
       "type": "free",
       "amount": 0
@@ -7691,6 +8499,9 @@
     ],
     "themes": [
       "undead"
+    ],
+    "adversaryTypes": [
+      "leader"
     ],
     "cost": {
       "type": "free",

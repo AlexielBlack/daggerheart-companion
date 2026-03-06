@@ -180,15 +180,19 @@ const featureMap = new Map()
 
 for (const adv of all) {
   const advThemes = THEME_MAP[adv.id] || ['monstrous']
+  const advType = (adv.type || 'standard').toLowerCase()
 
   for (const f of (adv.features || [])) {
     const key = f.name
 
     if (featureMap.has(key)) {
-      // Merge : ajouter les thèmes et sources
+      // Merge : ajouter les thèmes, sources et types d'adversaire
       const existing = featureMap.get(key)
       for (const t of advThemes) {
         if (!existing.themes.includes(t)) existing.themes.push(t)
+      }
+      if (!existing.adversaryTypes.includes(advType)) {
+        existing.adversaryTypes.push(advType)
       }
       existing.sources.push(adv.id)
       // Garder le tier le plus bas
@@ -205,6 +209,7 @@ for (const adv of all) {
         tags: f.tags || [],
         tier: adv.tier,
         themes: [...advThemes],
+        adversaryTypes: [advType],
         sources: [adv.id]
       })
     }

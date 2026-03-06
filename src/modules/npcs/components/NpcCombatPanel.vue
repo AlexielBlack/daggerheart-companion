@@ -334,6 +334,22 @@
               {{ d.emoji }} {{ d.label }}{{ d.ofClass ? ' ★' : '' }}
             </option>
           </select>
+          <select
+            v-model="filterAdvType"
+            class="catalogue__filter"
+            aria-label="Filtrer par type d'adversaire"
+          >
+            <option value="">
+              Tous rôles
+            </option>
+            <option
+              v-for="at in adversaryTypes"
+              :key="at.value"
+              :value="at.value"
+            >
+              {{ at.emoji }} {{ at.label }}{{ adversaryType === at.value ? ' ★' : '' }}
+            </option>
+          </select>
         </div>
 
         <div class="catalogue__list">
@@ -735,6 +751,7 @@ export default {
     const filterActivation = ref('')
     const filterTheme = ref('')
     const filterDomain = ref('')
+    const filterAdvType = ref('')
 
     // ── Domaines disponibles pour le filtre ──
     const domainOptions = computed(() => {
@@ -945,6 +962,13 @@ export default {
         })
       }
 
+      if (filterAdvType.value) {
+        result = result.filter(f => {
+          if (!f.adversaryTypes) return false
+          return f.adversaryTypes.includes(filterAdvType.value)
+        })
+      }
+
       return result
     })
 
@@ -1043,6 +1067,7 @@ export default {
       filterActivation,
       filterTheme,
       filterDomain,
+      filterAdvType,
       domainOptions,
       // Homebrew
       homebrewStore,

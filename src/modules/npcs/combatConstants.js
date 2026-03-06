@@ -423,6 +423,7 @@ export function createCombatFeature(overrides = {}) {
     tier: overrides.tier || 1,
     tags: Array.isArray(overrides.tags) ? [...overrides.tags] : [],
     themes: Array.isArray(overrides.themes) ? [...overrides.themes] : [],
+    adversaryTypes: Array.isArray(overrides.adversaryTypes) ? [...overrides.adversaryTypes] : [],
 
     // Coût & résolution
     cost: overrides.cost || { type: 'free', amount: 0 },
@@ -554,6 +555,18 @@ export function validateCombatFeature(feature) {
     for (const t of feature.themes) {
       if (!isValidTheme(t)) {
         errors.push(`thème invalide : « ${t} »`)
+      }
+    }
+  }
+
+  if (feature.adversaryTypes !== undefined && feature.adversaryTypes !== null) {
+    if (!Array.isArray(feature.adversaryTypes)) {
+      errors.push('adversaryTypes doit être un tableau')
+    } else {
+      for (const at of feature.adversaryTypes) {
+        if (!isValidAdversaryType(at)) {
+          errors.push(`type d'adversaire invalide : « ${at} »`)
+        }
       }
     }
   }
