@@ -1,0 +1,3754 @@
+[
+  {
+    "id": "dc-arcana-rune-ward",
+    "name": "Rune Ward",
+    "description": "Vous possédez un bibelot profondément personnel qui peut être imprégné de magie protectrice et tenu comme une protection par vous ou un allié. Décrivez ce que c'est et pourquoi c'est important pour vous. Le porteur de la protection peut dépenser un Espoir pour réduire les dégâts entrants de 1d8. Si le résultat du Dé de Protection est 8, le pouvoir de la protection prend fin après avoir réduit les dégâts ce tour. Elle peut être rechargée gratuitement lors de votre prochain repos.",
+    "source": "domain_card",
+    "sourceRef": "arcana-rune-ward",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-unleash-chaos",
+    "name": "Unleash Chaos",
+    "description": "Au début d'une session, placez un nombre de jetons égal à votre trait de Sort sur cette carte. Faites un jet de Sort contre une cible à Portée Lointaine et dépensez autant de jetons que vous le souhaitez pour canaliser l'énergie brute en vous et la déchaîner contre elle. Sur un succès, lancez un nombre de d10 égal aux jetons dépensés et infligez autant de dégâts magiques à la cible. Marquez un Stress pour recharger cette carte en jetons (jusqu'à votre trait de Sort). À la fin de chaque session, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "arcana-unleash-chaos",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-cinder-grasp",
+    "name": "Cinder Grasp",
+    "description": "Faites un jet de Sort contre une cible à Portée de Mêlée. Sur un succès, la cible s'embrase instantanément, subit 1d20+3 dégâts magiques, et est temporairement En Feu. Quand une créature agit alors qu'elle est En Feu, elle doit subir 2d6 dégâts magiques supplémentaires si elle est encore En Feu à la fin de son action.",
+    "source": "domain_card",
+    "sourceRef": "arcana-cinder-grasp",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-counterspell",
+    "name": "Counterspell",
+    "description": "Vous pouvez interrompre un effet magique en cours en faisant un jet de réaction avec votre trait de Sort. Sur un succès, l'effet s'arrête et toutes les conséquences sont évitées, et cette carte est placée dans votre coffre.",
+    "source": "domain_card",
+    "sourceRef": "arcana-counterspell",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-preservation-blast",
+    "name": "Preservation Blast",
+    "description": "Faites un jet de Sort contre toutes les cibles à Portée de Mêlée. Les cibles contre lesquelles vous réussissez sont repoussées à Portée Lointaine et subissent d8+3 dégâts magiques en utilisant votre trait de Sort.",
+    "source": "domain_card",
+    "sourceRef": "arcana-preservation-blast",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-chain-lightning",
+    "name": "Chain Lightning",
+    "description": "Marquez 2 Stress pour faire un jet de Sort, déchaînant la foudre sur toutes les cibles à Portée Proche. Les cibles contre lesquelles vous réussissez doivent faire un jet de réaction avec une Difficulté égale au résultat de votre jet de Sort. Celles qui échouent subissent 2d8+4 dégâts magiques. Les adversaires supplémentaires non encore ciblés et à Portée Proche des cibles ayant subi des dégâts doivent aussi faire le jet de réaction. Cette chaîne continue jusqu'à ce qu'il n'y ait plus d'adversaires à portée.",
+    "source": "domain_card",
+    "sourceRef": "arcana-chain-lightning",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-telekinesis",
+    "name": "Telekinesis",
+    "description": "Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, vous pouvez utiliser votre esprit pour la déplacer n'importe où à Portée Lointaine de sa position d'origine. Vous pouvez lancer la cible soulevée comme une attaque en faisant un jet de Sort supplémentaire contre la seconde cible. Sur un succès, infligez d12+4 dégâts physiques à la seconde cible en utilisant votre Maîtrise. Le sort prend alors fin.",
+    "source": "domain_card",
+    "sourceRef": "arcana-telekinesis",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-cloaking-blast",
+    "name": "Cloaking Blast",
+    "description": "Quand vous réussissez un jet de Sort pour lancer un autre sort, vous pouvez dépenser un Espoir pour devenir Voilé. Tant que vous êtes Voilé, vous restez invisible si vous êtes immobile quand un adversaire se déplace là où il vous verrait normalement. Quand vous vous déplacez dans ou dans la ligne de vue d'un adversaire ou faites une attaque, vous n'êtes plus Voilé.",
+    "source": "domain_card",
+    "sourceRef": "arcana-cloaking-blast",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": null,
+    "conditions": {
+      "applies": [
+        "invisible"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-arcane-reflection",
+    "name": "Arcane Reflection",
+    "description": "Quand vous devriez subir des dégâts magiques, vous pouvez dépenser autant d'Espoir que vous le souhaitez pour lancer autant de d6. Si l'un d'eux donne un 6, l'attaque est renvoyée au lanceur, lui infligeant les dégâts à sa place.",
+    "source": "domain_card",
+    "sourceRef": "arcana-arcane-reflection",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-confusing-aura",
+    "name": "Confusing Aura",
+    "description": "Faites un jet de Sort (14). Une fois par repos long sur un succès, vous créez une couche d'illusion sur votre corps qui rend difficile de déterminer où vous êtes exactement. Marquez autant de Stress que vous le souhaitez pour créer autant de couches supplémentaires. Quand un adversaire vous attaque, lancez un nombre de d6 égal aux couches actives. Si l'un donne 5 ou plus, une couche est détruite et l'attaque échoue. Si tous les résultats sont 4 ou moins, vous subissez les dégâts et le sort prend fin.",
+    "source": "domain_card",
+    "sourceRef": "arcana-confusing-aura",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-earthquake",
+    "name": "Earthquake",
+    "description": "Faites un jet de Sort (16). Une fois par repos sur un succès, toutes les cibles à Portée Très Lointaine qui ne volent pas doivent faire un Jet de Réaction (18). Celles qui échouent subissent 3d10+8 dégâts physiques et sont temporairement Vulnérables. Celles qui réussissent subissent la moitié des dégâts. De plus, tout le terrain à Portée Très Lointaine devient difficile à traverser et les structures à portée peuvent être endommagées ou s'écrouler.",
+    "source": "domain_card",
+    "sourceRef": "arcana-earthquake",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-arcana-falling-sky",
+    "name": "Falling Sky",
+    "description": "Faites un jet de Sort contre tous les adversaires à Portée Lointaine. Marquez autant de Stress que vous le souhaitez pour faire pleuvoir des éclats d'arcane depuis le ciel. Les cibles contre lesquelles vous réussissez subissent 1d20+2 dégâts magiques par Stress marqué.",
+    "source": "domain_card",
+    "sourceRef": "arcana-falling-sky",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "elemental"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-get-back-up",
+    "name": "Get Back Up",
+    "description": "Quand vous subissez des dégâts Sévères, vous pouvez marquer un Stress pour réduire la sévérité d'un palier.",
+    "source": "domain_card",
+    "sourceRef": "blade-get-back-up",
+    "activationType": "reaction",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous subissez des dégâts sévères",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-not-good-enough",
+    "name": "Not Good Enough",
+    "description": "Quand vous lancez vos dés de dégâts, vous pouvez relancer tous les 1 et les 2.",
+    "source": "domain_card",
+    "sourceRef": "blade-not-good-enough",
+    "activationType": "reaction",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous lancez vos dés de dégâts, vous pouvez relancer tous les 1 et les 2",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-whirlwind",
+    "name": "Whirlwind",
+    "description": "Quand vous réussissez une attaque contre une cible à Portée Très Proche, vous pouvez dépenser un Espoir pour utiliser l'attaque contre toutes les autres cibles à Portée Très Proche. Tous les adversaires supplémentaires contre lesquels vous réussissez avec cette capacité subissent la moitié des dégâts.",
+    "source": "domain_card",
+    "sourceRef": "blade-whirlwind",
+    "activationType": "reaction",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque contre une cible à portée très proche",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-reckless",
+    "name": "Reckless",
+    "description": "Marquez un Stress pour obtenir un avantage sur une attaque.",
+    "source": "domain_card",
+    "sourceRef": "blade-reckless",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-scramble",
+    "name": "Scramble",
+    "description": "Une fois par repos, quand une créature à Portée de Mêlée vous infligerait des dégâts, vous pouvez esquiver l'attaque et vous déplacer en sécurité hors de Portée de Mêlée de l'ennemi.",
+    "source": "domain_card",
+    "sourceRef": "blade-scramble",
+    "activationType": "reaction",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "melee",
+    "conditions": null,
+    "trigger": "Quand une créature à portée de mêlée vous infligerait des dégâts",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-versatile-fighter",
+    "name": "Versatile Fighter",
+    "description": "Vous pouvez utiliser un trait de personnage différent pour une arme équipée, plutôt que le trait requis par l'arme. Quand vous infligez des dégâts, vous pouvez marquer un Stress pour utiliser le résultat maximum d'un de vos dés de dégâts au lieu de le lancer.",
+    "source": "domain_card",
+    "sourceRef": "blade-versatile-fighter",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-deadly-focus",
+    "name": "Deadly Focus",
+    "description": "Une fois par repos, vous pouvez concentrer toute votre attention sur une cible de votre choix. Jusqu'à ce que vous attaquiez une autre créature, que vous vainquiez la cible ou que le combat se termine, gagnez un bonus de +1 à votre Maîtrise.",
+    "source": "domain_card",
+    "sourceRef": "blade-deadly-focus",
+    "activationType": "passive",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-fortified-armor",
+    "name": "Fortified Armor",
+    "description": "Tant que vous portez une armure, gagnez un bonus de +2 à vos seuils de dégâts.",
+    "source": "domain_card",
+    "sourceRef": "blade-fortified-armor",
+    "activationType": "passive",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-champions-edge",
+    "name": "Champion's Edge",
+    "description": "Quand vous obtenez un succès critique sur une attaque, vous pouvez dépenser jusqu'à 3 Espoir et choisir une des options suivantes pour chaque Espoir dépensé : Vous effacez un Point de Vie ; Vous effacez un Emplacement d'Armure ; La cible doit marquer un Point de Vie supplémentaire. Vous ne pouvez pas choisir la même option plus d'une fois.",
+    "source": "domain_card",
+    "sourceRef": "blade-champions-edge",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous obtenez un succès critique sur une attaque",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-vitality",
+    "name": "Vitality",
+    "description": "Quand vous choisissez cette carte, gagnez définitivement deux des bénéfices suivants : Un emplacement de Stress ; Un emplacement de Point de Vie ; Un bonus de +2 à vos seuils de dégâts. Puis placez cette carte dans votre coffre de façon permanente.",
+    "source": "domain_card",
+    "sourceRef": "blade-vitality",
+    "activationType": "passive",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-battle-hardened",
+    "name": "Battle-Hardened",
+    "description": "Une fois par repos long, quand vous devriez effectuer un Mouvement de Mort, vous pouvez dépenser un Espoir pour effacer un Point de Vie à la place.",
+    "source": "domain_card",
+    "sourceRef": "blade-battle-hardened",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-rage-up",
+    "name": "Rage Up",
+    "description": "Avant de faire une attaque, vous pouvez marquer un Stress pour gagner un bonus à votre jet de dégâts égal au double de votre Force. Vous pouvez utiliser Rage Up deux fois par attaque.",
+    "source": "domain_card",
+    "sourceRef": "blade-rage-up",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-blade-touched",
+    "name": "Blade-Touched",
+    "description": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Blade, vous gagnez les bénéfices suivants : bonus de +2 à vos jets d'attaque ; bonus de +4 à votre seuil de dégâts Sévères.",
+    "source": "domain_card",
+    "sourceRef": "blade-blade-touched",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-glancing-blow",
+    "name": "Glancing Blow",
+    "description": "Quand vous ratez une attaque, vous pouvez marquer un Stress pour infliger des dégâts d'arme en utilisant la moitié de votre Maîtrise.",
+    "source": "domain_card",
+    "sourceRef": "blade-glancing-blow",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-battle-cry",
+    "name": "Battle Cry",
+    "description": "Une fois par repos long, alors que vous chargez vers le danger, vous pouvez pousser un cri galvanisant qui inspire vos alliés. Tous les alliés qui vous entendent effacent chacun un Stress et gagnent un Espoir. De plus, vos alliés obtiennent un avantage sur les jets d'attaque jusqu'à ce que vous ou un allié obteniez un échec avec la Peur.",
+    "source": "domain_card",
+    "sourceRef": "blade-battle-cry",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-frenzy",
+    "name": "Frenzy",
+    "description": "Une fois par repos long, vous pouvez entrer en Frénésie jusqu'à ce qu'il n'y ait plus d'adversaires en vue. En Frénésie, vous ne pouvez pas utiliser les Emplacements d'Armure, et vous gagnez un bonus de +10 à vos jets de dégâts et un bonus de +8 à votre seuil de dégâts Sévères.",
+    "source": "domain_card",
+    "sourceRef": "blade-frenzy",
+    "activationType": "passive",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-gore-and-glory",
+    "name": "Gore and Glory",
+    "description": "Quand vous obtenez un succès critique sur une attaque d'arme, gagnez un Espoir supplémentaire ou effacez un Stress supplémentaire. De plus, quand vous infligez suffisamment de dégâts pour vaincre un ennemi, gagnez un Espoir ou effacez un Stress.",
+    "source": "domain_card",
+    "sourceRef": "blade-gore-and-glory",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous obtenez un succès critique sur une attaque d'arme",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-reapers-strike",
+    "name": "Reaper's Strike",
+    "description": "Une fois par repos long, dépensez un Espoir pour faire un jet d'attaque. Le MJ vous indique quelles cibles à portée seraient touchées. Choisissez l'une de ces cibles et forcez-la à marquer 5 Points de Vie.",
+    "source": "domain_card",
+    "sourceRef": "blade-reapers-strike",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-battle-monster",
+    "name": "Battle Monster",
+    "description": "Quand vous réussissez une attaque contre un adversaire, vous pouvez marquer 4 Stress pour forcer la cible à marquer un nombre de Points de Vie égal au nombre de Points de Vie que vous avez actuellement marqués, au lieu de lancer les dégâts.",
+    "source": "domain_card",
+    "sourceRef": "blade-battle-monster",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 4
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque contre un adversaire",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-blade-onslaught",
+    "name": "Onslaught",
+    "description": "Quand vous réussissez une attaque avec votre arme, vous n'infligez jamais de dégâts en dessous du seuil de dégâts Majeurs de la cible (la cible marque toujours un minimum de 2 Points de Vie). De plus, quand une créature à portée de votre arme inflige des dégâts à un allié avec une attaque qui ne vous inclut pas, vous pouvez marquer un Stress pour la forcer à faire un Jet de Réaction (15). Sur un échec, la cible doit marquer un Point de Vie.",
+    "source": "domain_card",
+    "sourceRef": "blade-onslaught",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque avec votre arme",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-i-see-it-coming",
+    "name": "I See It Coming",
+    "description": "Quand vous êtes ciblé par une attaque faite au-delà de la Portée de Mêlée, vous pouvez marquer un Stress pour lancer un d4 et gagner un bonus à votre Évasion égal au résultat contre cette attaque.",
+    "source": "domain_card",
+    "sourceRef": "bone-i-see-it-coming",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-untouchable",
+    "name": "Untouchable",
+    "description": "Gagnez un bonus à votre Évasion égal à la moitié de votre Agilité.",
+    "source": "domain_card",
+    "sourceRef": "bone-untouchable",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-ferocity",
+    "name": "Ferocity",
+    "description": "Quand vous forcez un adversaire à marquer 1 ou plusieurs Points de Vie, vous pouvez dépenser 2 Espoir pour augmenter votre Évasion du nombre de Points de Vie qu'il a marqués. Ce bonus dure jusqu'après la prochaine attaque effectuée contre vous.",
+    "source": "domain_card",
+    "sourceRef": "bone-ferocity",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-brace",
+    "name": "Brace",
+    "description": "Quand vous marquez un Emplacement d'Armure pour réduire les dégâts entrants, vous pouvez marquer un Stress pour marquer un Emplacement d'Armure supplémentaire.",
+    "source": "domain_card",
+    "sourceRef": "bone-brace",
+    "activationType": "reaction",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous marquez un emplacement d'armure pour réduire les dégâts entrants",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-redirect",
+    "name": "Redirect",
+    "description": "Quand une attaque faite contre vous au-delà de la Portée de Mêlée échoue, lancez un nombre de d6 égal à votre Maîtrise. Si l'un donne un 6, vous pouvez marquer un Stress pour rediriger l'attaque et infliger les dégâts à un adversaire à Portée Très Proche à la place.",
+    "source": "domain_card",
+    "sourceRef": "bone-redirect",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-signature-move",
+    "name": "Signature Move",
+    "description": "Nommez et décrivez votre coup signature. Une fois par repos, quand vous exécutez ce coup signature dans le cadre d'une action que vous effectuez, vous pouvez lancer un d20 comme Dé d'Espoir. Sur un succès, effacez un Stress.",
+    "source": "domain_card",
+    "sourceRef": "bone-signature-move",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-rapid-riposte",
+    "name": "Rapid Riposte",
+    "description": "Quand une attaque faite contre vous depuis la Portée de Mêlée échoue, vous pouvez marquer un Stress et saisir l'opportunité pour infliger les dégâts d'arme d'une de vos armes actives à l'attaquant.",
+    "source": "domain_card",
+    "sourceRef": "bone-rapid-riposte",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-bone-touched",
+    "name": "Bone-Touched",
+    "description": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Bone, vous gagnez les bénéfices suivants : bonus de +1 à l'Agilité ; Une fois par repos, vous pouvez dépenser 3 Espoir pour transformer une attaque réussie contre vous en échec.",
+    "source": "domain_card",
+    "sourceRef": "bone-bone-touched",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 3
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-cruel-precision",
+    "name": "Cruel Precision",
+    "description": "Quand vous réussissez une attaque avec une arme, gagnez un bonus à votre jet de dégâts égal à votre Finesse ou votre Agilité (au choix).",
+    "source": "domain_card",
+    "sourceRef": "bone-cruel-precision",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque avec une arme",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-breaking-blow",
+    "name": "Breaking Blow",
+    "description": "Quand vous réussissez une attaque, vous pouvez marquer un Stress pour que la prochaine attaque réussie contre cette même cible inflige 2d12 dégâts supplémentaires.",
+    "source": "domain_card",
+    "sourceRef": "bone-breaking-blow",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-wrangle",
+    "name": "Wrangle",
+    "description": "Faites un jet d'Agilité contre toutes les cibles à Portée Proche. Dépensez un Espoir pour déplacer les cibles contre lesquelles vous réussissez, ainsi que tout allié consentant à Portée Proche, vers un autre point à Portée Proche.",
+    "source": "domain_card",
+    "sourceRef": "bone-wrangle",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-on-the-brink",
+    "name": "On The Brink",
+    "description": "Quand il vous reste 2 Points de Vie non marqués ou moins, vous ne subissez pas les dégâts Mineurs.",
+    "source": "domain_card",
+    "sourceRef": "bone-on-the-brink",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-splintering-strike",
+    "name": "Splintering Strike",
+    "description": "Dépensez un Espoir et faites une attaque contre tous les adversaires à portée de votre arme. Une fois par repos long, sur un succès contre au moins une cible, lancez les dégâts de votre arme et répartissez ces dégâts comme vous le souhaitez entre les cibles touchées. Avant d'infliger les dégâts à chaque cible, lancez un dé de dégâts supplémentaire et ajoutez son résultat aux dégâts que vous lui infligez.",
+    "source": "domain_card",
+    "sourceRef": "bone-splintering-strike",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-deathrun",
+    "name": "Deathrun",
+    "description": "Dépensez 3 Espoir pour courir en ligne droite à travers le champ de bataille jusqu'à un point à Portée Lointaine, faisant une attaque contre tous les adversaires à portée de votre arme le long de ce chemin. Choisissez l'ordre dans lequel vous infligez les dégâts aux cibles touchées. Pour la première, lancez vos dégâts d'arme avec un bonus de +1 à votre Maîtrise. Puis retirez un dé de votre jet de dégâts et infligez les dégâts restants à la cible suivante. Continuez à retirer un dé pour chaque cible suivante jusqu'à épuisement des dés de dégâts ou des adversaires. Vous ne pouvez pas cibler le même adversaire plus d'une fois par attaque.",
+    "source": "domain_card",
+    "sourceRef": "bone-deathrun",
+    "activationType": "passive",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 3
+    },
+    "frequency": null,
+    "allyCooldown": "per_scene",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-bone-swift-step",
+    "name": "Swift Step",
+    "description": "Quand une attaque faite contre vous échoue, effacez un Stress. Si vous ne pouvez pas effacer de Stress, gagnez un Espoir.",
+    "source": "domain_card",
+    "sourceRef": "bone-swift-step",
+    "activationType": "passive",
+    "tier": 4,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-ava",
+    "name": "Book of Ava",
+    "description": "Power Push : Faites un jet de Sort contre une cible à Portée de Mêlée. Sur un succès, elle est repoussée à Portée Lointaine et subit d10+2 dégâts magiques en utilisant votre Maîtrise. Tava's Armor : Dépensez un Espoir pour donner à une cible que vous pouvez toucher un bonus de +1 à son Score d'Armure jusqu'à son prochain repos ou jusqu'à ce que vous lanciez à nouveau Tava's Armor. Ice Spike : Faites un jet de Sort (12) pour invoquer un grand pic de glace à Portée Lointaine. Si vous l'utilisez comme arme, faites le jet de Sort contre la Difficulté de la cible à la place. Sur un succès, infligez d6 dégâts physiques en utilisant votre Maîtrise.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-ava",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-illiat",
+    "name": "Book of Illiat",
+    "description": "Slumber : Faites un jet de Sort contre une cible à Portée Très Proche. Sur un succès, elle est Endormie jusqu'à ce qu'elle subisse des dégâts ou que le MJ dépense une Peur lors de son tour pour lever cette condition. Arcane Barrage : Une fois par repos, dépensez autant d'Espoir que vous le souhaitez et tirez des projectiles magiques qui frappent une cible de votre choix à Portée Proche. Lancez un nombre de d6 égal aux Espoir dépensés et infligez autant de dégâts magiques à la cible. Telepathy : Dépensez un Espoir pour ouvrir une ligne de communication mentale avec une cible que vous pouvez voir. Cette connexion dure jusqu'à votre prochain repos ou jusqu'à ce que vous lanciez à nouveau Telepathy.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-illiat",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif",
+      "social",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-tyfar",
+    "name": "Book of Tyfar",
+    "description": "Wild Flame : Faites un jet de Sort contre jusqu'à trois adversaires à Portée de Mêlée. Les cibles contre lesquelles vous réussissez subissent 2d6 dégâts magiques et doivent marquer un Stress alors que des flammes jaillissent de votre main. Magic Hand : Vous conjurez une main magique de la même taille et force que la vôtre à Portée Lointaine. Mysterious Mist : Faites un jet de Sort (13) pour créer un brouillard temporaire et épais qui s'installe dans une zone stationnaire à Portée Très Proche. Le brouillard obscurcit fortement cette zone et tout ce qui s'y trouve.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-tyfar",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-korvax",
+    "name": "Book of Korvax",
+    "description": "Levitation : Faites un jet de Sort pour soulever temporairement une cible que vous pouvez voir dans les airs et la déplacer à Portée Proche de sa position d'origine. Recant : Dépensez un Espoir pour forcer une cible à Portée de Mêlée à faire un Jet de Réaction (15). Sur un échec, elle oublie la dernière minute de votre conversation. Rune Circle : Marquez un Stress pour créer un cercle magique temporaire au sol où vous vous tenez. Tous les adversaires à Portée de Mêlée, ou qui entrent à Portée de Mêlée, subissent 2d12+4 dégâts magiques et sont repoussés à Portée Très Proche.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-korvax",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "social",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-norai",
+    "name": "Book of Norai",
+    "description": "Mystic Tether : Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, elle est temporairement Entravée et doit marquer un Stress. Si vous ciblez une créature volante, ce sort la cloue au sol et l'Entrave temporairement. Fireball : Faites un jet de Sort contre une cible à Portée Très Lointaine. Sur un succès, projetez une sphère de feu vers elle qui explose à l'impact. La cible et toutes les créatures à Portée Très Proche d'elle doivent faire un Jet de Réaction (13). Celles qui échouent subissent d20+5 dégâts magiques en utilisant votre Maîtrise. Celles qui réussissent subissent la moitié des dégâts.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-norai",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-exota",
+    "name": "Book of Exota",
+    "description": "Repudiate : Vous pouvez interrompre un effet magique en cours. Faites un jet de réaction avec votre trait de Sort. Une fois par repos sur un succès, l'effet s'arrête et toutes les conséquences sont évitées. Create Construct : Dépensez un Espoir pour choisir un groupe d'objets autour de vous et créer un assemblage animé à partir d'eux qui obéit à des commandes basiques. Faites un jet de Sort pour lui ordonner d'agir. Si nécessaire, il partage votre Évasion et vos traits et ses attaques infligent 2d10+3 dégâts physiques. Vous ne pouvez maintenir qu'un seul assemblage à la fois, et il se désagrège s'il subit le moindre dégât.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-exota",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-grynn",
+    "name": "Book of Grynn",
+    "description": "Arcane Deflection : Une fois par repos long, dépensez un Espoir pour annuler les dégâts d'une attaque vous ciblant vous ou un allié à Portée Très Proche. Time Lock : Ciblez un objet à Portée Lointaine. Cet objet se fige dans le temps et l'espace exactement où il est jusqu'à votre prochain repos. Si une créature tente de le déplacer, faites un jet de Sort contre elle pour maintenir le sort. Wall of Flame : Faites un jet de Sort (15). Sur un succès, créez un mur temporaire de flammes magiques entre deux points à Portée Lointaine. Toutes les créatures sur son chemin doivent choisir de quel côté se placer, et tout ce qui traverse ensuite le mur subit 4d10+3 dégâts magiques.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-grynn",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-manifest-wall",
+    "name": "Manifest Wall",
+    "description": "Faites un jet de Sort (15). Une fois par repos sur un succès, dépensez un Espoir pour créer un mur magique temporaire entre deux points à Portée Lointaine. Il peut mesurer jusqu'à 15 mètres de haut et se former sous n'importe quel angle. Les créatures ou objets sur son chemin sont repoussés du côté de votre choix. Le mur reste en place jusqu'à votre prochain repos ou jusqu'à ce que vous lanciez à nouveau Manifest Wall.",
+    "source": "domain_card",
+    "sourceRef": "codex-manifest-wall",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-banish",
+    "name": "Banish",
+    "description": "Faites un jet de Sort contre une cible à Portée Proche. Sur un succès, lancez un nombre de d20 égal à votre trait de Sort. La cible doit faire un jet de réaction avec une Difficulté égale à votre résultat le plus élevé. Sur un succès de la cible, elle doit marquer un Stress mais n'est pas bannie. Une fois par repos sur un échec de la cible, elle est bannie de ce plan. Quand les PJ obtiennent la Peur, la Difficulté subit une pénalité de -1 et la cible refait un jet de réaction. Sur un succès, elle revient du bannissement.",
+    "source": "domain_card",
+    "sourceRef": "codex-banish",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-sigil-of-retribution",
+    "name": "Sigil of Retribution",
+    "description": "Marquez un adversaire à Portée Proche d'un sceau de rétribution. Le MJ gagne une Peur. Quand l'adversaire marqué inflige des dégâts à vous ou vos alliés, placez un d8 sur cette carte. Vous pouvez accumuler un nombre de d8 égal à votre niveau. Quand vous attaquez l'adversaire marqué avec succès, lancez les dés sur cette carte et ajoutez le total à votre jet de dégâts, puis retirez les dés. Cet effet prend fin quand l'adversaire marqué est vaincu ou que vous lancez à nouveau Sigil of Retribution.",
+    "source": "domain_card",
+    "sourceRef": "codex-sigil-of-retribution",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-disintegration-wave",
+    "name": "Disintegration Wave",
+    "description": "Faites un jet de Sort (18). Une fois par repos long sur un succès, le MJ vous indique quels adversaires à Portée Lointaine ont une Difficulté de 18 ou moins. Marquez un Stress pour chacun que vous souhaitez toucher avec ce sort. Ils sont tués et ne peuvent revenir à la vie par aucun moyen.",
+    "source": "domain_card",
+    "sourceRef": "codex-disintegration-wave",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-book-of-yarrow",
+    "name": "Book of Yarrow",
+    "description": "Timejammer : Faites un jet de Sort (18). Sur un succès, le temps ralentit temporairement jusqu'à l'arrêt complet pour toute créature à Portée Lointaine sauf vous. Il reprend la prochaine fois que vous faites un jet d'action ciblant une autre créature. Magic Immunity : Dépensez 5 Espoir pour devenir immunisé aux dégâts magiques jusqu'à votre prochain repos.",
+    "source": "domain_card",
+    "sourceRef": "codex-book-of-yarrow",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 5
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-codex-transcendent-union",
+    "name": "Transcendent Union",
+    "description": "Une fois par repos long, dépensez 5 Espoir pour lancer ce sort sur deux créatures consentantes ou plus. Jusqu'à votre prochain repos, quand une créature liée par cette union devrait marquer du Stress ou des Points de Vie, les créatures connectées peuvent choisir qui le marque.",
+    "source": "domain_card",
+    "sourceRef": "codex-transcendent-union",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 5
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-inspirational-words",
+    "name": "Inspirational Words",
+    "description": "Votre discours est imprégné de pouvoir. Après un repos long, placez un nombre de jetons égal à votre Présence sur cette carte. Quand vous parlez avec un allié, vous pouvez dépenser un jeton de cette carte pour lui accorder l'un des bénéfices suivants : L'allié efface un Stress ; L'allié efface un Point de Vie ; L'allié gagne un Espoir. Lors d'un repos long, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "grace-inspirational-words",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "social",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-troublemaker",
+    "name": "Troublemaker",
+    "description": "Quand vous provoquez ou raillez une cible à Portée Lointaine, faites un jet de Présence contre elle. Une fois par repos sur un succès, lancez un nombre de d4 égal à votre Maîtrise. La cible doit marquer un Stress égal au résultat le plus élevé obtenu.",
+    "source": "domain_card",
+    "sourceRef": "grace-troublemaker",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "social",
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-hypnotic-shimmer",
+    "name": "Hypnotic Shimmer",
+    "description": "Faites un jet de Sort contre tous les adversaires devant vous à Portée Proche. Une fois par repos sur un succès, créez une illusion de couleurs et lumières clignotantes qui Étourdit temporairement les cibles contre lesquelles vous réussissez et les force à marquer un Stress. Tant qu'elles sont Étourdies, elles ne peuvent pas utiliser de réactions ni effectuer d'autres actions jusqu'à ce qu'elles annulent cette condition.",
+    "source": "domain_card",
+    "sourceRef": "grace-hypnotic-shimmer",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "social",
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "close",
+    "conditions": {
+      "applies": [
+        "stunned"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-soothing-speech",
+    "name": "Soothing Speech",
+    "description": "Pendant un repos court, quand vous prenez le temps de réconforter un autre personnage en utilisant le mouvement de repos Soigner les Blessures sur lui, effacez un Point de Vie supplémentaire sur ce personnage. Ce faisant, vous effacez aussi 2 Points de Vie.",
+    "source": "domain_card",
+    "sourceRef": "grace-soothing-speech",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "social",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-words-of-discord",
+    "name": "Words of Discord",
+    "description": "Murmurez des paroles de discorde à un adversaire à Portée de Mêlée et faites un jet de Sort (13). Sur un succès, la cible doit marquer un Stress et effectuer une attaque contre un autre adversaire au lieu de vous ou vos alliés. Une fois l'attaque terminée, la cible réalise ce qui s'est passé. La prochaine fois que vous lancez Words of Discord sur elle, vous subissez un malus de -5 au jet de Sort.",
+    "source": "domain_card",
+    "sourceRef": "grace-words-of-discord",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "social",
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-never-upstaged",
+    "name": "Never Upstaged",
+    "description": "Quand vous marquez 1 ou plusieurs Points de Vie suite à une attaque, vous pouvez marquer un Stress pour placer un nombre de jetons égal au nombre de Points de Vie marqués sur cette carte. Lors de votre prochaine attaque réussie, gagnez un bonus de +5 à votre jet de dégâts pour chaque jeton sur cette carte, puis retirez tous les jetons.",
+    "source": "domain_card",
+    "sourceRef": "grace-never-upstaged",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous marquez 1 ou plusieurs points de vie suite à une attaque",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-share-the-burden",
+    "name": "Share the Burden",
+    "description": "Une fois par repos, prenez sur vous le Stress d'une créature consentante à Portée de Mêlée. La cible décrit quelles connaissances intimes ou émotions fuient télépathiquement de son esprit en cet instant entre vous. Transférez autant de Stress marqué que souhaité sur vous, puis gagnez un Espoir pour chaque Stress transféré.",
+    "source": "domain_card",
+    "sourceRef": "grace-share-the-burden",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-grace-encore",
+    "name": "Encore",
+    "description": "Quand un allié à Portée Proche inflige des dégâts à un adversaire, vous pouvez faire un jet de Sort contre cette même cible. Sur un succès, vous infligez les mêmes dégâts à la cible que ceux infligés par votre allié. Si votre jet de Sort réussit avec la Peur, placez cette carte dans votre coffre.",
+    "source": "domain_card",
+    "sourceRef": "grace-encore",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid",
+      "socialIntrigue"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-rain-of-blades",
+    "name": "Rain of Blades",
+    "description": "Dépensez un Espoir pour faire un jet de Sort et conjurer des lames de lancer qui frappent toutes les cibles à Portée Très Proche. Les cibles contre lesquelles vous réussissez subissent d8+2 dégâts magiques en utilisant votre Maîtrise. Si une cible touchée est Vulnérable, elle subit 1d8 dégâts supplémentaires.",
+    "source": "domain_card",
+    "sourceRef": "midnight-rain-of-blades",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-shadowbind",
+    "name": "Shadowbind",
+    "description": "Faites un jet de Sort contre tous les adversaires à Portée Très Proche. Les cibles contre lesquelles vous réussissez sont temporairement Entravées alors que leur ombre les immobilise sur place.",
+    "source": "domain_card",
+    "sourceRef": "midnight-shadowbind",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-chokehold",
+    "name": "Chokehold",
+    "description": "Quand vous vous positionnez derrière une créature à peu près de votre taille, vous pouvez marquer un Stress pour l'immobiliser dans une prise d'étranglement, la rendant temporairement Vulnérable. Quand une créature attaque une cible Vulnérable de cette manière, elle inflige 2d6 dégâts supplémentaires.",
+    "source": "domain_card",
+    "sourceRef": "midnight-chokehold",
+    "activationType": "reaction",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": "Quand vous vous positionnez derrière une créature à peu près de votre taille",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-glyph-of-nightfall",
+    "name": "Glyph of Nightfall",
+    "description": "Faites un jet de Sort contre une cible à Portée Très Proche. Sur un succès, dépensez un Espoir pour conjurer un glyphe sombre sur son corps qui expose ses points faibles, réduisant temporairement la Difficulté de la cible d'une valeur égale à votre Connaissance (minimum 1).",
+    "source": "domain_card",
+    "sourceRef": "midnight-glyph-of-nightfall",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-hush",
+    "name": "Hush",
+    "description": "Faites un jet de Sort contre une cible à Portée Proche. Sur un succès, dépensez un Espoir pour conjurer une magie suppressive autour de la cible qui englobe tout à Portée Très Proche d'elle et la suit dans ses déplacements. La cible et tout ce qui se trouve dans la zone est Réduit au Silence jusqu'à ce que le MJ dépense une Peur lors de son tour pour lever cette condition, que vous lanciez Hush à nouveau, ou que vous subissiez des dégâts Majeurs. Tant qu'elles sont Réduites au Silence, les cibles ne peuvent ni faire de bruit ni lancer de sorts.",
+    "source": "domain_card",
+    "sourceRef": "midnight-hush",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "social",
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-phantom-retreat",
+    "name": "Phantom Retreat",
+    "description": "Dépensez un Espoir pour activer Phantom Retreat à l'endroit où vous vous tenez actuellement. Dépensez un autre Espoir à tout moment avant votre prochain repos pour disparaître de là où vous êtes et réapparaître à l'endroit où vous vous teniez quand vous avez activé Phantom Retreat. Ce sort prend fin après votre réapparition.",
+    "source": "domain_card",
+    "sourceRef": "midnight-phantom-retreat",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-midnight-touched",
+    "name": "Midnight-Touched",
+    "description": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Midnight, vous gagnez les bénéfices suivants : Une fois par repos, quand vous avez 0 Espoir et que le MJ gagnerait une Peur, vous pouvez gagner un Espoir à la place ; Quand vous réussissez une attaque, vous pouvez marquer un Stress pour ajouter le résultat de votre Dé de Peur à votre jet de dégâts.",
+    "source": "domain_card",
+    "sourceRef": "midnight-midnight-touched",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine midnight",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-vanishing-dodge",
+    "name": "Vanishing Dodge",
+    "description": "Quand une attaque contre vous qui infligerait des dégâts physiques échoue, vous pouvez dépenser un Espoir pour vous envelopper d'ombre, devenant Caché et vous téléportant à un point à Portée Proche de l'attaquant. Vous restez Caché jusqu'à votre prochain jet d'action.",
+    "source": "domain_card",
+    "sourceRef": "midnight-vanishing-dodge",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "close",
+    "conditions": {
+      "applies": [
+        "hidden"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-shadowhunter",
+    "name": "Shadowhunter",
+    "description": "Vos prouesses sont améliorées sous le couvert de l'ombre. Tant que vous êtes enveloppé dans une lumière faible ou l'obscurité, vous gagnez un bonus de +1 à votre Évasion et faites vos jets d'attaque avec un avantage.",
+    "source": "domain_card",
+    "sourceRef": "midnight-shadowhunter",
+    "activationType": "passive",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-night-terror",
+    "name": "Night Terror",
+    "description": "Une fois par repos long, choisissez des cibles à Portée Très Proche pour qu'elles vous perçoivent comme une horreur cauchemardesque. Les cibles doivent réussir un Jet de Réaction (16) ou devenir temporairement Horrifiées. Tant qu'elles sont Horrifiées, elles sont Vulnérables. Volez au MJ un nombre de Peur égal au nombre de cibles Horrifiées (jusqu'au nombre de Peur dans la réserve du MJ). Lancez un nombre de d6 égal aux Peur volées et infligez le total des dégâts à chaque cible Horrifiée. Défaussez les Peur volées.",
+    "source": "domain_card",
+    "sourceRef": "midnight-night-terror",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-twilight-toll",
+    "name": "Twilight Toll",
+    "description": "Choisissez une cible à Portée Lointaine. Quand vous réussissez un jet d'action contre elle qui ne résulte pas en un jet de dégâts, placez un jeton sur cette carte. Quand vous infligez des dégâts à cette cible, dépensez autant de jetons que souhaité pour ajouter un d12 par jeton dépensé à votre jet de dégâts. Vous ne pouvez maintenir Twilight Toll que sur une seule créature à la fois. Quand vous choisissez une nouvelle cible ou prenez un repos, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "midnight-twilight-toll",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": null,
+    "trigger": "Quand vous infligez des dégâts à cette cible",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-eclipse",
+    "name": "Eclipse",
+    "description": "Faites un jet de Sort (16). Une fois par repos long sur un succès, plongez toute la zone à Portée Lointaine dans une obscurité totale que seuls vous et vos alliés pouvez percer du regard. Les jets d'attaque ont un désavantage lorsqu'ils ciblent vous ou un allié dans cette ombre. De plus, quand vous ou un allié réussit avec l'Espoir contre un adversaire dans cette ombre, la cible doit marquer un Stress. Ce sort dure jusqu'à ce que le MJ dépense une Peur lors de son tour pour dissiper cet effet ou que vous subissiez des dégâts Sévères.",
+    "source": "domain_card",
+    "sourceRef": "midnight-eclipse",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-midnight-specter-of-the-dark",
+    "name": "Specter of the Dark",
+    "description": "Marquez un Stress pour devenir Spectral jusqu'à ce que vous fassiez un jet d'action ciblant une autre créature. Tant que vous êtes Spectral, vous êtes immunisé aux dégâts physiques et pouvez flotter et passer à travers les objets solides. Les autres créatures peuvent toujours vous voir sous cette forme.",
+    "source": "domain_card",
+    "sourceRef": "midnight-specter-of-the-dark",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-vicious-entangle",
+    "name": "Vicious Entangle",
+    "description": "Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, des racines et des lianes jaillissent du sol, infligeant 1d8+1 dégâts physiques et Entravant temporairement la cible. De plus, sur un succès, vous pouvez dépenser un Espoir pour Entraver temporairement un autre adversaire à Portée Très Proche de votre cible.",
+    "source": "domain_card",
+    "sourceRef": "sage-vicious-entangle",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-conjure-swarm",
+    "name": "Conjure Swarm",
+    "description": "Tekaira Armored Beetles : Marquez un Stress pour conjurer des scarabées blindés qui vous encerclent. Quand vous subissez des dégâts ensuite, réduisez la sévérité d'un palier. Vous pouvez dépenser un Espoir pour garder les scarabées conjurés après avoir subi des dégâts. Fire Flies : Faites un jet de Sort contre tous les adversaires à Portée Proche. Dépensez un Espoir pour infliger 2d8+3 dégâts magiques aux cibles contre lesquelles vous avez réussi.",
+    "source": "domain_card",
+    "sourceRef": "sage-conjure-swarm",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-corrosive-projectile",
+    "name": "Corrosive Projectile",
+    "description": "Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, infligez d6+4 dégâts magiques en utilisant votre Maîtrise. De plus, marquez 2 Stress ou plus pour la rendre définitivement Corrodée. Tant qu'une cible est Corrodée, elle subit une pénalité de -1 à sa Difficulté pour chaque 2 Stress que vous avez dépensés. Cette condition est cumulable.",
+    "source": "domain_card",
+    "sourceRef": "sage-corrosive-projectile",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-death-grip",
+    "name": "Death Grip",
+    "description": "Faites un jet de Sort contre une cible à Portée Proche et choisissez une des options suivantes : Vous attirez la cible à Portée de Mêlée ou vous vous déplacez à Portée de Mêlée d'elle ; Vous étreignez la cible et la forcez à marquer 2 Stress ; Tous les adversaires entre vous et la cible doivent réussir un Jet de Réaction (13) ou être frappés par les lianes, subissant 3d6+2 dégâts physiques. Sur un succès, des lianes jaillissent de vos mains, causant l'effet choisi et Entravant temporairement la cible.",
+    "source": "domain_card",
+    "sourceRef": "sage-death-grip",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "melee",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-healing-field",
+    "name": "Healing Field",
+    "description": "Une fois par repos long, vous pouvez conjurer un champ de plantes curatives autour de vous. Partout à Portée Proche de vous, la nature jaillit avec vigueur, permettant à vous et tous vos alliés dans la zone d'effacer un Point de Vie. Dépensez 2 Espoir pour permettre à vous et tous vos alliés d'effacer 2 Points de Vie à la place.",
+    "source": "domain_card",
+    "sourceRef": "sage-healing-field",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-thorn-skin",
+    "name": "Thorn Skin",
+    "description": "Une fois par repos, dépensez un Espoir pour faire pousser des épines sur tout votre corps. Placez un nombre de jetons égal à votre trait de Sort sur cette carte. Quand vous subissez des dégâts, vous pouvez dépenser autant de jetons que vous le souhaitez pour lancer autant de d6. Additionnez les résultats et réduisez les dégâts entrants de ce montant. Si vous êtes à Portée de Mêlée de l'attaquant, infligez-lui ce montant de dégâts en retour. Lors d'un repos, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "sage-thorn-skin",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif",
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-wild-fortress",
+    "name": "Wild Fortress",
+    "description": "Faites un jet de Sort (13). Sur un succès, dépensez 2 Espoir pour faire pousser une barricade naturelle en forme de dôme dans laquelle vous et un allié pouvez vous abriter. À l'intérieur du dôme, une créature ne peut être ciblée par des attaques et ne peut en faire. Les attaques contre le dôme réussissent automatiquement. Le dôme a les seuils de dégâts suivants et dure jusqu'à ce qu'il marque 3 Points de Vie. Placez des jetons sur cette carte pour représenter les Points de Vie marqués. Seuils : 15/30.",
+    "source": "domain_card",
+    "sourceRef": "sage-wild-fortress",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-wild-surge",
+    "name": "Wild Surge",
+    "description": "Une fois par repos long, marquez un Stress pour canaliser le monde naturel autour de vous et vous améliorer. Décrivez comment votre apparence change, puis placez un d6 sur cette carte avec la face 1 vers le haut. Tant que le Dé de Surge Sauvage est actif, vous ajoutez sa valeur à chaque jet d'action que vous faites. Après avoir ajouté sa valeur à un jet, augmentez la valeur du Dé de Surge Sauvage de un. Quand la valeur du dé dépasserait 6 ou que vous prenez un repos, cette forme s'estompe et vous devez marquer un Stress supplémentaire.",
+    "source": "domain_card",
+    "sourceRef": "sage-wild-surge",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-forest-sprites",
+    "name": "Forest Sprites",
+    "description": "Faites un jet de Sort (13). Sur un succès, dépensez autant d'Espoir que vous le souhaitez pour créer autant de petits esprits de la forêt qui apparaissent aux points que vous choisissez à Portée Lointaine, offrant les bénéfices suivants : Vos alliés gagnent un bonus de +3 aux jets d'attaque contre les adversaires à Portée de Mêlée d'un esprit ; Un allié qui marque un Emplacement d'Armure alors qu'il est à Portée de Mêlée d'un esprit peut marquer un Emplacement d'Armure supplémentaire. Un esprit disparaît après avoir accordé un bénéfice ou subi le moindre dégât.",
+    "source": "domain_card",
+    "sourceRef": "sage-forest-sprites",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-rejuvenation-barrier",
+    "name": "Rejuvenation Barrier",
+    "description": "Faites un jet de Sort (15). Une fois par repos sur un succès, créez une barrière temporaire d'énergie protectrice autour de vous à Portée Très Proche. Vous et tous les alliés à l'intérieur de la barrière au moment du lancement effacent 1d4 Points de Vie. Tant que la barrière est active, vous et tous les alliés à l'intérieur avez une résistance aux dégâts physiques venant de l'extérieur de la barrière. Quand vous vous déplacez, la barrière vous suit.",
+    "source": "domain_card",
+    "sourceRef": "sage-rejuvenation-barrier",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-fane-of-the-wilds",
+    "name": "Fane of the Wilds",
+    "description": "Après un repos long, placez un nombre de jetons égal au nombre de cartes de domaine Sage dans votre équipement et votre coffre sur cette carte. Quand vous feriez un jet de Sort, vous pouvez dépenser autant de jetons que vous le souhaitez après le jet pour gagner un bonus de +1 par jeton dépensé. Quand vous obtenez un succès critique sur un jet de Sort pour un sort du domaine Sage, gagnez un jeton. Lors d'un repos long, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "sage-fane-of-the-wilds",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "défensif",
+      "utilitaire"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous feriez un jet de sort",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-force-of-nature",
+    "name": "Force of Nature",
+    "description": "Marquez un Stress pour vous transformer en un esprit de la nature imposant, gagnant les bénéfices suivants : Quand vous réussissez une attaque ou un jet de Sort, gagnez un bonus de +10 au jet de dégâts ; Quand vous infligez suffisamment de dégâts pour vaincre une créature à Portée Proche, vous l'absorbez et effacez un Emplacement d'Armure ; Vous ne pouvez pas être Entravé. Avant de faire un jet d'action, vous devez dépenser un Espoir. Si vous ne pouvez pas, vous revenez à votre forme normale.",
+    "source": "domain_card",
+    "sourceRef": "sage-force-of-nature",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "close",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-sage-tempest",
+    "name": "Tempest",
+    "description": "Choisissez une des tempêtes suivantes et faites un jet de Sort contre toutes les cibles à Portée Lointaine. Les cibles contre lesquelles vous réussissez en subissent les effets jusqu'à ce que le MJ dépense une Peur lors de son tour pour mettre fin à ce sort. Blizzard : Infligez 2d20+8 dégâts magiques et les cibles sont temporairement Vulnérables. Hurricane : Infligez 3d10+10 dégâts magiques et choisissez une direction de vent. Les cibles ne peuvent pas se déplacer contre le vent. Tempête de sable : Infligez 5d6+9 dégâts magiques. Les attaques faites au-delà de la Portée de Mêlée ont le désavantage.",
+    "source": "domain_card",
+    "sourceRef": "sage-tempest",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-bolt-beacon",
+    "name": "Bolt Beacon",
+    "description": "Faites un jet de Sort contre une cible à Portée Lointaine. Sur un succès, dépensez un Espoir pour envoyer un rayon de lumière chatoyante vers elle, infligeant d8+2 dégâts magiques en utilisant votre Maîtrise. La cible devient temporairement Vulnérable et brille intensément jusqu'à ce que cette condition soit levée.",
+    "source": "domain_card",
+    "sourceRef": "splendor-bolt-beacon",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "far",
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-mending-touch",
+    "name": "Mending Touch",
+    "description": "Vous posez vos mains sur une créature et canalisez la magie curative pour refermer ses plaies. Quand vous pouvez prendre quelques minutes pour vous concentrer sur la cible que vous aidez, vous pouvez dépenser 2 Espoir pour effacer un Point de Vie ou un Stress sur elle. Une fois par repos long, quand vous passez ce temps de soin à apprendre quelque chose de nouveau sur elle ou à révéler quelque chose sur vous-même, vous pouvez effacer 2 Points de Vie ou 2 Stress sur elle à la place.",
+    "source": "domain_card",
+    "sourceRef": "splendor-mending-touch",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "défensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-reassurance",
+    "name": "Reassurance",
+    "description": "Une fois par repos, après qu'un allié tente un jet d'action mais avant que les conséquences ne prennent effet, vous pouvez offrir assistance ou des paroles de soutien. Quand vous le faites, votre allié peut relancer ses dés.",
+    "source": "domain_card",
+    "sourceRef": "splendor-reassurance",
+    "activationType": "reaction",
+    "tier": 1,
+    "tags": [
+      "défensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous le faites, votre allié peut relancer ses dés",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-healing-hands",
+    "name": "Healing Hands",
+    "description": "Faites un jet de Sort (13) et ciblez une créature autre que vous-même à Portée de Mêlée. Sur un succès, marquez un Stress pour effacer 2 Points de Vie ou 2 Stress sur la cible. Sur un échec, marquez un Stress pour effacer un Point de Vie ou un Stress sur la cible. Vous ne pouvez pas soigner la même cible à nouveau avant votre prochain repos long.",
+    "source": "domain_card",
+    "sourceRef": "splendor-healing-hands",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-second-wind",
+    "name": "Second Wind",
+    "description": "Une fois par repos, quand vous réussissez une attaque contre un adversaire, vous pouvez effacer 3 Stress ou un Point de Vie. Sur un succès avec Espoir, vous effacez aussi 3 Stress ou un Point de Vie sur un allié à Portée Proche de vous.",
+    "source": "domain_card",
+    "sourceRef": "splendor-second-wind",
+    "activationType": "reaction",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "close",
+    "conditions": null,
+    "trigger": "Quand vous réussissez une attaque contre un adversaire",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-life-ward",
+    "name": "Life Ward",
+    "description": "Dépensez 3 Espoir et choisissez un allié à Portée Proche. Il est marqué d'un sceau lumineux de protection. Quand cet allié devrait faire un mouvement de mort, il efface un Point de Vie à la place. Cet effet prend fin quand il sauve la cible d'un mouvement de mort, que vous lancez Life Ward sur une autre cible, ou que vous prenez un repos long.",
+    "source": "domain_card",
+    "sourceRef": "splendor-life-ward",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 3
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-smite",
+    "name": "Smite",
+    "description": "Une fois par repos, dépensez 3 Espoir pour charger votre châtiment puissant. Quand vous réussissez ensuite une attaque avec une arme, doublez le résultat de votre jet de dégâts. Cette attaque inflige des dégâts magiques quel que soit le type de dégâts de l'arme.",
+    "source": "domain_card",
+    "sourceRef": "splendor-smite",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 3
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-restoration",
+    "name": "Restoration",
+    "description": "Après un repos long, placez un nombre de jetons égal à votre trait de Sort sur cette carte. Touchez une créature et dépensez autant de jetons que vous le souhaitez pour effacer 2 Points de Vie ou 2 Stress par jeton dépensé. Vous pouvez aussi dépenser un jeton de cette carte en touchant une créature pour lever la condition Vulnérable ou guérir un mal physique ou magique (le MJ peut exiger des jetons supplémentaires selon la gravité du mal). Lors d'un repos long, retirez tous les jetons non dépensés.",
+    "source": "domain_card",
+    "sourceRef": "splendor-restoration",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-zone-of-protection",
+    "name": "Zone of Protection",
+    "description": "Faites un jet de Sort (16). Une fois par repos long sur un succès, choisissez un point à Portée Lointaine et créez une zone de protection visible pour tous les alliés à Portée Très Proche de ce point. Placez un d6 sur cette carte avec la face 1 vers le haut. Quand un allié dans cette zone subit des dégâts, il les réduit de la valeur du dé. Vous augmentez ensuite la valeur du dé de un. Quand la valeur du dé dépasserait 6, cet effet prend fin.",
+    "source": "domain_card",
+    "sourceRef": "splendor-zone-of-protection",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-healing-strike",
+    "name": "Healing Strike",
+    "description": "Quand vous infligez des dégâts à un adversaire, vous pouvez dépenser 2 Espoir pour effacer un Point de Vie sur un allié à Portée Proche.",
+    "source": "domain_card",
+    "sourceRef": "splendor-healing-strike",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-splendor-touched",
+    "name": "Splendor-Touched",
+    "description": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Splendor, vous gagnez les bénéfices suivants : bonus de +3 à votre seuil de dégâts Sévères ; Une fois par repos long, quand des dégâts entrants vous obligeraient à marquer un certain nombre de Points de Vie, vous pouvez choisir de marquer autant de Stress ou de dépenser autant d'Espoir à la place.",
+    "source": "domain_card",
+    "sourceRef": "splendor-splendor-touched",
+    "activationType": "action",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-shield-aura",
+    "name": "Shield Aura",
+    "description": "Marquez un Stress pour lancer une aura protectrice sur une cible à Portée Très Proche. Quand la cible marque un Emplacement d'Armure, elle réduit la sévérité de l'attaque d'un palier supplémentaire. Si ce sort fait qu'une créature qui aurait subi des dégâts ne marque finalement aucun Point de Vie, l'effet prend fin. Vous ne pouvez maintenir Shield Aura que sur une créature à la fois.",
+    "source": "domain_card",
+    "sourceRef": "splendor-shield-aura",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-stunning-sunlight",
+    "name": "Stunning Sunlight",
+    "description": "Faites un jet de Sort pour déchaîner de puissants rayons de lumière brûlante contre tous les adversaires devant vous à Portée Lointaine. Sur un succès, dépensez autant d'Espoir que vous le souhaitez et forcez autant de cibles touchées à faire un Jet de Réaction (14). Les cibles qui réussissent subissent 3d20+3 dégâts magiques. Les cibles qui échouent subissent 4d20+5 dégâts magiques et sont temporairement Étourdies. Tant qu'elles sont Étourdies, elles ne peuvent pas utiliser de réactions ni effectuer d'autres actions jusqu'à ce qu'elles lèvent cette condition.",
+    "source": "domain_card",
+    "sourceRef": "splendor-stunning-sunlight",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": {
+      "applies": [
+        "stunned"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-overwhelming-aura",
+    "name": "Overwhelming Aura",
+    "description": "Faites un jet de Sort (15) pour renforcer magiquement votre aura. Sur un succès, dépensez 2 Espoir pour rendre votre Présence égale à votre trait de Sort jusqu'à votre prochain repos long. Tant que ce sort est actif, un adversaire doit marquer un Stress quand il vous cible avec une attaque.",
+    "source": "domain_card",
+    "sourceRef": "splendor-overwhelming-aura",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-salvation-beam",
+    "name": "Salvation Beam",
+    "description": "Faites un jet de Sort (16). Sur un succès, marquez autant de Stress que vous le souhaitez pour cibler une ligne d'alliés à Portée Lointaine. Vous pouvez effacer sur les cibles un nombre de Points de Vie égal au nombre de Stress marqués, répartis entre elles comme vous le souhaitez.",
+    "source": "domain_card",
+    "sourceRef": "splendor-salvation-beam",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "far",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-splendor-resurrection",
+    "name": "Resurrection",
+    "description": "Faites un jet de Sort (20). Sur un succès, ramenez à la vie une créature morte depuis 100 ans ou moins en pleine santé. Puis lancez un d6. Sur un résultat de 5 ou moins, placez cette carte dans votre coffre de façon permanente. Sur un échec, vous ne pouvez pas relancer Resurrection pendant une semaine.",
+    "source": "domain_card",
+    "sourceRef": "splendor-resurrection",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-bare-bones",
+    "name": "Bare Bones",
+    "description": "Quand vous choisissez de ne pas équiper d'armure, vous avez un Score d'Armure de base de 3 + votre Force et utilisez les seuils de dégâts de base suivants : Rang 1 : 9/19 ; Rang 2 : 11/24 ; Rang 3 : 13/31 ; Rang 4 : 15/38.",
+    "source": "domain_card",
+    "sourceRef": "valor-bare-bones",
+    "activationType": "passive",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-forceful-push",
+    "name": "Forceful Push",
+    "description": "Faites une attaque avec votre arme principale contre une cible à Portée de Mêlée. Sur un succès, vous infligez des dégâts et la repoussez à Portée Proche. Sur un succès avec l'Espoir, ajoutez un d6 à votre jet de dégâts. De plus, vous pouvez dépenser un Espoir pour la rendre temporairement Vulnérable.",
+    "source": "domain_card",
+    "sourceRef": "valor-forceful-push",
+    "activationType": "action",
+    "tier": 1,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "melee",
+    "conditions": {
+      "applies": [
+        "vulnerable"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-i-am-your-shield",
+    "name": "I Am Your Shield",
+    "description": "Quand un allié à Portée Très Proche subirait des dégâts, vous pouvez marquer un Stress pour vous interposer et devenir la cible de l'attaque à sa place. Quand vous subissez des dégâts de cette attaque, vous pouvez marquer autant d'Emplacements d'Armure que souhaité.",
+    "source": "domain_card",
+    "sourceRef": "valor-i-am-your-shield",
+    "activationType": "reaction",
+    "tier": 1,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": "Quand un allié à portée très proche subirait des dégâts",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-body-basher",
+    "name": "Body Basher",
+    "description": "Vous utilisez toute la force de votre corps au combat. Sur une attaque réussie avec une arme à Portée de Mêlée, gagnez un bonus à votre jet de dégâts égal à votre Force.",
+    "source": "domain_card",
+    "sourceRef": "valor-body-basher",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "melee",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-critical-inspiration",
+    "name": "Critical Inspiration",
+    "description": "Une fois par repos, quand vous obtenez un succès critique sur une attaque, tous les alliés à Portée Très Proche peuvent effacer un Stress ou gagner un Espoir.",
+    "source": "domain_card",
+    "sourceRef": "valor-critical-inspiration",
+    "activationType": "reaction",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": "Quand vous obtenez un succès critique sur une attaque",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-lean-on-me",
+    "name": "Lean on Me",
+    "description": "Une fois par repos long, quand vous consolez ou inspirez un allié qui a échoué un jet d'action, vous pouvez tous les deux effacer 2 Stress.",
+    "source": "domain_card",
+    "sourceRef": "valor-lean-on-me",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "social",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-goad-them-on",
+    "name": "Goad Them On",
+    "description": "Décrivez comment vous provoquez une cible à Portée Proche, puis faites un jet de Présence contre elle. Sur un succès, la cible doit marquer un Stress, et la prochaine fois que le MJ la met en avant, elle doit vous cibler avec une attaque, qu'elle effectue avec un désavantage.",
+    "source": "domain_card",
+    "sourceRef": "valor-goad-them-on",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "offensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-support-tank",
+    "name": "Support Tank",
+    "description": "Quand un allié à Portée Proche échoue un jet, vous pouvez dépenser 2 Espoir pour lui permettre de relancer son Dé d'Espoir ou de Peur.",
+    "source": "domain_card",
+    "sourceRef": "valor-support-tank",
+    "activationType": "action",
+    "tier": 2,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "close",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-armorer",
+    "name": "Armorer",
+    "description": "Tant que vous portez une armure, gagnez un bonus de +1 à votre Score d'Armure. Pendant un repos, quand vous choisissez de réparer votre armure comme mouvement de repos, vos alliés effacent aussi un Emplacement d'Armure.",
+    "source": "domain_card",
+    "sourceRef": "valor-armorer",
+    "activationType": "passive",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-rousing-strike",
+    "name": "Rousing Strike",
+    "description": "Une fois par repos, quand vous obtenez un succès critique sur une attaque, vous et tous les alliés qui peuvent vous voir ou vous entendre pouvez effacer un Point de Vie ou 1d4 Stress.",
+    "source": "domain_card",
+    "sourceRef": "valor-rousing-strike",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "oncePerShortRest",
+    "allyCooldown": "per_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous obtenez un succès critique sur une attaque",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-rise-up",
+    "name": "Rise Up",
+    "description": "Gagnez un bonus à votre seuil de dégâts Sévères égal à votre Maîtrise. Quand vous marquez 1 ou plusieurs Points de Vie suite à une attaque, effacez un Stress.",
+    "source": "domain_card",
+    "sourceRef": "valor-rise-up",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous marquez 1 ou plusieurs points de vie suite à une attaque, effacez un stress",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-shrug-it-off",
+    "name": "Shrug It Off",
+    "description": "Quand vous subiriez des dégâts, vous pouvez marquer un Stress pour réduire la sévérité des dégâts d'un palier. Ce faisant, lancez un d6. Sur un résultat de 3 ou moins, placez cette carte dans votre coffre.",
+    "source": "domain_card",
+    "sourceRef": "valor-shrug-it-off",
+    "activationType": "passive",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": null,
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-valor-touched",
+    "name": "Valor-Touched",
+    "description": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine Valor, vous gagnez les bénéfices suivants : bonus de +1 à votre Score d'Armure ; Quand vous marquez 1 ou plusieurs Points de Vie sans marquer d'Emplacement d'Armure, effacez un Emplacement d'Armure.",
+    "source": "domain_card",
+    "sourceRef": "valor-valor-touched",
+    "activationType": "reaction",
+    "tier": 3,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand 4 ou plus des cartes de domaine de votre équipement sont du domaine valor",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-full-surge",
+    "name": "Full Surge",
+    "description": "Une fois par repos long, marquez 3 Stress pour pousser votre corps à ses limites. Gagnez un bonus de +2 à tous vos traits de personnage jusqu'à votre prochain repos.",
+    "source": "domain_card",
+    "sourceRef": "valor-full-surge",
+    "activationType": "passive",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 3
+    },
+    "frequency": "oncePerLongRest",
+    "allyCooldown": "per_long_rest",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-ground-pound",
+    "name": "Ground Pound",
+    "description": "Dépensez 2 Espoir pour frapper le sol où vous vous tenez et faites un jet de Force contre toutes les cibles à Portée Très Proche. Les cibles contre lesquelles vous réussissez sont projetées à Portée Lointaine et doivent faire un Jet de Réaction (17). Celles qui échouent subissent 4d10+8 dégâts. Celles qui réussissent subissent la moitié des dégâts.",
+    "source": "domain_card",
+    "sourceRef": "valor-ground-pound",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 2
+    },
+    "frequency": "atWill",
+    "allyCooldown": "per_scene",
+    "range": "veryClose",
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-hold-the-line",
+    "name": "Hold the Line",
+    "description": "Décrivez la posture défensive que vous adoptez et dépensez un Espoir. Si un adversaire se déplace à Portée Très Proche, il est attiré à Portée de Mêlée et Entravé. Cette condition dure jusqu'à ce que vous vous déplaciez ou échouiez un jet avec la Peur, ou que le MJ dépense 2 Peur lors de son tour pour la lever.",
+    "source": "domain_card",
+    "sourceRef": "valor-hold-the-line",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "hope",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "2_spotlights",
+    "range": "veryClose",
+    "conditions": {
+      "applies": [
+        "restrained"
+      ]
+    },
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-lead-by-example",
+    "name": "Lead by Example",
+    "description": "Quand vous infligez des dégâts à un adversaire, vous pouvez marquer un Stress et décrire comment vous encouragez vos alliés. Le prochain PJ à effectuer une attaque contre cet adversaire peut effacer un Stress ou gagner un Espoir.",
+    "source": "domain_card",
+    "sourceRef": "valor-lead-by-example",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "offensif",
+      "social"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "stress",
+      "amount": 1
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-unbreakable",
+    "name": "Unbreakable",
+    "description": "Quand vous marquez votre dernier Point de Vie, au lieu de faire un mouvement de mort, vous pouvez lancer un d6 et effacer un nombre de Points de Vie égal au résultat. Puis placez cette carte dans votre coffre.",
+    "source": "domain_card",
+    "sourceRef": "valor-unbreakable",
+    "activationType": "reaction",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": "Quand vous marquez votre dernier point de vie, au lieu de faire un mouvement de mort",
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  },
+  {
+    "id": "dc-valor-unyielding-armor",
+    "name": "Unyielding Armor",
+    "description": "Quand vous devriez marquer un Emplacement d'Armure, lancez un nombre de d6 égal à votre Maîtrise. Si l'un donne un 6, réduisez la sévérité d'un palier sans marquer d'Emplacement d'Armure.",
+    "source": "domain_card",
+    "sourceRef": "valor-unyielding-armor",
+    "activationType": "action",
+    "tier": 4,
+    "tags": [
+      "défensif"
+    ],
+    "themes": [
+      "humanoid"
+    ],
+    "cost": {
+      "type": "free",
+      "amount": 0
+    },
+    "frequency": "atWill",
+    "allyCooldown": "none",
+    "range": null,
+    "conditions": null,
+    "trigger": null,
+    "trait": null,
+    "countdown": null,
+    "damageFormula": null,
+    "damageType": null
+  }
+]
