@@ -119,3 +119,28 @@ Append-only cross-session continuity notes.
 - Build: 406 modules, 2.28s — SessionHome chunk 31.13 kB
 - 2709 tests totaux (97 fichiers), 0 régression
 - Commit: `4868f2c4`, pushé sur origin/main
+
+## 2026-03-06 22:00 — Violet
+
+### PcGroupPanel — 4 améliorations UX pour le mode Table
+- **Grille configurable** : sélecteur 2/3/4 colonnes (radiogroup ARIA), persisté via `useStorage('pcgroup-columns', 2)`, classes BEM `--cols-2/3/4` avec minmax 340px/260px/200px, masqué sur mobile
+- **Cartes de domaine enrichies** : en-tête (emoji activation + nom + Nv.X + type + domaine), meta badges (coût/portée/fréquence/rappel), tags en pills, texte feature complet. Import `getDomainById` pour résolution nom domaine.
+- **Sources des capacités** : headers `.pc-card__feature-source` par groupe — "Feature d'Espoir — Classe", "Classe — X", "Ascendance — X", "Communauté — X", "Spécialisation — X · Fondation/Spécialisation/Maîtrise"
+- **Onglets ARIA par carte** : 3 tabs (⚔️ Combat / ✨ Capacités / 🎒 Inventaire) remplacent les 4 `<details>`. Pattern WAI-ARIA tablist/tab/tabpanel avec navigation clavier. `v-show` pour panels. Inventaire enrichi : or + armure + items + empty state.
+- Suppression bouton "Tout déplier/replier" (obsolète avec les onglets)
+- Build: 406 modules, 2.39s — SessionHome chunk 36.72 kB (+5.6 kB)
+- 2709 tests totaux (97 fichiers), 0 régression
+- Commit: `5a879238`, pushé sur origin/main
+
+## 2026-03-06 23:00 — Violet
+
+### Gestion interactive PVs / Stress / Armure / Espoir en mode Jeu
+- **patchCharacterById(charId, updates)** : nouvelle action characterStore — mutation par ID sans changer selectedCharacter, Object.assign + persist()
+- **8 helpers dans PcGroupPanel** : incrementHP/decrementHP, incrementStress/decrementStress, incrementArmor/decrementArmor, incrementHope/decrementHope — clamping côté composant (effectiveMax*)
+- **Barres HP/Stress interactives** : boutons −/+ de part et d'autre (44px touch), disabled aux bornes, ARIA labels descriptifs
+- **Armure/Espoir interactifs** : boutons mini (28px) compacts de part et d'autre des valeurs
+- **Sémantique Daggerheart** : HP+ = marquer dégât, HP− = soigner, Stress+ = marquer, Armure+ = utiliser slot, Espoir+ = gagner
+- **Chaîne réactivité** : clic → helper → patchCharacterById → persist → enrichedCharacters recomputed → template re-rendu
+- 4 tests patchCharacterById (mutation par ID, updatedAt, no-op invalide, persistance)
+- 2713 tests totaux (97 fichiers), 0 régression
+- Build: 406 modules, 2.48s — SessionHome chunk 39.73 kB

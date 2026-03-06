@@ -658,4 +658,44 @@ describe('characterStore', () => {
       expect(store.selectedCharacterId).toBeNull()
     })
   })
+
+  describe('patchCharacterById', () => {
+    let charId
+
+    beforeEach(() => {
+      store.createCharacter('guardian')
+      charId = store.selectedCharacterId
+      // Creer un second personnage pour verifier que selectedCharacterId ne change pas
+      store.createCharacter('warrior')
+    })
+
+    it('met a jour un PJ par ID sans changer selectedCharacterId', () => {
+      const currentSelected = store.selectedCharacterId
+      store.patchCharacterById(charId, { currentHP: 3 })
+      expect(store.selectedCharacterId).toBe(currentSelected)
+      const patched = store.characters.find(c => c.id === charId)
+      expect(patched.currentHP).toBe(3)
+    })
+
+    it('met a jour updatedAt', () => {
+      // Force un updatedAt connu avant le patch
+      const char = store.characters.find(c => c.id === charId)
+      char.updatedAt = '2020-01-01T00:00:00.000Z'
+      store.patchCharacterById(charId, { currentStress: 2 })
+      expect(char.updatedAt).not.toBe('2020-01-01T00:00:00.000Z')
+    })
+
+    it('ne fait rien avec un ID invalide', () => {
+      const countBefore = store.characterCount
+      store.patchCharacterById('id-inexistant', { currentHP: 99 })
+      expect(store.characterCount).toBe(countBefore)
+    })
+
+    it('persiste les modifications', () => {
+      store.patchCharacterById(charId, { currentHP: 5, currentStress: 1 })
+      const patched = store.characters.find(c => c.id === charId)
+      expect(patched.currentHP).toBe(5)
+      expect(patched.currentStress).toBe(1)
+    })
+  })
 })

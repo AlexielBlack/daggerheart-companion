@@ -94,13 +94,21 @@
             <span v-if="pc.communityData">{{ pc.communityData.name }}</span>
           </div>
 
-          <!-- 3. Barres HP + Stress -->
+          <!-- 3. Barres HP + Stress (interactives) -->
           <div class="pc-card__bars">
             <!-- Barre HP : currentHP = degats marques -->
             <div
-              class="pc-card__bar"
+              class="pc-card__bar pc-card__bar--interactive"
               :aria-label="'Points de vie : ' + (pc.effectiveMaxHP - (pc.currentHP || 0)) + ' restants sur ' + pc.effectiveMaxHP"
             >
+              <button
+                class="pc-card__stat-btn"
+                :disabled="(pc.currentHP || 0) <= 0"
+                :aria-label="'Soigner 1 PV de ' + (pc.name || 'Sans nom')"
+                @click="decrementHP(pc)"
+              >
+                &minus;
+              </button>
               <div class="pc-card__bar-track">
                 <div
                   class="pc-card__bar-fill"
@@ -113,13 +121,29 @@
               <span class="pc-card__bar-text">
                 &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
               </span>
+              <button
+                class="pc-card__stat-btn"
+                :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
+                :aria-label="'Marquer 1 degat sur ' + (pc.name || 'Sans nom')"
+                @click="incrementHP(pc)"
+              >
+                +
+              </button>
             </div>
 
             <!-- Barre Stress -->
             <div
-              class="pc-card__bar"
+              class="pc-card__bar pc-card__bar--interactive"
               :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.effectiveMaxStress"
             >
+              <button
+                class="pc-card__stat-btn"
+                :disabled="(pc.currentStress || 0) <= 0"
+                :aria-label="'Reduire 1 stress de ' + (pc.name || 'Sans nom')"
+                @click="decrementStress(pc)"
+              >
+                &minus;
+              </button>
               <div class="pc-card__bar-track">
                 <div
                   class="pc-card__bar-fill"
@@ -132,15 +156,31 @@
               <span class="pc-card__bar-text">
                 &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
               </span>
+              <button
+                class="pc-card__stat-btn"
+                :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
+                :aria-label="'Marquer 1 stress sur ' + (pc.name || 'Sans nom')"
+                @click="incrementStress(pc)"
+              >
+                +
+              </button>
             </div>
           </div>
 
-          <!-- 4. Ligne armure + espoir -->
-          <div class="pc-card__armor-hope">
+          <!-- 4. Ligne armure + espoir (interactifs) -->
+          <div class="pc-card__armor-hope pc-card__armor-hope--interactive">
             <div
-              class="pc-card__armor-bar"
+              class="pc-card__armor-bar pc-card__armor-bar--interactive"
               :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
             >
+              <button
+                class="pc-card__stat-btn pc-card__stat-btn--mini"
+                :disabled="(pc.armorSlotsMarked || 0) <= 0"
+                :aria-label="'Restaurer 1 armure de ' + (pc.name || 'Sans nom')"
+                @click="decrementArmor(pc)"
+              >
+                &minus;
+              </button>
               <span class="pc-card__armor-label">
                 &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.effectiveArmorScore }}
               </span>
@@ -150,10 +190,37 @@
                   :style="{ width: armorFillPercent(pc) + '%' }"
                 ></div>
               </div>
+              <button
+                class="pc-card__stat-btn pc-card__stat-btn--mini"
+                :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
+                :aria-label="'Utiliser 1 armure de ' + (pc.name || 'Sans nom')"
+                @click="incrementArmor(pc)"
+              >
+                +
+              </button>
             </div>
-            <div class="pc-card__hope">
+            <div
+              class="pc-card__hope pc-card__hope--interactive"
+              :aria-label="'Espoir : ' + (pc.hope || 0)"
+            >
+              <button
+                class="pc-card__stat-btn pc-card__stat-btn--mini"
+                :disabled="(pc.hope || 0) <= 0"
+                :aria-label="'Depenser 1 espoir de ' + (pc.name || 'Sans nom')"
+                @click="decrementHope(pc)"
+              >
+                &minus;
+              </button>
               <span aria-hidden="true">&#x2728;</span>
               Espoir : <strong>{{ pc.hope || 0 }}</strong>
+              <button
+                class="pc-card__stat-btn pc-card__stat-btn--mini"
+                :disabled="(pc.hope || 0) >= 6"
+                :aria-label="'Gagner 1 espoir pour ' + (pc.name || 'Sans nom')"
+                @click="incrementHope(pc)"
+              >
+                +
+              </button>
             </div>
           </div>
 
@@ -607,7 +674,7 @@
 
 <script>
 /**
- * PcGroupPanel — Grille enrichie des personnages joueurs en lecture seule.
+ * PcGroupPanel — Grille enrichie des personnages joueurs.
  * Affiche une carte par PJ avec stats effectives, barres HP/Stress,
  * onglets Combat/Capacites/Inventaire, cartes de domaine enrichies,
  * et features avec labels de source.
@@ -618,6 +685,7 @@
  */
 import { computed, ref, nextTick } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
+import { useCharacterStore } from '@modules/characters'
 import { useStorage } from '@core/composables/useStorage'
 import { getDomainById } from '@data/domains'
 
@@ -635,6 +703,61 @@ export default {
   setup(props) {
     // ── Ref template pour la grille ──
     const gridRef = ref(null)
+
+    // ── Store pour mutations ──
+    const characterStore = useCharacterStore()
+
+    // ══════════════════════════════════════════════
+    //  GESTION INTERACTIVE — HP / Stress / Armure / Espoir
+    // ══════════════════════════════════════════════
+
+    /** Marquer 1 degat (augmente currentHP = degats marques) */
+    function incrementHP(pc) {
+      const newVal = Math.min(pc.effectiveMaxHP, (pc.currentHP || 0) + 1)
+      characterStore.patchCharacterById(pc.id, { currentHP: newVal })
+    }
+
+    /** Soigner 1 PV (diminue currentHP = degats marques) */
+    function decrementHP(pc) {
+      const newVal = Math.max(0, (pc.currentHP || 0) - 1)
+      characterStore.patchCharacterById(pc.id, { currentHP: newVal })
+    }
+
+    /** Marquer 1 stress */
+    function incrementStress(pc) {
+      const newVal = Math.min(pc.effectiveMaxStress, (pc.currentStress || 0) + 1)
+      characterStore.patchCharacterById(pc.id, { currentStress: newVal })
+    }
+
+    /** Reduire 1 stress */
+    function decrementStress(pc) {
+      const newVal = Math.max(0, (pc.currentStress || 0) - 1)
+      characterStore.patchCharacterById(pc.id, { currentStress: newVal })
+    }
+
+    /** Utiliser 1 slot d'armure (augmente armorSlotsMarked) */
+    function incrementArmor(pc) {
+      const newVal = Math.min(pc.effectiveArmorScore, (pc.armorSlotsMarked || 0) + 1)
+      characterStore.patchCharacterById(pc.id, { armorSlotsMarked: newVal })
+    }
+
+    /** Restaurer 1 slot d'armure */
+    function decrementArmor(pc) {
+      const newVal = Math.max(0, (pc.armorSlotsMarked || 0) - 1)
+      characterStore.patchCharacterById(pc.id, { armorSlotsMarked: newVal })
+    }
+
+    /** Gagner 1 espoir */
+    function incrementHope(pc) {
+      const newVal = Math.min(6, (pc.hope || 0) + 1)
+      characterStore.patchCharacterById(pc.id, { hope: newVal })
+    }
+
+    /** Depenser 1 espoir */
+    function decrementHope(pc) {
+      const newVal = Math.max(0, (pc.hope || 0) - 1)
+      characterStore.patchCharacterById(pc.id, { hope: newVal })
+    }
 
     // ── Personnages enrichis via resolveCharacterDisplay ──
     const enrichedCharacters = computed(() =>
@@ -908,6 +1031,15 @@ export default {
     return {
       gridRef,
       enrichedCharacters,
+      // Gestion interactive
+      incrementHP,
+      decrementHP,
+      incrementStress,
+      decrementStress,
+      incrementArmor,
+      decrementArmor,
+      incrementHope,
+      decrementHope,
       // Improvement 1 — colonnes
       columnCount,
       setColumns,
@@ -1167,6 +1299,51 @@ export default {
   min-width: 50px;
 }
 
+/* ── Boutons interactifs +/- ── */
+
+.pc-card__bar--interactive {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.pc-card__stat-btn {
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.pc-card__stat-btn:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+}
+
+.pc-card__stat-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.pc-card__stat-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pc-card__stat-btn--mini {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  font-size: var(--font-size-sm);
+}
+
 /* ── 4. Armure + Espoir ── */
 
 .pc-card__armor-hope {
@@ -1184,6 +1361,10 @@ export default {
   gap: var(--space-sm);
 }
 
+.pc-card__armor-bar--interactive {
+  gap: var(--space-xs);
+}
+
 .pc-card__armor-label {
   font-size: var(--font-size-xs);
   white-space: nowrap;
@@ -1192,6 +1373,12 @@ export default {
 .pc-card__hope {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+}
+
+.pc-card__hope--interactive {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
 /* ── 5. Defense ── */

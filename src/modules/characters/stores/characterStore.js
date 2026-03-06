@@ -1031,6 +1031,18 @@ export const useCharacterStore = defineStore('characters', () => {
     persist()
   }
 
+  /**
+   * Met a jour des champs d'un personnage par ID.
+   * Utilisable depuis PcGroupPanel sans changer selectedCharacter.
+   * Le composant appelant est responsable du clamping aux bornes effectives.
+   */
+  function patchCharacterById(charId, updates) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char) return
+    Object.assign(char, updates, { updatedAt: new Date().toISOString() })
+    persist()
+  }
+
   // ── Conditions ─────────────────────────────────────────
 
   /** Ajoute une condition */
@@ -1490,6 +1502,7 @@ export const useCharacterStore = defineStore('characters', () => {
     markArmor,
     clearArmor,
     setHope,
+    patchCharacterById,
 
     // Actions Conditions
     addCondition,
