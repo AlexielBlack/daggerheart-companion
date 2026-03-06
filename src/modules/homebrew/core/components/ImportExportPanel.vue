@@ -51,43 +51,11 @@
     >
       {{ statusMessage }}
     </div>
-
-    <!-- Confirmation de suppression -->
-    <div
-      v-if="showClearConfirm"
-      ref="clearConfirmRef"
-      class="import-export__confirm"
-      role="alertdialog"
-      aria-modal="true"
-      aria-label="Confirmer la suppression"
-    >
-      <p class="import-export__confirm-text">
-        Supprimer définitivement {{ itemCount }} {{ label.toLowerCase() }} ?
-        Cette action est irréversible.
-      </p>
-      <div class="import-export__confirm-actions">
-        <button
-          type="button"
-          class="btn btn--danger btn--sm"
-          @click="onClearConfirm"
-        >
-          Confirmer la suppression
-        </button>
-        <button
-          type="button"
-          class="btn btn--ghost btn--sm"
-          @click="showClearConfirm = false"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 
 /**
  * @component ImportExportPanel
@@ -123,10 +91,8 @@ export default {
   emits: ['export', 'import', 'clear-all'],
 
   setup() {
-    const showClearConfirm = ref(false)
-    const clearConfirmRef = ref(null)
-    useFocusTrap(clearConfirmRef, () => showClearConfirm.value)
-    return { showClearConfirm, clearConfirmRef }
+    const { confirm } = useConfirmDialog()
+    return { confirm }
   },
 
   data() {
@@ -164,14 +130,15 @@ export default {
       reader.readAsText(file)
     },
 
-    onClearRequest() {
-      this.showClearConfirm = true
-    },
-
-    onClearConfirm() {
-      this.$emit('clear-all')
-      this.showClearConfirm = false
-      this.setStatus('Tous les éléments ont été supprimés.', 'success')
+    async onClearRequest() {
+      const ok = await this.confirm({
+        message: `Supprimer définitivement ${this.itemCount} ${this.label.toLowerCase()} ? Cette action est irréversible.`,
+        confirmLabel: 'Confirmer la suppression'
+      })
+      if (ok) {
+        this.$emit('clear-all')
+        this.setStatus('Tous les éléments ont été supprimés.', 'success')
+      }
     },
 
     setStatus(message, type = 'info') {

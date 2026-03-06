@@ -151,45 +151,6 @@
       </div>
     </div>
 
-    <!-- Confirmation pull -->
-    <div
-      v-if="showPullConfirm"
-      ref="pullConfirmRef"
-      class="sync-panel__confirm"
-      role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="pull-confirm-heading"
-      aria-describedby="pull-confirm-description"
-    >
-      <p
-        id="pull-confirm-heading"
-        class="sync-panel__confirm-title"
-      >
-        ⚠️ Confirmer la réception
-      </p>
-      <p
-        id="pull-confirm-description"
-        class="sync-panel__confirm-text"
-      >
-        Vos données locales seront remplacées par celles du Gist distant.
-        Cette action est irréversible.
-      </p>
-      <div class="sync-panel__confirm-actions">
-        <button
-          class="sync-btn sync-btn--danger"
-          @click="confirmPull"
-        >
-          Confirmer
-        </button>
-        <button
-          class="sync-btn sync-btn--ghost"
-          @click="showPullConfirm = false"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
-
     <!-- Feedback -->
     <div
       v-if="feedback"
@@ -205,7 +166,7 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import { useGistSync } from '../composables/useGistSync.js'
 import { useSyncStore } from '../stores/syncStore.js'
 
@@ -222,9 +183,7 @@ export default {
     const validating = ref(false)
     const connected = ref(!!(gistSync.getToken() && gistSync.getGistId()))
     const username = ref(null)
-    const showPullConfirm = ref(false)
-    const pullConfirmRef = ref(null)
-    useFocusTrap(pullConfirmRef, () => showPullConfirm.value)
+    const { confirm } = useConfirmDialog()
     const feedback = ref(null)
 
     const syncing = computed(() =>
@@ -311,12 +270,14 @@ export default {
       }
     }
 
-    function handlePull() {
-      showPullConfirm.value = true
-    }
+    async function handlePull() {
+      const ok = await confirm({
+        title: '⚠️ Confirmer la réception',
+        message: 'Vos données locales seront remplacées par celles du Gist distant. Cette action est irréversible.',
+        confirmLabel: 'Confirmer'
+      })
+      if (!ok) return
 
-    async function confirmPull() {
-      showPullConfirm.value = false
       const result = await gistSync.pull()
 
       syncStore.addHistoryEntry({
@@ -356,14 +317,12 @@ export default {
       connected,
       username,
       syncing,
-      showPullConfirm, pullConfirmRef,
       feedback,
       formatDate,
       handleConnect,
       handleDisconnect,
       handlePush,
       handlePull,
-      confirmPull,
       handleRefreshInfo
     }
   }

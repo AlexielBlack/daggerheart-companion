@@ -125,55 +125,15 @@
           {{ toast.message }}
         </div>
       </Transition>
-
-      <!-- ═══ Confirm delete dialog ═══ -->
-      <Transition name="fade">
-        <div
-          v-if="deleteTarget"
-          class="overlay"
-          role="button"
-          tabindex="0"
-          aria-label="Fermer"
-          @click="deleteTarget = null"
-          @keydown.escape="deleteTarget = null"
-        >
-          <div
-            ref="deleteDialogRef"
-            class="confirm-dialog"
-            role="alertdialog"
-            aria-modal="true"
-            aria-label="Confirmer la suppression"
-            @click.stop
-          >
-            <p class="confirm-dialog__text">
-              Supprimer <strong>{{ deleteTargetName }}</strong> ? Cette action est irréversible.
-            </p>
-            <div class="confirm-dialog__actions">
-              <button
-                class="dialog-btn dialog-btn--cancel"
-                @click="deleteTarget = null"
-              >
-                Annuler
-              </button>
-              <button
-                class="dialog-btn dialog-btn--danger"
-                @click="executeDelete"
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
-        </div>
-      </Transition>
     </div>
   </ModuleBoundary>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useCharacterStore } from '../stores/characterStore'
 import { useLevelUpStore } from '@modules/levelup'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
@@ -187,10 +147,7 @@ export default {
     const store = useCharacterStore()
     const levelUpStore = useLevelUpStore()
     const showPicker = ref(false)
-    const deleteTarget = ref(null)
-    const deleteDialogRef = ref(null)
-
-    useFocusTrap(deleteDialogRef, () => !!deleteTarget.value)
+    const { confirm } = useConfirmDialog()
 
     // Toast
     const toast = ref({ visible: false, message: '', type: 'success' })
@@ -214,20 +171,15 @@ export default {
     }
 
     // Delete character
-    function confirmDelete(charId) {
-      deleteTarget.value = charId
-    }
-
-    const deleteTargetName = computed(() => {
-      if (!deleteTarget.value) return ''
-      const char = store.characters.find((c) => c.id === deleteTarget.value)
-      return char ? (char.name || 'Sans nom') : ''
-    })
-
-    function executeDelete() {
-      if (deleteTarget.value) {
-        store.deleteCharacter(deleteTarget.value)
-        deleteTarget.value = null
+    async function confirmDelete(charId) {
+      const char = store.characters.find((c) => c.id === charId)
+      const name = char ? (char.name || 'Sans nom') : ''
+      const ok = await confirm({
+        message: `Supprimer <strong>${name}</strong> ? Cette action est irréversible.`,
+        confirmLabel: 'Supprimer'
+      })
+      if (ok) {
+        store.deleteCharacter(charId)
         showToast('Personnage supprimé.', 'info')
       }
     }
@@ -265,13 +217,9 @@ export default {
     return {
       store,
       showPicker,
-      deleteTarget,
-      deleteDialogRef,
-      deleteTargetName,
       toast,
       onClassSelected,
       confirmDelete,
-      executeDelete,
       onLevelUp,
       onRollback,
       onLevelUpComplete,
@@ -354,62 +302,4 @@ export default {
 .toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
 .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(10px); }
 
-/* ── Confirm dialog ── */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.confirm-dialog {
-  background: var(--color-bg-secondary, #1f1f3a);
-  border: 1px solid var(--color-border, #3a3a5a);
-  border-radius: 8px;
-  padding: var(--space-lg);
-  max-width: 400px;
-  width: 90%;
-}
-
-.confirm-dialog__text {
-  margin: 0 0 var(--space-md);
-  font-size: 0.9rem;
-  color: var(--color-text-primary);
-  line-height: 1.5;
-}
-
-.confirm-dialog__actions {
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: flex-end;
-}
-
-.dialog-btn {
-  padding: var(--space-xs) var(--space-md);
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  border: 1px solid var(--color-border, #3a3a5a);
-}
-
-.dialog-btn--cancel {
-  background: transparent;
-  color: var(--color-text-secondary);
-}
-
-.dialog-btn--cancel:hover { border-color: var(--color-text-secondary); }
-
-.dialog-btn--danger {
-  background: var(--color-accent-fear, #c84b31);
-  color: #fff;
-  border-color: var(--color-accent-fear, #c84b31);
-}
-
-.dialog-btn--danger:hover { opacity: 0.9; }
-
-.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>

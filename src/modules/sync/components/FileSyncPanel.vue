@@ -57,46 +57,6 @@
       </small>
     </div>
 
-    <!-- Confirmation d'import -->
-    <div
-      v-if="showConfirm"
-      ref="confirmRef"
-      class="sync-panel__confirm"
-      role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="confirm-heading"
-      aria-describedby="confirm-description"
-    >
-      <p
-        id="confirm-heading"
-        class="sync-panel__confirm-title"
-      >
-        ⚠️ Confirmer l'import
-      </p>
-      <p
-        id="confirm-description"
-        class="sync-panel__confirm-text"
-      >
-        L'import remplacera vos données actuelles par celles du fichier
-        <strong>{{ pendingFile?.name }}</strong>.
-        Cette action est irréversible.
-      </p>
-      <div class="sync-panel__confirm-actions">
-        <button
-          class="sync-btn sync-btn--danger"
-          @click="confirmImport"
-        >
-          Confirmer l'import
-        </button>
-        <button
-          class="sync-btn sync-btn--ghost"
-          @click="cancelImport"
-        >
-          Annuler
-        </button>
-      </div>
-    </div>
-
     <!-- Feedback -->
     <div
       v-if="feedback"
@@ -112,7 +72,7 @@
 
 <script>
 import { ref } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import { useFileSync } from '../composables/useFileSync.js'
 import { useSyncStore } from '../stores/syncStore.js'
 
@@ -122,13 +82,9 @@ export default {
   setup() {
     const fileSync = useFileSync()
     const syncStore = useSyncStore()
+    const { confirm } = useConfirmDialog()
 
-    const showConfirm = ref(false)
-    const confirmRef = ref(null)
-    const pendingFile = ref(null)
     const feedback = ref(null)
-
-    useFocusTrap(confirmRef, () => showConfirm.value)
 
     function showFeedback(type, message) {
       feedback.value = { type, message }
@@ -146,18 +102,18 @@ export default {
       showFeedback('success', 'Export réussi ! Fichier téléchargé.')
     }
 
-    function handleImport(event) {
+    async function handleImport(event) {
       const file = event.target?.files?.[0]
       if (!file) return
 
-      pendingFile.value = file
-      showConfirm.value = true
-    }
+      const ok = await confirm({
+        title: '⚠️ Confirmer l\'import',
+        message: `L'import remplacera vos données actuelles par celles du fichier <strong>${file.name}</strong>. Cette action est irréversible.`,
+        confirmLabel: 'Confirmer l\'import'
+      })
+      if (!ok) return
 
-    async function confirmImport() {
-      if (!pendingFile.value) return
-
-      const result = await fileSync.importFromFile(pendingFile.value)
+      const result = await fileSync.importFromFile(file)
 
       syncStore.addHistoryEntry({
         type: 'import',
@@ -171,26 +127,13 @@ export default {
       } else {
         showFeedback('error', result.error || 'Erreur lors de l\'import.')
       }
-
-      showConfirm.value = false
-      pendingFile.value = null
-    }
-
-    function cancelImport() {
-      showConfirm.value = false
-      pendingFile.value = null
     }
 
     return {
       fileSync,
-      showConfirm,
-      confirmRef,
-      pendingFile,
       feedback,
       handleExport,
-      handleImport,
-      confirmImport,
-      cancelImport
+      handleImport
     }
   }
 }

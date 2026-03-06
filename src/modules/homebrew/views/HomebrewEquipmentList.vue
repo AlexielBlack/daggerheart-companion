@@ -81,40 +81,13 @@
         </div>
         <EquipmentPreview :data="selectedItem" />
       </aside>
-
-      <div
-        v-if="deleteTarget"
-        ref="deleteConfirmRef"
-        class="hb-eq-list__delete-confirm"
-        role="alertdialog"
-        aria-modal="true"
-        :aria-label="`Confirmer la suppression de ${deleteTarget.name}`"
-      >
-        <p class="hb-eq-list__delete-text">
-          Supprimer <strong>{{ deleteTarget.name }}</strong> définitivement ?
-        </p>
-        <div class="hb-eq-list__delete-actions">
-          <button
-            class="btn btn--danger btn--sm"
-            @click="confirmDelete"
-          >
-            Supprimer
-          </button>
-          <button
-            class="btn btn--ghost btn--sm"
-            @click="deleteTarget = null"
-          >
-            Annuler
-          </button>
-        </div>
-      </div>
     </div>
   </ModuleBoundary>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewList from '../core/components/HomebrewList.vue'
@@ -139,9 +112,7 @@ export default {
     const router = useRouter()
     const store = useEquipmentHomebrewStore()
     const selectedId = ref(null)
-    const deleteTarget = ref(null)
-    const deleteConfirmRef = ref(null)
-    useFocusTrap(deleteConfirmRef, () => !!deleteTarget.value)
+    const { confirm } = useConfirmDialog()
     const importExportRef = ref(null)
     const equipmentCategories = CATEGORY_DISPLAY
 
@@ -183,13 +154,16 @@ export default {
     function goEdit(id) { router.push(`/homebrew/equipment/${id}`) }
     function onSelect(id) { selectedId.value = selectedId.value === id ? null : id }
     function onDuplicate(id) { store.duplicate(id) }
-    function onDelete(id) { deleteTarget.value = store.getById(id) }
-
-    function confirmDelete() {
-      if (deleteTarget.value) {
-        store.remove(deleteTarget.value.id)
-        if (selectedId.value === deleteTarget.value.id) selectedId.value = null
-        deleteTarget.value = null
+    async function onDelete(id) {
+      const item = store.getById(id)
+      if (!item) return
+      const ok = await confirm({
+        message: `Supprimer <strong>${item.name}</strong> définitivement ?`,
+        confirmLabel: 'Supprimer'
+      })
+      if (ok) {
+        store.remove(item.id)
+        if (selectedId.value === item.id) selectedId.value = null
       }
     }
 
@@ -214,10 +188,10 @@ export default {
     function onClearAll() { store.clearAll(); selectedId.value = null }
 
     return {
-      store, selectedId, selectedItem, deleteTarget, deleteConfirmRef, importExportRef,
+      store, selectedId, selectedItem, importExportRef,
       sortOptions, equipmentCategories, hasActiveFilters,
       toggleCategoryFilter, toggleSortDirection, clearFilters,
-      goCreate, goEdit, onSelect, onDuplicate, onDelete, confirmDelete,
+      goCreate, goEdit, onSelect, onDuplicate, onDelete,
       onExport, onImport, onClearAll
     }
   }
@@ -235,7 +209,4 @@ export default {
 .hb-eq-list__detail { background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-md); }
 .hb-eq-list__detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); }
 .hb-eq-list__detail-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 0; }
-.hb-eq-list__delete-confirm { background-color: var(--color-bg-secondary); border: 2px solid var(--color-danger); border-radius: var(--radius-lg); padding: var(--space-md); text-align: center; }
-.hb-eq-list__delete-text { color: var(--color-text-primary); margin: 0 0 var(--space-sm); }
-.hb-eq-list__delete-actions { display: flex; justify-content: center; gap: var(--space-sm); }
 </style>

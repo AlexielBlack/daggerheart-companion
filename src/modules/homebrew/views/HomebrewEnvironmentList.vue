@@ -106,41 +106,13 @@
         </div>
         <EnvironmentPreview :data="selectedItem" />
       </aside>
-
-      <!-- Confirmation suppression -->
-      <div
-        v-if="deleteTarget"
-        ref="deleteConfirmRef"
-        class="hb-env-list__delete-confirm"
-        role="alertdialog"
-        aria-modal="true"
-        :aria-label="`Confirmer la suppression de ${deleteTarget.name}`"
-      >
-        <p class="hb-env-list__delete-text">
-          Supprimer <strong>{{ deleteTarget.name }}</strong> définitivement ?
-        </p>
-        <div class="hb-env-list__delete-actions">
-          <button
-            class="btn btn--danger btn--sm"
-            @click="confirmDelete"
-          >
-            Supprimer
-          </button>
-          <button
-            class="btn btn--ghost btn--sm"
-            @click="deleteTarget = null"
-          >
-            Annuler
-          </button>
-        </div>
-      </div>
     </div>
   </ModuleBoundary>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewList from '../core/components/HomebrewList.vue'
@@ -176,9 +148,7 @@ export default {
     const store = useEnvironmentHomebrewStore()
 
     const selectedId = ref(null)
-    const deleteTarget = ref(null)
-    const deleteConfirmRef = ref(null)
-    useFocusTrap(deleteConfirmRef, () => !!deleteTarget.value)
+    const { confirm } = useConfirmDialog()
     const importExportRef = ref(null)
 
     const environmentTypes = ENVIRONMENT_TYPES
@@ -249,17 +219,16 @@ export default {
       store.duplicate(id)
     }
 
-    function onDelete(id) {
-      deleteTarget.value = store.getById(id)
-    }
-
-    function confirmDelete() {
-      if (deleteTarget.value) {
-        store.remove(deleteTarget.value.id)
-        if (selectedId.value === deleteTarget.value.id) {
-          selectedId.value = null
-        }
-        deleteTarget.value = null
+    async function onDelete(id) {
+      const item = store.getById(id)
+      if (!item) return
+      const ok = await confirm({
+        message: `Supprimer <strong>${item.name}</strong> définitivement ?`,
+        confirmLabel: 'Supprimer'
+      })
+      if (ok) {
+        store.remove(item.id)
+        if (selectedId.value === item.id) selectedId.value = null
       }
     }
 
@@ -292,8 +261,7 @@ export default {
       store,
       selectedId,
       selectedItem,
-      deleteTarget, deleteConfirmRef,
-      importExportRef,
+            importExportRef,
       sortOptions,
       environmentTypes,
       hasActiveFilters,
@@ -307,7 +275,6 @@ export default {
       onSelect,
       onDuplicate,
       onDelete,
-      confirmDelete,
       onExport,
       onImport,
       onClearAll
@@ -396,22 +363,6 @@ export default {
   margin: 0;
 }
 
-.hb-env-list__delete-confirm {
-  background-color: var(--color-bg-secondary);
-  border: 2px solid var(--color-danger);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  text-align: center;
-}
 
-.hb-env-list__delete-text {
-  color: var(--color-text-primary);
-  margin: 0 0 var(--space-sm);
-}
 
-.hb-env-list__delete-actions {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-sm);
-}
 </style>

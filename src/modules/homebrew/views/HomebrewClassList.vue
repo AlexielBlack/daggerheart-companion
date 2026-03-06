@@ -58,40 +58,13 @@
         </div>
         <ClassPreview :data="selectedItem" />
       </aside>
-
-      <div
-        v-if="deleteTarget"
-        ref="deleteConfirmRef"
-        class="hb-cla-list__delete-confirm"
-        role="alertdialog"
-        aria-modal="true"
-        :aria-label="`Confirmer la suppression de ${deleteTarget.name}`"
-      >
-        <p class="hb-cla-list__delete-text">
-          Supprimer <strong>{{ deleteTarget.name }}</strong> définitivement ?
-        </p>
-        <div class="hb-cla-list__delete-actions">
-          <button
-            class="btn btn--danger btn--sm"
-            @click="confirmDelete"
-          >
-            Supprimer
-          </button>
-          <button
-            class="btn btn--ghost btn--sm"
-            @click="deleteTarget = null"
-          >
-            Annuler
-          </button>
-        </div>
-      </div>
     </div>
   </ModuleBoundary>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewList from '../core/components/HomebrewList.vue'
@@ -108,9 +81,7 @@ export default {
     const store = useClassHomebrewStore()
 
     const selectedId = ref(null)
-    const deleteTarget = ref(null)
-    const deleteConfirmRef = ref(null)
-    useFocusTrap(deleteConfirmRef, () => !!deleteTarget.value)
+    const { confirm } = useConfirmDialog()
     const importExportRef = ref(null)
 
     const sortOptions = [
@@ -152,17 +123,16 @@ export default {
       store.duplicate(id)
     }
 
-    function onDelete(id) {
-      deleteTarget.value = store.getById(id)
-    }
-
-    function confirmDelete() {
-      if (deleteTarget.value) {
-        store.remove(deleteTarget.value.id)
-        if (selectedId.value === deleteTarget.value.id) {
-          selectedId.value = null
-        }
-        deleteTarget.value = null
+    async function onDelete(id) {
+      const item = store.getById(id)
+      if (!item) return
+      const ok = await confirm({
+        message: `Supprimer <strong>${item.name}</strong> définitivement ?`,
+        confirmLabel: 'Supprimer'
+      })
+      if (ok) {
+        store.remove(item.id)
+        if (selectedId.value === item.id) selectedId.value = null
       }
     }
 
@@ -192,10 +162,10 @@ export default {
     }
 
     return {
-      store, selectedId, selectedItem, deleteTarget, deleteConfirmRef, importExportRef,
+      store, selectedId, selectedItem, importExportRef,
       sortOptions, hasActiveFilters,
       toggleSortDirection, clearFilters,
-      goCreate, goEdit, onSelect, onDuplicate, onDelete, confirmDelete,
+      goCreate, goEdit, onSelect, onDuplicate, onDelete,
       onExport, onImport, onClearAll
     }
   }
@@ -230,31 +200,6 @@ export default {
   margin: 0;
 }
 
-.hb-cla-list__delete-confirm {
-  position: fixed;
-  bottom: var(--space-lg);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-accent-danger);
-  border-radius: var(--radius-md);
-  padding: var(--space-md) var(--space-lg);
-  box-shadow: var(--shadow-lg);
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  flex-wrap: wrap;
-}
 
-.hb-cla-list__delete-text {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  margin: 0;
-}
 
-.hb-cla-list__delete-actions {
-  display: flex;
-  gap: var(--space-sm);
-}
 </style>

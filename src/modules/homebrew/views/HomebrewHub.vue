@@ -103,7 +103,7 @@
           <button
             v-if="totalCount > 0"
             class="btn btn--danger btn--sm"
-            @click="showClearConfirm = true"
+            @click="clearAll"
           >
             🗑️ Tout supprimer
           </button>
@@ -121,35 +121,6 @@
         >
           {{ importResult.message }}
         </div>
-
-        <!-- Confirmation de suppression totale -->
-        <div
-          v-if="showClearConfirm"
-          ref="clearConfirmRef"
-          class="hb-hub__clear-confirm"
-          role="alertdialog"
-          aria-modal="true"
-          aria-label="Confirmer la suppression de tout le contenu homebrew"
-        >
-          <p class="hb-hub__clear-text">
-            Supprimer <strong>toutes les {{ totalCount }} créations</strong> homebrew ?
-            Cette action est irréversible.
-          </p>
-          <div class="hb-hub__clear-actions">
-            <button
-              class="btn btn--danger btn--sm"
-              @click="clearAll"
-            >
-              Tout supprimer
-            </button>
-            <button
-              class="btn btn--ghost btn--sm"
-              @click="showClearConfirm = false"
-            >
-              Annuler
-            </button>
-          </div>
-        </div>
       </section>
     </div>
   </ModuleBoundary>
@@ -157,7 +128,7 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+import { useConfirmDialog } from '@core/composables/useConfirmDialog.js'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useAdversaryHomebrewStore } from '../categories/adversary/useAdversaryHomebrewStore.js'
 import { useAncestryHomebrewStore } from '../categories/ancestry/useAncestryHomebrewStore.js'
@@ -273,9 +244,7 @@ export default {
     // ── Import / Export global ──
     const importInput = ref(null)
     const importResult = ref(null)
-    const showClearConfirm = ref(false)
-    const clearConfirmRef = ref(null)
-    useFocusTrap(clearConfirmRef, () => showClearConfirm.value)
+    const { confirm } = useConfirmDialog()
 
     function exportAll() {
       const payload = {}
@@ -340,11 +309,16 @@ export default {
       reader.readAsText(file)
     }
 
-    function clearAll() {
-      for (const store of Object.values(stores)) {
-        store.clearAll()
+    async function clearAll() {
+      const ok = await confirm({
+        message: `Supprimer <strong>toutes les ${totalCount.value} créations</strong> homebrew ? Cette action est irréversible.`,
+        confirmLabel: 'Tout supprimer'
+      })
+      if (ok) {
+        for (const store of Object.values(stores)) {
+          store.clearAll()
+        }
       }
-      showClearConfirm.value = false
     }
 
     return {
@@ -352,7 +326,6 @@ export default {
       totalCount,
       importInput,
       importResult,
-      showClearConfirm, clearConfirmRef,
       exportAll,
       onImportFile,
       clearAll
