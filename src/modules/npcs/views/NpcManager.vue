@@ -4,121 +4,126 @@
   Responsive : en mobile, la fiche remplace la liste.
 -->
 <template>
-  <div class="npc-manager">
-    <header class="npc-manager__header">
-      <h1>PNJs</h1>
-      <div class="npc-manager__header-actions">
-        <span class="npc-manager__count">{{ store.count }} PNJ{{ store.count > 1 ? 's' : '' }}</span>
-        <button
-          class="btn btn--primary"
-          @click="startCreate"
+  <ModuleBoundary
+    module-name="PNJs"
+    module-id="npcs"
+  >
+    <div class="npc-manager">
+      <header class="npc-manager__header">
+        <h1>PNJs</h1>
+        <div class="npc-manager__header-actions">
+          <span class="npc-manager__count">{{ store.count }} PNJ{{ store.count > 1 ? 's' : '' }}</span>
+          <button
+            class="btn btn--primary"
+            @click="startCreate"
+          >
+            + Nouveau PNJ
+          </button>
+          <button
+            class="btn btn--ghost"
+            aria-label="Exporter les PNJs"
+            @click="exportAll"
+          >
+            📤
+          </button>
+          <label class="btn btn--ghost import-label">
+            📥
+            <input
+              type="file"
+              accept=".json"
+              class="sr-only"
+              @change="importFile"
+            />
+          </label>
+        </div>
+      </header>
+
+      <NpcFilters
+        :search-query="store.searchQuery"
+        :filter-status="store.filterStatus"
+        :filter-faction="store.filterFaction"
+        :filter-location="store.filterLocation"
+        :factions="store.allFactions"
+        :locations="store.allLocations"
+        @update:search-query="store.setSearch"
+        @update:filter-status="store.setStatusFilter"
+        @update:filter-faction="store.setFactionFilter"
+        @update:filter-location="store.setLocationFilter"
+        @clear="store.clearFilters"
+      />
+
+      <div class="npc-manager__layout">
+        <!-- ── Liste (masquée en mobile quand fiche ouverte) ── -->
+        <aside
+          class="npc-manager__list"
+          :class="{ 'npc-manager__list--hidden-mobile': showSheet }"
+          aria-label="Liste des PNJs"
         >
-          + Nouveau PNJ
-        </button>
-        <button
-          class="btn btn--ghost"
-          aria-label="Exporter les PNJs"
-          @click="exportAll"
-        >
-          📤
-        </button>
-        <label class="btn btn--ghost import-label">
-          📥
-          <input
-            type="file"
-            accept=".json"
-            class="sr-only"
-            @change="importFile"
+          <div
+            v-if="store.filteredNpcs.length === 0"
+            class="npc-manager__empty"
+          >
+            <p v-if="store.count === 0">
+              Aucun PNJ créé. Commencez par en ajouter un !
+            </p>
+            <p v-else>
+              Aucun PNJ ne correspond aux filtres.
+            </p>
+          </div>
+
+          <NpcCard
+            v-for="npc in store.filteredNpcs"
+            :key="npc.id"
+            :npc="npc"
+            :is-selected="store.selectedNpcId === npc.id"
+            @select="handleSelect"
           />
-        </label>
+        </aside>
+
+        <!-- ── Fiche détaillée ── -->
+        <main
+          class="npc-manager__detail"
+          :class="{ 'npc-manager__detail--visible-mobile': showSheet }"
+        >
+          <button
+            v-if="showSheet"
+            class="btn btn--ghost npc-manager__back"
+            @click="closeSheet"
+          >
+            ← Retour à la liste
+          </button>
+
+          <NpcSheet
+            v-if="showSheet"
+            :npc="currentNpc"
+            :other-npcs="store.npcs"
+            :factions="store.allFactions"
+            :locations="store.allLocations"
+            :homebrew-classes="homebrewClasses"
+            :all-adversaries="allAdversaries"
+            @save="handleSave"
+            @delete="handleDelete"
+          />
+
+          <div
+            v-else
+            class="npc-manager__placeholder"
+          >
+            <p>Sélectionnez un PNJ ou créez-en un nouveau.</p>
+          </div>
+        </main>
       </div>
-    </header>
 
-    <NpcFilters
-      :search-query="store.searchQuery"
-      :filter-status="store.filterStatus"
-      :filter-faction="store.filterFaction"
-      :filter-location="store.filterLocation"
-      :factions="store.allFactions"
-      :locations="store.allLocations"
-      @update:search-query="store.setSearch"
-      @update:filter-status="store.setStatusFilter"
-      @update:filter-faction="store.setFactionFilter"
-      @update:filter-location="store.setLocationFilter"
-      @clear="store.clearFilters"
-    />
-
-    <div class="npc-manager__layout">
-      <!-- ── Liste (masquée en mobile quand fiche ouverte) ── -->
-      <aside
-        class="npc-manager__list"
-        :class="{ 'npc-manager__list--hidden-mobile': showSheet }"
-        aria-label="Liste des PNJs"
+      <!-- ── Message d'import ── -->
+      <div
+        v-if="importMessage"
+        class="npc-manager__toast"
+        role="status"
       >
-        <div
-          v-if="store.filteredNpcs.length === 0"
-          class="npc-manager__empty"
-        >
-          <p v-if="store.count === 0">
-            Aucun PNJ créé. Commencez par en ajouter un !
-          </p>
-          <p v-else>
-            Aucun PNJ ne correspond aux filtres.
-          </p>
-        </div>
-
-        <NpcCard
-          v-for="npc in store.filteredNpcs"
-          :key="npc.id"
-          :npc="npc"
-          :is-selected="store.selectedNpcId === npc.id"
-          @select="handleSelect"
-        />
-      </aside>
-
-      <!-- ── Fiche détaillée ── -->
-      <main
-        class="npc-manager__detail"
-        :class="{ 'npc-manager__detail--visible-mobile': showSheet }"
-      >
-        <button
-          v-if="showSheet"
-          class="btn btn--ghost npc-manager__back"
-          @click="closeSheet"
-        >
-          ← Retour à la liste
-        </button>
-
-        <NpcSheet
-          v-if="showSheet"
-          :npc="currentNpc"
-          :other-npcs="store.npcs"
-          :factions="store.allFactions"
-          :locations="store.allLocations"
-          :homebrew-classes="homebrewClasses"
-          :all-adversaries="allAdversaries"
-          @save="handleSave"
-          @delete="handleDelete"
-        />
-
-        <div
-          v-else
-          class="npc-manager__placeholder"
-        >
-          <p>Sélectionnez un PNJ ou créez-en un nouveau.</p>
-        </div>
-      </main>
+        {{ importMessage }}
+      </div>
     </div>
-
-    <!-- ── Message d'import ── -->
-    <div
-      v-if="importMessage"
-      class="npc-manager__toast"
-      role="status"
-    >
-      {{ importMessage }}
-    </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -128,12 +133,14 @@ import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useCla
 import { useAdversaryStore } from '@modules/adversaries/stores/adversaryStore.js'
 import NpcCard from '../components/NpcCard.vue'
 import NpcFilters from '../components/NpcFilters.vue'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import NpcSheet from '../components/NpcSheet.vue'
 
 export default {
   name: 'NpcManager',
 
   components: {
+    ModuleBoundary,
     NpcCard,
     NpcFilters,
     NpcSheet

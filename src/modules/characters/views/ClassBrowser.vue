@@ -1,232 +1,237 @@
 <template>
-  <div class="class-browser">
-    <!-- ═══ En-tête ═══ -->
-    <header class="browser-header">
-      <h1 class="browser-header__title">
-        ⚔️ Classes & Spécialisations
-      </h1>
-      <p class="browser-header__subtitle">
-        {{ filteredClasses.length }} classe{{ filteredClasses.length > 1 ? 's' : '' }} disponible{{ filteredClasses.length > 1 ? 's' : '' }}
-      </p>
-    </header>
+  <ModuleBoundary
+    module-name="Classes & Spécialisations"
+    module-id="classes"
+  >
+    <div class="class-browser">
+      <!-- ═══ En-tête ═══ -->
+      <header class="browser-header">
+        <h1 class="browser-header__title">
+          ⚔️ Classes & Spécialisations
+        </h1>
+        <p class="browser-header__subtitle">
+          {{ filteredClasses.length }} classe{{ filteredClasses.length > 1 ? 's' : '' }} disponible{{ filteredClasses.length > 1 ? 's' : '' }}
+        </p>
+      </header>
 
-    <!-- ═══ Filtres ═══ -->
-    <div
-      class="browser-filters"
-      role="search"
-      aria-label="Filtrer les classes"
-    >
-      <label
-        class="sr-only"
-        for="class-search"
-      >Rechercher une classe</label>
-      <input
-        id="class-search"
-        v-model="searchQuery"
-        type="search"
-        class="filter-input"
-        placeholder="Rechercher une classe..."
-        aria-label="Rechercher une classe"
-      />
+      <!-- ═══ Filtres ═══ -->
       <div
-        class="filter-group"
-        role="group"
-        aria-label="Filtrer par source"
+        class="browser-filters"
+        role="search"
+        aria-label="Filtrer les classes"
       >
-        <button
-          v-for="source in sourceFilters"
-          :key="source.id"
-          class="filter-chip"
-          :class="{ 'filter-chip--active': activeSource === source.id }"
-          :aria-pressed="activeSource === source.id"
-          @click="setSource(source.id)"
-        >
-          {{ source.label }}
-        </button>
-      </div>
-    </div>
-
-    <!-- ═══ Grille de classes ═══ -->
-    <div
-      v-if="filteredClasses.length"
-      class="class-grid"
-      role="list"
-      aria-label="Liste des classes"
-    >
-      <article
-        v-for="cls in filteredClasses"
-        :key="cls.id"
-        class="class-card"
-        :class="{ 'class-card--expanded': expandedClassId === cls.id }"
-        role="listitem"
-      >
-        <!-- En-tête de la carte -->
-        <button
-          class="class-card__header"
-          :aria-expanded="expandedClassId === cls.id"
-          :aria-controls="`class-details-${cls.id}`"
-          @click="toggleClass(cls.id)"
-        >
-          <span
-            class="class-card__emoji"
-            aria-hidden="true"
-          >{{ cls.emoji }}</span>
-          <div class="class-card__info">
-            <span class="class-card__name">{{ cls.name }}</span>
-            <span class="class-card__domains">{{ cls.domains.join(' + ') }}</span>
-          </div>
-          <div class="class-card__badges">
-            <span
-              v-if="cls.source === 'custom'"
-              class="badge badge--custom"
-              aria-label="Classe personnalisée"
-            >Homebrew</span>
-          </div>
-          <span
-            class="class-card__chevron"
-            aria-hidden="true"
-          >{{ expandedClassId === cls.id ? '▲' : '▼' }}</span>
-        </button>
-
-        <!-- Détails de la classe -->
+        <label
+          class="sr-only"
+          for="class-search"
+        >Rechercher une classe</label>
+        <input
+          id="class-search"
+          v-model="searchQuery"
+          type="search"
+          class="filter-input"
+          placeholder="Rechercher une classe..."
+          aria-label="Rechercher une classe"
+        />
         <div
-          :id="`class-details-${cls.id}`"
-          class="class-card__body"
-          :hidden="expandedClassId !== cls.id"
+          class="filter-group"
+          role="group"
+          aria-label="Filtrer par source"
         >
-          <!-- Stats -->
-          <div class="class-stats">
-            <div class="stat-item">
-              <span class="stat-item__label">Évasion de départ</span>
-              <span class="stat-item__value">{{ cls.baseEvasion }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-item__label">PV de départ</span>
-              <span class="stat-item__value">{{ cls.baseHP }}</span>
-            </div>
-          </div>
-
-          <!-- Feature Espoir -->
-          <section class="class-section">
-            <h3 class="class-section__title">
-              ✨ Feature d'Espoir
-            </h3>
-            <p class="class-section__text">
-              {{ typeof cls.hopeFeature === 'object' ? `${cls.hopeFeature.name} : ${cls.hopeFeature.description}` : cls.hopeFeature }}
-            </p>
-          </section>
-
-          <!-- Features de Classe -->
-          <section class="class-section">
-            <h3 class="class-section__title">
-              ⚡ Features de Classe
-            </h3>
-            <ul class="feature-list">
-              <li
-                v-for="(feature, i) in cls.classFeatures"
-                :key="i"
-                class="feature-list__item"
-              >
-                {{ typeof feature === 'object' ? `${feature.name} : ${feature.description}` : feature }}
-              </li>
-            </ul>
-          </section>
-
-          <!-- Sous-classes -->
-          <section
-            v-if="getSubclasses(cls.id).length"
-            class="class-section"
-          >
-            <h3 class="class-section__title">
-              🎯 Spécialisations
-            </h3>
-            <div class="subclass-grid">
-              <article
-                v-for="sub in getSubclasses(cls.id)"
-                :key="sub.id"
-                class="subclass-card"
-              >
-                <header class="subclass-card__header">
-                  <h4 class="subclass-card__name">
-                    {{ sub.name }}
-                  </h4>
-                  <span
-                    v-if="sub.spellcastTrait"
-                    class="badge badge--spell"
-                    :aria-label="`Sort : ${sub.spellcastTrait}`"
-                  >Sort : {{ sub.spellcastTrait }}</span>
-                </header>
-                <p class="subclass-card__description">
-                  {{ sub.description }}
-                </p>
-                <div class="subclass-tiers">
-                  <div class="tier-block">
-                    <span class="tier-block__label">Fondation (Niv. 1–4)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(f, i) in sub.foundation"
-                        :key="i"
-                      >
-                        {{ typeof f === 'object' ? `${f.name} : ${f.description}` : f }}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="tier-block">
-                    <span class="tier-block__label">Spécialisation (Niv. 5–7)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(s, si) in sub.specialization"
-                        :key="si"
-                      >
-                        {{ typeof s === 'object' ? `${s.name} : ${s.description}` : s }}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="tier-block">
-                    <span class="tier-block__label">Maîtrise (Niv. 8+)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(m, mi) in sub.mastery"
-                        :key="mi"
-                      >
-                        {{ typeof m === 'object' ? `${m.name} : ${m.description}` : m }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <!-- Dupliquer en homebrew -->
           <button
-            class="btn btn--secondary btn--sm class-card__duplicate-btn"
-            @click.stop="duplicateToHomebrew(cls)"
+            v-for="source in sourceFilters"
+            :key="source.id"
+            class="filter-chip"
+            :class="{ 'filter-chip--active': activeSource === source.id }"
+            :aria-pressed="activeSource === source.id"
+            @click="setSource(source.id)"
           >
-            ✎ Dupliquer en homebrew
+            {{ source.label }}
           </button>
         </div>
-      </article>
-    </div>
+      </div>
 
-    <!-- ═══ État vide ═══ -->
-    <div
-      v-else
-      class="empty-state"
-      role="status"
-      aria-live="polite"
-    >
-      <p
-        class="empty-state__icon"
-        aria-hidden="true"
+      <!-- ═══ Grille de classes ═══ -->
+      <div
+        v-if="filteredClasses.length"
+        class="class-grid"
+        role="list"
+        aria-label="Liste des classes"
       >
-        🔍
-      </p>
-      <p class="empty-state__text">
-        Aucune classe trouvée pour « {{ searchQuery }} »
-      </p>
+        <article
+          v-for="cls in filteredClasses"
+          :key="cls.id"
+          class="class-card"
+          :class="{ 'class-card--expanded': expandedClassId === cls.id }"
+          role="listitem"
+        >
+          <!-- En-tête de la carte -->
+          <button
+            class="class-card__header"
+            :aria-expanded="expandedClassId === cls.id"
+            :aria-controls="`class-details-${cls.id}`"
+            @click="toggleClass(cls.id)"
+          >
+            <span
+              class="class-card__emoji"
+              aria-hidden="true"
+            >{{ cls.emoji }}</span>
+            <div class="class-card__info">
+              <span class="class-card__name">{{ cls.name }}</span>
+              <span class="class-card__domains">{{ cls.domains.join(' + ') }}</span>
+            </div>
+            <div class="class-card__badges">
+              <span
+                v-if="cls.source === 'custom'"
+                class="badge badge--custom"
+                aria-label="Classe personnalisée"
+              >Homebrew</span>
+            </div>
+            <span
+              class="class-card__chevron"
+              aria-hidden="true"
+            >{{ expandedClassId === cls.id ? '▲' : '▼' }}</span>
+          </button>
+
+          <!-- Détails de la classe -->
+          <div
+            :id="`class-details-${cls.id}`"
+            class="class-card__body"
+            :hidden="expandedClassId !== cls.id"
+          >
+            <!-- Stats -->
+            <div class="class-stats">
+              <div class="stat-item">
+                <span class="stat-item__label">Évasion de départ</span>
+                <span class="stat-item__value">{{ cls.baseEvasion }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-item__label">PV de départ</span>
+                <span class="stat-item__value">{{ cls.baseHP }}</span>
+              </div>
+            </div>
+
+            <!-- Feature Espoir -->
+            <section class="class-section">
+              <h3 class="class-section__title">
+                ✨ Feature d'Espoir
+              </h3>
+              <p class="class-section__text">
+                {{ typeof cls.hopeFeature === 'object' ? `${cls.hopeFeature.name} : ${cls.hopeFeature.description}` : cls.hopeFeature }}
+              </p>
+            </section>
+
+            <!-- Features de Classe -->
+            <section class="class-section">
+              <h3 class="class-section__title">
+                ⚡ Features de Classe
+              </h3>
+              <ul class="feature-list">
+                <li
+                  v-for="(feature, i) in cls.classFeatures"
+                  :key="i"
+                  class="feature-list__item"
+                >
+                  {{ typeof feature === 'object' ? `${feature.name} : ${feature.description}` : feature }}
+                </li>
+              </ul>
+            </section>
+
+            <!-- Sous-classes -->
+            <section
+              v-if="getSubclasses(cls.id).length"
+              class="class-section"
+            >
+              <h3 class="class-section__title">
+                🎯 Spécialisations
+              </h3>
+              <div class="subclass-grid">
+                <article
+                  v-for="sub in getSubclasses(cls.id)"
+                  :key="sub.id"
+                  class="subclass-card"
+                >
+                  <header class="subclass-card__header">
+                    <h4 class="subclass-card__name">
+                      {{ sub.name }}
+                    </h4>
+                    <span
+                      v-if="sub.spellcastTrait"
+                      class="badge badge--spell"
+                      :aria-label="`Sort : ${sub.spellcastTrait}`"
+                    >Sort : {{ sub.spellcastTrait }}</span>
+                  </header>
+                  <p class="subclass-card__description">
+                    {{ sub.description }}
+                  </p>
+                  <div class="subclass-tiers">
+                    <div class="tier-block">
+                      <span class="tier-block__label">Fondation (Niv. 1–4)</span>
+                      <ul class="tier-block__list">
+                        <li
+                          v-for="(f, i) in sub.foundation"
+                          :key="i"
+                        >
+                          {{ typeof f === 'object' ? `${f.name} : ${f.description}` : f }}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="tier-block">
+                      <span class="tier-block__label">Spécialisation (Niv. 5–7)</span>
+                      <ul class="tier-block__list">
+                        <li
+                          v-for="(s, si) in sub.specialization"
+                          :key="si"
+                        >
+                          {{ typeof s === 'object' ? `${s.name} : ${s.description}` : s }}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="tier-block">
+                      <span class="tier-block__label">Maîtrise (Niv. 8+)</span>
+                      <ul class="tier-block__list">
+                        <li
+                          v-for="(m, mi) in sub.mastery"
+                          :key="mi"
+                        >
+                          {{ typeof m === 'object' ? `${m.name} : ${m.description}` : m }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- Dupliquer en homebrew -->
+            <button
+              class="btn btn--secondary btn--sm class-card__duplicate-btn"
+              @click.stop="duplicateToHomebrew(cls)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- ═══ État vide ═══ -->
+      <div
+        v-else
+        class="empty-state"
+        role="status"
+        aria-live="polite"
+      >
+        <p
+          class="empty-state__icon"
+          aria-hidden="true"
+        >
+          🔍
+        </p>
+        <p class="empty-state__text">
+          Aucune classe trouvée pour « {{ searchQuery }} »
+        </p>
+      </div>
     </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -236,8 +241,11 @@ import { getSubclassesForClass } from '@/data/subclasses/index.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
 import { useCharacterStore } from '../stores/characterStore'
 
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 export default {
   name: 'ClassBrowser',
+
+  components: { ModuleBoundary },
 
   setup() {
     const router = useRouter()

@@ -1,244 +1,250 @@
 <template>
-  <div class="domain-browser">
-    <!-- ═══ En-tête ═══ -->
-    <header class="browser-header">
-      <h1 class="browser-header__title">
-        🃏 Domaines
-      </h1>
-      <p class="browser-header__subtitle">
-        {{ store.domainCount }} domaines — {{ store.totalCardCount }} cartes
-      </p>
-    </header>
+  <ModuleBoundary
+    module-name="Domaines"
+    module-id="domains"
+  >
+    <div class="domain-browser">
+      <!-- ═══ En-tête ═══ -->
+      <header class="browser-header">
+        <h1 class="browser-header__title">
+          🃏 Domaines
+        </h1>
+        <p class="browser-header__subtitle">
+          {{ store.domainCount }} domaines — {{ store.totalCardCount }} cartes
+        </p>
+      </header>
 
-    <!-- ═══ Filtres ═══ -->
-    <div
-      class="browser-filters"
-      role="search"
-      aria-label="Filtrer les domaines"
-    >
-      <label
-        class="sr-only"
-        for="domain-search"
-      >Rechercher un domaine</label>
-      <input
-        id="domain-search"
-        :value="store.searchQuery"
-        type="search"
-        class="filter-input"
-        placeholder="Rechercher domaine, classe, carte..."
-        aria-label="Rechercher un domaine"
-        @input="store.setSearch($event.target.value)"
-      />
+      <!-- ═══ Filtres ═══ -->
       <div
-        class="filter-group"
-        role="group"
-        aria-label="Filtrer par type de sort"
+        class="browser-filters"
+        role="search"
+        aria-label="Filtrer les domaines"
       >
-        <button
-          v-for="f in spellFilters"
-          :key="f.id"
-          class="filter-chip"
-          :class="{ 'filter-chip--active': store.filterSpell === f.id }"
-          :aria-pressed="store.filterSpell === f.id"
-          @click="store.setFilterSpell(f.id)"
-        >
-          {{ f.label }}
-        </button>
-      </div>
-    </div>
-
-    <!-- ═══ Grille de domaines ═══ -->
-    <div
-      v-if="store.filteredDomains.length"
-      class="domain-grid"
-      role="list"
-      aria-label="Liste des domaines"
-    >
-      <article
-        v-for="domain in store.filteredDomains"
-        :key="domain.id"
-        class="domain-card"
-        role="listitem"
-      >
-        <!-- En-tête du domaine -->
-        <button
-          class="domain-card__header"
-          :style="{ '--domain-color': domain.color }"
-          :aria-expanded="store.selectedDomainId === domain.id"
-          :aria-controls="`domain-details-${domain.id}`"
-          @click="store.selectDomain(domain.id)"
-        >
-          <span
-            class="domain-card__emoji"
-            aria-hidden="true"
-          >{{ domain.emoji }}</span>
-          <div class="domain-card__meta">
-            <span class="domain-card__name">{{ domain.name }}</span>
-            <span class="domain-card__classes">{{ domain.classes.join(', ') }}</span>
-          </div>
-          <div class="domain-card__indicators">
-            <span
-              v-if="domain.hasSpells"
-              class="badge badge--spell"
-              aria-label="Ce domaine possède des sorts"
-            >Sorts</span>
-            <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cartes</span>
-          </div>
-          <span
-            class="domain-card__chevron"
-            aria-hidden="true"
-          >{{ store.selectedDomainId === domain.id ? '▲' : '▼' }}</span>
-        </button>
-
-        <!-- Corps du domaine -->
+        <label
+          class="sr-only"
+          for="domain-search"
+        >Rechercher un domaine</label>
+        <input
+          id="domain-search"
+          :value="store.searchQuery"
+          type="search"
+          class="filter-input"
+          placeholder="Rechercher domaine, classe, carte..."
+          aria-label="Rechercher un domaine"
+          @input="store.setSearch($event.target.value)"
+        />
         <div
-          :id="`domain-details-${domain.id}`"
-          class="domain-card__body"
-          :hidden="store.selectedDomainId !== domain.id"
+          class="filter-group"
+          role="group"
+          aria-label="Filtrer par type de sort"
         >
-          <!-- Description -->
-          <p class="domain-description">
-            {{ domain.description }}
-          </p>
-
-          <!-- Thèmes -->
-          <div class="domain-themes">
-            <span
-              v-for="theme in domain.themes"
-              :key="theme"
-              class="theme-tag"
-            >{{ theme }}</span>
-          </div>
-
-          <!-- Filtres de cartes -->
-          <div
-            v-if="domain.cards.length > 0"
-            class="card-filters"
-            role="group"
-            aria-label="Filtrer les cartes"
-          >
-            <div class="card-filters__row">
-              <span class="card-filters__label">Type :</span>
-              <button
-                class="filter-chip filter-chip--sm"
-                :class="{ 'filter-chip--active': store.filterType === 'all' }"
-                :aria-pressed="store.filterType === 'all'"
-                @click="store.setFilterType('all')"
-              >
-                Tous
-              </button>
-              <button
-                v-for="t in store.availableTypes"
-                :key="t"
-                class="filter-chip filter-chip--sm"
-                :class="{ 'filter-chip--active': store.filterType === t }"
-                :aria-pressed="store.filterType === t"
-                @click="store.setFilterType(t)"
-              >
-                {{ getTypeLabel(t) }}
-              </button>
-            </div>
-            <div class="card-filters__row">
-              <span class="card-filters__label">Niveau :</span>
-              <button
-                class="filter-chip filter-chip--sm"
-                :class="{ 'filter-chip--active': store.filterLevel === 0 }"
-                :aria-pressed="store.filterLevel === 0"
-                @click="store.setFilterLevel(0)"
-              >
-                Tous
-              </button>
-              <button
-                v-for="lv in store.availableLevels"
-                :key="lv"
-                class="filter-chip filter-chip--sm"
-                :class="{ 'filter-chip--active': store.filterLevel === lv }"
-                :aria-pressed="store.filterLevel === lv"
-                @click="store.setFilterLevel(lv)"
-              >
-                {{ lv }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Cartes du domaine -->
-          <section
-            v-if="store.selectedDomainCards.length > 0"
-            class="domain-section"
-            :aria-label="`Cartes du domaine ${domain.name}`"
-          >
-            <h3 class="domain-section__title">
-              Cartes ({{ store.selectedDomainCards.length }})
-            </h3>
-            <div
-              class="cards-grid"
-              role="list"
-            >
-              <DomainCardItem
-                v-for="card in store.selectedDomainCards"
-                :key="card.id"
-                :card="card"
-                :domain-color="domain.color"
-              />
-            </div>
-          </section>
-
-          <!-- Classes liées -->
-          <section class="domain-section">
-            <h3 class="domain-section__title">
-              Classes liées
-            </h3>
-            <div class="linked-classes">
-              <span
-                v-for="cls in domain.classes"
-                :key="cls"
-                class="class-tag"
-              >{{ cls }}</span>
-            </div>
-          </section>
-
-          <!-- Dupliquer en homebrew -->
           <button
-            class="btn btn--secondary btn--sm domain-card__duplicate-btn"
-            @click.stop="duplicateToHomebrew(domain)"
+            v-for="f in spellFilters"
+            :key="f.id"
+            class="filter-chip"
+            :class="{ 'filter-chip--active': store.filterSpell === f.id }"
+            :aria-pressed="store.filterSpell === f.id"
+            @click="store.setFilterSpell(f.id)"
           >
-            ✎ Dupliquer en homebrew
+            {{ f.label }}
           </button>
         </div>
-      </article>
-    </div>
+      </div>
 
-    <!-- ═══ État vide ═══ -->
-    <div
-      v-else
-      class="empty-state"
-      role="status"
-      aria-live="polite"
-    >
-      <p
-        class="empty-state__icon"
-        aria-hidden="true"
+      <!-- ═══ Grille de domaines ═══ -->
+      <div
+        v-if="store.filteredDomains.length"
+        class="domain-grid"
+        role="list"
+        aria-label="Liste des domaines"
       >
-        🔍
-      </p>
-      <p class="empty-state__text">
-        Aucun domaine trouvé pour « {{ store.searchQuery }} »
-      </p>
+        <article
+          v-for="domain in store.filteredDomains"
+          :key="domain.id"
+          class="domain-card"
+          role="listitem"
+        >
+          <!-- En-tête du domaine -->
+          <button
+            class="domain-card__header"
+            :style="{ '--domain-color': domain.color }"
+            :aria-expanded="store.selectedDomainId === domain.id"
+            :aria-controls="`domain-details-${domain.id}`"
+            @click="store.selectDomain(domain.id)"
+          >
+            <span
+              class="domain-card__emoji"
+              aria-hidden="true"
+            >{{ domain.emoji }}</span>
+            <div class="domain-card__meta">
+              <span class="domain-card__name">{{ domain.name }}</span>
+              <span class="domain-card__classes">{{ domain.classes.join(', ') }}</span>
+            </div>
+            <div class="domain-card__indicators">
+              <span
+                v-if="domain.hasSpells"
+                class="badge badge--spell"
+                aria-label="Ce domaine possède des sorts"
+              >Sorts</span>
+              <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cartes</span>
+            </div>
+            <span
+              class="domain-card__chevron"
+              aria-hidden="true"
+            >{{ store.selectedDomainId === domain.id ? '▲' : '▼' }}</span>
+          </button>
+
+          <!-- Corps du domaine -->
+          <div
+            :id="`domain-details-${domain.id}`"
+            class="domain-card__body"
+            :hidden="store.selectedDomainId !== domain.id"
+          >
+            <!-- Description -->
+            <p class="domain-description">
+              {{ domain.description }}
+            </p>
+
+            <!-- Thèmes -->
+            <div class="domain-themes">
+              <span
+                v-for="theme in domain.themes"
+                :key="theme"
+                class="theme-tag"
+              >{{ theme }}</span>
+            </div>
+
+            <!-- Filtres de cartes -->
+            <div
+              v-if="domain.cards.length > 0"
+              class="card-filters"
+              role="group"
+              aria-label="Filtrer les cartes"
+            >
+              <div class="card-filters__row">
+                <span class="card-filters__label">Type :</span>
+                <button
+                  class="filter-chip filter-chip--sm"
+                  :class="{ 'filter-chip--active': store.filterType === 'all' }"
+                  :aria-pressed="store.filterType === 'all'"
+                  @click="store.setFilterType('all')"
+                >
+                  Tous
+                </button>
+                <button
+                  v-for="t in store.availableTypes"
+                  :key="t"
+                  class="filter-chip filter-chip--sm"
+                  :class="{ 'filter-chip--active': store.filterType === t }"
+                  :aria-pressed="store.filterType === t"
+                  @click="store.setFilterType(t)"
+                >
+                  {{ getTypeLabel(t) }}
+                </button>
+              </div>
+              <div class="card-filters__row">
+                <span class="card-filters__label">Niveau :</span>
+                <button
+                  class="filter-chip filter-chip--sm"
+                  :class="{ 'filter-chip--active': store.filterLevel === 0 }"
+                  :aria-pressed="store.filterLevel === 0"
+                  @click="store.setFilterLevel(0)"
+                >
+                  Tous
+                </button>
+                <button
+                  v-for="lv in store.availableLevels"
+                  :key="lv"
+                  class="filter-chip filter-chip--sm"
+                  :class="{ 'filter-chip--active': store.filterLevel === lv }"
+                  :aria-pressed="store.filterLevel === lv"
+                  @click="store.setFilterLevel(lv)"
+                >
+                  {{ lv }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Cartes du domaine -->
+            <section
+              v-if="store.selectedDomainCards.length > 0"
+              class="domain-section"
+              :aria-label="`Cartes du domaine ${domain.name}`"
+            >
+              <h3 class="domain-section__title">
+                Cartes ({{ store.selectedDomainCards.length }})
+              </h3>
+              <div
+                class="cards-grid"
+                role="list"
+              >
+                <DomainCardItem
+                  v-for="card in store.selectedDomainCards"
+                  :key="card.id"
+                  :card="card"
+                  :domain-color="domain.color"
+                />
+              </div>
+            </section>
+
+            <!-- Classes liées -->
+            <section class="domain-section">
+              <h3 class="domain-section__title">
+                Classes liées
+              </h3>
+              <div class="linked-classes">
+                <span
+                  v-for="cls in domain.classes"
+                  :key="cls"
+                  class="class-tag"
+                >{{ cls }}</span>
+              </div>
+            </section>
+
+            <!-- Dupliquer en homebrew -->
+            <button
+              class="btn btn--secondary btn--sm domain-card__duplicate-btn"
+              @click.stop="duplicateToHomebrew(domain)"
+            >
+              ✎ Dupliquer en homebrew
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- ═══ État vide ═══ -->
+      <div
+        v-else
+        class="empty-state"
+        role="status"
+        aria-live="polite"
+      >
+        <p
+          class="empty-state__icon"
+          aria-hidden="true"
+        >
+          🔍
+        </p>
+        <p class="empty-state__text">
+          Aucun domaine trouvé pour « {{ store.searchQuery }} »
+        </p>
+      </div>
     </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
 import DomainCardItem from '../components/DomainCardItem.vue'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'DomainBrowser',
 
-  components: { DomainCardItem },
+  components: { ModuleBoundary, DomainCardItem },
 
   setup() {
     const store = useDomainStore()

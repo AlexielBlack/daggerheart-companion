@@ -1,115 +1,122 @@
 <template>
-  <div class="community-browser">
-    <!-- ═══ En-tête ═══ -->
-    <header class="browser-header">
-      <h1 class="browser-header__title">
-        🏘️ Communautés
-      </h1>
-      <p class="browser-header__subtitle">
-        {{ store.filteredCount }} communauté{{ store.filteredCount > 1 ? 's' : '' }}
-        sur {{ store.totalCount }}
-        — D'où vient votre personnage ?
-      </p>
-    </header>
+  <ModuleBoundary
+    module-name="Communautés"
+    module-id="communities"
+  >
+    <div class="community-browser">
+      <!-- ═══ En-tête ═══ -->
+      <header class="browser-header">
+        <h1 class="browser-header__title">
+          🏘️ Communautés
+        </h1>
+        <p class="browser-header__subtitle">
+          {{ store.filteredCount }} communauté{{ store.filteredCount > 1 ? 's' : '' }}
+          sur {{ store.totalCount }}
+          — D'où vient votre personnage ?
+        </p>
+      </header>
 
-    <!-- ═══ Filtres ═══ -->
-    <div
-      class="browser-filters"
-      role="search"
-      aria-label="Filtrer les communautés"
-    >
-      <label
-        class="sr-only"
-        for="community-search"
-      >Rechercher une communauté</label>
-      <input
-        id="community-search"
-        :value="store.searchQuery"
-        type="search"
-        class="filter-input"
-        placeholder="Rechercher une communauté, feature ou adjectif..."
-        aria-label="Rechercher une communauté"
-        @input="store.setSearch($event.target.value)"
-      />
-      <button
-        v-if="store.hasActiveFilters"
-        class="filter-clear"
-        aria-label="Effacer la recherche"
-        @click="store.resetAll()"
+      <!-- ═══ Filtres ═══ -->
+      <div
+        class="browser-filters"
+        role="search"
+        aria-label="Filtrer les communautés"
       >
-        Effacer
-      </button>
-    </div>
+        <label
+          class="sr-only"
+          for="community-search"
+        >Rechercher une communauté</label>
+        <input
+          id="community-search"
+          :value="store.searchQuery"
+          type="search"
+          class="filter-input"
+          placeholder="Rechercher une communauté, feature ou adjectif..."
+          aria-label="Rechercher une communauté"
+          @input="store.setSearch($event.target.value)"
+        />
+        <button
+          v-if="store.hasActiveFilters"
+          class="filter-clear"
+          aria-label="Effacer la recherche"
+          @click="store.resetAll()"
+        >
+          Effacer
+        </button>
+      </div>
 
-    <!-- ═══ Grille ═══ -->
-    <div
-      v-if="store.filteredCommunities.length"
-      class="community-grid"
-      role="list"
-      aria-label="Liste des communautés"
-    >
-      <CommunityCard
-        v-for="community in store.filteredCommunities"
-        :key="community.id"
-        :community="community"
-        :is-expanded="store.expandedId === community.id"
-        @toggle="store.toggleExpand"
-        @duplicate="duplicateToHomebrew"
-      />
-    </div>
-
-    <!-- ═══ État vide ═══ -->
-    <div
-      v-else
-      class="empty-state"
-      role="status"
-      aria-live="polite"
-    >
-      <p
-        class="empty-state__icon"
-        aria-hidden="true"
+      <!-- ═══ Grille ═══ -->
+      <div
+        v-if="store.filteredCommunities.length"
+        class="community-grid"
+        role="list"
+        aria-label="Liste des communautés"
       >
-        🔍
-      </p>
-      <p class="empty-state__text">
-        Aucune communauté trouvée pour « {{ store.searchQuery }} »
-      </p>
-      <button
-        class="empty-state__reset"
-        @click="store.resetAll()"
-      >
-        Réinitialiser la recherche
-      </button>
-    </div>
+        <CommunityCard
+          v-for="community in store.filteredCommunities"
+          :key="community.id"
+          :community="community"
+          :is-expanded="store.expandedId === community.id"
+          @toggle="store.toggleExpand"
+          @duplicate="duplicateToHomebrew"
+        />
+      </div>
 
-    <!-- ═══ Note de règle ═══ -->
-    <aside
-      class="rule-note"
-      role="note"
-      aria-label="Note de règle sur les communautés"
-    >
-      <p>
-        <strong>Règle :</strong>
-        Les communautés représentent un aspect clé de la culture, de la classe ou de
-        l'environnement d'origine qui a eu le plus d'influence sur l'éducation de votre personnage.
-        Chaque communauté accorde une <em>feature de communauté</em> et propose six adjectifs
-        comme inspiration pour la personnalité du personnage.
-        Un personnage choisit <em>une</em> communauté à la création.
-      </p>
-    </aside>
-  </div>
+      <!-- ═══ État vide ═══ -->
+      <div
+        v-else
+        class="empty-state"
+        role="status"
+        aria-live="polite"
+      >
+        <p
+          class="empty-state__icon"
+          aria-hidden="true"
+        >
+          🔍
+        </p>
+        <p class="empty-state__text">
+          Aucune communauté trouvée pour « {{ store.searchQuery }} »
+        </p>
+        <button
+          class="empty-state__reset"
+          @click="store.resetAll()"
+        >
+          Réinitialiser la recherche
+        </button>
+      </div>
+
+      <!-- ═══ Note de règle ═══ -->
+      <aside
+        class="rule-note"
+        role="note"
+        aria-label="Note de règle sur les communautés"
+      >
+        <p>
+          <strong>Règle :</strong>
+          Les communautés représentent un aspect clé de la culture, de la classe ou de
+          l'environnement d'origine qui a eu le plus d'influence sur l'éducation de votre personnage.
+          Chaque communauté accorde une <em>feature de communauté</em> et propose six adjectifs
+          comme inspiration pour la personnalité du personnage.
+          Un personnage choisit <em>une</em> communauté à la création.
+        </p>
+      </aside>
+    </div>
+  </ModuleBoundary>
 </template>
 
 <script>
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
 import CommunityCard from '../components/CommunityCard.vue'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'CommunityBrowser',
 
   components: {
+    ModuleBoundary,
     CommunityCard
   },
 

@@ -1,167 +1,172 @@
 <template>
-  <div class="character-builder">
-    <div class="builder-layout">
-      <!-- ═══ Sidebar ═══ -->
-      <aside class="builder-sidebar">
-        <CharacterList
-          :characters="store.characters"
-          :selected-id="store.selectedCharacterId"
-          :can-add="store.canAddCharacter"
-          :max-characters="store.maxCharacters"
-          @select="store.selectCharacter"
-          @add="showPicker = true"
-          @delete="confirmDelete"
-        />
-      </aside>
+  <ModuleBoundary
+    module-name="Personnages"
+    module-id="characters"
+  >
+    <div class="character-builder">
+      <div class="builder-layout">
+        <!-- ═══ Sidebar ═══ -->
+        <aside class="builder-sidebar">
+          <CharacterList
+            :characters="store.characters"
+            :selected-id="store.selectedCharacterId"
+            :can-add="store.canAddCharacter"
+            :max-characters="store.maxCharacters"
+            @select="store.selectCharacter"
+            @add="showPicker = true"
+            @delete="confirmDelete"
+          />
+        </aside>
 
-      <!-- ═══ Main ═══ -->
-      <main class="builder-main">
-        <!-- Picker mode -->
-        <ClassPicker
-          v-if="showPicker"
-          @select="onClassSelected"
-          @cancel="showPicker = false"
-        />
+        <!-- ═══ Main ═══ -->
+        <main class="builder-main">
+          <!-- Picker mode -->
+          <ClassPicker
+            v-if="showPicker"
+            @select="onClassSelected"
+            @cancel="showPicker = false"
+          />
 
-        <!-- Sheet mode -->
-        <CharacterSheet
-          v-else-if="store.selectedCharacter"
-          :char="store.selectedCharacter"
-          :class-data="store.selectedCharacterClass"
-          :thresholds="store.selectedThresholds"
-          :effective-evasion="store.selectedEffectiveEvasion"
-          :effective-max-h-p="store.selectedEffectiveMaxHP"
-          :effective-max-stress="store.selectedEffectiveMaxStress"
-          :stat-bonuses="store.selectedStatBonuses"
-          :subclasses="store.availableSubclasses"
-          :subclass-data="store.selectedSubclassData"
-          :ancestry-data="store.selectedAncestryData"
-          :community-data="store.selectedCommunityData"
-          :ancestries="store.allAncestries"
-          :communities="store.allCommunities"
-          :armor="store.allArmor"
-          :primary-weapons="store.allPrimaryWeapons"
-          :secondary-weapons="store.allSecondaryWeapons"
-          :available-domains="store.availableDomains"
-          :available-domain-cards="store.availableDomainCards"
-          :loadout-cards="store.selectedLoadoutCards"
-          :vault-cards="store.selectedVaultCards"
-          :is-loadout-full="store.isLoadoutFull"
-          :max-loadout="store.selectedMaxLoadout"
-          :active-modifiers="store.activeModifiersList"
-          :permanent-effects="store.selectedCharacter?.permanentCardEffects || []"
-          :effective-armor-score="store.selectedEffectiveArmorScore"
-          @update="store.updateField"
-          @apply-selection="store.applySelection"
-          @update-mixed="store.updateMixedAncestry"
-          @mark-h-p="store.markHP()"
-          @clear-h-p="store.clearHP()"
-          @mark-stress="store.markStress()"
-          @clear-stress="store.clearStress()"
-          @mark-armor="store.markArmor()"
-          @clear-armor="store.clearArmor()"
-          @set-hope="store.setHope"
-          @add-condition="store.addCondition"
-          @remove-condition="store.removeCondition"
-          @add-experience="store.addExperience()"
-          @remove-experience="store.removeExperience"
-          @add-card-to-loadout="store.addCardToLoadout"
-          @add-card-to-vault="store.addCardToVault"
-          @move-card-to-loadout="store.moveCardToLoadout"
-          @move-card-to-vault="store.moveCardToVault"
-          @remove-card="store.removeCard"
-          @toggle-effect="store.toggleEffect"
-          @add-inventory-item="store.addInventoryItem"
-          @remove-inventory-item="store.removeInventoryItem"
-          @update-inventory-item="store.updateInventoryItem"
-          @update-gold="store.updateGold"
-          @level-up="onLevelUp"
-          @rollback="onRollback"
-        />
+          <!-- Sheet mode -->
+          <CharacterSheet
+            v-else-if="store.selectedCharacter"
+            :char="store.selectedCharacter"
+            :class-data="store.selectedCharacterClass"
+            :thresholds="store.selectedThresholds"
+            :effective-evasion="store.selectedEffectiveEvasion"
+            :effective-max-h-p="store.selectedEffectiveMaxHP"
+            :effective-max-stress="store.selectedEffectiveMaxStress"
+            :stat-bonuses="store.selectedStatBonuses"
+            :subclasses="store.availableSubclasses"
+            :subclass-data="store.selectedSubclassData"
+            :ancestry-data="store.selectedAncestryData"
+            :community-data="store.selectedCommunityData"
+            :ancestries="store.allAncestries"
+            :communities="store.allCommunities"
+            :armor="store.allArmor"
+            :primary-weapons="store.allPrimaryWeapons"
+            :secondary-weapons="store.allSecondaryWeapons"
+            :available-domains="store.availableDomains"
+            :available-domain-cards="store.availableDomainCards"
+            :loadout-cards="store.selectedLoadoutCards"
+            :vault-cards="store.selectedVaultCards"
+            :is-loadout-full="store.isLoadoutFull"
+            :max-loadout="store.selectedMaxLoadout"
+            :active-modifiers="store.activeModifiersList"
+            :permanent-effects="store.selectedCharacter?.permanentCardEffects || []"
+            :effective-armor-score="store.selectedEffectiveArmorScore"
+            @update="store.updateField"
+            @apply-selection="store.applySelection"
+            @update-mixed="store.updateMixedAncestry"
+            @mark-h-p="store.markHP()"
+            @clear-h-p="store.clearHP()"
+            @mark-stress="store.markStress()"
+            @clear-stress="store.clearStress()"
+            @mark-armor="store.markArmor()"
+            @clear-armor="store.clearArmor()"
+            @set-hope="store.setHope"
+            @add-condition="store.addCondition"
+            @remove-condition="store.removeCondition"
+            @add-experience="store.addExperience()"
+            @remove-experience="store.removeExperience"
+            @add-card-to-loadout="store.addCardToLoadout"
+            @add-card-to-vault="store.addCardToVault"
+            @move-card-to-loadout="store.moveCardToLoadout"
+            @move-card-to-vault="store.moveCardToVault"
+            @remove-card="store.removeCard"
+            @toggle-effect="store.toggleEffect"
+            @add-inventory-item="store.addInventoryItem"
+            @remove-inventory-item="store.removeInventoryItem"
+            @update-inventory-item="store.updateInventoryItem"
+            @update-gold="store.updateGold"
+            @level-up="onLevelUp"
+            @rollback="onRollback"
+          />
 
-        <!-- Empty state -->
-        <div
-          v-else
-          class="empty-state"
-        >
-          <p class="empty-state__emoji">
-            🧙
-          </p>
-          <p class="empty-state__title">
-            Aucun personnage
-          </p>
-          <p class="empty-state__text">
-            Créez votre premier personnage pour commencer.
-          </p>
-          <button
-            class="empty-state__btn"
-            @click="showPicker = true"
+          <!-- Empty state -->
+          <div
+            v-else
+            class="empty-state"
           >
-            + Nouveau personnage
-          </button>
-        </div>
-      </main>
-    </div>
-
-    <!-- ═══ Level Up Wizard ═══ -->
-    <LevelUpWizard
-      @levelup-complete="onLevelUpComplete"
-      @levelup-error="onLevelUpError"
-    />
-
-    <!-- ═══ Toast notifications ═══ -->
-    <Transition name="toast">
-      <div
-        v-if="toast.visible"
-        class="toast"
-        :class="`toast--${toast.type}`"
-        role="alert"
-        aria-live="polite"
-      >
-        {{ toast.message }}
-      </div>
-    </Transition>
-
-    <!-- ═══ Confirm delete dialog ═══ -->
-    <Transition name="fade">
-      <div
-        v-if="deleteTarget"
-        class="overlay"
-        role="button"
-        tabindex="0"
-        aria-label="Fermer"
-        @click="deleteTarget = null"
-        @keydown.escape="deleteTarget = null"
-      >
-        <div
-          ref="deleteDialogRef"
-          class="confirm-dialog"
-          role="alertdialog"
-          aria-modal="true"
-          aria-label="Confirmer la suppression"
-          @click.stop
-        >
-          <p class="confirm-dialog__text">
-            Supprimer <strong>{{ deleteTargetName }}</strong> ? Cette action est irréversible.
-          </p>
-          <div class="confirm-dialog__actions">
+            <p class="empty-state__emoji">
+              🧙
+            </p>
+            <p class="empty-state__title">
+              Aucun personnage
+            </p>
+            <p class="empty-state__text">
+              Créez votre premier personnage pour commencer.
+            </p>
             <button
-              class="dialog-btn dialog-btn--cancel"
-              @click="deleteTarget = null"
+              class="empty-state__btn"
+              @click="showPicker = true"
             >
-              Annuler
-            </button>
-            <button
-              class="dialog-btn dialog-btn--danger"
-              @click="executeDelete"
-            >
-              Supprimer
+              + Nouveau personnage
             </button>
           </div>
-        </div>
+        </main>
       </div>
-    </Transition>
-  </div>
+
+      <!-- ═══ Level Up Wizard ═══ -->
+      <LevelUpWizard
+        @levelup-complete="onLevelUpComplete"
+        @levelup-error="onLevelUpError"
+      />
+
+      <!-- ═══ Toast notifications ═══ -->
+      <Transition name="toast">
+        <div
+          v-if="toast.visible"
+          class="toast"
+          :class="`toast--${toast.type}`"
+          role="alert"
+          aria-live="polite"
+        >
+          {{ toast.message }}
+        </div>
+      </Transition>
+
+      <!-- ═══ Confirm delete dialog ═══ -->
+      <Transition name="fade">
+        <div
+          v-if="deleteTarget"
+          class="overlay"
+          role="button"
+          tabindex="0"
+          aria-label="Fermer"
+          @click="deleteTarget = null"
+          @keydown.escape="deleteTarget = null"
+        >
+          <div
+            ref="deleteDialogRef"
+            class="confirm-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Confirmer la suppression"
+            @click.stop
+          >
+            <p class="confirm-dialog__text">
+              Supprimer <strong>{{ deleteTargetName }}</strong> ? Cette action est irréversible.
+            </p>
+            <div class="confirm-dialog__actions">
+              <button
+                class="dialog-btn dialog-btn--cancel"
+                @click="deleteTarget = null"
+              >
+                Annuler
+              </button>
+              <button
+                class="dialog-btn dialog-btn--danger"
+                @click="executeDelete"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -173,10 +178,11 @@ import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
 import { LevelUpWizard } from '@modules/levelup'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
 export default {
   name: 'CharacterBuilder',
-  components: { CharacterList, ClassPicker, CharacterSheet, LevelUpWizard },
+  components: { ModuleBoundary, CharacterList, ClassPicker, CharacterSheet, LevelUpWizard },
   setup() {
     const store = useCharacterStore()
     const levelUpStore = useLevelUpStore()

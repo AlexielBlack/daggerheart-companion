@@ -1,428 +1,433 @@
 <template>
-  <div
-    class="live"
-    :class="'live--' + store.sceneMode"
+  <ModuleBoundary
+    module-name="Rencontre en cours"
+    module-id="encounter-live"
   >
-    <!-- Écran inactif -->
     <div
-      v-if="!store.isActive"
-      class="live__inactive"
+      class="live"
+      :class="'live--' + store.sceneMode"
     >
-      <p>Aucune rencontre en cours.</p>
-      <button
-        class="live__go-builder"
-        @click="$router.push('/encounters')"
+      <!-- Écran inactif -->
+      <div
+        v-if="!store.isActive"
+        class="live__inactive"
       >
-        Retour au builder de rencontres
-      </button>
-    </div>
-
-    <template v-else>
-      <!-- ══ Header ══ -->
-      <header class="live__header">
-        <!-- Groupe gauche : identité + mode scène -->
-        <div class="live__header-info">
-          <h1 class="live__title">
-            {{ store.encounterName || 'Rencontre' }}
-          </h1>
-          <span class="live__tier">T{{ store.encounterTier }}</span>
-          <SpotlightToggle
-            :scene-mode="store.sceneMode"
-            @update:scene-mode="onSetSceneMode"
-          />
-          <span
-            v-if="store.adversaryCombatSummary.count > 0"
-            class="live__combat-sum"
-          >
-            {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
-          </span>
-          <!-- BP indicator compact -->
-          <span
-            v-if="store.liveAdversaries.length > 0"
-            class="live__bp-pill"
-            :class="{
-              'live__bp-pill--over': store.liveBpRemaining < 0,
-              'live__bp-pill--exact': store.liveBpRemaining === 0,
-              'live__bp-pill--under': store.liveBpRemaining > 0
-            }"
-            :title="store.liveBpSpent + ' / ' + store.liveBpTotal + ' BP (' + (store.liveBpRemaining >= 0 ? '+' : '') + store.liveBpRemaining + ')'"
-          >
-            {{ store.liveBpSpent }}/{{ store.liveBpTotal }} BP
-          </span>
-        </div>
-
-        <!-- Groupe droit : actions rapides -->
-        <div class="live__header-actions">
-          <button
-            v-if="store.undoStack.length > 0"
-            class="live__undo-btn"
-            :title="'Annuler : ' + (store.lastUndoLabel || 'dernière action') + ' (Ctrl+Z)'"
-            aria-label="Annuler la dernière action"
-            @click="onUndo"
-          >
-            ↩ <span class="live__undo-label">{{ store.lastUndoLabel || store.undoStack.length }}</span>
-          </button>
-          <button
-            v-if="hasAdversaries"
-            class="live__aoe-btn"
-            :class="{ 'live__aoe-btn--on': aoeMode }"
-            title="Dégâts de zone (AoE)"
-            aria-label="Dégâts de zone"
-            @click="aoeMode = !aoeMode"
-          >
-            💥 AoE
-          </button>
-          <button
-            v-if="hasAdversaries"
-            class="live__reinforce-header-btn"
-            :class="{ 'live__reinforce-header-btn--open': showReinforcementPanel }"
-            title="Ajouter des renforts"
-            aria-label="Ajouter des renforts"
-            @click="showReinforcementPanel = true"
-          >
-            + Renforts
-          </button>
-          <button
-            v-if="store.countdowns.length === 0"
-            class="live__cd-btn"
-            title="Ajouter un countdown"
-            aria-label="Ajouter un countdown"
-            @click="showCountdownBar = true"
-          >
-            ⏱️
-          </button>
-          <button
-            class="live__log-btn"
-            :class="{ 'live__log-btn--has': store.encounterLog.length > 0 }"
-            title="Journal de combat"
-            aria-label="Journal de combat"
-            @click="showCombatLog = true"
-          >
-            📜
-          </button>
-          <button
-            class="live__end-btn"
-            @click="confirmEndEncounter"
-          >
-            Fin
-          </button>
-        </div>
-      </header>
-
-      <!-- ══ Countdowns ══ -->
-      <CountdownTracker
-        v-if="store.countdowns.length > 0 || showCountdownBar"
-        :countdowns="store.countdowns"
-        @add="onAddCountdown"
-        @remove="onRemoveCountdown"
-        @tick="onTickCountdown"
-        @untick="onUntickCountdown"
-        @advance-by-result="onAdvanceCountdownByResult"
-        @reset="onResetCountdown"
-      />
-
-      <!-- ══ Bouton flottant contexte (tablette uniquement) ══ -->
-      <button
-        v-if="hasAdversaries"
-        class="live__ctx-fab"
-        :class="{ 'live__ctx-fab--open': tabletCtxOpen }"
-        :aria-label="tabletCtxOpen ? 'Fermer le panneau contexte' : 'Ouvrir le panneau contexte'"
-        :title="tabletCtxOpen ? 'Fermer le contexte' : 'Voir le contexte'"
-        @click="tabletCtxOpen = !tabletCtxOpen"
-      >
-        {{ tabletCtxOpen ? '✕' : '📋' }}
-      </button>
-
-      <!-- ══ Grille 3 colonnes (desktop) / 2 colonnes + side-sheet (tablette) ══ -->
-      <div class="live__grid">
-        <!-- Colonne PJ -->
-        <div class="live__col-pc">
-          <PcSidebarCard
-            v-for="pc in store.participantPcs"
-            :key="pc.id"
-            :pc="pc"
-            :is-selected="store.activePcId === pc.id"
-            :is-down="!!store.pcDownStatus[pc.id]"
-            :active-conditions="store.pcConditions[pc.id] || []"
-            :spotlight-count="store.pcSpotlights[pc.id] || 0"
-            @select="onSelectPc"
-            @toggle-condition="onTogglePcCondition"
-            @long-press="onLongPressPc"
-          />
-        </div>
-
-        <!-- Colonne Adversaires (toujours visible en tablette) -->
-        <div
-          v-if="hasAdversaries"
-          class="live__col-adv"
+        <p>Aucune rencontre en cours.</p>
+        <button
+          class="live__go-builder"
+          @click="$router.push('/encounters')"
         >
-          <!-- Bandeau évasions PJ (visible en mode adversaryAttack) -->
-          <div
-            v-if="store.sceneMode === 'adversaryAttack' && store.participantPcs.length > 0"
-            class="live__evasion-bar"
-            aria-label="Évasions des PJ"
-          >
-            <span class="live__evasion-label">Évasions :</span>
+          Retour au builder de rencontres
+        </button>
+      </div>
+
+      <template v-else>
+        <!-- ══ Header ══ -->
+        <header class="live__header">
+          <!-- Groupe gauche : identité + mode scène -->
+          <div class="live__header-info">
+            <h1 class="live__title">
+              {{ store.encounterName || 'Rencontre' }}
+            </h1>
+            <span class="live__tier">T{{ store.encounterTier }}</span>
+            <SpotlightToggle
+              :scene-mode="store.sceneMode"
+              @update:scene-mode="onSetSceneMode"
+            />
             <span
-              v-for="pc in store.participantPcs"
-              :key="pc.id"
-              class="live__evasion-chip"
-              :class="{ 'live__evasion-chip--selected': store.activePcId === pc.id }"
+              v-if="store.adversaryCombatSummary.count > 0"
+              class="live__combat-sum"
             >
-              {{ pc.name }} <strong>{{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</strong>
+              {{ store.activeAdversaries.length }} actifs · {{ store.defeatedAdversaries.length }}💀
+            </span>
+            <!-- BP indicator compact -->
+            <span
+              v-if="store.liveAdversaries.length > 0"
+              class="live__bp-pill"
+              :class="{
+                'live__bp-pill--over': store.liveBpRemaining < 0,
+                'live__bp-pill--exact': store.liveBpRemaining === 0,
+                'live__bp-pill--under': store.liveBpRemaining > 0
+              }"
+              :title="store.liveBpSpent + ' / ' + store.liveBpTotal + ' BP (' + (store.liveBpRemaining >= 0 ? '+' : '') + store.liveBpRemaining + ')'"
+            >
+              {{ store.liveBpSpent }}/{{ store.liveBpTotal }} BP
             </span>
           </div>
 
-          <AdversaryGroupCard
-            v-for="group in store.groupedAdversaries"
-            :key="group.adversaryId"
-            :group="group"
-            :is-selected="store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId"
-            :has-acted="!!store.advActedThisTurn[group.adversaryId]"
-            @select-group="onSelectAdversaryGroup"
-            @apply-damage="onApplyDamage"
-            @mark-stress="onMarkStress"
-            @clear-stress="onClearStress"
-            @clear-hp="onClearHP"
-            @defeat="onDefeat"
-            @revive="onRevive"
-            @toggle-condition="onToggleAdvCondition"
-            @toggle-acted="onToggleActed"
-          />
+          <!-- Groupe droit : actions rapides -->
+          <div class="live__header-actions">
+            <button
+              v-if="store.undoStack.length > 0"
+              class="live__undo-btn"
+              :title="'Annuler : ' + (store.lastUndoLabel || 'dernière action') + ' (Ctrl+Z)'"
+              aria-label="Annuler la dernière action"
+              @click="onUndo"
+            >
+              ↩ <span class="live__undo-label">{{ store.lastUndoLabel || store.undoStack.length }}</span>
+            </button>
+            <button
+              v-if="hasAdversaries"
+              class="live__aoe-btn"
+              :class="{ 'live__aoe-btn--on': aoeMode }"
+              title="Dégâts de zone (AoE)"
+              aria-label="Dégâts de zone"
+              @click="aoeMode = !aoeMode"
+            >
+              💥 AoE
+            </button>
+            <button
+              v-if="hasAdversaries"
+              class="live__reinforce-header-btn"
+              :class="{ 'live__reinforce-header-btn--open': showReinforcementPanel }"
+              title="Ajouter des renforts"
+              aria-label="Ajouter des renforts"
+              @click="showReinforcementPanel = true"
+            >
+              + Renforts
+            </button>
+            <button
+              v-if="store.countdowns.length === 0"
+              class="live__cd-btn"
+              title="Ajouter un countdown"
+              aria-label="Ajouter un countdown"
+              @click="showCountdownBar = true"
+            >
+              ⏱️
+            </button>
+            <button
+              class="live__log-btn"
+              :class="{ 'live__log-btn--has': store.encounterLog.length > 0 }"
+              title="Journal de combat"
+              aria-label="Journal de combat"
+              @click="showCombatLog = true"
+            >
+              📜
+            </button>
+            <button
+              class="live__end-btn"
+              @click="confirmEndEncounter"
+            >
+              Fin
+            </button>
+          </div>
+        </header>
+
+        <!-- ══ Countdowns ══ -->
+        <CountdownTracker
+          v-if="store.countdowns.length > 0 || showCountdownBar"
+          :countdowns="store.countdowns"
+          @add="onAddCountdown"
+          @remove="onRemoveCountdown"
+          @tick="onTickCountdown"
+          @untick="onUntickCountdown"
+          @advance-by-result="onAdvanceCountdownByResult"
+          @reset="onResetCountdown"
+        />
+
+        <!-- ══ Bouton flottant contexte (tablette uniquement) ══ -->
+        <button
+          v-if="hasAdversaries"
+          class="live__ctx-fab"
+          :class="{ 'live__ctx-fab--open': tabletCtxOpen }"
+          :aria-label="tabletCtxOpen ? 'Fermer le panneau contexte' : 'Ouvrir le panneau contexte'"
+          :title="tabletCtxOpen ? 'Fermer le contexte' : 'Voir le contexte'"
+          @click="tabletCtxOpen = !tabletCtxOpen"
+        >
+          {{ tabletCtxOpen ? '✕' : '📋' }}
+        </button>
+
+        <!-- ══ Grille 3 colonnes (desktop) / 2 colonnes + side-sheet (tablette) ══ -->
+        <div class="live__grid">
+          <!-- Colonne PJ -->
+          <div class="live__col-pc">
+            <PcSidebarCard
+              v-for="pc in store.participantPcs"
+              :key="pc.id"
+              :pc="pc"
+              :is-selected="store.activePcId === pc.id"
+              :is-down="!!store.pcDownStatus[pc.id]"
+              :active-conditions="store.pcConditions[pc.id] || []"
+              :spotlight-count="store.pcSpotlights[pc.id] || 0"
+              @select="onSelectPc"
+              @toggle-condition="onTogglePcCondition"
+              @long-press="onLongPressPc"
+            />
+          </div>
+
+          <!-- Colonne Adversaires (toujours visible en tablette) -->
+          <div
+            v-if="hasAdversaries"
+            class="live__col-adv"
+          >
+            <!-- Bandeau évasions PJ (visible en mode adversaryAttack) -->
+            <div
+              v-if="store.sceneMode === 'adversaryAttack' && store.participantPcs.length > 0"
+              class="live__evasion-bar"
+              aria-label="Évasions des PJ"
+            >
+              <span class="live__evasion-label">Évasions :</span>
+              <span
+                v-for="pc in store.participantPcs"
+                :key="pc.id"
+                class="live__evasion-chip"
+                :class="{ 'live__evasion-chip--selected': store.activePcId === pc.id }"
+              >
+                {{ pc.name }} <strong>{{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</strong>
+              </span>
+            </div>
+
+            <AdversaryGroupCard
+              v-for="group in store.groupedAdversaries"
+              :key="group.adversaryId"
+              :group="group"
+              :is-selected="store.activeAdversary && store.activeAdversary.adversaryId === group.adversaryId"
+              :has-acted="!!store.advActedThisTurn[group.adversaryId]"
+              @select-group="onSelectAdversaryGroup"
+              @apply-damage="onApplyDamage"
+              @mark-stress="onMarkStress"
+              @clear-stress="onClearStress"
+              @clear-hp="onClearHP"
+              @defeat="onDefeat"
+              @revive="onRevive"
+              @toggle-condition="onToggleAdvCondition"
+              @toggle-acted="onToggleActed"
+            />
+          </div>
+
+          <!-- Colonne Contexte (side-sheet en tablette) -->
+          <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+          <div
+            class="live__col-ctx-wrapper"
+            :class="{ 'live__col-ctx-wrapper--open': tabletCtxOpen }"
+            @click.self="tabletCtxOpen = false"
+          >
+            <!-- eslint-enable -->
+            <div
+              ref="ctxColRef"
+              class="live__col-ctx"
+            >
+              <ContextPanel
+                :pc="store.activePc"
+                :adversary="store.activeAdversary"
+                :environment="store.activeEnvironment"
+                :scene-mode="store.sceneMode"
+                :last-click-category="store.lastClickCategory"
+                :primary-features="pcPrimary"
+                :secondary-features="pcSecondary"
+                :passive-features="pcPassive"
+                :reaction-features="pcReaction"
+                :all-features="pcAllFeatures"
+              />
+            </div>
+          </div>
         </div>
 
-        <!-- Colonne Contexte (side-sheet en tablette) -->
+        <!-- ══ Drawer Renforts ══ -->
+        <ReinforcementDrawer
+          v-model="showReinforcementPanel"
+          @add="addReinforcement"
+        />
+
+        <!-- ══ Drawer Journal de combat ══ -->
+        <CombatLogDrawer
+          v-model="showCombatLog"
+          :entries="store.encounterLog"
+          @clear="clearCombatLog"
+        />
+
+        <!-- ══ Modal AoE ══ -->
         <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
         <div
-          class="live__col-ctx-wrapper"
-          :class="{ 'live__col-ctx-wrapper--open': tabletCtxOpen }"
-          @click.self="tabletCtxOpen = false"
+          v-if="aoeMode"
+          class="live__overlay"
+          @click.self="aoeMode = false"
         >
           <!-- eslint-enable -->
           <div
-            ref="ctxColRef"
-            class="live__col-ctx"
+            ref="aoeModalRef"
+            class="live__aoe-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Dégâts de zone"
           >
-            <ContextPanel
-              :pc="store.activePc"
-              :adversary="store.activeAdversary"
-              :environment="store.activeEnvironment"
-              :scene-mode="store.sceneMode"
-              :last-click-category="store.lastClickCategory"
-              :primary-features="pcPrimary"
-              :secondary-features="pcSecondary"
-              :passive-features="pcPassive"
-              :reaction-features="pcReaction"
-              :all-features="pcAllFeatures"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ Drawer Renforts ══ -->
-      <ReinforcementDrawer
-        v-model="showReinforcementPanel"
-        @add="addReinforcement"
-      />
-
-      <!-- ══ Drawer Journal de combat ══ -->
-      <CombatLogDrawer
-        v-model="showCombatLog"
-        :entries="store.encounterLog"
-        @clear="clearCombatLog"
-      />
-
-      <!-- ══ Modal AoE ══ -->
-      <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-      <div
-        v-if="aoeMode"
-        class="live__overlay"
-        @click.self="aoeMode = false"
-      >
-        <!-- eslint-enable -->
-        <div
-          ref="aoeModalRef"
-          class="live__aoe-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Dégâts de zone"
-        >
-          <div class="live__aoe-header">
-            <span>💥 Dégâts de zone</span>
-            <button
-              aria-label="Fermer"
-              @click="aoeMode = false"
-            >
-              ✕
-            </button>
-          </div>
-          <div
-            v-for="inst in aoeAvailableInstances"
-            :key="inst.instanceId"
-            class="live__aoe-row"
-            :class="{ 'live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
-          >
-            <span class="live__aoe-name">
-              {{ inst.displayName }}
-            </span>
-            <span
-              v-if="inst.thresholds"
-              class="live__aoe-ref"
-              :title="'Seuils : Maj ' + inst.thresholds.major + ' / Sév ' + inst.thresholds.severe"
-            >{{ inst.thresholds.major }}/{{ inst.thresholds.severe }}</span>
-            <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-            <!-- Boutons seuils (comme sur les cartes) -->
-            <div class="live__aoe-thresh">
+            <div class="live__aoe-header">
+              <span>💥 Dégâts de zone</span>
               <button
-                class="live__aoe-th live__aoe-th--1"
-                title="1 HP (Mineur)"
-                @click="aoeSetHp(inst.instanceId, 1)"
+                aria-label="Fermer"
+                @click="aoeMode = false"
               >
-                1
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--2"
-                title="2 HP (Majeur)"
-                @click="aoeSetHp(inst.instanceId, 2)"
-              >
-                2
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--3"
-                title="3 HP (Sévère)"
-                @click="aoeSetHp(inst.instanceId, 3)"
-              >
-                3
+                ✕
               </button>
             </div>
-            <span
-              v-if="aoeDamage[inst.instanceId] > 0"
-              class="live__aoe-dmg"
-            >−{{ aoeDamage[inst.instanceId] }}HP</span>
-            <button
-              v-if="aoeDamage[inst.instanceId] > 0"
-              class="live__aoe-undo"
-              title="Annuler"
-              @click="aoeUndoTarget(inst.instanceId)"
-            >
-              ↩
-            </button>
-          </div>
-          <div
-            v-for="pc in store.participantPcs"
-            :key="'pc_' + pc.id"
-            class="live__aoe-row"
-            :class="{ 'live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
-          >
-            <span class="live__aoe-name">🧑 {{ pc.name }}</span>
-            <span class="live__aoe-hp">Évasion {{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</span>
-            <div class="live__aoe-thresh">
-              <button
-                class="live__aoe-th live__aoe-th--1"
-                title="1 HP"
-                @click="aoeSetHp('pc_' + pc.id, 1)"
-              >
-                1
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--2"
-                title="2 HP"
-                @click="aoeSetHp('pc_' + pc.id, 2)"
-              >
-                2
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--3"
-                title="3 HP"
-                @click="aoeSetHp('pc_' + pc.id, 3)"
-              >
-                3
-              </button>
-            </div>
-            <span
-              v-if="aoeDamage['pc_' + pc.id] > 0"
-              class="live__aoe-dmg"
-            >−{{ aoeDamage['pc_' + pc.id] }}HP</span>
-            <button
-              v-if="aoeDamage['pc_' + pc.id] > 0"
-              class="live__aoe-undo"
-              title="Annuler"
-              @click="aoeUndoTarget('pc_' + pc.id)"
-            >
-              ↩
-            </button>
-          </div>
-          <div class="live__aoe-footer">
-            <span>{{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }}</span>
-            <button
-              :disabled="aoeTotalTargets === 0"
-              @click="applyAoe"
-            >
-              Appliquer
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ Modal fin ══ -->
-      <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-      <div
-        v-if="showEndSummary && endSummaryData"
-        class="live__overlay"
-        @click.self="cancelEndEncounter"
-      >
-        <!-- eslint-enable -->
-        <div
-          ref="endModalRef"
-          class="live__end-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Résumé de la rencontre"
-        >
-          <h2>📋 Résumé — {{ endSummaryData.name }}</h2>
-          <div class="live__end-stats">
-            <div class="live__end-stat">
-              <span class="live__end-val">{{ endSummaryData.defeated.length }}</span>
-              <span>💀 Vaincus</span>
-            </div>
-            <div class="live__end-stat">
-              <span class="live__end-val">{{ endSummaryData.surviving.length }}</span>
-              <span>🔴 Restants</span>
-            </div>
-            <div class="live__end-stat">
-              <span class="live__end-val">{{ endSummaryData.totalHPMarked }}</span>
-              <span>❤️ HP marqués</span>
-            </div>
-          </div>
-          <div
-            v-if="Object.keys(endSummaryData.damageByPc).length > 0"
-            class="live__end-section"
-          >
-            <h3>Dégâts par PJ</h3>
             <div
-              v-for="(dmg, pcId) in endSummaryData.damageByPc"
-              :key="pcId"
-              class="live__end-row"
+              v-for="inst in aoeAvailableInstances"
+              :key="inst.instanceId"
+              class="live__aoe-row"
+              :class="{ 'live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
             >
-              <span>{{ dmg.pcName }}</span>
-              <span>❤️{{ dmg.hp }} · 💢{{ dmg.stress }}</span>
+              <span class="live__aoe-name">
+                {{ inst.displayName }}
+              </span>
+              <span
+                v-if="inst.thresholds"
+                class="live__aoe-ref"
+                :title="'Seuils : Maj ' + inst.thresholds.major + ' / Sév ' + inst.thresholds.severe"
+              >{{ inst.thresholds.major }}/{{ inst.thresholds.severe }}</span>
+              <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
+              <!-- Boutons seuils (comme sur les cartes) -->
+              <div class="live__aoe-thresh">
+                <button
+                  class="live__aoe-th live__aoe-th--1"
+                  title="1 HP (Mineur)"
+                  @click="aoeSetHp(inst.instanceId, 1)"
+                >
+                  1
+                </button>
+                <button
+                  class="live__aoe-th live__aoe-th--2"
+                  title="2 HP (Majeur)"
+                  @click="aoeSetHp(inst.instanceId, 2)"
+                >
+                  2
+                </button>
+                <button
+                  class="live__aoe-th live__aoe-th--3"
+                  title="3 HP (Sévère)"
+                  @click="aoeSetHp(inst.instanceId, 3)"
+                >
+                  3
+                </button>
+              </div>
+              <span
+                v-if="aoeDamage[inst.instanceId] > 0"
+                class="live__aoe-dmg"
+              >−{{ aoeDamage[inst.instanceId] }}HP</span>
+              <button
+                v-if="aoeDamage[inst.instanceId] > 0"
+                class="live__aoe-undo"
+                title="Annuler"
+                @click="aoeUndoTarget(inst.instanceId)"
+              >
+                ↩
+              </button>
+            </div>
+            <div
+              v-for="pc in store.participantPcs"
+              :key="'pc_' + pc.id"
+              class="live__aoe-row"
+              :class="{ 'live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
+            >
+              <span class="live__aoe-name">🧑 {{ pc.name }}</span>
+              <span class="live__aoe-hp">Évasion {{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</span>
+              <div class="live__aoe-thresh">
+                <button
+                  class="live__aoe-th live__aoe-th--1"
+                  title="1 HP"
+                  @click="aoeSetHp('pc_' + pc.id, 1)"
+                >
+                  1
+                </button>
+                <button
+                  class="live__aoe-th live__aoe-th--2"
+                  title="2 HP"
+                  @click="aoeSetHp('pc_' + pc.id, 2)"
+                >
+                  2
+                </button>
+                <button
+                  class="live__aoe-th live__aoe-th--3"
+                  title="3 HP"
+                  @click="aoeSetHp('pc_' + pc.id, 3)"
+                >
+                  3
+                </button>
+              </div>
+              <span
+                v-if="aoeDamage['pc_' + pc.id] > 0"
+                class="live__aoe-dmg"
+              >−{{ aoeDamage['pc_' + pc.id] }}HP</span>
+              <button
+                v-if="aoeDamage['pc_' + pc.id] > 0"
+                class="live__aoe-undo"
+                title="Annuler"
+                @click="aoeUndoTarget('pc_' + pc.id)"
+              >
+                ↩
+              </button>
+            </div>
+            <div class="live__aoe-footer">
+              <span>{{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }}</span>
+              <button
+                :disabled="aoeTotalTargets === 0"
+                @click="applyAoe"
+              >
+                Appliquer
+              </button>
             </div>
           </div>
-          <div class="live__end-actions">
-            <button @click="cancelEndEncounter">
-              Retour
-            </button>
-            <button
-              class="live__end-confirm"
-              @click="finalEndEncounter"
+        </div>
+
+        <!-- ══ Modal fin ══ -->
+        <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+        <div
+          v-if="showEndSummary && endSummaryData"
+          class="live__overlay"
+          @click.self="cancelEndEncounter"
+        >
+          <!-- eslint-enable -->
+          <div
+            ref="endModalRef"
+            class="live__end-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Résumé de la rencontre"
+          >
+            <h2>📋 Résumé — {{ endSummaryData.name }}</h2>
+            <div class="live__end-stats">
+              <div class="live__end-stat">
+                <span class="live__end-val">{{ endSummaryData.defeated.length }}</span>
+                <span>💀 Vaincus</span>
+              </div>
+              <div class="live__end-stat">
+                <span class="live__end-val">{{ endSummaryData.surviving.length }}</span>
+                <span>🔴 Restants</span>
+              </div>
+              <div class="live__end-stat">
+                <span class="live__end-val">{{ endSummaryData.totalHPMarked }}</span>
+                <span>❤️ HP marqués</span>
+              </div>
+            </div>
+            <div
+              v-if="Object.keys(endSummaryData.damageByPc).length > 0"
+              class="live__end-section"
             >
-              Terminer
-            </button>
+              <h3>Dégâts par PJ</h3>
+              <div
+                v-for="(dmg, pcId) in endSummaryData.damageByPc"
+                :key="pcId"
+                class="live__end-row"
+              >
+                <span>{{ dmg.pcName }}</span>
+                <span>❤️{{ dmg.hp }} · 💢{{ dmg.stress }}</span>
+              </div>
+            </div>
+            <div class="live__end-actions">
+              <button @click="cancelEndEncounter">
+                Retour
+              </button>
+              <button
+                class="live__end-confirm"
+                @click="finalEndEncounter"
+              >
+                Terminer
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </template>
-  </div>
+      </template>
+    </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -438,11 +443,12 @@ import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
 import CombatLogDrawer from '../components/CombatLogDrawer.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import { useHaptic } from '../composables/useHaptic'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle },
+  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle },
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()

@@ -1,31 +1,38 @@
 <template>
-  <div class="sync-manager">
-    <header class="sync-manager__header">
-      <h1 class="sync-manager__title">
-        🔄 Synchronisation
-      </h1>
-      <p class="sync-manager__subtitle">
-        Transférez vos données entre plusieurs appareils.
-      </p>
-    </header>
+  <ModuleBoundary
+    module-name="Synchronisation"
+    module-id="sync"
+  >
+    <div class="sync-manager">
+      <header class="sync-manager__header">
+        <h1 class="sync-manager__title">
+          🔄 Synchronisation
+        </h1>
+        <p class="sync-manager__subtitle">
+          Transférez vos données entre plusieurs appareils.
+        </p>
+      </header>
 
-    <div class="sync-manager__grid">
-      <FileSyncPanel />
-      <GistSyncPanel />
-      <SyncHistory />
+      <div class="sync-manager__grid">
+        <FileSyncPanel />
+        <GistSyncPanel />
+        <SyncHistory />
+      </div>
     </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
 import FileSyncPanel from '../components/FileSyncPanel.vue'
 import GistSyncPanel from '../components/GistSyncPanel.vue'
 import SyncHistory from '../components/SyncHistory.vue'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
 export default {
   name: 'SyncManager',
 
   components: {
+    ModuleBoundary,
     FileSyncPanel,
     GistSyncPanel,
     SyncHistory

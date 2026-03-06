@@ -1,34 +1,39 @@
 <template>
-  <div class="dice-roller">
-    <div class="roller-layout">
-      <!-- ═══ Main panels ═══ -->
-      <div class="roller-main">
-        <DualityPanel
-          ref="dualityPanel"
-          @roll="onDualityRoll"
-        />
-        <div class="panels-row">
-          <DamagePanel
-            ref="damagePanel"
-            @roll="onDamageRoll"
+  <ModuleBoundary
+    module-name="Lanceur de Dés"
+    module-id="dice"
+  >
+    <div class="dice-roller">
+      <div class="roller-layout">
+        <!-- ═══ Main panels ═══ -->
+        <div class="roller-main">
+          <DualityPanel
+            ref="dualityPanel"
+            @roll="onDualityRoll"
           />
-          <QuickDice
-            ref="quickDice"
-            @roll-quick="onQuickRoll"
-            @roll-g-m="onGMRoll"
+          <div class="panels-row">
+            <DamagePanel
+              ref="damagePanel"
+              @roll="onDamageRoll"
+            />
+            <QuickDice
+              ref="quickDice"
+              @roll-quick="onQuickRoll"
+              @roll-g-m="onGMRoll"
+            />
+          </div>
+        </div>
+
+        <!-- ═══ Sidebar: History ═══ -->
+        <div class="roller-sidebar">
+          <DiceHistory
+            :entries="store.history"
+            @clear="store.clearHistory()"
           />
         </div>
       </div>
-
-      <!-- ═══ Sidebar: History ═══ -->
-      <div class="roller-sidebar">
-        <DiceHistory
-          :entries="store.history"
-          @clear="store.clearHistory()"
-        />
-      </div>
     </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -38,10 +43,11 @@ import DualityPanel from '../components/DualityPanel.vue'
 import DamagePanel from '../components/DamagePanel.vue'
 import QuickDice from '../components/QuickDice.vue'
 import DiceHistory from '../components/DiceHistory.vue'
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
 export default {
   name: 'DiceRoller',
-  components: { DualityPanel, DamagePanel, QuickDice, DiceHistory },
+  components: { ModuleBoundary, DualityPanel, DamagePanel, QuickDice, DiceHistory },
   setup() {
     const store = useDiceStore()
     const dualityPanel = ref(null)

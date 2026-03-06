@@ -1,249 +1,254 @@
 <template>
-  <div class="ancestry-browser">
-    <!-- ═══ En-tête ═══ -->
-    <header class="browser-header">
-      <h1 class="browser-header__title">
-        🧬 Ascendances
-      </h1>
-      <p class="browser-header__subtitle">
-        {{ filteredAncestries.length }} ascendance{{ filteredAncestries.length > 1 ? 's' : '' }} +
-        {{ TRANSFORMATIONS.length }} transformations
-      </p>
-    </header>
+  <ModuleBoundary
+    module-name="Ascendances"
+    module-id="ancestries"
+  >
+    <div class="ancestry-browser">
+      <!-- ═══ En-tête ═══ -->
+      <header class="browser-header">
+        <h1 class="browser-header__title">
+          🧬 Ascendances
+        </h1>
+        <p class="browser-header__subtitle">
+          {{ filteredAncestries.length }} ascendance{{ filteredAncestries.length > 1 ? 's' : '' }} +
+          {{ TRANSFORMATIONS.length }} transformations
+        </p>
+      </header>
 
-    <!-- ═══ Filtres ═══ -->
-    <div
-      class="browser-filters"
-      role="search"
-      aria-label="Filtrer les ascendances"
-    >
-      <label
-        class="sr-only"
-        for="ancestry-search"
-      >Rechercher une ascendance</label>
-      <input
-        id="ancestry-search"
-        v-model="searchQuery"
-        type="search"
-        class="filter-input"
-        placeholder="Rechercher une ascendance..."
-        aria-label="Rechercher une ascendance"
-      />
+      <!-- ═══ Filtres ═══ -->
       <div
-        class="filter-group"
-        role="group"
-        aria-label="Filtrer par source"
+        class="browser-filters"
+        role="search"
+        aria-label="Filtrer les ascendances"
       >
-        <button
-          v-for="f in sourceFilters"
-          :key="f.id"
-          class="filter-chip"
-          :class="{ 'filter-chip--active': activeSource === f.id }"
-          :aria-pressed="activeSource === f.id"
-          @click="activeSource = f.id"
+        <label
+          class="sr-only"
+          for="ancestry-search"
+        >Rechercher une ascendance</label>
+        <input
+          id="ancestry-search"
+          v-model="searchQuery"
+          type="search"
+          class="filter-input"
+          placeholder="Rechercher une ascendance..."
+          aria-label="Rechercher une ascendance"
+        />
+        <div
+          class="filter-group"
+          role="group"
+          aria-label="Filtrer par source"
         >
-          {{ f.label }}
-        </button>
-      </div>
-    </div>
-
-    <!-- ═══ Section Ascendances ═══ -->
-    <section
-      v-if="showAncestries && filteredAncestries.length"
-      aria-label="Ascendances jouables"
-    >
-      <h2 class="section-title">
-        Ascendances
-      </h2>
-      <div
-        class="ancestry-grid"
-        role="list"
-        aria-label="Liste des ascendances"
-      >
-        <article
-          v-for="ancestry in filteredAncestries"
-          :key="ancestry.id"
-          class="ancestry-card"
-          role="listitem"
-        >
-          <!-- En-tête -->
           <button
-            class="ancestry-card__header"
-            :aria-expanded="expandedId === ancestry.id"
-            :aria-controls="`ancestry-details-${ancestry.id}`"
-            @click="toggleAncestry(ancestry.id)"
+            v-for="f in sourceFilters"
+            :key="f.id"
+            class="filter-chip"
+            :class="{ 'filter-chip--active': activeSource === f.id }"
+            :aria-pressed="activeSource === f.id"
+            @click="activeSource = f.id"
           >
-            <span
-              class="ancestry-card__emoji"
-              aria-hidden="true"
-            >{{ ancestry.emoji }}</span>
-            <div class="ancestry-card__meta">
-              <span class="ancestry-card__name">{{ ancestry.name }}</span>
-              <span
-                v-if="ancestry.source === 'custom'"
-                class="badge badge--custom"
-              >Homebrew</span>
-              <span
-                v-else
-                class="badge badge--srd"
-              >SRD</span>
-            </div>
-            <span
-              class="ancestry-card__chevron"
-              aria-hidden="true"
-            >{{ expandedId === ancestry.id ? '▲' : '▼' }}</span>
+            {{ f.label }}
           </button>
+        </div>
+      </div>
 
-          <!-- Corps -->
-          <div
-            :id="`ancestry-details-${ancestry.id}`"
-            class="ancestry-card__body"
-            :hidden="expandedId !== ancestry.id"
+      <!-- ═══ Section Ascendances ═══ -->
+      <section
+        v-if="showAncestries && filteredAncestries.length"
+        aria-label="Ascendances jouables"
+      >
+        <h2 class="section-title">
+          Ascendances
+        </h2>
+        <div
+          class="ancestry-grid"
+          role="list"
+          aria-label="Liste des ascendances"
+        >
+          <article
+            v-for="ancestry in filteredAncestries"
+            :key="ancestry.id"
+            class="ancestry-card"
+            role="listitem"
           >
-            <p class="ancestry-description">
-              {{ ancestry.description }}
-            </p>
-            <div class="features-grid">
-              <!-- Feature Haute -->
-              <div class="feature-block feature-block--top">
-                <div
-                  class="feature-block__badge"
-                  aria-label="Feature haute (Top)"
-                >
-                  Haute
-                </div>
-                <h3 class="feature-block__name">
-                  {{ ancestry.topFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ ancestry.topFeature.description }}
-                </p>
-              </div>
-              <!-- Feature Basse -->
-              <div class="feature-block feature-block--bottom">
-                <div
-                  class="feature-block__badge"
-                  aria-label="Feature basse (Bottom)"
-                >
-                  Basse
-                </div>
-                <h3 class="feature-block__name">
-                  {{ ancestry.bottomFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ ancestry.bottomFeature.description }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Dupliquer en homebrew -->
+            <!-- En-tête -->
             <button
-              class="btn btn--secondary btn--sm ancestry-card__duplicate-btn"
-              @click.stop="duplicateToHomebrew(ancestry)"
+              class="ancestry-card__header"
+              :aria-expanded="expandedId === ancestry.id"
+              :aria-controls="`ancestry-details-${ancestry.id}`"
+              @click="toggleAncestry(ancestry.id)"
             >
-              ✎ Dupliquer en homebrew
+              <span
+                class="ancestry-card__emoji"
+                aria-hidden="true"
+              >{{ ancestry.emoji }}</span>
+              <div class="ancestry-card__meta">
+                <span class="ancestry-card__name">{{ ancestry.name }}</span>
+                <span
+                  v-if="ancestry.source === 'custom'"
+                  class="badge badge--custom"
+                >Homebrew</span>
+                <span
+                  v-else
+                  class="badge badge--srd"
+                >SRD</span>
+              </div>
+              <span
+                class="ancestry-card__chevron"
+                aria-hidden="true"
+              >{{ expandedId === ancestry.id ? '▲' : '▼' }}</span>
             </button>
-          </div>
-        </article>
-      </div>
-    </section>
 
-    <!-- ═══ Section Transformations ═══ -->
-    <section
-      v-if="showTransformations"
-      class="transformations-section"
-      aria-label="Cartes de transformation"
-    >
-      <h2 class="section-title">
-        🔄 Transformations
-        <span class="section-title__note">Cartes spéciales SRD</span>
-      </h2>
-      <div
-        class="ancestry-grid"
-        role="list"
-        aria-label="Liste des transformations"
+            <!-- Corps -->
+            <div
+              :id="`ancestry-details-${ancestry.id}`"
+              class="ancestry-card__body"
+              :hidden="expandedId !== ancestry.id"
+            >
+              <p class="ancestry-description">
+                {{ ancestry.description }}
+              </p>
+              <div class="features-grid">
+                <!-- Feature Haute -->
+                <div class="feature-block feature-block--top">
+                  <div
+                    class="feature-block__badge"
+                    aria-label="Feature haute (Top)"
+                  >
+                    Haute
+                  </div>
+                  <h3 class="feature-block__name">
+                    {{ ancestry.topFeature.name }}
+                  </h3>
+                  <p class="feature-block__desc">
+                    {{ ancestry.topFeature.description }}
+                  </p>
+                </div>
+                <!-- Feature Basse -->
+                <div class="feature-block feature-block--bottom">
+                  <div
+                    class="feature-block__badge"
+                    aria-label="Feature basse (Bottom)"
+                  >
+                    Basse
+                  </div>
+                  <h3 class="feature-block__name">
+                    {{ ancestry.bottomFeature.name }}
+                  </h3>
+                  <p class="feature-block__desc">
+                    {{ ancestry.bottomFeature.description }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Dupliquer en homebrew -->
+              <button
+                class="btn btn--secondary btn--sm ancestry-card__duplicate-btn"
+                @click.stop="duplicateToHomebrew(ancestry)"
+              >
+                ✎ Dupliquer en homebrew
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ═══ Section Transformations ═══ -->
+      <section
+        v-if="showTransformations"
+        class="transformations-section"
+        aria-label="Cartes de transformation"
       >
-        <article
-          v-for="transform in filteredTransformations"
-          :key="transform.id"
-          class="ancestry-card ancestry-card--transform"
-          role="listitem"
+        <h2 class="section-title">
+          🔄 Transformations
+          <span class="section-title__note">Cartes spéciales SRD</span>
+        </h2>
+        <div
+          class="ancestry-grid"
+          role="list"
+          aria-label="Liste des transformations"
         >
-          <button
-            class="ancestry-card__header"
-            :aria-expanded="expandedId === `t_${transform.id}`"
-            :aria-controls="`transform-details-${transform.id}`"
-            @click="toggleAncestry(`t_${transform.id}`)"
+          <article
+            v-for="transform in filteredTransformations"
+            :key="transform.id"
+            class="ancestry-card ancestry-card--transform"
+            role="listitem"
           >
-            <span
-              class="ancestry-card__emoji"
-              aria-hidden="true"
-            >{{ transform.emoji }}</span>
-            <div class="ancestry-card__meta">
-              <span class="ancestry-card__name">{{ transform.name }}</span>
-              <span class="badge badge--transform">Transformation</span>
-            </div>
-            <span
-              class="ancestry-card__chevron"
-              aria-hidden="true"
-            >{{ expandedId === `t_${transform.id}` ? '▲' : '▼' }}</span>
-          </button>
-
-          <div
-            :id="`transform-details-${transform.id}`"
-            class="ancestry-card__body"
-            :hidden="expandedId !== `t_${transform.id}`"
-          >
-            <p class="ancestry-description">
-              {{ transform.description }}
-            </p>
-            <div class="features-grid">
-              <div class="feature-block feature-block--top">
-                <div class="feature-block__badge">
-                  Haute
-                </div>
-                <h3 class="feature-block__name">
-                  {{ transform.topFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ transform.topFeature.description }}
-                </p>
+            <button
+              class="ancestry-card__header"
+              :aria-expanded="expandedId === `t_${transform.id}`"
+              :aria-controls="`transform-details-${transform.id}`"
+              @click="toggleAncestry(`t_${transform.id}`)"
+            >
+              <span
+                class="ancestry-card__emoji"
+                aria-hidden="true"
+              >{{ transform.emoji }}</span>
+              <div class="ancestry-card__meta">
+                <span class="ancestry-card__name">{{ transform.name }}</span>
+                <span class="badge badge--transform">Transformation</span>
               </div>
-              <div class="feature-block feature-block--bottom">
-                <div class="feature-block__badge">
-                  Basse
+              <span
+                class="ancestry-card__chevron"
+                aria-hidden="true"
+              >{{ expandedId === `t_${transform.id}` ? '▲' : '▼' }}</span>
+            </button>
+
+            <div
+              :id="`transform-details-${transform.id}`"
+              class="ancestry-card__body"
+              :hidden="expandedId !== `t_${transform.id}`"
+            >
+              <p class="ancestry-description">
+                {{ transform.description }}
+              </p>
+              <div class="features-grid">
+                <div class="feature-block feature-block--top">
+                  <div class="feature-block__badge">
+                    Haute
+                  </div>
+                  <h3 class="feature-block__name">
+                    {{ transform.topFeature.name }}
+                  </h3>
+                  <p class="feature-block__desc">
+                    {{ transform.topFeature.description }}
+                  </p>
                 </div>
-                <h3 class="feature-block__name">
-                  {{ transform.bottomFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ transform.bottomFeature.description }}
-                </p>
+                <div class="feature-block feature-block--bottom">
+                  <div class="feature-block__badge">
+                    Basse
+                  </div>
+                  <h3 class="feature-block__name">
+                    {{ transform.bottomFeature.name }}
+                  </h3>
+                  <p class="feature-block__desc">
+                    {{ transform.bottomFeature.description }}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </article>
-      </div>
-    </section>
+          </article>
+        </div>
+      </section>
 
-    <!-- ═══ État vide ═══ -->
-    <div
-      v-if="!filteredAncestries.length && !filteredTransformations.length"
-      class="empty-state"
-      role="status"
-      aria-live="polite"
-    >
-      <p
-        class="empty-state__icon"
-        aria-hidden="true"
+      <!-- ═══ État vide ═══ -->
+      <div
+        v-if="!filteredAncestries.length && !filteredTransformations.length"
+        class="empty-state"
+        role="status"
+        aria-live="polite"
       >
-        🔍
-      </p>
-      <p class="empty-state__text">
-        Aucune ascendance trouvée pour « {{ searchQuery }} »
-      </p>
+        <p
+          class="empty-state__icon"
+          aria-hidden="true"
+        >
+          🔍
+        </p>
+        <p class="empty-state__text">
+          Aucune ascendance trouvée pour « {{ searchQuery }} »
+        </p>
+      </div>
     </div>
-  </div>
+  </ModuleBoundary>
 </template>
 
 <script>
@@ -252,8 +257,11 @@ import { useRouter } from 'vue-router'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@/data/ancestries/index.js'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
 
+import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 export default {
   name: 'AncestryBrowser',
+
+  components: { ModuleBoundary },
 
   setup() {
     const router = useRouter()
