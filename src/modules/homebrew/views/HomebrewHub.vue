@@ -125,8 +125,10 @@
         <!-- Confirmation de suppression totale -->
         <div
           v-if="showClearConfirm"
+          ref="clearConfirmRef"
           class="hb-hub__clear-confirm"
           role="alertdialog"
+          aria-modal="true"
           aria-label="Confirmer la suppression de tout le contenu homebrew"
         >
           <p class="hb-hub__clear-text">
@@ -155,6 +157,7 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useAdversaryHomebrewStore } from '../categories/adversary/useAdversaryHomebrewStore.js'
 import { useAncestryHomebrewStore } from '../categories/ancestry/useAncestryHomebrewStore.js'
@@ -271,6 +274,8 @@ export default {
     const importInput = ref(null)
     const importResult = ref(null)
     const showClearConfirm = ref(false)
+    const clearConfirmRef = ref(null)
+    useFocusTrap(clearConfirmRef, () => showClearConfirm.value)
 
     function exportAll() {
       const payload = {}
@@ -347,7 +352,7 @@ export default {
       totalCount,
       importInput,
       importResult,
-      showClearConfirm,
+      showClearConfirm, clearConfirmRef,
       exportAll,
       onImportFile,
       clearAll

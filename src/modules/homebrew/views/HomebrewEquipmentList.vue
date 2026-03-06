@@ -84,8 +84,10 @@
 
       <div
         v-if="deleteTarget"
+        ref="deleteConfirmRef"
         class="hb-eq-list__delete-confirm"
         role="alertdialog"
+        aria-modal="true"
         :aria-label="`Confirmer la suppression de ${deleteTarget.name}`"
       >
         <p class="hb-eq-list__delete-text">
@@ -112,6 +114,7 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewList from '../core/components/HomebrewList.vue'
@@ -137,6 +140,8 @@ export default {
     const store = useEquipmentHomebrewStore()
     const selectedId = ref(null)
     const deleteTarget = ref(null)
+    const deleteConfirmRef = ref(null)
+    useFocusTrap(deleteConfirmRef, () => !!deleteTarget.value)
     const importExportRef = ref(null)
     const equipmentCategories = CATEGORY_DISPLAY
 
@@ -209,7 +214,7 @@ export default {
     function onClearAll() { store.clearAll(); selectedId.value = null }
 
     return {
-      store, selectedId, selectedItem, deleteTarget, importExportRef,
+      store, selectedId, selectedItem, deleteTarget, deleteConfirmRef, importExportRef,
       sortOptions, equipmentCategories, hasActiveFilters,
       toggleCategoryFilter, toggleSortDirection, clearFilters,
       goCreate, goEdit, onSelect, onDuplicate, onDelete, confirmDelete,

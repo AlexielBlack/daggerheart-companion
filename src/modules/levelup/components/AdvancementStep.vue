@@ -126,8 +126,10 @@
         @keydown.escape="cancelTraitPick"
       >
         <div
+          ref="traitPickerRef"
           class="trait-picker"
           role="dialog"
+          aria-modal="true"
           aria-label="Choisissez 2 traits à augmenter"
           @click.stop
         >
@@ -206,6 +208,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { TRAITS } from '@data/classes'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'AdvancementStep',
@@ -268,6 +271,9 @@ export default {
     const traitPickerOpen = ref(false)
     const pickedTraits = ref([])
     const currentTraitOption = ref(null)
+    const traitPickerRef = ref(null)
+
+    useFocusTrap(traitPickerRef, () => traitPickerOpen.value)
 
     // Traits effectivement marqués (tenant compte du clear au tier achievement)
     const effectiveMarkedTraits = computed(() => {
@@ -346,6 +352,7 @@ export default {
       canSelect,
       selectSimple,
       traitPickerOpen,
+      traitPickerRef,
       pickedTraits,
       startTraitPick,
       isTraitMarked,

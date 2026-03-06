@@ -134,8 +134,10 @@
         @keydown.escape="deleteTarget = null"
       >
         <div
+          ref="deleteDialogRef"
           class="confirm-dialog"
           role="alertdialog"
+          aria-modal="true"
           aria-label="Confirmer la suppression"
           @click.stop
         >
@@ -166,6 +168,7 @@
 import { ref, computed } from 'vue'
 import { useCharacterStore } from '../stores/characterStore'
 import { useLevelUpStore } from '@modules/levelup'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
@@ -179,6 +182,9 @@ export default {
     const levelUpStore = useLevelUpStore()
     const showPicker = ref(false)
     const deleteTarget = ref(null)
+    const deleteDialogRef = ref(null)
+
+    useFocusTrap(deleteDialogRef, () => !!deleteTarget.value)
 
     // Toast
     const toast = ref({ visible: false, message: '', type: 'success' })
@@ -254,6 +260,7 @@ export default {
       store,
       showPicker,
       deleteTarget,
+      deleteDialogRef,
       deleteTargetName,
       toast,
       onClassSelected,

@@ -111,8 +111,10 @@
       <!-- Confirmation suppression -->
       <div
         v-if="deleteTarget"
+        ref="deleteConfirmRef"
         class="hb-adv-list__delete-confirm"
         role="alertdialog"
+        aria-modal="true"
         :aria-label="`Confirmer la suppression de ${deleteTarget.name}`"
       >
         <p class="hb-adv-list__delete-text">
@@ -139,6 +141,7 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import { useRouter } from 'vue-router'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import HomebrewList from '../core/components/HomebrewList.vue'
@@ -169,6 +172,8 @@ export default {
 
     const selectedId = ref(null)
     const deleteTarget = ref(null)
+    const deleteConfirmRef = ref(null)
+    useFocusTrap(deleteConfirmRef, () => !!deleteTarget.value)
     const importExportRef = ref(null)
     const adversaryTypes = ADVERSARY_TYPES
 
@@ -290,7 +295,7 @@ export default {
       store,
       selectedId,
       selectedItem,
-      deleteTarget,
+      deleteTarget, deleteConfirmRef,
       importExportRef,
       adversaryTypes,
       sortOptions,

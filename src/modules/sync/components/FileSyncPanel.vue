@@ -60,8 +60,10 @@
     <!-- Confirmation d'import -->
     <div
       v-if="showConfirm"
+      ref="confirmRef"
       class="sync-panel__confirm"
       role="alertdialog"
+      aria-modal="true"
       aria-labelledby="confirm-heading"
       aria-describedby="confirm-description"
     >
@@ -110,6 +112,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import { useFileSync } from '../composables/useFileSync.js'
 import { useSyncStore } from '../stores/syncStore.js'
 
@@ -121,8 +124,11 @@ export default {
     const syncStore = useSyncStore()
 
     const showConfirm = ref(false)
+    const confirmRef = ref(null)
     const pendingFile = ref(null)
     const feedback = ref(null)
+
+    useFocusTrap(confirmRef, () => showConfirm.value)
 
     function showFeedback(type, message) {
       feedback.value = { type, message }
@@ -178,6 +184,7 @@ export default {
     return {
       fileSync,
       showConfirm,
+      confirmRef,
       pendingFile,
       feedback,
       handleExport,

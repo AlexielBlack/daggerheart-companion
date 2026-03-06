@@ -51,6 +51,7 @@
 
 <script>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'BottomDrawer',
@@ -65,6 +66,8 @@ export default {
   setup(props, { emit }) {
     const sheet     = ref(null)
     const isVisible = ref(false)
+
+    useFocusTrap(sheet, () => props.modelValue)
 
     function close() {
       isVisible.value = false

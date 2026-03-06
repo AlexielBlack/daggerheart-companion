@@ -154,8 +154,10 @@
     <!-- Confirmation pull -->
     <div
       v-if="showPullConfirm"
+      ref="pullConfirmRef"
       class="sync-panel__confirm"
       role="alertdialog"
+      aria-modal="true"
       aria-labelledby="pull-confirm-heading"
       aria-describedby="pull-confirm-description"
     >
@@ -203,6 +205,7 @@
 
 <script>
 import { ref, computed } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import { useGistSync } from '../composables/useGistSync.js'
 import { useSyncStore } from '../stores/syncStore.js'
 
@@ -220,6 +223,8 @@ export default {
     const connected = ref(!!(gistSync.getToken() && gistSync.getGistId()))
     const username = ref(null)
     const showPullConfirm = ref(false)
+    const pullConfirmRef = ref(null)
+    useFocusTrap(pullConfirmRef, () => showPullConfirm.value)
     const feedback = ref(null)
 
     const syncing = computed(() =>
@@ -351,7 +356,7 @@ export default {
       connected,
       username,
       syncing,
-      showPullConfirm,
+      showPullConfirm, pullConfirmRef,
       feedback,
       formatDate,
       handleConnect,

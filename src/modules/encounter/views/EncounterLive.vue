@@ -241,8 +241,10 @@
       >
         <!-- eslint-enable -->
         <div
+          ref="aoeModalRef"
           class="live__aoe-modal"
           role="dialog"
+          aria-modal="true"
           aria-label="Dégâts de zone"
         >
           <div class="live__aoe-header">
@@ -371,8 +373,10 @@
       >
         <!-- eslint-enable -->
         <div
+          ref="endModalRef"
           class="live__end-modal"
           role="dialog"
+          aria-modal="true"
           aria-label="Résumé de la rencontre"
         >
           <h2>📋 Résumé — {{ endSummaryData.name }}</h2>
@@ -434,6 +438,7 @@ import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
 import CombatLogDrawer from '../components/CombatLogDrawer.vue'
 import SpotlightToggle from '../components/SpotlightToggle.vue'
 import { useHaptic } from '../composables/useHaptic'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
@@ -533,6 +538,8 @@ export default {
 
     // ── AoE ──
     const aoeMode = ref(false)
+    const aoeModalRef = ref(null)
+    useFocusTrap(aoeModalRef, () => aoeMode.value)
 
     // ── Countdowns ──
     const showCountdownBar = ref(false)
@@ -593,6 +600,8 @@ export default {
     // ── Fin ──
     const showEndSummary = ref(false)
     const endSummaryData = ref(null)
+    const endModalRef = ref(null)
+    useFocusTrap(endModalRef, () => showEndSummary.value && !!endSummaryData.value)
 
     // ── Navigation tablette : side-sheet contexte ──
     const tabletCtxOpen = ref(false)
@@ -678,10 +687,12 @@ export default {
       showCombatLog, clearCombatLog,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetHp, aoeUndoTarget, applyAoe,
+      aoeModalRef,
       showCountdownBar,
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
       showEndSummary, endSummaryData,
+      endModalRef,
       tabletCtxOpen, ctxColRef,
       haptic
     }

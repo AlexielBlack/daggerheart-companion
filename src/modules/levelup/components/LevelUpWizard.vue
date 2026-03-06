@@ -10,6 +10,7 @@
       @keydown.escape="store.close()"
     >
       <div
+        ref="wizardPanelRef"
         class="wizard-panel"
         role="dialog"
         aria-modal="true"
@@ -169,9 +170,10 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useCharacterStore } from '@modules/characters'
 import { useLevelUpStore, WIZARD_STEPS } from '../stores/levelUpStore'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 import TierAchievementStep from './TierAchievementStep.vue'
 import AdvancementStep from './AdvancementStep.vue'
 import ThresholdStep from './ThresholdStep.vue'
@@ -192,6 +194,9 @@ export default {
     const charStore = useCharacterStore()
     const store = useLevelUpStore()
     const STEPS = WIZARD_STEPS
+    const wizardPanelRef = ref(null)
+
+    useFocusTrap(wizardPanelRef, () => store.isOpen)
 
     // ── Données dérivées pour les composants enfants ──
 
@@ -282,6 +287,7 @@ export default {
       store,
       charStore,
       STEPS,
+      wizardPanelRef,
       selectionsWithLabels,
       currentThresholds,
       catalogCards,

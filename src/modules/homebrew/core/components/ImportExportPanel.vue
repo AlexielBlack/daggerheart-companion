@@ -55,8 +55,10 @@
     <!-- Confirmation de suppression -->
     <div
       v-if="showClearConfirm"
+      ref="clearConfirmRef"
       class="import-export__confirm"
       role="alertdialog"
+      aria-modal="true"
       aria-label="Confirmer la suppression"
     >
       <p class="import-export__confirm-text">
@@ -84,6 +86,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useFocusTrap } from '@core/composables/useFocusTrap.js'
+
 /**
  * @component ImportExportPanel
  * @description Panneau d'import/export JSON pour le contenu homebrew.
@@ -117,11 +122,17 @@ export default {
 
   emits: ['export', 'import', 'clear-all'],
 
+  setup() {
+    const showClearConfirm = ref(false)
+    const clearConfirmRef = ref(null)
+    useFocusTrap(clearConfirmRef, () => showClearConfirm.value)
+    return { showClearConfirm, clearConfirmRef }
+  },
+
   data() {
     return {
       statusMessage: '',
-      statusType: 'info',
-      showClearConfirm: false
+      statusType: 'info'
     }
   },
 
