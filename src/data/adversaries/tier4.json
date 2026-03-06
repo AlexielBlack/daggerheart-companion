@@ -314,7 +314,6 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "bete",
       "fee",
       "humanoide"
     ],
@@ -533,7 +532,7 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "demon"
+      "monstruosite"
     ],
     "description": "A powerful and imposing lieutenant of a God, made from solid tight. Motives & Tactics: Protect Hallows Above, dispatch angels, lay down law",
     "motives": [],
@@ -981,8 +980,7 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "humanoide",
-      "plante"
+      "humanoide"
     ],
     "description": "An expert seraph blessed with divine power.",
     "motives": [
@@ -1670,6 +1668,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
+      "fee",
       "humanoide"
     ],
     "description": "An ancient witch of the deep woods, Baba Yaga offers terrible truths — and punishes those who ask.",
@@ -1787,11 +1786,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "aberration",
-      "demon",
       "fee",
-      "geant",
-      "plante"
+      "geant"
     ],
     "description": "A titan in rusted bronze. The chained eye under his brow is a sunrise no land survives.",
     "motives": [
@@ -2079,7 +2075,7 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "bete",
+      "aberration",
       "humanoide"
     ],
     "description": "A robe-wearing, squid-headed humanoid from the Outer Realms.",
@@ -2298,7 +2294,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "geant"
+      "construction",
+      "fee"
     ],
     "description": "A living, creaking hut atop giant chicken legs, it stomps through the forest with uncanny grace. Bound to Baba Yaga's will, it shifts the land around it and crushes all who come too close.",
     "motives": [
@@ -2427,7 +2424,6 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "demon",
       "humanoide"
     ],
     "description": "A chosen warrior of a deity with an imperious look.",
@@ -2546,8 +2542,8 @@
     "tier": 4,
     "type": "Ranged",
     "genres": [
-      "bete",
-      "elementaire"
+      "elementaire",
+      "monstruosite"
     ],
     "description": "A monster on all fours that belches flames and incinerates foes.",
     "motives": [
@@ -2721,7 +2717,7 @@
     "tier": 4,
     "type": "Minion",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A masked humanoid partaking in a profaned ritual.",
     "motives": [
@@ -2902,7 +2898,6 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "aberration",
       "bete",
       "fee",
       "mort-vivant"
@@ -3002,6 +2997,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
+      "humanoide",
       "monstruosite"
     ],
     "description": "A large humanoid, the offspring of a God.",
@@ -3108,8 +3104,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "bete",
-      "humanoide"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A chosen warrior who has fallen out of favor with their deity and has been reshaped into a monstrosity as punishment.",
     "motives": [
@@ -3192,6 +3188,7 @@
     "tier": 4,
     "type": "Social",
     "genres": [
+      "fee",
       "humanoide"
     ],
     "description": "A powerful fae being that socializes at the fae court. Motives & Tactics: Influence fae courts, seek new pleasures, create mischief",
@@ -3288,6 +3285,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
+      "fee",
       "monstruosite"
     ],
     "description": "A powerful fae being with a monstrous appearance, who maintains a domain in the Fae Realm.",
@@ -3385,6 +3383,7 @@
     "tier": 4,
     "type": "Social",
     "genres": [
+      "fee",
       "monstruosite"
     ],
     "description": "A powerful fae being that likes to roam across realms.",
@@ -3683,7 +3682,7 @@
     "tier": 4,
     "type": "Social",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "An elderly elf in charge of a business empire.",
     "motives": [
@@ -3769,7 +3768,7 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "aberration"
     ],
     "description": "Invading forces from another plane, eager to conquer this world and consume its resources.",
     "motives": [
@@ -3873,7 +3872,7 @@
     "tier": 4,
     "type": "Minion",
     "genres": [
-      "monstruosite"
+      "mort-vivant"
     ],
     "description": "Une âme maudite liée à la volonté des Déchus.",
     "motives": [
@@ -3954,7 +3953,8 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Un mage puissant lié par les pactes qu’il a conclus de son vivant.",
     "motives": [
@@ -4061,7 +4061,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Un guerrier terrifiant qui tranche les mortels comme du papier.",
     "motives": [
@@ -4137,7 +4138,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Ce que seuls les plus redoutés ont une chance de craindre.",
     "motives": [
@@ -4467,8 +4469,7 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "bete",
-      "geant"
+      "monstruosite"
     ],
     "description": "An Iroquois terror--a storm of gnashing, wing-tendoned heads that batter windows and fires both.",
     "motives": [
@@ -4554,10 +4555,8 @@
     "tier": 4,
     "type": "Bruiser",
     "genres": [
-      "aberration",
       "fee",
-      "geant",
-      "mort-vivant"
+      "geant"
     ],
     "description": "A giant whose breath smells of bad iron and storm graves. One eye curses; the other pities and never wins.",
     "motives": [
@@ -4648,12 +4647,8 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "aberration",
-      "bete",
-      "demon",
       "fee",
-      "geant",
-      "plante"
+      "geant"
     ],
     "description": "A host of twisted giants and sea-born demons, the Fomorians rise from storm and shadow. Misshapen of form - some one-eyed, some one-armed, some part beast - they are the enemies of gods and mortals alike. They demand cruel tribute, spread blight across the land, and bring chaos where they march.",
     "motives": [
@@ -4754,7 +4749,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "dragon"
+      "dragon",
+      "elementaire"
     ],
     "description": "A Seneca flaming serpent, tail full of falling stars; it writes its name across lakes at night.",
     "motives": [
@@ -4960,7 +4956,7 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "plante"
+      "humanoide"
     ],
     "description": "A divinely-empowered monarch claiming dominion over the whole world.",
     "motives": [
@@ -5181,11 +5177,8 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
-      "aberration",
       "bete",
-      "elementaire",
-      "fee",
-      "geant"
+      "fee"
     ],
     "description": "A towering black hound with eyes burning like embers, known as the \"Dog of Darkness.\" Appearing from the shadows without sound, it vanishes just as swiftly, leaving only terror and the certainty that doom follows in its wake.",
     "motives": [
@@ -5422,8 +5415,7 @@
     "tier": 4,
     "type": "Ranged",
     "genres": [
-      "humanoide",
-      "mort-vivant"
+      "humanoide"
     ],
     "description": "Des soldats spirituels avec des arcs sanctifiés.",
     "motives": [
@@ -5490,8 +5482,7 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
-      "humanoide",
-      "plante"
+      "humanoide"
     ],
     "description": "A divinely-empowered killer dispatched to vanquish the godsʼ most persistent foes.",
     "motives": [
@@ -5612,7 +5603,7 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A heavenly host of winged humanoids whose song calls forth tears of religious awe.",
     "motives": [
@@ -5699,8 +5690,7 @@
     "tier": 4,
     "type": "Minion",
     "genres": [
-      "humanoide",
-      "plante"
+      "humanoide"
     ],
     "description": "Des âmes de fidèles, élevées avec des armes divines.",
     "motives": [
@@ -5883,7 +5873,7 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "mort-vivant"
+      "humanoide"
     ],
     "description": "Un champion divin, à la tête d’une armée sacrée de guerriers qui font respecter la volonté de leur dieu.",
     "motives": [
@@ -5998,8 +5988,8 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "aberration",
-      "elementaire"
+      "elementaire",
+      "mort-vivant"
     ],
     "description": "Frozen where they begged for mercy, the Morozhenye return as hollow echoes of the condemned. Their limbs crack with ice, their eyes see nothing, and their touch brings silence. They do not speak. They do not feel. They remember only the cold.",
     "motives": [
@@ -6196,6 +6186,7 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
+      "construction",
       "humanoide"
     ],
     "description": "A humanoid creature created for hunting and killing.",
@@ -6310,6 +6301,7 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
+      "construction",
       "humanoide"
     ],
     "description": "A humanoid creature created for hunting magical beings.",
@@ -6773,7 +6765,7 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
-      "mort-vivant"
+      "aberration"
     ],
     "description": "A shifting physical manifestation of terror made of sinew, bone, and shadow.",
     "motives": [
@@ -6959,7 +6951,6 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "aberration",
       "humanoide"
     ],
     "description": "An expert rogue skilled in deception.",
@@ -7061,7 +7052,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "mort-vivant"
+      "aberration"
     ],
     "description": "A shadowed reflection of a PC with access to all the cards in the PC’s Vault.",
     "motives": [
@@ -7235,9 +7226,8 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "bete",
       "elementaire",
-      "mort-vivant"
+      "fee"
     ],
     "description": "An ancient spirit of winter and judgement, Morozko rewards humility and punishes pride. His presence brings silence, snow, and the cold certainty that no soul escapes the test of frost.",
     "motives": [
@@ -7758,7 +7748,6 @@
     "type": "Horde",
     "genres": [
       "bete",
-      "construction",
       "fee",
       "mort-vivant"
     ],
@@ -7979,7 +7968,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "demon"
+      "monstruosite"
     ],
     "description": "Un immortel imposant et incarnation du destin, maudit à ne voir que les issues funestes.",
     "motives": [
@@ -8112,7 +8101,6 @@
     "type": "Leader",
     "genres": [
       "aberration",
-      "bete",
       "humanoide"
     ],
     "description": "A stoic, battle-hardened veteran from another world.",
@@ -8584,7 +8572,7 @@
     "type": "Ranged",
     "genres": [
       "aberration",
-      "bete"
+      "plante"
     ],
     "description": "A large, flower-shaped creature with brightly colored petals and broad dark leaves.",
     "motives": [
@@ -8846,7 +8834,7 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "monstruosite"
+      "aberration"
     ],
     "description": "Une masse changeante et informe apparemment faite de lumière chromatique.",
     "motives": [
@@ -8914,7 +8902,7 @@
     "tier": 4,
     "type": "Minion",
     "genres": [
-      "monstruosite"
+      "aberration"
     ],
     "description": "Une forme vaguement humanoïde dépouillée de mémoire et d’identité.",
     "motives": [
@@ -8983,8 +8971,7 @@
     "type": "Social",
     "genres": [
       "bete",
-      "geant",
-      "humanoide"
+      "monstruosite"
     ],
     "description": "A giant, vengeful barn owl with a 15-foot wingspan and a human face.",
     "motives": [
@@ -9569,6 +9556,7 @@
     "tier": 4,
     "type": "Bruiser",
     "genres": [
+      "dragon",
       "elementaire"
     ],
     "description": "A twisted drakona grown to enormous size. Lightless black flames pour from its lips and chains hang from its back.",
@@ -9829,7 +9817,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "monstruosite"
+      "bete"
     ],
     "description": "A huge bird of prey watching over a mountain.",
     "motives": [
@@ -9946,7 +9934,8 @@
     "tier": 4,
     "type": "Ranged",
     "genres": [
-      "construction"
+      "construction",
+      "mort-vivant"
     ],
     "description": "A floating humanoid skull animated by scintillating magic.",
     "motives": [
@@ -10042,9 +10031,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
+      "aberration",
       "bete",
-      "construction",
-      "humanoide",
       "mort-vivant"
     ],
     "description": "A spider made from the bones of a dozen dead priests infested with a fleshy parasite using the bodies as armor.",
@@ -10373,7 +10361,7 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "aberration",
+      "bete",
       "elementaire"
     ],
     "description": "Wings like continents turning, eyes full of verdict; thunder walks where it looks.",
@@ -10467,7 +10455,7 @@
     "tier": 4,
     "type": "Skulk",
     "genres": [
-      "bete",
+      "aberration",
       "mort-vivant"
     ],
     "description": "A flickering shadow being, leaving behind a trail of blackened sand. Motives & Tactics: Locate temporal anomalies, break into reality, unravel",
@@ -10560,7 +10548,8 @@
     "tier": 4,
     "type": "Leader",
     "genres": [
-      "bete"
+      "bete",
+      "monstruosite"
     ],
     "description": "A Cherokee eagle of the red rock bluffs; talons like grapnels, cry like bronze torn in half.",
     "motives": [
@@ -10731,7 +10720,6 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "aberration",
       "fee",
       "humanoide"
     ],
@@ -10831,6 +10819,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
+      "humanoide",
       "mort-vivant"
     ],
     "description": "An undead monarch whose power comes from their royal regalia.",
@@ -11181,7 +11170,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "dragon"
+      "dragon",
+      "elementaire"
     ],
     "description": "Enragé par ses blessures, le dragon éclate en lave en fusion.",
     "motives": [
@@ -11324,7 +11314,6 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "demon",
       "dragon"
     ],
     "description": "Une créature ailée massive aux écailles d’obsidienne et aux griffes impossiblement tranchantes.",
@@ -11451,8 +11440,7 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "construction",
-      "demon",
+      "aberration",
       "mort-vivant"
     ],
     "description": "A resurrected body, animated by an infestation of larvae that make an infernal humming sound.",
@@ -11627,8 +11615,7 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "elementaire",
-      "geant"
+      "elementaire"
     ],
     "description": "A colossal ice elemental surrounded by a raging blizzard.",
     "motives": [
@@ -11756,8 +11743,7 @@
     "type": "Solo",
     "genres": [
       "bete",
-      "elementaire",
-      "geant"
+      "elementaire"
     ],
     "description": "A colossal ice elemental taking the form of a wolf.",
     "motives": [
@@ -12066,7 +12052,8 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "aberration"
+      "aberration",
+      "humanoide"
     ],
     "description": "An alien with a bald head and large eyes, tracing strange patterns in the air.",
     "motives": [
@@ -12150,7 +12137,7 @@
     "type": "Leader",
     "genres": [
       "aberration",
-      "bete"
+      "humanoide"
     ],
     "description": "An alien with large eyes and an enlarged bald head.",
     "motives": [
@@ -12267,7 +12254,8 @@
     "tier": 4,
     "type": "Solo",
     "genres": [
-      "monstruosite"
+      "bete",
+      "geant"
     ],
     "description": "A castle-sized, bipedal reptile.",
     "motives": [
@@ -12394,7 +12382,7 @@
     "tier": 4,
     "type": "Support",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "A vengeful hearth-spirit born from neglect and broken customs. It twists homes into traps and punishes those who forget the old ways.",
     "motives": [
@@ -12483,7 +12471,6 @@
     "tier": 4,
     "type": "Horde",
     "genres": [
-      "demon",
       "mort-vivant"
     ],
     "hordeRatio": "20/HP",

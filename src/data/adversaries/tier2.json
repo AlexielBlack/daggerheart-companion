@@ -176,8 +176,6 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "bete",
-      "elementaire",
       "humanoide"
     ],
     "description": "A mage draped in heavy robes with a large crow skull where its head should be",
@@ -266,6 +264,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
+      "fee",
       "monstruosite"
     ],
     "description": "A radiant bird with the face of a sorrowful woman, the Alkonost sings of forgotten joys and distant peace. Her song brings blissful silence—but those who listen may never wish to wake.",
@@ -470,8 +469,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "aberration",
-      "bete"
+      "aberration"
     ],
     "description": "An amorphous slime with protruding faces and other body parts bearing an eerie resemblance to their former prey.",
     "motives": [
@@ -659,8 +657,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "aberration",
-      "construction"
+      "aberration"
     ],
     "description": "A creature's shadow come to life, with glowing eyes.",
     "motives": [
@@ -1216,6 +1213,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
+      "humanoide",
       "monstruosite"
     ],
     "description": "A bird-like humanoid who is deadly with a bow and arrow.",
@@ -1298,7 +1296,8 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "bete"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A bird-like humanoid who bravely swoops into combat.",
     "motives": [
@@ -1381,6 +1380,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
+      "humanoide",
       "monstruosite"
     ],
     "description": "A bird-like humanoid who can control air currents.",
@@ -1484,7 +1484,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "bete"
+      "aberration"
     ],
     "description": "A swarm of unicellular microorganisms.",
     "motives": [
@@ -1744,8 +1744,6 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "aberration",
-      "bete",
       "fee",
       "mort-vivant"
     ],
@@ -1942,7 +1940,6 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "bete",
       "construction"
     ],
     "description": "Un constructe en forme de cube avec une rune différente sur chacune de ses six faces.",
@@ -2042,7 +2039,6 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete",
       "construction"
     ],
     "description": "A pyramid-shaped construct with a different rune on each of their four sides.",
@@ -2422,7 +2418,8 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "monstruosite"
+      "aberration",
+      "humanoide"
     ],
     "description": "Her holy mission slandered and her compassion punished",
     "motives": [
@@ -2981,7 +2978,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "An apparition that haunts homes with violent pranks and theft of possessions.",
     "motives": [
@@ -3154,7 +3151,6 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "humanoide",
       "plante"
     ],
     "description": "A doll-like creature of the jungle made of bark and vines",
@@ -3311,7 +3307,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "monstruosite",
+      "fee",
       "mort-vivant"
     ],
     "description": "A Kwakwaka'wakw wild man of the cedar gloom, offering ghost food in a palm of wind.",
@@ -3527,8 +3523,8 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "bete",
-      "humanoide"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A half-horse half-human creature armed with bow and arrow.",
     "motives": [
@@ -3602,7 +3598,8 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "bete"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A half-horse half-human creature that charges at their foes.",
     "motives": [
@@ -3691,8 +3688,8 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "bete",
-      "humanoide"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A half-horse half-human creature who vigorously defends nature.",
     "motives": [
@@ -3788,7 +3785,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "monstruosite"
+      "construction"
     ],
     "description": "Un crâne humanoïde flottant animé par une magie scintillante.",
     "motives": [
@@ -3969,7 +3966,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "bete"
+      "construction"
     ],
     "description": "A clank with the form of a quadrupedal beast, often used as a mount.",
     "motives": [
@@ -4437,7 +4434,7 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "Un civil mal entraîné enrôlé de force pour la guerre.",
     "motives": [
@@ -4701,7 +4698,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "Un manipulateur accompli et maître des arts sociaux.",
     "motives": [
@@ -4767,8 +4764,8 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "fee",
-      "plante"
+      "bete",
+      "fee"
     ],
     "description": "Green-furred as moss, paws that make no sound, breath like heather smoke. It barks thrice when doom comes.",
     "motives": [
@@ -5026,7 +5023,6 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "demon",
       "humanoide"
     ],
     "description": "Un cultiste de bas rang en robes simples, avide de pouvoir.",
@@ -5251,7 +5247,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "bete"
+      "humanoide"
     ],
     "description": "A group of tourists from across the region, here to make wishes and be seen participating in the local custom. Demanding, incurious, and unwittingly making everything worse.",
     "motives": [
@@ -5354,7 +5350,6 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "bete",
       "demon"
     ],
     "hordeRatio": "1/HP",
@@ -5548,7 +5543,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "A household spirit bound to the hearth, the Domovoi rewards respect and punishes neglect.",
     "motives": [
@@ -5638,7 +5633,6 @@
     "type": "Skulk",
     "genres": [
       "aberration",
-      "bete",
       "demon"
     ],
     "description": "A vicious magical six-legged hellhound with glowing red eyes and two long, toothy squid arms. They confuse enemies by conjuring an illusory duplicate of themself.",
@@ -5714,9 +5708,6 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "bete",
-      "construction",
-      "dragon",
       "humanoide"
     ],
     "description": "A knight clad in dragonplate armor and a helmet in the shape of a dragon's head.",
@@ -5805,7 +5796,8 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "elementaire"
+      "elementaire",
+      "humanoide"
     ],
     "description": "A drakona who wields elemental power.",
     "motives": [
@@ -5902,7 +5894,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "bete"
+      "construction"
     ],
     "description": "A small flying machine surveying the landscape.",
     "motives": [
@@ -5987,8 +5979,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "construction",
-      "geant",
+      "fee",
       "mort-vivant"
     ],
     "description": "A headless centaur in fae armor with a flaming spine whip who is trailed by the flying heads of those it has killed.",
@@ -6103,8 +6094,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "humanoide",
-      "plante"
+      "humanoide"
     ],
     "description": "A dwarf with divine powers.",
     "motives": [
@@ -6192,7 +6182,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "construction"
+      "humanoide"
     ],
     "description": "A dwarf equipped head-to-toe in armor.",
     "motives": [
@@ -6289,7 +6279,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "bete"
     ],
     "hordeRatio": "3/HP",
     "description": "Un essaim de prédateurs aquatiques électriques.",
@@ -6357,7 +6347,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "bete"
     ],
     "description": "A large creature with tusks and a long prehensile trunk.",
     "motives": [
@@ -6431,7 +6421,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "An elf dual-wielding swords.",
     "motives": [
@@ -6507,7 +6497,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "Seekers for Mother, they collect what might please her.",
     "motives": [
@@ -6556,8 +6546,6 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "construction",
-      "geant",
       "humanoide"
     ],
     "description": "Un écuyer en armure ou un roturier expérimenté cherchant à progresser.",
@@ -6627,7 +6615,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A criminal expelled from their home to perish",
     "motives": [
@@ -6803,7 +6791,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "aberration"
     ],
     "description": "Une expérience nécromantique magique qui a mal tourné, le laissant déformé et maladroit.",
     "motives": [
@@ -6887,7 +6875,8 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "A soldier of the Old World with a chainmail coif but no head.",
     "motives": [
@@ -6960,7 +6949,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A large two headed faun, wielding weapons in both hands.",
     "motives": [
@@ -7047,8 +7036,8 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "bete",
-      "fee"
+      "fee",
+      "mort-vivant"
     ],
     "description": "A famine saint and curse in the same coat. Crows perch on his shoulders to hear who is spared.",
     "motives": [
@@ -7239,7 +7228,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "monstruosite"
+      "mort-vivant"
     ],
     "description": "A pale, long limbed, eater of flesh, dropping in blood and gore",
     "motives": [
@@ -7357,7 +7346,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A firbo!g wearing tattered leathers and a cowboy hat.",
     "motives": [
@@ -7445,7 +7434,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "plante"
+      "humanoide"
     ],
     "description": "A firbolg farmer who grows rare plants.",
     "motives": [
@@ -7685,7 +7674,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "plante"
     ],
     "description": "A group offungrils working together for a common cause.",
     "motives": [
@@ -7741,7 +7730,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "monstruosite"
+      "plante"
     ],
     "description": "A tall, thin fungril with a stench of death and decay.",
     "motives": [
@@ -7824,7 +7813,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete"
+      "humanoide"
     ],
     "description": "A galapa in dark clothing trained in martial arts and infiltration.",
     "motives": [
@@ -7924,7 +7913,6 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "demon",
       "humanoide"
     ],
     "description": "A galapa warrior with a scarred shell.",
@@ -8103,8 +8091,8 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "bete",
-      "geant"
+      "geant",
+      "humanoide"
     ],
     "description": "Un guerrier vêtu de cuir portant un fouet et un arc massif.",
     "motives": [
@@ -8530,9 +8518,8 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "bete",
-      "construction",
-      "geant"
+      "geant",
+      "humanoide"
     ],
     "description": "Un combattant géant portant une armure empruntée.",
     "motives": [
@@ -8600,8 +8587,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete",
-      "geant"
+      "bete"
     ],
     "description": "An arachnid the size of a small human with markings that help it blend into its environment",
     "motives": [
@@ -8685,7 +8671,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A large simiah with four arms dressed in rough leathers and hunched forward",
     "motives": [
@@ -8865,7 +8851,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A gnome armed with a large firearm.",
     "motives": [
@@ -8953,7 +8939,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A gnome who builds contraptions.",
     "motives": [
@@ -9060,8 +9046,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "aberration",
-      "bete"
+      "aberration"
     ],
     "description": "A fleshy, floating ball of teeth with ten jointed antennae rising from its crown, each bearing a different-colored eye.",
     "motives": [
@@ -9231,7 +9216,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "dragon",
+      "humanoide",
       "monstruosite"
     ],
     "description": "Un humanoïde écailleux à tête de serpents avec un arc doré, enragé que sa paix ait été troublée.",
@@ -9566,7 +9551,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "monstruosite"
+      "fee"
     ],
     "description": "A small humanoid with large claws and a greasy body.",
     "motives": [
@@ -9668,7 +9653,6 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete",
       "monstruosite"
     ],
     "description": "A creature with a lion's body and the head and wings of an eagle, often used as a winged mount.",
@@ -9738,7 +9722,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A huge ribbet with thick arms that reach to the ground, dressed in skulls and leathers",
     "motives": [
@@ -9827,8 +9811,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "aberration",
-      "bete"
+      "aberration"
     ],
     "description": "A doe-eyed creature of the wood in desperate need of your help.",
     "motives": [
@@ -10130,7 +10113,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "bete"
+      "construction"
     ],
     "description": "A crab-like machine bearing a large weight upon its back.",
     "motives": [
@@ -10214,8 +10197,7 @@
     "type": "Leader",
     "genres": [
       "construction",
-      "elementaire",
-      "humanoide"
+      "mort-vivant"
     ],
     "description": "A suit of heavy armor that remembers its duty, even in death",
     "motives": [
@@ -10438,7 +10420,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "plante"
     ],
     "description": "An infestation of rot given humanoid form",
     "motives": [
@@ -10524,7 +10506,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A band of angry civilians armed with torches and pitch forks.",
     "motives": [
@@ -11075,9 +11057,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "bete",
-      "humanoide",
-      "plante"
+      "humanoide"
     ],
     "description": "A holy warrior and protector, leading a divine powerʼs forces into battle.",
     "motives": [
@@ -11367,7 +11347,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "plante"
     ],
     "description": "A patch of kelp floating gently in the water currents.",
     "motives": [
@@ -11470,9 +11450,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete",
-      "fee",
-      "mort-vivant"
+      "fee"
     ],
     "description": "A shapeshifting water spirit that haunts rivers and lochs, most often taking the form of a glistening black horse. To the unwary, it seems beautiful and harmless, but once touched its skin clings like glue, dragging the victim into the depths.",
     "motives": [
@@ -11558,7 +11536,6 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "construction",
       "humanoide"
     ],
     "description": "Un soldat décoré en armure lourde avec une monture puissante.",
@@ -11664,8 +11641,8 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "bete",
-      "demon"
+      "demon",
+      "fee"
     ],
     "description": "A demonic bearded faun carrying a sack and rod.",
     "motives": [
@@ -12044,8 +12021,6 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "bete",
-      "humanoide",
       "plante"
     ],
     "description": "A centaur made from the bark and vine of the jungle with the exposed skull and antlers of an elk",
@@ -12241,7 +12216,7 @@
     "type": "Solo",
     "genres": [
       "aberration",
-      "demon"
+      "fee"
     ],
     "description": "A one-eyed, hunchbacked creature of ill omen, the Likho embodies pure misfortune. Those who cross its path face unnatural accidents, cruel luck, and an unshakable sense of impending doom.",
     "motives": [
@@ -12424,7 +12399,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "monstruosite"
+      "construction"
     ],
     "description": "A small, broken-looking doll with features that resemble humanoids with an unswerving loyalty to their creator.",
     "motives": [
@@ -12490,7 +12465,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A lithe lizardfolk with color-changing skin.",
     "motives": [
@@ -12578,7 +12553,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A large lizard folk with rough skin covered with war paint.",
     "motives": [
@@ -12675,7 +12650,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "bete"
+      "humanoide"
     ],
     "description": "A lizardfolk with a muscular tail, armed with a spear. Motives & Tactics: Keep watch, roam, block escape",
     "motives": [],
@@ -12760,7 +12735,7 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "monstruosite"
+      "bete"
     ],
     "description": "A large panda-like creature with blood-streaked fur.",
     "motives": [
@@ -12870,7 +12845,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "aberration"
+      "humanoide"
     ],
     "description": "A dwarf with crazed eyes, whispering to the rocks.",
     "motives": [
@@ -12958,8 +12933,6 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "bete",
-      "dragon",
       "plante"
     ],
     "description": "A group of mandrake roots tied together by their stems. They howl and scream, causing death in those that hear them.",
@@ -13029,8 +13002,6 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "bete",
-      "dragon",
       "monstruosite"
     ],
     "description": "A half-lion, half-dragon beast with a spiked tail.",
@@ -13115,7 +13086,6 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete",
       "humanoide"
     ],
     "description": "Un voleur rusé doté de talents acrobatiques et d’un goût pour le spectaculaire.",
@@ -13192,7 +13162,6 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "bete",
       "humanoide"
     ],
     "description": "A lavish party held in a noble's manor, with guests in ballgowns and faces hidden behind elaborate masks.",
@@ -13432,7 +13401,8 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "construction",
+      "humanoide"
     ],
     "description": "A metallic suit worn by a person.",
     "motives": [
@@ -13529,7 +13499,6 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "bete",
       "humanoide"
     ],
     "description": "Un marchand accompli dirigeant une vaste opération commerciale.",
@@ -13607,7 +13576,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A merfolk skilled in water magic.",
     "motives": [
@@ -13692,7 +13661,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "bete"
+      "humanoide"
     ],
     "description": "A merfolk skilled in underwater combat.",
     "motives": [
@@ -13763,8 +13732,7 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "bete",
-      "mort-vivant"
+      "fee"
     ],
     "description": "A mote of energy that takes the form of an animal.",
     "motives": [
@@ -13834,6 +13802,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
+      "humanoide",
       "monstruosite"
     ],
     "description": "Un firbolg massif à tête de taureau avec un tempérament explosif.",
@@ -14050,7 +14019,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete"
+      "aberration"
     ],
     "description": "A shapeshifting creature that can disguise themselves as humanoids.",
     "motives": [
@@ -14138,7 +14107,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "bete"
+      "aberration"
     ],
     "description": "A shapeshifting creature that can disguise themselves as objects.",
     "motives": [
@@ -14225,7 +14194,8 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Une silhouette mort-vivante portant un long manteau de cuir, au regard scrutateur et à la cruauté désinvolte.",
     "motives": [
@@ -14484,7 +14454,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "bete"
+      "fee"
     ],
     "description": "A Choctaw shadow that bends like smoke and speaks in the voice you use inside your head.",
     "motives": [
@@ -14571,7 +14541,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "monstruosite"
+      "bete"
     ],
     "description": "A whale with a horned head.",
     "motives": [
@@ -14646,7 +14616,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "mort-vivant"
+      "humanoide"
     ],
     "description": "An aspiring tyrant who has embraced the power of death. Wearing a mantle of flesh and melted wax, they carry a staff with twisted branches and wear a cloak of shadow.",
     "motives": [
@@ -14950,9 +14920,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "aberration",
-      "geant",
-      "mort-vivant"
+      "aberration"
     ],
     "description": "A quivering cube of slime as tall as a giant, transparent but deadly. In its form are bits of broken weapons, coins, and a partially digested skeleton.",
     "motives": [
@@ -15059,7 +15027,7 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "An orc fighter armed with a greataxe.",
     "motives": [
@@ -15128,7 +15096,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A wheelchair-bound orc armed with a crossbow.",
     "motives": [
@@ -15421,7 +15389,6 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "bete",
       "humanoide"
     ],
     "description": "A soldier draped in religious icons of the Veiled Gods",
@@ -15701,6 +15668,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
+      "fee",
       "humanoide"
     ],
     "description": "A grim guardian of sunlit fields, the Polevik strikes down the careless and the proud. Cloaked in dust and chaff, he emerges at noon to punish those who disrespect the labor of the land.",
@@ -15790,7 +15758,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "One of the disciples of Evelyar, betrayed by the clergy and",
     "motives": [
@@ -16158,7 +16126,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A large ribbet with rough skin and large webbed claws.",
     "motives": [
@@ -16656,7 +16624,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "construction"
     ],
     "description": "A scuttling machine with robotic arm attachments to break up and manipulate the environment.",
     "motives": [
@@ -17054,7 +17022,6 @@
     "tier": 2,
     "type": "Minion",
     "genres": [
-      "bete",
       "mort-vivant"
     ],
     "description": "A decrepit bandage wrapped Mummy that moves slowly",
@@ -17207,7 +17174,7 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A small and nimble simiah with a bronzed fur patch on their back.",
     "motives": [
@@ -17280,7 +17247,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "An elderly simiah with a golden fur patch on their back.",
     "motives": [
@@ -17382,7 +17349,7 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A muscular simiah with a silvery fur patch on their back.",
     "motives": [
@@ -17485,7 +17452,8 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "monstruosite"
+      "fee",
+      "humanoide"
     ],
     "description": "Une personne mi-poisson aux écailles chatoyantes et à la voix irrésistible.",
     "motives": [
@@ -17557,6 +17525,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
+      "fee",
       "monstruosite"
     ],
     "description": "A radiant bird with the face of a sorrowful woman, the Sirin sings songs so beautiful they lure mortals to their doom. Her voice offers hope—but it is a lie, sweet and final.",
@@ -17645,7 +17614,7 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "A large ribbet adorned in strings of teeth and shrunken heads.",
     "motives": [
@@ -17733,8 +17702,8 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "bete",
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Un combattant fantomatique avec un arc éthéré, incapable de trouver le repos tant que sa charge est vulnérable.",
     "motives": [
@@ -17909,8 +17878,8 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "bete",
-      "humanoide"
+      "humanoide",
+      "mort-vivant"
     ],
     "description": "Un combattant fantomatique avec lances et épées, ancré par le devoir.",
     "motives": [
@@ -17984,7 +17953,6 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "construction",
       "plante"
     ],
     "description": "A heavily mutated fungril with sharp, barklike armor.",
@@ -18074,7 +18042,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "bete",
+      "mort-vivant",
       "plante"
     ],
     "description": "Bodily remains of animals covered in fungus and volatile growths",
@@ -18331,7 +18299,6 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "aberration",
       "humanoide"
     ],
     "description": "A vengeful storm-maker with wild hair and fierce eyes, seeking power to never feel helpless again.",
@@ -18439,9 +18406,7 @@
     "tier": 2,
     "type": "Skulk",
     "genres": [
-      "aberration",
-      "bete",
-      "demon"
+      "aberration"
     ],
     "description": "An abomination with elongated insectoid-like legs and a carapace shell",
     "motives": [
@@ -18537,7 +18502,6 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "bete",
       "geant",
       "plante"
     ],
@@ -18631,7 +18595,6 @@
     "tier": 2,
     "type": "Solo",
     "genres": [
-      "bete",
       "demon"
     ],
     "description": "A ravenous demon unleashed through dark magic, it claims",
@@ -19018,7 +18981,7 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "monstruosite"
+      "humanoide"
     ],
     "description": "An artist driven to madness with wild hair and clothes covered in paint.",
     "motives": [
@@ -19119,7 +19082,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "monstruosite"
+      "construction"
     ],
     "description": "A small, broken-looking doll with features that resemble humanoids and an unswerving loyalty to their creator.",
     "motives": [
@@ -19173,7 +19136,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "A mischievous fae spirit that feeds on drama, anguish, and conflict. Takes many forms, never reveals their true visage.",
     "motives": [
@@ -19363,7 +19326,7 @@
     "tier": 2,
     "type": "Standard",
     "genres": [
-      "aberration"
+      "humanoide"
     ],
     "description": "On first glance, just an ordinary person. On second glance, a pair of eyes peeps out from their coat.",
     "motives": [
@@ -19960,7 +19923,6 @@
     "tier": 2,
     "type": "Ranged",
     "genres": [
-      "bete",
       "humanoide"
     ],
     "description": "Un mage endurci au combat, formé à la magie destructrice.",
@@ -20081,7 +20043,8 @@
     "tier": 2,
     "type": "Leader",
     "genres": [
-      "bete"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A hybrid rat humanoid with furry skin.",
     "motives": [
@@ -20182,7 +20145,8 @@
     "tier": 2,
     "type": "Bruiser",
     "genres": [
-      "bete"
+      "humanoide",
+      "monstruosite"
     ],
     "description": "A hybrid wolf humanoid with sharp fangs and muscular arms.",
     "motives": [
@@ -20283,7 +20247,7 @@
     "tier": 2,
     "type": "Social",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "A primal spirit of creation drawn to the emotional power of a genuine wish, seeking to make mortals' desires come true.",
     "motives": [
@@ -20387,7 +20351,7 @@
     "tier": 2,
     "type": "Horde",
     "genres": [
-      "mort-vivant"
+      "fee"
     ],
     "description": "A cluster of confused Wish Spirits, their tethers to wish tokens tangled and knotted together in a confounding muddle of contradictory wishes and desires.",
     "motives": [
@@ -20973,7 +20937,6 @@
     "tier": 2,
     "type": "Support",
     "genres": [
-      "bete",
       "mort-vivant"
     ],
     "description": "A rotting corpse of an undead beast.",
