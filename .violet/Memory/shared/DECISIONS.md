@@ -60,6 +60,14 @@ Append-only log of architectural and design decisions.
 
 ---
 
+## 2026-03-06 17:30 — Violet
+**Decision:** Un seul commit par feature, mémoire partagée incluse
+**Context:** Le workflow faisait systématiquement 2 commits — feature puis mémoire. Le second interrompt le premier dans l'historique git.
+**Rationale:** Les fichiers `.violet/Memory/shared/` sont mis à jour dans le même commit que la feature. Un changement logique = un commit. Plus propre dans l'historique, pas de commit orphelin mémoire.
+**Alternatives considered:** Commit mémoire séparé (historique pollué), mémoire en fin de session uniquement (risque de perte si session interrompue).
+
+---
+
 ## Pre-migration decisions (from project history)
 
 ### Options API vs Composition API
