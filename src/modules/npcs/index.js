@@ -18,6 +18,7 @@
 
 // Store
 export { useNpcStore } from './stores/npcStore.js'
+export { useHomebrewCombatFeatureStore } from './stores/homebrewCombatFeatureStore.js'
 
 // Constantes
 export {
