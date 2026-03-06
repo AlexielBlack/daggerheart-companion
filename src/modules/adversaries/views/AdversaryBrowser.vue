@@ -143,8 +143,6 @@ export default {
   flex-direction: column;
   gap: var(--space-md);
   padding: var(--space-md);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
 }
 
 .adversary-browser__content {

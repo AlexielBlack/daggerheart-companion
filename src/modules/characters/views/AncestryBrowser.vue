@@ -335,7 +335,7 @@ export default {
 </script>
 
 <style scoped>
-.ancestry-browser { max-width: 900px; margin: 0 auto; }
+.ancestry-browser { }
 
 /* ── Header ── */
 .browser-header { margin-bottom: var(--space-lg); }

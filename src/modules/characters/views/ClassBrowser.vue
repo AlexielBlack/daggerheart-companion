@@ -355,8 +355,6 @@ export default {
 
 <style scoped>
 .class-browser {
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 /* ── Header ── */

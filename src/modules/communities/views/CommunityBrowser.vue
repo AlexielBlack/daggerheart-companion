@@ -132,8 +132,6 @@ export default {
 
 <style scoped>
 .community-browser {
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 /* ── Header ── */

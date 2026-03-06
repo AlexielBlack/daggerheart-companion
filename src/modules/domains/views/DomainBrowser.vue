@@ -268,7 +268,7 @@ export default {
 </script>
 
 <style scoped>
-.domain-browser { max-width: 900px; margin: 0 auto; }
+.domain-browser { }
 
 /* ── Header ── */
 .browser-header { margin-bottom: var(--space-lg); }

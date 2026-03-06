@@ -629,7 +629,7 @@ export default {
 </script>
 
 <style scoped>
-.equipment-browser { max-width: 1060px; margin: 0 auto; }
+.equipment-browser { }
 
 /* ── Header ── */
 .browser-header { margin-bottom: var(--space-lg); }
