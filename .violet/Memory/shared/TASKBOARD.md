@@ -8,22 +8,22 @@ Cross-session task board. Updated at session start/end.
 
 | ID | Task | Agent | Status | Priority | Notes |
 |----|------|-------|--------|----------|-------|
-| — | Aucune tâche active | — | — | — | Tous les items du brainstorm innovation sont terminés |
+| — | Aucune tâche active | — | — | — | Tous les horizons sont terminés |
 
 ## Backlog / On the Horizon
 
 | ID | Task | Domain | Priority | Notes |
 |----|------|--------|----------|-------|
-| H-01 | Interface gameplay temps réel | Frontend + Data | Medium | Utiliserait le tag system |
-| H-02 | Subclass spellcastTrait rendering dans ClassPreview | Frontend | Low | Implémenté mais intégration gameplay à suivre |
+| — | Aucun item horizon restant | — | — | Toutes les features planifiées sont livrées |
 
 ## Completed (Recent)
 
 | ID | Task | Completed | Agent |
 |----|------|-----------|-------|
+| H-01+H-02 | Interface gameplay enrichie + spellcastTrait intégration | 2026-03-06 | Frontend |
 | I-05 | Encounter Sharing (Export/Import) | 2026-03-06 | Frontend |
 | I-04 | Session Timer + useSessionTimer | 2026-03-06 | Frontend |
-| I-07 | Quick Reference Panel (7 sections SRD) | 2026-03-06 | Frontend + Data |
+| I-07 | Quick Reference Panel (7 sections SRD) | 2026-03-06 | Frontend |
 | I-02 | Adversary Templates (21 templates) | 2026-03-06 | Frontend + Data |
 | I-03 | Encounter History & Statistics | 2026-03-06 | Frontend |
 | I-01 | Combat Dashboard (Fear/Hope, Overview, Stats) | 2026-03-06 | Frontend |
@@ -36,4 +36,4 @@ Cross-session task board. Updated at session start/end.
 
 ---
 
-*Updated: 2026-03-06 17:00 — Violet*
+*Updated: 2026-03-06 18:00 — Violet*

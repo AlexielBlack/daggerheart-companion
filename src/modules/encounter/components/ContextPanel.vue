@@ -136,6 +136,16 @@
           </div>
         </div>
 
+        <!-- Trait de spellcast -->
+        <div
+          v-if="spellcastInfo"
+          class="ctx-panel__spellcast"
+        >
+          <span class="ctx-panel__spellcast-badge">
+            🔮 {{ spellcastInfo.label }}
+          </span>
+        </div>
+
         <!-- Expériences -->
         <div
           v-if="pcExperiences.length > 0"
@@ -193,6 +203,8 @@
               v-for="f in tagFilteredActions"
               :key="f.name + f.source"
               :feature="f"
+              :show-spell-badge="!!f.isSpell"
+              :trait-label="f.resolvedTraitLabel || ''"
             />
           </div>
 
@@ -208,6 +220,8 @@
               v-for="f in tagFilteredReactions"
               :key="f.name + f.source"
               :feature="f"
+              :show-spell-badge="!!f.isSpell"
+              :trait-label="f.resolvedTraitLabel || ''"
             />
           </div>
 
@@ -223,6 +237,8 @@
               v-for="f in tagFilteredPassives"
               :key="f.name + f.source"
               :feature="f"
+              :show-spell-badge="!!f.isSpell"
+              :trait-label="f.resolvedTraitLabel || ''"
             />
           </div>
         </template>
@@ -242,6 +258,8 @@
               v-for="f in primaryFeatures"
               :key="f.name + f.source"
               :feature="f"
+              :show-spell-badge="!!getEnrichment(f).isSpell"
+              :trait-label="getEnrichment(f).resolvedTraitLabel || ''"
             />
           </div>
 
@@ -258,6 +276,8 @@
               v-for="f in reactionFeatures"
               :key="f.name + f.source"
               :feature="f"
+              :show-spell-badge="!!getEnrichment(f).isSpell"
+              :trait-label="getEnrichment(f).resolvedTraitLabel || ''"
             />
           </div>
 
@@ -276,6 +296,8 @@
               :feature="f"
               :dimmed="true"
               :default-expanded="false"
+              :show-spell-badge="!!getEnrichment(f).isSpell"
+              :trait-label="getEnrichment(f).resolvedTraitLabel || ''"
             />
           </div>
 
@@ -294,6 +316,8 @@
               :feature="f"
               :dimmed="true"
               :default-expanded="false"
+              :show-spell-badge="!!getEnrichment(f).isSpell"
+              :trait-label="getEnrichment(f).resolvedTraitLabel || ''"
             />
           </div>
         </template>
@@ -430,7 +454,11 @@ export default {
     passiveFeatures: { type: Array, default: () => [] },
     reactionFeatures: { type: Array, default: () => [] },
     /** Toutes les features PJ (non classifiées, pour filtrage par tag) */
-    allFeatures: { type: Array, default: () => [] }
+    allFeatures: { type: Array, default: () => [] },
+    /** Info spellcast du PJ actif (depuis usePlayerActions) */
+    spellcastInfo: { type: Object, default: null },
+    /** Features enrichies par usePlayerActions */
+    enrichedFeatures: { type: Array, default: () => [] }
   },
   setup(props) {
     const activeTab  = ref('pc')
@@ -505,24 +533,43 @@ export default {
       activeTagFilter.value = activeTagFilter.value === tagId ? null : tagId
     }
 
+    /** Features enrichies ou fallback vers allFeatures */
+    const effectiveFeatures = computed(() => {
+      return props.enrichedFeatures.length > 0 ? props.enrichedFeatures : props.allFeatures
+    })
+
+    /** Lookup enrichissement par clé feature (name + source) */
+    const enrichmentMap = computed(() => {
+      const map = new Map()
+      for (const f of effectiveFeatures.value) {
+        map.set(f.name + f.source, f)
+      }
+      return map
+    })
+
+    /** Résout l'enrichissement d'une feature */
+    function getEnrichment(feature) {
+      return enrichmentMap.value.get(feature.name + feature.source) || feature
+    }
+
     /** Features filtrées par le tag actif, groupées par type d'activation */
     const tagFilteredActions = computed(() => {
       if (!activeTagFilter.value) return []
-      return props.allFeatures.filter((f) =>
+      return effectiveFeatures.value.filter((f) =>
         f.activationType === 'action' && f.tags.includes(activeTagFilter.value)
       )
     })
 
     const tagFilteredReactions = computed(() => {
       if (!activeTagFilter.value) return []
-      return props.allFeatures.filter((f) =>
+      return effectiveFeatures.value.filter((f) =>
         f.activationType === 'reaction' && f.tags.includes(activeTagFilter.value)
       )
     })
 
     const tagFilteredPassives = computed(() => {
       if (!activeTagFilter.value) return []
-      return props.allFeatures.filter((f) =>
+      return effectiveFeatures.value.filter((f) =>
         f.activationType === 'passive' && f.tags.includes(activeTagFilter.value)
       )
     })
@@ -573,6 +620,7 @@ export default {
       onTouchStart, onTouchEnd,
       primaryLabel,
       TAG_FILTERS, activeTagFilter, toggleTagFilter,
+      effectiveFeatures, enrichmentMap, getEnrichment,
       tagFilteredActions, tagFilteredReactions, tagFilteredPassives, tagFilteredTotal,
       pcExperiences,
       primaryWeapon, secondaryWeapon, pcProficiency,
@@ -789,6 +837,24 @@ export default {
   color: var(--color-text-muted);
   font-style: italic;
   line-height: var(--line-height-normal);
+}
+
+/* ── Spellcast info ── */
+
+.ctx-panel__spellcast {
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.ctx-panel__spellcast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
 }
 
 /* ── Tag filters ── */

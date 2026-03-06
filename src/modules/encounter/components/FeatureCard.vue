@@ -23,6 +23,16 @@
           title="Hope Feature"
         >✨</span>
         <span
+          v-if="showSpellBadge"
+          class="feat-card__badge feat-card__badge--spell"
+          title="Sort (Domain Card)"
+        >🔮</span>
+        <span
+          v-if="traitLabel"
+          class="feat-card__badge feat-card__badge--trait"
+          :title="'Trait : ' + traitLabel"
+        >🎯 {{ traitLabel }}</span>
+        <span
           class="feat-card__badge"
           :class="'feat-card__badge--' + feature.activationType"
           :title="activationLabel"
@@ -106,7 +116,9 @@ export default {
   props: {
     feature: { type: Object, required: true },
     dimmed: { type: Boolean, default: false },
-    defaultExpanded: { type: Boolean, default: true }
+    defaultExpanded: { type: Boolean, default: true },
+    showSpellBadge: { type: Boolean, default: false },
+    traitLabel: { type: String, default: '' }
   },
   data() {
     return { expanded: this.defaultExpanded }
@@ -190,6 +202,8 @@ export default {
 .feat-card__badge--passive  { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
 .feat-card__badge--hope    { background: rgba(83, 168, 182, 0.15); color: var(--color-accent-hope); }
 .feat-card__badge--cost    { background: rgba(200, 75, 49, 0.12); }
+.feat-card__badge--spell  { background: rgba(124, 58, 237, 0.12); color: #7c3aed; }
+.feat-card__badge--trait  { background: rgba(59, 130, 246, 0.08); color: #3b82f6; }
 
 .feat-card__tag {
   display: inline-flex;

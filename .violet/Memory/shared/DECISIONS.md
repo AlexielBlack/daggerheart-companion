@@ -68,6 +68,22 @@ Append-only log of architectural and design decisions.
 
 ---
 
+## 2026-03-06 18:00 — Violet
+**Decision:** Fusionner H-01 et H-02 en une seule implémentation
+**Context:** H-01 (interface gameplay temps réel) et H-02 (spellcastTrait rendering) sont interdépendants. Les domain cards sont le système de sorts dans Daggerheart.
+**Rationale:** usePlayerActions résout le spellcastTrait + enrichit les features en une seule passe. Pas de duplication de logique. Un composable unique (usePlayerActions) sert les deux besoins.
+**Alternatives considered:** Deux implémentations séparées (duplication de la résolution de trait), enrichissement dans useEncounterFeatures directement (couplage avec le scoring par mode de scène).
+
+---
+
+## 2026-03-06 18:00 — Violet
+**Decision:** Enrichment lookup map dans ContextPanel pour les features classifiées
+**Context:** ContextPanel reçoit les features classifiées (primaryFeatures, etc.) depuis useEncounterFeatures ET les enrichedFeatures depuis usePlayerActions. Les features classifiées ne sont pas enrichies directement.
+**Rationale:** Un Map<key, enrichedFeature> permet de résoudre l'enrichissement en O(1) pour chaque FeatureCard en mode classifié, sans modifier useEncounterFeatures ni créer un couplage entre les deux composables.
+**Alternatives considered:** Enrichir dans useEncounterFeatures (couplage), passer seulement des enriched features (perte de la classification par mode de scène), double filtrage (duplication).
+
+---
+
 ## Pre-migration decisions (from project history)
 
 ### Options API vs Composition API

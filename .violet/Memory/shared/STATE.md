@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-06 17:00 — Violet
+**Last updated:** 2026-03-06 18:00 — Violet
 
 ---
 
@@ -9,7 +9,7 @@
 | Module | Status | Tests | Notes |
 |--------|--------|-------|-------|
 | Classes (8 SRD + 2 homebrew) | ✅ Complet | ✓ | Duelliste + Assassin homebrew |
-| Subclasses (22 total) | ✅ Complet | ✓ | spellcastTrait implémenté |
+| Subclasses (22 total) | ✅ Complet | ✓ | spellcastTrait implémenté + gameplay intégré |
 | Ancestries | ✅ Complet | ✓ | Données SRD vérifiées |
 | Communities (9) | ✅ Complet | ✓ | Données SRD vérifiées |
 | Domains | ✅ Complet | ✓ | Bug filtrage cartes résolu |
@@ -33,12 +33,13 @@
 | Quick Reference | ✅ Complet | ✓ | Panneau flottant 7 sections SRD, Teleport body (I-07) |
 | Encounter Templates | ✅ Complet | ✓ | 21 templates pré-construits, filtrage tier/tags (I-02) |
 | Combat Dashboard | ✅ Complet | ✓ | Fear/Hope tracker, battlefield overview, live stats (I-01) |
+| Player Actions Gameplay | ✅ Complet | ✓ | spellcastTrait intégré, badges Sort/Trait, features enrichies (H-01+H-02) |
 
 ## Test Suite
-- 376 encounter tests (17 fichiers)
-- ~2,640+ tests totaux estimés
+- 392 encounter tests (18 fichiers)
+- ~2,660+ tests totaux estimés
 - ESLint clean
-- Build Vite: 375 modules, 2.15s
+- Build Vite: 376 modules, 2.50s
 
 ## Tech Stack
 - Vue 3 + Vite + Pinia

@@ -24,6 +24,7 @@ import { useCharacterStore } from '@modules/characters/stores/characterStore'
 import { useEncounterHistoryStore } from './encounterHistoryStore'
 import { computeStatBonuses } from '@data/statModifiers'
 import { getClassById } from '@data/classes'
+import { getSubclassById } from '@data/subclasses'
 import {
   SCENE_MODE_PC_ATTACK,
   SCENE_MODE_ADVERSARY_ATTACK,
@@ -130,6 +131,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
           if (!c) return null
           const bonuses = computeStatBonuses(c)
           const cls = getClassById(c.classId)
+          const sub = c.subclassId ? getSubclassById(c.classId, c.subclassId) : null
           const baseHP = cls ? cls.baseHP : 6
           const baseStress = cls ? cls.baseStress : 6
 
@@ -175,7 +177,9 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
             primaryWeaponId: c.primaryWeaponId || '',
             secondaryWeaponId: c.secondaryWeaponId || '',
             experiences: Array.isArray(c.experiences) ? c.experiences.filter((e) => e.name) : [],
-            subclassProgression: c.subclassProgression || 'foundation'
+            subclassProgression: c.subclassProgression || 'foundation',
+            traits: c.traits || { agility: 0, strength: 0, finesse: 0, instinct: 0, presence: 0, knowledge: 0 },
+            spellcastTrait: sub?.spellcastTrait || null
           }
         })
         .filter(Boolean)

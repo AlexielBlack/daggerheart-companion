@@ -51,6 +51,7 @@ export { useHaptic, HAPTIC_PATTERNS } from './composables/useHaptic'
 export { useSessionTimer } from './composables/useSessionTimer'
 export { useFearHope } from './composables/useFearHope'
 export { useLiveStats } from './composables/useLiveStats'
+export { usePlayerActions } from './composables/usePlayerActions'
 
 // Vues
 export { default as EncounterBuilder } from './views/EncounterBuilder.vue'

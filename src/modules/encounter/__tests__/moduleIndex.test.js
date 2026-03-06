@@ -55,6 +55,7 @@ describe('encounter module index', () => {
     expect(typeof mod.useSessionTimer).toBe('function')
     expect(typeof mod.useFearHope).toBe('function')
     expect(typeof mod.useLiveStats).toBe('function')
+    expect(typeof mod.usePlayerActions).toBe('function')
   })
 
   it('exporte les vues', async () => {
@@ -63,10 +64,10 @@ describe('encounter module index', () => {
     expect(mod.EncounterLive).toBeDefined()
   })
 
-  it('exporte exactement 43 éléments', async () => {
+  it('exporte exactement 44 éléments', async () => {
     const mod = await import('../index.js')
-    // 3 stores + 11 builder + 17 live + 10 composables + 2 vues = 43
+    // 3 stores + 11 builder + 17 live + 11 composables + 2 vues = 44
     const exportNames = Object.keys(mod)
-    expect(exportNames.length).toBe(43)
+    expect(exportNames.length).toBe(44)
   })
 })

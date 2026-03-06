@@ -221,6 +221,8 @@
                 :passive-features="pcPassive"
                 :reaction-features="pcReaction"
                 :all-features="pcAllFeatures"
+                :spellcast-info="playerActionsSpellcast"
+                :enriched-features="playerActionsEnriched"
               />
             </div>
           </div>
@@ -437,6 +439,7 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterFeatures } from '../composables/useEncounterFeatures'
+import { usePlayerActions } from '../composables/usePlayerActions'
 import { SCENE_MODE_META } from '@data/encounters/liveConstants'
 import PcSidebarCard from '../components/PcSidebarCard.vue'
 import AdversaryGroupCard from '../components/AdversaryGroupCard.vue'
@@ -463,6 +466,9 @@ export default {
     const activePcRef = computed(() => store.activePc)
     const sceneModeRef = computed(() => store.sceneMode)
     const pcFeatures = useEncounterFeatures(activePcRef, sceneModeRef)
+
+    // Actions PJ enrichies (spellcast, trait modifiers)
+    const playerActions = usePlayerActions(activePcRef, pcFeatures.allFeatures)
 
     const isPcActor = computed(() => {
       const meta = SCENE_MODE_META[store.sceneMode]
@@ -692,6 +698,8 @@ export default {
       pcPassive: pcFeatures.passiveFeatures,
       pcReaction: pcFeatures.reactionFeatures,
       pcAllFeatures: pcFeatures.allFeatures,
+      playerActionsSpellcast: playerActions.spellcastInfo,
+      playerActionsEnriched: playerActions.enrichedFeatures,
       onSelectPc, onSelectAdversaryGroup, onLongPressPc,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,

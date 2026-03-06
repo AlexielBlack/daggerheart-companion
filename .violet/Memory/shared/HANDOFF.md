@@ -52,3 +52,17 @@ Append-only cross-session continuity notes.
 - Commit: `08f79828`
 - **Tous les 7 items du brainstorm innovation sont terminés (I-01 à I-07)**
 - Backlog restant : H-01 (interface gameplay temps réel), H-02 (subclass rendering gameplay)
+
+## 2026-03-06 18:00 — Violet
+
+### H-01 + H-02 Interface gameplay enrichie + spellcastTrait intégration
+- **Fusionné** : H-01 (gameplay temps réel) + H-02 (spellcastTrait) car domain cards = système de sorts
+- **encounterLiveStore.js** : participantPcs étendu avec `traits` (6 stats) + `spellcastTrait` (via getSubclassById)
+- **usePlayerActions.js** : nouveau composable — spellcastInfo, enrichedFeatures (isDomainCard, isSpell, resolvedTraitModifier, resolvedTraitLabel), domainCardCount, spellCount
+- **FeatureCard.vue** : badges 🔮 Sort + 🎯 Trait (props showSpellBadge + traitLabel)
+- **ContextPanel.vue** : section spellcast "🔮 Spellcast: Instinct +3", enrichedFeatures → tag filtering + enrichment lookup pour FeatureCard
+- **EncounterLive.vue** : import usePlayerActions, connexion playerActions → ContextPanel via spellcast-info + enriched-features
+- 44 exports (43 → 44), 392 tests (376 → 392, 18 fichiers), build 376 modules
+- ESLint clean, build 2.50s
+- Normalisation casing : spellcastTrait 'Instinct' → traits['instinct'] via .toLowerCase()
+- **Tous les items horizon sont terminés — aucun backlog restant**
