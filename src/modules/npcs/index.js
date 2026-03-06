@@ -78,11 +78,9 @@ export {
   isValidProficiency
 } from './combatConstants.js'
 
-// Catalogue de combat features
+// Catalogue de combat features (chargement lazy)
 export {
-  ADVERSARY_FEATURES,
-  DOMAIN_CARD_FEATURES,
-  ALL_COMBAT_FEATURES,
+  useCombatCatalogue,
   getFeatureById,
   filterFeatures,
   groupByActivationType

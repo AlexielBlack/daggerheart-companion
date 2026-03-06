@@ -1,50 +1,90 @@
 /**
  * @module npcs/combatFeatureCatalogue
- * @description Catalogue complet de combat features pour PNJs.
+ * @description Catalogue de combat features pour PNJs — chargement différé.
  *
- * Phase 4 — Extraction complète :
- *  - 265 features extraites des 129 adversaires (tiers 1-4)
- *  - 129 cartes de domaine offensives/défensives converties (9 domaines)
- *
- * Données générées par scripts/extractAdversaryFeatures.js
- * et stockées en JSON pour faciliter la maintenance.
+ * Les 330 KB de JSON (adversaires + cartes domaine) sont chargés via
+ * import() dynamique au premier appel de useCombatCatalogue().
+ * Cela éjecte les données du bundle principal NpcManager.
  *
  * API publique :
- *  - ADVERSARY_FEATURES     : features d'adversaires
- *  - DOMAIN_CARD_FEATURES   : cartes de domaine converties
- *  - ALL_COMBAT_FEATURES    : catalogue unifié
- *  - getFeatureById()       : recherche par ID
- *  - filterFeatures()       : filtrage multi-critères
- *  - groupByActivationType(): groupement P/A/R
+ *  - useCombatCatalogue() : composable retournant { features, loaded, load }
+ *  - getFeatureById()     : recherche par ID (après chargement)
+ *  - filterFeatures()     : filtrage multi-critères
+ *  - groupByActivationType()
  */
-
-import adversaryData from './data/adversaryFeatures.json'
-import domainCardData from './data/domainCardFeatures.json'
+import { ref, readonly } from 'vue'
 
 // ═══════════════════════════════════════════════════════════
-//  Données
+//  État partagé (singleton)
 // ═══════════════════════════════════════════════════════════
 
-/** 265 features extraites des 129 adversaires SRD */
-export const ADVERSARY_FEATURES = adversaryData
-
-/** 129 cartes de domaine offensives/défensives converties */
-export const DOMAIN_CARD_FEATURES = domainCardData
-
-/** Catalogue complet : 394 features */
-export const ALL_COMBAT_FEATURES = [...ADVERSARY_FEATURES, ...DOMAIN_CARD_FEATURES]
-
-// ═══════════════════════════════════════════════════════════
-//  Index par ID (pour lookups rapides)
-// ═══════════════════════════════════════════════════════════
-
+const _adversaryFeatures = ref([])
+const _domainCardFeatures = ref([])
+const _allFeatures = ref([])
+const _loaded = ref(false)
+const _loading = ref(false)
 const _indexById = new Map()
-for (const f of ALL_COMBAT_FEATURES) {
-  _indexById.set(f.id, f)
+
+/**
+ * Charge les données JSON de manière asynchrone (une seule fois).
+ * @returns {Promise<void>}
+ */
+async function _loadData() {
+  if (_loaded.value || _loading.value) return
+  _loading.value = true
+
+  const [advModule, domModule] = await Promise.all([
+    import('./data/adversaryFeatures.json'),
+    import('./data/domainCardFeatures.json')
+  ])
+
+  _adversaryFeatures.value = advModule.default
+  _domainCardFeatures.value = domModule.default
+  _allFeatures.value = [...advModule.default, ...domModule.default]
+
+  // Construire l'index
+  _indexById.clear()
+  for (const f of _allFeatures.value) {
+    _indexById.set(f.id, f)
+  }
+
+  _loading.value = false
+  _loaded.value = true
 }
 
 // ═══════════════════════════════════════════════════════════
-//  API publique
+//  Composable
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Composable réactif pour le catalogue de combat features.
+ * Déclenche le chargement lazy au premier appel.
+ *
+ * @returns {{
+ *   features: import('vue').Ref<object[]>,
+ *   adversaryFeatures: import('vue').Ref<object[]>,
+ *   domainCardFeatures: import('vue').Ref<object[]>,
+ *   loaded: import('vue').Ref<boolean>,
+ *   load: () => Promise<void>
+ * }}
+ */
+export function useCombatCatalogue() {
+  // Déclencher le chargement si pas encore fait
+  if (!_loaded.value && !_loading.value) {
+    _loadData()
+  }
+
+  return {
+    features: readonly(_allFeatures),
+    adversaryFeatures: readonly(_adversaryFeatures),
+    domainCardFeatures: readonly(_domainCardFeatures),
+    loaded: readonly(_loaded),
+    load: _loadData
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Fonctions utilitaires (opèrent sur les données chargées)
 // ═══════════════════════════════════════════════════════════
 
 /**
@@ -59,41 +99,36 @@ export function getFeatureById(id) {
 /**
  * Filtre les features par critères multiples.
  * @param {object} filters
- * @param {string} [filters.source] - 'adversary' | 'domain_card' | 'homebrew'
- * @param {number} [filters.tier] - Filtre ≤ tier donné
- * @param {string} [filters.activationType] - 'action' | 'reaction' | 'passive'
- * @param {string[]} [filters.tags] - Au moins un tag doit matcher
- * @param {string[]} [filters.themes] - Au moins un thème doit matcher
- * @param {string} [filters.search] - Recherche textuelle (nom, description)
+ * @param {string} [filters.source]
+ * @param {number} [filters.tier]
+ * @param {string} [filters.activationType]
+ * @param {string[]} [filters.tags]
+ * @param {string[]} [filters.themes]
+ * @param {string} [filters.search]
  * @returns {object[]}
  */
 export function filterFeatures(filters = {}) {
-  let result = ALL_COMBAT_FEATURES
+  let result = _allFeatures.value
 
   if (filters.source) {
     result = result.filter(f => f.source === filters.source)
   }
-
   if (filters.tier) {
     result = result.filter(f => f.tier <= filters.tier)
   }
-
   if (filters.activationType) {
     result = result.filter(f => f.activationType === filters.activationType)
   }
-
   if (Array.isArray(filters.tags) && filters.tags.length > 0) {
     result = result.filter(f =>
       f.tags.some(t => filters.tags.includes(t))
     )
   }
-
   if (Array.isArray(filters.themes) && filters.themes.length > 0) {
     result = result.filter(f =>
       f.themes.some(t => filters.themes.includes(t))
     )
   }
-
   if (filters.search && typeof filters.search === 'string') {
     const q = filters.search.toLowerCase()
     result = result.filter(f =>

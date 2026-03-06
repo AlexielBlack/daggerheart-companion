@@ -880,7 +880,7 @@ import {
   ALL_COOLDOWNS
 } from '../combatConstants.js'
 import {
-  ALL_COMBAT_FEATURES
+  useCombatCatalogue
 } from '../combatFeatureCatalogue.js'
 import { useHomebrewCombatFeatureStore } from '../stores/homebrewCombatFeatureStore.js'
 import { ALL_TAGS, TAG_META } from '@data/constants/tags.js'
@@ -927,6 +927,9 @@ export default {
   setup(props, { emit }) {
     // ── Store homebrew ──
     const homebrewStore = useHomebrewCombatFeatureStore()
+
+    // ── Catalogue de combat features (chargement lazy) ──
+    const { features: catalogueFeatures } = useCombatCatalogue()
 
     // ── État local filtres catalogue ──
     const searchText = ref('')
@@ -1160,7 +1163,7 @@ export default {
 
     // ── Catalogue mergé (SRD + homebrew) avec filtrage ──
     const allMergedFeatures = computed(() => {
-      return [...ALL_COMBAT_FEATURES, ...homebrewStore.features]
+      return [...catalogueFeatures.value, ...homebrewStore.features]
     })
 
     const availableFeatures = computed(() => {
