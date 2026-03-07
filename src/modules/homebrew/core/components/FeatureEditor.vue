@@ -26,6 +26,15 @@
       {{ helpText }}
     </p>
 
+    <!-- Picker catalogue (opt-in) -->
+    <FeatureCataloguePicker
+      v-if="withCatalogue"
+      :tier="tier"
+      :adversary-type="adversaryType"
+      :already-added="features.map(f => f.name)"
+      @pick="pickFromCatalogue"
+    />
+
     <!-- Liste des features -->
     <div
       v-if="features.length > 0"
@@ -217,11 +226,16 @@
  * Réutilisable pour adversaires, environnements et tout contenu avec features.
  */
 import { FEATURE_TAGS } from '../utils/schemaTypes.js'
+import FeatureCataloguePicker from './FeatureCataloguePicker.vue'
 
 let featureUidCounter = 0
 
 export default {
   name: 'FeatureEditor',
+
+  components: {
+    FeatureCataloguePicker
+  },
 
   props: {
     /** Tableau de features */
@@ -253,6 +267,21 @@ export default {
     path: {
       type: String,
       default: 'features'
+    },
+    /** Active le panneau catalogue picker */
+    withCatalogue: {
+      type: Boolean,
+      default: false
+    },
+    /** Tier de l'adversaire pour filtrer le catalogue */
+    tier: {
+      type: Number,
+      default: null
+    },
+    /** Type d'adversaire pour filtrage futur */
+    adversaryType: {
+      type: String,
+      default: null
     }
   },
 
@@ -344,6 +373,28 @@ export default {
     hasFieldError(idx, fieldName) {
       const target = `${this.path}[${idx}].${fieldName}`
       return this.errors.some((e) => e.field === target)
+    },
+
+    /**
+     * Copie une feature du catalogue en objet inline editable.
+     * Architecture copy-on-pick : aucun changement de format de donnees.
+     * @param {object} feat - Feature du catalogue
+     */
+    pickFromCatalogue(feat) {
+      featureUidCounter++
+      const costLabels = { fear: 'Peur', hope: 'Espoir', stress: 'Stress' }
+      const costText = feat.cost && feat.cost.type !== 'free'
+        ? `${feat.cost.amount} ${costLabels[feat.cost.type] || feat.cost.type}`
+        : ''
+      const inline = {
+        _uid: `feat-${featureUidCounter}-${Date.now()}`,
+        name: feat.name,
+        activationType: feat.activationType,
+        description: feat.description,
+        cost: costText,
+        tags: Array.isArray(feat.tags) ? [...feat.tags] : []
+      }
+      this.$emit('update:modelValue', [...this.features, inline])
     }
   }
 }

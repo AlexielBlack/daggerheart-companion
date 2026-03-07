@@ -268,7 +268,8 @@ export const adversarySchema = {
       key: 'features',
       type: FIELD_TYPES.FEATURES,
       label: 'Features',
-      helpText: 'Actions, réactions et passifs de l\'adversaire.'
+      helpText: 'Actions, réactions et passifs de l\'adversaire.',
+      withCatalogue: true
     }
   ]
 }

@@ -48,6 +48,9 @@
           :max-items="field.maxItems || null"
           :errors="fieldErrors(field.key)"
           :path="field.key"
+          :with-catalogue="field.withCatalogue || false"
+          :tier="formData.tier || null"
+          :adversary-type="formData.type || null"
           @update:model-value="setField(field.key, $event)"
         />
 
