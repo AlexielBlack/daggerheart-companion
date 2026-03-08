@@ -111,7 +111,9 @@ $mcpContent = @{
         }
     }
 }
-$mcpContent | ConvertTo-Json -Depth 4 | Out-File -FilePath "config\mcp.json" -Encoding utf8
+# IMPORTANT: WriteAllText writes UTF-8 WITHOUT BOM (Out-File adds BOM which breaks json.loads)
+$mcpJson = $mcpContent | ConvertTo-Json -Depth 4
+[System.IO.File]::WriteAllText("$PURPLE_DIR\config\mcp.json", $mcpJson)
 Write-Host "  OK: config/mcp.json cree avec chemins Windows" -ForegroundColor Green
 
 # --- Create data directories ---
