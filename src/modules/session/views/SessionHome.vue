@@ -21,7 +21,10 @@
       </header>
 
       <!-- Layout 2 colonnes -->
-      <div class="session-home__layout">
+      <div
+        class="session-home__layout"
+        :class="{ 'session-home__layout--full': sidebarCollapsed }"
+      >
         <!-- Colonne principale -->
         <main class="session-home__main">
           <PcGroupPanel :characters="characterStore.characters" />
@@ -49,10 +52,33 @@
           </section>
         </main>
 
-        <!-- Sidebar -->
-        <aside class="session-home__sidebar">
-          <EncounterLauncher />
-          <SessionHistoryPanel />
+        <!-- Sidebar collapsible -->
+        <aside
+          class="session-home__sidebar"
+          :class="{ 'session-home__sidebar--collapsed': sidebarCollapsed }"
+        >
+          <button
+            class="session-home__sidebar-toggle"
+            :aria-expanded="String(!sidebarCollapsed)"
+            aria-controls="session-sidebar-content"
+            :title="sidebarCollapsed ? 'Afficher les rencontres' : 'Masquer les rencontres'"
+            @click="sidebarCollapsed = !sidebarCollapsed"
+          >
+            <span class="session-home__sidebar-toggle-icon">&#x2694;&#xFE0F;</span>
+            <span
+              v-if="sidebarCollapsed"
+              class="session-home__sidebar-toggle-label"
+            >Rencontres</span>
+            <span class="session-home__sidebar-toggle-chevron">{{ sidebarCollapsed ? '&#x25C0;' : '&#x25B6;' }}</span>
+          </button>
+          <div
+            v-show="!sidebarCollapsed"
+            id="session-sidebar-content"
+            class="session-home__sidebar-content"
+          >
+            <EncounterLauncher />
+            <SessionHistoryPanel />
+          </div>
         </aside>
       </div>
 
@@ -76,6 +102,7 @@ import { SessionTimer } from '@modules/encounter'
 import { useCharacterStore } from '@modules/characters'
 import { useEncounterLiveStore } from '@modules/encounter'
 import { useSessionStore } from '../stores/sessionStore'
+import { useStorage } from '@core/composables/useStorage'
 
 import PcGroupPanel from '../components/PcGroupPanel.vue'
 import CombatResumeBanner from '../components/CombatResumeBanner.vue'
@@ -108,6 +135,9 @@ export default {
     const liveStore = useEncounterLiveStore()
     const sessionStore = useSessionStore()
 
+    // ── Sidebar collapsible (persisté) ──
+    const sidebarStorage = useStorage('session-sidebar-collapsed', false)
+
     /**
      * Reinitialise la session apres confirmation utilisateur.
      * Efface l'environnement, les PNJs charges et les notes.
@@ -118,7 +148,7 @@ export default {
       }
     }
 
-    return { characterStore, liveStore, sessionStore, handleReset }
+    return { characterStore, liveStore, sessionStore, handleReset, sidebarCollapsed: sidebarStorage.data }
   }
 }
 </script>
@@ -152,6 +182,10 @@ export default {
   align-items: start;
 }
 
+.session-home__layout--full {
+  grid-template-columns: 1fr auto;
+}
+
 .session-home__main {
   display: flex;
   flex-direction: column;
@@ -161,6 +195,53 @@ export default {
 .session-home__sidebar {
   position: sticky;
   top: calc(var(--header-height) + var(--space-md));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.session-home__sidebar--collapsed {
+  width: auto;
+  min-width: 0;
+}
+
+/* ── Toggle sidebar ── */
+
+.session-home__sidebar-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.session-home__sidebar-toggle:hover {
+  background: var(--color-bg-elevated, rgba(255, 255, 255, 0.08));
+  color: var(--color-text-primary);
+}
+
+.session-home__sidebar-toggle-icon {
+  font-size: 0.9rem;
+}
+
+.session-home__sidebar-toggle-label {
+  flex: 1;
+  text-align: left;
+}
+
+.session-home__sidebar-toggle-chevron {
+  margin-left: auto;
+  font-size: 0.6rem;
+}
+
+.session-home__sidebar-content {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
