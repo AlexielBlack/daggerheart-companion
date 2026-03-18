@@ -80,7 +80,7 @@ export function useGistSync() {
     try {
       const response = await fetch('https://api.github.com/user', {
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
         }
       })
@@ -116,7 +116,7 @@ export function useGistSync() {
       const response = await fetch(GIST_API, {
         method: 'POST',
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         },
@@ -181,7 +181,7 @@ export function useGistSync() {
       const response = await fetch(`${GIST_API}/${gistId}`, {
         method: 'PATCH',
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         },
@@ -243,7 +243,7 @@ export function useGistSync() {
 
       const response = await fetch(`${GIST_API}/${gistId}`, {
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
         }
       })
@@ -316,7 +316,7 @@ export function useGistSync() {
     try {
       const response = await fetch(`${GIST_API}/${gistId}`, {
         headers: {
-          Authorization: `token ${token}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
         }
       })
