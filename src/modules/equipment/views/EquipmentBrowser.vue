@@ -754,7 +754,7 @@ export default {
 
 @keyframes slideDown { from { opacity: 0; } to { opacity: 1; } }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   /* Armes : masquer colonnes 5 (Mains/Feature) et 6 (Tier) → garder 4 colonnes */
   .table-header:not(.table-header--armor),
   .table-row:not(.table-row--armor) { grid-template-columns: 2fr 1fr 1fr 1fr; }

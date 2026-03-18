@@ -187,6 +187,12 @@ export default {
   width: 100%;
 }
 
+@media (max-width: 1024px) {
+  .app-shell__content {
+    max-width: 100%;
+  }
+}
+
 /* ── Notifications ── */
 
 .app-shell__notifications {
