@@ -5,6 +5,9 @@ const GIST_API = 'https://api.github.com/gists'
 const GIST_FILENAME = 'daggerheart-companion-sync.json'
 const STORAGE_PREFIX = 'dh-'
 
+/** Options fetch communes — désactive le cache Safari */
+const FETCH_OPTS = { cache: 'no-store' }
+
 /**
  * Composable pour la synchronisation via GitHub Gist.
  * Permet de pousser/tirer les données de l'application vers un Gist privé.
@@ -79,6 +82,7 @@ export function useGistSync() {
   async function validateToken(token) {
     try {
       const response = await fetch('https://api.github.com/user', {
+        ...FETCH_OPTS,
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
@@ -109,6 +113,7 @@ export function useGistSync() {
   async function findExistingGist(token) {
     try {
       const response = await fetch(`${GIST_API}?per_page=100`, {
+        ...FETCH_OPTS,
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
@@ -146,6 +151,7 @@ export function useGistSync() {
       const payload = buildGistPayload()
 
       const response = await fetch(GIST_API, {
+        ...FETCH_OPTS,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -211,6 +217,7 @@ export function useGistSync() {
       const payload = buildGistPayload()
 
       const response = await fetch(`${GIST_API}/${gistId}`, {
+        ...FETCH_OPTS,
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -274,6 +281,7 @@ export function useGistSync() {
       error.value = null
 
       const response = await fetch(`${GIST_API}/${gistId}`, {
+        ...FETCH_OPTS,
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
@@ -347,6 +355,7 @@ export function useGistSync() {
 
     try {
       const response = await fetch(`${GIST_API}/${gistId}`, {
+        ...FETCH_OPTS,
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
