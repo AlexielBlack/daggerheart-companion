@@ -101,6 +101,38 @@ export function useGistSync() {
   }
 
   /**
+   * Recherche un Gist existant contenant le fichier de synchronisation.
+   * Permet la découverte automatique sur un nouvel appareil.
+   * @param {string} token
+   * @returns {Promise<{ found: boolean, gistId?: string, error?: string }>}
+   */
+  async function findExistingGist(token) {
+    try {
+      const response = await fetch(`${GIST_API}?per_page=100`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github.v3+json'
+        }
+      })
+
+      if (!response.ok) {
+        return { found: false, error: `Erreur recherche Gist (${response.status}).` }
+      }
+
+      const gists = await response.json()
+      const match = gists.find((g) => g.files && g.files[GIST_FILENAME])
+
+      if (match) {
+        return { found: true, gistId: match.id }
+      }
+
+      return { found: false }
+    } catch {
+      return { found: false, error: 'Impossible de rechercher les Gists existants.' }
+    }
+  }
+
+  /**
    * Crée un nouveau Gist privé pour la synchronisation.
    * @returns {Promise<{ success: boolean, gistId?: string, error?: string }>}
    */
@@ -398,6 +430,7 @@ export function useGistSync() {
     getGistId,
     setGistId,
     validateToken,
+    findExistingGist,
     createGist,
     push,
     pull,

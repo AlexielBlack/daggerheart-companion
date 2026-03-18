@@ -232,7 +232,14 @@ export default {
         gistSync.setGistId(gistId)
       }
 
-      // Si pas de gist ID, on en crée un au premier push
+      // Sinon, chercher automatiquement un Gist existant
+      if (!gistSync.getGistId()) {
+        const search = await gistSync.findExistingGist(token)
+        if (search.found) {
+          gistSync.setGistId(search.gistId)
+        }
+      }
+
       connected.value = true
       tokenInput.value = ''
       gistIdInput.value = ''
@@ -242,7 +249,11 @@ export default {
         await gistSync.fetchRemoteInfo()
       }
 
-      showFeedback('success', `Connecté en tant que ${result.username}.`)
+      const gistFound = gistSync.getGistId()
+      showFeedback('success',
+        `Connecté en tant que ${result.username}.`
+        + (gistFound ? ' Gist de synchronisation détecté.' : ' Aucun Gist trouvé — un nouveau sera créé au premier envoi.')
+      )
     }
 
     function handleDisconnect() {
