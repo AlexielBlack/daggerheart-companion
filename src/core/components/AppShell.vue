@@ -204,16 +204,7 @@ export default {
   flex: 1;
   padding: var(--space-md);
   overflow-y: auto;
-  max-width: var(--content-max-width);
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
-}
-
-@media (max-width: 1400px) {
-  .app-shell__content {
-    max-width: 100%;
-  }
 }
 
 /* ── Notifications ── */
