@@ -117,6 +117,39 @@ export async function checkForUpdate() {
 }
 
 /**
+ * Vide tous les caches du service worker, le desenregistre, puis recharge.
+ * Utile sur iPad/Safari ou le cache PWA peut rester bloque.
+ * @returns {Promise<boolean>}
+ */
+export async function clearCacheAndReload() {
+  try {
+    // Methode 1 : demander au SW de tout vider
+    if (navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage('CLEAR_CACHE')
+    }
+
+    // Methode 2 : vider les caches cote client (fallback)
+    if ('caches' in window) {
+      const keys = await caches.keys()
+      await Promise.all(keys.map((key) => caches.delete(key)))
+    }
+
+    // Desenregistrer tous les service workers
+    if ('serviceWorker' in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations()
+      await Promise.all(registrations.map((r) => r.unregister()))
+    }
+
+    // Recharger sans cache
+    window.location.reload()
+    return true
+  } catch (err) {
+    console.error('[SW] Clear cache failed:', err)
+    return false
+  }
+}
+
+/**
  * Composable reactif pour les composants Vue.
  *
  * @returns {{
@@ -125,7 +158,8 @@ export async function checkForUpdate() {
  *   hasUpdate: Readonly<Ref<boolean>>,
  *   isOffline: Readonly<Ref<boolean>>,
  *   applyUpdate: Function,
- *   checkForUpdate: Function
+ *   checkForUpdate: Function,
+ *   clearCacheAndReload: Function
  * }}
  */
 export function useServiceWorker() {
@@ -135,7 +169,8 @@ export function useServiceWorker() {
     hasUpdate: readonly(hasUpdate),
     isOffline: readonly(isOffline),
     applyUpdate,
-    checkForUpdate
+    checkForUpdate,
+    clearCacheAndReload
   }
 }
 

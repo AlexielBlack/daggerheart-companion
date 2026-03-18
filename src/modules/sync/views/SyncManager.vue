@@ -16,6 +16,7 @@
       <div class="sync-manager__grid">
         <FileSyncPanel />
         <GistSyncPanel />
+        <CachePanel />
         <SyncHistory />
       </div>
     </div>
@@ -25,6 +26,7 @@
 <script>
 import FileSyncPanel from '../components/FileSyncPanel.vue'
 import GistSyncPanel from '../components/GistSyncPanel.vue'
+import CachePanel from '../components/CachePanel.vue'
 import SyncHistory from '../components/SyncHistory.vue'
 import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
@@ -35,6 +37,7 @@ export default {
     ModuleBoundary,
     FileSyncPanel,
     GistSyncPanel,
+    CachePanel,
     SyncHistory
   }
 }

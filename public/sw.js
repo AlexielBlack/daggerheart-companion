@@ -179,4 +179,17 @@ self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting()
   }
+
+  if (event.data === 'CLEAR_CACHE') {
+    event.waitUntil(
+      caches.keys()
+        .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+        .then(() => self.registration.unregister())
+        .then(() => {
+          self.clients.matchAll().then((clients) => {
+            clients.forEach((client) => client.postMessage('CACHE_CLEARED'))
+          })
+        })
+    )
+  }
 })
