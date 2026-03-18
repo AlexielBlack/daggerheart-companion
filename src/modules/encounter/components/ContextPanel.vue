@@ -125,6 +125,18 @@
             </button>
           </div>
 
+          <!-- Seuils (Majeur / Sévère) -->
+          <div
+            v-if="pc.armorBaseThresholds"
+            class="ctx-panel__thresholds"
+          >
+            <span class="ctx-panel__threshold">
+              ⚔️ Seuils :
+              <strong>{{ pc.armorBaseThresholds.major || 0 }}</strong> Maj
+              / <strong>{{ pc.armorBaseThresholds.severe || 0 }}</strong> Sév
+            </span>
+          </div>
+
           <!-- Armure + Espoir (ligne compacte) -->
           <div class="ctx-panel__bar-row">
             <div
@@ -1002,6 +1014,24 @@ export default {
   padding: 0 var(--space-xs);
   border-radius: var(--radius-full);
   color: var(--color-text-muted);
+}
+
+/* ── Seuils ── */
+
+.ctx-panel__thresholds {
+  display: flex;
+  align-items: center;
+  padding: var(--space-xs) 0;
+}
+
+.ctx-panel__threshold {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.ctx-panel__threshold strong {
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Armes ── */

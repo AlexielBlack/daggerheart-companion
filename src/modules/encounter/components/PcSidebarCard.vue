@@ -46,6 +46,14 @@
         <span class="pc-sidebar__stat-val">{{ pc.armorScore || 0 }}</span>
         <span class="pc-sidebar__stat-lbl">Armure</span>
       </div>
+      <div
+        v-if="pc.armorBaseThresholds"
+        class="pc-sidebar__stat"
+        title="Seuils (Majeur/Sévère)"
+      >
+        <span class="pc-sidebar__stat-val">{{ pc.armorBaseThresholds.major || 0 }}/{{ pc.armorBaseThresholds.severe || 0 }}</span>
+        <span class="pc-sidebar__stat-lbl">Seuils</span>
+      </div>
     </div>
 
     <!-- HP / Stress compacts -->
