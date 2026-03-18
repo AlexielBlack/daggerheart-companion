@@ -85,7 +85,8 @@ describe('useGistSync', () => {
     it('retourne invalid avec un token expiré', async () => {
       globalThis.fetch = vi.fn().mockResolvedValue({
         ok: false,
-        status: 401
+        status: 401,
+        json: () => Promise.resolve({ message: 'Bad credentials' })
       })
 
       const { validateToken } = useGistSync()
