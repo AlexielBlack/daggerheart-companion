@@ -51,6 +51,8 @@ self.addEventListener('install', (event) => {
 })
 
 // ── Activate : nettoyage des anciens caches ──
+// Supprime TOUS les caches existants (y compris assets) pour forcer
+// le rechargement des nouveaux fichiers hashes apres chaque deploy.
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
@@ -58,7 +60,7 @@ self.addEventListener('activate', (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key !== SHELL_CACHE && key !== ASSETS_CACHE)
+            .filter((key) => key !== SHELL_CACHE)
             .map((key) => caches.delete(key))
         )
       )
