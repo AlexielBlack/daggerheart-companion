@@ -71,11 +71,14 @@ export function useStorage(key, defaultValue = null) {
  * Exporte toutes les données de l'application (backup).
  * @returns {string} JSON stringifié de toutes les données dh-*
  */
+/** Clés exclues de l'export — ne jamais synchroniser de secrets */
+const EXPORT_EXCLUDE = [`${STORAGE_PREFIX}gist-token`]
+
 export function exportAllData() {
   const backup = {}
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
-    if (key && key.startsWith(STORAGE_PREFIX)) {
+    if (key && key.startsWith(STORAGE_PREFIX) && !EXPORT_EXCLUDE.includes(key)) {
       try {
         backup[key] = JSON.parse(localStorage.getItem(key))
       } catch {
