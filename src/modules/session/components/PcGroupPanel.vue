@@ -1173,15 +1173,15 @@ export default {
 }
 
 .pc-group__grid--cols-2 {
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .pc-group__grid--cols-3 {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .pc-group__grid--cols-4 {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
 }
 
 @media (max-width: 768px) {
