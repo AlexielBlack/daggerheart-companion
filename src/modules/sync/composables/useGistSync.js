@@ -94,11 +94,15 @@ export function useGistSync() {
         return { valid: true, username: data.login }
       }
 
+      const errBody = await response.json().catch(() => ({}))
+      const detail = errBody.message || ''
+      console.error('[useGistSync] validateToken:', response.status, detail)
+
       if (response.status === 401) {
-        return { valid: false, error: 'Token invalide ou expiré.' }
+        return { valid: false, error: `Token invalide ou expiré (${detail || '401'}).` }
       }
 
-      return { valid: false, error: `Erreur GitHub (${response.status}).` }
+      return { valid: false, error: `Erreur GitHub (${response.status}): ${detail}` }
     } catch {
       return { valid: false, error: 'Impossible de contacter GitHub. Vérifiez votre connexion.' }
     }
