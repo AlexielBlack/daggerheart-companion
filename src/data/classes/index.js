@@ -566,6 +566,9 @@ export function createDefaultCharacter(classId) {
     primaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
     secondaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '' },
 
+    // Visibilité table de jeu
+    hidden: false,
+
     // Inventaire
     inventory: [],
     gold: { handfuls: 0, bags: 0, chests: 0 },

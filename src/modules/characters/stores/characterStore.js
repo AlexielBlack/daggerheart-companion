@@ -116,6 +116,12 @@ export const useCharacterStore = defineStore('characters', () => {
     return characters.value.find((c) => c.id === selectedCharacterId.value) || null
   })
 
+  /** Personnages visibles (non masqués) */
+  const visibleCharacters = computed(() => characters.value.filter((c) => !c.hidden))
+
+  /** Nombre de personnages masqués */
+  const hiddenCount = computed(() => characters.value.filter((c) => c.hidden).length)
+
   /** Nombre de personnages */
   const characterCount = computed(() => characters.value.length)
 
@@ -897,6 +903,7 @@ export const useCharacterStore = defineStore('characters', () => {
         secondaryWeapon: { name: '', trait: '', range: '', damage: '', feature: '', burden: '' },
         inventory: [],
         gold: { handfuls: 0, bags: 0, chests: 0 },
+        hidden: false,
         conditions: [],
         domainCards: { loadout: [], vault: [] },
         permanentCardEffects: [],
@@ -1040,6 +1047,14 @@ export const useCharacterStore = defineStore('characters', () => {
     const char = characters.value.find(c => c.id === charId)
     if (!char) return
     Object.assign(char, updates, { updatedAt: new Date().toISOString() })
+    persist()
+  }
+
+  /** Masquer / afficher un PJ sur la table de jeu */
+  function toggleHidden(charId) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char) return
+    char.hidden = !char.hidden
     persist()
   }
 
@@ -1453,6 +1468,8 @@ export const useCharacterStore = defineStore('characters', () => {
 
     // Getters
     selectedCharacter,
+    visibleCharacters,
+    hiddenCount,
     characterCount,
     canAddCharacter,
     selectedCharacterClass,
@@ -1493,6 +1510,9 @@ export const useCharacterStore = defineStore('characters', () => {
     updateField,
     applySelection,
     updateMixedAncestry,
+
+    // Actions visibilité
+    toggleHidden,
 
     // Actions HP/Stress/Armor
     markHP,

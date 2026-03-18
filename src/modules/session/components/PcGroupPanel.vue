@@ -7,12 +7,12 @@
     <div class="pc-group__header">
       <h3 class="pc-group__title">
         <span aria-hidden="true">&#x1F465;</span>
-        Personnages ({{ characters.length }})
+        Personnages ({{ visibleList.length }})
       </h3>
       <div class="pc-group__actions">
         <!-- Selecteur de colonnes -->
         <div
-          v-if="characters.length > 0"
+          v-if="visibleList.length > 0"
           class="pc-group__col-selector"
           role="radiogroup"
           aria-label="Nombre de colonnes"
@@ -42,7 +42,7 @@
 
     <!-- Etat vide -->
     <p
-      v-if="characters.length === 0"
+      v-if="visibleList.length === 0 && hiddenList.length === 0"
       class="pc-group__empty"
     >
       Aucun personnage cree.
@@ -53,14 +53,14 @@
 
     <!-- Grille de cartes PJ -->
     <div
-      v-else
+      v-if="visibleList.length > 0"
       ref="gridRef"
       :class="['pc-group__grid', 'pc-group__grid--cols-' + columnCount]"
       role="list"
       aria-label="Liste des personnages"
     >
       <article
-        v-for="pc in enrichedCharacters"
+        v-for="pc in visibleList"
         :key="pc.id"
         class="pc-card"
         role="listitem"
@@ -70,6 +70,14 @@
         <div class="pc-card__body">
           <!-- 1. Ligne identite -->
           <div class="pc-card__identity">
+            <button
+              class="pc-card__hide-btn"
+              title="Masquer ce PJ de la table"
+              aria-label="Masquer ce PJ"
+              @click="onToggleHidden(pc.id)"
+            >
+              &#x1F441;&#xFE0F;
+            </button>
             <span
               v-if="pc.classData"
               class="pc-card__class-emoji"
@@ -669,6 +677,42 @@
         </div>
       </article>
     </div>
+
+    <!-- Bandeau PJs masqués -->
+    <div
+      v-if="hiddenList.length > 0"
+      class="pc-group__hidden-bar"
+    >
+      <button
+        class="pc-group__hidden-toggle"
+        :aria-expanded="String(showHidden)"
+        @click="showHidden = !showHidden"
+      >
+        &#x1F441;&#xFE0F;&#x200D;&#x1F5E8;&#xFE0F;
+        {{ hiddenList.length }} PJ{{ hiddenList.length > 1 ? 's' : '' }} masque{{ hiddenList.length > 1 ? 's' : '' }}
+        <span class="pc-group__hidden-chevron">{{ showHidden ? '&#x25B2;' : '&#x25BC;' }}</span>
+      </button>
+      <div
+        v-if="showHidden"
+        class="pc-group__hidden-list"
+      >
+        <div
+          v-for="pc in hiddenList"
+          :key="pc.id"
+          class="pc-group__hidden-chip"
+        >
+          <span>{{ pc.name || 'Sans nom' }}</span>
+          <button
+            class="pc-group__hidden-restore"
+            :title="'Afficher ' + (pc.name || 'Sans nom')"
+            :aria-label="'Afficher ' + (pc.name || 'Sans nom')"
+            @click="onToggleHidden(pc.id)"
+          >
+            &#x2795;
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -763,6 +807,19 @@ export default {
     const enrichedCharacters = computed(() =>
       props.characters.map(resolveCharacterDisplay)
     )
+
+    // ── Filtrage visibles / masqués ──
+    const visibleList = computed(() =>
+      enrichedCharacters.value.filter((pc) => !pc.hidden)
+    )
+    const hiddenList = computed(() =>
+      enrichedCharacters.value.filter((pc) => pc.hidden)
+    )
+    const showHidden = ref(false)
+
+    function onToggleHidden(charId) {
+      characterStore.toggleHidden(charId)
+    }
 
     // ══════════════════════════════════════════════
     //  IMPROVEMENT 1 — Grille configurable (colonnes)
@@ -1031,6 +1088,10 @@ export default {
     return {
       gridRef,
       enrichedCharacters,
+      visibleList,
+      hiddenList,
+      showHidden,
+      onToggleHidden,
       // Gestion interactive
       incrementHP,
       decrementHP,
@@ -1760,5 +1821,104 @@ export default {
   color: var(--color-text-muted);
   font-style: italic;
   margin: var(--space-sm) 0 0;
+}
+
+/* ═══════════════════════════════════════════════
+   BOUTON MASQUER (oeil) sur carte PJ
+   ═══════════════════════════════════════════════ */
+
+.pc-card__hide-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 0.7rem;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.pc-card__hide-btn:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ═══════════════════════════════════════════════
+   BANDEAU PJs MASQUÉS
+   ═══════════════════════════════════════════════ */
+
+.pc-group__hidden-bar {
+  margin-top: var(--space-sm);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+}
+
+.pc-group__hidden-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.pc-group__hidden-toggle:hover {
+  color: var(--color-text-secondary);
+}
+
+.pc-group__hidden-chevron {
+  margin-left: auto;
+  font-size: 0.6rem;
+}
+
+.pc-group__hidden-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: 0 var(--space-sm) var(--space-sm);
+}
+
+.pc-group__hidden-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 3px var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.pc-group__hidden-restore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-size: 0.6rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.pc-group__hidden-restore:hover {
+  opacity: 1;
 }
 </style>
