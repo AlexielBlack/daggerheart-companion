@@ -52,6 +52,10 @@
     >
       {{ feedback.message }}
     </div>
+
+    <p class="cache-panel__version">
+      Version : {{ buildTime }}
+    </p>
   </section>
 </template>
 
@@ -67,6 +71,8 @@ export default {
     const checking = ref(false)
     const clearing = ref(false)
     const feedback = ref(null)
+    // eslint-disable-next-line no-undef
+    const buildTime = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'dev'
 
     function showFeedback(type, message) {
       feedback.value = { type, message }
@@ -102,6 +108,7 @@ export default {
       checking,
       clearing,
       feedback,
+      buildTime,
       handleCheckUpdate,
       handleApplyUpdate,
       handleClearCache
@@ -207,5 +214,12 @@ export default {
 
 .sync-btn--ghost:hover:not(:disabled) {
   background-color: var(--color-bg-elevated);
+}
+
+.cache-panel__version {
+  margin: var(--space-md) 0 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: monospace;
 }
 </style>

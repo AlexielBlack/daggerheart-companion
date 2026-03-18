@@ -4,6 +4,9 @@ import { resolve } from 'path'
 import { swPrecache } from './vite-plugin-sw-precache.js'
 
 export default defineConfig({
+  define: {
+    __BUILD_TIME__: JSON.stringify(new Date().toISOString())
+  },
   plugins: [vue(), swPrecache()],
   base: '/daggerheart-companion/',
   resolve: {

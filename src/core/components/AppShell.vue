@@ -43,6 +43,15 @@
       >
         <span aria-hidden="true">🎲</span>
       </router-link>
+
+      <router-link
+        to="/edition/sync"
+        class="app-shell__sync-shortcut"
+        aria-label="Synchronisation"
+        @click="closeNav"
+      >
+        <span aria-hidden="true">🔄</span>
+      </router-link>
     </header>
 
     <main
@@ -170,9 +179,23 @@ export default {
   margin-left: auto;
 }
 
-.app-shell__dice-shortcut:hover {
+.app-shell__dice-shortcut:hover,
+.app-shell__sync-shortcut:hover {
   background-color: var(--color-bg-elevated);
   color: var(--color-text-primary);
+}
+
+.app-shell__sync-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  flex-shrink: 0;
 }
 
 /* ── Contenu full width ── */
