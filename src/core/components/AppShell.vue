@@ -213,6 +213,7 @@ export default {
 @media (max-width: 1024px) {
   .app-shell__content {
     max-width: 100%;
+    padding: var(--space-xs);
   }
 }
 
