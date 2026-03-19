@@ -110,6 +110,29 @@ describe('NpcSceneCard', () => {
     expect(wrapper.emitted('open-details')[0]).toEqual(['npc-1'])
   })
 
+  it('affiche le style spotlight quand isSpotlight est true', () => {
+    const wrapper = mount(NpcSceneCard, {
+      props: { npc: fullNpc, isSpotlight: true }
+    })
+    expect(wrapper.find('.npc-scene-card--spotlight').exists()).toBe(true)
+  })
+
+  it('n affiche pas le style spotlight par defaut', () => {
+    const wrapper = mount(NpcSceneCard, {
+      props: { npc: fullNpc }
+    })
+    expect(wrapper.find('.npc-scene-card--spotlight').exists()).toBe(false)
+  })
+
+  it('emet spotlight au clic sur le bouton spotlight', async () => {
+    const wrapper = mount(NpcSceneCard, {
+      props: { npc: fullNpc, isSpotlight: false }
+    })
+    await wrapper.find('.npc-scene-card__spotlight-btn').trigger('click')
+    expect(wrapper.emitted('spotlight')).toBeTruthy()
+    expect(wrapper.emitted('spotlight')[0]).toEqual(['npc-1'])
+  })
+
   it('declenche la sauvegarde debounced des notes', async () => {
     vi.useFakeTimers()
     mockGetById.mockReturnValue({ ...fullNpc })

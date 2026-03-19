@@ -14,12 +14,14 @@ export const useSessionStore = defineStore('session', () => {
   const npcsStorage = useStorage('session-npcs', [])
   const notesStorage = useStorage('session-notes', '')
   const lastEncounterStorage = useStorage('session-last-encounter', null)
+  const spotlightStorage = useStorage('session-spotlight-npc', null)
 
   // Raccourcis vers les refs
   const environmentId = envStorage.data
   const loadedNpcIds = npcsStorage.data
   const sessionNotes = notesStorage.data
   const lastLaunchedEncounterId = lastEncounterStorage.data
+  const spotlightNpcId = spotlightStorage.data
 
   // ── Getters ─────────────────────────────────────────
   const loadedEnvironment = computed(() => {
@@ -83,12 +85,18 @@ export const useSessionStore = defineStore('session', () => {
     sessionNotes.value = text
   }
 
+  /** Basculer le spotlight sur un PNJ */
+  function setSpotlight(id) {
+    spotlightNpcId.value = spotlightNpcId.value === id ? null : id
+  }
+
   /** Reinitialiser toute la session */
   function resetSession() {
     environmentId.value = null
     loadedNpcIds.value = []
     sessionNotes.value = ''
     lastLaunchedEncounterId.value = null
+    spotlightNpcId.value = null
   }
 
   return {
@@ -97,6 +105,7 @@ export const useSessionStore = defineStore('session', () => {
     loadedNpcIds,
     sessionNotes,
     lastLaunchedEncounterId,
+    spotlightNpcId,
     // Getters
     loadedEnvironment,
     loadedNpcs,
@@ -111,6 +120,7 @@ export const useSessionStore = defineStore('session', () => {
     toggleNpc,
     clearNpcs,
     setSessionNotes,
+    setSpotlight,
     resetSession
   }
 })

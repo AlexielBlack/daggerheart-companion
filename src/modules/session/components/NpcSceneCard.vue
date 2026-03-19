@@ -1,6 +1,7 @@
 <template>
   <article
     class="npc-scene-card"
+    :class="{ 'npc-scene-card--spotlight': isSpotlight }"
     :aria-label="npc.name"
   >
     <!-- Header -->
@@ -20,6 +21,15 @@
           v-if="npc.title"
           class="npc-scene-card__title"
         >{{ npc.title }}</span>
+      </button>
+      <button
+        class="npc-scene-card__spotlight-btn"
+        :class="{ 'npc-scene-card__spotlight-btn--active': isSpotlight }"
+        :aria-label="isSpotlight ? 'Retirer la mise en avant de ' + npc.name : 'Mettre en avant ' + npc.name"
+        :aria-pressed="String(isSpotlight)"
+        @click="$emit('spotlight', npc.id)"
+      >
+        &#x1F3AF;
       </button>
       <button
         class="npc-scene-card__remove-btn"
@@ -137,10 +147,11 @@ export default {
   name: 'NpcSceneCard',
 
   props: {
-    npc: { type: Object, required: true }
+    npc: { type: Object, required: true },
+    isSpotlight: { type: Boolean, default: false }
   },
 
-  emits: ['remove', 'open-details'],
+  emits: ['remove', 'open-details', 'spotlight'],
 
   setup(props) {
     const npcStore = useNpcStore()
@@ -354,5 +365,33 @@ export default {
 
 .npc-scene-card__notes::placeholder {
   color: var(--color-text-muted, #888);
+}
+
+.npc-scene-card--spotlight {
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 12px rgba(83, 168, 182, 0.25);
+  transform: scale(1.02);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.npc-scene-card__spotlight-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 0.8em;
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: opacity var(--transition-fast);
+}
+
+.npc-scene-card__spotlight-btn:hover {
+  opacity: 0.8;
+}
+
+.npc-scene-card__spotlight-btn--active {
+  opacity: 1;
+  color: var(--color-accent-hope);
 }
 </style>

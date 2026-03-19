@@ -50,8 +50,10 @@
       >
         <NpcSceneCard
           :npc="npc"
+          :is-spotlight="sessionStore.spotlightNpcId === npc.id"
           @remove="sessionStore.removeNpc($event)"
           @open-details="$emit('open-npc', $event)"
+          @spotlight="sessionStore.setSpotlight($event)"
         />
       </div>
     </div>
