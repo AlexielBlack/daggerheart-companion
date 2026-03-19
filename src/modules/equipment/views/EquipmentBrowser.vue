@@ -566,6 +566,7 @@
     <!-- Panneau d'edition inline -->
     <aside
       v-if="editingInline"
+      ref="editPanel"
       class="equipment-browser__edit-panel"
       aria-label="Edition d'équipement custom"
     >
@@ -609,7 +610,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useEquipmentStore } from '../stores/equipmentStore.js'
 import { RANGES, BURDENS, RARITIES } from '@/data/equipment/constants.js'
@@ -636,6 +637,13 @@ export default {
     const editingInline = ref(false)
     const creatingNew = ref(false)
     const editingItemId = ref(null)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(equipmentSchema)
@@ -692,6 +700,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       expandedId.value = id
@@ -751,7 +760,9 @@ export default {
       setField,
       toRawData,
       reset,
-      equipmentSchema
+      equipmentSchema,
+      editPanel,
+      scrollToEditPanel
     }
   },
 
@@ -764,6 +775,7 @@ export default {
       this.editingInline = true
       this.creatingNew = false
       this.editingItemId = item.id
+      this.scrollToEditPanel()
     },
     onFieldUpdate({ field, value }) {
       this.setField(field, value)

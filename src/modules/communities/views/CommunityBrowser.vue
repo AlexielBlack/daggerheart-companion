@@ -97,6 +97,7 @@
     <!-- Panneau d'edition inline -->
     <aside
       v-if="editingInline"
+      ref="editPanel"
       class="community-browser__edit-panel"
       aria-label="Edition de communauté custom"
     >
@@ -132,7 +133,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
@@ -161,6 +162,13 @@ export default {
     const editingInline = ref(false)
     const creatingNew = ref(false)
     const editingCommunityId = ref(null)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(communitySchema)
@@ -172,6 +180,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       store.toggleExpand(id)
@@ -203,7 +212,9 @@ export default {
       setField,
       toRawData,
       reset,
-      communitySchema
+      communitySchema,
+      editPanel,
+      scrollToEditPanel
     }
   },
 
@@ -216,6 +227,7 @@ export default {
       this.editingInline = true
       this.creatingNew = false
       this.editingCommunityId = community.id
+      this.scrollToEditPanel()
     },
     onFieldUpdate({ field, value }) {
       this.setField(field, value)

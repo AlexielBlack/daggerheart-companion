@@ -236,6 +236,7 @@
     <!-- Panneau d'edition inline -->
     <aside
       v-if="editingInline"
+      ref="editPanel"
       class="domain-browser__edit-panel"
       aria-label="Edition de domaine custom"
     >
@@ -273,7 +274,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
@@ -300,6 +301,13 @@ export default {
     const editingInline = ref(false)
     const creatingNew = ref(false)
     const editingDomainId = ref(null)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(domainSchema)
@@ -321,6 +329,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       store.selectDomain(id)
@@ -354,7 +363,9 @@ export default {
       setField,
       toRawData,
       reset,
-      domainSchema
+      domainSchema,
+      editPanel,
+      scrollToEditPanel
     }
   },
 
@@ -367,6 +378,7 @@ export default {
       this.editingInline = true
       this.creatingNew = false
       this.editingDomainId = domain.id
+      this.scrollToEditPanel()
     },
     onFieldUpdate({ field, value }) {
       this.setField(field, value)

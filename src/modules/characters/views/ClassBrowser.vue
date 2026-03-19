@@ -214,6 +214,7 @@
     <!-- Panneau d'edition inline -->
     <aside
       v-if="editingInline"
+      ref="editPanel"
       class="class-browser__edit-panel"
       aria-label="Edition de classe custom"
     >
@@ -251,7 +252,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { getSubclassesForClass } from '@/data/subclasses/index.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
@@ -283,6 +284,7 @@ export default {
     const editingInline = ref(false)
     const creatingNew = ref(false)
     const editingClassId = ref(null)
+    const editPanel = ref(null)
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(classSchema)
@@ -300,6 +302,12 @@ export default {
       })
     })
 
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+
     // --- Deep-linking : sélection depuis la route ---
     function selectFromRoute(id) {
       if (!id) return
@@ -307,6 +315,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       expandedClassId.value = id
@@ -398,6 +407,8 @@ export default {
       editingInline,
       creatingNew,
       editingClassId,
+      editPanel,
+      scrollToEditPanel,
       formData,
       isDirty,
       hydrate,
@@ -431,6 +442,7 @@ export default {
       this.editingInline = true
       this.creatingNew = false
       this.editingClassId = cls.id
+      this.scrollToEditPanel()
     },
     onFieldUpdate({ field, value }) {
       this.setField(field, value)

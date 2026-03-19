@@ -89,7 +89,10 @@
 
         <!-- Mode edition inline -->
         <template v-else>
-          <div class="env-browser__edit-panel">
+          <div
+            ref="editPanel"
+            class="env-browser__edit-panel"
+          >
             <h3>{{ creatingNew ? 'Nouvel environnement custom' : 'Modifier' }}</h3>
             <HomebrewForm
               :schema="environmentSchema"
@@ -121,7 +124,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
@@ -156,6 +159,13 @@ export default {
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
     const creatingNew = ref(false)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(environmentSchema)
@@ -167,6 +177,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       store.selectEnvironment(id)
@@ -189,7 +200,9 @@ export default {
       setField,
       toRawData,
       reset,
-      environmentSchema
+      environmentSchema,
+      editPanel,
+      scrollToEditPanel
     }
   },
   computed: {
@@ -221,6 +234,7 @@ export default {
         this.hydrate(this.store.selectedEnvironment)
         this.editingInline = true
         this.creatingNew = false
+        this.scrollToEditPanel()
       }
     },
     onFieldUpdate({ field, value }) {

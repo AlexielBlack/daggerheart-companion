@@ -92,7 +92,10 @@
 
           <!-- Mode edition inline -->
           <template v-else>
-            <div class="adversary-browser__edit-panel">
+            <div
+              ref="editPanel"
+              class="adversary-browser__edit-panel"
+            >
               <h3>{{ creatingNew ? 'Nouvel adversaire custom' : 'Modifier' }}</h3>
               <HomebrewForm
                 :schema="adversarySchema"
@@ -124,7 +127,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
@@ -159,6 +162,13 @@ export default {
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
     const creatingNew = ref(false)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(adversarySchema)
@@ -170,6 +180,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       store.selectAdversary(id)
@@ -192,7 +203,9 @@ export default {
       setField,
       toRawData,
       reset,
-      adversarySchema
+      adversarySchema,
+      editPanel,
+      scrollToEditPanel
     }
   },
   computed: {
@@ -224,6 +237,7 @@ export default {
         this.hydrate(this.store.selectedAdversary)
         this.editingInline = true
         this.creatingNew = false
+        this.scrollToEditPanel()
       }
     },
     onFieldUpdate({ field, value }) {

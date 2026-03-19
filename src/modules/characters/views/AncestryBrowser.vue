@@ -245,6 +245,7 @@
     <!-- Panneau d'edition inline -->
     <aside
       v-if="editingInline"
+      ref="editPanel"
       class="ancestry-browser__edit-panel"
       aria-label="Edition d'ascendance custom"
     >
@@ -282,7 +283,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@/data/ancestries/index.js'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
@@ -312,6 +313,13 @@ export default {
     const editingInline = ref(false)
     const creatingNew = ref(false)
     const editingAncestryId = ref(null)
+    const editPanel = ref(null)
+
+    function scrollToEditPanel() {
+      nextTick(() => {
+        editPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(ancestrySchema)
@@ -372,6 +380,7 @@ export default {
         editingInline.value = true
         creatingNew.value = true
         reset()
+        scrollToEditPanel()
         return
       }
       expandedId.value = id
@@ -411,6 +420,8 @@ export default {
       editingInline,
       creatingNew,
       editingAncestryId,
+      editPanel,
+      scrollToEditPanel,
       formData,
       isDirty,
       hydrate,
@@ -430,6 +441,7 @@ export default {
       this.editingInline = true
       this.creatingNew = false
       this.editingAncestryId = ancestry.id
+      this.scrollToEditPanel()
     },
     onFieldUpdate({ field, value }) {
       this.setField(field, value)
