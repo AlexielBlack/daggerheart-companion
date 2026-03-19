@@ -13,7 +13,7 @@
     </section>
 
     <section class="scene-view__pcs">
-      <PcGroupPanel @select-pc="drawer.openPc($event)" />
+      <PcGroupPanel :characters="characterStore.characters" @select-pc="drawer.openPc($event)" />
     </section>
 
     <SessionNotes />
@@ -28,6 +28,7 @@
 
 <script>
 import { useSceneDrawer } from '../composables/useSceneDrawer'
+import { useCharacterStore } from '@modules/characters'
 import EnvironmentLoader from '../components/EnvironmentLoader.vue'
 import NpcLoader from '../components/NpcLoader.vue'
 import PcGroupPanel from '../components/PcGroupPanel.vue'
@@ -47,7 +48,8 @@ export default {
   },
   setup() {
     const drawer = useSceneDrawer()
-    return { drawer }
+    const characterStore = useCharacterStore()
+    return { drawer, characterStore }
   }
 }
 </script>
