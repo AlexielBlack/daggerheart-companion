@@ -1,34 +1,55 @@
 <template>
   <div class="scene-view">
-    <SceneActionBar @open-catalogue="drawer.openCatalogue()" />
+    <SceneActionBar
+      :active-tab="activeTab"
+      @open-catalogue="drawer.openCatalogue()"
+      @change-tab="activeTab = $event"
+    />
 
-    <EnvironmentLoader />
+    <div
+      class="scene-view__tab-content"
+      role="tabpanel"
+      :aria-label="tabLabels[activeTab]"
+    >
+      <section
+        v-if="activeTab === 'personnages'"
+        class="scene-view__pcs"
+      >
+        <PcGroupPanel
+          :characters="characterStore.characters"
+          @select-pc="drawer.openPc($event)"
+        />
+      </section>
 
-    <section class="scene-view__pcs">
-      <PcGroupPanel
-        :characters="characterStore.characters"
-        @select-pc="drawer.openPc($event)"
-      />
-    </section>
+      <section
+        v-if="activeTab === 'pnjs'"
+        class="scene-view__npcs"
+      >
+        <NpcGroupPanel
+          @open-catalogue="drawer.openCatalogue()"
+          @open-npc="drawer.openNpc($event)"
+        />
+      </section>
 
-    <section class="scene-view__npcs">
-      <NpcGroupPanel
-        @open-catalogue="drawer.openCatalogue()"
-        @open-npc="drawer.openNpc($event)"
-      />
-    </section>
+      <section
+        v-if="activeTab === 'environnement'"
+        class="scene-view__env"
+      >
+        <EnvironmentLoader />
+        <div class="scene-view__encounter">
+          <EncounterLauncher @open-generator="drawer.openGenerator()" />
+        </div>
+      </section>
+    </div>
 
     <SessionNotes />
-
-    <section class="scene-view__encounter">
-      <EncounterLauncher @open-generator="drawer.openGenerator()" />
-    </section>
 
     <SceneDrawer />
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
 import { useSceneDrawer } from '../composables/useSceneDrawer'
 import { useCharacterStore } from '@modules/characters'
 import SceneActionBar from '../components/SceneActionBar.vue'
@@ -53,13 +74,27 @@ export default {
   setup() {
     const drawer = useSceneDrawer()
     const characterStore = useCharacterStore()
-    return { drawer, characterStore }
+    const activeTab = ref('personnages')
+
+    const tabLabels = {
+      personnages: 'Panneau Personnages',
+      pnjs: 'Panneau PNJs',
+      environnement: 'Panneau Environnement'
+    }
+
+    return { drawer, characterStore, activeTab, tabLabels }
   }
 }
 </script>
 
 <style scoped>
 .scene-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 1rem);
+}
+
+.scene-view__env {
   display: flex;
   flex-direction: column;
   gap: var(--space-md, 1rem);

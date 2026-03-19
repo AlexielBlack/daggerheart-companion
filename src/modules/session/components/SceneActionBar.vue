@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="scene-action-bar"
-    role="toolbar"
-    aria-label="Actions rapides de scene"
-  >
+  <div class="scene-action-bar">
     <div
       class="scene-action-bar__counters"
+      role="toolbar"
       aria-label="Compteurs de session"
     >
       <div
@@ -51,41 +48,43 @@
         </button>
       </div>
     </div>
-    <a
-      href="#scene-env"
-      class="scene-action-bar__btn"
-      aria-label="Aller a l'environnement"
-      @click.prevent="scrollTo('env')"
+    <nav
+      class="scene-action-bar__tabs"
+      role="tablist"
+      aria-label="Onglets de scene"
     >
-      &#x1F30D; Env
-    </a>
-    <button
-      class="scene-action-bar__btn"
-      aria-label="Ouvrir le catalogue PNJ"
-      @click="$emit('open-catalogue')"
-    >
-      &#x1F3AD; PNJs
-      <span
-        v-if="sessionStore.loadedNpcCount > 0"
-        class="scene-action-bar__badge"
-      >{{ sessionStore.loadedNpcCount }}</span>
-    </button>
-    <a
-      href="#scene-encounter"
-      class="scene-action-bar__btn"
-      aria-label="Aller aux rencontres"
-      @click.prevent="scrollTo('encounter')"
-    >
-      &#x2694;&#xFE0F; Rencontres
-    </a>
-    <a
-      href="#scene-notes"
-      class="scene-action-bar__btn"
-      aria-label="Aller aux notes"
-      @click.prevent="scrollTo('notes')"
-    >
-      &#x1F4DD; Notes
-    </a>
+      <button
+        role="tab"
+        class="scene-action-bar__tab"
+        :class="{ 'scene-action-bar__tab--active': activeTab === 'personnages' }"
+        :aria-selected="activeTab === 'personnages'"
+        @click="$emit('change-tab', 'personnages')"
+      >
+        &#x1F9D9; Personnages
+      </button>
+      <button
+        role="tab"
+        class="scene-action-bar__tab"
+        :class="{ 'scene-action-bar__tab--active': activeTab === 'pnjs' }"
+        :aria-selected="activeTab === 'pnjs'"
+        @click="$emit('change-tab', 'pnjs')"
+      >
+        &#x1F3AD; PNJs
+        <span
+          v-if="sessionStore.loadedNpcCount > 0"
+          class="scene-action-bar__badge"
+        >{{ sessionStore.loadedNpcCount }}</span>
+      </button>
+      <button
+        role="tab"
+        class="scene-action-bar__tab"
+        :class="{ 'scene-action-bar__tab--active': activeTab === 'environnement' }"
+        :aria-selected="activeTab === 'environnement'"
+        @click="$emit('change-tab', 'environnement')"
+      >
+        &#x1F30D; Environnement
+      </button>
+    </nav>
   </div>
 </template>
 
@@ -95,23 +94,18 @@ import { useSessionStore } from '../stores/sessionStore'
 export default {
   name: 'SceneActionBar',
 
-  emits: ['open-catalogue'],
+  props: {
+    activeTab: {
+      type: String,
+      required: true
+    }
+  },
+
+  emits: ['open-catalogue', 'change-tab'],
 
   setup() {
     const sessionStore = useSessionStore()
-
-    /** Fait defiler la vue vers la section ciblee */
-    function scrollTo(target) {
-      const sectionMap = {
-        env: '.env-loader',
-        encounter: '.scene-view__encounter',
-        notes: '.session-notes'
-      }
-      const el = document.querySelector(sectionMap[target])
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-
-    return { scrollTo, sessionStore }
+    return { sessionStore }
   }
 }
 </script>
@@ -123,36 +117,50 @@ export default {
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   padding: var(--space-xs) var(--space-sm);
   background: color-mix(in srgb, var(--color-bg-primary) 90%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  flex-wrap: wrap;
 }
 
-.scene-action-bar__btn {
+.scene-action-bar__tabs {
+  display: flex;
+  gap: 2px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  padding: 2px;
+}
+
+.scene-action-bar__tab {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
   padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-bg-tertiary);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  text-decoration: none;
   white-space: nowrap;
   min-height: var(--touch-min);
-  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.scene-action-bar__btn:hover {
+.scene-action-bar__tab:hover {
   background: var(--color-bg-hover);
   color: var(--color-text-primary);
-  border-color: var(--color-border-active);
+}
+
+.scene-action-bar__tab--active {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .scene-action-bar__counters {

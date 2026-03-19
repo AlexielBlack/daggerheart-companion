@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 
-// ── Mock useStorage ──────────────────────────────────────
+// ── Mock useStorage ──────────────────────────────────
 vi.mock('@core/composables/useStorage', async () => {
   const { ref: vueRef } = await import('vue')
   return {
@@ -31,37 +31,49 @@ vi.mock('@modules/npcs', () => ({
 import SceneActionBar from '../SceneActionBar.vue'
 import { useSessionStore } from '../../stores/sessionStore'
 
+/** Monte le composant avec la prop activeTab requise */
+function mountBar(props = {}) {
+  return mount(SceneActionBar, {
+    props: { activeTab: 'personnages', ...props }
+  })
+}
+
 describe('SceneActionBar', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
   })
 
-  it('affiche le bouton Catalogue PNJ', () => {
-    const wrapper = mount(SceneActionBar)
-    expect(wrapper.find('[aria-label="Ouvrir le catalogue PNJ"]').exists()).toBe(true)
+  // ── Onglets ────────────────────────────
+
+  it('affiche les trois onglets de scene', () => {
+    const wrapper = mountBar()
+    const tabs = wrapper.findAll('[role="tab"]')
+    expect(tabs).toHaveLength(3)
+    expect(tabs[0].text()).toContain('Personnages')
+    expect(tabs[1].text()).toContain('PNJs')
+    expect(tabs[2].text()).toContain('Environnement')
   })
 
-  it('affiche le bouton Rencontres', () => {
-    const wrapper = mount(SceneActionBar)
-    expect(wrapper.find('[aria-label="Aller aux rencontres"]').exists()).toBe(true)
+  it('marque l\'onglet actif avec aria-selected', () => {
+    const wrapper = mountBar({ activeTab: 'pnjs' })
+    const tabs = wrapper.findAll('[role="tab"]')
+    expect(tabs[0].attributes('aria-selected')).toBe('false')
+    expect(tabs[1].attributes('aria-selected')).toBe('true')
+    expect(tabs[2].attributes('aria-selected')).toBe('false')
   })
 
-  it('affiche le bouton Notes', () => {
-    const wrapper = mount(SceneActionBar)
-    expect(wrapper.find('[aria-label="Aller aux notes"]').exists()).toBe(true)
+  it('emet change-tab au clic sur un onglet', async () => {
+    const wrapper = mountBar()
+    await wrapper.findAll('[role="tab"]')[2].trigger('click')
+    expect(wrapper.emitted('change-tab')).toBeTruthy()
+    expect(wrapper.emitted('change-tab')[0]).toEqual(['environnement'])
   })
 
-  it('emet open-catalogue au clic sur le bouton PNJ', async () => {
-    const wrapper = mount(SceneActionBar)
-    await wrapper.find('[aria-label="Ouvrir le catalogue PNJ"]').trigger('click')
-    expect(wrapper.emitted('open-catalogue')).toBeTruthy()
-  })
-
-  it('a le role toolbar avec aria-label', () => {
-    const wrapper = mount(SceneActionBar)
-    const toolbar = wrapper.find('[role="toolbar"]')
-    expect(toolbar.exists()).toBe(true)
-    expect(toolbar.attributes('aria-label')).toBe('Actions rapides de scene')
+  it('a un tablist avec aria-label', () => {
+    const wrapper = mountBar()
+    const tablist = wrapper.find('[role="tablist"]')
+    expect(tablist.exists()).toBe(true)
+    expect(tablist.attributes('aria-label')).toBe('Onglets de scene')
   })
 
   // ── Compteur Fear / Hope ────────────────────────────
@@ -71,44 +83,39 @@ describe('SceneActionBar', () => {
     sessionStore.incrementFear()
     sessionStore.incrementFear()
     sessionStore.incrementHopeGlobal()
-    const wrapper = mount(SceneActionBar)
+    const wrapper = mountBar()
     expect(wrapper.find('[aria-label="Compteur Fear"]').text()).toContain('2')
     expect(wrapper.find('[aria-label="Compteur Hope"]').text()).toContain('1')
   })
 
   it('incremente fear au clic sur le bouton +', async () => {
     const sessionStore = useSessionStore()
-    const wrapper = mount(SceneActionBar)
+    const wrapper = mountBar()
     await wrapper.find('[aria-label="Ajouter 1 Fear"]').trigger('click')
     expect(sessionStore.fear).toBe(1)
   })
 
   it('incremente hope au clic sur le bouton +', async () => {
     const sessionStore = useSessionStore()
-    const wrapper = mount(SceneActionBar)
+    const wrapper = mountBar()
     await wrapper.find('[aria-label="Ajouter 1 Hope"]').trigger('click')
     expect(sessionStore.hope).toBe(1)
   })
 
-  // ── Badge PNJ & bouton Env ────────────────────────────
+  // ── Badge PNJ ────────────────────────────
 
   it('affiche le nombre de PNJs charges dans le badge', () => {
     const sessionStore = useSessionStore()
     sessionStore.addNpc('npc-1')
     sessionStore.addNpc('npc-2')
-    const wrapper = mount(SceneActionBar)
+    const wrapper = mountBar()
     const badge = wrapper.find('.scene-action-bar__badge')
     expect(badge.exists()).toBe(true)
     expect(badge.text()).toBe('2')
   })
 
   it('masque le badge quand aucun PNJ charge', () => {
-    const wrapper = mount(SceneActionBar)
+    const wrapper = mountBar()
     expect(wrapper.find('.scene-action-bar__badge').exists()).toBe(false)
-  })
-
-  it('affiche le bouton Env', () => {
-    const wrapper = mount(SceneActionBar)
-    expect(wrapper.find('[aria-label="Aller a l\'environnement"]').exists()).toBe(true)
   })
 })
