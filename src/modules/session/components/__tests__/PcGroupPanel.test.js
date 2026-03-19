@@ -68,18 +68,6 @@ const mockPc = {
   classData: { name: 'Gardien', emoji: '🛡️' }
 }
 
-const mockPcMinimal = {
-  id: 'pc-2',
-  name: 'Brynn',
-  level: 1,
-  hidden: false,
-  currentHP: 0,
-  currentStress: 0,
-  armorSlotsMarked: 0,
-  hope: 0,
-  conditions: []
-}
-
 // ── Stubs pour router-link ──────────────────────────────
 const stubs = {
   'router-link': {
