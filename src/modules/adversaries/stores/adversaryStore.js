@@ -20,6 +20,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   const sortField = ref('name')
   const sortDirection = ref('asc')
   const selectedAdversaryId = ref(null)
+  const sourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ── Store Homebrew ────────────────────────────────────
   const homebrewStore = useAdversaryHomebrewStore()
@@ -45,6 +46,13 @@ export const useAdversaryStore = defineStore('adversaries', () => {
   /** Liste filtrée et triée des adversaires */
   const filteredAdversaries = computed(() => {
     let result = [...allItems.value]
+
+    // Filtre par source (SRD / homebrew)
+    if (sourceFilter.value === 'srd') {
+      result = result.filter((a) => a.source !== 'custom')
+    } else if (sourceFilter.value === 'custom') {
+      result = result.filter((a) => a.source === 'custom')
+    }
 
     // Filtre par recherche textuelle
     if (searchQuery.value.trim()) {
@@ -118,7 +126,8 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     searchQuery.value.trim().length > 0 ||
     selectedTiers.value.length > 0 ||
     selectedTypes.value.length > 0 ||
-    selectedGenres.value.length > 0
+    selectedGenres.value.length > 0 ||
+    sourceFilter.value !== 'all'
   )
 
   // ── Actions ────────────────────────────────────────────
@@ -176,6 +185,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     selectedTiers.value = []
     selectedTypes.value = []
     selectedGenres.value = []
+    sourceFilter.value = 'all'
   }
 
   function resetAll() {
@@ -199,6 +209,7 @@ export const useAdversaryStore = defineStore('adversaries', () => {
     sortField,
     sortDirection,
     selectedAdversaryId,
+    sourceFilter,
     // Constants
     availableTypes,
     availableGenres,

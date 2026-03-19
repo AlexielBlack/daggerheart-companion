@@ -19,6 +19,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
   const sortField = ref('name')
   const sortDirection = ref('asc')
   const selectedEnvironmentId = ref(null)
+  const sourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ── Store Homebrew ────────────────────────────────────
   const homebrewStore = useEnvironmentHomebrewStore()
@@ -41,6 +42,13 @@ export const useEnvironmentStore = defineStore('environments', () => {
   /** Liste filtrée et triée des environnements */
   const filteredEnvironments = computed(() => {
     let result = [...allItems.value]
+
+    // Filtre par source (SRD / homebrew)
+    if (sourceFilter.value === 'srd') {
+      result = result.filter((e) => e.source !== 'custom')
+    } else if (sourceFilter.value === 'custom') {
+      result = result.filter((e) => e.source === 'custom')
+    }
 
     // Filtre par recherche textuelle
     if (searchQuery.value.trim()) {
@@ -103,7 +111,8 @@ export const useEnvironmentStore = defineStore('environments', () => {
   const hasActiveFilters = computed(() =>
     searchQuery.value.trim().length > 0 ||
     selectedTiers.value.length > 0 ||
-    selectedTypes.value.length > 0
+    selectedTypes.value.length > 0 ||
+    sourceFilter.value !== 'all'
   )
 
   // ── Actions ────────────────────────────────────────────
@@ -151,6 +160,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
     searchQuery.value = ''
     selectedTiers.value = []
     selectedTypes.value = []
+    sourceFilter.value = 'all'
   }
 
   function resetAll() {
@@ -173,6 +183,7 @@ export const useEnvironmentStore = defineStore('environments', () => {
     sortField,
     sortDirection,
     selectedEnvironmentId,
+    sourceFilter,
     // Constants
     availableTypes,
     availableTiers,

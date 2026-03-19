@@ -24,6 +24,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
   const activeTier = ref(0) // 0 = all tiers
   const activeDamageType = ref('all') // all | phy | mag
   const activeRarity = ref('all') // all | common | uncommon | rare | legendary
+  const sourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ─── Homebrew ───
   const homebrewStore = useEquipmentHomebrewStore()
@@ -109,25 +110,33 @@ export const useEquipmentStore = defineStore('equipment', () => {
     return item.rarity === activeRarity.value
   }
 
+  // ─── Filtrage source (SRD / homebrew) ───
+  function matchesSource(item) {
+    if (sourceFilter.value === 'all') return true
+    if (sourceFilter.value === 'srd') return item.source !== 'custom'
+    if (sourceFilter.value === 'custom') return item.source === 'custom'
+    return true
+  }
+
   // ─── Computed filtered lists ───
   const filteredPrimaryWeapons = computed(() =>
-    allPrimary.value.filter((w) => matchesSearch(w) && matchesTier(w) && matchesDamageType(w))
+    allPrimary.value.filter((w) => matchesSearch(w) && matchesTier(w) && matchesDamageType(w) && matchesSource(w))
   )
 
   const filteredSecondaryWeapons = computed(() =>
-    allSecondary.value.filter((w) => matchesSearch(w) && matchesTier(w))
+    allSecondary.value.filter((w) => matchesSearch(w) && matchesTier(w) && matchesSource(w))
   )
 
   const filteredArmor = computed(() =>
-    allArmor.value.filter((a) => matchesSearch(a) && matchesTier(a))
+    allArmor.value.filter((a) => matchesSearch(a) && matchesTier(a) && matchesSource(a))
   )
 
   const filteredLoot = computed(() =>
-    allLoot.value.filter((l) => matchesSearch(l) && matchesRarity(l))
+    allLoot.value.filter((l) => matchesSearch(l) && matchesRarity(l) && matchesSource(l))
   )
 
   const filteredConsumables = computed(() =>
-    allConsumable.value.filter((c) => matchesSearch(c) && matchesRarity(c))
+    allConsumable.value.filter((c) => matchesSearch(c) && matchesRarity(c) && matchesSource(c))
   )
 
   // ─── Visibilité par catégorie ───
@@ -152,6 +161,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
     activeTier.value = 0
     activeDamageType.value = 'all'
     activeRarity.value = 'all'
+    sourceFilter.value = 'all'
   }
 
   return {
@@ -161,6 +171,7 @@ export const useEquipmentStore = defineStore('equipment', () => {
     activeTier,
     activeDamageType,
     activeRarity,
+    sourceFilter,
     // Constants
     categories,
     counts,

@@ -25,6 +25,7 @@ export const useDomainStore = defineStore('domains', () => {
   const filterType = ref('all') // 'all' | 'spell' | 'ability' | 'grimoire'
   const filterLevel = ref(0) // 0 = all levels
   const filterSpell = ref('all') // 'all' | 'spells' | 'martial'
+  const sourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ── Homebrew ──────────────────────────────────────────
   const homebrewStore = useDomainHomebrewStore()
@@ -88,6 +89,10 @@ export const useDomainStore = defineStore('domains', () => {
   const filteredDomains = computed(() => {
     const q = searchQuery.value.toLowerCase().trim()
     return allDomains.value.filter((domain) => {
+      // Filtre par source (SRD / homebrew)
+      if (sourceFilter.value === 'srd' && domain.source === 'custom') return false
+      if (sourceFilter.value === 'custom' && domain.source !== 'custom') return false
+
       const matchSpell =
         filterSpell.value === 'all' ||
         (filterSpell.value === 'spells' && domain.hasSpells) ||
@@ -167,6 +172,7 @@ export const useDomainStore = defineStore('domains', () => {
     filterType.value = 'all'
     filterLevel.value = 0
     filterSpell.value = 'all'
+    sourceFilter.value = 'all'
   }
 
   return {
@@ -176,6 +182,7 @@ export const useDomainStore = defineStore('domains', () => {
     filterType,
     filterLevel,
     filterSpell,
+    sourceFilter,
     // Getters
     allDomains,
     domainCount,

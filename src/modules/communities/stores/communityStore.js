@@ -15,6 +15,7 @@ export const useCommunityStore = defineStore('communities', () => {
   // ── État ───────────────────────────────────────────────
   const searchQuery = ref('')
   const expandedId = ref(null)
+  const sourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ── Store Homebrew ────────────────────────────────────
   const homebrewStore = useCommunityHomebrewStore()
@@ -32,9 +33,18 @@ export const useCommunityStore = defineStore('communities', () => {
 
   /** Liste filtrée des communautés */
   const filteredCommunities = computed(() => {
+    let result = [...allCommunities.value]
+
+    // Filtre par source (SRD / homebrew)
+    if (sourceFilter.value === 'srd') {
+      result = result.filter((c) => c.source !== 'custom')
+    } else if (sourceFilter.value === 'custom') {
+      result = result.filter((c) => c.source === 'custom')
+    }
+
     const q = searchQuery.value.toLowerCase().trim()
-    if (!q) return [...allCommunities.value]
-    return allCommunities.value.filter(
+    if (!q) return result
+    return result.filter(
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.description.toLowerCase().includes(q) ||
@@ -51,7 +61,10 @@ export const useCommunityStore = defineStore('communities', () => {
   const filteredCount = computed(() => filteredCommunities.value.length)
 
   /** Indique si des filtres sont actifs */
-  const hasActiveFilters = computed(() => searchQuery.value.trim().length > 0)
+  const hasActiveFilters = computed(() =>
+    searchQuery.value.trim().length > 0 ||
+    sourceFilter.value !== 'all'
+  )
 
   /** Communauté actuellement développée */
   const expandedCommunity = computed(() => {
@@ -78,6 +91,7 @@ export const useCommunityStore = defineStore('communities', () => {
 
   function clearFilters() {
     searchQuery.value = ''
+    sourceFilter.value = 'all'
   }
 
   function resetAll() {
@@ -89,6 +103,7 @@ export const useCommunityStore = defineStore('communities', () => {
     // State
     searchQuery,
     expandedId,
+    sourceFilter,
     // Getters
     filteredCommunities,
     totalCount,

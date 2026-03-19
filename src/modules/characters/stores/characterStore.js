@@ -41,6 +41,8 @@ export const useCharacterStore = defineStore('characters', () => {
   // ── État ────────────────────────────────────────────────
   const characters = ref([])
   const selectedCharacterId = ref(null)
+  const classSourceFilter = ref('all') // 'all' | 'srd' | 'custom'
+  const ancestrySourceFilter = ref('all') // 'all' | 'srd' | 'custom'
 
   // ── Constantes ─────────────────────────────────────────
   const availableTraits = TRAITS
@@ -1459,6 +1461,8 @@ export const useCharacterStore = defineStore('characters', () => {
     // État
     characters,
     selectedCharacterId,
+    classSourceFilter,
+    ancestrySourceFilter,
 
     // Constantes
     allClasses,
