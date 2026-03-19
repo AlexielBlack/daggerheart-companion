@@ -319,6 +319,8 @@
                   :key="cond"
                   class="pc-card__condition"
                   :style="conditionStyle(cond)"
+                  :title="conditionDesc(cond)"
+                  :aria-label="conditionLabel(cond) + ' : ' + conditionDesc(cond)"
                 >
                   {{ conditionLabel(cond) }}
                 </span>
@@ -1102,13 +1104,17 @@ export default {
 
     // ── Conditions ──
     const CONDITION_LABELS = {
-      vulnerable: { label: 'Vulnerable', color: 'var(--color-accent-danger)' },
-      restrained: { label: 'Entrave', color: 'var(--color-accent-warning)' },
-      hidden: { label: 'Cache', color: 'var(--color-accent-info)' }
+      vulnerable: { label: 'Vulnerable', color: 'var(--color-accent-danger)', desc: 'Les attaques contre cette cible gagnent un avantage.' },
+      restrained: { label: 'Entrave', color: 'var(--color-accent-warning)', desc: 'Ne peut pas se deplacer ni utiliser d\'actions de mouvement.' },
+      hidden: { label: 'Cache', color: 'var(--color-accent-info)', desc: 'Ne peut pas etre cible directement. Se revele en attaquant.' }
     }
 
     function conditionLabel(cond) {
       return CONDITION_LABELS[cond]?.label || cond
+    }
+
+    function conditionDesc(cond) {
+      return CONDITION_LABELS[cond]?.desc || ''
     }
 
     function conditionStyle(cond) {
@@ -1283,6 +1289,7 @@ export default {
       armorFillPercent,
       traitSign,
       conditionLabel,
+      conditionDesc,
       conditionStyle,
       TRAIT_ABBR,
       TRAIT_ORDER,
