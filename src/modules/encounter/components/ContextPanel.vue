@@ -551,6 +551,29 @@
         <EnvironmentPanel :environment="environment" />
       </div>
 
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <!--  PNJs en scène (session)                              -->
+      <!-- ═══════════════════════════════════════════════════════ -->
+      <section
+        v-if="sessionNpcs.length"
+        class="context-panel__npcs"
+      >
+        <h4 class="ctx-panel__section-title context-panel__npcs-title">
+          PNJs en scène
+        </h4>
+        <div class="context-panel__npc-chips">
+          <button
+            v-for="npc in sessionNpcs"
+            :key="npc.id"
+            class="context-panel__npc-chip"
+            :class="`context-panel__npc-chip--${npc.status || 'neutral'}`"
+            @click="$emit('select-npc', npc.id)"
+          >
+            {{ npc.name }}
+          </button>
+        </div>
+      </section>
+
       <!-- État vide -->
       <div
         v-if="!pc && !adversary && !environment"
@@ -569,6 +592,7 @@ import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
 import { useSwipe } from '../composables/useSwipe'
 import { getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
 import { useCharacterStore } from '@modules/characters'
+import { useSessionStore } from '@modules/session'
 import FeatureCard from './FeatureCard.vue'
 import EnvironmentPanel from './EnvironmentPanel.vue'
 
@@ -598,6 +622,7 @@ export default {
     /** Features enrichies par usePlayerActions */
     enrichedFeatures: { type: Array, default: () => [] }
   },
+  emits: ['select-npc'],
   setup(props) {
     const activeTab  = ref('pc')
     const swipeZone  = ref(null)
@@ -852,6 +877,10 @@ export default {
     const advActions = computed(() => advClassified.value.actionFeatures)
     const advReactions = computed(() => advClassified.value.reactionFeatures)
 
+    // PNJs en scène (depuis la session)
+    const sessionStore = useSessionStore()
+    const sessionNpcs = computed(() => sessionStore.loadedNpcs)
+
     return {
       activeTab, swipeZone, visibleTabs,
       onTouchStart, onTouchEnd,
@@ -862,6 +891,7 @@ export default {
       pcExperiences,
       primaryWeapon, secondaryWeapon, pcProficiency,
       advPassives, advActions, advReactions,
+      sessionNpcs,
       // Gestion interactive stats PJ
       incrementHP, decrementHP,
       incrementStress, decrementStress,
@@ -1305,4 +1335,37 @@ export default {
   min-width: 3rem;
   font-size: 0.7rem;
 }
+
+/* ── PNJs en scène ── */
+
+.context-panel__npcs {
+  padding: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.context-panel__npcs-title {
+  margin-bottom: var(--space-xs);
+}
+
+.context-panel__npc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 0.25rem);
+}
+
+.context-panel__npc-chip {
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.8em;
+  border: none;
+  cursor: pointer;
+  background: var(--color-surface, #1a1a2e);
+  color: var(--color-text, #fff);
+}
+
+.context-panel__npc-chip--ally { border-left: 3px solid #22c55e; }
+.context-panel__npc-chip--hostile { border-left: 3px solid #ef4444; }
+.context-panel__npc-chip--neutral { border-left: 3px solid #9ca3af; }
+.context-panel__npc-chip--dead { border-left: 3px solid #6b7280; opacity: 0.6; }
+.context-panel__npc-chip--missing { border-left: 3px solid #f97316; }
 </style>

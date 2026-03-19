@@ -219,6 +219,7 @@
                 :all-features="pcAllFeatures"
                 :spellcast-info="playerActionsSpellcast"
                 :enriched-features="playerActionsEnriched"
+                @select-npc="$emit('select-npc', $event)"
               />
             </div>
           </div>
@@ -452,6 +453,7 @@ import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 export default {
   name: 'EncounterLive',
   components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard },
+  emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
