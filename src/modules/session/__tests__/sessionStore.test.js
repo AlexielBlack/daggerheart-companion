@@ -244,6 +244,51 @@ describe('sessionStore', () => {
     })
   })
 
+  // ── Fear / Hope ─────────────────────────────────
+
+  describe('fear / hope (compteur global)', () => {
+    it('initialise fear et hope a 0', () => {
+      expect(store.fear).toBe(0)
+      expect(store.hope).toBe(0)
+    })
+
+    it('incrementFear augmente fear de 1', () => {
+      store.incrementFear()
+      expect(store.fear).toBe(1)
+    })
+
+    it('decrementFear diminue fear de 1 sans descendre sous 0', () => {
+      store.decrementFear()
+      expect(store.fear).toBe(0)
+      store.incrementFear()
+      store.incrementFear()
+      store.decrementFear()
+      expect(store.fear).toBe(1)
+    })
+
+    it('incrementHopeGlobal augmente hope de 1', () => {
+      store.incrementHopeGlobal()
+      expect(store.hope).toBe(1)
+    })
+
+    it('decrementHopeGlobal diminue hope de 1 sans descendre sous 0', () => {
+      store.decrementHopeGlobal()
+      expect(store.hope).toBe(0)
+      store.incrementHopeGlobal()
+      store.incrementHopeGlobal()
+      store.decrementHopeGlobal()
+      expect(store.hope).toBe(1)
+    })
+
+    it('resetSession remet fear et hope a 0', () => {
+      store.incrementFear()
+      store.incrementHopeGlobal()
+      store.resetSession()
+      expect(store.fear).toBe(0)
+      expect(store.hope).toBe(0)
+    })
+  })
+
   describe('loadedNpcCount', () => {
     it('retourne 0 sans PNJs', () => {
       expect(store.loadedNpcCount).toBe(0)

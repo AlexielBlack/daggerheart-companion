@@ -16,6 +16,8 @@ export const useSessionStore = defineStore('session', () => {
   const lastEncounterStorage = useStorage('session-last-encounter', null)
   const noteEntriesStorage = useStorage('session-note-entries', [])
   const spotlightStorage = useStorage('session-spotlight-npc', null)
+  const fearStorage = useStorage('session-fear', 0)
+  const hopeStorage = useStorage('session-hope', 0)
 
   // Raccourcis vers les refs
   const environmentId = envStorage.data
@@ -24,6 +26,8 @@ export const useSessionStore = defineStore('session', () => {
   const lastLaunchedEncounterId = lastEncounterStorage.data
   const noteEntries = noteEntriesStorage.data
   const spotlightNpcId = spotlightStorage.data
+  const fear = fearStorage.data
+  const hope = hopeStorage.data
 
   // ── Getters ─────────────────────────────────────────
   const loadedEnvironment = computed(() => {
@@ -87,6 +91,18 @@ export const useSessionStore = defineStore('session', () => {
     sessionNotes.value = text
   }
 
+  /** Incrementer le compteur Fear */
+  function incrementFear() { fear.value++ }
+
+  /** Decrementer le compteur Fear (plancher a 0) */
+  function decrementFear() { if (fear.value > 0) fear.value-- }
+
+  /** Incrementer le compteur Hope global */
+  function incrementHopeGlobal() { hope.value++ }
+
+  /** Decrementer le compteur Hope global (plancher a 0) */
+  function decrementHopeGlobal() { if (hope.value > 0) hope.value-- }
+
   /** Basculer le spotlight sur un PNJ */
   function setSpotlight(id) {
     spotlightNpcId.value = spotlightNpcId.value === id ? null : id
@@ -112,6 +128,8 @@ export const useSessionStore = defineStore('session', () => {
     lastLaunchedEncounterId.value = null
     noteEntries.value = []
     spotlightNpcId.value = null
+    fear.value = 0
+    hope.value = 0
   }
 
   return {
@@ -122,6 +140,8 @@ export const useSessionStore = defineStore('session', () => {
     lastLaunchedEncounterId,
     noteEntries,
     spotlightNpcId,
+    fear,
+    hope,
     // Getters
     loadedEnvironment,
     loadedNpcs,
@@ -139,6 +159,10 @@ export const useSessionStore = defineStore('session', () => {
     addNoteEntry,
     removeNoteEntry,
     setSpotlight,
+    incrementFear,
+    decrementFear,
+    incrementHopeGlobal,
+    decrementHopeGlobal,
     resetSession
   }
 })
