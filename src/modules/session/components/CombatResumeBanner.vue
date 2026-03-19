@@ -12,41 +12,44 @@
         &#x2694;&#xFE0F;
       </span>
       <span class="combat-banner__text">
-        <strong>Combat en cours :</strong>
-        {{ liveStore.encounterName || 'Rencontre' }}
-        — T{{ liveStore.encounterTier }}
-        · {{ activeCount }} adversaire{{ activeCount > 1 ? 's' : '' }}
-        actif{{ activeCount > 1 ? 's' : '' }}
+        <strong>Combat sauvegarde disponible</strong>
       </span>
     </div>
-    <router-link
-      to="/table/combat"
+    <button
       class="combat-banner__resume btn btn--primary"
       aria-label="Reprendre le combat en cours"
+      @click="onResume"
     >
       Reprendre le combat
-    </router-link>
+    </button>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
 import { useEncounterLiveStore } from '@modules/encounter'
+import { useRoute, useRouter } from 'vue-router'
 
 /**
- * CombatResumeBanner — Bandeau affiche quand un combat est actif.
- * Permet de reprendre rapidement le combat en cours depuis la page de session.
+ * CombatResumeBanner — Bandeau affiché quand un combat sauvegardé peut être restauré.
+ * Sur l'onglet combat, appelle restoreState(). Sur les autres onglets, navigue vers /table/combat.
  */
 export default {
   name: 'CombatResumeBanner',
 
   setup() {
     const liveStore = useEncounterLiveStore()
+    const route = useRoute()
+    const router = useRouter()
 
-    /** Nombre d'adversaires actifs (non vaincus) */
-    const activeCount = computed(() => liveStore.activeAdversaries?.length || 0)
+    function onResume() {
+      if (route.path === '/table/combat') {
+        liveStore.restoreState()
+      } else {
+        router.push('/table/combat')
+      }
+    }
 
-    return { liveStore, activeCount }
+    return { liveStore, onResume }
   }
 }
 </script>

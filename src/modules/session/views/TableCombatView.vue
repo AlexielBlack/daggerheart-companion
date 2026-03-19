@@ -8,7 +8,7 @@
         &larr; Retour a la Scene
       </router-link>
     </div>
-    <CombatResumeBanner />
+    <CombatResumeBanner v-if="!liveStore.isActive && liveStore.hasSavedState" />
     <EncounterLive @select-npc="drawer.openNpc($event)" />
     <SceneDrawer />
   </div>
@@ -19,13 +19,15 @@ import { useSceneDrawer } from '../composables/useSceneDrawer'
 import CombatResumeBanner from '../components/CombatResumeBanner.vue'
 import EncounterLive from '@modules/encounter/views/EncounterLive.vue'
 import SceneDrawer from '../components/SceneDrawer.vue'
+import { useEncounterLiveStore } from '@modules/encounter'
 
 export default {
   name: 'TableCombatView',
   components: { CombatResumeBanner, EncounterLive, SceneDrawer },
   setup() {
     const drawer = useSceneDrawer()
-    return { drawer }
+    const liveStore = useEncounterLiveStore()
+    return { drawer, liveStore }
   }
 }
 </script>

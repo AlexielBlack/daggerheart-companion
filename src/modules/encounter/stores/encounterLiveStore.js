@@ -876,6 +876,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   //  Persistence — Restore / Reset / End
   // ═══════════════════════════════════════════════════════
 
+  /** Indique si un état sauvegardé existe dans le localStorage */
+  const hasSavedState = computed(() => {
+    const data = liveStorage.data.value
+    return !!(data && data.isActive)
+  })
+
   function restoreState() {
     const data = liveStorage.data.value
     if (!data || !data.isActive) return false
@@ -1033,7 +1039,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     toggleAdvSpotlight, decrementAdvSpotlight,
 
     // Actions — Persistence
-    serializeLiveState, persistState, restoreState,
+    hasSavedState, serializeLiveState, persistState, restoreState,
     resetLive, endEncounter,
 
     // Actions — Undo (composable)
