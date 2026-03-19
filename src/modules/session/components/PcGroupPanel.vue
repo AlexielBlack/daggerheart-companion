@@ -699,7 +699,7 @@ export default {
     const characterStore = useCharacterStore()
 
     // ── Slider colonnes ──
-    const cardColumns = useStorage('pc-group-columns', 0)
+    const { data: cardColumns } = useStorage('pc-group-columns', 0)
     // 0 = auto (responsive CSS), 1-4 = forcé
     const COLUMN_OPTIONS = [
       { value: 0, label: 'Auto' },
