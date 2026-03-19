@@ -87,4 +87,85 @@ describe('NpcGroupPanel', () => {
     const wrapper = mount(NpcGroupPanel)
     expect(wrapper.text()).toContain('PNJs (1)')
   })
+
+  describe('tri et filtre PNJs', () => {
+    beforeEach(() => {
+      mockNpcs = [
+        { id: 'npc-1', name: 'Grendak', title: 'le Forgeron', status: 'hostile', faction: 'Guilde', notes: '' },
+        { id: 'npc-2', name: 'Lyra', title: '', status: 'ally', faction: '', notes: '' },
+        { id: 'npc-3', name: 'Korbin', title: 'le Sage', status: 'neutral', faction: 'Temple', notes: '' }
+      ]
+    })
+
+    it('affiche les boutons de filtre quand 3+ PNJs', () => {
+      const session = useSessionStore()
+      session.addNpc('npc-1')
+      session.addNpc('npc-2')
+      session.addNpc('npc-3')
+      const wrapper = mount(NpcGroupPanel)
+      expect(wrapper.find('.npc-group__filters').exists()).toBe(true)
+      expect(wrapper.findAll('.npc-group__filter-btn')).toHaveLength(4)
+    })
+
+    it('masque les filtres quand 2 ou moins PNJs', () => {
+      const session = useSessionStore()
+      session.addNpc('npc-1')
+      session.addNpc('npc-2')
+      const wrapper = mount(NpcGroupPanel)
+      expect(wrapper.find('.npc-group__filters').exists()).toBe(false)
+    })
+
+    it('filtre par statut au clic', async () => {
+      const session = useSessionStore()
+      session.addNpc('npc-1')
+      session.addNpc('npc-2')
+      session.addNpc('npc-3')
+      const wrapper = mount(NpcGroupPanel)
+
+      // Cliquer sur le filtre "Hostiles"
+      const hostileBtn = wrapper.findAll('.npc-group__filter-btn').find(b => b.text() === 'Hostiles')
+      await hostileBtn.trigger('click')
+
+      // Seul le PNJ hostile doit etre visible
+      const cards = wrapper.findAll('[role="listitem"]')
+      expect(cards).toHaveLength(1)
+      expect(wrapper.text()).toContain('Grendak')
+      expect(wrapper.text()).not.toContain('Lyra')
+      expect(wrapper.text()).not.toContain('Korbin')
+    })
+
+    it('tri spotlight-first puis par priorite de statut', async () => {
+      const { nextTick } = await import('vue')
+      const session = useSessionStore()
+      session.addNpc('npc-1')
+      session.addNpc('npc-2')
+      session.addNpc('npc-3')
+      // Mettre en spotlight le PNJ allie (normalement en bas)
+      session.setSpotlight('npc-2')
+      await nextTick()
+      const wrapper = mount(NpcGroupPanel)
+
+      const cards = wrapper.findAll('[role="listitem"]')
+      // Le spotlight (Lyra, ally) doit etre en premier
+      expect(cards[0].text()).toContain('Lyra')
+      // Puis hostile avant neutral
+      expect(cards[1].text()).toContain('Grendak')
+      expect(cards[2].text()).toContain('Korbin')
+    })
+
+    it('conserve le total dans le titre meme avec filtre actif', async () => {
+      const session = useSessionStore()
+      session.addNpc('npc-1')
+      session.addNpc('npc-2')
+      session.addNpc('npc-3')
+      const wrapper = mount(NpcGroupPanel)
+
+      // Filtrer sur hostiles uniquement
+      const hostileBtn = wrapper.findAll('.npc-group__filter-btn').find(b => b.text() === 'Hostiles')
+      await hostileBtn.trigger('click')
+
+      // Le titre affiche toujours le total (3), pas le filtre (1)
+      expect(wrapper.text()).toContain('PNJs (3)')
+    })
+  })
 })
