@@ -31,7 +31,7 @@
           </button>
         </div>
         <router-link
-          to="/table/pjs"
+          to="/table/prep/personnages"
           class="pc-group__edit-link"
           aria-label="Editer les personnages"
         >
@@ -46,7 +46,7 @@
       class="pc-group__empty"
     >
       Aucun personnage cree.
-      <router-link to="/table/pjs">
+      <router-link to="/table/prep/personnages">
         Creer un personnage
       </router-link>
     </p>
@@ -78,7 +78,7 @@
                   class="pc-card__hide-btn"
                   title="Masquer ce PJ de la table"
                   aria-label="Masquer ce PJ"
-                  @click="onToggleHidden(pc.id)"
+                  @click.stop="onToggleHidden(pc.id)"
                 >
                   &#x1F441;&#xFE0F;
                 </button>
@@ -87,7 +87,13 @@
                   class="pc-card__class-emoji"
                   aria-hidden="true"
                 >{{ pc.classData.emoji }}</span>
-                <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
+                <button
+                  class="pc-card__name-btn"
+                  :aria-label="'Voir la fiche de ' + (pc.name || 'Sans nom')"
+                  @click.stop="$emit('select-pc', pc.id)"
+                >
+                  <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
+                </button>
                 <span
                   v-if="pc.classData"
                   class="pc-card__class-name"
@@ -117,7 +123,7 @@
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentHP || 0) <= 0"
                     :aria-label="'Soigner 1 PV de ' + (pc.name || 'Sans nom')"
-                    @click="decrementHP(pc)"
+                    @click.stop="decrementHP(pc)"
                   >
                     &minus;
                   </button>
@@ -137,7 +143,7 @@
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
                     :aria-label="'Marquer 1 degat sur ' + (pc.name || 'Sans nom')"
-                    @click="incrementHP(pc)"
+                    @click.stop="incrementHP(pc)"
                   >
                     +
                   </button>
@@ -152,7 +158,7 @@
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentStress || 0) <= 0"
                     :aria-label="'Reduire 1 stress de ' + (pc.name || 'Sans nom')"
-                    @click="decrementStress(pc)"
+                    @click.stop="decrementStress(pc)"
                   >
                     &minus;
                   </button>
@@ -172,7 +178,7 @@
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
                     :aria-label="'Marquer 1 stress sur ' + (pc.name || 'Sans nom')"
-                    @click="incrementStress(pc)"
+                    @click.stop="incrementStress(pc)"
                   >
                     +
                   </button>
@@ -189,7 +195,7 @@
                     class="pc-card__stat-btn pc-card__stat-btn--mini"
                     :disabled="(pc.armorSlotsMarked || 0) <= 0"
                     :aria-label="'Restaurer 1 armure de ' + (pc.name || 'Sans nom')"
-                    @click="decrementArmor(pc)"
+                    @click.stop="decrementArmor(pc)"
                   >
                     &minus;
                   </button>
@@ -206,7 +212,7 @@
                     class="pc-card__stat-btn pc-card__stat-btn--mini"
                     :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
                     :aria-label="'Utiliser 1 armure de ' + (pc.name || 'Sans nom')"
-                    @click="incrementArmor(pc)"
+                    @click.stop="incrementArmor(pc)"
                   >
                     +
                   </button>
@@ -219,7 +225,7 @@
                     class="pc-card__stat-btn pc-card__stat-btn--mini"
                     :disabled="(pc.hope || 0) <= 0"
                     :aria-label="'Depenser 1 espoir de ' + (pc.name || 'Sans nom')"
-                    @click="decrementHope(pc)"
+                    @click.stop="decrementHope(pc)"
                   >
                     &minus;
                   </button>
@@ -229,7 +235,7 @@
                     class="pc-card__stat-btn pc-card__stat-btn--mini"
                     :disabled="(pc.hope || 0) >= 6"
                     :aria-label="'Gagner 1 espoir pour ' + (pc.name || 'Sans nom')"
-                    @click="incrementHope(pc)"
+                    @click.stop="incrementHope(pc)"
                   >
                     +
                   </button>
@@ -289,7 +295,7 @@
                 class="pc-card__expand-btn"
                 :aria-expanded="String(expandedPcId === pc.id)"
                 :aria-label="expandedPcId === pc.id ? 'Fermer les details de ' + (pc.name || 'Sans nom') : 'Ouvrir les details de ' + (pc.name || 'Sans nom')"
-                @click="toggleExpand(pc.id)"
+                @click.stop="toggleExpand(pc.id)"
               >
                 <span aria-hidden="true">{{ expandedPcId === pc.id ? '&#x2716;' : '&#x25B6;' }}</span>
                 {{ expandedPcId === pc.id ? 'Fermer' : 'Details' }}
@@ -322,7 +328,7 @@
                   :aria-selected="String(getActiveTab(pc.id) === tab.id)"
                   :aria-controls="'panel-' + pc.id + '-' + tab.id"
                   :tabindex="getActiveTab(pc.id) === tab.id ? 0 : -1"
-                  @click="setActiveTab(pc.id, tab.id)"
+                  @click.stop="setActiveTab(pc.id, tab.id)"
                   @keydown.left.prevent="navigateTab(pc, -1)"
                   @keydown.right.prevent="navigateTab(pc, 1)"
                 >
@@ -768,6 +774,8 @@ export default {
       default: () => []
     }
   },
+
+  emits: ['select-pc'],
 
   setup(props) {
     // ── Ref template pour la grille ──
@@ -1383,6 +1391,18 @@ export default {
 
 .pc-card__class-emoji {
   font-size: var(--font-size-lg);
+}
+
+.pc-card__name-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pc-card__name-btn:hover .pc-card__name {
+  text-decoration: underline;
 }
 
 .pc-card__name {

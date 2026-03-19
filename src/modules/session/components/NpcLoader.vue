@@ -17,8 +17,14 @@
         <span
           v-for="npc in sessionStore.loadedNpcs"
           :key="npc.id"
-          class="npc-chip"
+          class="npc-chip npc-chip--clickable"
           :class="`npc-chip--${npc.status}`"
+          role="button"
+          tabindex="0"
+          :aria-label="`Ouvrir la fiche de ${npc.name}`"
+          @click="$emit('select-npc', npc.id)"
+          @keydown.enter="$emit('select-npc', npc.id)"
+          @keydown.space.prevent="$emit('select-npc', npc.id)"
         >
           <span
             class="npc-chip__dot"
@@ -28,7 +34,7 @@
           <button
             class="npc-chip__remove"
             :aria-label="`Retirer ${npc.name}`"
-            @click="sessionStore.removeNpc(npc.id)"
+            @click.stop="sessionStore.removeNpc(npc.id)"
           >
             &#x2715;
           </button>
@@ -62,7 +68,7 @@
         class="npc-loader__empty-all"
       >
         Aucun PNJ cree.
-        <router-link to="/table/pnjs">
+        <router-link to="/table/prep/pnjs">
           Creer un PNJ
         </router-link>
       </p>
@@ -129,6 +135,8 @@ import { useNpcStore } from '@modules/npcs'
  */
 export default {
   name: 'NpcLoader',
+
+  emits: ['select-npc'],
 
   setup() {
     const sessionStore = useSessionStore()
@@ -212,6 +220,15 @@ export default {
   font-size: var(--font-size-sm);
   background: var(--color-bg-elevated);
   color: var(--color-text-primary);
+}
+
+.npc-chip--clickable {
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.npc-chip--clickable:hover {
+  opacity: 0.8;
 }
 
 .npc-chip__dot {
