@@ -120,10 +120,10 @@
         </div>
 
         <button
-          v-if="!confirmingDelete[i]"
+          v-if="!confirmingDelete[slot.id]"
           class="pc-inv-editor__delete-btn"
           :aria-label="'Supprimer objet ' + (i + 1)"
-          @click="startDelete(i)"
+          @click="startDelete(slot.id, i)"
         >
           &#x2715;
         </button>
@@ -131,7 +131,7 @@
           v-else
           class="pc-inv-editor__delete-btn pc-inv-editor__delete-btn--confirm"
           :aria-label="'Confirmer suppression objet ' + (i + 1)"
-          @click="confirmDelete(i)"
+          @click="confirmDelete(slot.id, i)"
         >
           Confirmer ?
         </button>
@@ -253,19 +253,19 @@ export default {
     const confirmingDelete = ref({})
     const deleteTimers = {}
 
-    function startDelete(index) {
-      confirmingDelete.value = { ...confirmingDelete.value, [index]: true }
-      deleteTimers[index] = setTimeout(() => {
+    function startDelete(slotId) {
+      confirmingDelete.value = { ...confirmingDelete.value, [slotId]: true }
+      deleteTimers[slotId] = setTimeout(() => {
         const updated = { ...confirmingDelete.value }
-        delete updated[index]
+        delete updated[slotId]
         confirmingDelete.value = updated
       }, 3000)
     }
 
-    function confirmDelete(index) {
-      clearTimeout(deleteTimers[index])
+    function confirmDelete(slotId, index) {
+      clearTimeout(deleteTimers[slotId])
       const updated = { ...confirmingDelete.value }
-      delete updated[index]
+      delete updated[slotId]
       confirmingDelete.value = updated
       emit('remove-item', index)
     }

@@ -1219,7 +1219,9 @@ export const useCharacterStore = defineStore('characters', () => {
 
   function removeInventoryItemById(charId, index) {
     const char = characters.value.find(c => c.id === charId)
-    if (!char || index < 0 || index >= char.inventory.length) return
+    if (!char) return
+    _migrateInventory(char)
+    if (index < 0 || index >= char.inventory.length) return
     char.inventory.splice(index, 1)
     char.updatedAt = new Date().toISOString()
     persist()
@@ -1227,7 +1229,9 @@ export const useCharacterStore = defineStore('characters', () => {
 
   function updateInventoryItemById(charId, index, field, value) {
     const char = characters.value.find(c => c.id === charId)
-    if (!char || index < 0 || index >= char.inventory.length) return
+    if (!char) return
+    _migrateInventory(char)
+    if (index < 0 || index >= char.inventory.length) return
     const slot = char.inventory[index]
     if (!slot || typeof slot !== 'object') return
 
@@ -1248,9 +1252,11 @@ export const useCharacterStore = defineStore('characters', () => {
     persist()
   }
 
+  const GOLD_TIERS = ['handfuls', 'bags', 'chests']
+
   function updateGoldById(charId, tier, value) {
     const char = characters.value.find(c => c.id === charId)
-    if (!char) return
+    if (!char || !GOLD_TIERS.includes(tier)) return
     if (!char.gold) char.gold = { handfuls: 0, bags: 0, chests: 0 }
     char.gold[tier] = Math.max(0, parseInt(value) || 0)
     char.updatedAt = new Date().toISOString()
