@@ -23,6 +23,18 @@
         @clear-filters="store.clearFilters"
       />
 
+      <!-- Filtre par source + bouton creation -->
+      <div class="adversary-browser__toolbar">
+        <SourceFilter v-model="store.sourceFilter" />
+        <router-link
+          to="/compendium/adversaires/new"
+          class="btn btn--secondary btn--sm adversary-browser__create-btn"
+          aria-label="Créer un adversaire custom"
+        >
+          + Créer un custom
+        </router-link>
+      </div>
+
       <!-- Content area: list + detail -->
       <div class="adversary-browser__content">
         <!-- List panel -->
@@ -51,21 +63,49 @@
 
         <!-- Detail panel -->
         <aside
-          v-if="showDetail"
+          v-if="showDetail || editingInline"
           class="adversary-browser__detail"
           aria-label="Détail de l'adversaire"
         >
-          <StatBlock
-            :adversary="store.selectedAdversary"
-            :closable="true"
-            @close="store.clearSelection"
-          />
-          <button
-            class="btn btn--secondary btn--sm adversary-browser__duplicate-btn"
-            @click="duplicateToHomebrew(store.selectedAdversary)"
-          >
-            ✎ Dupliquer en homebrew
-          </button>
+          <!-- Mode lecture -->
+          <template v-if="!editingInline">
+            <StatBlock
+              :adversary="store.selectedAdversary"
+              :closable="true"
+              @close="store.clearSelection"
+            />
+            <button
+              v-if="store.selectedAdversary?.source === 'custom'"
+              class="btn btn--secondary btn--sm adversary-browser__edit-btn"
+              aria-label="Modifier cet adversaire custom"
+              @click="startEdit"
+            >
+              Modifier
+            </button>
+            <button
+              class="btn btn--secondary btn--sm adversary-browser__duplicate-btn"
+              @click="duplicateToHomebrew(store.selectedAdversary)"
+            >
+              Dupliquer en homebrew
+            </button>
+          </template>
+
+          <!-- Mode edition inline -->
+          <template v-else>
+            <div class="adversary-browser__edit-panel">
+              <h3>{{ creatingNew ? 'Nouvel adversaire custom' : 'Modifier' }}</h3>
+              <HomebrewForm
+                :schema="adversarySchema"
+                :form-data="formData"
+                :is-dirty="isDirty"
+                :is-edit-mode="!creatingNew"
+                :errors="[]"
+                @submit="onSaveInline"
+                @cancel="onCancelEdit"
+                @update:field="onFieldUpdate"
+              />
+            </div>
+          </template>
         </aside>
 
         <!-- Placeholder when no detail -->
@@ -75,7 +115,7 @@
           aria-hidden="true"
         >
           <div class="adversary-browser__detail-placeholder">
-            <p>⚔️</p>
+            <p>&#x2694;&#xFE0F;</p>
             <p>Sélectionnez un adversaire pour voir sa fiche complète</p>
           </div>
         </aside>
@@ -84,9 +124,15 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
 import StatBlock from '../components/StatBlock.vue'
+import SourceFilter from '@core/components/SourceFilter.vue'
+import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
+import { adversarySchema } from '@modules/homebrew/schemas/adversarySchema.js'
+import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 import { useAdversaryStore } from '../stores/adversaryStore.js'
 import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 
@@ -94,17 +140,60 @@ import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversar
  * @component AdversaryBrowser
  * @description Vue principale de la bibliothèque d'adversaires.
  * Layout split : liste filtrable à gauche, fiche détaillée à droite.
+ * Supporte le deep-linking, le filtrage par source, et l'édition inline.
  */
 export default {
   name: 'AdversaryBrowser',
   components: {
     AdversaryFilters,
     AdversaryCard,
-    StatBlock
+    StatBlock,
+    SourceFilter,
+    HomebrewForm
   },
   setup() {
     const store = useAdversaryStore()
-    return { store }
+    const homebrewStore = useAdversaryHomebrewStore()
+    const route = useRoute()
+
+    // --- Refs pour l'édition inline ---
+    const editingInline = ref(false)
+    const creatingNew = ref(false)
+
+    // --- Composable formulaire ---
+    const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(adversarySchema)
+
+    // --- Deep-linking : sélection depuis la route ---
+    function selectFromRoute(id) {
+      if (!id) return
+      if (id === 'new') {
+        editingInline.value = true
+        creatingNew.value = true
+        reset()
+        return
+      }
+      store.selectAdversary(id)
+    }
+
+    // Sélection initiale au montage
+    selectFromRoute(route.params.id)
+
+    // Mise à jour lors de la navigation intra-route
+    onBeforeRouteUpdate((to) => selectFromRoute(to.params.id))
+
+    return {
+      store,
+      homebrewStore,
+      editingInline,
+      creatingNew,
+      formData,
+      isDirty,
+      hydrate,
+      setField,
+      toRawData,
+      reset,
+      adversarySchema
+    }
   },
   computed: {
     showDetail() {
@@ -123,11 +212,39 @@ export default {
       this.store.setSort(this.store.sortField)
     },
     duplicateToHomebrew(item) {
-      const homebrewStore = useAdversaryHomebrewStore()
-      const result = homebrewStore.createFromTemplate(item)
+      const result = this.homebrewStore.createFromTemplate(item)
       if (result.success) {
         this.$router.push(`/compendium/adversaires/${result.id}`)
       }
+    },
+
+    // --- Edition inline ---
+    startEdit() {
+      if (this.store.selectedAdversary) {
+        this.hydrate(this.store.selectedAdversary)
+        this.editingInline = true
+        this.creatingNew = false
+      }
+    },
+    onFieldUpdate({ field, value }) {
+      this.setField(field, value)
+    },
+    onSaveInline() {
+      const data = this.toRawData()
+      if (this.creatingNew) {
+        const result = this.homebrewStore.create(data)
+        if (result.success) {
+          this.store.selectAdversary(result.id)
+        }
+        this.creatingNew = false
+      } else {
+        this.homebrewStore.update(this.store.selectedAdversary.id, data)
+      }
+      this.editingInline = false
+    },
+    onCancelEdit() {
+      this.editingInline = false
+      this.creatingNew = false
     }
   }
 }
@@ -139,6 +256,18 @@ export default {
   flex-direction: column;
   gap: var(--space-md);
   padding: var(--space-md);
+}
+
+.adversary-browser__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.adversary-browser__create-btn {
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .adversary-browser__content {
@@ -200,6 +329,27 @@ export default {
   margin-bottom: var(--space-sm);
 }
 
+.adversary-browser__edit-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
+}
+
+.adversary-browser__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
+}
+
+.adversary-browser__edit-panel {
+  padding: var(--space-md);
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-md, 8px);
+}
+
+.adversary-browser__edit-panel h3 {
+  margin: 0 0 var(--space-md) 0;
+  font-family: var(--font-family-heading);
+}
+
 /* Responsive: stack on mobile */
 @media (max-width: 768px) {
   .adversary-browser__content {
@@ -217,10 +367,5 @@ export default {
   .adversary-browser__detail {
     position: static;
   }
-}
-
-.adversary-browser__duplicate-btn {
-  margin-top: var(--space-sm);
-  width: 100%;
 }
 </style>

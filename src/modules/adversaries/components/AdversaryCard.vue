@@ -24,6 +24,7 @@
 
     <h3 class="adversary-card__name">
       {{ adversary.name }}
+      <SourceBadge :source="adversary.source" />
     </h3>
 
     <div class="adversary-card__stats">
@@ -80,6 +81,7 @@
 
 <script>
 import { ADVERSARY_TYPE_LABELS, GENRE_META } from '@data/adversaries'
+import SourceBadge from '@core/components/SourceBadge.vue'
 
 /**
  * @component AdversaryCard
@@ -87,6 +89,7 @@ import { ADVERSARY_TYPE_LABELS, GENRE_META } from '@data/adversaries'
  */
 export default {
   name: 'AdversaryCard',
+  components: { SourceBadge },
   props: {
     adversary: {
       type: Object,
