@@ -231,14 +231,20 @@ export default {
 
 .builder-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-lg);
   align-items: start;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .builder-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(240px, 300px) 1fr;
+  }
+}
+
+@media (min-width: 1400px) {
+  .builder-layout {
+    grid-template-columns: minmax(280px, 340px) 1fr;
   }
 }
 

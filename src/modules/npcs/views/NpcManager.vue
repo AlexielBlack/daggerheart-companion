@@ -290,16 +290,24 @@ export default {
 
 .npc-manager__layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 1fr;
   gap: 1rem;
   min-height: 60vh;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .npc-manager__layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
+}
 
+@media (min-width: 1200px) {
+  .npc-manager__layout {
+    grid-template-columns: minmax(400px, 1fr) minmax(500px, 2fr);
+  }
+}
+
+@media (max-width: 767px) {
   .npc-manager__list--hidden-mobile {
     display: none;
   }
@@ -314,12 +322,19 @@ export default {
 }
 
 .npc-manager__list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.5rem;
   overflow-y: auto;
   max-height: 70vh;
   padding-right: 0.5rem;
+  align-content: start;
+}
+
+@media (min-width: 1200px) {
+  .npc-manager__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .npc-manager__empty {

@@ -327,21 +327,37 @@ export default {
 
 .builder-layout {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: 1fr;
   gap: var(--space-lg);
   align-items: start;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .builder-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr minmax(320px, 380px);
+  }
+}
+
+@media (min-width: 1400px) {
+  .builder-layout {
+    grid-template-columns: 1fr minmax(360px, 440px);
   }
 }
 
 .builder-main {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-md);
+}
+
+@media (min-width: 1200px) {
+  .builder-main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .builder-main > .builder-section:first-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .builder-section {
