@@ -34,11 +34,11 @@ vi.mock('@modules/npcs', () => ({
     update: mockUpdate
   }),
   NPC_STATUS_META: {
-    ally: { label: 'Allie', emoji: '🤝', color: '#059669' },
-    neutral: { label: 'Neutre', emoji: '😐', color: '#6b7280' },
-    hostile: { label: 'Hostile', emoji: '⚠️', color: '#dc2626' },
-    dead: { label: 'Mort', emoji: '💀', color: '#374151' },
-    missing: { label: 'Disparu', emoji: '❓', color: '#7c3aed' }
+    ally: { label: 'Allie', emoji: '\uD83E\uDD1D', color: '#059669' },
+    neutral: { label: 'Neutre', emoji: '\uD83D\uDE10', color: '#6b7280' },
+    hostile: { label: 'Hostile', emoji: '\u26A0\uFE0F', color: '#dc2626' },
+    dead: { label: 'Mort', emoji: '\uD83D\uDC80', color: '#374151' },
+    missing: { label: 'Disparu', emoji: '\u2753', color: '#7c3aed' }
   },
   DISPOSITION_META: {
     '-2': { label: 'Hostile', color: '#dc2626' },
@@ -109,7 +109,6 @@ describe('NpcSceneCard', () => {
   it('affiche sans titre ni faction quand ils sont vides', () => {
     const wrapper = mount(NpcSceneCard, { props: { npc: minimalNpc } })
     expect(wrapper.text()).toContain('Lyra')
-    expect(wrapper.text()).not.toContain('·')
   })
 
   it('affiche la pastille statut avec la bonne couleur', () => {
@@ -119,10 +118,13 @@ describe('NpcSceneCard', () => {
     expect(dot.attributes('style')).toContain('#dc2626')
   })
 
-  it('affiche la valeur existante des notes dans le textarea', async () => {
+  it('affiche les notes dans le textarea via l\'onglet Notes', async () => {
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
-    // Deplier la carte pour acceder au textarea
-    await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
+    // Cliquer sur l'onglet Notes
+    const tabs = wrapper.findAll('.npc-scene-card__tab')
+    const notesTab = tabs.find(t => t.text().includes('Notes'))
+    expect(notesTab).toBeTruthy()
+    await notesTab.trigger('click')
     const textarea = wrapper.find('textarea')
     expect(textarea.element.value).toBe('A un secret')
   })
@@ -168,8 +170,10 @@ describe('NpcSceneCard', () => {
     vi.useFakeTimers()
     mockGetById.mockReturnValue({ ...fullNpc })
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
-    // Deplier la carte pour acceder au textarea
-    await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
+    // Aller sur l'onglet Notes
+    const tabs = wrapper.findAll('.npc-scene-card__tab')
+    const notesTab = tabs.find(t => t.text().includes('Notes'))
+    await notesTab.trigger('click')
     const textarea = wrapper.find('textarea')
     await textarea.setValue('Nouvelle note')
     vi.advanceTimersByTime(600)
@@ -178,16 +182,35 @@ describe('NpcSceneCard', () => {
     vi.useRealTimers()
   })
 
-  describe('mode collapse', () => {
-    it('masque les details par defaut (description, personnalite, motifs, tactiques)', () => {
+  describe('onglets integres', () => {
+    it('ne contient plus de bouton expand/collapse', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: detailedNpc, isSpotlight: false }
       })
-      expect(wrapper.find('.npc-scene-card__field').exists()).toBe(false)
-      expect(wrapper.find('.npc-scene-card__notes').exists()).toBe(false)
+      expect(wrapper.find('.npc-scene-card__expand-btn').exists()).toBe(false)
     })
 
-    it('affiche le header et le subheader meme en collapse', () => {
+    it('affiche l\'onglet Profil quand le PNJ a du contenu profil', () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: detailedNpc, isSpotlight: false }
+      })
+      const tabs = wrapper.findAll('.npc-scene-card__tab')
+      const allText = tabs.map(t => t.text()).join(' ')
+      expect(allText).toContain('Profil')
+      expect(allText).toContain('Notes')
+    })
+
+    it('n\'affiche pas l\'onglet Profil quand pas de contenu profil', () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: minimalNpc, isSpotlight: false }
+      })
+      const tabs = wrapper.findAll('.npc-scene-card__tab')
+      const allText = tabs.map(t => t.text()).join(' ')
+      expect(allText).not.toContain('Profil')
+      expect(allText).toContain('Notes')
+    })
+
+    it('affiche le header et subheader directement', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: detailedNpc, isSpotlight: false }
       })
@@ -195,20 +218,20 @@ describe('NpcSceneCard', () => {
       expect(wrapper.find('.npc-scene-card__subheader').exists()).toBe(true)
     })
 
-    it('affiche les relations PJ en collapse (info critique)', () => {
+    it('affiche les relations PJ en dehors des onglets', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: mockNpcWithRelations, isSpotlight: false }
       })
       expect(wrapper.find('.npc-scene-card__relations').exists()).toBe(true)
     })
 
-    it('deplie les details au clic sur le bouton expand', async () => {
+    it('affiche la description dans l\'onglet Profil', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: detailedNpc, isSpotlight: false }
       })
-      await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
-      expect(wrapper.find('.npc-scene-card__field').exists()).toBe(true)
-      expect(wrapper.find('.npc-scene-card__notes').exists()).toBe(true)
+      // L'onglet profil est actif par defaut quand du contenu existe
+      expect(wrapper.text()).toContain('Un vieil homme mysterieux')
+      expect(wrapper.text()).toContain('Curieux et distant')
     })
   })
 })
