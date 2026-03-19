@@ -1200,6 +1200,63 @@ export const useCharacterStore = defineStore('characters', () => {
     }
   }
 
+  // ── Inventaire par ID (vue Session) ─────────────────
+
+  function addInventoryItemById(charId, type = 'custom') {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char) return
+    _migrateInventory(char)
+    char.inventory.push({
+      id: `inv-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      type,
+      itemId: '',
+      customName: '',
+      quantity: 1
+    })
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  function removeInventoryItemById(charId, index) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char || index < 0 || index >= char.inventory.length) return
+    char.inventory.splice(index, 1)
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  function updateInventoryItemById(charId, index, field, value) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char || index < 0 || index >= char.inventory.length) return
+    const slot = char.inventory[index]
+    if (!slot || typeof slot !== 'object') return
+
+    if (field === 'type') {
+      slot.type = value
+      slot.itemId = ''
+      slot.customName = ''
+      slot.quantity = 1
+    } else if (field === 'itemId') {
+      slot.itemId = value
+    } else if (field === 'customName') {
+      slot.customName = value
+    } else if (field === 'quantity') {
+      slot.quantity = Math.max(1, parseInt(value) || 1)
+    }
+
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
+  function updateGoldById(charId, tier, value) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char) return
+    if (!char.gold) char.gold = { handfuls: 0, bags: 0, chests: 0 }
+    char.gold[tier] = Math.max(0, parseInt(value) || 0)
+    char.updatedAt = new Date().toISOString()
+    persist()
+  }
+
   // ── Max HP/Stress adjustment (level ups) ───────────────
 
   /** Augmente le max HP (level up) */
@@ -1527,6 +1584,10 @@ export const useCharacterStore = defineStore('characters', () => {
     clearArmor,
     setHope,
     patchCharacterById,
+    addInventoryItemById,
+    removeInventoryItemById,
+    updateInventoryItemById,
+    updateGoldById,
 
     // Actions Conditions
     addCondition,
