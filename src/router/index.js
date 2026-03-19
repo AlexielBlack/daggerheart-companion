@@ -12,12 +12,17 @@ const AncestryBrowser = () => import('@modules/characters/views/AncestryBrowser.
 const CommunityBrowser = () => import('@modules/communities/views/CommunityBrowser.vue')
 const EquipmentBrowser = () => import('@modules/equipment/views/EquipmentBrowser.vue')
 
-// Onglets Table de jeu (vues wrapper integrant les composants session)
-const TablePjsView = () => import('@modules/session/views/TablePjsView.vue')
-const TablePnjsView = () => import('@modules/session/views/TablePnjsView.vue')
-const TableRencontresView = () => import('@modules/session/views/TableRencontresView.vue')
+// Onglets Table de jeu
+const SceneView = () => import('@modules/session/views/SceneView.vue')
 const TableCombatView = () => import('@modules/session/views/TableCombatView.vue')
 const DiceRoller = () => import('@modules/dice/views/DiceRoller.vue')
+const PrepView = () => import('@modules/session/views/PrepView.vue')
+
+// Sous-tabs Preparation
+const CharacterBuilder = () => import('@modules/characters/views/CharacterBuilder.vue')
+const NpcManager = () => import('@modules/npcs/views/NpcManager.vue')
+const EncounterBuilder = () => import('@modules/encounter/views/EncounterBuilder.vue')
+const EncounterHistory = () => import('@modules/encounter/components/EncounterHistory.vue')
 
 // Standalone
 const SyncManager = () => import('@modules/sync/views/SyncManager.vue')
@@ -54,17 +59,27 @@ const routes = [
     ]
   },
 
-  // --- Table de jeu (5 outils en routes imbriquees) ---
+  // --- Table de jeu (4 onglets workflow) ---
   {
     path: '/table',
     component: TableView,
-    redirect: '/table/pjs',
+    redirect: '/table/scene',
     children: [
-      { path: 'pjs', name: 'table-pjs', component: TablePjsView, meta: { title: 'Personnages', module: 'characters', tab: 'pjs' } },
-      { path: 'pnjs', name: 'table-pnjs', component: TablePnjsView, meta: { title: 'PNJs', module: 'npcs', tab: 'pnjs' } },
-      { path: 'rencontres', name: 'table-rencontres', component: TableRencontresView, meta: { title: 'Rencontres', module: 'encounter', tab: 'rencontres' } },
+      { path: 'scene', name: 'table-scene', component: SceneView, meta: { title: 'Scene', module: 'session', tab: 'scene' } },
       { path: 'combat', name: 'table-combat', component: TableCombatView, meta: { title: 'Combat', module: 'encounter', tab: 'combat' } },
-      { path: 'des', name: 'table-des', component: DiceRoller, meta: { title: 'Des', module: 'dice', tab: 'des' } }
+      { path: 'des', name: 'table-des', component: DiceRoller, meta: { title: 'Des', module: 'dice', tab: 'des' } },
+      {
+        path: 'prep',
+        component: PrepView,
+        redirect: '/table/prep/personnages',
+        meta: { tab: 'prep' },
+        children: [
+          { path: 'personnages', name: 'prep-personnages', component: CharacterBuilder, meta: { title: 'Personnages', module: 'characters', tab: 'prep', prepTab: 'personnages' } },
+          { path: 'pnjs', name: 'prep-pnjs', component: NpcManager, meta: { title: 'PNJs', module: 'npcs', tab: 'prep', prepTab: 'pnjs' } },
+          { path: 'rencontres', name: 'prep-rencontres', component: EncounterBuilder, meta: { title: 'Rencontres', module: 'encounter', tab: 'prep', prepTab: 'rencontres' } },
+          { path: 'historique', name: 'prep-historique', component: EncounterHistory, meta: { title: 'Historique', module: 'encounter', tab: 'prep', prepTab: 'historique' } }
+        ]
+      }
     ]
   },
 
@@ -81,9 +96,9 @@ const routes = [
   { path: '/lecture/equipement', redirect: '/compendium/equipement' },
 
   // --- Redirections legacy : edition -> table/compendium ---
-  { path: '/edition/personnages', redirect: '/table/pjs' },
-  { path: '/edition/rencontres', redirect: '/table/rencontres' },
-  { path: '/edition/pnjs', redirect: '/table/pnjs' },
+  { path: '/edition/personnages', redirect: '/table/prep/personnages' },
+  { path: '/edition/rencontres', redirect: '/table/prep/rencontres' },
+  { path: '/edition/pnjs', redirect: '/table/prep/pnjs' },
   { path: '/edition/homebrew', redirect: '/compendium' },
   {
     path: '/edition/homebrew/:category/:id?',
@@ -100,18 +115,23 @@ const routes = [
   { path: '/jeu/des', redirect: '/table/des' },
   { path: '/jeu', redirect: '/table' },
 
+  // --- Redirections legacy : anciennes routes table ---
+  { path: '/table/pjs', redirect: '/table/prep/personnages' },
+  { path: '/table/pnjs', redirect: '/table/scene' },
+  { path: '/table/rencontres', redirect: '/table/prep/rencontres' },
+
   // --- Redirections legacy : anciennes routes anglaises ---
   { path: '/adversaries', redirect: '/compendium/adversaires' },
   { path: '/environments', redirect: '/compendium/environnements' },
-  { path: '/characters', redirect: '/table/pjs' },
+  { path: '/characters', redirect: '/table/prep/personnages' },
   { path: '/characters/classe', redirect: '/compendium/classes' },
   { path: '/characters/domaines', redirect: '/compendium/domaines' },
   { path: '/characters/ascendance', redirect: '/compendium/ascendances' },
   { path: '/characters/communaute', redirect: '/compendium/communautes' },
   { path: '/characters/equipement', redirect: '/compendium/equipement' },
-  { path: '/encounters', redirect: '/table/rencontres' },
+  { path: '/encounters', redirect: '/table/prep/rencontres' },
   { path: '/encounters/live', redirect: '/table/combat' },
-  { path: '/npcs', redirect: '/table/pnjs' },
+  { path: '/npcs', redirect: '/table/prep/pnjs' },
   { path: '/dice', redirect: '/table/des' },
   {
     path: '/homebrew/:category?/:id?',

@@ -45,11 +45,10 @@ import ModuleBoundary from './ModuleBoundary.vue'
 
 /* Definition des onglets de la table de jeu */
 const TABLE_TABS = [
-  { id: 'pjs', label: 'PJs', icon: '\u{1F9D9}' },
-  { id: 'pnjs', label: 'PNJs', icon: '\u{1F464}' },
-  { id: 'rencontres', label: 'Rencontres', icon: '\u2694\uFE0F' },
-  { id: 'combat', label: 'Combat', icon: '\u{1F3AF}' },
-  { id: 'des', label: 'Des', icon: '\u{1F3B2}' }
+  { id: 'scene', label: 'Scene', icon: '\u{1F3AD}' },
+  { id: 'combat', label: 'Combat', icon: '\u2694\uFE0F' },
+  { id: 'des', label: 'Des', icon: '\u{1F3B2}' },
+  { id: 'prep', label: 'Preparation', icon: '\u{1F4CB}' }
 ]
 
 export default {
@@ -59,7 +58,7 @@ export default {
     const route = useRoute()
 
     /* Onglet courant derive de la meta de la route */
-    const currentTab = computed(() => route.meta?.tab || 'pjs')
+    const currentTab = computed(() => route.meta?.tab || 'scene')
 
     /* Titre dynamique pour le ModuleBoundary */
     const currentTitle = computed(() => {
