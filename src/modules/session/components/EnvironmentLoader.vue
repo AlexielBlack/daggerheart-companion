@@ -25,6 +25,32 @@
       <p class="env-loader__desc">
         {{ truncate(currentEnv.description, 120) }}
       </p>
+
+      <!-- Features mecaniques -->
+      <div
+        v-if="currentEnv.features && currentEnv.features.length > 0"
+        class="env-loader__features"
+      >
+        <div
+          v-for="(feat, idx) in currentEnv.features"
+          :key="idx"
+          class="env-loader__feature"
+          :class="'env-loader__feature--' + feat.activationType"
+        >
+          <div class="env-loader__feature-header">
+            <span class="env-loader__feature-type">{{ activationLabel(feat.activationType) }}</span>
+            <span class="env-loader__feature-name">{{ feat.name }}</span>
+            <span
+              v-if="feat.cost && feat.cost.type === 'fear'"
+              class="env-loader__feature-cost"
+            >{{ feat.cost.amount }} Fear</span>
+          </div>
+          <p class="env-loader__feature-desc">
+            {{ feat.description }}
+          </p>
+        </div>
+      </div>
+
       <button
         class="env-loader__remove btn btn--sm btn--ghost"
         aria-label="Retirer l'environnement"
@@ -135,6 +161,16 @@ export default {
     }
 
     /**
+     * Libelle traduit pour le type d'activation d'une feature.
+     * @param {string} type — passive, action ou reaction
+     * @returns {string}
+     */
+    function activationLabel(type) {
+      const labels = { passive: 'Passif', action: 'Action', reaction: 'Reaction' }
+      return labels[type] || type
+    }
+
+    /**
      * Tronque un texte a la longueur maximale indiquee.
      * @param {string} text — Texte a tronquer
      * @param {number} maxLen — Longueur maximale
@@ -145,7 +181,7 @@ export default {
       return text.slice(0, maxLen) + '\u2026'
     }
 
-    return { sessionStore, currentEnv, search, filteredEnvironments, selectEnv, truncate }
+    return { sessionStore, currentEnv, search, filteredEnvironments, selectEnv, truncate, activationLabel }
   }
 }
 </script>
@@ -270,5 +306,53 @@ export default {
   color: var(--color-text-muted);
   text-align: center;
   font-size: var(--font-size-sm);
+}
+
+.env-loader__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.env-loader__feature {
+  border-left: 3px solid var(--color-border);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.env-loader__feature--passive { border-left-color: var(--color-accent-info); }
+.env-loader__feature--action { border-left-color: var(--color-accent-warning); }
+.env-loader__feature--reaction { border-left-color: var(--color-accent-hope); }
+
+.env-loader__feature-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.env-loader__feature-type {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.env-loader__feature-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.env-loader__feature-cost {
+  font-size: var(--font-size-xs);
+  padding: 1px var(--space-xs);
+  background: color-mix(in srgb, var(--color-accent-fear) 20%, transparent);
+  color: var(--color-accent-fear);
+  border-radius: var(--radius-sm);
+}
+
+.env-loader__feature-desc {
+  margin: var(--space-xs) 0 0;
+  color: var(--color-text-secondary);
 }
 </style>
