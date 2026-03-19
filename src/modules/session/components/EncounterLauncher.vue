@@ -7,13 +7,22 @@
       <span aria-hidden="true">&#x2694;&#xFE0F;</span> Rencontres
     </h3>
 
-    <!-- Lien vers le constructeur complet -->
-    <router-link
-      to="/table/rencontres"
-      class="enc-launcher__builder-link"
-    >
-      &#x1F5FA;&#xFE0F; Ouvrir le constructeur
-    </router-link>
+    <!-- Lien vers le constructeur complet + bouton generation rapide -->
+    <div class="enc-launcher__header-actions">
+      <router-link
+        to="/table/prep/rencontres"
+        class="enc-launcher__builder-link"
+      >
+        &#x1F5FA;&#xFE0F; Ouvrir le constructeur
+      </router-link>
+      <button
+        class="btn btn--sm btn--ghost enc-launcher__generate-btn"
+        aria-label="Generer une rencontre"
+        @click="$emit('open-generator')"
+      >
+        &#x26A1; Generer
+      </button>
+    </div>
 
     <!-- Rencontres sauvegardees -->
     <details
@@ -63,7 +72,7 @@
       class="enc-launcher__empty"
     >
       Aucune rencontre sauvegardee.
-      <router-link to="/table/rencontres">
+      <router-link to="/table/prep/rencontres">
         Creer une rencontre
       </router-link>
     </p>
@@ -103,6 +112,8 @@ export default {
   components: {
     EncounterTemplatePicker
   },
+
+  emits: ['open-generator'],
 
   setup() {
     const router = useRouter()
@@ -173,7 +184,7 @@ export default {
      */
     function handleEdit(enc) {
       encounterStore.loadEncounter(enc)
-      router.push('/table/rencontres')
+      router.push('/table/prep/rencontres')
     }
 
     return {
@@ -194,6 +205,24 @@ export default {
   margin: 0 0 var(--space-sm) 0;
 }
 
+.enc-launcher__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.enc-launcher__generate-btn {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent-hope);
+}
+
+.enc-launcher__generate-btn:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
 .enc-launcher__builder-link {
   display: inline-flex;
   align-items: center;
@@ -201,7 +230,6 @@ export default {
   color: var(--color-accent-hope);
   text-decoration: none;
   font-size: var(--font-size-sm);
-  margin-bottom: var(--space-md);
   padding: var(--space-xs) 0;
 }
 
