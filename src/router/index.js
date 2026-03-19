@@ -12,11 +12,11 @@ const AncestryBrowser = () => import('@modules/characters/views/AncestryBrowser.
 const CommunityBrowser = () => import('@modules/communities/views/CommunityBrowser.vue')
 const EquipmentBrowser = () => import('@modules/equipment/views/EquipmentBrowser.vue')
 
-// Onglets Table de jeu
-const CharacterBuilder = () => import('@modules/characters/views/CharacterBuilder.vue')
-const NpcManager = () => import('@modules/npcs/views/NpcManager.vue')
-const EncounterBuilder = () => import('@modules/encounter/views/EncounterBuilder.vue')
-const EncounterLive = () => import('@modules/encounter/views/EncounterLive.vue')
+// Onglets Table de jeu (vues wrapper integrant les composants session)
+const TablePjsView = () => import('@modules/session/views/TablePjsView.vue')
+const TablePnjsView = () => import('@modules/session/views/TablePnjsView.vue')
+const TableRencontresView = () => import('@modules/session/views/TableRencontresView.vue')
+const TableCombatView = () => import('@modules/session/views/TableCombatView.vue')
 const DiceRoller = () => import('@modules/dice/views/DiceRoller.vue')
 
 // Standalone
@@ -60,10 +60,10 @@ const routes = [
     component: TableView,
     redirect: '/table/pjs',
     children: [
-      { path: 'pjs', name: 'table-pjs', component: CharacterBuilder, meta: { title: 'Personnages', module: 'characters', tab: 'pjs' } },
-      { path: 'pnjs', name: 'table-pnjs', component: NpcManager, meta: { title: 'PNJs', module: 'npcs', tab: 'pnjs' } },
-      { path: 'rencontres', name: 'table-rencontres', component: EncounterBuilder, meta: { title: 'Rencontres', module: 'encounter', tab: 'rencontres' } },
-      { path: 'combat', name: 'table-combat', component: EncounterLive, meta: { title: 'Combat', module: 'encounter', tab: 'combat' } },
+      { path: 'pjs', name: 'table-pjs', component: TablePjsView, meta: { title: 'Personnages', module: 'characters', tab: 'pjs' } },
+      { path: 'pnjs', name: 'table-pnjs', component: TablePnjsView, meta: { title: 'PNJs', module: 'npcs', tab: 'pnjs' } },
+      { path: 'rencontres', name: 'table-rencontres', component: TableRencontresView, meta: { title: 'Rencontres', module: 'encounter', tab: 'rencontres' } },
+      { path: 'combat', name: 'table-combat', component: TableCombatView, meta: { title: 'Combat', module: 'encounter', tab: 'combat' } },
       { path: 'des', name: 'table-des', component: DiceRoller, meta: { title: 'Des', module: 'dice', tab: 'des' } }
     ]
   },
