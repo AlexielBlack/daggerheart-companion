@@ -10,20 +10,22 @@
         Personnages ({{ visibleList.length }})
       </h3>
       <div class="pc-group__actions">
-        <!-- Bouton toggle compact -->
+        <!-- Bouton cycle de mode : strip → compact → detaille -->
         <button
           v-if="visibleList.length > 0"
-          class="pc-group__compact-btn"
-          :class="{ 'pc-group__compact-btn--active': isCompact }"
-          :aria-label="isCompact ? 'Basculer en mode detaille' : 'Basculer en mode compact'"
-          :aria-pressed="String(isCompact)"
-          @click="isCompact = !isCompact"
+          class="pc-group__mode-btn"
+          :aria-label="'Mode : ' + viewModeLabel + '. Cliquer pour changer.'"
+          @click="cycleViewMode()"
         >
-          {{ isCompact ? '&#x1F4CB;' : '&#x1F4AC;' }}
+          <span
+            aria-hidden="true"
+            v-html="viewModeIcon"
+          ></span>
+          {{ viewModeLabel }}
         </button>
-        <!-- Selecteur de colonnes -->
+        <!-- Selecteur de colonnes (masque en mode strip) -->
         <div
-          v-if="visibleList.length > 0"
+          v-if="visibleList.length > 0 && viewMode !== 'strip'"
           class="pc-group__col-selector"
           role="radiogroup"
           aria-label="Nombre de colonnes"
@@ -62,9 +64,16 @@
       </router-link>
     </p>
 
-    <!-- Grille de cartes PJ -->
+    <!-- Bandeau recapitulatif (mode strip) -->
+    <PcSummaryStrip
+      v-if="viewMode === 'strip' && visibleList.length > 0"
+      :characters="visibleList"
+      @select-pc="$emit('select-pc', $event)"
+    />
+
+    <!-- Grille de cartes PJ (modes compact et detaille) -->
     <div
-      v-if="visibleList.length > 0"
+      v-if="viewMode !== 'strip' && visibleList.length > 0"
       ref="gridRef"
       :class="['pc-group__grid', 'pc-group__grid--cols-' + columnCount]"
       role="list"
@@ -240,7 +249,7 @@
 
               <!-- 4. Ligne armure + espoir (interactifs) — masque en compact -->
               <div
-                v-if="!isCompact"
+                v-if="viewMode === 'detailed'"
                 class="pc-card__armor-hope pc-card__armor-hope--interactive"
               >
                 <div
@@ -300,7 +309,7 @@
 
               <!-- 5. Stats defensives — masque en compact -->
               <div
-                v-if="!isCompact"
+                v-if="viewMode === 'detailed'"
                 class="pc-card__defense"
               >
                 <span>Evasion : <strong>{{ pc.effectiveEvasion }}</strong></span>
@@ -328,7 +337,7 @@
 
               <!-- 7. Traits — masque en compact -->
               <div
-                v-if="!isCompact"
+                v-if="viewMode === 'detailed'"
                 class="pc-card__traits"
                 aria-label="Traits du personnage"
               >
@@ -350,7 +359,7 @@
 
             <!-- Bouton d'expansion des details — masque en compact -->
             <div
-              v-if="!isCompact && visibleTabs(pc).length > 0"
+              v-if="viewMode === 'detailed' && visibleTabs(pc).length > 0"
               class="pc-card__expand-bar"
             >
               <button
@@ -369,7 +378,7 @@
                PANNEAU DETAILS — s'ouvre a droite de la carte
                ═══════════════════════════════════════════════ -->
           <aside
-            v-if="!isCompact && expandedPcId === pc.id"
+            v-if="viewMode === 'detailed' && expandedPcId === pc.id"
             class="pc-detail"
             :aria-label="'Details de ' + (pc.name || 'Sans nom')"
           >
@@ -825,9 +834,12 @@ import { resolveCharacterDisplay } from '@modules/characters/composables/useChar
 import { useCharacterStore } from '@modules/characters'
 import { useStorage } from '@core/composables/useStorage'
 import { getDomainById } from '@data/domains'
+import PcSummaryStrip from './PcSummaryStrip.vue'
 
 export default {
   name: 'PcGroupPanel',
+
+  components: { PcSummaryStrip },
 
   props: {
     /** Tableau de personnages depuis characterStore.characters */
@@ -972,11 +984,30 @@ export default {
     // ══════════════════════════════════════════════
 
     // ══════════════════════════════════════════════
-    //  Mode compact — toggle persistant
+    //  Mode de vue — cycle strip → compact → detaille
     // ══════════════════════════════════════════════
 
-    const compactStorage = useStorage('pcgroup-compact', false)
-    const isCompact = compactStorage.data
+    const VIEW_MODES = ['strip', 'compact', 'detailed']
+    const viewModeStorage = useStorage('pcgroup-viewmode', 'strip')
+    const viewMode = viewModeStorage.data
+
+    /** Cycle vers le mode de vue suivant */
+    function cycleViewMode() {
+      const idx = VIEW_MODES.indexOf(viewMode.value)
+      viewMode.value = VIEW_MODES[(idx + 1) % VIEW_MODES.length]
+    }
+
+    /** Label lisible du mode actuel */
+    const viewModeLabel = computed(() => {
+      const labels = { strip: 'Bandeau', compact: 'Compact', detailed: 'Detaille' }
+      return labels[viewMode.value]
+    })
+
+    /** Icone HTML du mode actuel */
+    const viewModeIcon = computed(() => {
+      const icons = { strip: '&#x1F4CA;', compact: '&#x1F4CB;', detailed: '&#x1F4AC;' }
+      return icons[viewMode.value]
+    })
 
     const columnStorage = useStorage('pcgroup-columns', 2)
     const columnCount = columnStorage.data
@@ -1268,8 +1299,11 @@ export default {
       commitEditStat,
       cancelEditStat,
       isEditing,
-      // Mode compact
-      isCompact,
+      // Mode de vue
+      viewMode,
+      cycleViewMode,
+      viewModeLabel,
+      viewModeIcon,
       // Improvement 1 — colonnes
       columnCount,
       setColumns,
@@ -1351,33 +1385,28 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   BOUTON COMPACT
+   BOUTON MODE DE VUE
    ═══════════════════════════════════════════════ */
 
-.pc-group__compact-btn {
+.pc-group__mode-btn {
   min-width: var(--touch-min);
   min-height: var(--touch-min);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-xs);
   border: 1px solid var(--color-border);
   background: transparent;
   color: var(--color-text-muted);
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.pc-group__compact-btn:hover {
+.pc-group__mode-btn:hover {
   background: var(--color-bg-hover);
   color: var(--color-text-primary);
-}
-
-.pc-group__compact-btn--active {
-  background: var(--color-accent-hope);
-  color: var(--color-text-inverse);
-  border-color: var(--color-accent-hope);
 }
 
 /* ═══════════════════════════════════════════════
