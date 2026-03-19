@@ -42,10 +42,10 @@
               v-else-if="drawer.mode.value === 'pc'"
               :character-id="drawer.targetId.value"
             />
-            <div v-else-if="drawer.mode.value === 'catalogue'">
-              <!-- NpcCataloguePanel sera integre dans Task 6 -->
-              <p>Catalogue PNJ (a venir)</p>
-            </div>
+            <NpcCataloguePanel
+              v-else-if="drawer.mode.value === 'catalogue'"
+              @select-npc="drawer.openNpc($event)"
+            />
             <div v-else-if="drawer.mode.value === 'generator'">
               <!-- EncounterGenerator sera integre dans Task 16 -->
               <p>Generateur de rencontres (a venir)</p>
@@ -63,10 +63,11 @@ import { useSceneDrawer } from '../composables/useSceneDrawer'
 import { useFocusTrap } from '@core/composables/useFocusTrap'
 import NpcPreviewSheet from './NpcPreviewSheet.vue'
 import PcQuickSheet from './PcQuickSheet.vue'
+import NpcCataloguePanel from './NpcCataloguePanel.vue'
 
 export default {
   name: 'SceneDrawer',
-  components: { NpcPreviewSheet, PcQuickSheet },
+  components: { NpcPreviewSheet, PcQuickSheet, NpcCataloguePanel },
   setup() {
     const drawer = useSceneDrawer()
     const drawerRef = ref(null)
