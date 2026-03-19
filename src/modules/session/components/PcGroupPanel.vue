@@ -330,61 +330,14 @@
             role="tabpanel"
             :aria-labelledby="'tab-' + pc.id + '-inventaire'"
           >
-            <!-- Or -->
-            <p
-              v-if="hasGold(pc)"
-              class="pc-card__gold"
-            >
-              &#x1FA99; {{ formatGold(pc.gold) }}
-            </p>
-
-            <!-- Resume armure -->
-            <div
-              v-if="pc.armorData"
-              class="pc-card__equip-summary"
-            >
-              <span class="pc-card__equip-label">Armure :</span>
-              <span class="pc-card__equip-value">{{ pc.armorData.name }}</span>
-            </div>
-
-            <!-- Armes -->
-            <div
-              v-if="pc.primaryWeaponData || pc.secondaryWeaponData"
-              class="pc-card__equip-summary"
-            >
-              <span class="pc-card__equip-label">Armes :</span>
-              <span class="pc-card__equip-value">
-                {{ pc.primaryWeaponData ? pc.primaryWeaponData.name : '' }}{{ pc.primaryWeaponData && pc.secondaryWeaponData ? ', ' : '' }}{{ pc.secondaryWeaponData ? pc.secondaryWeaponData.name : '' }}
-              </span>
-            </div>
-
-            <!-- Items inventaire -->
-            <ul
-              v-if="pc.inventory && pc.inventory.length > 0"
-              class="pc-card__inventory-list"
-            >
-              <li
-                v-for="(item, idx) in pc.inventory"
-                :key="item.id || idx"
-                class="pc-card__inventory-item"
-              >
-                <span class="pc-card__inventory-name">
-                  {{ item.customName || item.itemId || 'Objet' }}
-                </span>
-                <span
-                  v-if="item.quantity > 1"
-                  class="pc-card__inventory-qty"
-                >x{{ item.quantity }}</span>
-              </li>
-            </ul>
-
-            <!-- Etat vide inventaire -->
-            <p
-              v-if="!hasGold(pc) && (!pc.inventory || pc.inventory.length === 0) && !pc.armorData && !pc.primaryWeaponData"
-              class="pc-card__empty-tab"
-            >
-              Inventaire vide.
-            </p>
+            <PcInventoryEditor
+              :inventory="pc.inventory || []"
+              :gold="pc.gold || { handfuls: 0, bags: 0, chests: 0 }"
+              @add-item="(type) => onAddItem(pc.id, type)"
+              @remove-item="(index) => onRemoveItem(pc.id, index)"
+              @update-item="(index, field, value) => onUpdateItem(pc.id, index, field, value)"
+              @update-gold="(tier, value) => onUpdateGold(pc.id, tier, value)"
+            />
           </div>
 
           <!-- Panneau Notes -->
@@ -611,9 +564,14 @@
 import { computed, ref, nextTick, watch } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
 import { useCharacterStore } from '@modules/characters'
+import PcInventoryEditor from './PcInventoryEditor.vue'
 
 export default {
   name: 'PcGroupPanel',
+
+  components: {
+    PcInventoryEditor
+  },
 
   props: {
     characters: {
@@ -727,6 +685,20 @@ export default {
       }, 500)
     }
 
+    // ── Inventaire interactif ──
+    function onAddItem(pcId, type) {
+      characterStore.addInventoryItemById(pcId, type)
+    }
+    function onRemoveItem(pcId, index) {
+      characterStore.removeInventoryItemById(pcId, index)
+    }
+    function onUpdateItem(pcId, index, field, value) {
+      characterStore.updateInventoryItemById(pcId, index, field, value)
+    }
+    function onUpdateGold(pcId, tier, value) {
+      characterStore.updateGoldById(pcId, tier, value)
+    }
+
     // ── Systeme d'onglets ──
     const CARD_TABS = [
       { id: 'capacites', label: 'Capacites', icon: '\u2728' },
@@ -822,21 +794,6 @@ export default {
     }
     const TRAIT_ORDER = ['agility', 'strength', 'finesse', 'instinct', 'presence', 'knowledge']
 
-    // ── Inventaire & Or ──
-    function hasGold(pc) {
-      const g = pc.gold || {}
-      return (g.handfuls || 0) + (g.bags || 0) + (g.chests || 0) > 0
-    }
-
-    function formatGold(gold) {
-      if (!gold) return ''
-      const parts = []
-      if (gold.handfuls) parts.push(`${gold.handfuls} poignee${gold.handfuls > 1 ? 's' : ''}`)
-      if (gold.bags) parts.push(`${gold.bags} bourse${gold.bags > 1 ? 's' : ''}`)
-      if (gold.chests) parts.push(`${gold.chests} coffre${gold.chests > 1 ? 's' : ''}`)
-      return parts.join(', ') || 'Aucun or'
-    }
-
     // ── Features ──
     function activationEmoji(type) {
       switch (type) {
@@ -877,6 +834,8 @@ export default {
       startEditStat, commitEditStat, cancelEditStat, isEditing,
       // Notes
       onNotesInput,
+      // Inventaire interactif
+      onAddItem, onRemoveItem, onUpdateItem, onUpdateGold,
       // Onglets
       activeTab, getActiveTab, setActiveTab,
       CARD_TABS, tabHasContent, visibleTabs, navigateTab,
@@ -884,7 +843,6 @@ export default {
       hpColor, stressColor, traitSign,
       conditionLabel, conditionDesc, conditionStyle,
       TRAIT_ABBR, TRAIT_ORDER,
-      hasGold, formatGold,
       activationEmoji, classFeaturesList, hasFeatures
     }
   }
