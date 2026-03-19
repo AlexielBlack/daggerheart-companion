@@ -31,14 +31,14 @@
             class="pc-group__columns-slider"
             aria-label="Largeur des cartes"
             :list="'pc-columns-ticks'"
-          >
+          />
           <datalist id="pc-columns-ticks">
             <option
               v-for="opt in COLUMN_OPTIONS"
               :key="opt.value"
               :value="opt.value"
               :label="opt.label"
-            />
+            ></option>
           </datalist>
         </div>
         <router-link
