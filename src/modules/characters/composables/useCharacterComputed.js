@@ -63,6 +63,57 @@ function resolveClass(id) {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  RÉSOLUTION D'ASCENDANCE (incluant Mixed Ancestry)
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Résout l'ascendance d'un personnage, y compris le cas Mixed Ancestry
+ * où les features sont piochées dans deux ascendances parentes.
+ *
+ * @param {Object} pc - Objet personnage brut
+ * @returns {Object|null} Objet ascendance résolu ou null
+ */
+function resolveAncestry(pc) {
+  if (!pc || !pc.ancestryId) return null
+
+  if (pc.ancestryId !== 'mixed-ancestry') {
+    return getAncestryById(pc.ancestryId) || null
+  }
+
+  // Mixed Ancestry : construire un objet synthétique
+  const config = pc.mixedAncestryConfig
+  const base = getAncestryById('mixed-ancestry')
+  if (!config) return base
+
+  const a1 = config.ancestry1Id ? getAncestryById(config.ancestry1Id) : null
+  const a2 = config.ancestry2Id ? getAncestryById(config.ancestry2Id) : null
+
+  let feature1 = base.topFeature
+  let feature2 = base.bottomFeature
+
+  if (a1 && config.ancestry1Feature) {
+    feature1 = config.ancestry1Feature === 'top' ? a1.topFeature : a1.bottomFeature
+  }
+  if (a2 && config.ancestry2Feature) {
+    feature2 = config.ancestry2Feature === 'top' ? a2.topFeature : a2.bottomFeature
+  }
+
+  const names = [a1, a2].filter(Boolean).map((a) => a.name)
+  const label = names.length > 0 ? `Mixed (${names.join(' / ')})` : 'Mixed Ancestry'
+
+  return {
+    ...base,
+    name: label,
+    topFeature: feature1,
+    bottomFeature: feature2,
+    _resolved: true,
+    _ancestry1: a1,
+    _ancestry2: a2,
+    _config: config
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
 //  FONCTION PURE — RÉSOLUTION COMPLÈTE
 // ═══════════════════════════════════════════════════════════
 
@@ -132,7 +183,7 @@ export function resolveCharacterDisplay(pc) {
 
   // ── Données de référence résolues ──
   const subclassData = getSubclassById(pc.classId, pc.subclassId) || null
-  const ancestryData = getAncestryById(pc.ancestryId) || null
+  const ancestryData = resolveAncestry(pc)
   const communityData = getCommunityById(pc.communityId) || null
   const armorData = getArmorById(pc.armorId) || null
   const primaryWeaponData = getPrimaryWeaponById(pc.primaryWeaponId) || null
