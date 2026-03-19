@@ -16,7 +16,10 @@
         aria-hidden="true"
       >{{ community.emoji }}</span>
       <div class="community-card__meta">
-        <span class="community-card__name">{{ community.name }}</span>
+        <span class="community-card__name">
+          {{ community.name }}
+          <SourceBadge :source="community.source" />
+        </span>
         <span class="community-card__feature-name">{{ community.feature.name }}</span>
       </div>
       <span
@@ -89,8 +92,11 @@
 </template>
 
 <script>
+import SourceBadge from '@core/components/SourceBadge.vue'
+
 export default {
   name: 'CommunityCard',
+  components: { SourceBadge },
 
   props: {
     community: {

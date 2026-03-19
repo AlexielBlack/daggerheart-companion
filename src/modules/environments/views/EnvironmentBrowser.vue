@@ -1,89 +1,135 @@
 <template>
   <div class="env-browser">
-      <!-- Filters -->
-      <EnvironmentFilters
-        :search-query="store.searchQuery"
-        :selected-tiers="store.selectedTiers"
-        :selected-types="store.selectedTypes"
-        :sort-field="store.sortField"
-        :sort-direction="store.sortDirection"
-        :has-active-filters="store.hasActiveFilters"
-        :filtered-count="store.filteredCount"
-        :total-count="store.totalCount"
-        :tiers="store.availableTiers"
-        :types="store.availableTypes"
-        @update:search-query="store.setSearch"
-        @update:sort-field="store.setSort"
-        @toggle-tier="store.toggleTier"
-        @toggle-type="store.toggleType"
-        @toggle-sort-direction="toggleDirection"
-        @clear-filters="store.clearFilters"
-      />
+    <!-- Filters -->
+    <EnvironmentFilters
+      :search-query="store.searchQuery"
+      :selected-tiers="store.selectedTiers"
+      :selected-types="store.selectedTypes"
+      :sort-field="store.sortField"
+      :sort-direction="store.sortDirection"
+      :has-active-filters="store.hasActiveFilters"
+      :filtered-count="store.filteredCount"
+      :total-count="store.totalCount"
+      :tiers="store.availableTiers"
+      :types="store.availableTypes"
+      @update:search-query="store.setSearch"
+      @update:sort-field="store.setSort"
+      @toggle-tier="store.toggleTier"
+      @toggle-type="store.toggleType"
+      @toggle-sort-direction="toggleDirection"
+      @clear-filters="store.clearFilters"
+    />
 
-      <!-- Content area: list + detail -->
-      <div class="env-browser__content">
-        <!-- List panel -->
-        <div
-          class="env-browser__list"
-          :class="{ 'env-browser__list--collapsed': showDetail }"
-          role="list"
-          aria-label="Liste des environnements"
+    <!-- Filtre par source + bouton creation -->
+    <div class="env-browser__toolbar">
+      <SourceFilter v-model="store.sourceFilter" />
+      <router-link
+        to="/compendium/environnements/new"
+        class="btn btn--secondary btn--sm env-browser__create-btn"
+        aria-label="Créer un environnement custom"
+      >
+        + Créer un custom
+      </router-link>
+    </div>
+
+    <!-- Content area: list + detail -->
+    <div class="env-browser__content">
+      <!-- List panel -->
+      <div
+        class="env-browser__list"
+        :class="{ 'env-browser__list--collapsed': showDetail }"
+        role="list"
+        aria-label="Liste des environnements"
+      >
+        <p
+          v-if="store.filteredCount === 0"
+          class="env-browser__empty"
+          role="status"
         >
-          <p
-            v-if="store.filteredCount === 0"
-            class="env-browser__empty"
-            role="status"
-          >
-            Aucun environnement trouvé avec ces filtres.
-          </p>
+          Aucun environnement trouvé avec ces filtres.
+        </p>
 
-          <EnvironmentCard
-            v-for="environment in store.filteredEnvironments"
-            :key="environment.id"
-            :environment="environment"
-            :selected="store.selectedEnvironmentId === environment.id"
-            @select="handleSelect"
-          />
-        </div>
+        <EnvironmentCard
+          v-for="environment in store.filteredEnvironments"
+          :key="environment.id"
+          :environment="environment"
+          :selected="store.selectedEnvironmentId === environment.id"
+          @select="handleSelect"
+        />
+      </div>
 
-        <!-- Detail panel -->
-        <aside
-          v-if="showDetail"
-          class="env-browser__detail"
-          aria-label="Détail de l'environnement"
-        >
+      <!-- Detail panel -->
+      <aside
+        v-if="showDetail || editingInline"
+        class="env-browser__detail"
+        aria-label="Détail de l'environnement"
+      >
+        <!-- Mode lecture -->
+        <template v-if="!editingInline">
           <EnvironmentStatBlock
             :environment="store.selectedEnvironment"
             :closable="true"
             @close="store.clearSelection"
           />
           <button
+            v-if="store.selectedEnvironment?.source === 'custom'"
+            class="btn btn--secondary btn--sm env-browser__edit-btn"
+            aria-label="Modifier cet environnement custom"
+            @click="startEdit"
+          >
+            Modifier
+          </button>
+          <button
             class="btn btn--secondary btn--sm env-browser__duplicate-btn"
             @click="duplicateToHomebrew(store.selectedEnvironment)"
           >
-            ✎ Dupliquer en homebrew
+            Dupliquer en homebrew
           </button>
-        </aside>
+        </template>
 
-        <!-- Placeholder when no detail -->
-        <aside
-          v-else
-          class="env-browser__detail env-browser__detail--empty"
-          aria-hidden="true"
-        >
-          <div class="env-browser__detail-placeholder">
-            <p>🌍</p>
-            <p>Sélectionnez un environnement pour voir sa fiche complète</p>
+        <!-- Mode edition inline -->
+        <template v-else>
+          <div class="env-browser__edit-panel">
+            <h3>{{ creatingNew ? 'Nouvel environnement custom' : 'Modifier' }}</h3>
+            <HomebrewForm
+              :schema="environmentSchema"
+              :form-data="formData"
+              :is-dirty="isDirty"
+              :is-edit-mode="!creatingNew"
+              :errors="[]"
+              @submit="onSaveInline"
+              @cancel="onCancelEdit"
+              @update:field="onFieldUpdate"
+            />
           </div>
-        </aside>
-      </div>
+        </template>
+      </aside>
+
+      <!-- Placeholder when no detail -->
+      <aside
+        v-else
+        class="env-browser__detail env-browser__detail--empty"
+        aria-hidden="true"
+      >
+        <div class="env-browser__detail-placeholder">
+          <p>&#127757;</p>
+          <p>Sélectionnez un environnement pour voir sa fiche complète</p>
+        </div>
+      </aside>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
 import EnvironmentStatBlock from '../components/EnvironmentStatBlock.vue'
+import SourceFilter from '@core/components/SourceFilter.vue'
+import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
+import { environmentSchema } from '@modules/homebrew/schemas/environmentSchema.js'
+import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 import { useEnvironmentStore } from '../stores/environmentStore.js'
 import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/environment/useEnvironmentHomebrewStore.js'
 
@@ -91,17 +137,60 @@ import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/enviro
  * @component EnvironmentBrowser
  * @description Vue principale de la bibliothèque d'environnements.
  * Layout split : liste filtrable à gauche, fiche détaillée à droite.
+ * Supporte le deep-linking, le filtrage par source, et l'édition inline.
  */
 export default {
   name: 'EnvironmentBrowser',
   components: {
     EnvironmentFilters,
     EnvironmentCard,
-    EnvironmentStatBlock
+    EnvironmentStatBlock,
+    SourceFilter,
+    HomebrewForm
   },
   setup() {
     const store = useEnvironmentStore()
-    return { store }
+    const homebrewStore = useEnvironmentHomebrewStore()
+    const route = useRoute()
+
+    // --- Refs pour l'édition inline ---
+    const editingInline = ref(false)
+    const creatingNew = ref(false)
+
+    // --- Composable formulaire ---
+    const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(environmentSchema)
+
+    // --- Deep-linking : sélection depuis la route ---
+    function selectFromRoute(id) {
+      if (!id) return
+      if (id === 'new') {
+        editingInline.value = true
+        creatingNew.value = true
+        reset()
+        return
+      }
+      store.selectEnvironment(id)
+    }
+
+    // Sélection initiale au montage
+    selectFromRoute(route.params.id)
+
+    // Mise à jour lors de la navigation intra-route
+    onBeforeRouteUpdate((to) => selectFromRoute(to.params.id))
+
+    return {
+      store,
+      homebrewStore,
+      editingInline,
+      creatingNew,
+      formData,
+      isDirty,
+      hydrate,
+      setField,
+      toRawData,
+      reset,
+      environmentSchema
+    }
   },
   computed: {
     showDetail() {
@@ -120,11 +209,39 @@ export default {
       this.store.setSort(this.store.sortField)
     },
     duplicateToHomebrew(item) {
-      const homebrewStore = useEnvironmentHomebrewStore()
-      const result = homebrewStore.createFromTemplate(item)
+      const result = this.homebrewStore.createFromTemplate(item)
       if (result.success) {
         this.$router.push(`/compendium/environnements/${result.id}`)
       }
+    },
+
+    // --- Edition inline ---
+    startEdit() {
+      if (this.store.selectedEnvironment) {
+        this.hydrate(this.store.selectedEnvironment)
+        this.editingInline = true
+        this.creatingNew = false
+      }
+    },
+    onFieldUpdate({ field, value }) {
+      this.setField(field, value)
+    },
+    onSaveInline() {
+      const data = this.toRawData()
+      if (this.creatingNew) {
+        const result = this.homebrewStore.create(data)
+        if (result.success) {
+          this.store.selectEnvironment(result.id)
+        }
+        this.creatingNew = false
+      } else {
+        this.homebrewStore.update(this.store.selectedEnvironment.id, data)
+      }
+      this.editingInline = false
+    },
+    onCancelEdit() {
+      this.editingInline = false
+      this.creatingNew = false
     }
   }
 }
@@ -136,6 +253,18 @@ export default {
   flex-direction: column;
   gap: var(--space-md);
   padding: var(--space-md);
+}
+
+.env-browser__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.env-browser__create-btn {
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .env-browser__content {
@@ -191,6 +320,27 @@ export default {
   margin-bottom: var(--space-sm);
 }
 
+.env-browser__edit-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
+}
+
+.env-browser__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
+}
+
+.env-browser__edit-panel {
+  padding: var(--space-md);
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-md, 8px);
+}
+
+.env-browser__edit-panel h3 {
+  margin: 0 0 var(--space-md) 0;
+  font-family: var(--font-family-heading);
+}
+
 /* Responsive: stack on mobile */
 @media (max-width: 768px) {
   .env-browser__content {
@@ -208,10 +358,5 @@ export default {
   .env-browser__detail {
     position: static;
   }
-}
-
-.env-browser__duplicate-btn {
-  margin-top: var(--space-sm);
-  width: 100%;
 }
 </style>

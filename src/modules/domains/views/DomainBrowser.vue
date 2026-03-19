@@ -1,248 +1,308 @@
 <template>
   <div class="domain-browser">
-      <!-- ═══ En-tête ═══ -->
-      <header class="browser-header">
-        <h1 class="browser-header__title">
-          🃏 Domaines
-        </h1>
-        <p class="browser-header__subtitle">
-          {{ store.domainCount }} domaines — {{ store.totalCardCount }} cartes
-        </p>
-      </header>
+    <!-- En-tete -->
+    <header class="browser-header">
+      <h1 class="browser-header__title">
+        Domaines
+      </h1>
+      <p class="browser-header__subtitle">
+        {{ store.domainCount }} domaines — {{ store.totalCardCount }} cartes
+      </p>
+    </header>
 
-      <!-- ═══ Filtres ═══ -->
+    <!-- Filtres -->
+    <div
+      class="browser-filters"
+      role="search"
+      aria-label="Filtrer les domaines"
+    >
+      <label
+        class="sr-only"
+        for="domain-search"
+      >Rechercher un domaine</label>
+      <input
+        id="domain-search"
+        :value="store.searchQuery"
+        type="search"
+        class="filter-input"
+        placeholder="Rechercher domaine, classe, carte..."
+        aria-label="Rechercher un domaine"
+        @input="store.setSearch($event.target.value)"
+      />
       <div
-        class="browser-filters"
-        role="search"
-        aria-label="Filtrer les domaines"
+        class="filter-group"
+        role="group"
+        aria-label="Filtrer par type de sort"
       >
-        <label
-          class="sr-only"
-          for="domain-search"
-        >Rechercher un domaine</label>
-        <input
-          id="domain-search"
-          :value="store.searchQuery"
-          type="search"
-          class="filter-input"
-          placeholder="Rechercher domaine, classe, carte..."
-          aria-label="Rechercher un domaine"
-          @input="store.setSearch($event.target.value)"
-        />
-        <div
-          class="filter-group"
-          role="group"
-          aria-label="Filtrer par type de sort"
+        <button
+          v-for="f in spellFilters"
+          :key="f.id"
+          class="filter-chip"
+          :class="{ 'filter-chip--active': store.filterSpell === f.id }"
+          :aria-pressed="store.filterSpell === f.id"
+          @click="store.setFilterSpell(f.id)"
         >
-          <button
-            v-for="f in spellFilters"
-            :key="f.id"
-            class="filter-chip"
-            :class="{ 'filter-chip--active': store.filterSpell === f.id }"
-            :aria-pressed="store.filterSpell === f.id"
-            @click="store.setFilterSpell(f.id)"
+          {{ f.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Filtre par source + bouton creation -->
+    <div class="domain-browser__toolbar">
+      <SourceFilter v-model="store.sourceFilter" />
+      <router-link
+        to="/compendium/domaines/new"
+        class="btn btn--secondary btn--sm domain-browser__create-btn"
+        aria-label="Créer un domaine custom"
+      >
+        + Créer un custom
+      </router-link>
+    </div>
+
+    <!-- Grille de domaines -->
+    <div
+      v-if="store.filteredDomains.length"
+      class="domain-grid"
+      role="list"
+      aria-label="Liste des domaines"
+    >
+      <article
+        v-for="domain in store.filteredDomains"
+        :key="domain.id"
+        class="domain-card"
+        role="listitem"
+      >
+        <!-- En-tete du domaine -->
+        <button
+          class="domain-card__header"
+          :style="{ '--domain-color': domain.color }"
+          :aria-expanded="store.selectedDomainId === domain.id"
+          :aria-controls="`domain-details-${domain.id}`"
+          @click="store.selectDomain(domain.id)"
+        >
+          <span
+            class="domain-card__emoji"
+            aria-hidden="true"
+          >{{ domain.emoji }}</span>
+          <div class="domain-card__meta">
+            <span class="domain-card__name">
+              {{ domain.name }}
+              <SourceBadge :source="domain.source" />
+            </span>
+            <span class="domain-card__classes">{{ domain.classes.join(', ') }}</span>
+          </div>
+          <div class="domain-card__indicators">
+            <span
+              v-if="domain.hasSpells"
+              class="badge badge--spell"
+              aria-label="Ce domaine possède des sorts"
+            >Sorts</span>
+            <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cartes</span>
+          </div>
+          <span
+            class="domain-card__chevron"
+            aria-hidden="true"
+          >{{ store.selectedDomainId === domain.id ? '&#9650;' : '&#9660;' }}</span>
+        </button>
+
+        <!-- Corps du domaine -->
+        <div
+          :id="`domain-details-${domain.id}`"
+          class="domain-card__body"
+          :hidden="store.selectedDomainId !== domain.id"
+        >
+          <!-- Description -->
+          <p class="domain-description">
+            {{ domain.description }}
+          </p>
+
+          <!-- Themes -->
+          <div class="domain-themes">
+            <span
+              v-for="theme in domain.themes"
+              :key="theme"
+              class="theme-tag"
+            >{{ theme }}</span>
+          </div>
+
+          <!-- Filtres de cartes -->
+          <div
+            v-if="domain.cards.length > 0"
+            class="card-filters"
+            role="group"
+            aria-label="Filtrer les cartes"
           >
-            {{ f.label }}
+            <div class="card-filters__row">
+              <span class="card-filters__label">Type :</span>
+              <button
+                class="filter-chip filter-chip--sm"
+                :class="{ 'filter-chip--active': store.filterType === 'all' }"
+                :aria-pressed="store.filterType === 'all'"
+                @click="store.setFilterType('all')"
+              >
+                Tous
+              </button>
+              <button
+                v-for="t in store.availableTypes"
+                :key="t"
+                class="filter-chip filter-chip--sm"
+                :class="{ 'filter-chip--active': store.filterType === t }"
+                :aria-pressed="store.filterType === t"
+                @click="store.setFilterType(t)"
+              >
+                {{ getTypeLabel(t) }}
+              </button>
+            </div>
+            <div class="card-filters__row">
+              <span class="card-filters__label">Niveau :</span>
+              <button
+                class="filter-chip filter-chip--sm"
+                :class="{ 'filter-chip--active': store.filterLevel === 0 }"
+                :aria-pressed="store.filterLevel === 0"
+                @click="store.setFilterLevel(0)"
+              >
+                Tous
+              </button>
+              <button
+                v-for="lv in store.availableLevels"
+                :key="lv"
+                class="filter-chip filter-chip--sm"
+                :class="{ 'filter-chip--active': store.filterLevel === lv }"
+                :aria-pressed="store.filterLevel === lv"
+                @click="store.setFilterLevel(lv)"
+              >
+                {{ lv }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Cartes du domaine -->
+          <section
+            v-if="store.selectedDomainCards.length > 0"
+            class="domain-section"
+            :aria-label="`Cartes du domaine ${domain.name}`"
+          >
+            <h3 class="domain-section__title">
+              Cartes ({{ store.selectedDomainCards.length }})
+            </h3>
+            <div
+              class="cards-grid"
+              role="list"
+            >
+              <DomainCardItem
+                v-for="card in store.selectedDomainCards"
+                :key="card.id"
+                :card="card"
+                :domain-color="domain.color"
+              />
+            </div>
+          </section>
+
+          <!-- Classes liees -->
+          <section class="domain-section">
+            <h3 class="domain-section__title">
+              Classes liées
+            </h3>
+            <div class="linked-classes">
+              <span
+                v-for="cls in domain.classes"
+                :key="cls"
+                class="class-tag"
+              >{{ cls }}</span>
+            </div>
+          </section>
+
+          <!-- Bouton Modifier (custom uniquement) -->
+          <button
+            v-if="domain.source === 'custom'"
+            class="btn btn--secondary btn--sm domain-card__edit-btn"
+            aria-label="Modifier ce domaine custom"
+            @click.stop="startEdit(domain)"
+          >
+            Modifier
+          </button>
+
+          <!-- Dupliquer en homebrew -->
+          <button
+            class="btn btn--secondary btn--sm domain-card__duplicate-btn"
+            @click.stop="duplicateToHomebrew(domain)"
+          >
+            Dupliquer en homebrew
           </button>
         </div>
-      </div>
+      </article>
+    </div>
 
-      <!-- ═══ Grille de domaines ═══ -->
-      <div
-        v-if="store.filteredDomains.length"
-        class="domain-grid"
-        role="list"
-        aria-label="Liste des domaines"
+    <!-- Panneau d'edition inline -->
+    <aside
+      v-if="editingInline"
+      class="domain-browser__edit-panel"
+      aria-label="Edition de domaine custom"
+    >
+      <h3>{{ creatingNew ? 'Nouveau domaine custom' : 'Modifier' }}</h3>
+      <HomebrewForm
+        :schema="domainSchema"
+        :form-data="formData"
+        :is-dirty="isDirty"
+        :is-edit-mode="!creatingNew"
+        :errors="[]"
+        @submit="onSaveInline"
+        @cancel="onCancelEdit"
+        @update:field="onFieldUpdate"
+      />
+    </aside>
+
+    <!-- Etat vide -->
+    <div
+      v-if="!store.filteredDomains.length && !editingInline"
+      class="empty-state"
+      role="status"
+      aria-live="polite"
+    >
+      <p
+        class="empty-state__icon"
+        aria-hidden="true"
       >
-        <article
-          v-for="domain in store.filteredDomains"
-          :key="domain.id"
-          class="domain-card"
-          role="listitem"
-        >
-          <!-- En-tête du domaine -->
-          <button
-            class="domain-card__header"
-            :style="{ '--domain-color': domain.color }"
-            :aria-expanded="store.selectedDomainId === domain.id"
-            :aria-controls="`domain-details-${domain.id}`"
-            @click="store.selectDomain(domain.id)"
-          >
-            <span
-              class="domain-card__emoji"
-              aria-hidden="true"
-            >{{ domain.emoji }}</span>
-            <div class="domain-card__meta">
-              <span class="domain-card__name">{{ domain.name }}</span>
-              <span class="domain-card__classes">{{ domain.classes.join(', ') }}</span>
-            </div>
-            <div class="domain-card__indicators">
-              <span
-                v-if="domain.hasSpells"
-                class="badge badge--spell"
-                aria-label="Ce domaine possède des sorts"
-              >Sorts</span>
-              <span class="domain-card__count">{{ domain.cards.length }}/{{ domain.cardCount }} cartes</span>
-            </div>
-            <span
-              class="domain-card__chevron"
-              aria-hidden="true"
-            >{{ store.selectedDomainId === domain.id ? '▲' : '▼' }}</span>
-          </button>
-
-          <!-- Corps du domaine -->
-          <div
-            :id="`domain-details-${domain.id}`"
-            class="domain-card__body"
-            :hidden="store.selectedDomainId !== domain.id"
-          >
-            <!-- Description -->
-            <p class="domain-description">
-              {{ domain.description }}
-            </p>
-
-            <!-- Thèmes -->
-            <div class="domain-themes">
-              <span
-                v-for="theme in domain.themes"
-                :key="theme"
-                class="theme-tag"
-              >{{ theme }}</span>
-            </div>
-
-            <!-- Filtres de cartes -->
-            <div
-              v-if="domain.cards.length > 0"
-              class="card-filters"
-              role="group"
-              aria-label="Filtrer les cartes"
-            >
-              <div class="card-filters__row">
-                <span class="card-filters__label">Type :</span>
-                <button
-                  class="filter-chip filter-chip--sm"
-                  :class="{ 'filter-chip--active': store.filterType === 'all' }"
-                  :aria-pressed="store.filterType === 'all'"
-                  @click="store.setFilterType('all')"
-                >
-                  Tous
-                </button>
-                <button
-                  v-for="t in store.availableTypes"
-                  :key="t"
-                  class="filter-chip filter-chip--sm"
-                  :class="{ 'filter-chip--active': store.filterType === t }"
-                  :aria-pressed="store.filterType === t"
-                  @click="store.setFilterType(t)"
-                >
-                  {{ getTypeLabel(t) }}
-                </button>
-              </div>
-              <div class="card-filters__row">
-                <span class="card-filters__label">Niveau :</span>
-                <button
-                  class="filter-chip filter-chip--sm"
-                  :class="{ 'filter-chip--active': store.filterLevel === 0 }"
-                  :aria-pressed="store.filterLevel === 0"
-                  @click="store.setFilterLevel(0)"
-                >
-                  Tous
-                </button>
-                <button
-                  v-for="lv in store.availableLevels"
-                  :key="lv"
-                  class="filter-chip filter-chip--sm"
-                  :class="{ 'filter-chip--active': store.filterLevel === lv }"
-                  :aria-pressed="store.filterLevel === lv"
-                  @click="store.setFilterLevel(lv)"
-                >
-                  {{ lv }}
-                </button>
-              </div>
-            </div>
-
-            <!-- Cartes du domaine -->
-            <section
-              v-if="store.selectedDomainCards.length > 0"
-              class="domain-section"
-              :aria-label="`Cartes du domaine ${domain.name}`"
-            >
-              <h3 class="domain-section__title">
-                Cartes ({{ store.selectedDomainCards.length }})
-              </h3>
-              <div
-                class="cards-grid"
-                role="list"
-              >
-                <DomainCardItem
-                  v-for="card in store.selectedDomainCards"
-                  :key="card.id"
-                  :card="card"
-                  :domain-color="domain.color"
-                />
-              </div>
-            </section>
-
-            <!-- Classes liées -->
-            <section class="domain-section">
-              <h3 class="domain-section__title">
-                Classes liées
-              </h3>
-              <div class="linked-classes">
-                <span
-                  v-for="cls in domain.classes"
-                  :key="cls"
-                  class="class-tag"
-                >{{ cls }}</span>
-              </div>
-            </section>
-
-            <!-- Dupliquer en homebrew -->
-            <button
-              class="btn btn--secondary btn--sm domain-card__duplicate-btn"
-              @click.stop="duplicateToHomebrew(domain)"
-            >
-              ✎ Dupliquer en homebrew
-            </button>
-          </div>
-        </article>
-      </div>
-
-      <!-- ═══ État vide ═══ -->
-      <div
-        v-else
-        class="empty-state"
-        role="status"
-        aria-live="polite"
-      >
-        <p
-          class="empty-state__icon"
-          aria-hidden="true"
-        >
-          🔍
-        </p>
-        <p class="empty-state__text">
-          Aucun domaine trouvé pour « {{ store.searchQuery }} »
-        </p>
-      </div>
+        &#128269;
+      </p>
+      <p class="empty-state__text">
+        Aucun domaine trouvé pour « {{ store.searchQuery }} »
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
 import DomainCardItem from '../components/DomainCardItem.vue'
 import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
-import { useRouter } from 'vue-router'
+import SourceFilter from '@core/components/SourceFilter.vue'
+import SourceBadge from '@core/components/SourceBadge.vue'
+import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
+import { domainSchema } from '@modules/homebrew/schemas/domainSchema.js'
+import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 
 export default {
   name: 'DomainBrowser',
 
-  components: { DomainCardItem },
+  components: { DomainCardItem, SourceFilter, SourceBadge, HomebrewForm },
 
   setup() {
     const store = useDomainStore()
+    const homebrewStore = useDomainHomebrewStore()
     const router = useRouter()
+    const route = useRoute()
+
+    // --- Refs pour l'edition inline ---
+    const editingInline = ref(false)
+    const creatingNew = ref(false)
+    const editingDomainId = ref(null)
+
+    // --- Composable formulaire ---
+    const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(domainSchema)
 
     const spellFilters = [
       { id: 'all', label: 'Tous' },
@@ -254,15 +314,80 @@ export default {
       return CARD_TYPES[type] || type
     }
 
+    // --- Deep-linking : sélection depuis la route ---
+    function selectFromRoute(id) {
+      if (!id) return
+      if (id === 'new') {
+        editingInline.value = true
+        creatingNew.value = true
+        reset()
+        return
+      }
+      store.selectDomain(id)
+    }
+
+    // Sélection initiale au montage
+    selectFromRoute(route.params.id)
+
+    // Mise à jour lors de la navigation intra-route
+    onBeforeRouteUpdate((to) => selectFromRoute(to.params.id))
+
     function duplicateToHomebrew(domain) {
-      const homebrewStore = useDomainHomebrewStore()
       const result = homebrewStore.createFromTemplate(domain)
       if (result.success) {
         router.push(`/compendium/domaines/${result.id}`)
       }
     }
 
-    return { store, spellFilters, getTypeLabel, duplicateToHomebrew }
+    return {
+      store,
+      homebrewStore,
+      spellFilters,
+      getTypeLabel,
+      duplicateToHomebrew,
+      editingInline,
+      creatingNew,
+      editingDomainId,
+      formData,
+      isDirty,
+      hydrate,
+      setField,
+      toRawData,
+      reset,
+      domainSchema
+    }
+  },
+
+  methods: {
+    // --- Edition inline ---
+    startEdit(domain) {
+      this.hydrate(domain)
+      this.editingInline = true
+      this.creatingNew = false
+      this.editingDomainId = domain.id
+    },
+    onFieldUpdate({ field, value }) {
+      this.setField(field, value)
+    },
+    onSaveInline() {
+      const data = this.toRawData()
+      if (this.creatingNew) {
+        const result = this.homebrewStore.create(data)
+        if (result.success) {
+          this.store.selectDomain(result.id)
+        }
+        this.creatingNew = false
+      } else {
+        this.homebrewStore.update(this.editingDomainId, data)
+      }
+      this.editingInline = false
+      this.editingDomainId = null
+    },
+    onCancelEdit() {
+      this.editingInline = false
+      this.creatingNew = false
+      this.editingDomainId = null
+    }
   }
 }
 </script>
@@ -270,13 +395,27 @@ export default {
 <style scoped>
 .domain-browser { }
 
-/* ── Header ── */
+/* -- Header -- */
 .browser-header { margin-bottom: var(--space-lg); }
 .browser-header__title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0 0 var(--space-xs); }
 .browser-header__subtitle { color: var(--color-text-secondary); margin: 0; font-size: var(--font-size-sm); }
 
-/* ── Filtres ── */
-.browser-filters { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-lg); align-items: center; }
+/* -- Toolbar -- */
+.domain-browser__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.domain-browser__create-btn {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* -- Filtres -- */
+.browser-filters { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-md); align-items: center; }
 .filter-input { flex: 1; min-width: 200px; padding: var(--space-sm) var(--space-md); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text-primary); font-size: var(--font-size-sm); }
 .filter-input:focus { outline: 2px solid var(--color-accent-hope); outline-offset: 1px; }
 .filter-group { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
@@ -285,15 +424,15 @@ export default {
 .filter-chip--active { background: var(--color-accent-hope); border-color: var(--color-accent-hope); color: #fff; font-weight: var(--font-weight-medium); }
 .filter-chip--sm { padding: 2px var(--space-xs); font-size: 0.65rem; }
 
-/* ── Card Filters ── */
+/* -- Card Filters -- */
 .card-filters { display: flex; flex-direction: column; gap: var(--space-xs); margin-bottom: var(--space-md); padding: var(--space-sm); background: var(--color-bg-surface); border-radius: var(--radius-md); border: 1px solid var(--color-border); }
 .card-filters__row { display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; }
 .card-filters__label { font-size: var(--font-size-xs); color: var(--color-text-muted); min-width: 40px; font-weight: var(--font-weight-medium); }
 
-/* ── Grille ── */
+/* -- Grille -- */
 .domain-grid { display: flex; flex-direction: column; gap: var(--space-sm); }
 
-/* ── Carte domaine ── */
+/* -- Carte domaine -- */
 .domain-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color var(--transition-fast); }
 .domain-card__header {
   width: 100%; display: flex; align-items: center; gap: var(--space-sm);
@@ -312,45 +451,63 @@ export default {
 .domain-card__count { font-size: var(--font-size-xs); color: var(--color-text-muted); }
 .domain-card__chevron { color: var(--color-text-muted); font-size: 0.75rem; }
 
-/* ── Corps ── */
+/* -- Corps -- */
 .domain-card__body { border-top: 1px solid var(--color-border); padding: var(--space-md); animation: slideDown 0.2s ease; }
 .domain-card__body[hidden] { display: none; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── Description & Thèmes ── */
+/* -- Description & Themes -- */
 .domain-description { font-size: var(--font-size-sm); line-height: 1.6; color: var(--color-text-secondary); margin: 0 0 var(--space-md); }
 .domain-themes { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-md); }
 .theme-tag { font-size: var(--font-size-xs); padding: 2px var(--space-sm); background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-full); color: var(--color-text-secondary); }
 
-/* ── Sections ── */
+/* -- Sections -- */
 .domain-section { margin-bottom: var(--space-md); }
 .domain-section__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 var(--space-sm); }
 
-/* ── Cartes grid ── */
+/* -- Cartes grid -- */
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-sm); }
 
-/* ── Classes liées ── */
+/* -- Classes liees -- */
 .linked-classes { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
 .class-tag { font-size: var(--font-size-xs); padding: 2px var(--space-sm); background: rgba(83, 168, 182, 0.1); border: 1px solid rgba(83, 168, 182, 0.3); border-radius: var(--radius-full); color: var(--color-accent-hope); font-weight: var(--font-weight-medium); }
 
-/* ── Badges ── */
+/* -- Badges -- */
 .badge { font-size: 0.65rem; padding: 2px var(--space-xs); border-radius: var(--radius-sm); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: 0.05em; }
 .badge--spell { background: rgba(139, 92, 246, 0.15); color: #7c3aed; border: 1px solid rgba(139, 92, 246, 0.3); }
 
-/* ── Empty state ── */
+/* -- Edit panel -- */
+.domain-browser__edit-panel {
+  padding: var(--space-md);
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-md, 8px);
+  margin-top: var(--space-md);
+}
+
+.domain-browser__edit-panel h3 {
+  margin: 0 0 var(--space-md) 0;
+  font-family: var(--font-family-heading);
+}
+
+.domain-card__edit-btn {
+  margin-top: var(--space-md);
+  width: 100%;
+}
+
+.domain-card__duplicate-btn {
+  margin-top: var(--space-sm);
+  width: 100%;
+}
+
+/* -- Empty state -- */
 .empty-state { text-align: center; padding: var(--space-xl); }
 .empty-state__icon { font-size: 2rem; margin: 0 0 var(--space-sm); }
 .empty-state__text { color: var(--color-text-muted); }
 
-/* ── Accessibilité ── */
+/* -- Accessibilite -- */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
 
 @media (max-width: 600px) {
   .cards-grid { grid-template-columns: 1fr; }
-}
-
-.domain-card__duplicate-btn {
-  margin-top: var(--space-md);
-  width: 100%;
 }
 </style>

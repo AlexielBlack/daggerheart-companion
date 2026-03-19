@@ -1,131 +1,242 @@
 <template>
   <div class="community-browser">
-      <!-- ═══ En-tête ═══ -->
-      <header class="browser-header">
-        <h1 class="browser-header__title">
-          🏘️ Communautés
-        </h1>
-        <p class="browser-header__subtitle">
-          {{ store.filteredCount }} communauté{{ store.filteredCount > 1 ? 's' : '' }}
-          sur {{ store.totalCount }}
-          — D'où vient votre personnage ?
-        </p>
-      </header>
+    <!-- En-tete -->
+    <header class="browser-header">
+      <h1 class="browser-header__title">
+        Communautes
+      </h1>
+      <p class="browser-header__subtitle">
+        {{ store.filteredCount }} communauté{{ store.filteredCount > 1 ? 's' : '' }}
+        sur {{ store.totalCount }}
+        — D'où vient votre personnage ?
+      </p>
+    </header>
 
-      <!-- ═══ Filtres ═══ -->
-      <div
-        class="browser-filters"
-        role="search"
-        aria-label="Filtrer les communautés"
+    <!-- Filtres -->
+    <div
+      class="browser-filters"
+      role="search"
+      aria-label="Filtrer les communautés"
+    >
+      <label
+        class="sr-only"
+        for="community-search"
+      >Rechercher une communauté</label>
+      <input
+        id="community-search"
+        :value="store.searchQuery"
+        type="search"
+        class="filter-input"
+        placeholder="Rechercher une communauté, feature ou adjectif..."
+        aria-label="Rechercher une communauté"
+        @input="store.setSearch($event.target.value)"
+      />
+      <button
+        v-if="store.hasActiveFilters"
+        class="filter-clear"
+        aria-label="Effacer la recherche"
+        @click="store.resetAll()"
       >
-        <label
-          class="sr-only"
-          for="community-search"
-        >Rechercher une communauté</label>
-        <input
-          id="community-search"
-          :value="store.searchQuery"
-          type="search"
-          class="filter-input"
-          placeholder="Rechercher une communauté, feature ou adjectif..."
-          aria-label="Rechercher une communauté"
-          @input="store.setSearch($event.target.value)"
-        />
-        <button
-          v-if="store.hasActiveFilters"
-          class="filter-clear"
-          aria-label="Effacer la recherche"
-          @click="store.resetAll()"
-        >
-          Effacer
-        </button>
-      </div>
+        Effacer
+      </button>
+    </div>
 
-      <!-- ═══ Grille ═══ -->
-      <div
-        v-if="store.filteredCommunities.length"
-        class="community-grid"
-        role="list"
-        aria-label="Liste des communautés"
+    <!-- Filtre par source + bouton creation -->
+    <div class="community-browser__toolbar">
+      <SourceFilter v-model="store.sourceFilter" />
+      <router-link
+        to="/compendium/communautes/new"
+        class="btn btn--secondary btn--sm community-browser__create-btn"
+        aria-label="Créer une communauté custom"
       >
-        <CommunityCard
-          v-for="community in store.filteredCommunities"
-          :key="community.id"
-          :community="community"
-          :is-expanded="store.expandedId === community.id"
-          @toggle="store.toggleExpand"
-          @duplicate="duplicateToHomebrew"
-        />
-      </div>
+        + Créer un custom
+      </router-link>
+    </div>
 
-      <!-- ═══ État vide ═══ -->
-      <div
-        v-else
-        class="empty-state"
-        role="status"
-        aria-live="polite"
-      >
-        <p
-          class="empty-state__icon"
-          aria-hidden="true"
-        >
-          🔍
-        </p>
-        <p class="empty-state__text">
-          Aucune communauté trouvée pour « {{ store.searchQuery }} »
-        </p>
-        <button
-          class="empty-state__reset"
-          @click="store.resetAll()"
-        >
-          Réinitialiser la recherche
-        </button>
-      </div>
+    <!-- Grille -->
+    <div
+      v-if="store.filteredCommunities.length"
+      class="community-grid"
+      role="list"
+      aria-label="Liste des communautés"
+    >
+      <CommunityCard
+        v-for="community in store.filteredCommunities"
+        :key="community.id"
+        :community="community"
+        :is-expanded="store.expandedId === community.id"
+        @toggle="store.toggleExpand"
+        @duplicate="duplicateToHomebrew"
+      />
+    </div>
 
-      <!-- ═══ Note de règle ═══ -->
-      <aside
-        class="rule-note"
-        role="note"
-        aria-label="Note de règle sur les communautés"
+    <!-- Etat vide -->
+    <div
+      v-else-if="!editingInline"
+      class="empty-state"
+      role="status"
+      aria-live="polite"
+    >
+      <p
+        class="empty-state__icon"
+        aria-hidden="true"
       >
-        <p>
-          <strong>Règle :</strong>
-          Les communautés représentent un aspect clé de la culture, de la classe ou de
-          l'environnement d'origine qui a eu le plus d'influence sur l'éducation de votre personnage.
-          Chaque communauté accorde une <em>feature de communauté</em> et propose six adjectifs
-          comme inspiration pour la personnalité du personnage.
-          Un personnage choisit <em>une</em> communauté à la création.
-        </p>
-      </aside>
+        &#128269;
+      </p>
+      <p class="empty-state__text">
+        Aucune communauté trouvée pour « {{ store.searchQuery }} »
+      </p>
+      <button
+        class="empty-state__reset"
+        @click="store.resetAll()"
+      >
+        Réinitialiser la recherche
+      </button>
+    </div>
+
+    <!-- Panneau d'edition inline -->
+    <aside
+      v-if="editingInline"
+      class="community-browser__edit-panel"
+      aria-label="Edition de communauté custom"
+    >
+      <h3>{{ creatingNew ? 'Nouvelle communauté custom' : 'Modifier' }}</h3>
+      <HomebrewForm
+        :schema="communitySchema"
+        :form-data="formData"
+        :is-dirty="isDirty"
+        :is-edit-mode="!creatingNew"
+        :errors="[]"
+        @submit="onSaveInline"
+        @cancel="onCancelEdit"
+        @update:field="onFieldUpdate"
+      />
+    </aside>
+
+    <!-- Note de regle -->
+    <aside
+      class="rule-note"
+      role="note"
+      aria-label="Note de règle sur les communautés"
+    >
+      <p>
+        <strong>Règle :</strong>
+        Les communautés représentent un aspect clé de la culture, de la classe ou de
+        l'environnement d'origine qui a eu le plus d'influence sur l'éducation de votre personnage.
+        Chaque communauté accorde une <em>feature de communauté</em> et propose six adjectifs
+        comme inspiration pour la personnalité du personnage.
+        Un personnage choisit <em>une</em> communauté à la création.
+      </p>
+    </aside>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
 import CommunityCard from '../components/CommunityCard.vue'
-import { useRouter } from 'vue-router'
+import SourceFilter from '@core/components/SourceFilter.vue'
+import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
+import { communitySchema } from '@modules/homebrew/schemas/communitySchema.js'
+import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 
 export default {
   name: 'CommunityBrowser',
 
   components: {
-    CommunityCard
+    CommunityCard,
+    SourceFilter,
+    HomebrewForm
   },
 
   setup() {
     const store = useCommunityStore()
+    const homebrewStore = useCommunityHomebrewStore()
     const router = useRouter()
+    const route = useRoute()
+
+    // --- Refs pour l'edition inline ---
+    const editingInline = ref(false)
+    const creatingNew = ref(false)
+    const editingCommunityId = ref(null)
+
+    // --- Composable formulaire ---
+    const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(communitySchema)
+
+    // --- Deep-linking : sélection depuis la route ---
+    function selectFromRoute(id) {
+      if (!id) return
+      if (id === 'new') {
+        editingInline.value = true
+        creatingNew.value = true
+        reset()
+        return
+      }
+      store.toggleExpand(id)
+    }
+
+    // Sélection initiale au montage
+    selectFromRoute(route.params.id)
+
+    // Mise à jour lors de la navigation intra-route
+    onBeforeRouteUpdate((to) => selectFromRoute(to.params.id))
 
     function duplicateToHomebrew(community) {
-      const homebrewStore = useCommunityHomebrewStore()
       const result = homebrewStore.createFromTemplate(community)
       if (result.success) {
         router.push(`/compendium/communautes/${result.id}`)
       }
     }
 
-    return { store, duplicateToHomebrew }
+    return {
+      store,
+      homebrewStore,
+      duplicateToHomebrew,
+      editingInline,
+      creatingNew,
+      editingCommunityId,
+      formData,
+      isDirty,
+      hydrate,
+      setField,
+      toRawData,
+      reset,
+      communitySchema
+    }
+  },
+
+  methods: {
+    // --- Edition inline ---
+    startEdit(community) {
+      this.hydrate(community)
+      this.editingInline = true
+      this.creatingNew = false
+      this.editingCommunityId = community.id
+    },
+    onFieldUpdate({ field, value }) {
+      this.setField(field, value)
+    },
+    onSaveInline() {
+      const data = this.toRawData()
+      if (this.creatingNew) {
+        const result = this.homebrewStore.create(data)
+        if (result.success) {
+          this.store.toggleExpand(result.id)
+        }
+        this.creatingNew = false
+      } else {
+        this.homebrewStore.update(this.editingCommunityId, data)
+      }
+      this.editingInline = false
+      this.editingCommunityId = null
+    },
+    onCancelEdit() {
+      this.editingInline = false
+      this.creatingNew = false
+      this.editingCommunityId = null
+    }
   }
 }
 </script>
@@ -134,7 +245,7 @@ export default {
 .community-browser {
 }
 
-/* ── Header ── */
+/* -- Header -- */
 .browser-header {
   margin-bottom: var(--space-lg);
 }
@@ -152,11 +263,25 @@ export default {
   font-size: var(--font-size-sm);
 }
 
-/* ── Filtres ── */
+/* -- Toolbar -- */
+.community-browser__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.community-browser__create-btn {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* -- Filtres -- */
 .browser-filters {
   display: flex;
   gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   align-items: center;
 }
 
@@ -196,7 +321,7 @@ export default {
   outline-offset: 1px;
 }
 
-/* ── Grille ── */
+/* -- Grille -- */
 .community-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -204,7 +329,20 @@ export default {
   margin-bottom: var(--space-xl);
 }
 
-/* ── Note de règle ── */
+/* -- Edit panel -- */
+.community-browser__edit-panel {
+  padding: var(--space-md);
+  background: var(--color-surface-alt, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: var(--space-lg);
+}
+
+.community-browser__edit-panel h3 {
+  margin: 0 0 var(--space-md) 0;
+  font-family: var(--font-family-heading);
+}
+
+/* -- Note de regle -- */
 .rule-note {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
@@ -224,7 +362,7 @@ export default {
   color: #ca8a04;
 }
 
-/* ── Empty state ── */
+/* -- Empty state -- */
 .empty-state {
   text-align: center;
   padding: var(--space-xl);
@@ -259,7 +397,7 @@ export default {
   outline-offset: 1px;
 }
 
-/* ── Accessibilité ── */
+/* -- Accessibilite -- */
 .sr-only {
   position: absolute;
   width: 1px;

@@ -20,6 +20,7 @@
 
     <h3 class="env-card__name">
       {{ environment.name }}
+      <SourceBadge :source="environment.source" />
     </h3>
 
     <p class="env-card__description">
@@ -51,6 +52,7 @@
 
 <script>
 import { ENVIRONMENT_TYPE_ICONS, ENVIRONMENT_TYPE_LABELS } from '@data/environments'
+import SourceBadge from '@core/components/SourceBadge.vue'
 
 /**
  * @component EnvironmentCard
@@ -58,6 +60,7 @@ import { ENVIRONMENT_TYPE_ICONS, ENVIRONMENT_TYPE_LABELS } from '@data/environme
  */
 export default {
   name: 'EnvironmentCard',
+  components: { SourceBadge },
   props: {
     environment: {
       type: Object,
