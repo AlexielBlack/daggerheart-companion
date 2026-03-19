@@ -361,7 +361,9 @@ export default {
   methods: {
     // --- Edition inline ---
     startEdit(domain) {
-      this.hydrate(domain)
+      // Priorité : données brutes du store homebrew (pas la version normalisée)
+      const raw = this.homebrewStore.items.find((item) => item.id === domain.id)
+      this.hydrate(raw || domain)
       this.editingInline = true
       this.creatingNew = false
       this.editingDomainId = domain.id
@@ -378,7 +380,10 @@ export default {
         }
         this.creatingNew = false
       } else {
-        this.homebrewStore.update(this.editingDomainId, data)
+        const result = this.homebrewStore.update(this.editingDomainId, data)
+        if (!result.success && result.error && result.error.includes('introuvable')) {
+          this.homebrewStore.create({ ...data, id: this.editingDomainId })
+        }
       }
       this.editingInline = false
       this.editingDomainId = null

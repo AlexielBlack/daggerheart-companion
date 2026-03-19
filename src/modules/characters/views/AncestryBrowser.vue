@@ -424,7 +424,9 @@ export default {
   methods: {
     // --- Edition inline ---
     startEdit(ancestry) {
-      this.hydrate(ancestry)
+      // Priorité : données brutes du store homebrew
+      const raw = this.homebrewStore.items.find((item) => item.id === ancestry.id)
+      this.hydrate(raw || ancestry)
       this.editingInline = true
       this.creatingNew = false
       this.editingAncestryId = ancestry.id
@@ -441,7 +443,10 @@ export default {
         }
         this.creatingNew = false
       } else {
-        this.homebrewStore.update(this.editingAncestryId, data)
+        const result = this.homebrewStore.update(this.editingAncestryId, data)
+        if (!result.success && result.error && result.error.includes('introuvable')) {
+          this.homebrewStore.create({ ...data, id: this.editingAncestryId })
+        }
       }
       this.editingInline = false
       this.editingAncestryId = null

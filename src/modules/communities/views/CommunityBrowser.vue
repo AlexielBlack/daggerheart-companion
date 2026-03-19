@@ -210,7 +210,9 @@ export default {
   methods: {
     // --- Edition inline ---
     startEdit(community) {
-      this.hydrate(community)
+      // Priorité : données brutes du store homebrew
+      const raw = this.homebrewStore.items.find((item) => item.id === community.id)
+      this.hydrate(raw || community)
       this.editingInline = true
       this.creatingNew = false
       this.editingCommunityId = community.id
@@ -227,7 +229,10 @@ export default {
         }
         this.creatingNew = false
       } else {
-        this.homebrewStore.update(this.editingCommunityId, data)
+        const result = this.homebrewStore.update(this.editingCommunityId, data)
+        if (!result.success && result.error && result.error.includes('introuvable')) {
+          this.homebrewStore.create({ ...data, id: this.editingCommunityId })
+        }
       }
       this.editingInline = false
       this.editingCommunityId = null

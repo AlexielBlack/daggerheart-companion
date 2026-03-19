@@ -411,7 +411,23 @@ export default {
   methods: {
     // --- Edition inline ---
     startEdit(cls) {
-      this.hydrate(cls)
+      // Priorité : données brutes du store homebrew (format formulaire)
+      const raw = this.homebrewStore.items.find((item) => item.id === cls.id)
+      if (raw) {
+        this.hydrate(raw)
+      } else {
+        // Classe statique custom : convertir au format formulaire
+        const adapted = { ...cls }
+        if (typeof adapted.hopeFeature === 'object' && adapted.hopeFeature !== null) {
+          adapted.hopeFeature = `${adapted.hopeFeature.name} : ${adapted.hopeFeature.description}`
+        }
+        if (Array.isArray(adapted.classFeatures)) {
+          adapted.classFeatures = adapted.classFeatures.map((f) =>
+            typeof f === 'string' ? { name: f, description: '' } : { name: f.name || '', description: f.description || '', tags: f.tags || [] }
+          )
+        }
+        this.hydrate(adapted)
+      }
       this.editingInline = true
       this.creatingNew = false
       this.editingClassId = cls.id
@@ -428,7 +444,11 @@ export default {
         }
         this.creatingNew = false
       } else {
-        this.homebrewStore.update(this.editingClassId, data)
+        const result = this.homebrewStore.update(this.editingClassId, data)
+        // Si l'item n'existe pas dans le store (classe statique), le creer
+        if (!result.success && result.error && result.error.includes('introuvable')) {
+          this.homebrewStore.create({ ...data, id: this.editingClassId })
+        }
       }
       this.editingInline = false
       this.editingClassId = null
