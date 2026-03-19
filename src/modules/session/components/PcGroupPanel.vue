@@ -147,9 +147,30 @@
                       }"
                     ></div>
                   </div>
-                  <span class="pc-card__bar-text">
+                  <span
+                    v-if="!isEditing(pc.id, 'currentHP')"
+                    class="pc-card__bar-text pc-card__bar-text--clickable"
+                    role="button"
+                    tabindex="0"
+                    :aria-label="'Modifier les degats de ' + (pc.name || 'Sans nom')"
+                    @click.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
+                    @keydown.enter.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
+                  >
                     &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
                   </span>
+                  <input
+                    v-else
+                    type="number"
+                    class="pc-card__stat-input"
+                    :value="editingValue"
+                    min="0"
+                    :max="pc.effectiveMaxHP"
+                    :aria-label="'Saisir les degats de ' + (pc.name || 'Sans nom')"
+                    @input="editingValue = $event.target.value"
+                    @blur="commitEditStat(pc)"
+                    @keydown.enter.stop="commitEditStat(pc)"
+                    @keydown.escape.stop="cancelEditStat()"
+                  />
                   <button
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
@@ -182,9 +203,30 @@
                       }"
                     ></div>
                   </div>
-                  <span class="pc-card__bar-text">
+                  <span
+                    v-if="!isEditing(pc.id, 'currentStress')"
+                    class="pc-card__bar-text pc-card__bar-text--clickable"
+                    role="button"
+                    tabindex="0"
+                    :aria-label="'Modifier le stress de ' + (pc.name || 'Sans nom')"
+                    @click.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
+                    @keydown.enter.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
+                  >
                     &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
                   </span>
+                  <input
+                    v-else
+                    type="number"
+                    class="pc-card__stat-input"
+                    :value="editingValue"
+                    min="0"
+                    :max="pc.effectiveMaxStress"
+                    :aria-label="'Saisir le stress de ' + (pc.name || 'Sans nom')"
+                    @input="editingValue = $event.target.value"
+                    @blur="commitEditStat(pc)"
+                    @keydown.enter.stop="commitEditStat(pc)"
+                    @keydown.escape.stop="cancelEditStat()"
+                  />
                   <button
                     class="pc-card__stat-btn"
                     :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
@@ -776,7 +818,7 @@
  * simultanement, sans passer par les getters du store (qui ne gerent
  * que le personnage selectionne).
  */
-import { computed, ref, nextTick } from 'vue'
+import { computed, ref, nextTick, watch } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
 import { useCharacterStore } from '@modules/characters'
 import { useStorage } from '@core/composables/useStorage'
@@ -853,6 +895,50 @@ export default {
       const newVal = Math.max(0, (pc.hope || 0) - 1)
       characterStore.patchCharacterById(pc.id, { hope: newVal })
     }
+
+    // ── Saisie directe (clic sur valeur) ──
+    const editingStat = ref(null) // { pcId, stat } ou null
+    const editingValue = ref('')
+
+    function startEditStat(pcId, stat, currentValue) {
+      editingStat.value = { pcId, stat }
+      editingValue.value = String(currentValue)
+    }
+
+    function commitEditStat(pc) {
+      if (!editingStat.value) return
+      const val = parseInt(editingValue.value, 10)
+      if (isNaN(val) || val < 0) {
+        editingStat.value = null
+        return
+      }
+      const { stat } = editingStat.value
+      const maxMap = {
+        currentHP: pc.effectiveMaxHP,
+        currentStress: pc.effectiveMaxStress
+      }
+      const clamped = Math.min(maxMap[stat] || 99, Math.max(0, val))
+      characterStore.patchCharacterById(pc.id, { [stat]: clamped })
+      editingStat.value = null
+    }
+
+    function cancelEditStat() {
+      editingStat.value = null
+    }
+
+    function isEditing(pcId, stat) {
+      return editingStat.value?.pcId === pcId && editingStat.value?.stat === stat
+    }
+
+    // Auto-focus l'input quand il apparait
+    watch(editingStat, (val) => {
+      if (val) {
+        nextTick(() => {
+          const input = document.querySelector('.pc-card__stat-input')
+          if (input) { input.focus(); input.select() }
+        })
+      }
+    })
 
     // ── Expansion des details (un seul PJ a la fois) ──
     const expandedPcId = ref(null)
@@ -1169,6 +1255,13 @@ export default {
       decrementArmor,
       incrementHope,
       decrementHope,
+      // Saisie directe
+      editingStat,
+      editingValue,
+      startEditStat,
+      commitEditStat,
+      cancelEditStat,
+      isEditing,
       // Mode compact
       isCompact,
       // Improvement 1 — colonnes
@@ -2098,5 +2191,46 @@ export default {
 
 .pc-group__hidden-restore:hover {
   opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   Saisie directe HP/Stress — clic sur la valeur
+   ═══════════════════════════════════════════════ */
+
+.pc-card__bar-text--clickable {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 1px var(--space-xs);
+  transition: background var(--transition-fast);
+}
+
+.pc-card__bar-text--clickable:hover {
+  background: var(--color-bg-hover);
+}
+
+.pc-card__stat-input {
+  width: 50px;
+  background: var(--color-bg-input);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-accent-hope);
+  border-radius: var(--radius-sm);
+  padding: 1px var(--space-xs);
+  font-size: var(--font-size-xs);
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+}
+
+.pc-card__stat-input:focus {
+  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.3);
+}
+
+.pc-card__stat-input::-webkit-inner-spin-button,
+.pc-card__stat-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pc-card__stat-input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

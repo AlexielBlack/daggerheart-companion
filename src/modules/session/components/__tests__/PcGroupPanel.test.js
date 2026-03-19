@@ -184,3 +184,27 @@ describe('PcGroupPanel — mode compact', () => {
     expect(wrapper.find('.pc-card__identity').exists()).toBe(true)
   })
 })
+
+describe('Saisie directe HP/Stress', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('affiche un element clickable pour la valeur HP', () => {
+    const wrapper = mount(PcGroupPanel, {
+      props: { characters: [mockPc] },
+      global: { stubs }
+    })
+    expect(wrapper.find('.pc-card__bar-text--clickable').exists()).toBe(true)
+  })
+
+  it('bascule vers un input au clic sur la valeur HP', async () => {
+    const wrapper = mount(PcGroupPanel, {
+      props: { characters: [mockPc] },
+      global: { stubs }
+    })
+    const clickable = wrapper.find('.pc-card__bar-text--clickable')
+    await clickable.trigger('click')
+    expect(wrapper.find('.pc-card__stat-input').exists()).toBe(true)
+  })
+})
