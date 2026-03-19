@@ -10,6 +10,17 @@
         Personnages ({{ visibleList.length }})
       </h3>
       <div class="pc-group__actions">
+        <!-- Bouton toggle compact -->
+        <button
+          v-if="visibleList.length > 0"
+          class="pc-group__compact-btn"
+          :class="{ 'pc-group__compact-btn--active': isCompact }"
+          :aria-label="isCompact ? 'Basculer en mode detaille' : 'Basculer en mode compact'"
+          :aria-pressed="String(isCompact)"
+          @click="isCompact = !isCompact"
+        >
+          {{ isCompact ? '&#x1F4CB;' : '&#x1F4AC;' }}
+        </button>
         <!-- Selecteur de colonnes -->
         <div
           v-if="visibleList.length > 0"
@@ -185,8 +196,11 @@
                 </div>
               </div>
 
-              <!-- 4. Ligne armure + espoir (interactifs) -->
-              <div class="pc-card__armor-hope pc-card__armor-hope--interactive">
+              <!-- 4. Ligne armure + espoir (interactifs) — masque en compact -->
+              <div
+                v-if="!isCompact"
+                class="pc-card__armor-hope pc-card__armor-hope--interactive"
+              >
                 <div
                   class="pc-card__armor-bar pc-card__armor-bar--interactive"
                   :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
@@ -242,8 +256,11 @@
                 </div>
               </div>
 
-              <!-- 5. Stats defensives -->
-              <div class="pc-card__defense">
+              <!-- 5. Stats defensives — masque en compact -->
+              <div
+                v-if="!isCompact"
+                class="pc-card__defense"
+              >
                 <span>Evasion : <strong>{{ pc.effectiveEvasion }}</strong></span>
                 <span class="pc-card__defense-sep">|</span>
                 <span>Seuils : <strong>{{ pc.thresholds.major }} / {{ pc.thresholds.severe }}</strong></span>
@@ -265,8 +282,9 @@
                 </span>
               </div>
 
-              <!-- 7. Traits -->
+              <!-- 7. Traits — masque en compact -->
               <div
+                v-if="!isCompact"
                 class="pc-card__traits"
                 aria-label="Traits du personnage"
               >
@@ -286,9 +304,9 @@
               </div>
             </div>
 
-            <!-- Bouton d'expansion des details -->
+            <!-- Bouton d'expansion des details — masque en compact -->
             <div
-              v-if="visibleTabs(pc).length > 0"
+              v-if="!isCompact && visibleTabs(pc).length > 0"
               class="pc-card__expand-bar"
             >
               <button
@@ -307,7 +325,7 @@
                PANNEAU DETAILS — s'ouvre a droite de la carte
                ═══════════════════════════════════════════════ -->
           <aside
-            v-if="expandedPcId === pc.id"
+            v-if="!isCompact && expandedPcId === pc.id"
             class="pc-detail"
             :aria-label="'Details de ' + (pc.name || 'Sans nom')"
           >
@@ -865,6 +883,13 @@ export default {
     //  IMPROVEMENT 1 — Grille configurable (colonnes)
     // ══════════════════════════════════════════════
 
+    // ══════════════════════════════════════════════
+    //  Mode compact — toggle persistant
+    // ══════════════════════════════════════════════
+
+    const compactStorage = useStorage('pcgroup-compact', false)
+    const isCompact = compactStorage.data
+
     const columnStorage = useStorage('pcgroup-columns', 2)
     const columnCount = columnStorage.data
 
@@ -1144,6 +1169,8 @@ export default {
       decrementArmor,
       incrementHope,
       decrementHope,
+      // Mode compact
+      isCompact,
       // Improvement 1 — colonnes
       columnCount,
       setColumns,
@@ -1221,6 +1248,36 @@ export default {
 .pc-group__empty {
   color: var(--color-text-muted);
   padding: var(--space-lg) 0;
+}
+
+/* ═══════════════════════════════════════════════
+   BOUTON COMPACT
+   ═══════════════════════════════════════════════ */
+
+.pc-group__compact-btn {
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.pc-group__compact-btn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.pc-group__compact-btn--active {
+  background: var(--color-accent-hope);
+  color: var(--color-text-inverse);
+  border-color: var(--color-accent-hope);
 }
 
 /* ═══════════════════════════════════════════════
