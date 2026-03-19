@@ -5,7 +5,7 @@
   >
     <div class="hb-dom-list">
       <HomebrewList
-        back-route="/edition/homebrew"
+        back-route="/compendium"
         :items="store.filteredItems"
         label="Domaines custom"
         label-singular="domaine"
@@ -108,11 +108,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/edition/homebrew/domain/new')
+      router.push('/compendium/domaines/new')
     }
 
     function goEdit(id) {
-      router.push(`/edition/homebrew/domain/${id}`)
+      router.push(`/compendium/domaines/${id}`)
     }
 
     function onSelect(id) {

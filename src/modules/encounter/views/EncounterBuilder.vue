@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Constructeur de Rencontres"
-    module-id="encounter"
-  >
-    <div class="encounter-builder">
+  <div class="encounter-builder">
       <header class="builder-header">
         <h1 class="builder-title">
           🗺️ Constructeur de Rencontres
@@ -192,14 +188,12 @@
       >
         {{ notification.message }}
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useEncounterStore } from '../stores/encounterStore'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterHistoryStore } from '../stores/encounterHistoryStore'
@@ -217,7 +211,6 @@ import EncounterTemplatePicker from '../components/EncounterTemplatePicker.vue'
 export default {
   name: 'EncounterBuilder',
   components: {
-    ModuleBoundary,
     EncounterConfig,
     BattlePointsBar,
     EncounterSlotList,
@@ -278,7 +271,7 @@ export default {
     function handleLaunch() {
       const data = store.serializeEncounter()
       liveStore.startEncounter(data)
-      router.push('/jeu/combat')
+      router.push('/table/combat')
     }
 
     function handleImportEncounter(data) {

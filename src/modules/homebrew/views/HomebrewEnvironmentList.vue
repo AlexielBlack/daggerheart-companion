@@ -5,7 +5,7 @@
   >
     <div class="hb-env-list">
       <HomebrewList
-        back-route="/edition/homebrew"
+        back-route="/compendium"
         :items="store.filteredItems"
         label="Environnements custom"
         label-singular="environnement"
@@ -204,11 +204,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/edition/homebrew/environment/new')
+      router.push('/compendium/environnements/new')
     }
 
     function goEdit(id) {
-      router.push(`/edition/homebrew/environment/${id}`)
+      router.push(`/compendium/environnements/${id}`)
     }
 
     function onSelect(id) {

@@ -5,7 +5,7 @@
   >
     <div class="hb-adv-list">
       <HomebrewList
-        back-route="/edition/homebrew"
+        back-route="/compendium"
         :items="store.filteredItems"
         label="Adversaires custom"
         label-singular="adversaire"
@@ -207,11 +207,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/edition/homebrew/adversary/new')
+      router.push('/compendium/adversaires/new')
     }
 
     function goEdit(id) {
-      router.push(`/edition/homebrew/adversary/${id}`)
+      router.push(`/compendium/adversaires/${id}`)
     }
 
     function onSelect(id) {

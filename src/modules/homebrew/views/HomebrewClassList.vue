@@ -5,7 +5,7 @@
   >
     <div class="hb-cla-list">
       <HomebrewList
-        back-route="/edition/homebrew"
+        back-route="/compendium"
         :items="store.filteredItems"
         label="Classes custom"
         label-singular="classe"
@@ -108,11 +108,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/edition/homebrew/class/new')
+      router.push('/compendium/classes/new')
     }
 
     function goEdit(id) {
-      router.push(`/edition/homebrew/class/${id}`)
+      router.push(`/compendium/classes/${id}`)
     }
 
     function onSelect(id) {

@@ -10,7 +10,7 @@
         aria-label="Fil d'Ariane"
       >
         <router-link
-          to="/edition/homebrew/adversary"
+          to="/compendium/adversaires"
           class="hb-adv-editor__breadcrumb-link"
         >
           ← Adversaires custom
@@ -180,7 +180,7 @@ export default {
             return
           }
         }
-        router.push('/edition/homebrew/adversary')
+        router.push('/compendium/adversaires')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -200,7 +200,7 @@ export default {
     }
 
     function onCancel() {
-      router.push('/edition/homebrew/adversary')
+      router.push('/compendium/adversaires')
     }
 
     return {

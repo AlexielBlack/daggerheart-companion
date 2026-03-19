@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Lanceur de Dés"
-    module-id="dice"
-  >
-    <div class="dice-roller">
+  <div class="dice-roller">
       <div class="roller-layout">
         <!-- ═══ Main panels ═══ -->
         <div class="roller-main">
@@ -32,8 +28,7 @@
           />
         </div>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -43,11 +38,10 @@ import DualityPanel from '../components/DualityPanel.vue'
 import DamagePanel from '../components/DamagePanel.vue'
 import QuickDice from '../components/QuickDice.vue'
 import DiceHistory from '../components/DiceHistory.vue'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
 export default {
   name: 'DiceRoller',
-  components: { ModuleBoundary, DualityPanel, DamagePanel, QuickDice, DiceHistory },
+  components: { DualityPanel, DamagePanel, QuickDice, DiceHistory },
   setup() {
     const store = useDiceStore()
     const dualityPanel = ref(null)

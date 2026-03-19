@@ -10,7 +10,7 @@
         aria-label="Fil d'Ariane"
       >
         <router-link
-          to="/edition/homebrew/equipment"
+          to="/compendium/equipement"
           class="hb-eq-editor__breadcrumb-link"
         >
           ← Équipements custom
@@ -150,7 +150,7 @@ export default {
             return
           }
         }
-        router.push('/edition/homebrew/equipment')
+        router.push('/compendium/equipement')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -170,7 +170,7 @@ export default {
     }
 
     function onCeqel() {
-      router.push('/edition/homebrew/equipment')
+      router.push('/compendium/equipement')
     }
 
     return {

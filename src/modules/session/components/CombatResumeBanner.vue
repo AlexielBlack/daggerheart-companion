@@ -20,7 +20,7 @@
       </span>
     </div>
     <router-link
-      to="/jeu/combat"
+      to="/table/combat"
       class="combat-banner__resume btn btn--primary"
       aria-label="Reprendre le combat en cours"
     >

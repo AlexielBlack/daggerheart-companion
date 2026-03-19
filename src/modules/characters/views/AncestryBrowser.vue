@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Ascendances"
-    module-id="ancestries"
-  >
-    <div class="ancestry-browser">
+  <div class="ancestry-browser">
       <!-- ═══ En-tête ═══ -->
       <header class="browser-header">
         <h1 class="browser-header__title">
@@ -247,8 +243,7 @@
           Aucune ascendance trouvée pour « {{ searchQuery }} »
         </p>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -257,11 +252,8 @@ import { useRouter } from 'vue-router'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@/data/ancestries/index.js'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
 
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 export default {
   name: 'AncestryBrowser',
-
-  components: { ModuleBoundary },
 
   setup() {
     const router = useRouter()
@@ -321,7 +313,7 @@ export default {
       const homebrewStore = useAncestryHomebrewStore()
       const result = homebrewStore.createFromTemplate(ancestry)
       if (result.success) {
-        router.push(`/edition/homebrew/ancestry/${result.id}`)
+        router.push(`/compendium/ascendances/${result.id}`)
       }
     }
 

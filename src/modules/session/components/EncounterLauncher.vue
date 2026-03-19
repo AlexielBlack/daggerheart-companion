@@ -9,7 +9,7 @@
 
     <!-- Lien vers le constructeur complet -->
     <router-link
-      to="/edition/rencontres"
+      to="/table/rencontres"
       class="enc-launcher__builder-link"
     >
       &#x1F5FA;&#xFE0F; Ouvrir le constructeur
@@ -63,7 +63,7 @@
       class="enc-launcher__empty"
     >
       Aucune rencontre sauvegardee.
-      <router-link to="/edition/rencontres">
+      <router-link to="/table/rencontres">
         Creer une rencontre
       </router-link>
     </p>
@@ -154,7 +154,7 @@ export default {
       const enriched = enrichWithSessionContext(encounterData)
       liveStore.startEncounter(enriched)
       sessionStore.lastLaunchedEncounterId = encounterData.id || null
-      router.push('/jeu/combat')
+      router.push('/table/combat')
     }
 
     /**
@@ -164,7 +164,7 @@ export default {
     function handleLaunchTemplate(templateData) {
       const enriched = enrichWithSessionContext(templateData)
       liveStore.startEncounter(enriched)
-      router.push('/jeu/combat')
+      router.push('/table/combat')
     }
 
     /**
@@ -173,7 +173,7 @@ export default {
      */
     function handleEdit(enc) {
       encounterStore.loadEncounter(enc)
-      router.push('/edition/rencontres')
+      router.push('/table/rencontres')
     }
 
     return {

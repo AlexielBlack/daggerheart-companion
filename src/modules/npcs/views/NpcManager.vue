@@ -4,11 +4,7 @@
   Responsive : en mobile, la fiche remplace la liste.
 -->
 <template>
-  <ModuleBoundary
-    module-name="PNJs"
-    module-id="npcs"
-  >
-    <div class="npc-manager">
+  <div class="npc-manager">
       <header class="npc-manager__header">
         <h1>PNJs</h1>
         <div class="npc-manager__header-actions">
@@ -122,8 +118,7 @@
       >
         {{ importMessage }}
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -133,14 +128,12 @@ import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useCla
 import { useAdversaryStore } from '@modules/adversaries/stores/adversaryStore.js'
 import NpcCard from '../components/NpcCard.vue'
 import NpcFilters from '../components/NpcFilters.vue'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import NpcSheet from '../components/NpcSheet.vue'
 
 export default {
   name: 'NpcManager',
 
   components: {
-    ModuleBoundary,
     NpcCard,
     NpcFilters,
     NpcSheet

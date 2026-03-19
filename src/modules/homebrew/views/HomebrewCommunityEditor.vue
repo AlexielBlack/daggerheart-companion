@@ -10,7 +10,7 @@
         aria-label="Fil d'Ariane"
       >
         <router-link
-          to="/edition/homebrew/community"
+          to="/compendium/communautes"
           class="hb-com-editor__breadcrumb-link"
         >
           ← Communautés custom
@@ -150,7 +150,7 @@ export default {
             return
           }
         }
-        router.push('/edition/homebrew/community')
+        router.push('/compendium/communautes')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -170,7 +170,7 @@ export default {
     }
 
     function onCancel() {
-      router.push('/edition/homebrew/community')
+      router.push('/compendium/communautes')
     }
 
     return {

@@ -31,7 +31,7 @@
           </button>
         </div>
         <router-link
-          to="/edition/personnages"
+          to="/table/pjs"
           class="pc-group__edit-link"
           aria-label="Editer les personnages"
         >
@@ -46,7 +46,7 @@
       class="pc-group__empty"
     >
       Aucun personnage cree.
-      <router-link to="/edition/personnages">
+      <router-link to="/table/pjs">
         Creer un personnage
       </router-link>
     </p>

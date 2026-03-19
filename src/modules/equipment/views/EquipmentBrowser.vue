@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Équipement"
-    module-id="equipment"
-  >
-    <div class="equipment-browser">
+  <div class="equipment-browser">
       <!-- ═══ En-tête ═══ -->
       <header class="browser-header">
         <h1 class="browser-header__title">
@@ -525,8 +521,7 @@
           Réinitialiser les filtres
         </button>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -536,11 +531,8 @@ import { useEquipmentStore } from '../stores/equipmentStore.js'
 import { RANGES, BURDENS, RARITIES } from '@/data/equipment/constants.js'
 import { useEquipmentHomebrewStore } from '@modules/homebrew/categories/equipment/useEquipmentHomebrewStore.js'
 
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 export default {
   name: 'EquipmentBrowser',
-
-  components: { ModuleBoundary },
 
   setup() {
     const store = useEquipmentStore()
@@ -612,7 +604,7 @@ export default {
       const homebrewStore = useEquipmentHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        router.push(`/edition/homebrew/equipment/${result.id}`)
+        router.push(`/compendium/equipement/${result.id}`)
       }
     }
 

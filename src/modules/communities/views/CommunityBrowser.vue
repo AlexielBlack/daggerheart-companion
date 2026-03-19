@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Communautés"
-    module-id="communities"
-  >
-    <div class="community-browser">
+  <div class="community-browser">
       <!-- ═══ En-tête ═══ -->
       <header class="browser-header">
         <h1 class="browser-header__title">
@@ -101,22 +97,19 @@
           Un personnage choisit <em>une</em> communauté à la création.
         </p>
       </aside>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
 import CommunityCard from '../components/CommunityCard.vue'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'CommunityBrowser',
 
   components: {
-    ModuleBoundary,
     CommunityCard
   },
 
@@ -128,7 +121,7 @@ export default {
       const homebrewStore = useCommunityHomebrewStore()
       const result = homebrewStore.createFromTemplate(community)
       if (result.success) {
-        router.push(`/edition/homebrew/community/${result.id}`)
+        router.push(`/compendium/communautes/${result.id}`)
       }
     }
 

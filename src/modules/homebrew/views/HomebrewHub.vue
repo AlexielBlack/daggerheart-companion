@@ -148,8 +148,8 @@ const CATEGORY_DEFS = [
     label: 'Adversaires',
     labelSingular: 'adversaire',
     description: 'Créez des ennemis uniques avec stats, features et seuils de dégâts.',
-    listRoute: '/edition/homebrew/adversary',
-    createRoute: '/edition/homebrew/adversary/new'
+    listRoute: '/compendium/adversaires',
+    createRoute: '/compendium/adversaires/new'
   },
   {
     key: 'ancestry',
@@ -157,8 +157,8 @@ const CATEGORY_DEFS = [
     label: 'Ascendances',
     labelSingular: 'ascendance',
     description: 'Inventez de nouvelles ascendances avec features et traits.',
-    listRoute: '/edition/homebrew/ancestry',
-    createRoute: '/edition/homebrew/ancestry/new'
+    listRoute: '/compendium/ascendances',
+    createRoute: '/compendium/ascendances/new'
   },
   {
     key: 'class',
@@ -166,8 +166,8 @@ const CATEGORY_DEFS = [
     label: 'Classes',
     labelSingular: 'classe',
     description: 'Concevez des classes avec domaines, stats et hope features.',
-    listRoute: '/edition/homebrew/class',
-    createRoute: '/edition/homebrew/class/new'
+    listRoute: '/compendium/classes',
+    createRoute: '/compendium/classes/new'
   },
   {
     key: 'community',
@@ -175,8 +175,8 @@ const CATEGORY_DEFS = [
     label: 'Communautés',
     labelSingular: 'communauté',
     description: 'Créez des communautés avec adjectifs et features narratives.',
-    listRoute: '/edition/homebrew/community',
-    createRoute: '/edition/homebrew/community/new'
+    listRoute: '/compendium/communautes',
+    createRoute: '/compendium/communautes/new'
   },
   {
     key: 'domain',
@@ -184,8 +184,8 @@ const CATEGORY_DEFS = [
     label: 'Domaines',
     labelSingular: 'domaine',
     description: 'Construisez des domaines avec cartes, sorts et thèmes.',
-    listRoute: '/edition/homebrew/domain',
-    createRoute: '/edition/homebrew/domain/new'
+    listRoute: '/compendium/domaines',
+    createRoute: '/compendium/domaines/new'
   },
   {
     key: 'environment',
@@ -193,8 +193,8 @@ const CATEGORY_DEFS = [
     label: 'Environnements',
     labelSingular: 'environnement',
     description: 'Modélisez des lieux avec tiers, impulses et features.',
-    listRoute: '/edition/homebrew/environment',
-    createRoute: '/edition/homebrew/environment/new'
+    listRoute: '/compendium/environnements',
+    createRoute: '/compendium/environnements/new'
   },
   {
     key: 'equipment',
@@ -202,8 +202,8 @@ const CATEGORY_DEFS = [
     label: 'Équipement',
     labelSingular: 'équipement',
     description: 'Forgez armes, armures, butin et consommables.',
-    listRoute: '/edition/homebrew/equipment',
-    createRoute: '/edition/homebrew/equipment/new'
+    listRoute: '/compendium/equipement',
+    createRoute: '/compendium/equipement/new'
   }
 ]
 

@@ -5,7 +5,7 @@
   >
     <div class="hb-com-list">
       <HomebrewList
-        back-route="/edition/homebrew"
+        back-route="/compendium"
         :items="store.filteredItems"
         label="Communautés custom"
         label-singular="communauté"
@@ -126,11 +126,11 @@ export default {
     }
 
     function goCreate() {
-      router.push('/edition/homebrew/community/new')
+      router.push('/compendium/communautes/new')
     }
 
     function goEdit(id) {
-      router.push(`/edition/homebrew/community/${id}`)
+      router.push(`/compendium/communautes/${id}`)
     }
 
     function onSelect(id) {

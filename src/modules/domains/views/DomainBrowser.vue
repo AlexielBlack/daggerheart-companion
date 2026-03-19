@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Domaines"
-    module-id="domains"
-  >
-    <div class="domain-browser">
+  <div class="domain-browser">
       <!-- ═══ En-tête ═══ -->
       <header class="browser-header">
         <h1 class="browser-header__title">
@@ -229,22 +225,20 @@
           Aucun domaine trouvé pour « {{ store.searchQuery }} »
         </p>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
 import DomainCardItem from '../components/DomainCardItem.vue'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useDomainHomebrewStore } from '@modules/homebrew/categories/domain/useDomainHomebrewStore.js'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'DomainBrowser',
 
-  components: { ModuleBoundary, DomainCardItem },
+  components: { DomainCardItem },
 
   setup() {
     const store = useDomainStore()
@@ -264,7 +258,7 @@ export default {
       const homebrewStore = useDomainHomebrewStore()
       const result = homebrewStore.createFromTemplate(domain)
       if (result.success) {
-        router.push(`/edition/homebrew/domain/${result.id}`)
+        router.push(`/compendium/domaines/${result.id}`)
       }
     }
 

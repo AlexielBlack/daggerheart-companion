@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Adversaires"
-    module-id="adversaries"
-  >
-    <div class="adversary-browser">
+  <div class="adversary-browser">
       <!-- Filters -->
       <AdversaryFilters
         :search-query="store.searchQuery"
@@ -84,12 +80,10 @@
           </div>
         </aside>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
 import StatBlock from '../components/StatBlock.vue'
@@ -104,7 +98,6 @@ import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversar
 export default {
   name: 'AdversaryBrowser',
   components: {
-    ModuleBoundary,
     AdversaryFilters,
     AdversaryCard,
     StatBlock
@@ -133,7 +126,7 @@ export default {
       const homebrewStore = useAdversaryHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        this.$router.push(`/edition/homebrew/adversary/${result.id}`)
+        this.$router.push(`/compendium/adversaires/${result.id}`)
       }
     }
   }

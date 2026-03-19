@@ -1,12 +1,8 @@
 <template>
-  <ModuleBoundary
-    module-name="Rencontre en cours"
-    module-id="encounter-live"
+  <div
+    class="live"
+    :class="'live--' + store.sceneMode"
   >
-    <div
-      class="live"
-      :class="'live--' + store.sceneMode"
-    >
       <!-- Écran inactif -->
       <div
         v-if="!store.isActive"
@@ -15,7 +11,7 @@
         <p>Aucune rencontre en cours.</p>
         <button
           class="live__go-builder"
-          @click="$router.push('/edition/rencontres')"
+          @click="$router.push('/table/rencontres')"
         >
           Retour au builder de rencontres
         </button>
@@ -431,8 +427,7 @@
           </div>
         </div>
       </template>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -452,12 +447,11 @@ import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
 import { useHaptic } from '../composables/useHaptic'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { ModuleBoundary, PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard },
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
@@ -728,7 +722,7 @@ export default {
       this.showEndSummary = false
       this.endSummaryData = null
       this.store.endEncounter()
-      this.$router.push('/edition/rencontres')
+      this.$router.push('/table/rencontres')
     },
     cancelEndEncounter() {
       this.showEndSummary = false

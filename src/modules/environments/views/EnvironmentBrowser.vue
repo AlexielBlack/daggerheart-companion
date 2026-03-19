@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Environnements"
-    module-id="environments"
-  >
-    <div class="env-browser">
+  <div class="env-browser">
       <!-- Filters -->
       <EnvironmentFilters
         :search-query="store.searchQuery"
@@ -81,12 +77,10 @@
           </div>
         </aside>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
 import EnvironmentStatBlock from '../components/EnvironmentStatBlock.vue'
@@ -101,7 +95,6 @@ import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/enviro
 export default {
   name: 'EnvironmentBrowser',
   components: {
-    ModuleBoundary,
     EnvironmentFilters,
     EnvironmentCard,
     EnvironmentStatBlock
@@ -130,7 +123,7 @@ export default {
       const homebrewStore = useEnvironmentHomebrewStore()
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
-        this.$router.push(`/edition/homebrew/environment/${result.id}`)
+        this.$router.push(`/compendium/environnements/${result.id}`)
       }
     }
   }

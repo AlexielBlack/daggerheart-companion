@@ -62,7 +62,7 @@
         class="npc-loader__empty-all"
       >
         Aucun PNJ cree.
-        <router-link to="/edition/pnjs">
+        <router-link to="/table/pnjs">
           Creer un PNJ
         </router-link>
       </p>

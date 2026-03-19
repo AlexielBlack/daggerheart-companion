@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Personnages"
-    module-id="characters"
-  >
-    <div class="character-builder">
+  <div class="character-builder">
       <div class="builder-layout">
         <!-- ═══ Sidebar ═══ -->
         <aside class="builder-sidebar">
@@ -125,8 +121,7 @@
           {{ toast.message }}
         </div>
       </Transition>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -138,11 +133,10 @@ import CharacterList from '../components/CharacterList.vue'
 import ClassPicker from '../components/ClassPicker.vue'
 import CharacterSheet from '../components/CharacterSheet.vue'
 import { LevelUpWizard } from '@modules/levelup'
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 
 export default {
   name: 'CharacterBuilder',
-  components: { ModuleBoundary, CharacterList, ClassPicker, CharacterSheet, LevelUpWizard },
+  components: { CharacterList, ClassPicker, CharacterSheet, LevelUpWizard },
   setup() {
     const store = useCharacterStore()
     const levelUpStore = useLevelUpStore()

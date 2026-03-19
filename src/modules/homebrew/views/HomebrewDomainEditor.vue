@@ -9,7 +9,7 @@
         aria-label="Fil d Ariane"
       >
         <router-link
-          to="/edition/homebrew/domain"
+          to="/compendium/domaines"
           class="hb-dom-editor__breadcrumb-link"
         >
           &#x2190; Domaines custom
@@ -110,7 +110,7 @@ export default {
           const created = store.create(raw)
           if (!created.success) { submitError.value = created.error || 'Echec de la creation.'; return }
         }
-        router.push('/edition/homebrew/domain')
+        router.push('/compendium/domaines')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -127,7 +127,7 @@ export default {
       } else { reset() }
     }
 
-    function onCancel() { router.push('/edition/homebrew/domain') }
+    function onCancel() { router.push('/compendium/domaines') }
 
     return {
       domainSchema, formData, isDirty, isEditMode,

@@ -1,9 +1,5 @@
 <template>
-  <ModuleBoundary
-    module-name="Classes & Spécialisations"
-    module-id="classes"
-  >
-    <div class="class-browser">
+  <div class="class-browser">
       <!-- ═══ En-tête ═══ -->
       <header class="browser-header">
         <h1 class="browser-header__title">
@@ -230,8 +226,7 @@
           Aucune classe trouvée pour « {{ searchQuery }} »
         </p>
       </div>
-    </div>
-  </ModuleBoundary>
+  </div>
 </template>
 
 <script>
@@ -241,11 +236,8 @@ import { getSubclassesForClass } from '@/data/subclasses/index.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
 import { useCharacterStore } from '../stores/characterStore'
 
-import ModuleBoundary from '@core/components/ModuleBoundary.vue'
 export default {
   name: 'ClassBrowser',
-
-  components: { ModuleBoundary },
 
   setup() {
     const router = useRouter()
@@ -342,7 +334,7 @@ export default {
 
       const result = homebrewStore.createFromTemplate(data)
       if (result.success) {
-        router.push(`/edition/homebrew/class/${result.id}`)
+        router.push(`/compendium/classes/${result.id}`)
       }
     }
 

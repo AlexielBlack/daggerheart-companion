@@ -10,7 +10,7 @@
         aria-label="Fil d'Ariane"
       >
         <router-link
-          to="/edition/homebrew/ancestry"
+          to="/compendium/ascendances"
           class="hb-anc-editor__breadcrumb-link"
         >
           ← Ascendances custom
@@ -150,7 +150,7 @@ export default {
             return
           }
         }
-        router.push('/edition/homebrew/ancestry')
+        router.push('/compendium/ascendances')
       } catch (err) {
         submitError.value = err.message || 'Erreur inattendue.'
       } finally {
@@ -170,7 +170,7 @@ export default {
     }
 
     function onCancel() {
-      router.push('/edition/homebrew/ancestry')
+      router.push('/compendium/ascendances')
     }
 
     return {
