@@ -11,7 +11,6 @@ export { useSceneDrawer } from './composables/useSceneDrawer'
 
 // Composants
 export { default as PcGroupPanel } from './components/PcGroupPanel.vue'
-export { default as PcSummaryStrip } from './components/PcSummaryStrip.vue'
 export { default as EnvironmentLoader } from './components/EnvironmentLoader.vue'
 export { default as NpcGroupPanel } from './components/NpcGroupPanel.vue'
 export { default as NpcSceneCard } from './components/NpcSceneCard.vue'

@@ -10,39 +10,6 @@
         Personnages ({{ visibleList.length }})
       </h3>
       <div class="pc-group__actions">
-        <!-- Bouton cycle de mode : strip → compact → detaille -->
-        <button
-          v-if="visibleList.length > 0"
-          class="pc-group__mode-btn"
-          :aria-label="'Mode : ' + viewModeLabel + '. Cliquer pour changer.'"
-          @click="cycleViewMode()"
-        >
-          <span
-            aria-hidden="true"
-            v-html="viewModeIcon"
-          ></span>
-          {{ viewModeLabel }}
-        </button>
-        <!-- Selecteur de colonnes (masque en mode strip) -->
-        <div
-          v-if="visibleList.length > 0 && viewMode !== 'strip'"
-          class="pc-group__col-selector"
-          role="radiogroup"
-          aria-label="Nombre de colonnes"
-        >
-          <button
-            v-for="n in [2, 3, 4]"
-            :key="n"
-            class="pc-group__col-btn"
-            :class="{ 'pc-group__col-btn--active': columnCount === n }"
-            role="radio"
-            :aria-checked="String(columnCount === n)"
-            :aria-label="n + ' colonnes'"
-            @click="setColumns(n)"
-          >
-            {{ n }}
-          </button>
-        </div>
         <router-link
           to="/table/prep/personnages"
           class="pc-group__edit-link"
@@ -64,723 +31,540 @@
       </router-link>
     </p>
 
-    <!-- Bandeau recapitulatif (mode strip) -->
-    <PcSummaryStrip
-      v-if="viewMode === 'strip' && visibleList.length > 0"
-      :characters="visibleList"
-      @select-pc="$emit('select-pc', $event)"
-    />
-
-    <!-- Grille de cartes PJ (modes compact et detaille) -->
+    <!-- Grille de cartes PJ -->
     <div
-      v-if="viewMode !== 'strip' && visibleList.length > 0"
-      ref="gridRef"
-      :class="['pc-group__grid', 'pc-group__grid--cols-' + columnCount]"
+      v-if="visibleList.length > 0"
+      class="pc-group__grid"
       role="list"
       aria-label="Liste des personnages"
     >
-      <template
+      <article
         v-for="pc in visibleList"
         :key="pc.id"
+        class="pc-card"
+        role="listitem"
+        :aria-label="pc.name || 'Sans nom'"
       >
-        <!-- Wrapper : grid-item simple si compact, full-row si expand -->
-        <div
-          :class="expandedPcId === pc.id ? 'pc-card-row' : 'pc-card-wrapper'"
-          role="listitem"
-          :aria-label="pc.name || 'Sans nom'"
-        >
-          <article class="pc-card">
-            <!-- Zone toujours visible -->
-            <div class="pc-card__body">
-              <!-- 1. Ligne identite -->
-              <div class="pc-card__identity">
-                <button
-                  class="pc-card__hide-btn"
-                  title="Masquer ce PJ de la table"
-                  aria-label="Masquer ce PJ"
-                  @click.stop="onToggleHidden(pc.id)"
-                >
-                  &#x1F441;&#xFE0F;
-                </button>
-                <span
-                  v-if="pc.classData"
-                  class="pc-card__class-emoji"
-                  aria-hidden="true"
-                >{{ pc.classData.emoji }}</span>
-                <button
-                  class="pc-card__name-btn"
-                  :aria-label="'Voir la fiche de ' + (pc.name || 'Sans nom')"
-                  @click.stop="$emit('select-pc', pc.id)"
-                >
-                  <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
-                </button>
-                <span
-                  v-if="pc.classData"
-                  class="pc-card__class-name"
-                >{{ pc.classData.name }}</span>
-                <span class="pc-card__level-badge">Nv.{{ pc.level || 1 }}</span>
-                <span
-                  v-if="pc.subclassData"
-                  class="pc-card__subclass"
-                >{{ pc.subclassData.name }}</span>
-              </div>
-
-              <!-- 2. Ligne ascendance / communaute -->
-              <div class="pc-card__meta">
-                <span v-if="pc.ancestryData">{{ pc.ancestryData.name }}</span>
-                <span v-if="pc.ancestryData && pc.communityData"> &middot; </span>
-                <span v-if="pc.communityData">{{ pc.communityData.name }}</span>
-              </div>
-
-              <!-- 3. Barres HP + Stress (interactives) -->
-              <div class="pc-card__bars">
-                <!-- Barre HP : currentHP = degats marques -->
-                <div
-                  class="pc-card__bar pc-card__bar--interactive"
-                  :aria-label="'Points de vie : ' + (pc.effectiveMaxHP - (pc.currentHP || 0)) + ' restants sur ' + pc.effectiveMaxHP"
-                >
-                  <button
-                    class="pc-card__stat-btn"
-                    :disabled="(pc.currentHP || 0) <= 0"
-                    :aria-label="'Soigner 1 PV de ' + (pc.name || 'Sans nom')"
-                    @click.stop="decrementHP(pc)"
-                  >
-                    &minus;
-                  </button>
-                  <div class="pc-card__bar-track">
-                    <div
-                      class="pc-card__bar-fill"
-                      :style="{
-                        width: hpFillPercent(pc) + '%',
-                        backgroundColor: hpColor(pc.currentHP || 0, pc.effectiveMaxHP)
-                      }"
-                    ></div>
-                  </div>
-                  <span
-                    v-if="!isEditing(pc.id, 'currentHP')"
-                    class="pc-card__bar-text pc-card__bar-text--clickable"
-                    role="button"
-                    tabindex="0"
-                    :aria-label="'Modifier les degats de ' + (pc.name || 'Sans nom')"
-                    @click.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
-                    @keydown.enter.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
-                  >
-                    &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
-                  </span>
-                  <input
-                    v-else
-                    type="number"
-                    class="pc-card__stat-input"
-                    :value="editingValue"
-                    min="0"
-                    :max="pc.effectiveMaxHP"
-                    :aria-label="'Saisir les degats de ' + (pc.name || 'Sans nom')"
-                    @input="editingValue = $event.target.value"
-                    @blur="commitEditStat(pc)"
-                    @keydown.enter.stop="commitEditStat(pc)"
-                    @keydown.escape.stop="cancelEditStat()"
-                  />
-                  <button
-                    class="pc-card__stat-btn"
-                    :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
-                    :aria-label="'Marquer 1 degat sur ' + (pc.name || 'Sans nom')"
-                    @click.stop="incrementHP(pc)"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <!-- Barre Stress -->
-                <div
-                  class="pc-card__bar pc-card__bar--interactive"
-                  :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.effectiveMaxStress"
-                >
-                  <button
-                    class="pc-card__stat-btn"
-                    :disabled="(pc.currentStress || 0) <= 0"
-                    :aria-label="'Reduire 1 stress de ' + (pc.name || 'Sans nom')"
-                    @click.stop="decrementStress(pc)"
-                  >
-                    &minus;
-                  </button>
-                  <div class="pc-card__bar-track">
-                    <div
-                      class="pc-card__bar-fill"
-                      :style="{
-                        width: stressFillPercent(pc) + '%',
-                        backgroundColor: stressColor(pc.currentStress || 0, pc.effectiveMaxStress)
-                      }"
-                    ></div>
-                  </div>
-                  <span
-                    v-if="!isEditing(pc.id, 'currentStress')"
-                    class="pc-card__bar-text pc-card__bar-text--clickable"
-                    role="button"
-                    tabindex="0"
-                    :aria-label="'Modifier le stress de ' + (pc.name || 'Sans nom')"
-                    @click.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
-                    @keydown.enter.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
-                  >
-                    &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
-                  </span>
-                  <input
-                    v-else
-                    type="number"
-                    class="pc-card__stat-input"
-                    :value="editingValue"
-                    min="0"
-                    :max="pc.effectiveMaxStress"
-                    :aria-label="'Saisir le stress de ' + (pc.name || 'Sans nom')"
-                    @input="editingValue = $event.target.value"
-                    @blur="commitEditStat(pc)"
-                    @keydown.enter.stop="commitEditStat(pc)"
-                    @keydown.escape.stop="cancelEditStat()"
-                  />
-                  <button
-                    class="pc-card__stat-btn"
-                    :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
-                    :aria-label="'Marquer 1 stress sur ' + (pc.name || 'Sans nom')"
-                    @click.stop="incrementStress(pc)"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- 4. Ligne armure + espoir (interactifs) — masque en compact -->
-              <div
-                v-if="viewMode === 'detailed'"
-                class="pc-card__armor-hope pc-card__armor-hope--interactive"
-              >
-                <div
-                  class="pc-card__armor-bar pc-card__armor-bar--interactive"
-                  :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
-                >
-                  <button
-                    class="pc-card__stat-btn pc-card__stat-btn--mini"
-                    :disabled="(pc.armorSlotsMarked || 0) <= 0"
-                    :aria-label="'Restaurer 1 armure de ' + (pc.name || 'Sans nom')"
-                    @click.stop="decrementArmor(pc)"
-                  >
-                    &minus;
-                  </button>
-                  <span class="pc-card__armor-label">
-                    &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.effectiveArmorScore }}
-                  </span>
-                  <div class="pc-card__bar-track pc-card__bar-track--sm">
-                    <div
-                      class="pc-card__bar-fill pc-card__bar-fill--armor"
-                      :style="{ width: armorFillPercent(pc) + '%' }"
-                    ></div>
-                  </div>
-                  <button
-                    class="pc-card__stat-btn pc-card__stat-btn--mini"
-                    :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
-                    :aria-label="'Utiliser 1 armure de ' + (pc.name || 'Sans nom')"
-                    @click.stop="incrementArmor(pc)"
-                  >
-                    +
-                  </button>
-                </div>
-                <div
-                  class="pc-card__hope pc-card__hope--interactive"
-                  :aria-label="'Espoir : ' + (pc.hope || 0)"
-                >
-                  <button
-                    class="pc-card__stat-btn pc-card__stat-btn--mini"
-                    :disabled="(pc.hope || 0) <= 0"
-                    :aria-label="'Depenser 1 espoir de ' + (pc.name || 'Sans nom')"
-                    @click.stop="decrementHope(pc)"
-                  >
-                    &minus;
-                  </button>
-                  <span aria-hidden="true">&#x2728;</span>
-                  Espoir : <strong>{{ pc.hope || 0 }}</strong>
-                  <button
-                    class="pc-card__stat-btn pc-card__stat-btn--mini"
-                    :disabled="(pc.hope || 0) >= 6"
-                    :aria-label="'Gagner 1 espoir pour ' + (pc.name || 'Sans nom')"
-                    @click.stop="incrementHope(pc)"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- 5. Stats defensives — masque en compact -->
-              <div
-                v-if="viewMode === 'detailed'"
-                class="pc-card__defense"
-              >
-                <span>Evasion : <strong>{{ pc.effectiveEvasion }}</strong></span>
-                <span class="pc-card__defense-sep">|</span>
-                <span>Seuils : <strong>{{ pc.thresholds.major }} / {{ pc.thresholds.severe }}</strong></span>
-              </div>
-
-              <!-- 6. Conditions -->
-              <div
-                v-if="pc.conditions && pc.conditions.length > 0"
-                class="pc-card__conditions"
-                aria-label="Conditions actives"
-              >
-                <span
-                  v-for="cond in pc.conditions"
-                  :key="cond"
-                  class="pc-card__condition"
-                  :style="conditionStyle(cond)"
-                  :title="conditionDesc(cond)"
-                  :aria-label="conditionLabel(cond) + ' : ' + conditionDesc(cond)"
-                >
-                  {{ conditionLabel(cond) }}
-                </span>
-              </div>
-
-              <!-- 7. Traits — masque en compact -->
-              <div
-                v-if="viewMode === 'detailed'"
-                class="pc-card__traits"
-                aria-label="Traits du personnage"
-              >
-                <div
-                  v-for="traitKey in TRAIT_ORDER"
-                  :key="traitKey"
-                  class="pc-card__trait"
-                  :class="{
-                    'pc-card__trait--positive': (pc.traits && pc.traits[traitKey]) > 0,
-                    'pc-card__trait--negative': (pc.traits && pc.traits[traitKey]) < 0,
-                    'pc-card__trait--zero': !(pc.traits && pc.traits[traitKey])
-                  }"
-                >
-                  <span class="pc-card__trait-label">{{ TRAIT_ABBR[traitKey] }}</span>
-                  <span class="pc-card__trait-value">{{ traitSign(pc.traits ? pc.traits[traitKey] : 0) }}</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bouton d'expansion des details — masque en compact -->
-            <div
-              v-if="viewMode === 'detailed' && visibleTabs(pc).length > 0"
-              class="pc-card__expand-bar"
+        <!-- 1. Identite -->
+        <div class="pc-card__body">
+          <div class="pc-card__identity">
+            <button
+              class="pc-card__hide-btn"
+              title="Masquer ce PJ de la table"
+              aria-label="Masquer ce PJ"
+              @click.stop="onToggleHidden(pc.id)"
             >
-              <button
-                class="pc-card__expand-btn"
-                :aria-expanded="String(expandedPcId === pc.id)"
-                :aria-label="expandedPcId === pc.id ? 'Fermer les details de ' + (pc.name || 'Sans nom') : 'Ouvrir les details de ' + (pc.name || 'Sans nom')"
-                @click.stop="toggleExpand(pc.id)"
-              >
-                <span aria-hidden="true">{{ expandedPcId === pc.id ? '&#x2716;' : '&#x25B6;' }}</span>
-                {{ expandedPcId === pc.id ? 'Fermer' : 'Details' }}
-              </button>
-            </div>
-          </article>
+              &#x1F441;&#xFE0F;
+            </button>
+            <span
+              v-if="pc.classData"
+              class="pc-card__class-emoji"
+              aria-hidden="true"
+            >{{ pc.classData.emoji }}</span>
+            <button
+              class="pc-card__name-btn"
+              :aria-label="'Voir la fiche de ' + (pc.name || 'Sans nom')"
+              @click.stop="$emit('select-pc', pc.id)"
+            >
+              <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
+            </button>
+            <span
+              v-if="pc.classData"
+              class="pc-card__class-name"
+            >{{ pc.classData.name }}</span>
+            <span class="pc-card__level-badge">Nv.{{ pc.level || 1 }}</span>
+            <span
+              v-if="pc.subclassData"
+              class="pc-card__subclass"
+            >{{ pc.subclassData.name }}</span>
+          </div>
 
-          <!-- ═══════════════════════════════════════════════
-               PANNEAU DETAILS — s'ouvre a droite de la carte
-               ═══════════════════════════════════════════════ -->
-          <aside
-            v-if="viewMode === 'detailed' && expandedPcId === pc.id"
-            class="pc-detail"
-            :aria-label="'Details de ' + (pc.name || 'Sans nom')"
+          <!-- 2. Ascendance / Communaute -->
+          <div class="pc-card__meta">
+            <span v-if="pc.ancestryData">{{ pc.ancestryData.name }}</span>
+            <span v-if="pc.ancestryData && pc.communityData"> &middot; </span>
+            <span v-if="pc.communityData">{{ pc.communityData.name }}</span>
+          </div>
+
+          <!-- 3. Traits (toujours visibles) -->
+          <div
+            class="pc-card__traits"
+            aria-label="Traits du personnage"
           >
-            <!-- Barre d'onglets -->
-            <div class="pc-card__tabs">
-              <div
-                class="pc-card__tablist"
-                role="tablist"
-                :aria-label="'Sections de ' + (pc.name || 'Sans nom')"
-              >
-                <button
-                  v-for="tab in visibleTabs(pc)"
-                  :id="'tab-' + pc.id + '-' + tab.id"
-                  :key="tab.id"
-                  class="pc-card__tab"
-                  :class="{ 'pc-card__tab--active': getActiveTab(pc.id) === tab.id }"
-                  role="tab"
-                  :aria-selected="String(getActiveTab(pc.id) === tab.id)"
-                  :aria-controls="'panel-' + pc.id + '-' + tab.id"
-                  :tabindex="getActiveTab(pc.id) === tab.id ? 0 : -1"
-                  @click.stop="setActiveTab(pc.id, tab.id)"
-                  @keydown.left.prevent="navigateTab(pc, -1)"
-                  @keydown.right.prevent="navigateTab(pc, 1)"
-                >
-                  <span aria-hidden="true">{{ tab.icon }}</span>
-                  <span class="pc-card__tab-label">{{ tab.label }}</span>
-                </button>
+            <div
+              v-for="traitKey in TRAIT_ORDER"
+              :key="traitKey"
+              class="pc-card__trait"
+              :class="{
+                'pc-card__trait--positive': (pc.traits && pc.traits[traitKey]) > 0,
+                'pc-card__trait--negative': (pc.traits && pc.traits[traitKey]) < 0,
+                'pc-card__trait--zero': !(pc.traits && pc.traits[traitKey])
+              }"
+            >
+              <span class="pc-card__trait-label">{{ TRAIT_ABBR[traitKey] }}</span>
+              <span class="pc-card__trait-value">{{ traitSign(pc.traits ? pc.traits[traitKey] : 0) }}</span>
+            </div>
+          </div>
+
+          <!-- 4. Conditions -->
+          <div
+            v-if="pc.conditions && pc.conditions.length > 0"
+            class="pc-card__conditions"
+            aria-label="Conditions actives"
+          >
+            <span
+              v-for="cond in pc.conditions"
+              :key="cond"
+              class="pc-card__condition"
+              :style="conditionStyle(cond)"
+              :title="conditionDesc(cond)"
+              :aria-label="conditionLabel(cond) + ' : ' + conditionDesc(cond)"
+            >
+              {{ conditionLabel(cond) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 5. Onglets integres : Capacites | Inventaire | Notes -->
+        <div
+          v-if="visibleTabs(pc).length > 0"
+          class="pc-card__tabs"
+        >
+          <div
+            class="pc-card__tablist"
+            role="tablist"
+            :aria-label="'Sections de ' + (pc.name || 'Sans nom')"
+          >
+            <button
+              v-for="tab in visibleTabs(pc)"
+              :id="'tab-' + pc.id + '-' + tab.id"
+              :key="tab.id"
+              class="pc-card__tab"
+              :class="{ 'pc-card__tab--active': getActiveTab(pc.id) === tab.id }"
+              role="tab"
+              :aria-selected="String(getActiveTab(pc.id) === tab.id)"
+              :aria-controls="'panel-' + pc.id + '-' + tab.id"
+              :tabindex="getActiveTab(pc.id) === tab.id ? 0 : -1"
+              @click.stop="setActiveTab(pc.id, tab.id)"
+              @keydown.left.prevent="navigateTab(pc, -1)"
+              @keydown.right.prevent="navigateTab(pc, 1)"
+            >
+              <span aria-hidden="true">{{ tab.icon }}</span>
+              <span class="pc-card__tab-label">{{ tab.label }}</span>
+            </button>
+          </div>
+
+          <!-- Panneau Capacites -->
+          <div
+            v-show="getActiveTab(pc.id) === 'capacites'"
+            :id="'panel-' + pc.id + '-capacites'"
+            class="pc-card__tabpanel"
+            role="tabpanel"
+            :aria-labelledby="'tab-' + pc.id + '-capacites'"
+          >
+            <!-- Hope Feature -->
+            <div
+              v-if="pc.classData && pc.classData.hopeFeature"
+              class="pc-card__feature-group"
+            >
+              <div class="pc-card__feature-source">
+                <span aria-hidden="true">&#x2728;</span>
+                Feature d'Espoir &#x2014; {{ pc.classData.name }}
               </div>
-
-              <!-- ── Panneau Combat ── -->
-              <div
-                v-show="getActiveTab(pc.id) === 'combat'"
-                :id="'panel-' + pc.id + '-combat'"
-                class="pc-card__tabpanel"
-                role="tabpanel"
-                :aria-labelledby="'tab-' + pc.id + '-combat'"
-              >
-                <!-- Armes -->
-                <div
-                  v-if="pc.primaryWeaponData || pc.secondaryWeaponData"
-                  class="pc-card__weapons-section"
-                >
-                  <!-- Arme primaire -->
-                  <div
-                    v-if="pc.primaryWeaponData"
-                    class="pc-card__weapon"
-                  >
-                    <span class="pc-card__weapon-name">{{ pc.primaryWeaponData.name }}</span>
-                    <span
-                      v-if="pc.primaryWeaponData.trait"
-                      class="pc-card__weapon-trait"
-                    >[{{ pc.primaryWeaponData.trait }}]</span>
-                    <span
-                      v-if="pc.primaryWeaponData.damage"
-                      class="pc-card__weapon-damage"
-                    >{{ pc.primaryWeaponData.damage }}</span>
-                    <span
-                      v-if="pc.primaryWeaponData.range"
-                      class="pc-card__weapon-range"
-                    >{{ pc.primaryWeaponData.range }}</span>
-                  </div>
-                  <p
-                    v-if="pc.primaryWeaponData && pc.primaryWeaponData.feature"
-                    class="pc-card__weapon-feature"
-                  >
-                    {{ pc.primaryWeaponData.feature }}
-                  </p>
-
-                  <!-- Arme secondaire -->
-                  <div
-                    v-if="pc.secondaryWeaponData"
-                    class="pc-card__weapon"
-                  >
-                    <span class="pc-card__weapon-name">{{ pc.secondaryWeaponData.name }}</span>
-                    <span
-                      v-if="pc.secondaryWeaponData.trait"
-                      class="pc-card__weapon-trait"
-                    >[{{ pc.secondaryWeaponData.trait }}]</span>
-                    <span
-                      v-if="pc.secondaryWeaponData.damage"
-                      class="pc-card__weapon-damage"
-                    >{{ pc.secondaryWeaponData.damage }}</span>
-                    <span
-                      v-if="pc.secondaryWeaponData.range"
-                      class="pc-card__weapon-range"
-                    >{{ pc.secondaryWeaponData.range }}</span>
-                  </div>
-                  <p
-                    v-if="pc.secondaryWeaponData && pc.secondaryWeaponData.feature"
-                    class="pc-card__weapon-feature"
-                  >
-                    {{ pc.secondaryWeaponData.feature }}
-                  </p>
-                </div>
-
-                <!-- Cartes de domaine enrichies -->
-                <div
-                  v-if="pc.loadoutCards && pc.loadoutCards.length > 0"
-                  class="pc-card__domain-cards"
-                >
-                  <div
-                    v-for="card in pc.loadoutCards"
-                    :key="card.id"
-                    class="pc-card__domain-card"
-                  >
-                    <!-- En-tete de carte -->
-                    <div class="pc-card__domain-card-header">
-                      <span
-                        class="pc-card__domain-card-activation"
-                        aria-hidden="true"
-                      >{{ activationEmoji(card.activationType) }}</span>
-                      <span class="pc-card__domain-card-name">{{ card.name }}</span>
-                      <span class="pc-card__domain-card-level">Nv.{{ card.level }}</span>
-                      <span
-                        class="pc-card__domain-card-type"
-                        aria-hidden="true"
-                      >{{ formatCardType(card) }}</span>
-                      <span
-                        v-if="card.domain"
-                        class="pc-card__domain-card-domain"
-                      >{{ domainName(card.domain) }}</span>
-                    </div>
-
-                    <!-- Ligne meta : cout, portee, frequence, rappel -->
-                    <div class="pc-card__domain-card-meta">
-                      <span
-                        v-if="card.cost"
-                        class="pc-card__domain-card-badge"
-                      >{{ formatCardCost(card.cost) }}</span>
-                      <span
-                        v-if="card.range"
-                        class="pc-card__domain-card-badge"
-                      >{{ formatRange(card.range) }}</span>
-                      <span
-                        v-if="card.frequency"
-                        class="pc-card__domain-card-badge"
-                      >{{ formatFrequency(card.frequency) }}</span>
-                      <span
-                        v-if="card.recallCost != null && card.recallCost > 0"
-                        class="pc-card__domain-card-badge pc-card__domain-card-badge--recall"
-                      >Rappel : {{ card.recallCost }}</span>
-                    </div>
-
-                    <!-- Tags -->
-                    <div
-                      v-if="card.tags && card.tags.length > 0"
-                      class="pc-card__domain-card-tags"
-                    >
-                      <span
-                        v-for="tag in card.tags"
-                        :key="tag"
-                        class="pc-card__domain-card-tag"
-                      >{{ tag }}</span>
-                    </div>
-
-                    <!-- Description complete -->
-                    <p
-                      v-if="card.feature"
-                      class="pc-card__domain-card-feature"
-                    >
-                      {{ card.feature }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Etat vide combat -->
-                <p
-                  v-if="!pc.primaryWeaponData && !pc.secondaryWeaponData && (!pc.loadoutCards || pc.loadoutCards.length === 0)"
-                  class="pc-card__empty-tab"
-                >
-                  Aucun equipement de combat.
-                </p>
-              </div>
-
-              <!-- ── Panneau Capacites ── -->
-              <div
-                v-show="getActiveTab(pc.id) === 'capacites'"
-                :id="'panel-' + pc.id + '-capacites'"
-                class="pc-card__tabpanel"
-                role="tabpanel"
-                :aria-labelledby="'tab-' + pc.id + '-capacites'"
-              >
-                <!-- Hope Feature -->
-                <div
-                  v-if="pc.classData && pc.classData.hopeFeature"
-                  class="pc-card__feature-group"
-                >
-                  <div class="pc-card__feature-source">
-                    <span aria-hidden="true">&#x2728;</span>
-                    Feature d'Espoir &#x2014; {{ pc.classData.name }}
-                  </div>
-                  <div class="pc-card__feature pc-card__feature--hope">
-                    <template v-if="typeof pc.classData.hopeFeature === 'object'">
-                      <span class="pc-card__feature-name">
-                        {{ activationEmoji(pc.classData.hopeFeature.activationType) }}
-                        {{ pc.classData.hopeFeature.name }}
-                      </span>
-                      <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature.description }}</span>
-                    </template>
-                    <template v-else>
-                      <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature }}</span>
-                    </template>
-                  </div>
-                </div>
-
-                <!-- Class Features -->
-                <div
-                  v-if="classFeaturesList(pc).length > 0"
-                  class="pc-card__feature-group"
-                >
-                  <div class="pc-card__feature-source">
-                    <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                    Classe &#x2014; {{ pc.classData.name }}
-                  </div>
-                  <div
-                    v-for="(feat, idx) in classFeaturesList(pc)"
-                    :key="'cf-' + idx"
-                    class="pc-card__feature"
-                  >
-                    <template v-if="typeof feat === 'object'">
-                      <span class="pc-card__feature-name">
-                        {{ activationEmoji(feat.activationType) }}
-                        {{ feat.name }}
-                      </span>
-                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                    </template>
-                    <template v-else>
-                      <span class="pc-card__feature-desc">{{ feat }}</span>
-                    </template>
-                  </div>
-                </div>
-
-                <!-- Ancestry Features -->
-                <div
-                  v-if="pc.ancestryData && (pc.ancestryData.topFeature || pc.ancestryData.bottomFeature)"
-                  class="pc-card__feature-group"
-                >
-                  <div class="pc-card__feature-source">
-                    <span aria-hidden="true">&#x1F9EC;</span>
-                    Ascendance &#x2014; {{ pc.ancestryData.name }}
-                  </div>
-                  <div
-                    v-if="pc.ancestryData.topFeature"
-                    class="pc-card__feature"
-                  >
-                    <span class="pc-card__feature-name">{{ pc.ancestryData.topFeature.name }}</span>
-                    <span class="pc-card__feature-desc">{{ pc.ancestryData.topFeature.description }}</span>
-                  </div>
-                  <div
-                    v-if="pc.ancestryData.bottomFeature"
-                    class="pc-card__feature"
-                  >
-                    <span class="pc-card__feature-name">{{ pc.ancestryData.bottomFeature.name }}</span>
-                    <span class="pc-card__feature-desc">{{ pc.ancestryData.bottomFeature.description }}</span>
-                  </div>
-                </div>
-
-                <!-- Community Feature -->
-                <div
-                  v-if="pc.communityData && pc.communityData.feature"
-                  class="pc-card__feature-group"
-                >
-                  <div class="pc-card__feature-source">
-                    <span aria-hidden="true">&#x1F3D8;&#xFE0F;</span>
-                    Communaute &#x2014; {{ pc.communityData.name }}
-                  </div>
-                  <div class="pc-card__feature">
-                    <span class="pc-card__feature-name">{{ pc.communityData.feature.name }}</span>
-                    <span class="pc-card__feature-desc">{{ pc.communityData.feature.description }}</span>
-                  </div>
-                </div>
-
-                <!-- Subclass features par tier -->
-                <template v-if="pc.subclassData">
-                  <!-- Foundation (toujours visible) -->
-                  <div
-                    v-if="(pc.subclassData.foundation || []).length > 0"
-                    class="pc-card__feature-group"
-                  >
-                    <div class="pc-card__feature-source">
-                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Fondation
-                    </div>
-                    <div
-                      v-for="(feat, idx) in (pc.subclassData.foundation || [])"
-                      :key="'found-' + idx"
-                      class="pc-card__feature"
-                    >
-                      <span class="pc-card__feature-name">
-                        {{ activationEmoji(feat.activationType) }}
-                        {{ feat.name }}
-                      </span>
-                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                    </div>
-                  </div>
-
-                  <!-- Specialization (niveau >= 5) -->
-                  <div
-                    v-if="(pc.level || 1) >= 5 && (pc.subclassData.specialization || []).length > 0"
-                    class="pc-card__feature-group"
-                  >
-                    <div class="pc-card__feature-source">
-                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Specialisation
-                    </div>
-                    <div
-                      v-for="(feat, idx) in (pc.subclassData.specialization || [])"
-                      :key="'spec-' + idx"
-                      class="pc-card__feature"
-                    >
-                      <span class="pc-card__feature-name">
-                        {{ activationEmoji(feat.activationType) }}
-                        {{ feat.name }}
-                      </span>
-                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                    </div>
-                  </div>
-
-                  <!-- Mastery (niveau >= 8) -->
-                  <div
-                    v-if="(pc.level || 1) >= 8 && (pc.subclassData.mastery || []).length > 0"
-                    class="pc-card__feature-group"
-                  >
-                    <div class="pc-card__feature-source">
-                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Maitrise
-                    </div>
-                    <div
-                      v-for="(feat, idx) in (pc.subclassData.mastery || [])"
-                      :key="'mast-' + idx"
-                      class="pc-card__feature"
-                    >
-                      <span class="pc-card__feature-name">
-                        {{ activationEmoji(feat.activationType) }}
-                        {{ feat.name }}
-                      </span>
-                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                    </div>
-                  </div>
+              <div class="pc-card__feature pc-card__feature--hope">
+                <template v-if="typeof pc.classData.hopeFeature === 'object'">
+                  <span class="pc-card__feature-name">
+                    {{ activationEmoji(pc.classData.hopeFeature.activationType) }}
+                    {{ pc.classData.hopeFeature.name }}
+                  </span>
+                  <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature.description }}</span>
+                </template>
+                <template v-else>
+                  <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature }}</span>
                 </template>
               </div>
+            </div>
 
-              <!-- ── Panneau Inventaire ── -->
+            <!-- Class Features -->
+            <div
+              v-if="classFeaturesList(pc).length > 0"
+              class="pc-card__feature-group"
+            >
+              <div class="pc-card__feature-source">
+                <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                Classe &#x2014; {{ pc.classData.name }}
+              </div>
               <div
-                v-show="getActiveTab(pc.id) === 'inventaire'"
-                :id="'panel-' + pc.id + '-inventaire'"
-                class="pc-card__tabpanel"
-                role="tabpanel"
-                :aria-labelledby="'tab-' + pc.id + '-inventaire'"
+                v-for="(feat, idx) in classFeaturesList(pc)"
+                :key="'cf-' + idx"
+                class="pc-card__feature"
               >
-                <!-- Or -->
-                <p
-                  v-if="hasGold(pc)"
-                  class="pc-card__gold"
-                >
-                  &#x1FA99; {{ formatGold(pc.gold) }}
-                </p>
-
-                <!-- Resume armure -->
-                <div
-                  v-if="pc.armorData"
-                  class="pc-card__equip-summary"
-                >
-                  <span class="pc-card__equip-label">Armure :</span>
-                  <span class="pc-card__equip-value">{{ pc.armorData.name }}</span>
-                </div>
-
-                <!-- Items inventaire -->
-                <ul
-                  v-if="pc.inventory && pc.inventory.length > 0"
-                  class="pc-card__inventory-list"
-                >
-                  <li
-                    v-for="(item, idx) in pc.inventory"
-                    :key="item.id || idx"
-                    class="pc-card__inventory-item"
-                  >
-                    <span class="pc-card__inventory-name">
-                      {{ item.customName || item.itemId || 'Objet' }}
-                    </span>
-                    <span
-                      v-if="item.quantity > 1"
-                      class="pc-card__inventory-qty"
-                    >x{{ item.quantity }}</span>
-                  </li>
-                </ul>
-
-                <!-- Etat vide inventaire -->
-                <p
-                  v-if="!hasGold(pc) && (!pc.inventory || pc.inventory.length === 0) && !pc.armorData"
-                  class="pc-card__empty-tab"
-                >
-                  Inventaire vide.
-                </p>
+                <template v-if="typeof feat === 'object'">
+                  <span class="pc-card__feature-name">
+                    {{ activationEmoji(feat.activationType) }}
+                    {{ feat.name }}
+                  </span>
+                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                </template>
+                <template v-else>
+                  <span class="pc-card__feature-desc">{{ feat }}</span>
+                </template>
               </div>
             </div>
-          </aside>
+
+            <!-- Ancestry Features -->
+            <div
+              v-if="pc.ancestryData && (pc.ancestryData.topFeature || pc.ancestryData.bottomFeature)"
+              class="pc-card__feature-group"
+            >
+              <div class="pc-card__feature-source">
+                <span aria-hidden="true">&#x1F9EC;</span>
+                Ascendance &#x2014; {{ pc.ancestryData.name }}
+              </div>
+              <div
+                v-if="pc.ancestryData.topFeature"
+                class="pc-card__feature"
+              >
+                <span class="pc-card__feature-name">{{ pc.ancestryData.topFeature.name }}</span>
+                <span class="pc-card__feature-desc">{{ pc.ancestryData.topFeature.description }}</span>
+              </div>
+              <div
+                v-if="pc.ancestryData.bottomFeature"
+                class="pc-card__feature"
+              >
+                <span class="pc-card__feature-name">{{ pc.ancestryData.bottomFeature.name }}</span>
+                <span class="pc-card__feature-desc">{{ pc.ancestryData.bottomFeature.description }}</span>
+              </div>
+            </div>
+
+            <!-- Community Feature -->
+            <div
+              v-if="pc.communityData && pc.communityData.feature"
+              class="pc-card__feature-group"
+            >
+              <div class="pc-card__feature-source">
+                <span aria-hidden="true">&#x1F3D8;&#xFE0F;</span>
+                Communaute &#x2014; {{ pc.communityData.name }}
+              </div>
+              <div class="pc-card__feature">
+                <span class="pc-card__feature-name">{{ pc.communityData.feature.name }}</span>
+                <span class="pc-card__feature-desc">{{ pc.communityData.feature.description }}</span>
+              </div>
+            </div>
+
+            <!-- Subclass features par tier -->
+            <template v-if="pc.subclassData">
+              <!-- Foundation -->
+              <div
+                v-if="(pc.subclassData.foundation || []).length > 0"
+                class="pc-card__feature-group"
+              >
+                <div class="pc-card__feature-source">
+                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Fondation
+                </div>
+                <div
+                  v-for="(feat, idx) in (pc.subclassData.foundation || [])"
+                  :key="'found-' + idx"
+                  class="pc-card__feature"
+                >
+                  <span class="pc-card__feature-name">
+                    {{ activationEmoji(feat.activationType) }}
+                    {{ feat.name }}
+                  </span>
+                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                </div>
+              </div>
+
+              <!-- Specialization (niveau >= 5) -->
+              <div
+                v-if="(pc.level || 1) >= 5 && (pc.subclassData.specialization || []).length > 0"
+                class="pc-card__feature-group"
+              >
+                <div class="pc-card__feature-source">
+                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Specialisation
+                </div>
+                <div
+                  v-for="(feat, idx) in (pc.subclassData.specialization || [])"
+                  :key="'spec-' + idx"
+                  class="pc-card__feature"
+                >
+                  <span class="pc-card__feature-name">
+                    {{ activationEmoji(feat.activationType) }}
+                    {{ feat.name }}
+                  </span>
+                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                </div>
+              </div>
+
+              <!-- Mastery (niveau >= 8) -->
+              <div
+                v-if="(pc.level || 1) >= 8 && (pc.subclassData.mastery || []).length > 0"
+                class="pc-card__feature-group"
+              >
+                <div class="pc-card__feature-source">
+                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Maitrise
+                </div>
+                <div
+                  v-for="(feat, idx) in (pc.subclassData.mastery || [])"
+                  :key="'mast-' + idx"
+                  class="pc-card__feature"
+                >
+                  <span class="pc-card__feature-name">
+                    {{ activationEmoji(feat.activationType) }}
+                    {{ feat.name }}
+                  </span>
+                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Panneau Inventaire -->
+          <div
+            v-show="getActiveTab(pc.id) === 'inventaire'"
+            :id="'panel-' + pc.id + '-inventaire'"
+            class="pc-card__tabpanel"
+            role="tabpanel"
+            :aria-labelledby="'tab-' + pc.id + '-inventaire'"
+          >
+            <!-- Or -->
+            <p
+              v-if="hasGold(pc)"
+              class="pc-card__gold"
+            >
+              &#x1FA99; {{ formatGold(pc.gold) }}
+            </p>
+
+            <!-- Resume armure -->
+            <div
+              v-if="pc.armorData"
+              class="pc-card__equip-summary"
+            >
+              <span class="pc-card__equip-label">Armure :</span>
+              <span class="pc-card__equip-value">{{ pc.armorData.name }}</span>
+            </div>
+
+            <!-- Armes -->
+            <div
+              v-if="pc.primaryWeaponData || pc.secondaryWeaponData"
+              class="pc-card__equip-summary"
+            >
+              <span class="pc-card__equip-label">Armes :</span>
+              <span class="pc-card__equip-value">
+                {{ pc.primaryWeaponData ? pc.primaryWeaponData.name : '' }}{{ pc.primaryWeaponData && pc.secondaryWeaponData ? ', ' : '' }}{{ pc.secondaryWeaponData ? pc.secondaryWeaponData.name : '' }}
+              </span>
+            </div>
+
+            <!-- Items inventaire -->
+            <ul
+              v-if="pc.inventory && pc.inventory.length > 0"
+              class="pc-card__inventory-list"
+            >
+              <li
+                v-for="(item, idx) in pc.inventory"
+                :key="item.id || idx"
+                class="pc-card__inventory-item"
+              >
+                <span class="pc-card__inventory-name">
+                  {{ item.customName || item.itemId || 'Objet' }}
+                </span>
+                <span
+                  v-if="item.quantity > 1"
+                  class="pc-card__inventory-qty"
+                >x{{ item.quantity }}</span>
+              </li>
+            </ul>
+
+            <!-- Etat vide inventaire -->
+            <p
+              v-if="!hasGold(pc) && (!pc.inventory || pc.inventory.length === 0) && !pc.armorData && !pc.primaryWeaponData"
+              class="pc-card__empty-tab"
+            >
+              Inventaire vide.
+            </p>
+          </div>
+
+          <!-- Panneau Notes -->
+          <div
+            v-show="getActiveTab(pc.id) === 'notes'"
+            :id="'panel-' + pc.id + '-notes'"
+            class="pc-card__tabpanel"
+            role="tabpanel"
+            :aria-labelledby="'tab-' + pc.id + '-notes'"
+          >
+            <textarea
+              class="pc-card__notes-textarea"
+              :value="pc.notes || ''"
+              placeholder="Notes sur ce personnage..."
+              :aria-label="'Notes de ' + (pc.name || 'Sans nom')"
+              rows="4"
+              @input="onNotesInput(pc.id, $event.target.value)"
+            ></textarea>
+          </div>
         </div>
-      </template>
+
+        <!-- 6. Footer combat compact -->
+        <div class="pc-card__combat-footer">
+          <!-- HP -->
+          <div
+            class="pc-card__stat-chip pc-card__stat-chip--hp"
+            :aria-label="'Points de vie : ' + (pc.effectiveMaxHP - (pc.currentHP || 0)) + ' restants sur ' + pc.effectiveMaxHP"
+          >
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.currentHP || 0) <= 0"
+              aria-label="Soigner 1 PV"
+              @click.stop="decrementHP(pc)"
+            >
+              &minus;
+            </button>
+            <span
+              v-if="!isEditing(pc.id, 'currentHP')"
+              class="pc-card__stat-text pc-card__stat-text--clickable"
+              :style="{ color: hpColor(pc.currentHP || 0, pc.effectiveMaxHP) }"
+              role="button"
+              tabindex="0"
+              @click.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
+              @keydown.enter.stop="startEditStat(pc.id, 'currentHP', pc.currentHP || 0)"
+            >
+              &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
+            </span>
+            <input
+              v-else
+              type="number"
+              class="pc-card__stat-input"
+              :value="editingValue"
+              min="0"
+              :max="pc.effectiveMaxHP"
+              :aria-label="'Saisir les degats de ' + (pc.name || 'Sans nom')"
+              @input="editingValue = $event.target.value"
+              @blur="commitEditStat(pc)"
+              @keydown.enter.stop="commitEditStat(pc)"
+              @keydown.escape.stop="cancelEditStat()"
+            />
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
+              aria-label="Marquer 1 degat"
+              @click.stop="incrementHP(pc)"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Stress -->
+          <div
+            class="pc-card__stat-chip pc-card__stat-chip--stress"
+            :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.effectiveMaxStress"
+          >
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.currentStress || 0) <= 0"
+              aria-label="Reduire 1 stress"
+              @click.stop="decrementStress(pc)"
+            >
+              &minus;
+            </button>
+            <span
+              v-if="!isEditing(pc.id, 'currentStress')"
+              class="pc-card__stat-text pc-card__stat-text--clickable"
+              :style="{ color: stressColor(pc.currentStress || 0, pc.effectiveMaxStress) }"
+              role="button"
+              tabindex="0"
+              @click.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
+              @keydown.enter.stop="startEditStat(pc.id, 'currentStress', pc.currentStress || 0)"
+            >
+              &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
+            </span>
+            <input
+              v-else
+              type="number"
+              class="pc-card__stat-input"
+              :value="editingValue"
+              min="0"
+              :max="pc.effectiveMaxStress"
+              :aria-label="'Saisir le stress de ' + (pc.name || 'Sans nom')"
+              @input="editingValue = $event.target.value"
+              @blur="commitEditStat(pc)"
+              @keydown.enter.stop="commitEditStat(pc)"
+              @keydown.escape.stop="cancelEditStat()"
+            />
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
+              aria-label="Marquer 1 stress"
+              @click.stop="incrementStress(pc)"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Armure -->
+          <div
+            class="pc-card__stat-chip"
+            :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
+          >
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.armorSlotsMarked || 0) <= 0"
+              aria-label="Restaurer 1 armure"
+              @click.stop="decrementArmor(pc)"
+            >
+              &minus;
+            </button>
+            <span class="pc-card__stat-text">
+              &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.effectiveArmorScore }}
+            </span>
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
+              aria-label="Utiliser 1 armure"
+              @click.stop="incrementArmor(pc)"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Espoir -->
+          <div
+            class="pc-card__stat-chip"
+            :aria-label="'Espoir : ' + (pc.hope || 0)"
+          >
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.hope || 0) <= 0"
+              aria-label="Depenser 1 espoir"
+              @click.stop="decrementHope(pc)"
+            >
+              &minus;
+            </button>
+            <span class="pc-card__stat-text">
+              &#x2728; {{ pc.hope || 0 }}
+            </span>
+            <button
+              class="pc-card__stat-btn-sm"
+              :disabled="(pc.hope || 0) >= 6"
+              aria-label="Gagner 1 espoir"
+              @click.stop="incrementHope(pc)"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Evasion & Seuils (lecture seule) -->
+          <div class="pc-card__stat-readonly">
+            <span>Ev. {{ pc.effectiveEvasion }}</span>
+            <span class="pc-card__stat-sep">|</span>
+            <span>{{ pc.thresholds.major }}/{{ pc.thresholds.severe }}</span>
+          </div>
+        </div>
+      </article>
     </div>
 
-    <!-- Bandeau PJs masqués -->
+    <!-- Bandeau PJs masques -->
     <div
       v-if="hiddenList.length > 0"
       class="pc-group__hidden-bar"
@@ -821,28 +605,17 @@
 <script>
 /**
  * PcGroupPanel — Grille enrichie des personnages joueurs.
- * Affiche une carte par PJ avec stats effectives, barres HP/Stress,
- * onglets Combat/Capacites/Inventaire, cartes de domaine enrichies,
- * et features avec labels de source.
- *
- * Utilise resolveCharacterDisplay pour resoudre les stats de TOUS les PJ
- * simultanement, sans passer par les getters du store (qui ne gerent
- * que le personnage selectionne).
+ * Affiche une carte par PJ avec traits, onglets Capacites/Inventaire/Notes,
+ * et footer combat compact (HP/Stress/Armure/Espoir).
  */
 import { computed, ref, nextTick, watch } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
 import { useCharacterStore } from '@modules/characters'
-import { useStorage } from '@core/composables/useStorage'
-import { getDomainById } from '@data/domains'
-import PcSummaryStrip from './PcSummaryStrip.vue'
 
 export default {
   name: 'PcGroupPanel',
 
-  components: { PcSummaryStrip },
-
   props: {
-    /** Tableau de personnages depuis characterStore.characters */
     characters: {
       type: Array,
       default: () => []
@@ -852,73 +625,67 @@ export default {
   emits: ['select-pc'],
 
   setup(props) {
-    // ── Ref template pour la grille ──
-    const gridRef = ref(null)
-
-    // ── Store pour mutations ──
     const characterStore = useCharacterStore()
 
-    // ══════════════════════════════════════════════
-    //  GESTION INTERACTIVE — HP / Stress / Armure / Espoir
-    // ══════════════════════════════════════════════
+    // ── Personnages enrichis ──
+    const enrichedCharacters = computed(() =>
+      props.characters.map(resolveCharacterDisplay)
+    )
+    const visibleList = computed(() =>
+      enrichedCharacters.value.filter((pc) => !pc.hidden)
+    )
+    const hiddenList = computed(() =>
+      enrichedCharacters.value.filter((pc) => pc.hidden)
+    )
+    const showHidden = ref(false)
 
-    /** Marquer 1 degat (augmente currentHP = degats marques) */
+    function onToggleHidden(charId) {
+      characterStore.toggleHidden(charId)
+    }
+
+    // ── Gestion interactive HP / Stress / Armure / Espoir ──
+
     function incrementHP(pc) {
       const newVal = Math.min(pc.effectiveMaxHP, (pc.currentHP || 0) + 1)
       characterStore.patchCharacterById(pc.id, { currentHP: newVal })
     }
-
-    /** Soigner 1 PV (diminue currentHP = degats marques) */
     function decrementHP(pc) {
       const newVal = Math.max(0, (pc.currentHP || 0) - 1)
       characterStore.patchCharacterById(pc.id, { currentHP: newVal })
     }
-
-    /** Marquer 1 stress */
     function incrementStress(pc) {
       const newVal = Math.min(pc.effectiveMaxStress, (pc.currentStress || 0) + 1)
       characterStore.patchCharacterById(pc.id, { currentStress: newVal })
     }
-
-    /** Reduire 1 stress */
     function decrementStress(pc) {
       const newVal = Math.max(0, (pc.currentStress || 0) - 1)
       characterStore.patchCharacterById(pc.id, { currentStress: newVal })
     }
-
-    /** Utiliser 1 slot d'armure (augmente armorSlotsMarked) */
     function incrementArmor(pc) {
       const newVal = Math.min(pc.effectiveArmorScore, (pc.armorSlotsMarked || 0) + 1)
       characterStore.patchCharacterById(pc.id, { armorSlotsMarked: newVal })
     }
-
-    /** Restaurer 1 slot d'armure */
     function decrementArmor(pc) {
       const newVal = Math.max(0, (pc.armorSlotsMarked || 0) - 1)
       characterStore.patchCharacterById(pc.id, { armorSlotsMarked: newVal })
     }
-
-    /** Gagner 1 espoir */
     function incrementHope(pc) {
       const newVal = Math.min(6, (pc.hope || 0) + 1)
       characterStore.patchCharacterById(pc.id, { hope: newVal })
     }
-
-    /** Depenser 1 espoir */
     function decrementHope(pc) {
       const newVal = Math.max(0, (pc.hope || 0) - 1)
       characterStore.patchCharacterById(pc.id, { hope: newVal })
     }
 
     // ── Saisie directe (clic sur valeur) ──
-    const editingStat = ref(null) // { pcId, stat } ou null
+    const editingStat = ref(null)
     const editingValue = ref('')
 
     function startEditStat(pcId, stat, currentValue) {
       editingStat.value = { pcId, stat }
       editingValue.value = String(currentValue)
     }
-
     function commitEditStat(pc) {
       if (!editingStat.value) return
       const val = parseInt(editingValue.value, 10)
@@ -935,16 +702,13 @@ export default {
       characterStore.patchCharacterById(pc.id, { [stat]: clamped })
       editingStat.value = null
     }
-
     function cancelEditStat() {
       editingStat.value = null
     }
-
     function isEditing(pcId, stat) {
       return editingStat.value?.pcId === pcId && editingStat.value?.stat === stat
     }
 
-    // Auto-focus l'input quand il apparait
     watch(editingStat, (val) => {
       if (val) {
         nextTick(() => {
@@ -954,111 +718,47 @@ export default {
       }
     })
 
-    // ── Expansion des details (un seul PJ a la fois) ──
-    const expandedPcId = ref(null)
-
-    function toggleExpand(pcId) {
-      expandedPcId.value = expandedPcId.value === pcId ? null : pcId
+    // ── Notes avec debounce ──
+    const notesTimers = {}
+    function onNotesInput(pcId, value) {
+      clearTimeout(notesTimers[pcId])
+      notesTimers[pcId] = setTimeout(() => {
+        characterStore.patchCharacterById(pcId, { notes: value })
+      }, 500)
     }
 
-    // ── Personnages enrichis via resolveCharacterDisplay ──
-    const enrichedCharacters = computed(() =>
-      props.characters.map(resolveCharacterDisplay)
-    )
-
-    // ── Filtrage visibles / masqués ──
-    const visibleList = computed(() =>
-      enrichedCharacters.value.filter((pc) => !pc.hidden)
-    )
-    const hiddenList = computed(() =>
-      enrichedCharacters.value.filter((pc) => pc.hidden)
-    )
-    const showHidden = ref(false)
-
-    function onToggleHidden(charId) {
-      characterStore.toggleHidden(charId)
-    }
-
-    // ══════════════════════════════════════════════
-    //  IMPROVEMENT 1 — Grille configurable (colonnes)
-    // ══════════════════════════════════════════════
-
-    // ══════════════════════════════════════════════
-    //  Mode de vue — cycle strip → compact → detaille
-    // ══════════════════════════════════════════════
-
-    const VIEW_MODES = ['strip', 'compact', 'detailed']
-    const viewModeStorage = useStorage('pcgroup-viewmode', 'strip')
-    const viewMode = viewModeStorage.data
-
-    /** Cycle vers le mode de vue suivant */
-    function cycleViewMode() {
-      const idx = VIEW_MODES.indexOf(viewMode.value)
-      viewMode.value = VIEW_MODES[(idx + 1) % VIEW_MODES.length]
-    }
-
-    /** Label lisible du mode actuel */
-    const viewModeLabel = computed(() => {
-      const labels = { strip: 'Bandeau', compact: 'Compact', detailed: 'Detaille' }
-      return labels[viewMode.value]
-    })
-
-    /** Icone HTML du mode actuel */
-    const viewModeIcon = computed(() => {
-      const icons = { strip: '&#x1F4CA;', compact: '&#x1F4CB;', detailed: '&#x1F4AC;' }
-      return icons[viewMode.value]
-    })
-
-    const columnStorage = useStorage('pcgroup-columns', 2)
-    const columnCount = columnStorage.data
-
-    /** Met a jour le nombre de colonnes affichees */
-    function setColumns(n) {
-      columnCount.value = n
-    }
-
-    // ══════════════════════════════════════════════
-    //  IMPROVEMENT 4 — Systeme d'onglets par carte
-    // ══════════════════════════════════════════════
-
+    // ── Systeme d'onglets ──
     const CARD_TABS = [
-      { id: 'combat', label: 'Combat', icon: '\u2694\uFE0F' },
       { id: 'capacites', label: 'Capacites', icon: '\u2728' },
-      { id: 'inventaire', label: 'Inventaire', icon: '\uD83C\uDF92' }
+      { id: 'inventaire', label: 'Inventaire', icon: '\uD83C\uDF92' },
+      { id: 'notes', label: 'Notes', icon: '\uD83D\uDCDD' }
     ]
     const activeTab = ref({})
 
-    /** Retourne l'onglet actif pour un PJ donne */
     function getActiveTab(pcId) {
-      return activeTab.value[pcId] || 'combat'
+      return activeTab.value[pcId] || 'capacites'
     }
-
-    /** Definit l'onglet actif pour un PJ donne */
     function setActiveTab(pcId, tab) {
       activeTab.value = { ...activeTab.value, [pcId]: tab }
     }
 
-    /** Verifie si un onglet a du contenu pour un PJ donne */
     function tabHasContent(pc, tabId) {
       switch (tabId) {
-        case 'combat':
-          return !!(pc.primaryWeaponData || pc.secondaryWeaponData ||
-                    (pc.loadoutCards && pc.loadoutCards.length > 0))
         case 'capacites':
           return hasFeatures(pc)
         case 'inventaire':
+          return true
+        case 'notes':
           return true
         default:
           return false
       }
     }
 
-    /** Retourne les onglets visibles pour un PJ donne */
     function visibleTabs(pc) {
       return CARD_TABS.filter(t => tabHasContent(pc, t.id))
     }
 
-    /** Navigation clavier entre onglets (fleche gauche/droite) */
     function navigateTab(pc, direction) {
       const tabs = visibleTabs(pc)
       const currentIdx = tabs.findIndex(t => t.id === getActiveTab(pc.id))
@@ -1070,25 +770,7 @@ export default {
       })
     }
 
-    // ══════════════════════════════════════════════
-    //  Helpers barres HP/Stress/Armure
-    // ══════════════════════════════════════════════
-
-    /**
-     * Pourcentage de remplissage de la barre HP.
-     * currentHP = degats marques, donc la barre represente les degats subis.
-     */
-    function hpFillPercent(pc) {
-      const max = pc.effectiveMaxHP
-      if (!max || max <= 0) return 0
-      const current = pc.currentHP || 0
-      return Math.max(0, Math.min(100, Math.round((current / max) * 100)))
-    }
-
-    /**
-     * Couleur dynamique de la barre HP.
-     * current = degats marques → remaining = max - current.
-     */
+    // ── Helpers barres ──
     function hpColor(current, max) {
       if (!max || max === 0) return 'var(--color-text-muted)'
       const remaining = max - current
@@ -1098,18 +780,6 @@ export default {
       return 'var(--color-accent-danger)'
     }
 
-    /** Pourcentage de remplissage de la barre Stress */
-    function stressFillPercent(pc) {
-      const max = pc.effectiveMaxStress
-      if (!max || max <= 0) return 0
-      const current = pc.currentStress || 0
-      return Math.max(0, Math.min(100, Math.round((current / max) * 100)))
-    }
-
-    /**
-     * Couleur dynamique de la barre Stress.
-     * Plus le stress est haut, plus c'est dangereux.
-     */
     function stressColor(current, max) {
       if (!max || max === 0) return 'var(--color-text-muted)'
       const ratio = current / max
@@ -1118,15 +788,6 @@ export default {
       return 'var(--color-accent-danger)'
     }
 
-    /** Pourcentage de remplissage de la barre Armure */
-    function armorFillPercent(pc) {
-      const max = pc.effectiveArmorScore
-      if (!max || max <= 0) return 0
-      const current = pc.armorSlotsMarked || 0
-      return Math.max(0, Math.min(100, Math.round((current / max) * 100)))
-    }
-
-    /** Affichage signe des traits */
     function traitSign(value) {
       const v = value || 0
       if (v > 0) return `+${v}`
@@ -1143,16 +804,11 @@ export default {
     function conditionLabel(cond) {
       return CONDITION_LABELS[cond]?.label || cond
     }
-
     function conditionDesc(cond) {
       return CONDITION_LABELS[cond]?.desc || ''
     }
-
     function conditionStyle(cond) {
-      const c = CONDITION_LABELS[cond]?.color || 'var(--color-text-muted)'
-      return {
-        '--condition-color': c
-      }
+      return { '--condition-color': CONDITION_LABELS[cond]?.color || 'var(--color-text-muted)' }
     }
 
     // ── Traits ──
@@ -1164,20 +820,12 @@ export default {
       presence: 'PRE',
       knowledge: 'SAV'
     }
-
     const TRAIT_ORDER = ['agility', 'strength', 'finesse', 'instinct', 'presence', 'knowledge']
 
-    // ══════════════════════════════════════════════
-    //  Inventaire & Or
-    // ══════════════════════════════════════════════
-
+    // ── Inventaire & Or ──
     function hasGold(pc) {
       const g = pc.gold || {}
       return (g.handfuls || 0) + (g.bags || 0) + (g.chests || 0) > 0
-    }
-
-    function hasInventory(pc) {
-      return hasGold(pc) || (pc.inventory && pc.inventory.length > 0)
     }
 
     function formatGold(gold) {
@@ -1189,65 +837,7 @@ export default {
       return parts.join(', ') || 'Aucun or'
     }
 
-    // ══════════════════════════════════════════════
-    //  Cartes de domaine — type et emoji
-    // ══════════════════════════════════════════════
-
-    function formatCardType(card) {
-      if (!card.type) return ''
-      switch (card.type) {
-        case 'ability': return '\u{1F7E2}'
-        case 'spell': return '\u{1F52E}'
-        case 'passive': return '\u{1F535}'
-        default: return ''
-      }
-    }
-
-    // ══════════════════════════════════════════════
-    //  IMPROVEMENT 2 — Contenu enrichi des cartes
-    // ══════════════════════════════════════════════
-
-    /** Resout le nom d'un domaine a partir de son ID */
-    function domainName(domainId) {
-      const d = getDomainById(domainId)
-      return d ? d.name : domainId
-    }
-
-    /** Formate le cout d'une carte de domaine */
-    function formatCardCost(cost) {
-      if (!cost || cost.type === 'free' || cost.amount === 0) return 'Gratuit'
-      const typeLabels = { hope: 'Espoir', stress: 'Stress', armor: 'Armure' }
-      return `${cost.amount} ${typeLabels[cost.type] || cost.type}`
-    }
-
-    /** Formate la frequence d'utilisation d'une carte */
-    function formatFrequency(freq) {
-      const labels = {
-        atWill: 'A volonte',
-        oncePerShortRest: '1/repos court',
-        oncePerLongRest: '1/repos long',
-        oncePerSession: '1/session'
-      }
-      return labels[freq] || freq || ''
-    }
-
-    /** Formate la portee d'une carte */
-    function formatRange(range) {
-      const labels = {
-        self: 'Soi',
-        melee: 'Melee',
-        veryClose: 'Tres proche',
-        close: 'Proche',
-        far: 'Loin',
-        veryFar: 'Tres loin'
-      }
-      return labels[range] || range || ''
-    }
-
-    // ══════════════════════════════════════════════
-    //  Capacites / Features
-    // ══════════════════════════════════════════════
-
+    // ── Features ──
     function activationEmoji(type) {
       switch (type) {
         case 'action': return '\u{1F7E2}'
@@ -1257,13 +847,11 @@ export default {
       }
     }
 
-    /** Retourne la liste des features de classe (gere SRD objets et homebrew strings) */
     function classFeaturesList(pc) {
       if (!pc.classData || !pc.classData.classFeatures) return []
       return pc.classData.classFeatures
     }
 
-    /** Verifie si le personnage a des features a afficher */
     function hasFeatures(pc) {
       if (pc.classData && pc.classData.hopeFeature) return true
       if (pc.classData && pc.classData.classFeatures && pc.classData.classFeatures.length > 0) return true
@@ -1274,73 +862,30 @@ export default {
     }
 
     return {
-      gridRef,
       enrichedCharacters,
       visibleList,
       hiddenList,
       showHidden,
       onToggleHidden,
-      // Expansion details
-      expandedPcId,
-      toggleExpand,
       // Gestion interactive
-      incrementHP,
-      decrementHP,
-      incrementStress,
-      decrementStress,
-      incrementArmor,
-      decrementArmor,
-      incrementHope,
-      decrementHope,
+      incrementHP, decrementHP,
+      incrementStress, decrementStress,
+      incrementArmor, decrementArmor,
+      incrementHope, decrementHope,
       // Saisie directe
-      editingStat,
-      editingValue,
-      startEditStat,
-      commitEditStat,
-      cancelEditStat,
-      isEditing,
-      // Mode de vue
-      viewMode,
-      cycleViewMode,
-      viewModeLabel,
-      viewModeIcon,
-      // Improvement 1 — colonnes
-      columnCount,
-      setColumns,
-      // Improvement 4 — onglets
-      activeTab,
-      getActiveTab,
-      setActiveTab,
-      CARD_TABS,
-      tabHasContent,
-      visibleTabs,
-      navigateTab,
-      // Barres et stats
-      hpFillPercent,
-      hpColor,
-      stressFillPercent,
-      stressColor,
-      armorFillPercent,
-      traitSign,
-      conditionLabel,
-      conditionDesc,
-      conditionStyle,
-      TRAIT_ABBR,
-      TRAIT_ORDER,
-      // Inventaire
-      hasGold,
-      hasInventory,
-      formatGold,
-      // Cartes de domaine
-      formatCardType,
-      activationEmoji,
-      classFeaturesList,
-      hasFeatures,
-      // Improvement 2 — contenu enrichi
-      domainName,
-      formatCardCost,
-      formatFrequency,
-      formatRange
+      editingStat, editingValue,
+      startEditStat, commitEditStat, cancelEditStat, isEditing,
+      // Notes
+      onNotesInput,
+      // Onglets
+      activeTab, getActiveTab, setActiveTab,
+      CARD_TABS, tabHasContent, visibleTabs, navigateTab,
+      // Helpers
+      hpColor, stressColor, traitSign,
+      conditionLabel, conditionDesc, conditionStyle,
+      TRAIT_ABBR, TRAIT_ORDER,
+      hasGold, formatGold,
+      activationEmoji, classFeaturesList, hasFeatures
     }
   }
 }
@@ -1385,171 +930,29 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   BOUTON MODE DE VUE
-   ═══════════════════════════════════════════════ */
-
-.pc-group__mode-btn {
-  min-width: var(--touch-min);
-  min-height: var(--touch-min);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.pc-group__mode-btn:hover {
-  background: var(--color-bg-hover);
-  color: var(--color-text-primary);
-}
-
-/* ═══════════════════════════════════════════════
-   SELECTEUR DE COLONNES
-   ═══════════════════════════════════════════════ */
-
-.pc-group__col-selector {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: var(--color-bg-elevated);
-  border-radius: var(--radius-md);
-  padding: 2px;
-}
-
-.pc-group__col-btn {
-  min-width: var(--touch-min);
-  min-height: var(--touch-min);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.pc-group__col-btn:hover {
-  background: var(--color-bg-hover);
-  color: var(--color-text-primary);
-}
-
-.pc-group__col-btn--active {
-  background: var(--color-accent-hope);
-  color: var(--color-text-inverse);
-}
-
-.pc-group__col-btn--active:hover {
-  background: var(--color-accent-hope);
-  color: var(--color-text-inverse);
-}
-
-/* ═══════════════════════════════════════════════
-   GRILLE — Layout responsive configurable
+   GRILLE AUTO-RESPONSIVE
    ═══════════════════════════════════════════════ */
 
 .pc-group__grid {
   display: grid;
   gap: var(--space-md);
+  grid-template-columns: 1fr;
 }
 
-.pc-group__grid--cols-2 {
-  grid-template-columns: repeat(2, 1fr);
+@media (min-width: 768px) {
+  .pc-group__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.pc-group__grid--cols-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.pc-group__grid--cols-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (max-width: 768px) {
-  .pc-group__grid--cols-2,
-  .pc-group__grid--cols-3,
-  .pc-group__grid--cols-4 {
-    grid-template-columns: 1fr;
+@media (min-width: 1400px) {
+  .pc-group__grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* ═══════════════════════════════════════════════
-   WRAPPERS — Compact vs Expand
-   ═══════════════════════════════════════════════ */
-
-.pc-card-wrapper {
-  /* Item de grille normal, pas de style special */
-}
-
-.pc-card-row {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: var(--space-md);
-}
-
-@media (max-width: 768px) {
-  .pc-card-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   BOUTON D'EXPANSION
-   ═══════════════════════════════════════════════ */
-
-.pc-card__expand-bar {
-  border-top: 1px solid var(--color-border);
-  padding: var(--space-xs) var(--space-md);
-  display: flex;
-  justify-content: center;
-}
-
-.pc-card__expand-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-}
-
-.pc-card__expand-btn:hover {
-  background: var(--color-bg-hover);
-  color: var(--color-text-primary);
-  border-color: var(--color-border-active);
-}
-
-/* ═══════════════════════════════════════════════
-   PANNEAU DETAILS (aside a droite)
-   ═══════════════════════════════════════════════ */
-
-.pc-detail {
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  overflow-y: auto;
-  max-height: 80vh;
-}
-
-/* ═══════════════════════════════════════════════
-   PC CARD — Carte individuelle
+   PC CARD
    ═══════════════════════════════════════════════ */
 
 .pc-card {
@@ -1557,6 +960,8 @@ export default {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .pc-card__body {
@@ -1617,171 +1022,14 @@ export default {
   font-style: italic;
 }
 
-/* ── 2. Meta (ascendance / communaute) ── */
+/* ── 2. Meta ── */
 
 .pc-card__meta {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
 
-/* ── 3. Barres HP + Stress ── */
-
-.pc-card__bars {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-}
-
-.pc-card__bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.pc-card__bar-track {
-  flex: 1;
-  height: 6px;
-  background: var(--color-bg-elevated);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.pc-card__bar-track--sm {
-  height: 4px;
-}
-
-.pc-card__bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-
-.pc-card__bar-fill--armor {
-  background: var(--color-accent-gold);
-}
-
-.pc-card__bar-text {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  min-width: 50px;
-}
-
-/* ── Boutons interactifs +/- ── */
-
-.pc-card__bar--interactive {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.pc-card__stat-btn {
-  min-width: var(--touch-min);
-  min-height: var(--touch-min);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  transition: background var(--transition-fast), transform var(--transition-fast);
-}
-
-.pc-card__stat-btn:hover:not(:disabled) {
-  background: var(--color-bg-hover);
-}
-
-.pc-card__stat-btn:active:not(:disabled) {
-  transform: scale(0.92);
-}
-
-.pc-card__stat-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.pc-card__stat-btn--mini {
-  min-width: 1.75rem;
-  min-height: 1.75rem;
-  font-size: var(--font-size-sm);
-}
-
-/* ── 4. Armure + Espoir ── */
-
-.pc-card__armor-hope {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  align-items: center;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.pc-card__armor-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.pc-card__armor-bar--interactive {
-  gap: var(--space-xs);
-}
-
-.pc-card__armor-label {
-  font-size: var(--font-size-xs);
-  white-space: nowrap;
-}
-
-.pc-card__hope {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.pc-card__hope--interactive {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-/* ── 5. Defense ── */
-
-.pc-card__defense {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.pc-card__defense-sep {
-  color: var(--color-text-muted);
-}
-
-/* ── 6. Conditions ── */
-
-.pc-card__conditions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-}
-
-.pc-card__condition {
-  font-size: var(--font-size-xs);
-  padding: 2px var(--space-sm);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--condition-color, var(--color-text-muted));
-  color: var(--condition-color, var(--color-text-muted));
-  background: color-mix(in srgb, var(--condition-color, var(--color-text-muted)) 15%, transparent);
-  font-weight: var(--font-weight-medium);
-}
-
-/* ── 7. Traits ── */
+/* ── 3. Traits ── */
 
 .pc-card__traits {
   display: grid;
@@ -1822,6 +1070,24 @@ export default {
 
 .pc-card__trait--zero .pc-card__trait-value {
   color: var(--color-text-muted);
+}
+
+/* ── 4. Conditions ── */
+
+.pc-card__conditions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.pc-card__condition {
+  font-size: var(--font-size-xs);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--condition-color, var(--color-text-muted));
+  color: var(--condition-color, var(--color-text-muted));
+  background: color-mix(in srgb, var(--condition-color, var(--color-text-muted)) 15%, transparent);
+  font-weight: var(--font-weight-medium);
 }
 
 /* ═══════════════════════════════════════════════
@@ -1878,154 +1144,7 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   ARMES (dans onglet Combat)
-   ═══════════════════════════════════════════════ */
-
-.pc-card__weapons-section {
-  margin-bottom: var(--space-sm);
-}
-
-.pc-card__weapon {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-xs) 0;
-  flex-wrap: wrap;
-}
-
-.pc-card__weapon-name {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-}
-
-.pc-card__weapon-trait {
-  font-size: var(--font-size-xs);
-  color: var(--color-accent-hope);
-}
-
-.pc-card__weapon-damage {
-  font-size: var(--font-size-xs);
-  color: var(--color-accent-fear);
-  font-weight: var(--font-weight-bold);
-}
-
-.pc-card__weapon-range {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-}
-
-.pc-card__weapon-feature {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-xs);
-  padding-left: var(--space-sm);
-  font-style: italic;
-}
-
-/* ═══════════════════════════════════════════════
-   CARTES DE DOMAINE ENRICHIES (dans onglet Combat)
-   ═══════════════════════════════════════════════ */
-
-.pc-card__domain-cards {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.pc-card__domain-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-sm);
-  background: var(--color-bg-elevated);
-}
-
-.pc-card__domain-card-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-xs);
-}
-
-.pc-card__domain-card-activation {
-  font-size: var(--font-size-sm);
-}
-
-.pc-card__domain-card-name {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-}
-
-.pc-card__domain-card-level {
-  font-size: var(--font-size-xs);
-  color: var(--color-accent-hope);
-  background: rgba(83, 168, 182, 0.15);
-  padding: 1px var(--space-xs);
-  border-radius: var(--radius-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.pc-card__domain-card-type {
-  font-size: var(--font-size-xs);
-}
-
-.pc-card__domain-card-domain {
-  font-size: var(--font-size-xs);
-  padding: 1px var(--space-xs);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg-surface);
-  color: var(--color-text-secondary);
-}
-
-.pc-card__domain-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-xs);
-}
-
-.pc-card__domain-card-badge {
-  font-size: var(--font-size-xs);
-  padding: 1px var(--space-sm);
-  border-radius: var(--radius-full);
-  background: var(--color-bg-surface);
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-}
-
-.pc-card__domain-card-badge--recall {
-  background: rgba(224, 165, 38, 0.15);
-  color: var(--color-accent-gold);
-}
-
-.pc-card__domain-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-xs);
-}
-
-.pc-card__domain-card-tag {
-  font-size: 0.625rem;
-  padding: 1px var(--space-xs);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border-active);
-  color: var(--color-accent-hope);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.pc-card__domain-card-feature {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  line-height: var(--line-height-normal);
-  margin: 0;
-}
-
-/* ═══════════════════════════════════════════════
-   CAPACITES / FEATURES avec labels source
+   CAPACITES / FEATURES
    ═══════════════════════════════════════════════ */
 
 .pc-card__feature-group {
@@ -2073,7 +1192,7 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   INVENTAIRE (onglet)
+   INVENTAIRE
    ═══════════════════════════════════════════════ */
 
 .pc-card__gold {
@@ -2131,7 +1250,146 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   BOUTON MASQUER (oeil) sur carte PJ
+   NOTES
+   ═══════════════════════════════════════════════ */
+
+.pc-card__notes-textarea {
+  width: 100%;
+  min-height: 5rem;
+  padding: var(--space-sm);
+  background: var(--color-bg-input, var(--color-bg-elevated));
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.pc-card__notes-textarea:focus {
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.2);
+}
+
+.pc-card__notes-textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER COMBAT COMPACT
+   ═══════════════════════════════════════════════ */
+
+.pc-card__combat-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-elevated);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+}
+
+.pc-card__stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px var(--space-xs);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.pc-card__stat-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  padding: 0 2px;
+}
+
+.pc-card__stat-text--clickable {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.pc-card__stat-text--clickable:hover {
+  background: var(--color-bg-hover);
+}
+
+.pc-card__stat-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.pc-card__stat-btn-sm:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.pc-card__stat-btn-sm:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.pc-card__stat-readonly {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 2px var(--space-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-left: auto;
+}
+
+.pc-card__stat-sep {
+  color: var(--color-border);
+}
+
+.pc-card__stat-input {
+  width: 42px;
+  background: var(--color-bg-input, var(--color-bg-elevated));
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-accent-hope);
+  border-radius: var(--radius-sm);
+  padding: 1px 2px;
+  font-size: var(--font-size-xs);
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+}
+
+.pc-card__stat-input:focus {
+  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.3);
+}
+
+.pc-card__stat-input::-webkit-inner-spin-button,
+.pc-card__stat-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pc-card__stat-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ═══════════════════════════════════════════════
+   BOUTON MASQUER (oeil)
    ═══════════════════════════════════════════════ */
 
 .pc-card__hide-btn {
@@ -2157,7 +1415,7 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
-   BANDEAU PJs MASQUÉS
+   BANDEAU PJs MASQUES
    ═══════════════════════════════════════════════ */
 
 .pc-group__hidden-bar {
@@ -2227,46 +1485,5 @@ export default {
 
 .pc-group__hidden-restore:hover {
   opacity: 1;
-}
-
-/* ═══════════════════════════════════════════════
-   Saisie directe HP/Stress — clic sur la valeur
-   ═══════════════════════════════════════════════ */
-
-.pc-card__bar-text--clickable {
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  padding: 1px var(--space-xs);
-  transition: background var(--transition-fast);
-}
-
-.pc-card__bar-text--clickable:hover {
-  background: var(--color-bg-hover);
-}
-
-.pc-card__stat-input {
-  width: 50px;
-  background: var(--color-bg-input);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-accent-hope);
-  border-radius: var(--radius-sm);
-  padding: 1px var(--space-xs);
-  font-size: var(--font-size-xs);
-  font-family: inherit;
-  text-align: center;
-  outline: none;
-}
-
-.pc-card__stat-input:focus {
-  box-shadow: 0 0 0 2px rgba(83, 168, 182, 0.3);
-}
-
-.pc-card__stat-input::-webkit-inner-spin-button,
-.pc-card__stat-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.pc-card__stat-input[type=number] {
-  -moz-appearance: textfield;
 }
 </style>
