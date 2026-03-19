@@ -6,19 +6,18 @@ import TableView from '../TableView.vue'
 
 const StubTab = { template: '<div class="stub-tab">Tab</div>' }
 
-function makeRouter(initialRoute = '/table/pjs') {
+function makeRouter(initialRoute = '/table/scene') {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [{
       path: '/table',
       component: TableView,
-      redirect: '/table/pjs',
+      redirect: '/table/scene',
       children: [
-        { path: 'pjs', name: 'table-pjs', component: StubTab, meta: { tab: 'pjs', title: 'Personnages' } },
-        { path: 'pnjs', name: 'table-pnjs', component: StubTab, meta: { tab: 'pnjs', title: 'PNJs' } },
-        { path: 'rencontres', name: 'table-rencontres', component: StubTab, meta: { tab: 'rencontres', title: 'Rencontres' } },
+        { path: 'scene', name: 'table-scene', component: StubTab, meta: { tab: 'scene', title: 'Scene' } },
         { path: 'combat', name: 'table-combat', component: StubTab, meta: { tab: 'combat', title: 'Combat' } },
-        { path: 'des', name: 'table-des', component: StubTab, meta: { tab: 'des', title: 'Des' } }
+        { path: 'des', name: 'table-des', component: StubTab, meta: { tab: 'des', title: 'Des' } },
+        { path: 'prep', name: 'table-prep', component: StubTab, meta: { tab: 'prep', title: 'Preparation' } }
       ]
     }]
   })
@@ -27,25 +26,25 @@ function makeRouter(initialRoute = '/table/pjs') {
 }
 
 describe('TableView', () => {
-  it('affiche 5 onglets', async () => {
+  it('affiche 4 onglets', async () => {
     const router = makeRouter()
     await router.isReady()
     const wrapper = mount(TableView, { global: { plugins: [router] } })
     const tabs = wrapper.find('[role="tablist"]').findAll('[role="tab"]')
-    expect(tabs).toHaveLength(5)
+    expect(tabs).toHaveLength(4)
   })
 
   it('marque l\'onglet actif', async () => {
-    const router = makeRouter('/table/pjs')
+    const router = makeRouter('/table/scene')
     await router.isReady()
     const wrapper = mount(TableView, { global: { plugins: [router] } })
     const activeTab = wrapper.find('[aria-selected="true"]')
     expect(activeTab.exists()).toBe(true)
-    expect(activeTab.text()).toContain('PJs')
+    expect(activeTab.text()).toContain('Scene')
   })
 
   it('contient un router-view', async () => {
-    const router = makeRouter('/table/pjs')
+    const router = makeRouter('/table/scene')
     await router.isReady()
     const wrapper = mount(TableView, { global: { plugins: [router] } })
     expect(wrapper.find('.stub-tab').exists()).toBe(true)
