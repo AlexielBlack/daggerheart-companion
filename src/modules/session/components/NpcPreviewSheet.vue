@@ -50,12 +50,21 @@
       <p>{{ npc.combatProfile }}</p>
     </section>
 
-    <router-link
-      :to="`/table/prep/pnjs`"
-      class="npc-preview__edit"
-    >
-      Editer
-    </router-link>
+    <div class="npc-preview__actions">
+      <button
+        class="npc-preview__scene-btn"
+        :class="{ 'npc-preview__scene-btn--active': isInScene }"
+        @click="toggleScene"
+      >
+        {{ isInScene ? 'Retirer de la scene' : 'Ajouter a la scene' }}
+      </button>
+      <router-link
+        :to="`/table/prep/pnjs`"
+        class="npc-preview__edit"
+      >
+        Editer
+      </router-link>
+    </div>
   </article>
   <p v-else>
     PNJ introuvable.
@@ -65,6 +74,7 @@
 <script>
 import { computed } from 'vue'
 import { useNpcStore } from '@modules/npcs'
+import { useSessionStore } from '../stores/sessionStore'
 
 const STATUS_LABELS = {
   ally: 'Allie',
@@ -81,9 +91,16 @@ export default {
   },
   setup(props) {
     const npcStore = useNpcStore()
+    const sessionStore = useSessionStore()
     const npc = computed(() => npcStore.getById(props.npcId))
     const statusLabel = computed(() => STATUS_LABELS[npc.value?.status] || 'Neutre')
-    return { npc, statusLabel }
+    const isInScene = computed(() => sessionStore.loadedNpcIds.includes(props.npcId))
+
+    function toggleScene() {
+      sessionStore.toggleNpc(props.npcId)
+    }
+
+    return { npc, statusLabel, isInScene, toggleScene }
   }
 }
 </script>
@@ -102,5 +119,9 @@ export default {
 .npc-preview__details dt { color: var(--color-text-secondary, #aaa); }
 .npc-preview__desc { white-space: pre-wrap; }
 .npc-preview__relations { list-style: disc; padding-left: 1.5em; }
-.npc-preview__edit { display: inline-block; margin-top: var(--space-md, 1rem); color: var(--color-hope, #f0c040); }
+.npc-preview__actions { display: flex; gap: var(--space-sm, 0.5rem); align-items: center; margin-top: var(--space-md, 1rem); flex-wrap: wrap; }
+.npc-preview__scene-btn { padding: var(--space-xs, 0.25rem) var(--space-md, 1rem); border-radius: var(--radius-sm, 4px); border: 1px solid var(--color-accent-success, #16a34a); background: var(--color-accent-success, #16a34a); color: #fff; cursor: pointer; font-size: var(--font-size-sm, 0.875rem); font-weight: var(--font-weight-medium, 500); transition: all var(--transition-fast, 0.15s); }
+.npc-preview__scene-btn:hover { opacity: 0.9; }
+.npc-preview__scene-btn--active { background: var(--color-accent-danger, #dc2626); border-color: var(--color-accent-danger, #dc2626); }
+.npc-preview__edit { display: inline-block; color: var(--color-hope, #f0c040); }
 </style>

@@ -35,13 +35,25 @@
         v-for="npc in filteredNpcs"
         :key="npc.id"
         class="npc-catalogue__item"
+        :class="{ 'npc-catalogue__item--loaded': isLoaded(npc.id) }"
         role="option"
         tabindex="0"
-        :aria-selected="false"
+        :aria-selected="isLoaded(npc.id)"
         @click="selectNpc(npc.id)"
         @keydown.enter="selectNpc(npc.id)"
         @keydown.space.prevent="selectNpc(npc.id)"
       >
+        <button
+          class="npc-catalogue__toggle"
+          :class="{ 'npc-catalogue__toggle--active': isLoaded(npc.id) }"
+          :aria-label="isLoaded(npc.id) ? `Retirer ${npc.name} de la scene` : `Ajouter ${npc.name} a la scene`"
+          :title="isLoaded(npc.id) ? 'Retirer de la scene' : 'Ajouter a la scene'"
+          @click.stop="toggleNpc(npc.id)"
+          @keydown.enter.stop="toggleNpc(npc.id)"
+          @keydown.space.stop.prevent="toggleNpc(npc.id)"
+        >
+          {{ isLoaded(npc.id) ? '✓' : '+' }}
+        </button>
         <span
           class="npc-catalogue__badge"
           :class="`npc-catalogue__badge--${npc.status}`"
@@ -80,6 +92,7 @@
 <script>
 import { ref, computed } from 'vue'
 import { useNpcStore } from '@modules/npcs'
+import { useSessionStore } from '../stores/sessionStore'
 
 /** Labels de statut en francais */
 const STATUS_LABELS = {
@@ -101,6 +114,7 @@ export default {
 
   setup(props, { emit }) {
     const npcStore = useNpcStore()
+    const sessionStore = useSessionStore()
     const search = ref('')
 
     /**
@@ -135,7 +149,24 @@ export default {
       emit('select-npc', id)
     }
 
-    return { npcStore, search, filteredNpcs, statusLabel, selectNpc }
+    /**
+     * Ajoute ou retire un PNJ de la scene.
+     * @param {string} id — Identifiant du PNJ
+     */
+    function toggleNpc(id) {
+      sessionStore.toggleNpc(id)
+    }
+
+    /**
+     * Verifie si un PNJ est deja charge en scene.
+     * @param {string} id — Identifiant du PNJ
+     * @returns {boolean}
+     */
+    function isLoaded(id) {
+      return sessionStore.loadedNpcIds.includes(id)
+    }
+
+    return { npcStore, search, filteredNpcs, statusLabel, selectNpc, toggleNpc, isLoaded }
   }
 }
 </script>
@@ -180,8 +211,46 @@ export default {
   transition: background-color var(--transition-fast);
 }
 
+.npc-catalogue__item--loaded {
+  background: var(--color-accent-success, #16a34a)10;
+  border-left: 3px solid var(--color-accent-success, #16a34a);
+}
+
 .npc-catalogue__item:hover {
   background: var(--color-bg-elevated);
+}
+
+.npc-catalogue__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 1em;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.npc-catalogue__toggle:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-accent-hope, #f0c040);
+}
+
+.npc-catalogue__toggle--active {
+  background: var(--color-accent-success, #16a34a);
+  border-color: var(--color-accent-success, #16a34a);
+  color: #fff;
+}
+
+.npc-catalogue__toggle--active:hover {
+  background: var(--color-accent-danger, #dc2626);
+  border-color: var(--color-accent-danger, #dc2626);
 }
 
 .npc-catalogue__item:focus-visible {
