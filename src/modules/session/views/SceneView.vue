@@ -6,6 +6,8 @@
       @change-tab="activeTab = $event"
     />
 
+    <SessionNotes />
+
     <div
       class="scene-view__tab-content"
       role="tabpanel"
@@ -41,8 +43,6 @@
         </div>
       </section>
     </div>
-
-    <SessionNotes />
 
     <SceneDrawer />
   </div>

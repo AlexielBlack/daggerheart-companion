@@ -26,27 +26,6 @@
           +
         </button>
       </div>
-      <div
-        class="scene-action-bar__counter scene-action-bar__counter--hope"
-        aria-label="Compteur Hope"
-      >
-        <button
-          class="scene-action-bar__counter-btn"
-          aria-label="Retirer 1 Hope"
-          :disabled="sessionStore.hope <= 0"
-          @click="sessionStore.decrementHopeGlobal()"
-        >
-          &minus;
-        </button>
-        <span class="scene-action-bar__counter-value scene-action-bar__counter-value--hope">{{ sessionStore.hope }}</span>
-        <button
-          class="scene-action-bar__counter-btn"
-          aria-label="Ajouter 1 Hope"
-          @click="sessionStore.incrementHopeGlobal()"
-        >
-          +
-        </button>
-      </div>
     </div>
     <nav
       class="scene-action-bar__tabs"
@@ -184,10 +163,6 @@ export default {
   border-color: color-mix(in srgb, var(--color-accent-fear) 50%, transparent);
 }
 
-.scene-action-bar__counter--hope {
-  border-color: color-mix(in srgb, var(--color-accent-hope) 50%, transparent);
-}
-
 .scene-action-bar__counter-btn {
   background: none;
   border: none;
@@ -214,12 +189,6 @@ export default {
 
 .scene-action-bar__counter-value--fear {
   color: var(--color-accent-fear);
-  min-width: 1.2em;
-  text-align: center;
-}
-
-.scene-action-bar__counter-value--hope {
-  color: var(--color-accent-hope);
   min-width: 1.2em;
   text-align: center;
 }

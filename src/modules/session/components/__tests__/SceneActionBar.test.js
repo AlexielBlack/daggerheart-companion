@@ -78,14 +78,12 @@ describe('SceneActionBar', () => {
 
   // ── Compteur Fear / Hope ────────────────────────────
 
-  it('affiche le compteur Fear/Hope avec les valeurs du store', () => {
+  it('affiche le compteur Fear avec les valeurs du store', () => {
     const sessionStore = useSessionStore()
     sessionStore.incrementFear()
     sessionStore.incrementFear()
-    sessionStore.incrementHopeGlobal()
     const wrapper = mountBar()
     expect(wrapper.find('[aria-label="Compteur Fear"]').text()).toContain('2')
-    expect(wrapper.find('[aria-label="Compteur Hope"]').text()).toContain('1')
   })
 
   it('incremente fear au clic sur le bouton +', async () => {
@@ -95,11 +93,9 @@ describe('SceneActionBar', () => {
     expect(sessionStore.fear).toBe(1)
   })
 
-  it('incremente hope au clic sur le bouton +', async () => {
-    const sessionStore = useSessionStore()
+  it('n\'affiche pas le compteur Hope', () => {
     const wrapper = mountBar()
-    await wrapper.find('[aria-label="Ajouter 1 Hope"]').trigger('click')
-    expect(sessionStore.hope).toBe(1)
+    expect(wrapper.find('[aria-label="Compteur Hope"]').exists()).toBe(false)
   })
 
   // ── Badge PNJ ────────────────────────────
