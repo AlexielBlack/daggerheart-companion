@@ -138,6 +138,13 @@
         </li>
       </ul>
 
+      <!-- Indicateur de sauvegarde -->
+      <span
+        v-if="isSaving"
+        class="npc-scene-card__saving"
+        aria-live="polite"
+      >Sauvegarde...</span>
+
       <!-- Notes -->
       <textarea
         class="npc-scene-card__notes"
@@ -155,6 +162,7 @@
 import { computed, ref } from 'vue'
 import { useNpcStore, NPC_STATUS_META, DISPOSITION_META, RELATION_TYPE_META } from '@modules/npcs'
 import { useCharacterStore } from '@modules/characters'
+import { useSaveIndicator } from '../composables/useSaveIndicator'
 
 export default {
   name: 'NpcSceneCard',
@@ -169,6 +177,7 @@ export default {
   setup(props) {
     const npcStore = useNpcStore()
     const characterStore = useCharacterStore()
+    const { isSaving, markDirty, markSaved } = useSaveIndicator()
     let debounceTimer = null
     const expanded = ref(false)
 
@@ -218,6 +227,7 @@ export default {
     })
 
     function onNotesInput(value) {
+      markDirty()
       clearTimeout(debounceTimer)
       debounceTimer = setTimeout(() => {
         const clone = npcStore.getById(props.npc.id)
@@ -225,10 +235,11 @@ export default {
           clone.notes = value
           npcStore.update(props.npc.id, clone)
         }
+        markSaved()
       }, 500)
     }
 
-    return { expanded, statusMeta, subheader, pcRelationsList, npcRelationsList, onNotesInput }
+    return { expanded, statusMeta, subheader, pcRelationsList, npcRelationsList, onNotesInput, isSaving }
   }
 }
 </script>
@@ -422,5 +433,17 @@ export default {
 .npc-scene-card__spotlight-btn--active {
   opacity: 1;
   color: var(--color-accent-hope);
+}
+
+.npc-scene-card__saving {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  animation: npc-pulse 1s infinite;
+}
+
+@keyframes npc-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 </style>

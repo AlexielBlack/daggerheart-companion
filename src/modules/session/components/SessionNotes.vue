@@ -10,6 +10,11 @@
       >
         Notes de scene
       </label>
+      <span
+        v-if="isSaving"
+        class="session-notes__saving"
+        aria-live="polite"
+      >Sauvegarde...</span>
       <div class="session-notes__header-actions">
         <button
           class="session-notes__add-btn"
@@ -102,11 +107,13 @@
 <script>
 import { ref, nextTick, watch } from 'vue'
 import { useSessionStore } from '../stores/sessionStore'
+import { useSaveIndicator } from '../composables/useSaveIndicator'
 
 export default {
   name: 'SessionNotes',
   setup() {
     const sessionStore = useSessionStore()
+    const { isSaving, markDirty, markSaved } = useSaveIndicator()
     const expanded = ref(false)
     const textareaId = `session-notes-${Math.random().toString(36).slice(2, 8)}`
     let debounceTimer = null
@@ -138,15 +145,18 @@ export default {
     }
 
     function onInput(event) {
+      markDirty()
       clearTimeout(debounceTimer)
       const text = event.target.value
       debounceTimer = setTimeout(() => {
         sessionStore.setSessionNotes(text)
+        markSaved()
       }, 500)
     }
 
     return {
       sessionStore,
+      isSaving,
       expanded,
       textareaId,
       onInput,
@@ -336,5 +346,17 @@ export default {
 .session-notes__entry-remove:hover {
   opacity: 1;
   color: var(--color-accent-danger);
+}
+
+.session-notes__saving {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  animation: notes-pulse 1s infinite;
+}
+
+@keyframes notes-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 </style>
