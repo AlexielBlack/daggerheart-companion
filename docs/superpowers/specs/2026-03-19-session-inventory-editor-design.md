@@ -21,9 +21,9 @@ props: {
 }
 ```
 
-### Events émis
+### Pattern d'interaction
 
-Aucun — le composant appelle directement les méthodes du `characterStore` via l'ID du personnage.
+Le composant utilise le pattern **props + emits**, cohérent avec `InventoryPanel.vue`. Le parent (`PcGroupPanel`) gère les appels store via `patchCharacterById`.
 
 ## Fonctionnalités
 
@@ -38,7 +38,7 @@ Chaque item dans l'inventaire affiche :
 - Nom résolu (item SRD via lookup ou nom custom)
 - Quantité avec +/- inline (si consommable)
 - Nom éditable via champ texte inline (si type custom)
-- Bouton ✕ avec confirmation temporaire : au clic, le bouton passe en rouge "Confirmer ?" pendant ~3 secondes, puis revient à l'état normal si non confirmé
+- Bouton ✕ avec confirmation temporaire : au clic, le bouton passe en rouge "Confirmer ?" pendant 3000ms, puis revient à l'état normal si non confirmé. Plusieurs confirmations simultanées sont autorisées (timers indépendants).
 
 ### Modification inline
 
@@ -61,16 +61,28 @@ Le formulaire se referme après l'ajout.
 
 ## Données et store
 
-Réutilise directement les méthodes existantes du `characterStore` :
-- `addInventoryItem(type)`
-- `removeInventoryItem(index)`
-- `updateInventoryItem(index, field, value)`
-- `updateGold(tier, value)`
+### Nouvelles actions store (par ID)
 
-Les données d'équipement SRD sont importées depuis `@data/equipment` :
+Les méthodes existantes (`addInventoryItem`, etc.) opèrent sur `selectedCharacter`. Pour la vue Session qui affiche plusieurs personnages, il faut des variantes par ID suivant le pattern `patchCharacterById` existant :
+
+- `addInventoryItemById(charId, type)`
+- `removeInventoryItemById(charId, index)`
+- `updateInventoryItemById(charId, index, field, value)`
+- `updateGoldById(charId, tier, value)`
+
+Ces méthodes localisent le personnage par ID et appliquent la même logique que leurs équivalents existants.
+
+### Données d'équipement SRD
+
+Importées depuis `@data/equipment` :
 - `primaryWeapons`, `secondaryWeapons`, `armor`, `loot`, `consumables`
 
-Le composant doit temporairement sélectionner le personnage dans le store (via `selectCharacter(id)`) pour utiliser ces méthodes, puis restaurer la sélection précédente si nécessaire. Alternative : passer l'index du personnage et appeler les actions directement sur l'objet.
+### Résolution des noms d'items
+
+Le composant inclut une fonction locale `resolveItemName(slot)` qui :
+- Pour les types SRD (loot, consumable, weapon, armor) : lookup par `slot.itemId` dans les données d'équipement, retourne `.name`
+- Pour le type custom : retourne `slot.customName`
+- Fallback : retourne "Item inconnu"
 
 ## Intégration dans PcGroupPanel
 
@@ -88,4 +100,5 @@ Dans l'onglet Inventaire existant (actuellement en lecture seule), remplacer l'a
 | Fichier | Modification |
 |---------|-------------|
 | `src/modules/session/components/PcInventoryEditor.vue` | Nouveau composant |
-| `src/modules/session/components/PcGroupPanel.vue` | Import + utilisation du nouveau composant dans l'onglet Inventaire |
+| `src/modules/session/components/PcGroupPanel.vue` | Import + utilisation du nouveau composant, wiring des events vers le store |
+| `src/modules/characters/stores/characterStore.js` | Ajout des 4 variantes `*ById` pour les actions inventaire |
