@@ -10,6 +10,37 @@
         Personnages ({{ visibleList.length }})
       </h3>
       <div class="pc-group__actions">
+        <div
+          class="pc-group__columns-control"
+          role="group"
+          aria-label="Nombre de colonnes"
+        >
+          <label
+            for="pc-columns-slider"
+            class="pc-group__columns-label"
+          >
+            {{ cardColumns === 0 ? 'Auto' : cardColumns + ' col.' }}
+          </label>
+          <input
+            id="pc-columns-slider"
+            v-model.number="cardColumns"
+            type="range"
+            min="0"
+            max="4"
+            step="1"
+            class="pc-group__columns-slider"
+            aria-label="Largeur des cartes"
+            :list="'pc-columns-ticks'"
+          >
+          <datalist id="pc-columns-ticks">
+            <option
+              v-for="opt in COLUMN_OPTIONS"
+              :key="opt.value"
+              :value="opt.value"
+              :label="opt.label"
+            />
+          </datalist>
+        </div>
         <router-link
           to="/table/prep/personnages"
           class="pc-group__edit-link"
@@ -35,6 +66,8 @@
     <div
       v-if="visibleList.length > 0"
       class="pc-group__grid"
+      :class="{ 'pc-group__grid--custom': cardColumns > 0 }"
+      :style="gridStyle"
       role="list"
       aria-label="Liste des personnages"
     >
@@ -641,6 +674,7 @@ import { computed, ref, nextTick, watch } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
 import { useCharacterStore } from '@modules/characters'
 import { getDomainById } from '@data/domains/index.js'
+import { useStorage } from '@core/composables/useStorage'
 import PcInventoryEditor from './PcInventoryEditor.vue'
 import DomainCardItem from '@modules/domains/components/DomainCardItem.vue'
 
@@ -663,6 +697,24 @@ export default {
 
   setup(props) {
     const characterStore = useCharacterStore()
+
+    // ── Slider colonnes ──
+    const cardColumns = useStorage('pc-group-columns', 0)
+    // 0 = auto (responsive CSS), 1-4 = forcé
+    const COLUMN_OPTIONS = [
+      { value: 0, label: 'Auto' },
+      { value: 1, label: '1' },
+      { value: 2, label: '2' },
+      { value: 3, label: '3' },
+      { value: 4, label: '4' }
+    ]
+
+    const gridStyle = computed(() => {
+      if (!cardColumns.value || cardColumns.value === 0) return {}
+      return {
+        'grid-template-columns': `repeat(${cardColumns.value}, 1fr)`
+      }
+    })
 
     // ── Personnages enrichis ──
     const enrichedCharacters = computed(() =>
@@ -924,6 +976,8 @@ export default {
       hiddenList,
       showHidden,
       onToggleHidden,
+      // Slider colonnes
+      cardColumns, COLUMN_OPTIONS, gridStyle,
       // Gestion interactive
       incrementHP, decrementHP,
       incrementStress, decrementStress,
@@ -989,6 +1043,29 @@ export default {
 }
 
 /* ═══════════════════════════════════════════════
+   CONTROLE COLONNES
+   ═══════════════════════════════════════════════ */
+
+.pc-group__columns-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.pc-group__columns-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  min-width: 3em;
+  text-align: right;
+}
+
+.pc-group__columns-slider {
+  width: 80px;
+  cursor: pointer;
+  accent-color: var(--color-accent-primary);
+}
+
+/* ═══════════════════════════════════════════════
    GRILLE AUTO-RESPONSIVE
    ═══════════════════════════════════════════════ */
 
@@ -999,13 +1076,13 @@ export default {
 }
 
 @media (min-width: 768px) {
-  .pc-group__grid {
+  .pc-group__grid:not(.pc-group__grid--custom) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1400px) {
-  .pc-group__grid {
+  .pc-group__grid:not(.pc-group__grid--custom) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
