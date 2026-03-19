@@ -1,5 +1,7 @@
 <template>
   <div class="scene-view">
+    <SceneActionBar @open-catalogue="drawer.openCatalogue()" />
+
     <EnvironmentLoader />
 
     <section class="scene-view__pcs">
@@ -29,6 +31,7 @@
 <script>
 import { useSceneDrawer } from '../composables/useSceneDrawer'
 import { useCharacterStore } from '@modules/characters'
+import SceneActionBar from '../components/SceneActionBar.vue'
 import EnvironmentLoader from '../components/EnvironmentLoader.vue'
 import NpcGroupPanel from '../components/NpcGroupPanel.vue'
 import PcGroupPanel from '../components/PcGroupPanel.vue'
@@ -39,6 +42,7 @@ import SceneDrawer from '../components/SceneDrawer.vue'
 export default {
   name: 'SceneView',
   components: {
+    SceneActionBar,
     EnvironmentLoader,
     NpcGroupPanel,
     PcGroupPanel,
