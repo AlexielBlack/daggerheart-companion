@@ -123,9 +123,28 @@
               {{ conditionLabel(cond) }}
             </span>
           </div>
+
+          <!-- 5. Experiences -->
+          <div
+            v-if="hasExperiences(pc)"
+            class="pc-card__experiences"
+            aria-label="Experiences du personnage"
+          >
+            <span
+              v-for="(exp, idx) in (pc.experiences || [])"
+              :key="'exp-' + idx"
+              class="pc-card__experience"
+            >
+              <span class="pc-card__experience-name">{{ exp.name }}</span>
+              <span
+                v-if="exp.bonus"
+                class="pc-card__experience-bonus"
+              >+{{ exp.bonus }}</span>
+            </span>
+          </div>
         </div>
 
-        <!-- 5. Onglets integres : Capacites | Inventaire | Notes -->
+        <!-- 6. Onglets integres : Capacites | Domaines | Inventaire | Notes -->
         <div
           v-if="visibleTabs(pc).length > 0"
           class="pc-card__tabs"
@@ -320,6 +339,58 @@
                 </div>
               </div>
             </template>
+          </div>
+
+          <!-- Panneau Domaines -->
+          <div
+            v-show="getActiveTab(pc.id) === 'domaines'"
+            :id="'panel-' + pc.id + '-domaines'"
+            class="pc-card__tabpanel"
+            role="tabpanel"
+            :aria-labelledby="'tab-' + pc.id + '-domaines'"
+          >
+            <!-- Loadout -->
+            <div
+              v-if="pc.loadoutCards && pc.loadoutCards.length > 0"
+              class="pc-card__domain-section"
+            >
+              <div class="pc-card__domain-section-title">
+                Loadout ({{ pc.loadoutCards.length }})
+              </div>
+              <div class="pc-card__domain-grid">
+                <DomainCardItem
+                  v-for="card in pc.loadoutCards"
+                  :key="card.id"
+                  :card="card"
+                  :domain-color="domainColor(card.domain)"
+                />
+              </div>
+            </div>
+
+            <!-- Vault -->
+            <div
+              v-if="pc.vaultCards && pc.vaultCards.length > 0"
+              class="pc-card__domain-section"
+            >
+              <div class="pc-card__domain-section-title pc-card__domain-section-title--vault">
+                Vault ({{ pc.vaultCards.length }})
+              </div>
+              <div class="pc-card__domain-grid">
+                <DomainCardItem
+                  v-for="card in pc.vaultCards"
+                  :key="card.id"
+                  :card="card"
+                  :domain-color="domainColor(card.domain)"
+                />
+              </div>
+            </div>
+
+            <p
+              v-if="(!pc.loadoutCards || pc.loadoutCards.length === 0) && (!pc.vaultCards || pc.vaultCards.length === 0)"
+              class="pc-card__empty-tab"
+            >
+              Aucune carte de domaine.
+            </p>
           </div>
 
           <!-- Panneau Inventaire -->
@@ -569,13 +640,16 @@
 import { computed, ref, nextTick, watch } from 'vue'
 import { resolveCharacterDisplay } from '@modules/characters/composables/useCharacterComputed'
 import { useCharacterStore } from '@modules/characters'
+import { getDomainById } from '@data/domains/index.js'
 import PcInventoryEditor from './PcInventoryEditor.vue'
+import DomainCardItem from '@modules/domains/components/DomainCardItem.vue'
 
 export default {
   name: 'PcGroupPanel',
 
   components: {
-    PcInventoryEditor
+    PcInventoryEditor,
+    DomainCardItem
   },
 
   props: {
@@ -710,6 +784,7 @@ export default {
     // ── Systeme d'onglets ──
     const CARD_TABS = [
       { id: 'capacites', label: 'Capacites', icon: '\u2728' },
+      { id: 'domaines', label: 'Domaines', icon: '\uD83C\uDFB4' },
       { id: 'inventaire', label: 'Inventaire', icon: '\uD83C\uDF92' },
       { id: 'notes', label: 'Notes', icon: '\uD83D\uDCDD' }
     ]
@@ -726,6 +801,8 @@ export default {
       switch (tabId) {
         case 'capacites':
           return hasFeatures(pc)
+        case 'domaines':
+          return hasDomainCards(pc)
         case 'inventaire':
           return true
         case 'notes':
@@ -817,6 +894,21 @@ export default {
       return pc.classData.classFeatures
     }
 
+    function hasExperiences(pc) {
+      return pc.experiences && pc.experiences.some(e => e.name)
+    }
+
+    function hasDomainCards(pc) {
+      return (pc.loadoutCards && pc.loadoutCards.length > 0) ||
+        (pc.vaultCards && pc.vaultCards.length > 0)
+    }
+
+    function domainColor(domainId) {
+      if (!domainId) return '#53a8b6'
+      const domain = getDomainById(domainId)
+      return domain ? domain.color : '#53a8b6'
+    }
+
     function hasFeatures(pc) {
       if (pc.classData && pc.classData.hopeFeature) return true
       if (pc.classData && pc.classData.classFeatures && pc.classData.classFeatures.length > 0) return true
@@ -851,7 +943,8 @@ export default {
       hpColor, stressColor, traitSign,
       conditionLabel, conditionDesc, conditionStyle,
       TRAIT_ABBR, TRAIT_ORDER,
-      activationEmoji, classFeaturesList, hasFeatures
+      activationEmoji, classFeaturesList, hasFeatures,
+      hasExperiences, hasDomainCards, domainColor
     }
   }
 }
@@ -1056,6 +1149,37 @@ export default {
   font-weight: var(--font-weight-medium);
 }
 
+/* ── 5. Experiences ── */
+
+.pc-card__experiences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.pc-card__experience {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-xs);
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.pc-card__experience-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.pc-card__experience-bonus {
+  font-size: 0.625rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-success);
+}
+
 /* ═══════════════════════════════════════════════
    SYSTEME D'ONGLETS
    ═══════════════════════════════════════════════ */
@@ -1242,6 +1366,39 @@ export default {
 
 .pc-card__notes-textarea::placeholder {
   color: var(--color-text-muted);
+}
+
+/* ═══════════════════════════════════════════════
+   DOMAINES
+   ═══════════════════════════════════════════════ */
+
+.pc-card__domain-section {
+  margin-bottom: var(--space-md);
+}
+
+.pc-card__domain-section:last-child {
+  margin-bottom: 0;
+}
+
+.pc-card__domain-section-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-hope);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pc-card__domain-section-title--vault {
+  color: var(--color-text-muted);
+}
+
+.pc-card__domain-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
 /* ═══════════════════════════════════════════════

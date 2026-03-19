@@ -90,7 +90,8 @@ export function resolveCharacterDisplay(pc) {
       armorData: null,
       primaryWeaponData: null,
       secondaryWeaponData: null,
-      loadoutCards: []
+      loadoutCards: [],
+      vaultCards: []
     }
   }
 
@@ -137,8 +138,11 @@ export function resolveCharacterDisplay(pc) {
   const primaryWeaponData = getPrimaryWeaponById(pc.primaryWeaponId) || null
   const secondaryWeaponData = getSecondaryWeaponById(pc.secondaryWeaponId) || null
 
-  // ── Cartes de domaine du loadout ──
+  // ── Cartes de domaine du loadout et vault ──
   const loadoutCards = (pc.domainCards?.loadout || [])
+    .map(getCardById)
+    .filter(Boolean)
+  const vaultCards = (pc.domainCards?.vault || [])
     .map(getCardById)
     .filter(Boolean)
 
@@ -157,7 +161,8 @@ export function resolveCharacterDisplay(pc) {
     armorData,
     primaryWeaponData,
     secondaryWeaponData,
-    loadoutCards
+    loadoutCards,
+    vaultCards
   }
 }
 
