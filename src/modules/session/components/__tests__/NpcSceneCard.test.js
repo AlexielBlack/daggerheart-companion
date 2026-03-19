@@ -39,6 +39,19 @@ vi.mock('@modules/npcs', () => ({
     hostile: { label: 'Hostile', emoji: '⚠️', color: '#dc2626' },
     dead: { label: 'Mort', emoji: '💀', color: '#374151' },
     missing: { label: 'Disparu', emoji: '❓', color: '#7c3aed' }
+  },
+  DISPOSITION_META: {
+    '-2': { label: 'Hostile', color: '#dc2626' },
+    '-1': { label: 'Mefiant', color: '#f59e0b' },
+    0: { label: 'Neutre', color: '#6b7280' },
+    1: { label: 'Amical', color: '#3b82f6' },
+    2: { label: 'Allie', color: '#059669' }
+  },
+  RELATION_TYPE_META: {
+    ally: { label: 'Allie' },
+    enemy: { label: 'Ennemi' },
+    rival: { label: 'Rival' },
+    other: { label: 'Autre' }
   }
 }))
 
@@ -60,6 +73,22 @@ const minimalNpc = {
   status: 'ally',
   faction: '',
   notes: ''
+}
+
+const mockNpcWithRelations = {
+  id: 'npc-rel', name: 'Aldric', title: 'Capitaine', status: 'neutral',
+  faction: 'Garde Royale', location: '', description: '', personality: '',
+  motives: '', tactics: '', notes: '',
+  pcRelations: [{ pcId: 'pc-1', disposition: 1, note: 'Allie de confiance' }],
+  npcRelations: []
+}
+
+const detailedNpc = {
+  id: 'npc-3', name: 'Thorne', title: 'Alchimiste',
+  status: 'neutral', faction: 'Cercle Arcane', location: 'Tour Nord',
+  description: 'Un vieil homme mysterieux', personality: 'Curieux et distant',
+  motives: 'Decouvrir la verite', tactics: 'Manipulation subtile',
+  notes: 'Possede un artefact', pcRelations: [], npcRelations: []
 }
 
 describe('NpcSceneCard', () => {
@@ -90,8 +119,10 @@ describe('NpcSceneCard', () => {
     expect(dot.attributes('style')).toContain('#dc2626')
   })
 
-  it('affiche la valeur existante des notes dans le textarea', () => {
+  it('affiche la valeur existante des notes dans le textarea', async () => {
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
+    // Deplier la carte pour acceder au textarea
+    await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
     const textarea = wrapper.find('textarea')
     expect(textarea.element.value).toBe('A un secret')
   })
@@ -137,11 +168,47 @@ describe('NpcSceneCard', () => {
     vi.useFakeTimers()
     mockGetById.mockReturnValue({ ...fullNpc })
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
+    // Deplier la carte pour acceder au textarea
+    await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
     const textarea = wrapper.find('textarea')
     await textarea.setValue('Nouvelle note')
     vi.advanceTimersByTime(600)
     expect(mockGetById).toHaveBeenCalledWith('npc-1')
     expect(mockUpdate).toHaveBeenCalledWith('npc-1', expect.objectContaining({ notes: 'Nouvelle note' }))
     vi.useRealTimers()
+  })
+
+  describe('mode collapse', () => {
+    it('masque les details par defaut (description, personnalite, motifs, tactiques)', () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: detailedNpc, isSpotlight: false }
+      })
+      expect(wrapper.find('.npc-scene-card__field').exists()).toBe(false)
+      expect(wrapper.find('.npc-scene-card__notes').exists()).toBe(false)
+    })
+
+    it('affiche le header et le subheader meme en collapse', () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: detailedNpc, isSpotlight: false }
+      })
+      expect(wrapper.find('.npc-scene-card__name').exists()).toBe(true)
+      expect(wrapper.find('.npc-scene-card__subheader').exists()).toBe(true)
+    })
+
+    it('affiche les relations PJ en collapse (info critique)', () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: mockNpcWithRelations, isSpotlight: false }
+      })
+      expect(wrapper.find('.npc-scene-card__relations').exists()).toBe(true)
+    })
+
+    it('deplie les details au clic sur le bouton expand', async () => {
+      const wrapper = mount(NpcSceneCard, {
+        props: { npc: detailedNpc, isSpotlight: false }
+      })
+      await wrapper.find('.npc-scene-card__expand-btn').trigger('click')
+      expect(wrapper.find('.npc-scene-card__field').exists()).toBe(true)
+      expect(wrapper.find('.npc-scene-card__notes').exists()).toBe(true)
+    })
   })
 })

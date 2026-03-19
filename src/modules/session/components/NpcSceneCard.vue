@@ -48,42 +48,17 @@
       {{ subheader }}
     </div>
 
-    <!-- Description -->
-    <p
-      v-if="npc.description"
-      class="npc-scene-card__field"
+    <!-- Bouton deplier/replier -->
+    <button
+      class="npc-scene-card__expand-btn"
+      :aria-expanded="String(expanded)"
+      :aria-label="expanded ? 'Replier les details' : 'Deplier les details'"
+      @click="expanded = !expanded"
     >
-      {{ npc.description }}
-    </p>
+      {{ expanded ? '&#x25BC;' : '&#x25B6;' }}
+    </button>
 
-    <!-- Personnalite -->
-    <p
-      v-if="npc.personality"
-      class="npc-scene-card__field"
-    >
-      <span class="npc-scene-card__label">Personnalite</span>
-      {{ npc.personality }}
-    </p>
-
-    <!-- Motifs -->
-    <p
-      v-if="npc.motives"
-      class="npc-scene-card__field"
-    >
-      <span class="npc-scene-card__label">Motifs</span>
-      {{ npc.motives }}
-    </p>
-
-    <!-- Tactiques -->
-    <p
-      v-if="npc.tactics"
-      class="npc-scene-card__field"
-    >
-      <span class="npc-scene-card__label">Tactiques</span>
-      {{ npc.tactics }}
-    </p>
-
-    <!-- Relations PJ -->
+    <!-- Relations PJ (toujours visibles — info critique) -->
     <ul
       v-if="pcRelationsList.length"
       class="npc-scene-card__relations"
@@ -107,39 +82,77 @@
       </li>
     </ul>
 
-    <!-- Relations PNJ -->
-    <ul
-      v-if="npcRelationsList.length"
-      class="npc-scene-card__relations"
-    >
-      <li
-        v-for="rel in npcRelationsList"
-        :key="rel.targetNpcId"
-        class="npc-scene-card__relation"
+    <!-- Contenu depliable -->
+    <template v-if="expanded">
+      <!-- Description -->
+      <p
+        v-if="npc.description"
+        class="npc-scene-card__field"
       >
-        <span class="npc-scene-card__rel-type">{{ rel.typeLabel }}</span>
-        <span class="npc-scene-card__rel-name">{{ rel.name }}</span>
-        <span
-          v-if="rel.note"
-          class="npc-scene-card__rel-note"
-        >— {{ rel.note }}</span>
-      </li>
-    </ul>
+        {{ npc.description }}
+      </p>
 
-    <!-- Notes -->
-    <textarea
-      class="npc-scene-card__notes"
-      :value="npc.notes"
-      :aria-label="'Notes pour ' + npc.name"
-      placeholder="Notes sur ce PNJ..."
-      rows="2"
-      @input="onNotesInput($event.target.value)"
-    ></textarea>
+      <!-- Personnalite -->
+      <p
+        v-if="npc.personality"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Personnalite</span>
+        {{ npc.personality }}
+      </p>
+
+      <!-- Motifs -->
+      <p
+        v-if="npc.motives"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Motifs</span>
+        {{ npc.motives }}
+      </p>
+
+      <!-- Tactiques -->
+      <p
+        v-if="npc.tactics"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Tactiques</span>
+        {{ npc.tactics }}
+      </p>
+
+      <!-- Relations PNJ -->
+      <ul
+        v-if="npcRelationsList.length"
+        class="npc-scene-card__relations"
+      >
+        <li
+          v-for="rel in npcRelationsList"
+          :key="rel.targetNpcId"
+          class="npc-scene-card__relation"
+        >
+          <span class="npc-scene-card__rel-type">{{ rel.typeLabel }}</span>
+          <span class="npc-scene-card__rel-name">{{ rel.name }}</span>
+          <span
+            v-if="rel.note"
+            class="npc-scene-card__rel-note"
+          >— {{ rel.note }}</span>
+        </li>
+      </ul>
+
+      <!-- Notes -->
+      <textarea
+        class="npc-scene-card__notes"
+        :value="npc.notes"
+        :aria-label="'Notes pour ' + npc.name"
+        placeholder="Notes sur ce PNJ..."
+        rows="2"
+        @input="onNotesInput($event.target.value)"
+      ></textarea>
+    </template>
   </article>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useNpcStore, NPC_STATUS_META, DISPOSITION_META, RELATION_TYPE_META } from '@modules/npcs'
 import { useCharacterStore } from '@modules/characters'
 
@@ -157,6 +170,7 @@ export default {
     const npcStore = useNpcStore()
     const characterStore = useCharacterStore()
     let debounceTimer = null
+    const expanded = ref(false)
 
     const statusMeta = computed(() => {
       return NPC_STATUS_META[props.npc.status] || NPC_STATUS_META.neutral
@@ -214,7 +228,7 @@ export default {
       }, 500)
     }
 
-    return { statusMeta, subheader, pcRelationsList, npcRelationsList, onNotesInput }
+    return { expanded, statusMeta, subheader, pcRelationsList, npcRelationsList, onNotesInput }
   }
 }
 </script>
@@ -288,6 +302,21 @@ export default {
   font-size: var(--font-size-sm, 0.875rem);
   color: var(--color-text-secondary, #aaa);
   padding-left: calc(8px + var(--space-xs, 0.25rem));
+}
+
+.npc-scene-card__expand-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px var(--space-xs);
+  font-size: var(--font-size-xs);
+  align-self: flex-start;
+  transition: color var(--transition-fast);
+}
+
+.npc-scene-card__expand-btn:hover {
+  color: var(--color-accent-hope);
 }
 
 .npc-scene-card__field {
