@@ -27,8 +27,6 @@
         </router-link>
       </h1>
 
-      <ModeSelector @navigate="closeNav" />
-
       <AppNav
         id="main-nav"
         :is-open="navOpen"
@@ -36,21 +34,12 @@
       />
 
       <router-link
-        to="/jeu/des"
+        to="/table/des"
         class="app-shell__dice-shortcut"
         aria-label="Lanceur de dés"
         @click="closeNav"
       >
         <span aria-hidden="true">🎲</span>
-      </router-link>
-
-      <router-link
-        to="/edition/sync"
-        class="app-shell__sync-shortcut"
-        aria-label="Synchronisation"
-        @click="closeNav"
-      >
-        <span aria-hidden="true">🔄</span>
       </router-link>
     </header>
 
@@ -90,12 +79,11 @@
 <script>
 import { ref } from 'vue'
 import AppNav from './AppNav.vue'
-import ModeSelector from './ModeSelector.vue'
 import { useNotification } from '@core/composables/useNotification.js'
 
 export default {
   name: 'AppShell',
-  components: { AppNav, ModeSelector },
+  components: { AppNav },
   setup() {
     const navOpen = ref(false)
     const { notifications, dismiss } = useNotification()
@@ -179,23 +167,9 @@ export default {
   margin-left: auto;
 }
 
-.app-shell__dice-shortcut:hover,
-.app-shell__sync-shortcut:hover {
+.app-shell__dice-shortcut:hover {
   background-color: var(--color-bg-elevated);
   color: var(--color-text-primary);
-}
-
-.app-shell__sync-shortcut {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-size: 1.2rem;
-  transition: color var(--transition-fast), background-color var(--transition-fast);
-  flex-shrink: 0;
 }
 
 /* ── Contenu full width ── */
