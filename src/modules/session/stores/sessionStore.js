@@ -14,6 +14,7 @@ export const useSessionStore = defineStore('session', () => {
   const npcsStorage = useStorage('session-npcs', [])
   const notesStorage = useStorage('session-notes', '')
   const lastEncounterStorage = useStorage('session-last-encounter', null)
+  const noteEntriesStorage = useStorage('session-note-entries', [])
   const spotlightStorage = useStorage('session-spotlight-npc', null)
 
   // Raccourcis vers les refs
@@ -21,6 +22,7 @@ export const useSessionStore = defineStore('session', () => {
   const loadedNpcIds = npcsStorage.data
   const sessionNotes = notesStorage.data
   const lastLaunchedEncounterId = lastEncounterStorage.data
+  const noteEntries = noteEntriesStorage.data
   const spotlightNpcId = spotlightStorage.data
 
   // ── Getters ─────────────────────────────────────────
@@ -90,12 +92,25 @@ export const useSessionStore = defineStore('session', () => {
     spotlightNpcId.value = spotlightNpcId.value === id ? null : id
   }
 
+  /** Ajouter une entree de notes horodatee */
+  function addNoteEntry(text, tag) {
+    const now = new Date()
+    const timestamp = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+    noteEntries.value = [...noteEntries.value, { timestamp, text, tag: tag || null, id: Date.now() }]
+  }
+
+  /** Supprimer une entree de notes */
+  function removeNoteEntry(id) {
+    noteEntries.value = noteEntries.value.filter(e => e.id !== id)
+  }
+
   /** Reinitialiser toute la session */
   function resetSession() {
     environmentId.value = null
     loadedNpcIds.value = []
     sessionNotes.value = ''
     lastLaunchedEncounterId.value = null
+    noteEntries.value = []
     spotlightNpcId.value = null
   }
 
@@ -105,6 +120,7 @@ export const useSessionStore = defineStore('session', () => {
     loadedNpcIds,
     sessionNotes,
     lastLaunchedEncounterId,
+    noteEntries,
     spotlightNpcId,
     // Getters
     loadedEnvironment,
@@ -120,6 +136,8 @@ export const useSessionStore = defineStore('session', () => {
     toggleNpc,
     clearNpcs,
     setSessionNotes,
+    addNoteEntry,
+    removeNoteEntry,
     setSpotlight,
     resetSession
   }
