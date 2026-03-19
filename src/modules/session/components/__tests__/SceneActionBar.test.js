@@ -25,7 +25,7 @@ vi.mock('@modules/environments', () => ({
 }))
 
 vi.mock('@modules/npcs', () => ({
-  useNpcStore: () => ({ getById: () => null })
+  useNpcStore: () => ({ getById: (id) => (id ? { id, name: `PNJ ${id}` } : null) })
 }))
 
 import SceneActionBar from '../SceneActionBar.vue'
@@ -88,5 +88,27 @@ describe('SceneActionBar', () => {
     const wrapper = mount(SceneActionBar)
     await wrapper.find('[aria-label="Ajouter 1 Hope"]').trigger('click')
     expect(sessionStore.hope).toBe(1)
+  })
+
+  // ── Badge PNJ & bouton Env ────────────────────────────
+
+  it('affiche le nombre de PNJs charges dans le badge', () => {
+    const sessionStore = useSessionStore()
+    sessionStore.addNpc('npc-1')
+    sessionStore.addNpc('npc-2')
+    const wrapper = mount(SceneActionBar)
+    const badge = wrapper.find('.scene-action-bar__badge')
+    expect(badge.exists()).toBe(true)
+    expect(badge.text()).toBe('2')
+  })
+
+  it('masque le badge quand aucun PNJ charge', () => {
+    const wrapper = mount(SceneActionBar)
+    expect(wrapper.find('.scene-action-bar__badge').exists()).toBe(false)
+  })
+
+  it('affiche le bouton Env', () => {
+    const wrapper = mount(SceneActionBar)
+    expect(wrapper.find('[aria-label="Aller a l\'environnement"]').exists()).toBe(true)
   })
 })

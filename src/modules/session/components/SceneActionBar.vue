@@ -51,12 +51,24 @@
         </button>
       </div>
     </div>
+    <a
+      href="#scene-env"
+      class="scene-action-bar__btn"
+      aria-label="Aller a l'environnement"
+      @click.prevent="scrollTo('env')"
+    >
+      &#x1F30D; Env
+    </a>
     <button
       class="scene-action-bar__btn"
       aria-label="Ouvrir le catalogue PNJ"
       @click="$emit('open-catalogue')"
     >
       &#x1F3AD; PNJs
+      <span
+        v-if="sessionStore.loadedNpcCount > 0"
+        class="scene-action-bar__badge"
+      >{{ sessionStore.loadedNpcCount }}</span>
     </button>
     <a
       href="#scene-encounter"
@@ -91,6 +103,7 @@ export default {
     /** Fait defiler la vue vers la section ciblee */
     function scrollTo(target) {
       const sectionMap = {
+        env: '.env-loader',
         encounter: '.scene-view__encounter',
         notes: '.session-notes'
       }
@@ -201,5 +214,19 @@ export default {
   color: var(--color-accent-hope);
   min-width: 1.2em;
   text-align: center;
+}
+
+.scene-action-bar__badge {
+  font-size: var(--font-size-xs);
+  background: var(--color-accent-hope);
+  color: var(--color-text-inverse, #1a1a2e);
+  border-radius: var(--radius-full);
+  min-width: 1.2em;
+  height: 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
 }
 </style>
