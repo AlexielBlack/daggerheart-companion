@@ -59,623 +59,648 @@
       role="list"
       aria-label="Liste des personnages"
     >
-      <article
+      <template
         v-for="pc in visibleList"
         :key="pc.id"
-        class="pc-card"
-        role="listitem"
-        :aria-label="pc.name || 'Sans nom'"
       >
-        <!-- Zone toujours visible -->
-        <div class="pc-card__body">
-          <!-- 1. Ligne identite -->
-          <div class="pc-card__identity">
-            <button
-              class="pc-card__hide-btn"
-              title="Masquer ce PJ de la table"
-              aria-label="Masquer ce PJ"
-              @click="onToggleHidden(pc.id)"
-            >
-              &#x1F441;&#xFE0F;
-            </button>
-            <span
-              v-if="pc.classData"
-              class="pc-card__class-emoji"
-              aria-hidden="true"
-            >{{ pc.classData.emoji }}</span>
-            <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
-            <span
-              v-if="pc.classData"
-              class="pc-card__class-name"
-            >{{ pc.classData.name }}</span>
-            <span class="pc-card__level-badge">Nv.{{ pc.level || 1 }}</span>
-            <span
-              v-if="pc.subclassData"
-              class="pc-card__subclass"
-            >{{ pc.subclassData.name }}</span>
-          </div>
-
-          <!-- 2. Ligne ascendance / communaute -->
-          <div class="pc-card__meta">
-            <span v-if="pc.ancestryData">{{ pc.ancestryData.name }}</span>
-            <span v-if="pc.ancestryData && pc.communityData"> &middot; </span>
-            <span v-if="pc.communityData">{{ pc.communityData.name }}</span>
-          </div>
-
-          <!-- 3. Barres HP + Stress (interactives) -->
-          <div class="pc-card__bars">
-            <!-- Barre HP : currentHP = degats marques -->
-            <div
-              class="pc-card__bar pc-card__bar--interactive"
-              :aria-label="'Points de vie : ' + (pc.effectiveMaxHP - (pc.currentHP || 0)) + ' restants sur ' + pc.effectiveMaxHP"
-            >
-              <button
-                class="pc-card__stat-btn"
-                :disabled="(pc.currentHP || 0) <= 0"
-                :aria-label="'Soigner 1 PV de ' + (pc.name || 'Sans nom')"
-                @click="decrementHP(pc)"
-              >
-                &minus;
-              </button>
-              <div class="pc-card__bar-track">
-                <div
-                  class="pc-card__bar-fill"
-                  :style="{
-                    width: hpFillPercent(pc) + '%',
-                    backgroundColor: hpColor(pc.currentHP || 0, pc.effectiveMaxHP)
-                  }"
-                ></div>
-              </div>
-              <span class="pc-card__bar-text">
-                &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
-              </span>
-              <button
-                class="pc-card__stat-btn"
-                :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
-                :aria-label="'Marquer 1 degat sur ' + (pc.name || 'Sans nom')"
-                @click="incrementHP(pc)"
-              >
-                +
-              </button>
-            </div>
-
-            <!-- Barre Stress -->
-            <div
-              class="pc-card__bar pc-card__bar--interactive"
-              :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.effectiveMaxStress"
-            >
-              <button
-                class="pc-card__stat-btn"
-                :disabled="(pc.currentStress || 0) <= 0"
-                :aria-label="'Reduire 1 stress de ' + (pc.name || 'Sans nom')"
-                @click="decrementStress(pc)"
-              >
-                &minus;
-              </button>
-              <div class="pc-card__bar-track">
-                <div
-                  class="pc-card__bar-fill"
-                  :style="{
-                    width: stressFillPercent(pc) + '%',
-                    backgroundColor: stressColor(pc.currentStress || 0, pc.effectiveMaxStress)
-                  }"
-                ></div>
-              </div>
-              <span class="pc-card__bar-text">
-                &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
-              </span>
-              <button
-                class="pc-card__stat-btn"
-                :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
-                :aria-label="'Marquer 1 stress sur ' + (pc.name || 'Sans nom')"
-                @click="incrementStress(pc)"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <!-- 4. Ligne armure + espoir (interactifs) -->
-          <div class="pc-card__armor-hope pc-card__armor-hope--interactive">
-            <div
-              class="pc-card__armor-bar pc-card__armor-bar--interactive"
-              :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
-            >
-              <button
-                class="pc-card__stat-btn pc-card__stat-btn--mini"
-                :disabled="(pc.armorSlotsMarked || 0) <= 0"
-                :aria-label="'Restaurer 1 armure de ' + (pc.name || 'Sans nom')"
-                @click="decrementArmor(pc)"
-              >
-                &minus;
-              </button>
-              <span class="pc-card__armor-label">
-                &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.effectiveArmorScore }}
-              </span>
-              <div class="pc-card__bar-track pc-card__bar-track--sm">
-                <div
-                  class="pc-card__bar-fill pc-card__bar-fill--armor"
-                  :style="{ width: armorFillPercent(pc) + '%' }"
-                ></div>
-              </div>
-              <button
-                class="pc-card__stat-btn pc-card__stat-btn--mini"
-                :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
-                :aria-label="'Utiliser 1 armure de ' + (pc.name || 'Sans nom')"
-                @click="incrementArmor(pc)"
-              >
-                +
-              </button>
-            </div>
-            <div
-              class="pc-card__hope pc-card__hope--interactive"
-              :aria-label="'Espoir : ' + (pc.hope || 0)"
-            >
-              <button
-                class="pc-card__stat-btn pc-card__stat-btn--mini"
-                :disabled="(pc.hope || 0) <= 0"
-                :aria-label="'Depenser 1 espoir de ' + (pc.name || 'Sans nom')"
-                @click="decrementHope(pc)"
-              >
-                &minus;
-              </button>
-              <span aria-hidden="true">&#x2728;</span>
-              Espoir : <strong>{{ pc.hope || 0 }}</strong>
-              <button
-                class="pc-card__stat-btn pc-card__stat-btn--mini"
-                :disabled="(pc.hope || 0) >= 6"
-                :aria-label="'Gagner 1 espoir pour ' + (pc.name || 'Sans nom')"
-                @click="incrementHope(pc)"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <!-- 5. Stats defensives -->
-          <div class="pc-card__defense">
-            <span>Evasion : <strong>{{ pc.effectiveEvasion }}</strong></span>
-            <span class="pc-card__defense-sep">|</span>
-            <span>Seuils : <strong>{{ pc.thresholds.major }} / {{ pc.thresholds.severe }}</strong></span>
-          </div>
-
-          <!-- 6. Conditions -->
-          <div
-            v-if="pc.conditions && pc.conditions.length > 0"
-            class="pc-card__conditions"
-            aria-label="Conditions actives"
-          >
-            <span
-              v-for="cond in pc.conditions"
-              :key="cond"
-              class="pc-card__condition"
-              :style="conditionStyle(cond)"
-            >
-              {{ conditionLabel(cond) }}
-            </span>
-          </div>
-
-          <!-- 7. Traits -->
-          <div
-            class="pc-card__traits"
-            aria-label="Traits du personnage"
-          >
-            <div
-              v-for="traitKey in TRAIT_ORDER"
-              :key="traitKey"
-              class="pc-card__trait"
-              :class="{
-                'pc-card__trait--positive': (pc.traits && pc.traits[traitKey]) > 0,
-                'pc-card__trait--negative': (pc.traits && pc.traits[traitKey]) < 0,
-                'pc-card__trait--zero': !(pc.traits && pc.traits[traitKey])
-              }"
-            >
-              <span class="pc-card__trait-label">{{ TRAIT_ABBR[traitKey] }}</span>
-              <span class="pc-card__trait-value">{{ traitSign(pc.traits ? pc.traits[traitKey] : 0) }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ═══════════════════════════════════════════════
-             ONGLETS — Combat / Capacites / Inventaire
-             ═══════════════════════════════════════════════ -->
+        <!-- Wrapper : grid-item simple si compact, full-row si expand -->
         <div
-          v-if="visibleTabs(pc).length > 0"
-          class="pc-card__tabs"
+          :class="expandedPcId === pc.id ? 'pc-card-row' : 'pc-card-wrapper'"
+          role="listitem"
+          :aria-label="pc.name || 'Sans nom'"
         >
-          <!-- Barre d'onglets -->
-          <div
-            class="pc-card__tablist"
-            role="tablist"
-            :aria-label="'Sections de ' + (pc.name || 'Sans nom')"
-          >
-            <button
-              v-for="tab in visibleTabs(pc)"
-              :id="'tab-' + pc.id + '-' + tab.id"
-              :key="tab.id"
-              class="pc-card__tab"
-              :class="{ 'pc-card__tab--active': getActiveTab(pc.id) === tab.id }"
-              role="tab"
-              :aria-selected="String(getActiveTab(pc.id) === tab.id)"
-              :aria-controls="'panel-' + pc.id + '-' + tab.id"
-              :tabindex="getActiveTab(pc.id) === tab.id ? 0 : -1"
-              @click="setActiveTab(pc.id, tab.id)"
-              @keydown.left.prevent="navigateTab(pc, -1)"
-              @keydown.right.prevent="navigateTab(pc, 1)"
-            >
-              <span aria-hidden="true">{{ tab.icon }}</span>
-              <span class="pc-card__tab-label">{{ tab.label }}</span>
-            </button>
-          </div>
-
-          <!-- ── Panneau Combat ── -->
-          <div
-            v-show="getActiveTab(pc.id) === 'combat'"
-            :id="'panel-' + pc.id + '-combat'"
-            class="pc-card__tabpanel"
-            role="tabpanel"
-            :aria-labelledby="'tab-' + pc.id + '-combat'"
-          >
-            <!-- Armes -->
-            <div
-              v-if="pc.primaryWeaponData || pc.secondaryWeaponData"
-              class="pc-card__weapons-section"
-            >
-              <!-- Arme primaire -->
-              <div
-                v-if="pc.primaryWeaponData"
-                class="pc-card__weapon"
-              >
-                <span class="pc-card__weapon-name">{{ pc.primaryWeaponData.name }}</span>
+          <article class="pc-card">
+            <!-- Zone toujours visible -->
+            <div class="pc-card__body">
+              <!-- 1. Ligne identite -->
+              <div class="pc-card__identity">
+                <button
+                  class="pc-card__hide-btn"
+                  title="Masquer ce PJ de la table"
+                  aria-label="Masquer ce PJ"
+                  @click="onToggleHidden(pc.id)"
+                >
+                  &#x1F441;&#xFE0F;
+                </button>
                 <span
-                  v-if="pc.primaryWeaponData.trait"
-                  class="pc-card__weapon-trait"
-                >[{{ pc.primaryWeaponData.trait }}]</span>
+                  v-if="pc.classData"
+                  class="pc-card__class-emoji"
+                  aria-hidden="true"
+                >{{ pc.classData.emoji }}</span>
+                <span class="pc-card__name">{{ pc.name || 'Sans nom' }}</span>
                 <span
-                  v-if="pc.primaryWeaponData.damage"
-                  class="pc-card__weapon-damage"
-                >{{ pc.primaryWeaponData.damage }}</span>
+                  v-if="pc.classData"
+                  class="pc-card__class-name"
+                >{{ pc.classData.name }}</span>
+                <span class="pc-card__level-badge">Nv.{{ pc.level || 1 }}</span>
                 <span
-                  v-if="pc.primaryWeaponData.range"
-                  class="pc-card__weapon-range"
-                >{{ pc.primaryWeaponData.range }}</span>
+                  v-if="pc.subclassData"
+                  class="pc-card__subclass"
+                >{{ pc.subclassData.name }}</span>
               </div>
-              <p
-                v-if="pc.primaryWeaponData && pc.primaryWeaponData.feature"
-                class="pc-card__weapon-feature"
-              >
-                {{ pc.primaryWeaponData.feature }}
-              </p>
 
-              <!-- Arme secondaire -->
-              <div
-                v-if="pc.secondaryWeaponData"
-                class="pc-card__weapon"
-              >
-                <span class="pc-card__weapon-name">{{ pc.secondaryWeaponData.name }}</span>
-                <span
-                  v-if="pc.secondaryWeaponData.trait"
-                  class="pc-card__weapon-trait"
-                >[{{ pc.secondaryWeaponData.trait }}]</span>
-                <span
-                  v-if="pc.secondaryWeaponData.damage"
-                  class="pc-card__weapon-damage"
-                >{{ pc.secondaryWeaponData.damage }}</span>
-                <span
-                  v-if="pc.secondaryWeaponData.range"
-                  class="pc-card__weapon-range"
-                >{{ pc.secondaryWeaponData.range }}</span>
+              <!-- 2. Ligne ascendance / communaute -->
+              <div class="pc-card__meta">
+                <span v-if="pc.ancestryData">{{ pc.ancestryData.name }}</span>
+                <span v-if="pc.ancestryData && pc.communityData"> &middot; </span>
+                <span v-if="pc.communityData">{{ pc.communityData.name }}</span>
               </div>
-              <p
-                v-if="pc.secondaryWeaponData && pc.secondaryWeaponData.feature"
-                class="pc-card__weapon-feature"
+
+              <!-- 3. Barres HP + Stress (interactives) -->
+              <div class="pc-card__bars">
+                <!-- Barre HP : currentHP = degats marques -->
+                <div
+                  class="pc-card__bar pc-card__bar--interactive"
+                  :aria-label="'Points de vie : ' + (pc.effectiveMaxHP - (pc.currentHP || 0)) + ' restants sur ' + pc.effectiveMaxHP"
+                >
+                  <button
+                    class="pc-card__stat-btn"
+                    :disabled="(pc.currentHP || 0) <= 0"
+                    :aria-label="'Soigner 1 PV de ' + (pc.name || 'Sans nom')"
+                    @click="decrementHP(pc)"
+                  >
+                    &minus;
+                  </button>
+                  <div class="pc-card__bar-track">
+                    <div
+                      class="pc-card__bar-fill"
+                      :style="{
+                        width: hpFillPercent(pc) + '%',
+                        backgroundColor: hpColor(pc.currentHP || 0, pc.effectiveMaxHP)
+                      }"
+                    ></div>
+                  </div>
+                  <span class="pc-card__bar-text">
+                    &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.effectiveMaxHP }}
+                  </span>
+                  <button
+                    class="pc-card__stat-btn"
+                    :disabled="(pc.currentHP || 0) >= pc.effectiveMaxHP"
+                    :aria-label="'Marquer 1 degat sur ' + (pc.name || 'Sans nom')"
+                    @click="incrementHP(pc)"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <!-- Barre Stress -->
+                <div
+                  class="pc-card__bar pc-card__bar--interactive"
+                  :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.effectiveMaxStress"
+                >
+                  <button
+                    class="pc-card__stat-btn"
+                    :disabled="(pc.currentStress || 0) <= 0"
+                    :aria-label="'Reduire 1 stress de ' + (pc.name || 'Sans nom')"
+                    @click="decrementStress(pc)"
+                  >
+                    &minus;
+                  </button>
+                  <div class="pc-card__bar-track">
+                    <div
+                      class="pc-card__bar-fill"
+                      :style="{
+                        width: stressFillPercent(pc) + '%',
+                        backgroundColor: stressColor(pc.currentStress || 0, pc.effectiveMaxStress)
+                      }"
+                    ></div>
+                  </div>
+                  <span class="pc-card__bar-text">
+                    &#x1F630; {{ pc.currentStress || 0 }}/{{ pc.effectiveMaxStress }}
+                  </span>
+                  <button
+                    class="pc-card__stat-btn"
+                    :disabled="(pc.currentStress || 0) >= pc.effectiveMaxStress"
+                    :aria-label="'Marquer 1 stress sur ' + (pc.name || 'Sans nom')"
+                    @click="incrementStress(pc)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4. Ligne armure + espoir (interactifs) -->
+              <div class="pc-card__armor-hope pc-card__armor-hope--interactive">
+                <div
+                  class="pc-card__armor-bar pc-card__armor-bar--interactive"
+                  :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + pc.effectiveArmorScore"
+                >
+                  <button
+                    class="pc-card__stat-btn pc-card__stat-btn--mini"
+                    :disabled="(pc.armorSlotsMarked || 0) <= 0"
+                    :aria-label="'Restaurer 1 armure de ' + (pc.name || 'Sans nom')"
+                    @click="decrementArmor(pc)"
+                  >
+                    &minus;
+                  </button>
+                  <span class="pc-card__armor-label">
+                    &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.effectiveArmorScore }}
+                  </span>
+                  <div class="pc-card__bar-track pc-card__bar-track--sm">
+                    <div
+                      class="pc-card__bar-fill pc-card__bar-fill--armor"
+                      :style="{ width: armorFillPercent(pc) + '%' }"
+                    ></div>
+                  </div>
+                  <button
+                    class="pc-card__stat-btn pc-card__stat-btn--mini"
+                    :disabled="(pc.armorSlotsMarked || 0) >= pc.effectiveArmorScore"
+                    :aria-label="'Utiliser 1 armure de ' + (pc.name || 'Sans nom')"
+                    @click="incrementArmor(pc)"
+                  >
+                    +
+                  </button>
+                </div>
+                <div
+                  class="pc-card__hope pc-card__hope--interactive"
+                  :aria-label="'Espoir : ' + (pc.hope || 0)"
+                >
+                  <button
+                    class="pc-card__stat-btn pc-card__stat-btn--mini"
+                    :disabled="(pc.hope || 0) <= 0"
+                    :aria-label="'Depenser 1 espoir de ' + (pc.name || 'Sans nom')"
+                    @click="decrementHope(pc)"
+                  >
+                    &minus;
+                  </button>
+                  <span aria-hidden="true">&#x2728;</span>
+                  Espoir : <strong>{{ pc.hope || 0 }}</strong>
+                  <button
+                    class="pc-card__stat-btn pc-card__stat-btn--mini"
+                    :disabled="(pc.hope || 0) >= 6"
+                    :aria-label="'Gagner 1 espoir pour ' + (pc.name || 'Sans nom')"
+                    @click="incrementHope(pc)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- 5. Stats defensives -->
+              <div class="pc-card__defense">
+                <span>Evasion : <strong>{{ pc.effectiveEvasion }}</strong></span>
+                <span class="pc-card__defense-sep">|</span>
+                <span>Seuils : <strong>{{ pc.thresholds.major }} / {{ pc.thresholds.severe }}</strong></span>
+              </div>
+
+              <!-- 6. Conditions -->
+              <div
+                v-if="pc.conditions && pc.conditions.length > 0"
+                class="pc-card__conditions"
+                aria-label="Conditions actives"
               >
-                {{ pc.secondaryWeaponData.feature }}
-              </p>
+                <span
+                  v-for="cond in pc.conditions"
+                  :key="cond"
+                  class="pc-card__condition"
+                  :style="conditionStyle(cond)"
+                >
+                  {{ conditionLabel(cond) }}
+                </span>
+              </div>
+
+              <!-- 7. Traits -->
+              <div
+                class="pc-card__traits"
+                aria-label="Traits du personnage"
+              >
+                <div
+                  v-for="traitKey in TRAIT_ORDER"
+                  :key="traitKey"
+                  class="pc-card__trait"
+                  :class="{
+                    'pc-card__trait--positive': (pc.traits && pc.traits[traitKey]) > 0,
+                    'pc-card__trait--negative': (pc.traits && pc.traits[traitKey]) < 0,
+                    'pc-card__trait--zero': !(pc.traits && pc.traits[traitKey])
+                  }"
+                >
+                  <span class="pc-card__trait-label">{{ TRAIT_ABBR[traitKey] }}</span>
+                  <span class="pc-card__trait-value">{{ traitSign(pc.traits ? pc.traits[traitKey] : 0) }}</span>
+                </div>
+              </div>
             </div>
 
-            <!-- Cartes de domaine enrichies -->
+            <!-- Bouton d'expansion des details -->
             <div
-              v-if="pc.loadoutCards && pc.loadoutCards.length > 0"
-              class="pc-card__domain-cards"
+              v-if="visibleTabs(pc).length > 0"
+              class="pc-card__expand-bar"
             >
-              <div
-                v-for="card in pc.loadoutCards"
-                :key="card.id"
-                class="pc-card__domain-card"
+              <button
+                class="pc-card__expand-btn"
+                :aria-expanded="String(expandedPcId === pc.id)"
+                :aria-label="expandedPcId === pc.id ? 'Fermer les details de ' + (pc.name || 'Sans nom') : 'Ouvrir les details de ' + (pc.name || 'Sans nom')"
+                @click="toggleExpand(pc.id)"
               >
-                <!-- En-tete de carte -->
-                <div class="pc-card__domain-card-header">
-                  <span
-                    class="pc-card__domain-card-activation"
-                    aria-hidden="true"
-                  >{{ activationEmoji(card.activationType) }}</span>
-                  <span class="pc-card__domain-card-name">{{ card.name }}</span>
-                  <span class="pc-card__domain-card-level">Nv.{{ card.level }}</span>
-                  <span
-                    class="pc-card__domain-card-type"
-                    aria-hidden="true"
-                  >{{ formatCardType(card) }}</span>
-                  <span
-                    v-if="card.domain"
-                    class="pc-card__domain-card-domain"
-                  >{{ domainName(card.domain) }}</span>
-                </div>
+                <span aria-hidden="true">{{ expandedPcId === pc.id ? '&#x2716;' : '&#x25B6;' }}</span>
+                {{ expandedPcId === pc.id ? 'Fermer' : 'Details' }}
+              </button>
+            </div>
+          </article>
 
-                <!-- Ligne meta : cout, portee, frequence, rappel -->
-                <div class="pc-card__domain-card-meta">
-                  <span
-                    v-if="card.cost"
-                    class="pc-card__domain-card-badge"
-                  >{{ formatCardCost(card.cost) }}</span>
-                  <span
-                    v-if="card.range"
-                    class="pc-card__domain-card-badge"
-                  >{{ formatRange(card.range) }}</span>
-                  <span
-                    v-if="card.frequency"
-                    class="pc-card__domain-card-badge"
-                  >{{ formatFrequency(card.frequency) }}</span>
-                  <span
-                    v-if="card.recallCost != null && card.recallCost > 0"
-                    class="pc-card__domain-card-badge pc-card__domain-card-badge--recall"
-                  >Rappel : {{ card.recallCost }}</span>
-                </div>
+          <!-- ═══════════════════════════════════════════════
+               PANNEAU DETAILS — s'ouvre a droite de la carte
+               ═══════════════════════════════════════════════ -->
+          <aside
+            v-if="expandedPcId === pc.id"
+            class="pc-detail"
+            :aria-label="'Details de ' + (pc.name || 'Sans nom')"
+          >
+            <!-- Barre d'onglets -->
+            <div class="pc-card__tabs">
+              <div
+                class="pc-card__tablist"
+                role="tablist"
+                :aria-label="'Sections de ' + (pc.name || 'Sans nom')"
+              >
+                <button
+                  v-for="tab in visibleTabs(pc)"
+                  :id="'tab-' + pc.id + '-' + tab.id"
+                  :key="tab.id"
+                  class="pc-card__tab"
+                  :class="{ 'pc-card__tab--active': getActiveTab(pc.id) === tab.id }"
+                  role="tab"
+                  :aria-selected="String(getActiveTab(pc.id) === tab.id)"
+                  :aria-controls="'panel-' + pc.id + '-' + tab.id"
+                  :tabindex="getActiveTab(pc.id) === tab.id ? 0 : -1"
+                  @click="setActiveTab(pc.id, tab.id)"
+                  @keydown.left.prevent="navigateTab(pc, -1)"
+                  @keydown.right.prevent="navigateTab(pc, 1)"
+                >
+                  <span aria-hidden="true">{{ tab.icon }}</span>
+                  <span class="pc-card__tab-label">{{ tab.label }}</span>
+                </button>
+              </div>
 
-                <!-- Tags -->
+              <!-- ── Panneau Combat ── -->
+              <div
+                v-show="getActiveTab(pc.id) === 'combat'"
+                :id="'panel-' + pc.id + '-combat'"
+                class="pc-card__tabpanel"
+                role="tabpanel"
+                :aria-labelledby="'tab-' + pc.id + '-combat'"
+              >
+                <!-- Armes -->
                 <div
-                  v-if="card.tags && card.tags.length > 0"
-                  class="pc-card__domain-card-tags"
+                  v-if="pc.primaryWeaponData || pc.secondaryWeaponData"
+                  class="pc-card__weapons-section"
                 >
-                  <span
-                    v-for="tag in card.tags"
-                    :key="tag"
-                    class="pc-card__domain-card-tag"
-                  >{{ tag }}</span>
+                  <!-- Arme primaire -->
+                  <div
+                    v-if="pc.primaryWeaponData"
+                    class="pc-card__weapon"
+                  >
+                    <span class="pc-card__weapon-name">{{ pc.primaryWeaponData.name }}</span>
+                    <span
+                      v-if="pc.primaryWeaponData.trait"
+                      class="pc-card__weapon-trait"
+                    >[{{ pc.primaryWeaponData.trait }}]</span>
+                    <span
+                      v-if="pc.primaryWeaponData.damage"
+                      class="pc-card__weapon-damage"
+                    >{{ pc.primaryWeaponData.damage }}</span>
+                    <span
+                      v-if="pc.primaryWeaponData.range"
+                      class="pc-card__weapon-range"
+                    >{{ pc.primaryWeaponData.range }}</span>
+                  </div>
+                  <p
+                    v-if="pc.primaryWeaponData && pc.primaryWeaponData.feature"
+                    class="pc-card__weapon-feature"
+                  >
+                    {{ pc.primaryWeaponData.feature }}
+                  </p>
+
+                  <!-- Arme secondaire -->
+                  <div
+                    v-if="pc.secondaryWeaponData"
+                    class="pc-card__weapon"
+                  >
+                    <span class="pc-card__weapon-name">{{ pc.secondaryWeaponData.name }}</span>
+                    <span
+                      v-if="pc.secondaryWeaponData.trait"
+                      class="pc-card__weapon-trait"
+                    >[{{ pc.secondaryWeaponData.trait }}]</span>
+                    <span
+                      v-if="pc.secondaryWeaponData.damage"
+                      class="pc-card__weapon-damage"
+                    >{{ pc.secondaryWeaponData.damage }}</span>
+                    <span
+                      v-if="pc.secondaryWeaponData.range"
+                      class="pc-card__weapon-range"
+                    >{{ pc.secondaryWeaponData.range }}</span>
+                  </div>
+                  <p
+                    v-if="pc.secondaryWeaponData && pc.secondaryWeaponData.feature"
+                    class="pc-card__weapon-feature"
+                  >
+                    {{ pc.secondaryWeaponData.feature }}
+                  </p>
                 </div>
 
-                <!-- Description complete -->
-                <p
-                  v-if="card.feature"
-                  class="pc-card__domain-card-feature"
+                <!-- Cartes de domaine enrichies -->
+                <div
+                  v-if="pc.loadoutCards && pc.loadoutCards.length > 0"
+                  class="pc-card__domain-cards"
                 >
-                  {{ card.feature }}
+                  <div
+                    v-for="card in pc.loadoutCards"
+                    :key="card.id"
+                    class="pc-card__domain-card"
+                  >
+                    <!-- En-tete de carte -->
+                    <div class="pc-card__domain-card-header">
+                      <span
+                        class="pc-card__domain-card-activation"
+                        aria-hidden="true"
+                      >{{ activationEmoji(card.activationType) }}</span>
+                      <span class="pc-card__domain-card-name">{{ card.name }}</span>
+                      <span class="pc-card__domain-card-level">Nv.{{ card.level }}</span>
+                      <span
+                        class="pc-card__domain-card-type"
+                        aria-hidden="true"
+                      >{{ formatCardType(card) }}</span>
+                      <span
+                        v-if="card.domain"
+                        class="pc-card__domain-card-domain"
+                      >{{ domainName(card.domain) }}</span>
+                    </div>
+
+                    <!-- Ligne meta : cout, portee, frequence, rappel -->
+                    <div class="pc-card__domain-card-meta">
+                      <span
+                        v-if="card.cost"
+                        class="pc-card__domain-card-badge"
+                      >{{ formatCardCost(card.cost) }}</span>
+                      <span
+                        v-if="card.range"
+                        class="pc-card__domain-card-badge"
+                      >{{ formatRange(card.range) }}</span>
+                      <span
+                        v-if="card.frequency"
+                        class="pc-card__domain-card-badge"
+                      >{{ formatFrequency(card.frequency) }}</span>
+                      <span
+                        v-if="card.recallCost != null && card.recallCost > 0"
+                        class="pc-card__domain-card-badge pc-card__domain-card-badge--recall"
+                      >Rappel : {{ card.recallCost }}</span>
+                    </div>
+
+                    <!-- Tags -->
+                    <div
+                      v-if="card.tags && card.tags.length > 0"
+                      class="pc-card__domain-card-tags"
+                    >
+                      <span
+                        v-for="tag in card.tags"
+                        :key="tag"
+                        class="pc-card__domain-card-tag"
+                      >{{ tag }}</span>
+                    </div>
+
+                    <!-- Description complete -->
+                    <p
+                      v-if="card.feature"
+                      class="pc-card__domain-card-feature"
+                    >
+                      {{ card.feature }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Etat vide combat -->
+                <p
+                  v-if="!pc.primaryWeaponData && !pc.secondaryWeaponData && (!pc.loadoutCards || pc.loadoutCards.length === 0)"
+                  class="pc-card__empty-tab"
+                >
+                  Aucun equipement de combat.
+                </p>
+              </div>
+
+              <!-- ── Panneau Capacites ── -->
+              <div
+                v-show="getActiveTab(pc.id) === 'capacites'"
+                :id="'panel-' + pc.id + '-capacites'"
+                class="pc-card__tabpanel"
+                role="tabpanel"
+                :aria-labelledby="'tab-' + pc.id + '-capacites'"
+              >
+                <!-- Hope Feature -->
+                <div
+                  v-if="pc.classData && pc.classData.hopeFeature"
+                  class="pc-card__feature-group"
+                >
+                  <div class="pc-card__feature-source">
+                    <span aria-hidden="true">&#x2728;</span>
+                    Feature d'Espoir &#x2014; {{ pc.classData.name }}
+                  </div>
+                  <div class="pc-card__feature pc-card__feature--hope">
+                    <template v-if="typeof pc.classData.hopeFeature === 'object'">
+                      <span class="pc-card__feature-name">
+                        {{ activationEmoji(pc.classData.hopeFeature.activationType) }}
+                        {{ pc.classData.hopeFeature.name }}
+                      </span>
+                      <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature.description }}</span>
+                    </template>
+                    <template v-else>
+                      <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature }}</span>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- Class Features -->
+                <div
+                  v-if="classFeaturesList(pc).length > 0"
+                  class="pc-card__feature-group"
+                >
+                  <div class="pc-card__feature-source">
+                    <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                    Classe &#x2014; {{ pc.classData.name }}
+                  </div>
+                  <div
+                    v-for="(feat, idx) in classFeaturesList(pc)"
+                    :key="'cf-' + idx"
+                    class="pc-card__feature"
+                  >
+                    <template v-if="typeof feat === 'object'">
+                      <span class="pc-card__feature-name">
+                        {{ activationEmoji(feat.activationType) }}
+                        {{ feat.name }}
+                      </span>
+                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                    </template>
+                    <template v-else>
+                      <span class="pc-card__feature-desc">{{ feat }}</span>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- Ancestry Features -->
+                <div
+                  v-if="pc.ancestryData && (pc.ancestryData.topFeature || pc.ancestryData.bottomFeature)"
+                  class="pc-card__feature-group"
+                >
+                  <div class="pc-card__feature-source">
+                    <span aria-hidden="true">&#x1F9EC;</span>
+                    Ascendance &#x2014; {{ pc.ancestryData.name }}
+                  </div>
+                  <div
+                    v-if="pc.ancestryData.topFeature"
+                    class="pc-card__feature"
+                  >
+                    <span class="pc-card__feature-name">{{ pc.ancestryData.topFeature.name }}</span>
+                    <span class="pc-card__feature-desc">{{ pc.ancestryData.topFeature.description }}</span>
+                  </div>
+                  <div
+                    v-if="pc.ancestryData.bottomFeature"
+                    class="pc-card__feature"
+                  >
+                    <span class="pc-card__feature-name">{{ pc.ancestryData.bottomFeature.name }}</span>
+                    <span class="pc-card__feature-desc">{{ pc.ancestryData.bottomFeature.description }}</span>
+                  </div>
+                </div>
+
+                <!-- Community Feature -->
+                <div
+                  v-if="pc.communityData && pc.communityData.feature"
+                  class="pc-card__feature-group"
+                >
+                  <div class="pc-card__feature-source">
+                    <span aria-hidden="true">&#x1F3D8;&#xFE0F;</span>
+                    Communaute &#x2014; {{ pc.communityData.name }}
+                  </div>
+                  <div class="pc-card__feature">
+                    <span class="pc-card__feature-name">{{ pc.communityData.feature.name }}</span>
+                    <span class="pc-card__feature-desc">{{ pc.communityData.feature.description }}</span>
+                  </div>
+                </div>
+
+                <!-- Subclass features par tier -->
+                <template v-if="pc.subclassData">
+                  <!-- Foundation (toujours visible) -->
+                  <div
+                    v-if="(pc.subclassData.foundation || []).length > 0"
+                    class="pc-card__feature-group"
+                  >
+                    <div class="pc-card__feature-source">
+                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Fondation
+                    </div>
+                    <div
+                      v-for="(feat, idx) in (pc.subclassData.foundation || [])"
+                      :key="'found-' + idx"
+                      class="pc-card__feature"
+                    >
+                      <span class="pc-card__feature-name">
+                        {{ activationEmoji(feat.activationType) }}
+                        {{ feat.name }}
+                      </span>
+                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Specialization (niveau >= 5) -->
+                  <div
+                    v-if="(pc.level || 1) >= 5 && (pc.subclassData.specialization || []).length > 0"
+                    class="pc-card__feature-group"
+                  >
+                    <div class="pc-card__feature-source">
+                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Specialisation
+                    </div>
+                    <div
+                      v-for="(feat, idx) in (pc.subclassData.specialization || [])"
+                      :key="'spec-' + idx"
+                      class="pc-card__feature"
+                    >
+                      <span class="pc-card__feature-name">
+                        {{ activationEmoji(feat.activationType) }}
+                        {{ feat.name }}
+                      </span>
+                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Mastery (niveau >= 8) -->
+                  <div
+                    v-if="(pc.level || 1) >= 8 && (pc.subclassData.mastery || []).length > 0"
+                    class="pc-card__feature-group"
+                  >
+                    <div class="pc-card__feature-source">
+                      <span aria-hidden="true">&#x2694;&#xFE0F;</span>
+                      Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Maitrise
+                    </div>
+                    <div
+                      v-for="(feat, idx) in (pc.subclassData.mastery || [])"
+                      :key="'mast-' + idx"
+                      class="pc-card__feature"
+                    >
+                      <span class="pc-card__feature-name">
+                        {{ activationEmoji(feat.activationType) }}
+                        {{ feat.name }}
+                      </span>
+                      <span class="pc-card__feature-desc">{{ feat.description }}</span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <!-- ── Panneau Inventaire ── -->
+              <div
+                v-show="getActiveTab(pc.id) === 'inventaire'"
+                :id="'panel-' + pc.id + '-inventaire'"
+                class="pc-card__tabpanel"
+                role="tabpanel"
+                :aria-labelledby="'tab-' + pc.id + '-inventaire'"
+              >
+                <!-- Or -->
+                <p
+                  v-if="hasGold(pc)"
+                  class="pc-card__gold"
+                >
+                  &#x1FA99; {{ formatGold(pc.gold) }}
+                </p>
+
+                <!-- Resume armure -->
+                <div
+                  v-if="pc.armorData"
+                  class="pc-card__equip-summary"
+                >
+                  <span class="pc-card__equip-label">Armure :</span>
+                  <span class="pc-card__equip-value">{{ pc.armorData.name }}</span>
+                </div>
+
+                <!-- Items inventaire -->
+                <ul
+                  v-if="pc.inventory && pc.inventory.length > 0"
+                  class="pc-card__inventory-list"
+                >
+                  <li
+                    v-for="(item, idx) in pc.inventory"
+                    :key="item.id || idx"
+                    class="pc-card__inventory-item"
+                  >
+                    <span class="pc-card__inventory-name">
+                      {{ item.customName || item.itemId || 'Objet' }}
+                    </span>
+                    <span
+                      v-if="item.quantity > 1"
+                      class="pc-card__inventory-qty"
+                    >x{{ item.quantity }}</span>
+                  </li>
+                </ul>
+
+                <!-- Etat vide inventaire -->
+                <p
+                  v-if="!hasGold(pc) && (!pc.inventory || pc.inventory.length === 0) && !pc.armorData"
+                  class="pc-card__empty-tab"
+                >
+                  Inventaire vide.
                 </p>
               </div>
             </div>
-
-            <!-- Etat vide combat -->
-            <p
-              v-if="!pc.primaryWeaponData && !pc.secondaryWeaponData && (!pc.loadoutCards || pc.loadoutCards.length === 0)"
-              class="pc-card__empty-tab"
-            >
-              Aucun equipement de combat.
-            </p>
-          </div>
-
-          <!-- ── Panneau Capacites ── -->
-          <div
-            v-show="getActiveTab(pc.id) === 'capacites'"
-            :id="'panel-' + pc.id + '-capacites'"
-            class="pc-card__tabpanel"
-            role="tabpanel"
-            :aria-labelledby="'tab-' + pc.id + '-capacites'"
-          >
-            <!-- Hope Feature -->
-            <div
-              v-if="pc.classData && pc.classData.hopeFeature"
-              class="pc-card__feature-group"
-            >
-              <div class="pc-card__feature-source">
-                <span aria-hidden="true">&#x2728;</span>
-                Feature d'Espoir &#x2014; {{ pc.classData.name }}
-              </div>
-              <div class="pc-card__feature pc-card__feature--hope">
-                <template v-if="typeof pc.classData.hopeFeature === 'object'">
-                  <span class="pc-card__feature-name">
-                    {{ activationEmoji(pc.classData.hopeFeature.activationType) }}
-                    {{ pc.classData.hopeFeature.name }}
-                  </span>
-                  <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature.description }}</span>
-                </template>
-                <template v-else>
-                  <span class="pc-card__feature-desc">{{ pc.classData.hopeFeature }}</span>
-                </template>
-              </div>
-            </div>
-
-            <!-- Class Features -->
-            <div
-              v-if="classFeaturesList(pc).length > 0"
-              class="pc-card__feature-group"
-            >
-              <div class="pc-card__feature-source">
-                <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                Classe &#x2014; {{ pc.classData.name }}
-              </div>
-              <div
-                v-for="(feat, idx) in classFeaturesList(pc)"
-                :key="'cf-' + idx"
-                class="pc-card__feature"
-              >
-                <template v-if="typeof feat === 'object'">
-                  <span class="pc-card__feature-name">
-                    {{ activationEmoji(feat.activationType) }}
-                    {{ feat.name }}
-                  </span>
-                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                </template>
-                <template v-else>
-                  <span class="pc-card__feature-desc">{{ feat }}</span>
-                </template>
-              </div>
-            </div>
-
-            <!-- Ancestry Features -->
-            <div
-              v-if="pc.ancestryData && (pc.ancestryData.topFeature || pc.ancestryData.bottomFeature)"
-              class="pc-card__feature-group"
-            >
-              <div class="pc-card__feature-source">
-                <span aria-hidden="true">&#x1F9EC;</span>
-                Ascendance &#x2014; {{ pc.ancestryData.name }}
-              </div>
-              <div
-                v-if="pc.ancestryData.topFeature"
-                class="pc-card__feature"
-              >
-                <span class="pc-card__feature-name">{{ pc.ancestryData.topFeature.name }}</span>
-                <span class="pc-card__feature-desc">{{ pc.ancestryData.topFeature.description }}</span>
-              </div>
-              <div
-                v-if="pc.ancestryData.bottomFeature"
-                class="pc-card__feature"
-              >
-                <span class="pc-card__feature-name">{{ pc.ancestryData.bottomFeature.name }}</span>
-                <span class="pc-card__feature-desc">{{ pc.ancestryData.bottomFeature.description }}</span>
-              </div>
-            </div>
-
-            <!-- Community Feature -->
-            <div
-              v-if="pc.communityData && pc.communityData.feature"
-              class="pc-card__feature-group"
-            >
-              <div class="pc-card__feature-source">
-                <span aria-hidden="true">&#x1F3D8;&#xFE0F;</span>
-                Communaute &#x2014; {{ pc.communityData.name }}
-              </div>
-              <div class="pc-card__feature">
-                <span class="pc-card__feature-name">{{ pc.communityData.feature.name }}</span>
-                <span class="pc-card__feature-desc">{{ pc.communityData.feature.description }}</span>
-              </div>
-            </div>
-
-            <!-- Subclass features par tier -->
-            <template v-if="pc.subclassData">
-              <!-- Foundation (toujours visible) -->
-              <div
-                v-if="(pc.subclassData.foundation || []).length > 0"
-                class="pc-card__feature-group"
-              >
-                <div class="pc-card__feature-source">
-                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Fondation
-                </div>
-                <div
-                  v-for="(feat, idx) in (pc.subclassData.foundation || [])"
-                  :key="'found-' + idx"
-                  class="pc-card__feature"
-                >
-                  <span class="pc-card__feature-name">
-                    {{ activationEmoji(feat.activationType) }}
-                    {{ feat.name }}
-                  </span>
-                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                </div>
-              </div>
-
-              <!-- Specialization (niveau >= 5) -->
-              <div
-                v-if="(pc.level || 1) >= 5 && (pc.subclassData.specialization || []).length > 0"
-                class="pc-card__feature-group"
-              >
-                <div class="pc-card__feature-source">
-                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Specialisation
-                </div>
-                <div
-                  v-for="(feat, idx) in (pc.subclassData.specialization || [])"
-                  :key="'spec-' + idx"
-                  class="pc-card__feature"
-                >
-                  <span class="pc-card__feature-name">
-                    {{ activationEmoji(feat.activationType) }}
-                    {{ feat.name }}
-                  </span>
-                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                </div>
-              </div>
-
-              <!-- Mastery (niveau >= 8) -->
-              <div
-                v-if="(pc.level || 1) >= 8 && (pc.subclassData.mastery || []).length > 0"
-                class="pc-card__feature-group"
-              >
-                <div class="pc-card__feature-source">
-                  <span aria-hidden="true">&#x2694;&#xFE0F;</span>
-                  Specialisation &#x2014; {{ pc.subclassData.name }} &#xB7; Maitrise
-                </div>
-                <div
-                  v-for="(feat, idx) in (pc.subclassData.mastery || [])"
-                  :key="'mast-' + idx"
-                  class="pc-card__feature"
-                >
-                  <span class="pc-card__feature-name">
-                    {{ activationEmoji(feat.activationType) }}
-                    {{ feat.name }}
-                  </span>
-                  <span class="pc-card__feature-desc">{{ feat.description }}</span>
-                </div>
-              </div>
-            </template>
-          </div>
-
-          <!-- ── Panneau Inventaire ── -->
-          <div
-            v-show="getActiveTab(pc.id) === 'inventaire'"
-            :id="'panel-' + pc.id + '-inventaire'"
-            class="pc-card__tabpanel"
-            role="tabpanel"
-            :aria-labelledby="'tab-' + pc.id + '-inventaire'"
-          >
-            <!-- Or -->
-            <p
-              v-if="hasGold(pc)"
-              class="pc-card__gold"
-            >
-              &#x1FA99; {{ formatGold(pc.gold) }}
-            </p>
-
-            <!-- Resume armure -->
-            <div
-              v-if="pc.armorData"
-              class="pc-card__equip-summary"
-            >
-              <span class="pc-card__equip-label">Armure :</span>
-              <span class="pc-card__equip-value">{{ pc.armorData.name }}</span>
-            </div>
-
-            <!-- Items inventaire -->
-            <ul
-              v-if="pc.inventory && pc.inventory.length > 0"
-              class="pc-card__inventory-list"
-            >
-              <li
-                v-for="(item, idx) in pc.inventory"
-                :key="item.id || idx"
-                class="pc-card__inventory-item"
-              >
-                <span class="pc-card__inventory-name">
-                  {{ item.customName || item.itemId || 'Objet' }}
-                </span>
-                <span
-                  v-if="item.quantity > 1"
-                  class="pc-card__inventory-qty"
-                >x{{ item.quantity }}</span>
-              </li>
-            </ul>
-
-            <!-- Etat vide inventaire -->
-            <p
-              v-if="!hasGold(pc) && (!pc.inventory || pc.inventory.length === 0) && !pc.armorData"
-              class="pc-card__empty-tab"
-            >
-              Inventaire vide.
-            </p>
-          </div>
+          </aside>
         </div>
-      </article>
+      </template>
     </div>
 
     <!-- Bandeau PJs masqués -->
@@ -801,6 +826,13 @@ export default {
     function decrementHope(pc) {
       const newVal = Math.max(0, (pc.hope || 0) - 1)
       characterStore.patchCharacterById(pc.id, { hope: newVal })
+    }
+
+    // ── Expansion des details (un seul PJ a la fois) ──
+    const expandedPcId = ref(null)
+
+    function toggleExpand(pcId) {
+      expandedPcId.value = expandedPcId.value === pcId ? null : pcId
     }
 
     // ── Personnages enrichis via resolveCharacterDisplay ──
@@ -1092,6 +1124,9 @@ export default {
       hiddenList,
       showHidden,
       onToggleHidden,
+      // Expansion details
+      expandedPcId,
+      toggleExpand,
       // Gestion interactive
       incrementHP,
       decrementHP,
@@ -1251,6 +1286,72 @@ export default {
   .pc-group__grid--cols-4 {
     grid-template-columns: 1fr;
   }
+}
+
+/* ═══════════════════════════════════════════════
+   WRAPPERS — Compact vs Expand
+   ═══════════════════════════════════════════════ */
+
+.pc-card-wrapper {
+  /* Item de grille normal, pas de style special */
+}
+
+.pc-card-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .pc-card-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BOUTON D'EXPANSION
+   ═══════════════════════════════════════════════ */
+
+.pc-card__expand-bar {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-xs) var(--space-md);
+  display: flex;
+  justify-content: center;
+}
+
+.pc-card__expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pc-card__expand-btn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-active);
+}
+
+/* ═══════════════════════════════════════════════
+   PANNEAU DETAILS (aside a droite)
+   ═══════════════════════════════════════════════ */
+
+.pc-detail {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
 /* ═══════════════════════════════════════════════
