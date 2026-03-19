@@ -43,6 +43,71 @@
       </div>
     </div>
 
+    <!-- Equipment selects -->
+    <div class="pc-inv-editor__equip">
+      <div class="pc-inv-editor__equip-row">
+        <span class="pc-inv-editor__equip-label">Armure</span>
+        <select
+          class="pc-inv-editor__equip-select"
+          :value="armorId"
+          aria-label="Armure equipee"
+          @change="$emit('update-equipment', 'armorId', $event.target.value)"
+        >
+          <option value="">
+            — Aucune —
+          </option>
+          <option
+            v-for="item in ARMOR"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+      <div class="pc-inv-editor__equip-row">
+        <span class="pc-inv-editor__equip-label">Arme 1re</span>
+        <select
+          class="pc-inv-editor__equip-select"
+          :value="primaryWeaponId"
+          aria-label="Arme principale equipee"
+          @change="$emit('update-equipment', 'primaryWeaponId', $event.target.value)"
+        >
+          <option value="">
+            — Aucune —
+          </option>
+          <option
+            v-for="item in PRIMARY_WEAPONS"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }} — {{ item.damage }}
+          </option>
+        </select>
+      </div>
+      <div class="pc-inv-editor__equip-row">
+        <span class="pc-inv-editor__equip-label">Arme 2de</span>
+        <select
+          class="pc-inv-editor__equip-select"
+          :value="secondaryWeaponId"
+          :disabled="isTwoHanded"
+          aria-label="Arme secondaire equipee"
+          @change="$emit('update-equipment', 'secondaryWeaponId', $event.target.value)"
+        >
+          <option value="">
+            — Aucune —
+          </option>
+          <option
+            v-for="item in SECONDARY_WEAPONS"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }} — {{ item.damage }}
+          </option>
+        </select>
+      </div>
+    </div>
+
     <!-- Items list -->
     <ul
       v-if="inventory && inventory.length > 0"
@@ -207,10 +272,26 @@ export default {
     gold: {
       type: Object,
       default: () => ({ handfuls: 0, bags: 0, chests: 0 })
+    },
+    primaryWeaponId: {
+      type: String,
+      default: ''
+    },
+    secondaryWeaponId: {
+      type: String,
+      default: ''
+    },
+    armorId: {
+      type: String,
+      default: ''
+    },
+    isTwoHanded: {
+      type: Boolean,
+      default: false
     }
   },
 
-  emits: ['add-item', 'remove-item', 'update-item', 'update-gold'],
+  emits: ['add-item', 'remove-item', 'update-item', 'update-gold', 'update-equipment'],
 
   setup(props, { emit }) {
     const goldTiers = [
@@ -280,7 +361,10 @@ export default {
       onAddItem,
       confirmingDelete,
       startDelete,
-      confirmDelete
+      confirmDelete,
+      PRIMARY_WEAPONS,
+      SECONDARY_WEAPONS,
+      ARMOR
     }
   }
 }
@@ -292,6 +376,47 @@ export default {
   flex-direction: column;
   gap: var(--space-sm);
 }
+
+/* ── Equipment selects ── */
+
+.pc-inv-editor__equip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pc-inv-editor__equip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.pc-inv-editor__equip-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  min-width: 55px;
+  flex-shrink: 0;
+}
+
+.pc-inv-editor__equip-select {
+  font-size: var(--font-size-xs);
+  padding: 2px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  flex: 1;
+  min-width: 0;
+}
+
+.pc-inv-editor__equip-select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Gold tracker ── */
 
 .pc-inv-editor__gold {
   display: flex;

@@ -333,10 +333,15 @@
             <PcInventoryEditor
               :inventory="pc.inventory || []"
               :gold="pc.gold || { handfuls: 0, bags: 0, chests: 0 }"
+              :primary-weapon-id="pc.primaryWeaponId || ''"
+              :secondary-weapon-id="pc.secondaryWeaponId || ''"
+              :armor-id="pc.armorId || ''"
+              :is-two-handed="!!(pc.primaryWeapon && pc.primaryWeapon.burden === 'Two-Handed')"
               @add-item="(type) => onAddItem(pc.id, type)"
               @remove-item="(index) => onRemoveItem(pc.id, index)"
               @update-item="(index, field, value) => onUpdateItem(pc.id, index, field, value)"
               @update-gold="(tier, value) => onUpdateGold(pc.id, tier, value)"
+              @update-equipment="(field, value) => onUpdateEquipment(pc.id, field, value)"
             />
           </div>
 
@@ -698,6 +703,9 @@ export default {
     function onUpdateGold(pcId, tier, value) {
       characterStore.updateGoldById(pcId, tier, value)
     }
+    function onUpdateEquipment(pcId, field, value) {
+      characterStore.applySelectionById(pcId, field, value)
+    }
 
     // ── Systeme d'onglets ──
     const CARD_TABS = [
@@ -835,7 +843,7 @@ export default {
       // Notes
       onNotesInput,
       // Inventaire interactif
-      onAddItem, onRemoveItem, onUpdateItem, onUpdateGold,
+      onAddItem, onRemoveItem, onUpdateItem, onUpdateGold, onUpdateEquipment,
       // Onglets
       activeTab, getActiveTab, setActiveTab,
       CARD_TABS, tabHasContent, visibleTabs, navigateTab,

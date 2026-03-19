@@ -1263,6 +1263,79 @@ export const useCharacterStore = defineStore('characters', () => {
     persist()
   }
 
+  /**
+   * Applique une sélection d'équipement par ID de personnage (vue Session).
+   * Réutilise la logique d'applySelection sans toucher selectedCharacter.
+   */
+  function applySelectionById(charId, field, value) {
+    const char = characters.value.find(c => c.id === charId)
+    if (!char) return
+    const EQUIPMENT_FIELDS = ['armorId', 'primaryWeaponId', 'secondaryWeaponId']
+    if (!EQUIPMENT_FIELDS.includes(field)) return
+
+    char[field] = value
+    char.updatedAt = new Date().toISOString()
+
+    try {
+      switch (field) {
+        case 'armorId': {
+          const armor = getArmorById(value) || allArmor.value.find((a) => a.id === value)
+          if (armor) {
+            char.armorName = armor.name
+            char.armorBaseThresholds = { major: armor.thresholds.major, severe: armor.thresholds.severe }
+            char.armorScore = armor.baseScore
+            char.armorSlotsMarked = 0
+            let armorEvasionBonus = 0
+            if (armor.featureKey === 'Flexible') armorEvasionBonus = 1
+            else if (armor.featureKey === 'Heavy') armorEvasionBonus = -1
+            else if (armor.featureKey === 'Very Heavy') armorEvasionBonus = -2
+            char.evasionBonus = armorEvasionBonus
+          } else {
+            char.armorName = ''
+            char.armorBaseThresholds = { major: 0, severe: 0 }
+            char.armorScore = 0
+            char.armorSlotsMarked = 0
+            char.evasionBonus = 0
+          }
+          break
+        }
+        case 'primaryWeaponId': {
+          const wpn = getPrimaryWeaponById(value) || allPrimaryWeapons.value.find((w) => w.id === value)
+          if (wpn) {
+            char.primaryWeapon = {
+              name: wpn.name, trait: wpn.trait, range: wpn.range,
+              damage: wpn.damage, feature: wpn.feature || '', burden: wpn.burden || 'One-Handed'
+            }
+            if (wpn.burden === 'Two-Handed') {
+              char.secondaryWeaponId = ''
+              char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
+            }
+          } else {
+            char.primaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
+          }
+          break
+        }
+        case 'secondaryWeaponId': {
+          if (char.primaryWeapon && char.primaryWeapon.burden === 'Two-Handed') break
+          const wpn = getSecondaryWeaponById(value) || allSecondaryWeapons.value.find((w) => w.id === value)
+          if (wpn) {
+            char.secondaryWeapon = {
+              name: wpn.name, trait: wpn.trait, range: wpn.range,
+              damage: wpn.damage, feature: wpn.feature || '', burden: wpn.burden || 'One-Handed'
+            }
+          } else {
+            char.secondaryWeapon = { name: '', trait: '', range: '', damage: '', feature: '', burden: '' }
+          }
+          break
+        }
+      }
+    } catch (err) {
+      console.error(`[characterStore] applySelectionById error for ${field}:`, err)
+    }
+
+    persist()
+  }
+
   // ── Max HP/Stress adjustment (level ups) ───────────────
 
   /** Augmente le max HP (level up) */
@@ -1594,6 +1667,7 @@ export const useCharacterStore = defineStore('characters', () => {
     removeInventoryItemById,
     updateInventoryItemById,
     updateGoldById,
+    applySelectionById,
 
     // Actions Conditions
     addCondition,
