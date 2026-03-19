@@ -187,8 +187,8 @@ export default {
 .session-notes__textarea {
   width: 100%;
   min-height: 4lh;
-  max-height: 4lh;
-  resize: none;
+  max-height: none;
+  resize: vertical;
   background: var(--color-surface, #1a1a2e);
   color: var(--color-text, #fff);
   border: 1px solid var(--color-border, rgba(255,255,255,0.1));
@@ -201,7 +201,6 @@ export default {
 
 .session-notes--expanded .session-notes__textarea {
   min-height: 12lh;
-  max-height: 12lh;
 }
 
 .session-notes__header-actions {
