@@ -76,7 +76,7 @@ export default {
 .table-view {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100dvh - var(--header-height, 56px) - 2 * var(--space-md, 1rem));
 }
 
 .table-view__content {
