@@ -17,6 +17,7 @@
             <router-link
               :to="`/compendium/${tab.id}`"
               role="tab"
+              :title="tab.label"
               :aria-selected="currentTab === tab.id ? 'true' : 'false'"
               class="compendium-view__tab"
               :class="{ 'compendium-view__tab--active': currentTab === tab.id }"
@@ -82,7 +83,7 @@ const COMPENDIUM_TABS = [
   { id: 'classes', label: 'Classes', icon: '\uD83D\uDDE1\uFE0F' },
   { id: 'domaines', label: 'Domaines', icon: '\uD83C\uDCCF' },
   { id: 'ascendances', label: 'Ascendances', icon: '\uD83E\uDDEC' },
-  { id: 'communautes', label: 'Communautes', icon: '\uD83C\uDFD8\uFE0F' },
+  { id: 'communautes', label: 'Communautés', icon: '\uD83C\uDFD8\uFE0F' },
   { id: 'equipement', label: 'Equipement', icon: '\uD83D\uDEE1\uFE0F' }
 ]
 
@@ -198,6 +199,8 @@ export default {
   .compendium-view__tab-label { display: none; }
   .compendium-view__tab-icon { font-size: 1.3em; }
   .compendium-view__tab { padding: var(--space-sm, 0.5rem); }
-  .compendium-view__columns-control { display: none; }
+  .compendium-view__columns-control { display: none !important; }
+  .compendium-view__columns-slider,
+  #compendium-columns-ticks { display: none !important; }
 }
 </style>

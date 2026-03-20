@@ -48,13 +48,21 @@
           role="list"
           aria-label="Liste des adversaires"
         >
-          <p
+          <div
             v-if="store.filteredCount === 0"
             class="adversary-browser__empty"
             role="status"
           >
-            Aucun adversaire trouvé avec ces filtres.
-          </p>
+            <p aria-hidden="true">&#x2694;&#xFE0F;</p>
+            <p>Aucun adversaire trouvé avec ces filtres.</p>
+            <button
+              v-if="store.hasActiveFilters"
+              class="btn btn--secondary btn--sm"
+              @click="store.clearFilters"
+            >
+              Effacer les filtres
+            </button>
+          </div>
 
           <AdversaryCard
             v-for="adversary in store.filteredAdversaries"
@@ -329,6 +337,11 @@ export default {
   text-align: center;
   color: var(--color-text-muted);
   padding: var(--space-2xl) var(--space-md);
+}
+
+.adversary-browser__empty p:first-child {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-sm);
 }
 
 .adversary-browser__detail {

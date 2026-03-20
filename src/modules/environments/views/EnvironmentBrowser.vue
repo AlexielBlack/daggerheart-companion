@@ -45,13 +45,21 @@
         role="list"
         aria-label="Liste des environnements"
       >
-        <p
+        <div
           v-if="store.filteredCount === 0"
           class="env-browser__empty"
           role="status"
         >
-          Aucun environnement trouvé avec ces filtres.
-        </p>
+          <p aria-hidden="true">&#127757;</p>
+          <p>Aucun environnement trouvé avec ces filtres.</p>
+          <button
+            v-if="store.hasActiveFilters"
+            class="btn btn--secondary btn--sm"
+            @click="store.clearFilters"
+          >
+            Effacer les filtres
+          </button>
+        </div>
 
         <EnvironmentCard
           v-for="environment in store.filteredEnvironments"
@@ -320,6 +328,11 @@ export default {
   text-align: center;
   color: var(--color-text-muted);
   padding: var(--space-2xl) var(--space-md);
+}
+
+.env-browser__empty p:first-child {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-sm);
 }
 
 .env-browser__detail {
