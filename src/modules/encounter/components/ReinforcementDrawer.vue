@@ -5,121 +5,215 @@
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <div class="reinf__inner">
-      <!-- ── Recherche ── -->
-      <div class="reinf__search-row">
-        <input
-          ref="searchInput"
-          v-model="search"
-          class="reinf__search"
-          type="search"
-          placeholder="Rechercher un adversaire…"
-          aria-label="Rechercher un adversaire"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-        />
-      </div>
-
-      <!-- ── Filtres ── -->
-      <div class="reinf__filters-block">
-        <!-- Tier -->
-        <div class="reinf__filter-row">
-          <span class="reinf__filter-label">Tier</span>
-          <div class="reinf__filter-pills">
-            <button
-              v-for="t in 4"
-              :key="'tier-' + t"
-              class="reinf__pill"
-              :class="{ 'reinf__pill--on': tierFilter.includes(t) }"
-              :aria-label="'Tier ' + t"
-              :aria-pressed="tierFilter.includes(t)"
-              @click="toggleTier(t)"
-            >
-              {{ t }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Type -->
-        <div class="reinf__filter-row">
-          <span class="reinf__filter-label">Type</span>
-          <div class="reinf__filter-pills">
-            <button
-              v-for="typ in adversaryTypes"
-              :key="typ"
-              class="reinf__pill"
-              :class="{ 'reinf__pill--on': typeFilter.includes(typ) }"
-              :aria-label="typ"
-              :aria-pressed="typeFilter.includes(typ)"
-              @click="toggleType(typ)"
-            >
-              {{ typ.slice(0, 3) }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Tri -->
-        <div class="reinf__filter-row">
-          <span class="reinf__filter-label">Tri</span>
-          <div class="reinf__filter-pills">
-            <button
-              v-for="opt in sortOptions"
-              :key="opt.key"
-              class="reinf__pill"
-              :class="{ 'reinf__pill--on': sortKey === opt.key }"
-              :aria-pressed="sortKey === opt.key"
-              @click="sortKey = opt.key"
-            >
-              {{ opt.label }}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Compteur ── -->
-      <div class="reinf__count-bar">
-        <span class="reinf__count">
-          {{ filtered.length }} résultat{{ filtered.length > 1 ? 's' : '' }}
-        </span>
+      <!-- ── Onglets Adversaires / PNJ ── -->
+      <div
+        class="reinf__tabs"
+        role="tablist"
+        aria-label="Type de renfort"
+      >
         <button
-          v-if="hasActiveFilters"
-          class="reinf__reset"
-          aria-label="Réinitialiser les filtres"
-          @click="resetFilters"
+          role="tab"
+          class="reinf__tab"
+          :class="{ 'reinf__tab--on': tab === 'adversary' }"
+          :aria-selected="tab === 'adversary'"
+          @click="tab = 'adversary'"
         >
-          Réinitialiser
+          Adversaires
+        </button>
+        <button
+          role="tab"
+          class="reinf__tab"
+          :class="{ 'reinf__tab--on': tab === 'npc' }"
+          :aria-selected="tab === 'npc'"
+          @click="tab = 'npc'"
+        >
+          PNJ
+          <span
+            v-if="combatNpcs.length > 0"
+            class="reinf__tab-badge"
+          >{{ combatNpcs.length }}</span>
         </button>
       </div>
 
-      <!-- ── Liste ── -->
-      <ul
-        class="reinf__list"
-        aria-label="Adversaires disponibles"
-      >
-        <li
-          v-for="adv in filtered"
-          :key="adv.id"
-        >
+      <!-- ════ Onglet Adversaires ════ -->
+      <template v-if="tab === 'adversary'">
+        <!-- ── Recherche ── -->
+        <div class="reinf__search-row">
+          <input
+            ref="searchInput"
+            v-model="search"
+            class="reinf__search"
+            type="search"
+            placeholder="Rechercher un adversaire…"
+            aria-label="Rechercher un adversaire"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <!-- ── Filtres ── -->
+        <div class="reinf__filters-block">
+          <!-- Tier -->
+          <div class="reinf__filter-row">
+            <span class="reinf__filter-label">Tier</span>
+            <div class="reinf__filter-pills">
+              <button
+                v-for="t in 4"
+                :key="'tier-' + t"
+                class="reinf__pill"
+                :class="{ 'reinf__pill--on': tierFilter.includes(t) }"
+                :aria-label="'Tier ' + t"
+                :aria-pressed="tierFilter.includes(t)"
+                @click="toggleTier(t)"
+              >
+                {{ t }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Type -->
+          <div class="reinf__filter-row">
+            <span class="reinf__filter-label">Type</span>
+            <div class="reinf__filter-pills">
+              <button
+                v-for="typ in adversaryTypes"
+                :key="typ"
+                class="reinf__pill"
+                :class="{ 'reinf__pill--on': typeFilter.includes(typ) }"
+                :aria-label="typ"
+                :aria-pressed="typeFilter.includes(typ)"
+                @click="toggleType(typ)"
+              >
+                {{ typ.slice(0, 3) }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Tri -->
+          <div class="reinf__filter-row">
+            <span class="reinf__filter-label">Tri</span>
+            <div class="reinf__filter-pills">
+              <button
+                v-for="opt in sortOptions"
+                :key="opt.key"
+                class="reinf__pill"
+                :class="{ 'reinf__pill--on': sortKey === opt.key }"
+                :aria-pressed="sortKey === opt.key"
+                @click="sortKey = opt.key"
+              >
+                {{ opt.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Compteur ── -->
+        <div class="reinf__count-bar">
+          <span class="reinf__count">
+            {{ filtered.length }} résultat{{ filtered.length > 1 ? 's' : '' }}
+          </span>
           <button
-            class="reinf__item"
-            :aria-label="adv.name + ' — ' + adv.type + ' Tier ' + adv.tier + ' ' + adv.hp + ' HP'"
-            @click="pick(adv.id)"
+            v-if="hasActiveFilters"
+            class="reinf__reset"
+            aria-label="Réinitialiser les filtres"
+            @click="resetFilters"
           >
-            <span class="reinf__item-name">{{ adv.name }}</span>
-            <span class="reinf__item-meta">
-              <span class="reinf__item-type">{{ adv.type }}</span>
-              <span class="reinf__item-tier">T{{ adv.tier }}</span>
-              <span class="reinf__item-hp">{{ adv.hp }}HP</span>
-            </span>
+            Réinitialiser
           </button>
-        </li>
-        <li
-          v-if="filtered.length === 0"
-          class="reinf__empty"
+        </div>
+
+        <!-- ── Liste ── -->
+        <ul
+          class="reinf__list"
+          aria-label="Adversaires disponibles"
         >
-          Aucun résultat
-        </li>
-      </ul>
+          <li
+            v-for="adv in filtered"
+            :key="adv.id"
+          >
+            <button
+              class="reinf__item"
+              :aria-label="adv.name + ' — ' + adv.type + ' Tier ' + adv.tier + ' ' + adv.hp + ' HP'"
+              @click="pick(adv.id)"
+            >
+              <span class="reinf__item-name">{{ adv.name }}</span>
+              <span class="reinf__item-meta">
+                <span class="reinf__item-type">{{ adv.type }}</span>
+                <span class="reinf__item-tier">T{{ adv.tier }}</span>
+                <span class="reinf__item-hp">{{ adv.hp }}HP</span>
+              </span>
+            </button>
+          </li>
+          <li
+            v-if="filtered.length === 0"
+            class="reinf__empty"
+          >
+            Aucun résultat
+          </li>
+        </ul>
+      </template>
+
+      <!-- ════ Onglet PNJ ════ -->
+      <template v-if="tab === 'npc'">
+        <!-- ── Recherche PNJ ── -->
+        <div class="reinf__search-row">
+          <input
+            ref="npcSearchInput"
+            v-model="npcSearch"
+            class="reinf__search"
+            type="search"
+            placeholder="Rechercher un PNJ…"
+            aria-label="Rechercher un PNJ"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="reinf__count-bar">
+          <span class="reinf__count">
+            {{ filteredNpcs.length }} PNJ{{ filteredNpcs.length > 1 ? 's' : '' }} avec profil combat
+          </span>
+        </div>
+
+        <ul
+          class="reinf__list"
+          aria-label="PNJ disponibles"
+        >
+          <li
+            v-for="npc in filteredNpcs"
+            :key="npc.id"
+          >
+            <button
+              class="reinf__item"
+              :aria-label="npc.name + ' — ' + npc.combatLabel"
+              @click="pickNpc(npc.id)"
+            >
+              <span class="reinf__item-name">
+                {{ npc.name }}
+                <span
+                  v-if="npc.title"
+                  class="reinf__npc-title"
+                >, {{ npc.title }}</span>
+              </span>
+              <span class="reinf__item-meta">
+                <span class="reinf__npc-mode">{{ npc.combatLabel }}</span>
+                <span
+                  v-if="npc.hp"
+                  class="reinf__item-hp"
+                >{{ npc.hp }}HP</span>
+              </span>
+            </button>
+          </li>
+          <li
+            v-if="filteredNpcs.length === 0"
+            class="reinf__empty"
+          >
+            {{ combatNpcs.length === 0 ? 'Aucun PNJ avec profil de combat' : 'Aucun résultat' }}
+          </li>
+        </ul>
+      </template>
     </div>
   </BottomDrawer>
 </template>
@@ -128,6 +222,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import BottomDrawer from './BottomDrawer.vue'
 import { allAdversaries, ADVERSARY_TYPES } from '@data/adversaries'
+import { useNpcStore } from '@modules/npcs/stores/npcStore'
 
 const SORT_OPTIONS = [
   { key: 'name',  label: 'Nom'  },
@@ -144,14 +239,17 @@ export default {
     modelValue: { type: Boolean, default: false }
   },
 
-  emits: ['update:modelValue', 'add'],
+  emits: ['update:modelValue', 'add', 'add-npc'],
 
   setup(props, { emit }) {
     const searchInput = ref(null)
+    const npcSearchInput = ref(null)
     const search      = ref('')
+    const npcSearch   = ref('')
     const tierFilter  = ref([])
     const typeFilter  = ref([])
     const sortKey     = ref('name')
+    const tab         = ref('adversary')
 
     const adversaryTypes = ADVERSARY_TYPES
     const sortOptions    = SORT_OPTIONS
@@ -160,13 +258,22 @@ export default {
     watch(() => props.modelValue, async (val) => {
       if (val) {
         await nextTick()
-        // Double rAF pour s'assurer que l'animation est initiée
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            searchInput.value?.focus()
+            if (tab.value === 'npc') npcSearchInput.value?.focus()
+            else searchInput.value?.focus()
           })
         })
       }
+    })
+
+    // Focus auto au changement d'onglet
+    watch(tab, async () => {
+      await nextTick()
+      requestAnimationFrame(() => {
+        if (tab.value === 'npc') npcSearchInput.value?.focus()
+        else searchInput.value?.focus()
+      })
     })
 
     function toggleTier(tier) {
@@ -220,16 +327,59 @@ export default {
       return sorted.slice(0, 50)
     })
 
+    // ── PNJ avec profil combat ──
+    const npcStore = useNpcStore()
+
+    const combatNpcs = computed(() => {
+      return npcStore.npcs
+        .filter((n) => n.combatProfileMode && n.combatProfileMode !== 'none')
+        .map((n) => {
+          let combatLabel = ''
+          let hp = null
+          if (n.combatProfileMode === 'linked' && n.linkedAdversaryId) {
+            const linked = allAdversaries.find((a) => a.id === n.linkedAdversaryId)
+            combatLabel = linked ? linked.type : 'Lié'
+            hp = linked ? linked.hp : null
+          } else if (n.combatProfileMode === 'custom') {
+            combatLabel = n.adversaryType || 'Custom'
+            hp = n.combatStats?.hp || null
+          }
+          return {
+            id: n.id,
+            name: n.name,
+            title: n.title || '',
+            combatLabel,
+            hp
+          }
+        })
+        .sort((a, b) => a.name.localeCompare(b.name))
+    })
+
+    const filteredNpcs = computed(() => {
+      const q = npcSearch.value.toLowerCase().trim()
+      if (!q) return combatNpcs.value
+      return combatNpcs.value.filter(
+        (n) => n.name.toLowerCase().includes(q) ||
+               (n.title && n.title.toLowerCase().includes(q))
+      )
+    })
+
     function pick(adversaryId) {
       emit('add', adversaryId)
-      // Ferme le drawer après sélection
+      emit('update:modelValue', false)
+    }
+
+    function pickNpc(npcId) {
+      emit('add-npc', npcId)
       emit('update:modelValue', false)
     }
 
     return {
-      searchInput, search, tierFilter, typeFilter, sortKey,
+      searchInput, npcSearchInput, search, npcSearch,
+      tierFilter, typeFilter, sortKey, tab,
       adversaryTypes, sortOptions, filtered, hasActiveFilters,
-      toggleTier, toggleType, resetFilters, pick
+      combatNpcs, filteredNpcs,
+      toggleTier, toggleType, resetFilters, pick, pickNpc
     }
   }
 }
@@ -240,6 +390,52 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* ── Onglets ── */
+.reinf__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.reinf__tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  min-height: var(--touch-min);
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.reinf__tab:hover {
+  color: var(--color-text-primary);
+}
+
+.reinf__tab--on {
+  color: var(--color-accent-hope);
+  border-bottom-color: var(--color-accent-hope);
+  font-weight: var(--font-weight-bold);
+}
+
+.reinf__tab-badge {
+  font-size: var(--font-size-xs);
+  background: rgba(83, 168, 182, 0.2);
+  color: var(--color-accent-hope);
+  padding: 1px var(--space-xs);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Recherche ── */
@@ -431,6 +627,21 @@ export default {
   font-variant-numeric: tabular-nums;
   min-width: 3rem;
   text-align: right;
+}
+
+/* ── PNJ spécifique ── */
+.reinf__npc-title {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.reinf__npc-mode {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  padding: 1px var(--space-xs);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
 }
 
 .reinf__empty {

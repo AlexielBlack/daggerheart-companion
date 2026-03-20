@@ -21,6 +21,7 @@ import { allAdversaries } from '@data/adversaries'
 import { allEnvironments } from '@data/environments'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { useNpcStore } from '@modules/npcs/stores/npcStore'
 import { useEncounterHistoryStore } from './encounterHistoryStore'
 import { computeStatBonuses } from '@data/statModifiers'
 import { getClassById } from '@data/classes'
@@ -68,6 +69,65 @@ function createLiveAdversary(adversary, instanceIndex = 0) {
     isDefeated: false,
     notes: ''
   }
+}
+
+/**
+ * Crée un état live pour un adversaire depuis un PNJ avec profil de combat.
+ * @param {Object} npc - Données PNJ complètes
+ * @param {number} instanceIndex - Index d'instance
+ * @returns {Object|null} État live de l'adversaire, ou null si pas de profil combat
+ */
+function createLiveAdversaryFromNpc(npc, instanceIndex = 0) {
+  if (!npc || npc.combatProfileMode === 'none') return null
+
+  if (npc.combatProfileMode === 'linked' && npc.linkedAdversaryId) {
+    const linked = allAdversaries.find((a) => a.id === npc.linkedAdversaryId)
+    if (!linked) return null
+    const live = createLiveAdversary(linked, instanceIndex)
+    // Remplacer l'identifiant et le nom par ceux du PNJ
+    live.instanceId = `npc_${npc.id}_${instanceIndex}`
+    live.adversaryId = `npc_${npc.id}`
+    live.name = npc.name
+    live.npcId = npc.id
+    return live
+  }
+
+  if (npc.combatProfileMode === 'custom') {
+    const cs = npc.combatStats || {}
+    return {
+      instanceId: `npc_${npc.id}_${instanceIndex}`,
+      adversaryId: `npc_${npc.id}`,
+      name: npc.name,
+      type: npc.adversaryType || 'Standard',
+      tier: npc.tier || 1,
+      maxHP: cs.hp || 6,
+      maxStress: cs.stress || 2,
+      difficulty: cs.difficulty || 10,
+      thresholds: {
+        major: cs.thresholdMajor || null,
+        severe: cs.thresholdSevere || null
+      },
+      attack: cs.attackModifier !== null && cs.attackModifier !== undefined ? {
+        modifier: cs.attackModifier,
+        name: 'Attaque',
+        range: cs.attackRange || 'Melee',
+        damage: cs.attackDamage || '',
+        damageType: cs.attackDamageType || 'phy'
+      } : null,
+      features: Array.isArray(npc.combatFeatures) ? [...npc.combatFeatures] : [],
+      motives: [],
+      experiences: [],
+      focusProfile: null,
+      npcId: npc.id,
+      markedHP: 0,
+      markedStress: 0,
+      conditions: [],
+      isDefeated: false,
+      notes: ''
+    }
+  }
+
+  return null
 }
 
 export const useEncounterLiveStore = defineStore('encounter-live', () => {
@@ -654,6 +714,37 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return newIds
   }
 
+  /**
+   * Ajoute un PNJ comme adversaire dans le combat live.
+   * Le PNJ doit avoir un profil de combat (linked ou custom).
+   * @param {string} npcId - ID du PNJ
+   * @returns {string[]} IDs des instances créées
+   */
+  function addNpcReinforcement(npcId) {
+    pushUndo('PNJ renfort')
+    const npcStore = useNpcStore()
+    const npc = npcStore.getById(npcId)
+    if (!npc) return []
+
+    const npcAdvId = `npc_${npc.id}`
+    const existingCount = liveAdversaries.value.filter((a) => a.adversaryId === npcAdvId).length
+    const instance = createLiveAdversaryFromNpc(npc, existingCount)
+    if (!instance) return []
+
+    liveAdversaries.value.push(instance)
+
+    encounterLog.value.push({
+      action: 'reinforcement', adversaryId: npcAdvId, advName: npc.name,
+      quantity: 1, instanceIds: [instance.instanceId], isNpc: true, timestamp: Date.now()
+    })
+
+    if (!activeAdversaryId.value) {
+      activeAdversaryId.value = instance.instanceId
+    }
+    persistState()
+    return [instance.instanceId]
+  }
+
   // ═══════════════════════════════════════════════════════
   //  Actions — Dégâts de zone (AoE)
   // ═══════════════════════════════════════════════════════
@@ -1020,7 +1111,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     markAdversaryStress, clearAdversaryStress,
     addAdversaryCondition, removeAdversaryCondition,
     defeatAdversary, reviveAdversary,
-    addReinforcement, setAdversaryNotes,
+    addReinforcement, addNpcReinforcement, setAdversaryNotes,
     applyAoeDamage,
     applyAoeDamagePerTarget,
     applyAoeDamageToPcsPerTarget,

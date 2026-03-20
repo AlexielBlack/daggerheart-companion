@@ -229,6 +229,7 @@
         <ReinforcementDrawer
           v-model="showReinforcementPanel"
           @add="addReinforcement"
+          @add-npc="addNpcReinforcement"
         />
 
         <!-- ══ Drawer Journal de combat ══ -->
@@ -535,6 +536,7 @@ export default {
     const showReinforcementPanel = ref(false)
 
     function addReinforcement(adversaryId) { store.addReinforcement(adversaryId, 1) }
+    function addNpcReinforcement(npcId) { store.addNpcReinforcement(npcId) }
 
     // ── Undo (avec haptique) ──
     function onUndo() {
@@ -699,7 +701,7 @@ export default {
       onSelectPc, onSelectAdversaryGroup, onLongPressPc,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
-      showReinforcementPanel, addReinforcement, onUndo,
+      showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
       aoeSetHp, aoeUndoTarget, applyAoe,
