@@ -247,8 +247,15 @@
         &#128269;
       </p>
       <p class="empty-state__text">
-        Aucune classe trouvée pour « {{ searchQuery }} »
+        Aucune classe trouvée avec ces filtres.
       </p>
+      <button
+        v-if="searchQuery || charStore.classSourceFilter !== 'all'"
+        class="btn btn--secondary btn--sm"
+        @click="searchQuery = ''; charStore.classSourceFilter = 'all'"
+      >
+        Effacer les filtres
+      </button>
     </div>
   </div>
 </template>
@@ -264,6 +271,7 @@ import SourceBadge from '@core/components/SourceBadge.vue'
 import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
 import { classSchema } from '@modules/homebrew/schemas/classSchema.js'
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
+import { useNotification } from '@core/composables/useNotification.js'
 
 export default {
   name: 'ClassBrowser',
@@ -277,6 +285,7 @@ export default {
   setup() {
     const router = useRouter()
     const route = useRoute()
+    const { success: notifySuccess } = useNotification()
     const charStore = useCharacterStore()
     const homebrewStore = useClassHomebrewStore()
     const searchQuery = ref('')
@@ -398,6 +407,7 @@ export default {
 
       const result = homebrewStore.createFromTemplate(data)
       if (result.success) {
+        notifySuccess(`\u00ab ${cls.name} \u00bb dupliqu\u00e9 en homebrew`)
         router.push(`/compendium/classes/${result.id}`)
       }
     }
@@ -588,7 +598,7 @@ export default {
 .class-card__body {
   border-top: 1px solid var(--color-border);
   padding: var(--space-md);
-  animation: slideDown 0.2s ease;
+  animation: slideDown 0.25s ease-out;
 }
 .class-card__body[hidden] { display: none; }
 

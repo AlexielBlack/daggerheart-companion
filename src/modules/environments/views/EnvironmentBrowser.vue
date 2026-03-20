@@ -147,6 +147,7 @@ import { environmentSchema } from '@modules/homebrew/schemas/environmentSchema.j
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 import { useEnvironmentStore } from '../stores/environmentStore.js'
 import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/environment/useEnvironmentHomebrewStore.js'
+import { useNotification } from '@core/composables/useNotification.js'
 
 /**
  * @component EnvironmentBrowser
@@ -166,6 +167,7 @@ export default {
   setup() {
     const store = useEnvironmentStore()
     const homebrewStore = useEnvironmentHomebrewStore()
+    const { success: notifySuccess } = useNotification()
     const route = useRoute()
     const compendiumColumns = inject('compendiumColumns', ref(0))
     const listGridStyle = computed(() => {
@@ -221,7 +223,8 @@ export default {
       editPanel,
       scrollToEditPanel,
       compendiumColumns,
-      listGridStyle
+      listGridStyle,
+      notifySuccess
     }
   },
   computed: {
@@ -243,6 +246,7 @@ export default {
     duplicateToHomebrew(item) {
       const result = this.homebrewStore.createFromTemplate(item)
       if (result.success) {
+        this.notifySuccess(`\u00ab ${item.name} \u00bb dupliqu\u00e9 en homebrew`)
         this.$router.push(`/compendium/environnements/${result.id}`)
       }
     },
@@ -337,7 +341,22 @@ export default {
 
 .env-browser__detail {
   position: sticky;
-  top: var(--space-md);
+  top: 0;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.env-browser__detail::-webkit-scrollbar {
+  width: 6px;
+}
+
+.env-browser__detail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.env-browser__detail::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
 }
 
 .env-browser__detail--empty {

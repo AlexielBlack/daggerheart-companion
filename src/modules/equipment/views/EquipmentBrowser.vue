@@ -704,6 +704,7 @@ import SourceBadge from '@core/components/SourceBadge.vue'
 import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
 import { equipmentSchema } from '@modules/homebrew/schemas/equipmentSchema.js'
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
+import { useNotification } from '@core/composables/useNotification.js'
 
 export default {
   name: 'EquipmentBrowser',
@@ -713,6 +714,7 @@ export default {
   setup() {
     const store = useEquipmentStore()
     const homebrewStore = useEquipmentHomebrewStore()
+    const { success: notifySuccess } = useNotification()
     const router = useRouter()
     const route = useRoute()
     const expandedId = ref(null)
@@ -837,6 +839,7 @@ export default {
     function duplicateToHomebrew(item) {
       const result = homebrewStore.createFromTemplate(item)
       if (result.success) {
+        notifySuccess(`\u00ab ${item.name} \u00bb dupliqu\u00e9 en homebrew`)
         router.push(`/compendium/equipement/${result.id}`)
       }
     }

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { computed, provide } from 'vue'
+import { computed, provide, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import ModuleBoundary from './ModuleBoundary.vue'
 import { useStorage } from '@core/composables/useStorage.js'
@@ -112,6 +112,14 @@ export default {
     const currentTitle = computed(() => {
       const tab = COMPENDIUM_TABS.find(t => t.id === currentTab.value)
       return tab ? tab.label : 'Compendium'
+    })
+
+    // Scroll-to-top au changement d'onglet
+    watch(currentTab, () => {
+      nextTick(() => {
+        const content = document.querySelector('.compendium-view__content')
+        if (content) content.scrollTop = 0
+      })
     })
 
     return { tabs: COMPENDIUM_TABS, currentTab, currentTitle, compendiumColumns, COLUMN_OPTIONS }

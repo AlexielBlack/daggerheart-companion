@@ -150,6 +150,7 @@ import { adversarySchema } from '@modules/homebrew/schemas/adversarySchema.js'
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 import { useAdversaryStore } from '../stores/adversaryStore.js'
 import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
+import { useNotification } from '@core/composables/useNotification.js'
 
 /**
  * @component AdversaryBrowser
@@ -169,6 +170,7 @@ export default {
   setup() {
     const store = useAdversaryStore()
     const homebrewStore = useAdversaryHomebrewStore()
+    const { success: notifySuccess } = useNotification()
     const route = useRoute()
     const compendiumColumns = inject('compendiumColumns', ref(0))
     const listGridStyle = computed(() => {
@@ -224,7 +226,8 @@ export default {
       editPanel,
       scrollToEditPanel,
       compendiumColumns,
-      listGridStyle
+      listGridStyle,
+      notifySuccess
     }
   },
   computed: {
@@ -246,6 +249,7 @@ export default {
     duplicateToHomebrew(item) {
       const result = this.homebrewStore.createFromTemplate(item)
       if (result.success) {
+        this.notifySuccess(`\u00ab ${item.name} \u00bb dupliqu\u00e9 en homebrew`)
         this.$router.push(`/compendium/adversaires/${result.id}`)
       }
     },
@@ -346,7 +350,22 @@ export default {
 
 .adversary-browser__detail {
   position: sticky;
-  top: var(--space-md);
+  top: 0;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.adversary-browser__detail::-webkit-scrollbar {
+  width: 6px;
+}
+
+.adversary-browser__detail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.adversary-browser__detail::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
 }
 
 .adversary-browser__detail--empty {
