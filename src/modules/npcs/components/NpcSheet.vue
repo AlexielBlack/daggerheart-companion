@@ -5,6 +5,8 @@
 <template>
   <section
     class="npc-sheet"
+    :class="{ 'npc-sheet--custom-cols': sheetColumns > 0 }"
+    :style="sheetGridStyle"
     :aria-label="`Fiche de ${form.name || 'PNJ'}`"
   >
     <!-- ── En-tête ── -->
@@ -403,12 +405,22 @@ export default {
     /** Classes homebrew */
     homebrewClasses: { type: Array, default: () => [] },
     /** Tous les adversaires (SRD + homebrew) */
-    allAdversaries: { type: Array, default: () => [] }
+    allAdversaries: { type: Array, default: () => [] },
+    /** Nombre de colonnes (0=auto, 1-4=forcé) */
+    sheetColumns: { type: Number, default: 0 }
   },
 
   emits: ['save', 'delete'],
 
   setup(props, { emit }) {
+    // ── Style grille colonnes ──
+    const sheetGridStyle = computed(() => {
+      if (!props.sheetColumns || props.sheetColumns === 0) return {}
+      return {
+        'grid-template-columns': `repeat(${props.sheetColumns}, 1fr)`
+      }
+    })
+
     const form = ref(createDefaultNpc())
     const isDirty = ref(false)
     const saveMessage = ref('')
@@ -534,7 +546,8 @@ export default {
       addNpcRelation,
       removeNpcRel,
       save,
-      confirmDelete
+      confirmDelete,
+      sheetGridStyle
     }
   }
 }
@@ -542,12 +555,21 @@ export default {
 
 <style scoped>
 .npc-sheet {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   padding: 1rem;
-  max-width: 700px;
+}
+
+@media (min-width: 900px) {
+  .npc-sheet:not(.npc-sheet--custom-cols) {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
 }
 
 .npc-sheet__header {
-  margin-bottom: 1rem;
+  grid-column: 1 / -1;
+  margin-bottom: 0;
 }
 
 .npc-sheet__title-row {
