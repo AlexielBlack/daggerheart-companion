@@ -1,199 +1,239 @@
 <template>
   <div class="encounter-builder">
-      <header class="builder-header">
-        <h1 class="builder-title">
-          🗺️ Constructeur de Rencontres
-        </h1>
-        <p class="builder-subtitle">
-          Composez vos rencontres avec le système de Battle Points du SRD Daggerheart.
-        </p>
-      </header>
+    <header class="builder-header">
+      <div class="builder-header__top">
+        <div>
+          <h1 class="builder-title">
+            🗺️ Constructeur de Rencontres
+          </h1>
+          <p class="builder-subtitle">
+            Composez vos rencontres avec le système de Battle Points du SRD Daggerheart.
+          </p>
+        </div>
+        <div
+          class="builder-columns-control"
+          role="group"
+          aria-label="Nombre de colonnes"
+        >
+          <label
+            for="encounter-columns-slider"
+            class="builder-columns-label"
+          >
+            {{ sheetColumns === 0 ? 'Auto' : sheetColumns + ' col.' }}
+          </label>
+          <input
+            id="encounter-columns-slider"
+            v-model.number="sheetColumns"
+            type="range"
+            min="0"
+            max="4"
+            step="1"
+            class="builder-columns-slider"
+            aria-label="Colonnes du contenu"
+            :list="'encounter-columns-ticks'"
+          />
+          <datalist id="encounter-columns-ticks">
+            <option
+              v-for="opt in COLUMN_OPTIONS"
+              :key="opt.value"
+              :value="opt.value"
+              :label="opt.label"
+            ></option>
+          </datalist>
+        </div>
+      </div>
+    </header>
 
-      <div class="builder-layout">
-        <!-- Colonne gauche : configuration + composition -->
-        <div class="builder-main">
-          <div class="builder-section">
-            <EncounterConfig
-              :name="store.encounterName"
-              :notes="store.encounterNotes"
-              :pc-count="store.pcCount"
-              :tier="store.selectedTier"
-              :intensity="store.selectedIntensity"
-              :active-adjustments="store.activeAdjustments"
-              :auto-adjustments="store.autoAdjustments"
-              :lower-tier-percentage="store.lowerTierInfo.percentage"
-              :min-pc="store.minPcCount"
-              :max-pc="store.maxPcCount"
-              :characters="store.availableCharacters"
-              :selected-pc-ids="store.selectedPcIds"
-              @update:name="store.encounterName = $event"
-              @update:notes="store.encounterNotes = $event"
-              @update:pc-count="store.setPcCount($event)"
-              @update:tier="store.setTier($event)"
-              @update:intensity="store.setIntensity($event)"
-              @toggle-adjustment="store.toggleAdjustment($event)"
-              @update:selected-pc-ids="store.setSelectedPcIds($event)"
-            />
-          </div>
-
-          <div class="builder-section">
-            <BattlePointsBar
-              :total="store.totalBattlePoints"
-              :spent="store.spentBattlePoints"
-              :remaining="store.remainingBattlePoints"
-              :slots="store.adversarySlotsDetailed"
-              :show-breakdown="true"
-            />
-          </div>
-
-          <div class="builder-section">
-            <h2 class="section-title">
-              Adversaires
-            </h2>
-            <EncounterSlotList
-              :slots="store.adversarySlotsDetailed"
-              @increment="store.addAdversary($event)"
-              @decrement="store.removeAdversary($event)"
-              @remove-all="store.setAdversaryQuantity($event, 0)"
-              @set-tier-override="store.setSlotTierOverride($event.adversaryId, $event.tier)"
-            />
-          </div>
-
-          <div class="builder-section">
-            <details
-              class="picker-details"
-              :open="pickerAdversaryOpen"
-            >
-              <summary
-                class="section-title section-title--clickable"
-                role="button"
-                tabindex="0"
-                @click.prevent="pickerAdversaryOpen = !pickerAdversaryOpen"
-                @keydown.enter.prevent="pickerAdversaryOpen = !pickerAdversaryOpen"
-              >
-                ➕ Ajouter des adversaires
-              </summary>
-              <AdversaryPicker
-                :current-slots="store.adversarySlots"
-                @add="store.addAdversary($event)"
-                @remove="store.removeAdversary($event)"
-              />
-            </details>
-          </div>
-
-          <div class="builder-section">
-            <details class="picker-details">
-              <summary class="section-title section-title--clickable">
-                🌍 Environnement
-                <span
-                  v-if="store.selectedEnvironment"
-                  class="env-badge"
-                >
-                  {{ store.selectedEnvironment.name }}
-                </span>
-              </summary>
-              <EnvironmentPicker
-                :selected-id="store.selectedEnvironmentId"
-                @select="store.setEnvironment($event)"
-              />
-            </details>
-          </div>
+    <div class="builder-layout">
+      <!-- Colonne gauche : configuration + composition -->
+      <div
+        class="builder-main"
+        :class="{ 'builder-main--custom': sheetColumns > 0 }"
+        :style="gridStyle"
+      >
+        <div class="builder-section">
+          <EncounterConfig
+            :name="store.encounterName"
+            :notes="store.encounterNotes"
+            :pc-count="store.pcCount"
+            :tier="store.selectedTier"
+            :intensity="store.selectedIntensity"
+            :active-adjustments="store.activeAdjustments"
+            :auto-adjustments="store.autoAdjustments"
+            :lower-tier-percentage="store.lowerTierInfo.percentage"
+            :min-pc="store.minPcCount"
+            :max-pc="store.maxPcCount"
+            :characters="store.availableCharacters"
+            :selected-pc-ids="store.selectedPcIds"
+            @update:name="store.encounterName = $event"
+            @update:notes="store.encounterNotes = $event"
+            @update:pc-count="store.setPcCount($event)"
+            @update:tier="store.setTier($event)"
+            @update:intensity="store.setIntensity($event)"
+            @toggle-adjustment="store.toggleAdjustment($event)"
+            @update:selected-pc-ids="store.setSelectedPcIds($event)"
+          />
         </div>
 
-        <!-- Colonne droite : résumé + sauvegarde -->
-        <aside class="builder-sidebar">
-          <div class="sidebar-section">
-            <EncounterSummary
-              :adversary-count="store.totalAdversaryCount"
-              :total-h-p="store.totalAdversaryHP"
-              :total-stress="store.totalAdversaryStress"
-              :intensity="store.currentIntensity"
-              :environment="store.selectedEnvironment"
-              :warnings="store.warnings"
-              :is-valid="store.isValid"
-              @save="handleSave"
-              @reset="handleReset"
-              @launch="handleLaunch"
+        <div class="builder-section">
+          <BattlePointsBar
+            :total="store.totalBattlePoints"
+            :spent="store.spentBattlePoints"
+            :remaining="store.remainingBattlePoints"
+            :slots="store.adversarySlotsDetailed"
+            :show-breakdown="true"
+          />
+        </div>
+
+        <div class="builder-section">
+          <h2 class="section-title">
+            Adversaires
+          </h2>
+          <EncounterSlotList
+            :slots="store.adversarySlotsDetailed"
+            @increment="store.addAdversary($event)"
+            @decrement="store.removeAdversary($event)"
+            @remove-all="store.setAdversaryQuantity($event, 0)"
+            @set-tier-override="store.setSlotTierOverride($event.adversaryId, $event.tier)"
+          />
+        </div>
+
+        <div class="builder-section">
+          <details
+            class="picker-details"
+            :open="pickerAdversaryOpen"
+          >
+            <summary
+              class="section-title section-title--clickable"
+              role="button"
+              tabindex="0"
+              @click.prevent="pickerAdversaryOpen = !pickerAdversaryOpen"
+              @keydown.enter.prevent="pickerAdversaryOpen = !pickerAdversaryOpen"
+            >
+              ➕ Ajouter des adversaires
+            </summary>
+            <AdversaryPicker
+              :current-slots="store.adversarySlots"
+              @add="store.addAdversary($event)"
+              @remove="store.removeAdversary($event)"
             />
-          </div>
+          </details>
+        </div>
 
-          <div class="sidebar-section">
-            <details>
-              <summary class="section-title section-title--clickable">
-                📝 Templates de rencontres
-              </summary>
-              <EncounterTemplatePicker
-                :current-tier="store.selectedTier"
-                :current-pc-count="store.pcCount"
-                @load-template="handleLoadTemplate"
-              />
-            </details>
-          </div>
-
-          <div class="sidebar-section">
-            <details>
-              <summary class="section-title section-title--clickable">
-                📋 Rencontres sauvegardées
-                <span
-                  v-if="savedEncounters.length > 0"
-                  class="count-badge"
-                >{{ savedEncounters.length }}</span>
-              </summary>
-              <SavedEncounterList
-                :encounters="savedEncounters"
-                @load="handleLoad($event)"
-                @delete="handleDelete($event)"
-              />
-            </details>
-          </div>
-          <div class="sidebar-section">
-            <details>
-              <summary class="section-title section-title--clickable">
-                📤 Partager / Importer
-              </summary>
-              <EncounterSharePanel
-                :encounter-data="store.serializeEncounter()"
-                :is-valid="store.isValid"
-                @import="handleImportEncounter"
-              />
-            </details>
-          </div>
-
-          <div class="sidebar-section">
-            <details>
-              <summary class="section-title section-title--clickable">
-                📜 Historique de campagne
-                <span
-                  v-if="historyStore.count > 0"
-                  class="count-badge"
-                >{{ historyStore.count }}</span>
-              </summary>
-              <EncounterHistory
-                :entries="historyStore.all"
-                :stats="historyStore.stats"
-                @remove="historyStore.remove($event)"
-                @clear="historyStore.clear()"
-              />
-            </details>
-          </div>
-        </aside>
+        <div class="builder-section">
+          <details class="picker-details">
+            <summary class="section-title section-title--clickable">
+              🌍 Environnement
+              <span
+                v-if="store.selectedEnvironment"
+                class="env-badge"
+              >
+                {{ store.selectedEnvironment.name }}
+              </span>
+            </summary>
+            <EnvironmentPicker
+              :selected-id="store.selectedEnvironmentId"
+              @select="store.setEnvironment($event)"
+            />
+          </details>
+        </div>
       </div>
 
-      <div
-        v-if="notification"
-        class="builder-notification"
-        :class="`builder-notification--${notification.type}`"
-        role="status"
-        aria-live="polite"
-      >
-        {{ notification.message }}
-      </div>
+      <!-- Colonne droite : résumé + sauvegarde -->
+      <aside class="builder-sidebar">
+        <div class="sidebar-section">
+          <EncounterSummary
+            :adversary-count="store.totalAdversaryCount"
+            :total-h-p="store.totalAdversaryHP"
+            :total-stress="store.totalAdversaryStress"
+            :intensity="store.currentIntensity"
+            :environment="store.selectedEnvironment"
+            :warnings="store.warnings"
+            :is-valid="store.isValid"
+            @save="handleSave"
+            @reset="handleReset"
+            @launch="handleLaunch"
+          />
+        </div>
+
+        <div class="sidebar-section">
+          <details>
+            <summary class="section-title section-title--clickable">
+              📝 Templates de rencontres
+            </summary>
+            <EncounterTemplatePicker
+              :current-tier="store.selectedTier"
+              :current-pc-count="store.pcCount"
+              @load-template="handleLoadTemplate"
+            />
+          </details>
+        </div>
+
+        <div class="sidebar-section">
+          <details>
+            <summary class="section-title section-title--clickable">
+              📋 Rencontres sauvegardées
+              <span
+                v-if="savedEncounters.length > 0"
+                class="count-badge"
+              >{{ savedEncounters.length }}</span>
+            </summary>
+            <SavedEncounterList
+              :encounters="savedEncounters"
+              @load="handleLoad($event)"
+              @delete="handleDelete($event)"
+            />
+          </details>
+        </div>
+        <div class="sidebar-section">
+          <details>
+            <summary class="section-title section-title--clickable">
+              📤 Partager / Importer
+            </summary>
+            <EncounterSharePanel
+              :encounter-data="store.serializeEncounter()"
+              :is-valid="store.isValid"
+              @import="handleImportEncounter"
+            />
+          </details>
+        </div>
+
+        <div class="sidebar-section">
+          <details>
+            <summary class="section-title section-title--clickable">
+              📜 Historique de campagne
+              <span
+                v-if="historyStore.count > 0"
+                class="count-badge"
+              >{{ historyStore.count }}</span>
+            </summary>
+            <EncounterHistory
+              :entries="historyStore.all"
+              :stats="historyStore.stats"
+              @remove="historyStore.remove($event)"
+              @clear="historyStore.clear()"
+            />
+          </details>
+        </div>
+      </aside>
+    </div>
+
+    <div
+      v-if="notification"
+      class="builder-notification"
+      :class="`builder-notification--${notification.type}`"
+      role="status"
+      aria-live="polite"
+    >
+      {{ notification.message }}
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStorage } from '@core/composables/useStorage'
 import { useEncounterStore } from '../stores/encounterStore'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
 import { useEncounterHistoryStore } from '../stores/encounterHistoryStore'
@@ -230,6 +270,22 @@ export default {
     const pickerAdversaryOpen = ref(false)
     const notification = ref(null)
     let notificationTimer = null
+
+    // ── Slider colonnes ──
+    const { data: sheetColumns } = useStorage('prep-encounter-columns', 0)
+    const COLUMN_OPTIONS = [
+      { value: 0, label: 'Auto' },
+      { value: 1, label: '1' },
+      { value: 2, label: '2' },
+      { value: 3, label: '3' },
+      { value: 4, label: '4' }
+    ]
+    const gridStyle = computed(() => {
+      if (!sheetColumns.value || sheetColumns.value === 0) return {}
+      return {
+        'grid-template-columns': `repeat(${sheetColumns.value}, 1fr)`
+      }
+    })
 
     const savedEncounters = computed(() => {
       const list = store.savedEncountersList
@@ -290,6 +346,9 @@ export default {
       pickerAdversaryOpen,
       notification,
       savedEncounters,
+      sheetColumns,
+      COLUMN_OPTIONS,
+      gridStyle,
       handleSave,
       handleReset,
       handleLoad,
@@ -310,6 +369,34 @@ export default {
 
 .builder-header {
   margin-bottom: var(--space-lg);
+}
+
+.builder-header__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* ── Slider colonnes ── */
+.builder-columns-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.builder-columns-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #aaa);
+  min-width: 3em;
+  text-align: right;
+}
+
+.builder-columns-slider {
+  width: 80px;
+  accent-color: var(--color-accent-hope, #53a8b6);
+  cursor: pointer;
 }
 
 .builder-title {
@@ -351,11 +438,11 @@ export default {
 }
 
 @media (min-width: 1200px) {
-  .builder-main {
+  .builder-main:not(.builder-main--custom) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .builder-main > .builder-section:first-child {
+  .builder-main:not(.builder-main--custom) > .builder-section:first-child {
     grid-column: 1 / -1;
   }
 }
