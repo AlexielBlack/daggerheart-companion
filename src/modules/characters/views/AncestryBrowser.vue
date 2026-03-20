@@ -68,6 +68,8 @@
       </h2>
       <div
         class="ancestry-grid"
+        :class="{ 'ancestry-grid--custom': compendiumColumns > 0 }"
+        :style="gridStyle"
         role="list"
         aria-label="Liste des ascendances"
       >
@@ -176,6 +178,8 @@
       </h2>
       <div
         class="ancestry-grid"
+        :class="{ 'ancestry-grid--custom': compendiumColumns > 0 }"
+        :style="gridStyle"
         role="list"
         aria-label="Liste des transformations"
       >
@@ -283,7 +287,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, inject, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { SRD_ANCESTRIES, CUSTOM_ANCESTRIES, TRANSFORMATIONS } from '@/data/ancestries/index.js'
 import { useAncestryHomebrewStore } from '@modules/homebrew/categories/ancestry/useAncestryHomebrewStore.js'
@@ -308,6 +312,11 @@ export default {
     const homebrewStore = useAncestryHomebrewStore()
     const searchQuery = ref('')
     const expandedId = ref(null)
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const gridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -428,7 +437,9 @@ export default {
       setField,
       toRawData,
       reset,
-      ancestrySchema
+      ancestrySchema,
+      compendiumColumns,
+      gridStyle
     }
   },
 
@@ -510,6 +521,7 @@ export default {
 
 /* -- Grille -- */
 .ancestry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-sm); margin-bottom: var(--space-lg); }
+.ancestry-grid--custom { grid-template-columns: unset; }
 
 /* -- Carte -- */
 .ancestry-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color var(--transition-fast); }

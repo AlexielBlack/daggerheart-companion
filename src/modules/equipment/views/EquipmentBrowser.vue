@@ -459,6 +459,8 @@
       </h2>
       <div
         class="item-card-grid"
+        :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
+        :style="cardGridStyle"
         role="list"
         aria-label="Liste du loot"
       >
@@ -517,6 +519,8 @@
       </h2>
       <div
         class="item-card-grid"
+        :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
+        :style="cardGridStyle"
         role="list"
         aria-label="Liste des consommables"
       >
@@ -610,7 +614,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, inject, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useEquipmentStore } from '../stores/equipmentStore.js'
 import { RANGES, BURDENS, RARITIES } from '@/data/equipment/constants.js'
@@ -632,6 +636,11 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const expandedId = ref(null)
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const cardGridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -762,7 +771,9 @@ export default {
       reset,
       equipmentSchema,
       editPanel,
-      scrollToEditPanel
+      scrollToEditPanel,
+      compendiumColumns,
+      cardGridStyle
     }
   },
 
@@ -917,6 +928,7 @@ export default {
 
 /* -- Cartes (loot & consommables) -- */
 .item-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-sm); }
+.item-card-grid--custom { grid-template-columns: unset; }
 .item-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-md); }
 .item-card--consumable { border-top: 2px solid var(--color-accent-hope); }
 .item-card--legendary { border-color: rgba(234, 179, 8, 0.3); }

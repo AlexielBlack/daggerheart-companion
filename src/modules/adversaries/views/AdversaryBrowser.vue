@@ -40,7 +40,11 @@
         <!-- List panel -->
         <div
           class="adversary-browser__list"
-          :class="{ 'adversary-browser__list--collapsed': showDetail }"
+          :class="{
+            'adversary-browser__list--collapsed': showDetail,
+            'adversary-browser__list--grid': compendiumColumns > 0
+          }"
+          :style="listGridStyle"
           role="list"
           aria-label="Liste des adversaires"
         >
@@ -127,7 +131,7 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
+import { ref, inject, computed, nextTick } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
@@ -158,6 +162,11 @@ export default {
     const store = useAdversaryStore()
     const homebrewStore = useAdversaryHomebrewStore()
     const route = useRoute()
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const listGridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
@@ -205,7 +214,9 @@ export default {
       reset,
       adversarySchema,
       editPanel,
-      scrollToEditPanel
+      scrollToEditPanel,
+      compendiumColumns,
+      listGridStyle
     }
   },
   computed: {
@@ -362,6 +373,11 @@ export default {
 .adversary-browser__edit-panel h3 {
   margin: 0 0 var(--space-md) 0;
   font-family: var(--font-family-heading);
+}
+
+.adversary-browser__list--grid {
+  display: grid;
+  gap: var(--space-sm);
 }
 
 /* Responsive: stack on mobile */

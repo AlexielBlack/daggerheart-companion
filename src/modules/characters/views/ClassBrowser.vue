@@ -46,6 +46,8 @@
     <div
       v-if="filteredClasses.length"
       class="class-grid"
+      :class="{ 'class-grid--custom': compendiumColumns > 0 }"
+      :style="gridStyle"
       role="list"
       aria-label="Liste des classes"
     >
@@ -252,7 +254,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, inject, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { getSubclassesForClass } from '@/data/subclasses/index.js'
 import { useClassHomebrewStore } from '@modules/homebrew/categories/class/useClassHomebrewStore.js'
@@ -279,6 +281,11 @@ export default {
     const homebrewStore = useClassHomebrewStore()
     const searchQuery = ref('')
     const expandedClassId = ref(null)
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const gridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
@@ -415,7 +422,9 @@ export default {
       setField,
       toRawData,
       reset,
-      classSchema
+      classSchema,
+      compendiumColumns,
+      gridStyle
     }
   },
 
@@ -536,6 +545,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+}
+
+.class-grid--custom {
+  display: grid;
 }
 
 /* -- Carte de classe -- */

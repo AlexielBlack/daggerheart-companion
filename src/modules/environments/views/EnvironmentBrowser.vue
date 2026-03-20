@@ -37,7 +37,11 @@
       <!-- List panel -->
       <div
         class="env-browser__list"
-        :class="{ 'env-browser__list--collapsed': showDetail }"
+        :class="{
+          'env-browser__list--collapsed': showDetail,
+          'env-browser__list--grid': compendiumColumns > 0
+        }"
+        :style="listGridStyle"
         role="list"
         aria-label="Liste des environnements"
       >
@@ -124,7 +128,7 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
+import { ref, inject, computed, nextTick } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
@@ -155,6 +159,11 @@ export default {
     const store = useEnvironmentStore()
     const homebrewStore = useEnvironmentHomebrewStore()
     const route = useRoute()
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const listGridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
@@ -202,7 +211,9 @@ export default {
       reset,
       environmentSchema,
       editPanel,
-      scrollToEditPanel
+      scrollToEditPanel,
+      compendiumColumns,
+      listGridStyle
     }
   },
   computed: {
@@ -353,6 +364,11 @@ export default {
 .env-browser__edit-panel h3 {
   margin: 0 0 var(--space-md) 0;
   font-family: var(--font-family-heading);
+}
+
+.env-browser__list--grid {
+  display: grid;
+  gap: var(--space-sm);
 }
 
 /* Responsive: stack on mobile */

@@ -57,6 +57,8 @@
     <div
       v-if="store.filteredCommunities.length"
       class="community-grid"
+      :class="{ 'community-grid--custom': compendiumColumns > 0 }"
+      :style="gridStyle"
       role="list"
       aria-label="Liste des communautés"
     >
@@ -133,7 +135,7 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
+import { ref, inject, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
@@ -157,6 +159,11 @@ export default {
     const homebrewStore = useCommunityHomebrewStore()
     const router = useRouter()
     const route = useRoute()
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const gridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -214,7 +221,9 @@ export default {
       reset,
       communitySchema,
       editPanel,
-      scrollToEditPanel
+      scrollToEditPanel,
+      compendiumColumns,
+      gridStyle
     }
   },
 
@@ -344,6 +353,10 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--space-sm);
   margin-bottom: var(--space-xl);
+}
+
+.community-grid--custom {
+  grid-template-columns: unset;
 }
 
 /* -- Edit panel -- */

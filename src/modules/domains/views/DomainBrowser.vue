@@ -63,6 +63,8 @@
     <div
       v-if="store.filteredDomains.length"
       class="domain-grid"
+      :class="{ 'domain-grid--custom': compendiumColumns > 0 }"
+      :style="gridStyle"
       role="list"
       aria-label="Liste des domaines"
     >
@@ -274,7 +276,7 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
+import { ref, inject, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useDomainStore } from '../stores/domainStore.js'
 import { CARD_TYPES } from '@/data/domains/index.js'
@@ -296,6 +298,11 @@ export default {
     const homebrewStore = useDomainHomebrewStore()
     const router = useRouter()
     const route = useRoute()
+    const compendiumColumns = inject('compendiumColumns', ref(0))
+    const gridStyle = computed(() => {
+      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
+      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
+    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -365,7 +372,9 @@ export default {
       reset,
       domainSchema,
       editPanel,
-      scrollToEditPanel
+      scrollToEditPanel,
+      compendiumColumns,
+      gridStyle
     }
   },
 
@@ -448,6 +457,7 @@ export default {
 
 /* -- Grille -- */
 .domain-grid { display: flex; flex-direction: column; gap: var(--space-sm); }
+.domain-grid--custom { display: grid; }
 
 /* -- Carte domaine -- */
 .domain-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color var(--transition-fast); }
