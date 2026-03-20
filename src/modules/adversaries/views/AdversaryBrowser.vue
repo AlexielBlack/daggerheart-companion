@@ -282,8 +282,8 @@ export default {
         this.scrollToEditPanel()
       }
     },
-    onFieldUpdate({ field, value }) {
-      this.setField(field, value)
+    onFieldUpdate({ key, value }) {
+      this.setField(key, value)
     },
     onSaveInline() {
       const data = this.toRawData()
