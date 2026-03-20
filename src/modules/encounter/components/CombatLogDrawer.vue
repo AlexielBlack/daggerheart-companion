@@ -20,22 +20,49 @@
         </button>
       </div>
 
-      <!-- Liste des entrées -->
+      <!-- Liste des entrées (groupées par actionId) -->
       <ul
         v-if="entries.length > 0"
         class="clog__list"
         aria-label="Entrées du journal de combat"
       >
-        <li
-          v-for="(entry, idx) in reversedEntries"
-          :key="idx"
-          class="clog__entry"
-          :class="'clog__entry--' + entry.action"
+        <template
+          v-for="(group, gIdx) in groupedLog"
+          :key="group.actionId || group.entries[0]?.timestamp || gIdx"
         >
-          <span class="clog__icon">{{ actionIcon(entry) }}</span>
-          <span class="clog__text">{{ actionText(entry) }}</span>
-          <span class="clog__time">{{ formatTime(entry.timestamp) }}</span>
-        </li>
+          <!-- Groupe multi-entrées (Action Bar) -->
+          <li
+            v-if="group.actionId && group.entries.length > 1"
+            class="clog__group"
+          >
+            <div class="clog__group-header">
+              {{ group.actorName || 'Action' }}
+            </div>
+            <div
+              v-for="(entry, idx) in group.entries"
+              :key="entry.timestamp || idx"
+              class="clog__group-entry clog__entry"
+              :class="'clog__entry--' + entry.action"
+            >
+              <span class="clog__icon">{{ actionIcon(entry) }}</span>
+              <span class="clog__text">{{ actionText(entry) }}</span>
+              <span class="clog__time">{{ formatTime(entry.timestamp) }}</span>
+            </div>
+          </li>
+          <!-- Entrée(s) simple(s) (legacy ou non groupée) -->
+          <template v-else>
+            <li
+              v-for="(entry, idx) in group.entries"
+              :key="entry.timestamp || idx"
+              class="clog__entry"
+              :class="'clog__entry--' + entry.action"
+            >
+              <span class="clog__icon">{{ actionIcon(entry) }}</span>
+              <span class="clog__text">{{ actionText(entry) }}</span>
+              <span class="clog__time">{{ formatTime(entry.timestamp) }}</span>
+            </li>
+          </template>
+        </template>
       </ul>
 
       <!-- État vide -->
@@ -65,7 +92,13 @@ const ACTION_ICONS = {
   condition_added: '⚡',
   condition_removed: '✖️',
   damage_removed: '↩',
-  reinforcement: '➕'
+  reinforcement: '➕',
+  heal_hp: '💚',
+  heal_stress: '🩹',
+  hope_change: '✨',
+  down: '💀',
+  condition_add: '⚡',
+  condition_remove: '⚡'
 }
 
 export default {
@@ -78,6 +111,28 @@ export default {
   emits: ['update:modelValue', 'clear'],
   setup(props) {
     const reversedEntries = computed(() => [...props.entries].reverse())
+
+    // Groupement des entrées par actionId (actions groupées depuis l'Action Bar)
+    const groupedLog = computed(() => {
+      const entries = reversedEntries.value || []
+      const groups = []
+      let currentGroup = null
+
+      for (const entry of entries) {
+        if (entry.actionId && currentGroup?.actionId === entry.actionId) {
+          currentGroup.entries.push(entry)
+        } else {
+          currentGroup = {
+            actionId: entry.actionId || null,
+            actorName: entry.actorName || null,
+            entries: [entry]
+          }
+          groups.push(currentGroup)
+        }
+      }
+
+      return groups
+    })
 
     function actionIcon(entry) {
       return ACTION_ICONS[entry.action] || '•'
@@ -111,6 +166,18 @@ export default {
         return `${entry.entityName} : −${entry.condition}`
       case 'damage_removed':
         return `Dégâts annulés : ${entry.advName || entry.pcName}`
+      case 'heal_hp':
+        return `${entry.pcName || entry.advName} : ${entry.amount} Soin HP`
+      case 'heal_stress':
+        return `${entry.pcName || entry.advName} : ${entry.amount} Soin Stress`
+      case 'hope_change':
+        return `${entry.pcName} : +${entry.amount} Espoir`
+      case 'down':
+        return `${entry.advName || entry.pcName} : À Terre`
+      case 'condition_add':
+        return `${entry.advName || entry.pcName} : +${entry.condition}`
+      case 'condition_remove':
+        return `${entry.advName || entry.pcName} : -${entry.condition}`
       default:
         return entry.action
       }
@@ -122,7 +189,7 @@ export default {
       return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     }
 
-    return { reversedEntries, actionIcon, actionText, formatTime }
+    return { reversedEntries, groupedLog, actionIcon, actionText, formatTime }
   }
 }
 </script>
@@ -207,6 +274,25 @@ export default {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+/* ── Groupes (Action Bar) ── */
+.clog__group {
+  border-left: 3px solid var(--color-accent, #a855f7);
+  padding-left: 8px;
+  margin-bottom: 4px;
+}
+
+.clog__group-header {
+  font-size: var(--font-size-xs);
+  color: var(--color-accent, #a855f7);
+  font-weight: bold;
+  margin-bottom: 2px;
+  padding: var(--space-xs) 0;
+}
+
+.clog__group-entry {
+  padding-left: 4px;
 }
 
 /* ── État vide ── */
