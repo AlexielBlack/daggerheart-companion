@@ -411,6 +411,8 @@ export default {
       return LIVE_CONDITIONS
     },
     collapsed() {
+      // En mode ciblage, déplier automatiquement tous les groupes
+      if (this.isTargeting) return false
       if (this.manualCollapsed !== null) return this.manualCollapsed
       return !this.isSelected
     },
