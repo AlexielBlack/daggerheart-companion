@@ -4,7 +4,9 @@
     :class="{
       'adv-group--selected': isSelected,
       'adv-group--all-defeated': group.activeCount === 0,
-      'adv-group--collapsed': collapsed
+      'adv-group--collapsed': collapsed,
+      'adv-group--targeting': isTargeting,
+      'adv-group--targeted': isTargeting && allGroupTargeted
     }"
     :aria-label="group.name + ' — ' + group.instances.length + ' instance(s)'"
   >
@@ -14,9 +16,9 @@
       role="button"
       tabindex="0"
       :aria-expanded="!collapsed"
-      @click="$emit('select-group', group.adversaryId)"
-      @keydown.enter="$emit('select-group', group.adversaryId)"
-      @keydown.space.prevent="$emit('select-group', group.adversaryId)"
+      @click="onHeaderClick"
+      @keydown.enter="onHeaderClick"
+      @keydown.space.prevent="onHeaderClick"
     >
       <div class="adv-group__identity">
         <span class="adv-group__name">
@@ -411,10 +413,13 @@ export default {
       return LIVE_CONDITIONS
     },
     collapsed() {
-      // En mode ciblage, déplier automatiquement tous les groupes
-      if (this.isTargeting) return false
       if (this.manualCollapsed !== null) return this.manualCollapsed
       return !this.isSelected
+    },
+    /** Vrai si toutes les instances actives du groupe sont ciblées */
+    allGroupTargeted() {
+      return this.activeInstances.length > 0 &&
+        this.activeInstances.every(inst => this.isTargetSelected(inst.instanceId))
     },
     totalMarkedHP() {
       return this.group.instances.reduce((s, i) => s + i.markedHP, 0)
@@ -454,6 +459,16 @@ export default {
     }
   },
   methods: {
+    /** En ciblage, toggle toutes les instances actives ; sinon sélectionner le groupe */
+    onHeaderClick() {
+      if (this.isTargeting) {
+        for (const inst of this.activeInstances) {
+          this.$emit('toggle-target', inst.instanceId, 'adversary')
+        }
+        return
+      }
+      this.$emit('select-group', this.group.adversaryId)
+    },
     hpPercent(inst) {
       if (!inst.maxHP) return 0
       return Math.round((inst.markedHP / inst.maxHP) * 100)
@@ -525,6 +540,14 @@ export default {
 }
 
 .adv-group--all-defeated { opacity: 0.5; }
+
+.adv-group--targeting {
+  cursor: crosshair;
+}
+.adv-group--targeted {
+  border: 2px solid var(--color-success, #22c55e);
+  background: rgba(34, 197, 94, 0.1);
+}
 
 /* ── Header ── */
 
