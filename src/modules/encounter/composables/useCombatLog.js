@@ -37,8 +37,8 @@ export function useCombatLog(deps) {
    * @param {string} pcId
    * @param {string} condition
    */
-  function togglePcCondition(pcId, condition) {
-    pushUndo()
+  function togglePcCondition(pcId, condition, { skipUndo = false } = {}) {
+    if (!skipUndo) pushUndo()
     if (!pcConditions.value[pcId]) {
       pcConditions.value[pcId] = []
     }
@@ -74,8 +74,8 @@ export function useCombatLog(deps) {
    * @param {string} instanceId
    * @param {string} condition
    */
-  function toggleAdversaryCondition(instanceId, condition) {
-    pushUndo()
+  function toggleAdversaryCondition(instanceId, condition, { skipUndo = false } = {}) {
+    if (!skipUndo) pushUndo()
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     const idx = adv.conditions.indexOf(condition)

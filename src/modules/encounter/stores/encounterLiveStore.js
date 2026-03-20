@@ -556,14 +556,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return adv ? adv.name : '?'
   }
 
-  function markAdversaryHP(instanceId, amount = 1) {
-    pushUndo('+' + amount + ' HP ' + advShortName(instanceId))
+  function markAdversaryHP(instanceId, amount = 1, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('+' + amount + ' HP ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedHP
     adv.markedHP = Math.min(adv.maxHP, adv.markedHP + amount)
     const actual = adv.markedHP - prev
-    if (actual > 0 && activePcId.value) {
+    if (!skipLog && actual > 0 && activePcId.value) {
       const last = combatLog.value[combatLog.value.length - 1]
       if (last && last.action === 'damage' && last.type === 'hp'
         && last.pcId === activePcId.value && last.instanceId === instanceId) {
@@ -587,17 +587,19 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Minion : défait dès le premier dégât ; autres : défait si tous les HP marqués
     if ((adv.type === 'Minion' && adv.markedHP > 0) || adv.markedHP >= adv.maxHP) {
       adv.isDefeated = true
-      const pcDown = participantPcs.value.find((p) => p.id === activePcId.value)
-      encounterLog.value.push({
-        action: 'adv_down', instanceId, advName: adv.name,
-        pcId: activePcId.value || null, pcName: pcDown ? pcDown.name : '?', timestamp: Date.now()
-      })
+      if (!skipLog) {
+        const pcDown = participantPcs.value.find((p) => p.id === activePcId.value)
+        encounterLog.value.push({
+          action: 'adv_down', instanceId, advName: adv.name,
+          pcId: activePcId.value || null, pcName: pcDown ? pcDown.name : '?', timestamp: Date.now()
+        })
+      }
     }
     persistState()
   }
 
-  function clearAdversaryHP(instanceId, amount = 1) {
-    pushUndo('−' + amount + ' HP ' + advShortName(instanceId))
+  function clearAdversaryHP(instanceId, amount = 1, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('−' + amount + ' HP ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedHP = Math.max(0, adv.markedHP - amount)
@@ -605,14 +607,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function markAdversaryStress(instanceId, amount = 1) {
-    pushUndo('+' + amount + ' ST ' + advShortName(instanceId))
+  function markAdversaryStress(instanceId, amount = 1, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('+' + amount + ' ST ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv || adv.isDefeated) return
     const prev = adv.markedStress
     adv.markedStress = Math.min(adv.maxStress, adv.markedStress + amount)
     const actual = adv.markedStress - prev
-    if (actual > 0 && activePcId.value) {
+    if (!skipLog && actual > 0 && activePcId.value) {
       const last = combatLog.value[combatLog.value.length - 1]
       if (last && last.action === 'damage' && last.type === 'stress'
         && last.pcId === activePcId.value && last.instanceId === instanceId) {
@@ -636,8 +638,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function clearAdversaryStress(instanceId, amount = 1) {
-    pushUndo('−' + amount + ' ST ' + advShortName(instanceId))
+  function clearAdversaryStress(instanceId, amount = 1, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('−' + amount + ' ST ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.markedStress = Math.max(0, adv.markedStress - amount)
@@ -660,16 +662,18 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (idx >= 0) { adv.conditions.splice(idx, 1); persistState() }
   }
 
-  function defeatAdversary(instanceId) {
-    pushUndo('💀 ' + advShortName(instanceId))
+  function defeatAdversary(instanceId, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('💀 ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = true
-    const pc = participantPcs.value.find((p) => p.id === activePcId.value)
-    encounterLog.value.push({
-      action: 'adv_down', instanceId, advName: adv.name,
-      pcId: activePcId.value || null, pcName: pc ? pc.name : '?', timestamp: Date.now()
-    })
+    if (!skipLog) {
+      const pc = participantPcs.value.find((p) => p.id === activePcId.value)
+      encounterLog.value.push({
+        action: 'adv_down', instanceId, advName: adv.name,
+        pcId: activePcId.value || null, pcName: pc ? pc.name : '?', timestamp: Date.now()
+      })
+    }
     if (activeAdversaryId.value === instanceId) {
       const next = activeAdversaries.value[0]
       activeAdversaryId.value = next ? next.instanceId : null
@@ -677,8 +681,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function reviveAdversary(instanceId) {
-    pushUndo('↩ ' + advShortName(instanceId))
+  function reviveAdversary(instanceId, { skipUndo = false, skipLog = false } = {}) {
+    if (!skipUndo) pushUndo('↩ ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = false
@@ -1134,7 +1138,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     resetLive, endEncounter,
 
     // Actions — Undo (composable)
-    undo, undoStack, lastUndoLabel,
+    pushUndo, undo, undoStack, lastUndoLabel,
 
     // Actions — Résumé
     lastEncounterSummary, generateSummary
