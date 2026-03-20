@@ -598,7 +598,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function clearAdversaryHP(instanceId, amount = 1, { skipUndo = false, skipLog: _skipLog = false } = {}) {
+  function clearAdversaryHP(instanceId, amount = 1, { skipUndo = false } = {}) {
     if (!skipUndo) pushUndo('−' + amount + ' HP ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
@@ -638,7 +638,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function clearAdversaryStress(instanceId, amount = 1, { skipUndo = false, skipLog: _skipLog = false } = {}) {
+  function clearAdversaryStress(instanceId, amount = 1, { skipUndo = false } = {}) {
     if (!skipUndo) pushUndo('−' + amount + ' ST ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
@@ -681,7 +681,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function reviveAdversary(instanceId, { skipUndo = false, skipLog: _skipLog = false } = {}) {
+  function reviveAdversary(instanceId, { skipUndo = false } = {}) {
     if (!skipUndo) pushUndo('↩ ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
