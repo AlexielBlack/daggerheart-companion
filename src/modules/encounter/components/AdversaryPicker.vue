@@ -5,25 +5,69 @@
     aria-label="Ajouter des adversaires"
   >
     <div class="picker-header">
-      <input
-        v-model="search"
-        type="text"
-        class="picker-search"
-        placeholder="Chercher un adversaire…"
-        aria-label="Rechercher un adversaire"
-      />
-      <div class="picker-filters">
+      <div class="picker-row">
+        <input
+          v-model="search"
+          type="text"
+          class="picker-search"
+          placeholder="Chercher un adversaire…"
+          aria-label="Rechercher un adversaire"
+        />
+        <div class="picker-filters">
+          <button
+            v-for="t in 4"
+            :key="t"
+            class="filter-chip"
+            :class="{ 'filter-chip--active': filterTier === t, [`filter-chip--tier-${t}`]: true }"
+            :aria-pressed="filterTier === t ? 'true' : 'false'"
+            @click="filterTier = filterTier === t ? null : t"
+          >
+            T{{ t }}
+          </button>
+        </div>
+      </div>
+
+      <div
+        role="group"
+        aria-label="Filtrer par type"
+        class="picker-chips"
+      >
         <button
-          v-for="t in 4"
-          :key="t"
-          class="filter-chip"
-          :class="{ 'filter-chip--active': filterTier === t, [`filter-chip--tier-${t}`]: true }"
-          :aria-pressed="filterTier === t ? 'true' : 'false'"
-          @click="filterTier = filterTier === t ? null : t"
+          v-for="type in ADVERSARY_TYPES"
+          :key="type"
+          class="filter-chip filter-chip--sm"
+          :class="{ 'filter-chip--active': filterTypes.has(type) }"
+          :aria-pressed="filterTypes.has(type) ? 'true' : 'false'"
+          @click="toggleType(type)"
         >
-          T{{ t }}
+          {{ ADVERSARY_TYPE_LABELS[type] }}
         </button>
       </div>
+
+      <div
+        role="group"
+        aria-label="Filtrer par genre"
+        class="picker-chips"
+      >
+        <button
+          v-for="genre in ADVERSARY_GENRES"
+          :key="genre"
+          class="filter-chip filter-chip--sm"
+          :class="{ 'filter-chip--active': filterGenres.has(genre) }"
+          :aria-pressed="filterGenres.has(genre) ? 'true' : 'false'"
+          @click="toggleGenre(genre)"
+        >
+          {{ GENRE_META[genre].label }}
+        </button>
+      </div>
+
+      <button
+        v-if="filterTypes.size > 0 || filterGenres.size > 0"
+        class="filter-clear"
+        @click="clearAdvancedFilters"
+      >
+        Effacer filtres
+      </button>
     </div>
 
     <ul
@@ -82,8 +126,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { allAdversaries } from '@data/adversaries'
+import { ref, reactive, computed } from 'vue'
+import {
+  allAdversaries,
+  ADVERSARY_TYPES,
+  ADVERSARY_TYPE_LABELS,
+  ADVERSARY_GENRES,
+  GENRE_META
+} from '@data/adversaries'
 import { BATTLE_POINT_COSTS } from '@data/encounters/constants'
 
 export default {
@@ -96,6 +146,23 @@ export default {
   setup(props) {
     const search = ref('')
     const filterTier = ref(null)
+    const filterTypes = reactive(new Set())
+    const filterGenres = reactive(new Set())
+
+    function toggleType(type) {
+      if (filterTypes.has(type)) filterTypes.delete(type)
+      else filterTypes.add(type)
+    }
+
+    function toggleGenre(genre) {
+      if (filterGenres.has(genre)) filterGenres.delete(genre)
+      else filterGenres.add(genre)
+    }
+
+    function clearAdvancedFilters() {
+      filterTypes.clear()
+      filterGenres.clear()
+    }
 
     const filteredAdversaries = computed(() => {
       let result = allAdversaries
@@ -112,7 +179,17 @@ export default {
         )
       }
 
-      return result.slice(0, 50) // Limite affichage pour performance
+      if (filterTypes.size > 0) {
+        result = result.filter((a) => filterTypes.has(a.type))
+      }
+
+      if (filterGenres.size > 0) {
+        result = result.filter((a) =>
+          a.genres && a.genres.some((g) => filterGenres.has(g))
+        )
+      }
+
+      return result.slice(0, 50)
     })
 
     function getCost(type) {
@@ -124,7 +201,13 @@ export default {
       return slot ? slot.quantity : 0
     }
 
-    return { search, filterTier, filteredAdversaries, getCost, getQuantity }
+    return {
+      search, filterTier, filterTypes, filterGenres,
+      filteredAdversaries, getCost, getQuantity,
+      toggleType, toggleGenre, clearAdvancedFilters,
+      ADVERSARY_TYPES, ADVERSARY_TYPE_LABELS,
+      ADVERSARY_GENRES, GENRE_META
+    }
   }
 }
 </script>
@@ -146,6 +229,40 @@ export default {
   z-index: 1;
   background: var(--color-bg-secondary, #1f1f3a);
   padding-bottom: var(--space-xs);
+}
+
+.picker-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.picker-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter-chip--sm {
+  font-size: 0.7rem;
+  padding: 1px 6px;
+}
+
+.filter-clear {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: transparent;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms);
+}
+
+.filter-clear:hover {
+  border-color: var(--color-accent-fear, #c84b31);
+  color: var(--color-accent-fear, #c84b31);
 }
 
 .picker-search {
@@ -178,6 +295,12 @@ export default {
 }
 
 .filter-chip:hover { border-color: var(--color-text-secondary); }
+
+.filter-chip--sm.filter-chip--active {
+  border-color: var(--color-accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
+  background: rgba(83, 168, 182, 0.1);
+}
 
 .filter-chip--tier-1.filter-chip--active { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
 .filter-chip--tier-2.filter-chip--active { border-color: #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
