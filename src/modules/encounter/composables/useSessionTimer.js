@@ -129,14 +129,21 @@ export function useSessionTimer() {
    * @returns {number} Temps écoulé en millisecondes
    */
   function lapAndRestart() {
-    const currentElapsed = elapsed.value
+    // Calculer le temps directement depuis le storage (partagé entre instances)
+    const state = storage.data.value
+    let currentElapsed = state.accumulatedMs || 0
+    if (state.isRunning && state.startedAt) {
+      currentElapsed += Date.now() - state.startedAt
+    }
+    const currentRound = state.currentRound || 1
     stopTicking()
     storage.save({
       ...DEFAULT_STATE,
       startedAt: Date.now(),
       isRunning: true,
-      currentRound: storage.data.value.currentRound
+      currentRound: currentRound + 1
     })
+    elapsed.value = 0
     startTicking()
     return currentElapsed
   }

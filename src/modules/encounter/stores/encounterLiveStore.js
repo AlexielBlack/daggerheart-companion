@@ -408,9 +408,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const sessionTimer = useSessionTimer()
 
   function onRoundComplete() {
-    const roundMs = sessionTimer.lapAndRestart()
     const round = sessionTimer.currentRound.value
-    sessionTimer.advanceRound()
+    const roundMs = sessionTimer.lapAndRestart()
     combatLog.value.push({
       action: 'round_complete',
       round,
