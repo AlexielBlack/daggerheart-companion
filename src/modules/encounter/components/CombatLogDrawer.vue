@@ -139,19 +139,22 @@ export default {
     }
 
     function actionText(entry) {
+      // Source = actorName (ActionBar) ou fallback legacy (pcName/advName)
+      const src = entry.actorName || entry.pcName || entry.advName || '?'
+
       switch (entry.action) {
       case 'damage':
         return entry.type === 'hp'
-          ? `${entry.pcName} → ${entry.advName} : ${entry.amount} HP`
-          : `${entry.pcName} → ${entry.advName} : ${entry.amount} Stress`
+          ? `${src} → ${entry.advName} : ${entry.amount} HP`
+          : `${src} → ${entry.advName} : ${entry.amount} Stress`
       case 'pc_hit':
-        return `${entry.advName} → ${entry.pcName} : ${entry.hpMarked} HP`
+        return `${src} → ${entry.pcName} : ${entry.amount || entry.hpMarked} ${entry.type === 'stress' ? 'Stress' : 'HP'}`
       case 'pc_armor':
         return `${entry.pcName} utilise un slot d'armure`
       case 'miss':
         return entry.attackerType === 'pc'
-          ? `${entry.pcName} rate ${entry.advName}`
-          : `${entry.advName} rate ${entry.pcName}`
+          ? `${entry.pcName || src} rate ${entry.advName}`
+          : `${entry.advName || src} rate ${entry.pcName}`
       case 'adv_down':
         return `${entry.advName} vaincu` + (entry.pcName ? ` par ${entry.pcName}` : '')
       case 'pc_down':
@@ -167,9 +170,9 @@ export default {
       case 'damage_removed':
         return `Dégâts annulés : ${entry.advName || entry.pcName}`
       case 'heal_hp':
-        return `${entry.pcName || entry.advName} : ${entry.amount} Soin HP`
+        return `${entry.advName || entry.pcName || src} : ${entry.amount} Soin HP`
       case 'heal_stress':
-        return `${entry.pcName || entry.advName} : ${entry.amount} Soin Stress`
+        return `${entry.advName || entry.pcName || src} : ${entry.amount} Soin Stress`
       case 'hope_change':
         return `${entry.pcName} : +${entry.amount} Espoir`
       case 'down':
