@@ -104,7 +104,9 @@ function validateNpc(data) {
 
 export const useNpcStore = defineStore('npcs', () => {
   // ── Persistence ────────────────────────────────────────
-  const { data: storedNpcs, error: storageError } = useStorage('npcs', [])
+  const npcStorage = useStorage('npcs', [])
+  const storedNpcs = npcStorage.data
+  const storageError = npcStorage.error
 
   // ── État ────────────────────────────────────────────────
   const selectedNpcId = ref(null)
@@ -133,7 +135,7 @@ export const useNpcStore = defineStore('npcs', () => {
       if (!('importance' in npc)) { npc.importance = ''; migrated = true }
     }
     if (migrated) {
-      storedNpcs.save(storedNpcs.value)
+      npcStorage.save(storedNpcs.value)
     }
   }
 
