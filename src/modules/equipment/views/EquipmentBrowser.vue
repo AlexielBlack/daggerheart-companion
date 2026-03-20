@@ -695,6 +695,7 @@
 
 <script>
 import { ref, computed, inject, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useEquipmentStore } from '../stores/equipmentStore.js'
 import { RANGES, BURDENS, RARITIES } from '@/data/equipment/constants.js'
@@ -705,6 +706,7 @@ import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
 import { equipmentSchema } from '@modules/homebrew/schemas/equipmentSchema.js'
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
 import { useNotification } from '@core/composables/useNotification.js'
+import { useFilterSync } from '@core/composables/useFilterSync.js'
 
 export default {
   name: 'EquipmentBrowser',
@@ -718,6 +720,22 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const expandedId = ref(null)
+
+    // --- Synchronisation filtres <-> query params URL ---
+    const {
+      searchQuery: eqSearchQuery, activeCategory, activeTier,
+      activeDamageType, activeRarity, sourceFilter: eqSourceFilter
+    } = storeToRefs(store)
+    useFilterSync({
+      filters: {
+        q: { ref: eqSearchQuery, default: '' },
+        cat: { ref: activeCategory, default: 'all' },
+        tier: { ref: activeTier, default: 0 },
+        dmg: { ref: activeDamageType, default: 'all' },
+        rarity: { ref: activeRarity, default: 'all' },
+        src: { ref: eqSourceFilter, default: 'all' }
+      }
+    })
     const compendiumColumns = inject('compendiumColumns', ref(0))
 
     // --- Sections collapsibles ---

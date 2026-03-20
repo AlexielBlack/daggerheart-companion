@@ -137,6 +137,7 @@
 
 <script>
 import { ref, inject, computed, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import EnvironmentFilters from '../components/EnvironmentFilters.vue'
 import EnvironmentCard from '../components/EnvironmentCard.vue'
@@ -148,6 +149,7 @@ import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.
 import { useEnvironmentStore } from '../stores/environmentStore.js'
 import { useEnvironmentHomebrewStore } from '@modules/homebrew/categories/environment/useEnvironmentHomebrewStore.js'
 import { useNotification } from '@core/composables/useNotification.js'
+import { useFilterSync } from '@core/composables/useFilterSync.js'
 
 /**
  * @component EnvironmentBrowser
@@ -169,6 +171,22 @@ export default {
     const homebrewStore = useEnvironmentHomebrewStore()
     const { success: notifySuccess } = useNotification()
     const route = useRoute()
+
+    // --- Synchronisation filtres <-> query params URL ---
+    const {
+      searchQuery, selectedTiers, selectedTypes,
+      sortField, sortDirection, sourceFilter
+    } = storeToRefs(store)
+    useFilterSync({
+      filters: {
+        q: { ref: searchQuery, default: '' },
+        tier: { ref: selectedTiers, default: [] },
+        type: { ref: selectedTypes, default: [] },
+        sort: { ref: sortField, default: 'name' },
+        dir: { ref: sortDirection, default: 'asc' },
+        src: { ref: sourceFilter, default: 'all' }
+      }
+    })
     const compendiumColumns = inject('compendiumColumns', ref(0))
     const listGridStyle = computed(() => {
       if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
