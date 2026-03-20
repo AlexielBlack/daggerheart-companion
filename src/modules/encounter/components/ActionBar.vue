@@ -153,20 +153,6 @@
           Appliquer
         </button>
       </div>
-
-      <!-- Bouton Appliquer pour MISS (pas de montant) -->
-      <div
-        v-if="pendingAction?.effect === ACTION_EFFECTS.MISS && !showAmounts"
-        class="action-bar__amounts"
-      >
-        <button
-          class="action-bar__apply"
-          :aria-disabled="String(!canApply)"
-          @click="applyIfValid"
-        >
-          Appliquer
-        </button>
-      </div>
     </div>
   </Transition>
 </template>
@@ -219,7 +205,7 @@ export default {
       const effect = this.pendingAction?.effect
       if (!effect) return false
       if (effect === this.ACTION_EFFECTS.MISS) return true
-      return this.ACTION_EFFECT_META[effect]?.hasAmount && this.hasTargets
+      return this.hasTargets
     },
 
     /** Afficher la zone de sélection des cibles */
