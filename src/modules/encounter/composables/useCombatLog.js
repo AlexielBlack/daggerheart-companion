@@ -249,6 +249,23 @@ export function useCombatLog(deps) {
     persistState()
   }
 
+  /**
+   * Enregistre une entrée enrichie dans les logs de combat et de rencontre.
+   * Fonction générique pour centraliser le logging avec des champs enrichis
+   * (actionId pour grouper les actions, actorId/actorName pour l'attribution).
+   * @param {Object} entry - Objet contenant les données de l'entrée
+   * @returns {void}
+   */
+  function logActionEntry(entry) {
+    const logEntry = {
+      ...entry,
+      timestamp: Date.now()
+    }
+    combatLog.value.push(logEntry)
+    encounterLog.value.push(logEntry)
+    persistState()
+  }
+
   return {
     togglePcCondition,
     toggleAdversaryCondition,
@@ -257,6 +274,7 @@ export function useCombatLog(deps) {
     logPcDown,
     logPcRevive,
     logPcArmorUsed,
-    logMiss
+    logMiss,
+    logActionEntry
   }
 }
