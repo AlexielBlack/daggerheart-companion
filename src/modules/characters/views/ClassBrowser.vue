@@ -525,6 +525,8 @@ export default {
 .class-browser__create-btn {
   text-decoration: none;
   white-space: nowrap;
+  color: var(--color-accent-hope);
+  font-weight: var(--font-weight-medium);
 }
 
 /* -- Filtres -- */

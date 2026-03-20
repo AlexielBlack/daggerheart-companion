@@ -140,6 +140,7 @@
 
 <script>
 import { ref, inject, computed, nextTick } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import AdversaryFilters from '../components/AdversaryFilters.vue'
 import AdversaryCard from '../components/AdversaryCard.vue'
@@ -151,6 +152,7 @@ import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.
 import { useAdversaryStore } from '../stores/adversaryStore.js'
 import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 import { useNotification } from '@core/composables/useNotification.js'
+import { useFilterSync } from '@core/composables/useFilterSync.js'
 
 /**
  * @component AdversaryBrowser
@@ -172,6 +174,23 @@ export default {
     const homebrewStore = useAdversaryHomebrewStore()
     const { success: notifySuccess } = useNotification()
     const route = useRoute()
+
+    // --- Synchronisation filtres <-> query params URL ---
+    const {
+      searchQuery, selectedTiers, selectedTypes, selectedGenres,
+      sortField, sortDirection, sourceFilter
+    } = storeToRefs(store)
+    useFilterSync({
+      filters: {
+        q: { ref: searchQuery, default: '' },
+        tier: { ref: selectedTiers, default: [] },
+        type: { ref: selectedTypes, default: [] },
+        genre: { ref: selectedGenres, default: [] },
+        sort: { ref: sortField, default: 'name' },
+        dir: { ref: sortDirection, default: 'asc' },
+        src: { ref: sourceFilter, default: 'all' }
+      }
+    })
     const compendiumColumns = inject('compendiumColumns', ref(0))
     const listGridStyle = computed(() => {
       if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
@@ -305,6 +324,8 @@ export default {
 .adversary-browser__create-btn {
   text-decoration: none;
   white-space: nowrap;
+  color: var(--color-accent-hope);
+  font-weight: var(--font-weight-medium);
 }
 
 .adversary-browser__content {

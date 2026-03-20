@@ -100,7 +100,11 @@
 
     <!-- Sort + Clear -->
     <div class="adversary-filters__actions">
-      <div class="adversary-filters__sort">
+      <div
+        class="adversary-filters__sort"
+        role="group"
+        aria-label="Tri des résultats"
+      >
         <label
           for="adversary-sort"
           class="adversary-filters__legend"

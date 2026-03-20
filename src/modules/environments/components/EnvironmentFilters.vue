@@ -66,7 +66,11 @@
 
     <!-- Sort + Clear -->
     <div class="env-filters__actions">
-      <div class="env-filters__sort">
+      <div
+        class="env-filters__sort"
+        role="group"
+        aria-label="Tri des résultats"
+      >
         <label
           for="env-sort"
           class="env-filters__legend"
