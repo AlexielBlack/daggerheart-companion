@@ -239,7 +239,7 @@ export default {
 
     // ── Nombre de PJ (auto-detecte) ───────────────────────
     const pcCount = computed(() => {
-      const count = characterStore.characters?.length || 0
+      const count = characterStore.visibleCharacters?.length || 0
       return count > 0 ? count : 4
     })
 
@@ -248,7 +248,7 @@ export default {
       if (sessionStore.loadedEnvironment?.tier) {
         return sessionStore.loadedEnvironment.tier
       }
-      const chars = characterStore.characters || []
+      const chars = characterStore.visibleCharacters || []
       if (chars.length > 0) {
         const tiers = chars.map(c => getTierForLevel(c.level || 1))
         const avg = Math.round(tiers.reduce((a, b) => a + b, 0) / tiers.length)
@@ -322,7 +322,7 @@ export default {
           quantity: slot.quantity
         })),
         environmentId: sessionStore.environmentId || null,
-        selectedPcIds: (characterStore.characters || []).map(c => c.id),
+        selectedPcIds: (characterStore.visibleCharacters || []).map(c => c.id),
         notes: '',
         createdAt: new Date().toISOString(),
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
@@ -357,7 +357,7 @@ export default {
           quantity: slot.quantity
         })),
         environmentId: sessionStore.environmentId || null,
-        selectedPcIds: (characterStore.characters || []).map(c => c.id),
+        selectedPcIds: (characterStore.visibleCharacters || []).map(c => c.id),
         notes: ''
       }
 
