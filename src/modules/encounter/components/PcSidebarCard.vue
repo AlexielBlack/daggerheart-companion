@@ -110,6 +110,15 @@
       </button>
     </div>
 
+    <!-- Espoir -->
+    <div
+      v-if="(pc.hope || 0) > 0"
+      class="pc-sidebar__hope"
+      :aria-label="'Espoir : ' + pc.hope"
+    >
+      ✨ {{ pc.hope }}
+    </div>
+
     <!-- Résumé compact des conditions actives (visible quand non sélectionné) -->
     <div
       v-if="!isSelected && activeConditions.length > 0"
@@ -336,6 +345,14 @@ export default {
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* ── Espoir ── */
+.pc-sidebar__hope {
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-hope);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
 }
 
 /* ── Résumé conditions (non-sélectionné) ── */

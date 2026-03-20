@@ -170,17 +170,17 @@ export default {
       case 'damage_removed':
         return `Dégâts annulés : ${entry.advName || entry.pcName}`
       case 'heal_hp':
-        return `${entry.advName || entry.pcName || src} : ${entry.amount} Soin HP`
+        return `${src} → ${entry.advName || entry.pcName || '?'} : ${entry.amount} Soin HP`
       case 'heal_stress':
-        return `${entry.advName || entry.pcName || src} : ${entry.amount} Soin Stress`
+        return `${src} → ${entry.advName || entry.pcName || '?'} : ${entry.amount} Soin Stress`
       case 'hope_change':
-        return `${entry.pcName} : +${entry.amount} Espoir`
+        return `${entry.pcName || src} : +${entry.amount} Espoir`
       case 'down':
-        return `${entry.advName || entry.pcName} : À Terre`
+        return `${src} → ${entry.advName || entry.pcName || '?'} : À Terre`
       case 'condition_add':
-        return `${entry.advName || entry.pcName} : +${entry.condition}`
+        return `${src} → ${entry.advName || entry.pcName || '?'} : +${entry.condition}`
       case 'condition_remove':
-        return `${entry.advName || entry.pcName} : -${entry.condition}`
+        return `${src} → ${entry.advName || entry.pcName || '?'} : -${entry.condition}`
       default:
         return entry.action
       }

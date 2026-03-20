@@ -27,10 +27,6 @@
             {{ store.encounterName || 'Rencontre' }}
           </h1>
           <span class="live__tier">T{{ store.encounterTier }}</span>
-          <SpotlightToggle
-            :scene-mode="store.sceneMode"
-            @update:scene-mode="onSetSceneMode"
-          />
           <SessionTimer />
           <span
             v-if="store.adversaryCombatSummary.count > 0"
@@ -63,16 +59,6 @@
             @click="onUndo"
           >
             ↩ <span class="live__undo-label">{{ store.lastUndoLabel || store.undoStack.length }}</span>
-          </button>
-          <button
-            v-if="hasAdversaries"
-            class="live__aoe-btn"
-            :class="{ 'live__aoe-btn--on': aoeMode }"
-            title="Dégâts de zone (AoE)"
-            aria-label="Dégâts de zone"
-            @click="aoeMode = !aoeMode"
-          >
-            💥 AoE
           </button>
           <button
             v-if="hasAdversaries"
@@ -158,7 +144,39 @@
           />
         </div>
 
-        <!-- Colonne Adversaires (toujours visible en tablette) -->
+        <!-- Colonne Contexte (Features) -->
+        <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+        <div
+          class="live__col-ctx-wrapper"
+          :class="{ 'live__col-ctx-wrapper--open': tabletCtxOpen }"
+          @click.self="tabletCtxOpen = false"
+        >
+          <!-- eslint-enable -->
+          <div
+            ref="ctxColRef"
+            class="live__col-ctx"
+          >
+            <ContextPanel
+              :pc="store.activePc"
+              :adversary="store.activeAdversary"
+              :environment="store.activeEnvironment"
+              :scene-mode="store.sceneMode"
+              :last-click-category="store.lastClickCategory"
+              :primary-features="pcPrimary"
+              :secondary-features="pcSecondary"
+              :passive-features="pcPassive"
+              :reaction-features="pcReaction"
+              :all-features="pcAllFeatures"
+              :spellcast-info="playerActionsSpellcast"
+              :enriched-features="playerActionsEnriched"
+              :action-bar-open="actionBarOpen"
+              @select-npc="$emit('select-npc', $event)"
+              @open-action="openAction"
+            />
+          </div>
+        </div>
+
+        <!-- Colonne Adversaires -->
         <div
           v-if="hasAdversaries"
           class="live__col-adv"
@@ -200,38 +218,6 @@
             @toggle-acted="onToggleActed"
           />
         </div>
-
-        <!-- Colonne Contexte (side-sheet en tablette) -->
-        <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-        <div
-          class="live__col-ctx-wrapper"
-          :class="{ 'live__col-ctx-wrapper--open': tabletCtxOpen }"
-          @click.self="tabletCtxOpen = false"
-        >
-          <!-- eslint-enable -->
-          <div
-            ref="ctxColRef"
-            class="live__col-ctx"
-          >
-            <ContextPanel
-              :pc="store.activePc"
-              :adversary="store.activeAdversary"
-              :environment="store.activeEnvironment"
-              :scene-mode="store.sceneMode"
-              :last-click-category="store.lastClickCategory"
-              :primary-features="pcPrimary"
-              :secondary-features="pcSecondary"
-              :passive-features="pcPassive"
-              :reaction-features="pcReaction"
-              :all-features="pcAllFeatures"
-              :spellcast-info="playerActionsSpellcast"
-              :enriched-features="playerActionsEnriched"
-              :action-bar-open="actionBarOpen"
-              @select-npc="$emit('select-npc', $event)"
-              @open-action="openAction"
-            />
-          </div>
-        </div>
       </div>
 
       <!-- ══ Drawer Renforts ══ -->
@@ -250,138 +236,6 @@
 
       <!-- ══ Bandeau d'actions (ciblage) ══ -->
       <ActionBar />
-
-      <!-- ══ Modal AoE ══ -->
-      <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
-      <div
-        v-if="aoeMode"
-        class="live__overlay"
-        @click.self="aoeMode = false"
-      >
-        <!-- eslint-enable -->
-        <div
-          ref="aoeModalRef"
-          class="live__aoe-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Dégâts de zone"
-        >
-          <div class="live__aoe-header">
-            <span>💥 Dégâts de zone</span>
-            <button
-              aria-label="Fermer"
-              @click="aoeMode = false"
-            >
-              ✕
-            </button>
-          </div>
-          <div
-            v-for="inst in aoeAvailableInstances"
-            :key="inst.instanceId"
-            class="live__aoe-row"
-            :class="{ 'live__aoe-row--hit': aoeDamage[inst.instanceId] > 0 }"
-          >
-            <span class="live__aoe-name">
-              {{ inst.displayName }}
-            </span>
-            <span
-              v-if="inst.thresholds"
-              class="live__aoe-ref"
-              :title="'Seuils : Maj ' + inst.thresholds.major + ' / Sév ' + inst.thresholds.severe"
-            >{{ inst.thresholds.major }}/{{ inst.thresholds.severe }}</span>
-            <span class="live__aoe-hp">❤️{{ inst.markedHP }}/{{ inst.maxHP }}</span>
-            <!-- Boutons seuils (comme sur les cartes) -->
-            <div class="live__aoe-thresh">
-              <button
-                class="live__aoe-th live__aoe-th--1"
-                title="1 HP (Mineur)"
-                @click="aoeSetHp(inst.instanceId, 1)"
-              >
-                1
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--2"
-                title="2 HP (Majeur)"
-                @click="aoeSetHp(inst.instanceId, 2)"
-              >
-                2
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--3"
-                title="3 HP (Sévère)"
-                @click="aoeSetHp(inst.instanceId, 3)"
-              >
-                3
-              </button>
-            </div>
-            <span
-              v-if="aoeDamage[inst.instanceId] > 0"
-              class="live__aoe-dmg"
-            >−{{ aoeDamage[inst.instanceId] }}HP</span>
-            <button
-              v-if="aoeDamage[inst.instanceId] > 0"
-              class="live__aoe-undo"
-              title="Annuler"
-              @click="aoeUndoTarget(inst.instanceId)"
-            >
-              ↩
-            </button>
-          </div>
-          <div
-            v-for="pc in store.participantPcs"
-            :key="'pc_' + pc.id"
-            class="live__aoe-row"
-            :class="{ 'live__aoe-row--hit': aoeDamage['pc_' + pc.id] > 0 }"
-          >
-            <span class="live__aoe-name">🧑 {{ pc.name }}</span>
-            <span class="live__aoe-hp">Évasion {{ (pc.evasion || 10) + (pc.evasionBonus || 0) }}</span>
-            <div class="live__aoe-thresh">
-              <button
-                class="live__aoe-th live__aoe-th--1"
-                title="1 HP"
-                @click="aoeSetHp('pc_' + pc.id, 1)"
-              >
-                1
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--2"
-                title="2 HP"
-                @click="aoeSetHp('pc_' + pc.id, 2)"
-              >
-                2
-              </button>
-              <button
-                class="live__aoe-th live__aoe-th--3"
-                title="3 HP"
-                @click="aoeSetHp('pc_' + pc.id, 3)"
-              >
-                3
-              </button>
-            </div>
-            <span
-              v-if="aoeDamage['pc_' + pc.id] > 0"
-              class="live__aoe-dmg"
-            >−{{ aoeDamage['pc_' + pc.id] }}HP</span>
-            <button
-              v-if="aoeDamage['pc_' + pc.id] > 0"
-              class="live__aoe-undo"
-              title="Annuler"
-              @click="aoeUndoTarget('pc_' + pc.id)"
-            >
-              ↩
-            </button>
-          </div>
-          <div class="live__aoe-footer">
-            <span>{{ aoeTotalTargets }} cible{{ aoeTotalTargets > 1 ? 's' : '' }}</span>
-            <button
-              :disabled="aoeTotalTargets === 0"
-              @click="applyAoe"
-            >
-              Appliquer
-            </button>
-          </div>
-        </div>
-      </div>
 
       <!-- ══ Modal fin ══ -->
       <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
@@ -456,7 +310,6 @@ import ContextPanel from '../components/ContextPanel.vue'
 import CountdownTracker from '../components/CountdownTracker.vue'
 import ReinforcementDrawer from '../components/ReinforcementDrawer.vue'
 import CombatLogDrawer from '../components/CombatLogDrawer.vue'
-import SpotlightToggle from '../components/SpotlightToggle.vue'
 import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
@@ -467,7 +320,7 @@ import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
@@ -501,11 +354,6 @@ export default {
       store.selectPc(pcId)
       haptic.swap()
       tabletCtxOpen.value = true
-    }
-
-    // ── Scene mode (depuis le toggle) ──
-    function onSetSceneMode(mode) {
-      store.setSceneMode(mode)
     }
 
     // ── Actions adversaire (avec haptique) ──
@@ -570,11 +418,6 @@ export default {
       store.persistState()
     }
 
-    // ── AoE ──
-    const aoeMode = ref(false)
-    const aoeModalRef = ref(null)
-    useFocusTrap(aoeModalRef, () => aoeMode.value)
-
     // ── Countdowns ──
     const showCountdownBar = ref(false)
 
@@ -591,45 +434,6 @@ export default {
       store.advanceCountdownByResult(countdownId, rollResult)
     }
     function onResetCountdown(id) { store.resetCountdown(id) }
-    const aoeDamage = ref({})
-    const aoeAvailableInstances = computed(() => {
-      const active = store.liveAdversaries.filter((a) => !a.isDefeated)
-      const countByAdv = {}
-      for (const a of store.liveAdversaries) { countByAdv[a.adversaryId] = (countByAdv[a.adversaryId] || 0) + 1 }
-      const indexByAdv = {}
-      return active.map((a) => {
-        indexByAdv[a.adversaryId] = (indexByAdv[a.adversaryId] || 0) + 1
-        const needsNumber = countByAdv[a.adversaryId] > 1
-        return { ...a, displayName: needsNumber ? `${a.name} #${indexByAdv[a.adversaryId]}` : a.name }
-      })
-    })
-    const aoeTotalTargets = computed(() => Object.values(aoeDamage.value).filter((v) => v > 0).length)
-
-    /** Pose directement les HP à marquer pour une cible AoE */
-    function aoeSetHp(targetId, hp) {
-      aoeDamage.value = { ...aoeDamage.value, [targetId]: hp }
-    }
-
-    function aoeUndoTarget(targetId) {
-      const copy = { ...aoeDamage.value }
-      delete copy[targetId]
-      aoeDamage.value = copy
-    }
-    function applyAoe() {
-      const dmg = aoeDamage.value
-      const advCustom = {}
-      const pcHits = []
-      for (const [targetId, amount] of Object.entries(dmg)) {
-        if (amount <= 0) continue
-        if (targetId.startsWith('pc_')) { pcHits.push({ pcId: targetId.slice(3), amount }) }
-        else { advCustom[targetId] = amount }
-      }
-      if (Object.keys(advCustom).length > 0) store.applyAoeDamagePerTarget(advCustom)
-      if (pcHits.length > 0) store.applyAoeDamageToPcsPerTarget(pcHits)
-      haptic.confirm()
-      aoeDamage.value = {}
-      aoeMode.value = false
-    }
 
     // ── Fin ──
     const showEndSummary = ref(false)
@@ -683,7 +487,6 @@ export default {
       if (e.key === 'Tab') { e.preventDefault(); store.swapSpotlight(); haptic.swap(); return }
       if (e.key === 'Escape') {
         if (tabletCtxOpen.value) { tabletCtxOpen.value = false; return }
-        if (aoeMode.value) aoeMode.value = false
         if (showReinforcementPanel.value) showReinforcementPanel.value = false
         if (showEndSummary.value) showEndSummary.value = false
         return
@@ -708,7 +511,6 @@ export default {
 
     return {
       store, isPcActor, hasAdversaries,
-      onSetSceneMode,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -721,9 +523,6 @@ export default {
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
-      aoeMode, aoeDamage, aoeAvailableInstances, aoeTotalTargets,
-      aoeSetHp, aoeUndoTarget, applyAoe,
-      aoeModalRef,
       showCountdownBar,
       onAddCountdown, onRemoveCountdown, onTickCountdown, onUntickCountdown,
       onAdvanceCountdownByResult, onResetCountdown,
@@ -799,7 +598,7 @@ export default {
 .live__tablet-tabs { display: none; }
 
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
-.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(300px, 2.5fr) minmax(240px, 1.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
+.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(240px, 1.5fr) minmax(300px, 2.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
 .live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
 
@@ -873,6 +672,7 @@ export default {
   .live__col-adv {
     grid-column: 2;
     grid-row: 1;
+    order: 2;
   }
 
   /* Side-sheet contexte — overlay coulissant depuis la droite */
