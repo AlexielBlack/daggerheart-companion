@@ -150,6 +150,9 @@ export function useActionBar () {
             store.markAdversaryHP(t.id, t.amount, skipOpt)
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             store.logActionEntry({ ...logCtx, action: 'damage', instanceId: t.id, advName: adv?.name, type: 'hp', amount: t.amount })
+            if (adv?.isDefeated) {
+              store.logActionEntry({ ...logCtx, action: 'adv_down', instanceId: t.id, advName: adv.name })
+            }
           }
           // PJ : currentHP = dégâts marqués, augmente quand on prend des dégâts
           if (t.type === 'pc') {
@@ -233,10 +236,11 @@ export function useActionBar () {
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             if (adv?.isDefeated) {
               store.reviveAdversary(t.id, { skipUndo: true, skipLog: true })
+              store.logActionEntry({ ...logCtx, action: 'adv_revive', instanceId: t.id, advName: adv?.name })
             } else {
               store.defeatAdversary(t.id, { skipUndo: true, skipLog: true })
+              store.logActionEntry({ ...logCtx, action: 'adv_down', instanceId: t.id, advName: adv?.name })
             }
-            store.logActionEntry({ ...logCtx, action: 'down', instanceId: t.id, advName: adv?.name })
           }
           // PJ : toggle du statut à terre
           if (t.type === 'pc') {

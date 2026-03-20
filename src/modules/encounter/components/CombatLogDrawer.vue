@@ -96,7 +96,7 @@ const ACTION_ICONS = {
   heal_hp: '💚',
   heal_stress: '🩹',
   hope_change: '✨',
-  down: '💀',
+  adv_revive: '💚',
   condition_add: '⚡',
   condition_remove: '⚡',
   round_complete: '🔔'
@@ -157,13 +157,15 @@ export default {
           ? `${entry.pcName || src} rate ${entry.advName}`
           : `${entry.advName || src} rate ${entry.pcName}`
       case 'adv_down':
-        return `${entry.advName} vaincu` + (entry.pcName ? ` par ${entry.pcName}` : '')
+        return `${entry.advName} vaincu` + (entry.actorName ? ` par ${entry.actorName}` : entry.pcName ? ` par ${entry.pcName}` : '')
+      case 'adv_revive':
+        return `${entry.advName} réanimé` + (entry.actorName ? ` par ${entry.actorName}` : '')
       case 'pc_down':
-        return `${entry.pcName} est à terre`
+        return `${entry.pcName} est à terre` + (entry.actorName ? ` (${entry.actorName})` : '')
       case 'pc_down_cancelled':
         return `${entry.pcName} n'est plus à terre`
       case 'pc_revive':
-        return `${entry.pcName} réanimé`
+        return `${entry.pcName} réanimé` + (entry.actorName ? ` par ${entry.actorName}` : '')
       case 'condition_added':
         return `${entry.entityName} : +${entry.condition}`
       case 'condition_removed':
@@ -176,8 +178,6 @@ export default {
         return `${src} → ${entry.advName || entry.pcName || '?'} : ${entry.amount} Soin Stress`
       case 'hope_change':
         return `${entry.pcName || src} : +${entry.amount} Espoir`
-      case 'down':
-        return `${src} → ${entry.advName || entry.pcName || '?'} : À Terre`
       case 'condition_add':
         return `${src} → ${entry.advName || entry.pcName || '?'} : +${entry.condition}`
       case 'condition_remove':
