@@ -169,19 +169,24 @@ export default {
 <style scoped>
 .env-filters {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
   background-color: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
 }
 
-.env-filters__search { width: 100%; }
+.env-filters__search {
+  flex: 1;
+  min-width: 180px;
+  max-width: 280px;
+}
 
 .env-filters__input {
   width: 100%;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-xs) var(--space-sm);
   background-color: var(--color-bg-input);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -197,7 +202,14 @@ export default {
 
 .env-filters__input::placeholder { color: var(--color-text-muted); }
 
-.env-filters__group { border: none; padding: 0; margin: 0; }
+.env-filters__group {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
 
 .env-filters__legend {
   font-size: var(--font-size-xs);
@@ -205,7 +217,8 @@ export default {
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 0;
+  white-space: nowrap;
 }
 
 .env-filters__chips {
@@ -278,8 +291,17 @@ export default {
 }
 
 .env-filters__count {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .env-filters__search {
+    max-width: none;
+    flex-basis: 100%;
+  }
 }
 
 .sr-only {
