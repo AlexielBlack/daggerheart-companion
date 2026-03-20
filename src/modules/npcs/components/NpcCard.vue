@@ -55,10 +55,10 @@
     </div>
 
     <p
-      v-if="npc.motives"
+      v-if="npc.ambition"
       class="npc-card__motives"
     >
-      {{ truncate(npc.motives, 80) }}
+      {{ truncate(npc.ambition, 80) }}
     </p>
   </article>
 </template>

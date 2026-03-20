@@ -138,9 +138,9 @@
       </div>
     </fieldset>
 
-    <!-- ── Description & Motifs ── -->
+    <!-- ── Description & Personnalité ── -->
     <fieldset class="npc-sheet__section">
-      <legend>Description & Motifs</legend>
+      <legend>Description & Personnalité</legend>
 
       <div class="field">
         <label for="npc-description">Description</label>
@@ -152,36 +152,83 @@
         ></textarea>
       </div>
 
-      <div class="field">
-        <label for="npc-personality">Personnalité</label>
-        <input
-          id="npc-personality"
-          v-model="form.personality"
-          type="text"
-          placeholder="Traits de caractère clés"
-        />
+      <div class="field-grid">
+        <div class="field">
+          <label for="npc-personality">Personnalité</label>
+          <input
+            id="npc-personality"
+            v-model="form.personality"
+            type="text"
+            placeholder="Traits de caractère clés"
+          />
+        </div>
+
+        <div class="field">
+          <label for="npc-contradiction">Contradiction</label>
+          <input
+            id="npc-contradiction"
+            v-model="form.contradiction"
+            type="text"
+            placeholder="Ce qui contredit sa personnalité apparente"
+          />
+        </div>
       </div>
 
       <div class="field-grid">
         <div class="field">
-          <label for="npc-motives">Motifs</label>
-          <textarea
-            id="npc-motives"
-            v-model="form.motives"
-            rows="2"
-            placeholder="Ce que le PNJ veut…"
-          ></textarea>
+          <label for="npc-ancestry">Ascendance</label>
+          <input
+            id="npc-ancestry"
+            v-model="form.ancestry"
+            type="text"
+            placeholder="Ascendance du PNJ"
+          />
         </div>
 
         <div class="field">
-          <label for="npc-tactics">Tactiques</label>
-          <textarea
-            id="npc-tactics"
-            v-model="form.tactics"
-            rows="2"
-            placeholder="Comment il agit…"
-          ></textarea>
+          <label for="npc-importance">Importance</label>
+          <input
+            id="npc-importance"
+            v-model="form.importance"
+            type="text"
+            placeholder="Rôle dans l'histoire"
+          />
         </div>
+      </div>
+    </fieldset>
+
+    <!-- ── Ambition & Moyens ── -->
+    <fieldset class="npc-sheet__section">
+      <legend>Ambition & Moyens</legend>
+
+      <div class="field">
+        <label for="npc-ambition">Ambition</label>
+        <textarea
+          id="npc-ambition"
+          v-model="form.ambition"
+          rows="2"
+          placeholder="Ce que le PNJ veut accomplir…"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="npc-moyens">Moyens</label>
+        <textarea
+          id="npc-moyens"
+          v-model="form.moyens"
+          rows="2"
+          placeholder="Comment il s'y prend…"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="npc-active-problem">Problème Actif</label>
+        <textarea
+          id="npc-active-problem"
+          v-model="form.activeProblem"
+          rows="2"
+          placeholder="Problème en cours qui implique ce PNJ…"
+        ></textarea>
       </div>
     </fieldset>
 

@@ -113,6 +113,30 @@ export const useNpcStore = defineStore('npcs', () => {
   const filterFaction = ref(null)
   const filterLocation = ref(null)
 
+  // ── Migration : renommage motives→ambition, tactics→moyens, nouveaux champs ──
+  if (Array.isArray(storedNpcs.value)) {
+    let migrated = false
+    for (const npc of storedNpcs.value) {
+      if ('motives' in npc && !('ambition' in npc)) {
+        npc.ambition = npc.motives || ''
+        delete npc.motives
+        migrated = true
+      }
+      if ('tactics' in npc && !('moyens' in npc)) {
+        npc.moyens = npc.tactics || ''
+        delete npc.tactics
+        migrated = true
+      }
+      if (!('contradiction' in npc)) { npc.contradiction = ''; migrated = true }
+      if (!('activeProblem' in npc)) { npc.activeProblem = ''; migrated = true }
+      if (!('ancestry' in npc)) { npc.ancestry = ''; migrated = true }
+      if (!('importance' in npc)) { npc.importance = ''; migrated = true }
+    }
+    if (migrated) {
+      storedNpcs.save(storedNpcs.value)
+    }
+  }
+
   // ── Items réactifs ─────────────────────────────────────
   const npcs = computed(() => {
     if (!Array.isArray(storedNpcs.value)) return []
