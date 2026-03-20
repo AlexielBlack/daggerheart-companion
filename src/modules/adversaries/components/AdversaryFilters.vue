@@ -64,8 +64,22 @@
       </div>
     </fieldset>
 
+    <!-- Toggle filtres avancés (genres) -->
+    <button
+      class="adversary-filters__toggle-advanced"
+      :aria-expanded="String(showAdvancedFilters)"
+      aria-controls="adversary-genre-filters"
+      @click="showAdvancedFilters = !showAdvancedFilters"
+    >
+      {{ showAdvancedFilters ? 'Masquer genres' : 'Genres ▸' }}
+    </button>
+
     <!-- Genre filters -->
-    <fieldset class="adversary-filters__group">
+    <fieldset
+      id="adversary-genre-filters"
+      class="adversary-filters__group adversary-filters__group--genres"
+      :class="{ 'adversary-filters__group--hidden': !showAdvancedFilters }"
+    >
       <legend class="adversary-filters__legend">
         Genre
       </legend>
@@ -150,6 +164,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { ADVERSARY_TYPE_LABELS, GENRE_META } from '@data/adversaries'
 
 /**
@@ -181,6 +196,11 @@ export default {
     'toggle-sort-direction',
     'clear-filters'
   ],
+  setup() {
+    // État du toggle filtres avancés (genres) sur mobile
+    const showAdvancedFilters = ref(false)
+    return { showAdvancedFilters }
+  },
   computed: {
     typeLabels() {
       return ADVERSARY_TYPE_LABELS
@@ -343,10 +363,35 @@ export default {
   margin-left: auto;
 }
 
+.adversary-filters__toggle-advanced {
+  display: none;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-hope);
+  background: transparent;
+  border: 1px solid var(--color-accent-hope);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.adversary-filters__toggle-advanced:hover {
+  background: rgba(83, 168, 182, 0.1);
+}
+
 @media (max-width: 768px) {
   .adversary-filters__search {
     max-width: none;
     flex-basis: 100%;
+  }
+
+  .adversary-filters__toggle-advanced {
+    display: inline-flex;
+  }
+
+  .adversary-filters__group--genres.adversary-filters__group--hidden {
+    display: none;
   }
 }
 
