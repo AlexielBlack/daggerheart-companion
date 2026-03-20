@@ -2,6 +2,7 @@
   <div
     class="live"
     :class="'live--' + store.sceneMode"
+    :style="actionBarOpen ? { paddingBottom: '160px' } : {}"
   >
       <!-- Écran inactif -->
       <div
@@ -239,6 +240,9 @@
           @clear="clearCombatLog"
         />
 
+        <!-- ══ Bandeau d'actions (ciblage) ══ -->
+        <ActionBar />
+
         <!-- ══ Modal AoE ══ -->
         <!-- eslint-disable vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
         <div
@@ -448,16 +452,22 @@ import SpotlightToggle from '../components/SpotlightToggle.vue'
 import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
+import ActionBar from '../components/ActionBar.vue'
 import { useHaptic } from '../composables/useHaptic'
+import { useActionBar } from '../composables/useActionBar'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SpotlightToggle, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
+
+    // Bandeau d'actions (ciblage)
+    const actionBar = useActionBar()
+    const actionBarOpen = actionBar.isOpen
 
     // Features PJ contextuelles
     const activePcRef = computed(() => store.activePc)
@@ -712,7 +722,11 @@ export default {
       showEndSummary, endSummaryData,
       endModalRef,
       tabletCtxOpen, ctxColRef,
-      haptic
+      haptic,
+      actionBarOpen,
+      openAction: actionBar.openAction,
+      toggleTarget: actionBar.toggleTarget,
+      isTargetSelected: actionBar.isTargetSelected
     }
   },
   methods: {
