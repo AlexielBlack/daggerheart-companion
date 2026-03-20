@@ -396,7 +396,8 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   const {
     togglePcCondition, toggleAdversaryCondition, removeCombatLogEntry,
-    logPcHit, logPcDown, logPcRevive, logPcArmorUsed, logMiss
+    logPcHit, logPcDown, logPcRevive, logPcArmorUsed, logMiss,
+    logActionEntry
   } = useCombatLog({
     combatLog, encounterLog, liveAdversaries, activePcId,
     participantPcs, activeAdversary, pcDownStatus, pcConditions,
@@ -1126,7 +1127,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
     // Actions — Combat log & conditions (composable)
     removeCombatLogEntry,
-    logPcHit, logPcDown, logPcRevive, logPcArmorUsed, logMiss,
+    logPcHit, logPcDown, logPcRevive, logPcArmorUsed, logMiss, logActionEntry,
     togglePcCondition, toggleAdversaryCondition,
 
     // Actions — Spotlight (composable)
