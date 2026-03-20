@@ -3,7 +3,7 @@
 
 import { ref, computed } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
-import { ACTION_EFFECTS } from '@data/encounters/actionEffects'
+import { ACTION_EFFECTS, ACTION_EFFECT_META } from '@data/encounters/actionEffects'
 
 // État module-level = singleton partagé entre tous les consommateurs
 const pendingAction = ref(null)
@@ -124,6 +124,101 @@ export function useActionBar () {
     return adv?.name || actorId
   }
 
+  /** Applique l'action en cours : dispatch vers les fonctions store appropriées */
+  function applyAction () {
+    if (!pendingAction.value || !canApply.value) return
+
+    const { effect, condition, targets } = pendingAction.value
+    const actionId = generateActionId()
+    const actorName = getActorName()
+    const actorId = pendingAction.value.actorId
+
+    // Un seul pushUndo avant toutes les mutations
+    if (effect !== ACTION_EFFECTS.MISS) {
+      store.pushUndo('Action: ' + (ACTION_EFFECT_META[effect]?.label || effect))
+    }
+
+    const skipOpt = { skipUndo: true, skipLog: true }
+    const logCtx = { actionId, actorId, actorName }
+
+    switch (effect) {
+      case ACTION_EFFECTS.DAMAGE_HP:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            store.markAdversaryHP(t.id, t.amount, skipOpt)
+            const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
+            store.logActionEntry({ ...logCtx, action: 'damage', instanceId: t.id, advName: adv?.name, type: 'hp', amount: t.amount })
+          }
+        }
+        break
+
+      case ACTION_EFFECTS.DAMAGE_STRESS:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            store.markAdversaryStress(t.id, t.amount, skipOpt)
+            const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
+            store.logActionEntry({ ...logCtx, action: 'damage', instanceId: t.id, advName: adv?.name, type: 'stress', amount: t.amount })
+          }
+        }
+        break
+
+      case ACTION_EFFECTS.HEAL_HP:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            store.clearAdversaryHP(t.id, t.amount, skipOpt)
+            const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
+            store.logActionEntry({ ...logCtx, action: 'heal_hp', instanceId: t.id, advName: adv?.name, amount: t.amount })
+          }
+        }
+        break
+
+      case ACTION_EFFECTS.HEAL_STRESS:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            store.clearAdversaryStress(t.id, t.amount, skipOpt)
+            const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
+            store.logActionEntry({ ...logCtx, action: 'heal_stress', instanceId: t.id, advName: adv?.name, amount: t.amount })
+          }
+        }
+        break
+
+      case ACTION_EFFECTS.CONDITION:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            store.toggleAdversaryCondition(t.id, condition, { skipUndo: true })
+          } else {
+            store.togglePcCondition(t.id, condition, { skipUndo: true })
+          }
+          store.logActionEntry({ ...logCtx, action: 'condition_add', instanceId: t.type === 'adversary' ? t.id : undefined, pcId: t.type === 'pc' ? t.id : undefined, condition })
+        }
+        break
+
+      case ACTION_EFFECTS.DOWN:
+        for (const t of targets) {
+          if (t.type === 'adversary') {
+            const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
+            if (adv?.isDefeated) {
+              store.reviveAdversary(t.id, { skipUndo: true, skipLog: true })
+            } else {
+              store.defeatAdversary(t.id, { skipUndo: true, skipLog: true })
+            }
+            store.logActionEntry({ ...logCtx, action: 'down', instanceId: t.id, advName: adv?.name })
+          }
+        }
+        break
+
+      case ACTION_EFFECTS.HOPE:
+        // Espoir par PJ via characterStore — Task 7
+        break
+
+      case ACTION_EFFECTS.MISS:
+        store.logActionEntry({ ...logCtx, action: 'miss' })
+        break
+    }
+
+    cancelAction()
+  }
+
   /** Annule l'action en cours */
   function cancelAction () {
     pendingAction.value = null
@@ -146,6 +241,7 @@ export function useActionBar () {
     isTargetSelected,
     generateActionId,
     getActorName,
+    applyAction,
     cancelAction
   }
 }
