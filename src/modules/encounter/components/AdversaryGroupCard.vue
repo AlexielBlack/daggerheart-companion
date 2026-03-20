@@ -148,10 +148,16 @@
           v-for="inst in group.instances"
           :key="inst.instanceId"
           class="adv-group__minion-btn"
-          :class="{ 'adv-group__minion-btn--dead': inst.isDefeated }"
-          :aria-label="(inst.isDefeated ? 'Réanimer' : 'Vaincre') + ' minion #' + (group.instances.indexOf(inst) + 1)"
+          :class="{
+            'adv-group__minion-btn--dead': inst.isDefeated,
+            'adv-group__minion-btn--targeted': isTargeting && isTargetSelected(inst.instanceId)
+          }"
+          :aria-label="isTargeting
+            ? 'Sélectionner minion #' + (group.instances.indexOf(inst) + 1) + ' comme cible'
+            : (inst.isDefeated ? 'Réanimer' : 'Vaincre') + ' minion #' + (group.instances.indexOf(inst) + 1)"
+          :aria-pressed="isTargeting ? isTargetSelected(inst.instanceId) : undefined"
           :title="inst.isDefeated ? 'Réanimer' : 'Vaincre'"
-          @click.stop="toggleMinion(inst)"
+          @click.stop="isTargeting ? $emit('toggle-target', inst.instanceId, 'adversary') : toggleMinion(inst)"
         >
           {{ inst.isDefeated ? '💀' : '✦' }}
         </button>
@@ -165,11 +171,18 @@
         v-else
         class="adv-group__instances"
       >
+        <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
         <div
           v-for="inst in activeInstances"
           :key="inst.instanceId"
           class="adv-group__inst"
-          :class="{ 'adv-group__inst--swiped': swipedId === inst.instanceId }"
+          :class="{
+            'adv-group__inst--swiped': swipedId === inst.instanceId,
+            'adv-group__inst--targeted': isTargeting && isTargetSelected(inst.instanceId)
+          }"
+          :aria-pressed="isTargeting ? isTargetSelected(inst.instanceId) : undefined"
+          :aria-label="isTargeting ? 'Sélectionner ' + inst.name + ' comme cible' : undefined"
+          @click="isTargeting ? $emit('toggle-target', inst.instanceId, 'adversary') : null"
         >
           <!-- Bouton vaincre révélé par swipe -->
           <button
@@ -320,10 +333,13 @@
           </button>
           <!-- Instances vaincues dépliables -->
           <template v-if="showDefeated">
+            <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
             <div
               v-for="inst in defeatedInstances"
               :key="inst.instanceId"
               class="adv-group__inst adv-group__inst--defeated"
+              :class="{ 'adv-group__inst--targeted': isTargeting && isTargetSelected(inst.instanceId) }"
+              @click="isTargeting ? $emit('toggle-target', inst.instanceId, 'adversary') : null"
             >
               <div class="adv-group__inst-row1">
                 <span
@@ -356,13 +372,16 @@ export default {
   props: {
     group: { type: Object, required: true },
     isSelected: { type: Boolean, default: false },
-    hasActed: { type: Boolean, default: false }
+    hasActed: { type: Boolean, default: false },
+    isTargeting: { type: Boolean, default: false },
+    isTargetSelected: { type: Function, default: () => false }
   },
   emits: [
     'select-group',
     'apply-damage', 'mark-stress', 'clear-stress',
     'clear-hp', 'defeat', 'revive',
-    'toggle-condition', 'toggle-acted'
+    'toggle-condition', 'toggle-acted',
+    'toggle-target'
   ],
   data() {
     return {
@@ -758,6 +777,16 @@ export default {
 }
 
 .adv-group__inst--defeated { opacity: 0.4; }
+
+.adv-group__inst--targeted {
+  border: 2px solid var(--color-success, #22c55e) !important;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.adv-group__minion-btn--targeted {
+  border-color: var(--color-success, #22c55e) !important;
+  background: rgba(34, 197, 94, 0.1);
+}
 
 /* Contenu swipeable */
 .adv-group__inst-content {
