@@ -137,110 +137,126 @@
       aria-label="Armes primaires"
     >
       <h2 class="section-title">
-        Armes Primaires
-        <span class="section-count">{{ store.filteredPrimaryWeapons.length }}</span>
+        <button
+          class="section-title__toggle"
+          :aria-expanded="String(isSectionOpen('primaryWeapon'))"
+          aria-controls="section-primary-weapons"
+          @click="toggleSection('primaryWeapon')"
+        >
+          <span
+            class="section-title__chevron"
+            :class="{ 'section-title__chevron--collapsed': !isSectionOpen('primaryWeapon') }"
+          >&#x25BC;</span>
+          Armes Primaires
+          <span class="section-count">{{ store.filteredPrimaryWeapons.length }}</span>
+        </button>
       </h2>
       <div
-        class="weapon-table"
-        role="table"
-        aria-label="Tableau des armes primaires"
+        v-show="isSectionOpen('primaryWeapon')"
+        id="section-primary-weapons"
       >
         <div
-          class="table-header"
-          role="row"
+          class="weapon-table"
+          role="table"
+          aria-label="Tableau des armes primaires"
         >
-          <span role="columnheader">Nom</span>
-          <span role="columnheader">Trait</span>
-          <span role="columnheader">Portée</span>
-          <span role="columnheader">Dégâts</span>
-          <span role="columnheader">Mains</span>
-          <span role="columnheader">Tier</span>
-        </div>
-        <template
-          v-for="weapon in store.filteredPrimaryWeapons"
-          :key="weapon.id"
-        >
-          <button
-            class="table-row"
+          <div
+            class="table-header"
             role="row"
-            :aria-expanded="String(expandedId === weapon.id)"
-            :aria-controls="`equip-${weapon.id}`"
-            @click="toggleItem(weapon.id)"
           >
-            <span
-              role="cell"
-              class="cell-name"
-            >
-              {{ weapon.name }}
-              <SourceBadge :source="weapon.source" />
-            </span>
-            <span
-              role="cell"
-              class="cell-trait"
-            >{{ weapon.trait }}</span>
-            <span
-              role="cell"
-              class="cell-range"
-            >{{ rangeLabel(weapon.range) }}</span>
-            <span
-              role="cell"
-              class="cell-damage"
+            <span role="columnheader">Nom</span>
+            <span role="columnheader">Trait</span>
+            <span role="columnheader">Portée</span>
+            <span role="columnheader">Dégâts</span>
+            <span role="columnheader">Mains</span>
+            <span role="columnheader">Tier</span>
+          </div>
+          <template
+            v-for="weapon in store.filteredPrimaryWeapons"
+            :key="weapon.id"
+          >
+            <button
+              class="table-row"
+              role="row"
+              :aria-expanded="String(expandedId === weapon.id)"
+              :aria-controls="`equip-${weapon.id}`"
+              @click="toggleItem(weapon.id)"
             >
               <span
-                class="damage-badge"
-                :class="`damage-badge--${weapon.damageType}`"
-              >{{ weapon.damage }}</span>
-            </span>
-            <span
-              role="cell"
-              class="cell-burden"
-            >{{ burdenLabel(weapon.burden) }}</span>
-            <span
-              role="cell"
-              class="cell-tier"
-            >
-              <span class="tier-badge">T{{ weapon.tier }}</span>
-            </span>
-          </button>
-          <div
-            :id="`equip-${weapon.id}`"
-            class="item-details"
-            :hidden="expandedId !== weapon.id"
-          >
-            <p
-              v-if="weapon.feature"
-              class="item-details__feature"
-            >
-              <strong>Feature :</strong> {{ weapon.feature }}
-            </p>
-            <p
-              v-if="weapon.damageType === 'mag'"
-              class="item-details__note"
-            >
-              Arme magique — nécessite un trait Spellcast
-            </p>
-            <p
-              v-if="!weapon.feature"
-              class="item-details__note"
-            >
-              Pas de feature spéciale.
-            </p>
-            <button
-              v-if="weapon.source === 'custom'"
-              class="btn btn--secondary btn--xs item-details__edit-btn"
-              aria-label="Modifier cet équipement custom"
-              @click.stop="startEdit(weapon)"
-            >
-              Modifier
+                role="cell"
+                class="cell-name"
+              >
+                {{ weapon.name }}
+                <SourceBadge :source="weapon.source" />
+              </span>
+              <span
+                role="cell"
+                class="cell-trait"
+              >{{ weapon.trait }}</span>
+              <span
+                role="cell"
+                class="cell-range"
+              >{{ rangeLabel(weapon.range) }}</span>
+              <span
+                role="cell"
+                class="cell-damage"
+              >
+                <span
+                  class="damage-badge"
+                  :class="`damage-badge--${weapon.damageType}`"
+                >{{ weapon.damage }}</span>
+              </span>
+              <span
+                role="cell"
+                class="cell-burden"
+              >{{ burdenLabel(weapon.burden) }}</span>
+              <span
+                role="cell"
+                class="cell-tier"
+              >
+                <span class="tier-badge">T{{ weapon.tier }}</span>
+              </span>
             </button>
-            <button
-              class="btn btn--secondary btn--sm item-details__duplicate-btn"
-              @click.stop="duplicateToHomebrew(weapon)"
+            <div
+              :id="`equip-${weapon.id}`"
+              class="item-details"
+              :hidden="expandedId !== weapon.id"
             >
-              Dupliquer en homebrew
-            </button>
-          </div>
-        </template>
+              <p
+                v-if="weapon.feature"
+                class="item-details__feature"
+              >
+                <strong>Feature :</strong> {{ weapon.feature }}
+              </p>
+              <p
+                v-if="weapon.damageType === 'mag'"
+                class="item-details__note"
+              >
+                Arme magique — nécessite un trait Spellcast
+              </p>
+              <p
+                v-if="!weapon.feature"
+                class="item-details__note"
+              >
+                Pas de feature spéciale.
+              </p>
+              <button
+                v-if="weapon.source === 'custom'"
+                class="btn btn--secondary btn--xs item-details__edit-btn"
+                aria-label="Modifier cet équipement custom"
+                @click.stop="startEdit(weapon)"
+              >
+                Modifier
+              </button>
+              <button
+                class="btn btn--secondary btn--sm item-details__duplicate-btn"
+                @click.stop="duplicateToHomebrew(weapon)"
+              >
+                Dupliquer en homebrew
+              </button>
+            </div>
+          </template>
+        </div>
       </div>
     </section>
 
@@ -251,101 +267,117 @@
       aria-label="Armes secondaires"
     >
       <h2 class="section-title">
-        Armes Secondaires
-        <span class="section-count">{{ store.filteredSecondaryWeapons.length }}</span>
+        <button
+          class="section-title__toggle"
+          :aria-expanded="String(isSectionOpen('secondaryWeapon'))"
+          aria-controls="section-secondary-weapons"
+          @click="toggleSection('secondaryWeapon')"
+        >
+          <span
+            class="section-title__chevron"
+            :class="{ 'section-title__chevron--collapsed': !isSectionOpen('secondaryWeapon') }"
+          >&#x25BC;</span>
+          Armes Secondaires
+          <span class="section-count">{{ store.filteredSecondaryWeapons.length }}</span>
+        </button>
       </h2>
       <div
-        class="weapon-table"
-        role="table"
-        aria-label="Tableau des armes secondaires"
+        v-show="isSectionOpen('secondaryWeapon')"
+        id="section-secondary-weapons"
       >
         <div
-          class="table-header"
-          role="row"
+          class="weapon-table"
+          role="table"
+          aria-label="Tableau des armes secondaires"
         >
-          <span role="columnheader">Nom</span>
-          <span role="columnheader">Trait</span>
-          <span role="columnheader">Portée</span>
-          <span role="columnheader">Dégâts</span>
-          <span role="columnheader">Feature</span>
-          <span role="columnheader">Tier</span>
-        </div>
-        <template
-          v-for="weapon in store.filteredSecondaryWeapons"
-          :key="weapon.id"
-        >
-          <button
-            class="table-row"
-            role="row"
-            :aria-expanded="String(expandedId === weapon.id)"
-            :aria-controls="`equip-${weapon.id}`"
-            @click="toggleItem(weapon.id)"
-          >
-            <span
-              role="cell"
-              class="cell-name"
-            >
-              {{ weapon.name }}
-              <SourceBadge :source="weapon.source" />
-            </span>
-            <span
-              role="cell"
-              class="cell-trait"
-            >{{ weapon.trait }}</span>
-            <span
-              role="cell"
-              class="cell-range"
-            >{{ rangeLabel(weapon.range) }}</span>
-            <span
-              role="cell"
-              class="cell-damage"
-            >
-              <span class="damage-badge damage-badge--phy">{{ weapon.damage }}</span>
-            </span>
-            <span
-              role="cell"
-              class="cell-feature-key"
-            >{{ weapon.featureKey || '—' }}</span>
-            <span
-              role="cell"
-              class="cell-tier"
-            >
-              <span class="tier-badge">T{{ weapon.tier }}</span>
-            </span>
-          </button>
           <div
-            :id="`equip-${weapon.id}`"
-            class="item-details"
-            :hidden="expandedId !== weapon.id"
+            class="table-header"
+            role="row"
           >
-            <p
-              v-if="weapon.feature"
-              class="item-details__feature"
-            >
-              <strong>Feature :</strong> {{ weapon.feature }}
-            </p>
-            <p
-              v-else
-              class="item-details__note"
-            >
-              Pas de feature spéciale.
-            </p>
-            <button
-              v-if="weapon.source === 'custom'"
-              class="btn btn--secondary btn--xs item-details__edit-btn"
-              aria-label="Modifier cet équipement custom"
-              @click.stop="startEdit(weapon)"
-            >
-              Modifier
-            </button>
-            <button
-              class="btn btn--secondary btn--sm item-details__duplicate-btn"
-              @click.stop="duplicateToHomebrew(weapon)"
-            >
-              Dupliquer en homebrew
-            </button>
+            <span role="columnheader">Nom</span>
+            <span role="columnheader">Trait</span>
+            <span role="columnheader">Portée</span>
+            <span role="columnheader">Dégâts</span>
+            <span role="columnheader">Feature</span>
+            <span role="columnheader">Tier</span>
           </div>
-        </template>
+          <template
+            v-for="weapon in store.filteredSecondaryWeapons"
+            :key="weapon.id"
+          >
+            <button
+              class="table-row"
+              role="row"
+              :aria-expanded="String(expandedId === weapon.id)"
+              :aria-controls="`equip-${weapon.id}`"
+              @click="toggleItem(weapon.id)"
+            >
+              <span
+                role="cell"
+                class="cell-name"
+              >
+                {{ weapon.name }}
+                <SourceBadge :source="weapon.source" />
+              </span>
+              <span
+                role="cell"
+                class="cell-trait"
+              >{{ weapon.trait }}</span>
+              <span
+                role="cell"
+                class="cell-range"
+              >{{ rangeLabel(weapon.range) }}</span>
+              <span
+                role="cell"
+                class="cell-damage"
+              >
+                <span class="damage-badge damage-badge--phy">{{ weapon.damage }}</span>
+              </span>
+              <span
+                role="cell"
+                class="cell-feature-key"
+              >{{ weapon.featureKey || '—' }}</span>
+              <span
+                role="cell"
+                class="cell-tier"
+              >
+                <span class="tier-badge">T{{ weapon.tier }}</span>
+              </span>
+            </button>
+            <div
+              :id="`equip-${weapon.id}`"
+              class="item-details"
+              :hidden="expandedId !== weapon.id"
+            >
+              <p
+                v-if="weapon.feature"
+                class="item-details__feature"
+              >
+                <strong>Feature :</strong> {{ weapon.feature }}
+              </p>
+              <p
+                v-else
+                class="item-details__note"
+              >
+                Pas de feature spéciale.
+              </p>
+              <button
+                v-if="weapon.source === 'custom'"
+                class="btn btn--secondary btn--xs item-details__edit-btn"
+                aria-label="Modifier cet équipement custom"
+                @click.stop="startEdit(weapon)"
+              >
+                Modifier
+              </button>
+              <button
+                class="btn btn--secondary btn--sm item-details__duplicate-btn"
+                @click.stop="duplicateToHomebrew(weapon)"
+              >
+                Dupliquer en homebrew
+              </button>
+            </div>
+          </template>
+        </div>
       </div>
     </section>
 
@@ -356,94 +388,110 @@
       aria-label="Armures"
     >
       <h2 class="section-title">
-        Armures
-        <span class="section-count">{{ store.filteredArmor.length }}</span>
+        <button
+          class="section-title__toggle"
+          :aria-expanded="String(isSectionOpen('armor'))"
+          aria-controls="section-armor"
+          @click="toggleSection('armor')"
+        >
+          <span
+            class="section-title__chevron"
+            :class="{ 'section-title__chevron--collapsed': !isSectionOpen('armor') }"
+          >&#x25BC;</span>
+          Armures
+          <span class="section-count">{{ store.filteredArmor.length }}</span>
+        </button>
       </h2>
       <div
-        class="weapon-table armor-table"
-        role="table"
-        aria-label="Tableau des armures"
+        v-show="isSectionOpen('armor')"
+        id="section-armor"
       >
         <div
-          class="table-header table-header--armor"
-          role="row"
+          class="weapon-table armor-table"
+          role="table"
+          aria-label="Tableau des armures"
         >
-          <span role="columnheader">Nom</span>
-          <span role="columnheader">Seuils (Maj/Sév)</span>
-          <span role="columnheader">Score</span>
-          <span role="columnheader">Feature</span>
-          <span role="columnheader">Tier</span>
-        </div>
-        <template
-          v-for="armor in store.filteredArmor"
-          :key="armor.id"
-        >
-          <button
-            class="table-row table-row--armor"
-            role="row"
-            :aria-expanded="String(expandedId === armor.id)"
-            :aria-controls="`equip-${armor.id}`"
-            @click="toggleItem(armor.id)"
-          >
-            <span
-              role="cell"
-              class="cell-name"
-            >
-              {{ armor.name }}
-              <SourceBadge :source="armor.source" />
-            </span>
-            <span
-              role="cell"
-              class="cell-thresholds"
-            >{{ armor.thresholds.major }} / {{ armor.thresholds.severe }}</span>
-            <span
-              role="cell"
-              class="cell-score"
-            >{{ armor.baseScore }}</span>
-            <span
-              role="cell"
-              class="cell-feature-key"
-            >{{ armor.featureKey || '—' }}</span>
-            <span
-              role="cell"
-              class="cell-tier"
-            >
-              <span class="tier-badge">T{{ armor.tier }}</span>
-            </span>
-          </button>
           <div
-            :id="`equip-${armor.id}`"
-            class="item-details"
-            :hidden="expandedId !== armor.id"
+            class="table-header table-header--armor"
+            role="row"
           >
-            <p
-              v-if="armor.feature"
-              class="item-details__feature"
-            >
-              <strong>Feature :</strong> {{ armor.feature }}
-            </p>
-            <p
-              v-else
-              class="item-details__note"
-            >
-              Pas de feature spéciale.
-            </p>
-            <button
-              v-if="armor.source === 'custom'"
-              class="btn btn--secondary btn--xs item-details__edit-btn"
-              aria-label="Modifier cet équipement custom"
-              @click.stop="startEdit(armor)"
-            >
-              Modifier
-            </button>
-            <button
-              class="btn btn--secondary btn--sm item-details__duplicate-btn"
-              @click.stop="duplicateToHomebrew(armor)"
-            >
-              Dupliquer en homebrew
-            </button>
+            <span role="columnheader">Nom</span>
+            <span role="columnheader">Seuils (Maj/Sév)</span>
+            <span role="columnheader">Score</span>
+            <span role="columnheader">Feature</span>
+            <span role="columnheader">Tier</span>
           </div>
-        </template>
+          <template
+            v-for="armor in store.filteredArmor"
+            :key="armor.id"
+          >
+            <button
+              class="table-row table-row--armor"
+              role="row"
+              :aria-expanded="String(expandedId === armor.id)"
+              :aria-controls="`equip-${armor.id}`"
+              @click="toggleItem(armor.id)"
+            >
+              <span
+                role="cell"
+                class="cell-name"
+              >
+                {{ armor.name }}
+                <SourceBadge :source="armor.source" />
+              </span>
+              <span
+                role="cell"
+                class="cell-thresholds"
+              >{{ armor.thresholds.major }} / {{ armor.thresholds.severe }}</span>
+              <span
+                role="cell"
+                class="cell-score"
+              >{{ armor.baseScore }}</span>
+              <span
+                role="cell"
+                class="cell-feature-key"
+              >{{ armor.featureKey || '—' }}</span>
+              <span
+                role="cell"
+                class="cell-tier"
+              >
+                <span class="tier-badge">T{{ armor.tier }}</span>
+              </span>
+            </button>
+            <div
+              :id="`equip-${armor.id}`"
+              class="item-details"
+              :hidden="expandedId !== armor.id"
+            >
+              <p
+                v-if="armor.feature"
+                class="item-details__feature"
+              >
+                <strong>Feature :</strong> {{ armor.feature }}
+              </p>
+              <p
+                v-else
+                class="item-details__note"
+              >
+                Pas de feature spéciale.
+              </p>
+              <button
+                v-if="armor.source === 'custom'"
+                class="btn btn--secondary btn--xs item-details__edit-btn"
+                aria-label="Modifier cet équipement custom"
+                @click.stop="startEdit(armor)"
+              >
+                Modifier
+              </button>
+              <button
+                class="btn btn--secondary btn--sm item-details__duplicate-btn"
+                @click.stop="duplicateToHomebrew(armor)"
+              >
+                Dupliquer en homebrew
+              </button>
+            </div>
+          </template>
+        </div>
       </div>
     </section>
 
@@ -454,56 +502,72 @@
       aria-label="Loot"
     >
       <h2 class="section-title">
-        Loot
-        <span class="section-count">{{ store.filteredLoot.length }}</span>
+        <button
+          class="section-title__toggle"
+          :aria-expanded="String(isSectionOpen('loot'))"
+          aria-controls="section-loot"
+          @click="toggleSection('loot')"
+        >
+          <span
+            class="section-title__chevron"
+            :class="{ 'section-title__chevron--collapsed': !isSectionOpen('loot') }"
+          >&#x25BC;</span>
+          Loot
+          <span class="section-count">{{ store.filteredLoot.length }}</span>
+        </button>
       </h2>
       <div
-        class="item-card-grid"
-        :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
-        :style="cardGridStyle"
-        role="list"
-        aria-label="Liste du loot"
+        v-show="isSectionOpen('loot')"
+        id="section-loot"
       >
-        <article
-          v-for="item in store.filteredLoot"
-          :key="item.id"
-          class="item-card"
-          :class="`item-card--${item.rarity}`"
-          role="listitem"
+        <div
+          class="item-card-grid"
+          :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
+          :style="cardGridStyle"
+          role="list"
+          aria-label="Liste du loot"
         >
-          <header class="item-card__header">
-            <span class="item-card__roll">#{{ String(item.roll).padStart(2, '0') }}</span>
-            <div class="item-card__meta">
-              <h3 class="item-card__name">
-                {{ item.name }}
-                <SourceBadge :source="item.source" />
-              </h3>
-              <span
-                class="rarity-badge"
-                :class="`rarity-badge--${item.rarity}`"
-              >{{ rarityLabel(item.rarity) }}</span>
+          <article
+            v-for="item in store.filteredLoot"
+            :key="item.id"
+            class="item-card"
+            :class="`item-card--${item.rarity}`"
+            role="listitem"
+          >
+            <header class="item-card__header">
+              <span class="item-card__roll">#{{ String(item.roll).padStart(2, '0') }}</span>
+              <div class="item-card__meta">
+                <h3 class="item-card__name">
+                  {{ item.name }}
+                  <SourceBadge :source="item.source" />
+                </h3>
+                <span
+                  class="rarity-badge"
+                  :class="`rarity-badge--${item.rarity}`"
+                >{{ rarityLabel(item.rarity) }}</span>
+              </div>
+            </header>
+            <p class="item-card__desc">
+              {{ item.description }}
+            </p>
+            <div class="item-card__actions">
+              <button
+                v-if="item.source === 'custom'"
+                class="btn btn--secondary btn--xs item-card__edit-btn"
+                aria-label="Modifier cet équipement custom"
+                @click.stop="startEdit(item)"
+              >
+                Modifier
+              </button>
+              <button
+                class="btn btn--secondary btn--xs item-card__duplicate-btn"
+                @click.stop="duplicateToHomebrew(item)"
+              >
+                Homebrew
+              </button>
             </div>
-          </header>
-          <p class="item-card__desc">
-            {{ item.description }}
-          </p>
-          <div class="item-card__actions">
-            <button
-              v-if="item.source === 'custom'"
-              class="btn btn--secondary btn--xs item-card__edit-btn"
-              aria-label="Modifier cet équipement custom"
-              @click.stop="startEdit(item)"
-            >
-              Modifier
-            </button>
-            <button
-              class="btn btn--secondary btn--xs item-card__duplicate-btn"
-              @click.stop="duplicateToHomebrew(item)"
-            >
-              Homebrew
-            </button>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -514,56 +578,72 @@
       aria-label="Consommables"
     >
       <h2 class="section-title">
-        Consommables
-        <span class="section-count">{{ store.filteredConsumables.length }}</span>
+        <button
+          class="section-title__toggle"
+          :aria-expanded="String(isSectionOpen('consumable'))"
+          aria-controls="section-consumables"
+          @click="toggleSection('consumable')"
+        >
+          <span
+            class="section-title__chevron"
+            :class="{ 'section-title__chevron--collapsed': !isSectionOpen('consumable') }"
+          >&#x25BC;</span>
+          Consommables
+          <span class="section-count">{{ store.filteredConsumables.length }}</span>
+        </button>
       </h2>
       <div
-        class="item-card-grid"
-        :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
-        :style="cardGridStyle"
-        role="list"
-        aria-label="Liste des consommables"
+        v-show="isSectionOpen('consumable')"
+        id="section-consumables"
       >
-        <article
-          v-for="item in store.filteredConsumables"
-          :key="item.id"
-          class="item-card item-card--consumable"
-          :class="`item-card--${item.rarity}`"
-          role="listitem"
+        <div
+          class="item-card-grid"
+          :class="{ 'item-card-grid--custom': compendiumColumns > 0 }"
+          :style="cardGridStyle"
+          role="list"
+          aria-label="Liste des consommables"
         >
-          <header class="item-card__header">
-            <span class="item-card__roll">#{{ String(item.roll).padStart(2, '0') }}</span>
-            <div class="item-card__meta">
-              <h3 class="item-card__name">
-                {{ item.name }}
-                <SourceBadge :source="item.source" />
-              </h3>
-              <span
-                class="rarity-badge"
-                :class="`rarity-badge--${item.rarity}`"
-              >{{ rarityLabel(item.rarity) }}</span>
+          <article
+            v-for="item in store.filteredConsumables"
+            :key="item.id"
+            class="item-card item-card--consumable"
+            :class="`item-card--${item.rarity}`"
+            role="listitem"
+          >
+            <header class="item-card__header">
+              <span class="item-card__roll">#{{ String(item.roll).padStart(2, '0') }}</span>
+              <div class="item-card__meta">
+                <h3 class="item-card__name">
+                  {{ item.name }}
+                  <SourceBadge :source="item.source" />
+                </h3>
+                <span
+                  class="rarity-badge"
+                  :class="`rarity-badge--${item.rarity}`"
+                >{{ rarityLabel(item.rarity) }}</span>
+              </div>
+            </header>
+            <p class="item-card__desc">
+              {{ item.description }}
+            </p>
+            <div class="item-card__actions">
+              <button
+                v-if="item.source === 'custom'"
+                class="btn btn--secondary btn--xs item-card__edit-btn"
+                aria-label="Modifier cet équipement custom"
+                @click.stop="startEdit(item)"
+              >
+                Modifier
+              </button>
+              <button
+                class="btn btn--secondary btn--xs item-card__duplicate-btn"
+                @click.stop="duplicateToHomebrew(item)"
+              >
+                Homebrew
+              </button>
             </div>
-          </header>
-          <p class="item-card__desc">
-            {{ item.description }}
-          </p>
-          <div class="item-card__actions">
-            <button
-              v-if="item.source === 'custom'"
-              class="btn btn--secondary btn--xs item-card__edit-btn"
-              aria-label="Modifier cet équipement custom"
-              @click.stop="startEdit(item)"
-            >
-              Modifier
-            </button>
-            <button
-              class="btn btn--secondary btn--xs item-card__duplicate-btn"
-              @click.stop="duplicateToHomebrew(item)"
-            >
-              Homebrew
-            </button>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -637,6 +717,23 @@ export default {
     const route = useRoute()
     const expandedId = ref(null)
     const compendiumColumns = inject('compendiumColumns', ref(0))
+
+    // --- Sections collapsibles ---
+    const collapsedSections = ref(new Set())
+
+    function toggleSection(section) {
+      if (collapsedSections.value.has(section)) {
+        collapsedSections.value.delete(section)
+      } else {
+        collapsedSections.value.add(section)
+      }
+      // Forcer la réactivité
+      collapsedSections.value = new Set(collapsedSections.value)
+    }
+
+    function isSectionOpen(section) {
+      return !collapsedSections.value.has(section)
+    }
     const cardGridStyle = computed(() => {
       if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
       return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
@@ -773,7 +870,10 @@ export default {
       editPanel,
       scrollToEditPanel,
       compendiumColumns,
-      cardGridStyle
+      cardGridStyle,
+      collapsedSections,
+      toggleSection,
+      isSectionOpen
     }
   },
 
@@ -855,6 +955,32 @@ export default {
 .section-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0 0 var(--space-md); display: flex; align-items: center; gap: var(--space-sm); }
 .section-count { font-size: var(--font-size-sm); font-weight: normal; color: var(--color-text-muted); background: var(--color-bg-elevated); padding: 2px var(--space-sm); border-radius: var(--radius-full); }
 
+.section-title__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+}
+
+.section-title__toggle:hover {
+  color: var(--color-accent-hope);
+}
+
+.section-title__chevron {
+  font-size: var(--font-size-xs);
+  transition: transform var(--transition-fast);
+}
+
+.section-title__chevron--collapsed {
+  transform: rotate(-90deg);
+}
+
 /* -- Tables -- */
 .weapon-table { border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
 .table-header {
@@ -869,6 +995,9 @@ export default {
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 .table-header--armor { grid-template-columns: 2.5fr 1fr 0.5fr 1.5fr 0.5fr; }
 /* Alignement des colonnes */
