@@ -72,27 +72,27 @@
       </button>
     </div>
 
+    <!-- ── Seuils : toujours visibles ── -->
+    <div
+      v-if="hasThresholds"
+      class="adv-group__thresh-ref"
+    >
+      <span class="adv-group__thresh-tag adv-group__thresh-tag--minor">
+        &lt; {{ firstInstance.thresholds.major }} → 1HP
+      </span>
+      <span class="adv-group__thresh-tag adv-group__thresh-tag--major">
+        {{ firstInstance.thresholds.major }}–{{ firstInstance.thresholds.severe - 1 }} → 2HP
+      </span>
+      <span class="adv-group__thresh-tag adv-group__thresh-tag--severe">
+        ≥ {{ firstInstance.thresholds.severe }} → 3HP
+      </span>
+    </div>
+
     <!-- ── Contenu dépliable ── -->
     <div
       v-show="!collapsed"
       class="adv-group__body"
     >
-      <!-- Seuils (une seule ligne de référence, pas des boutons) -->
-      <div
-        v-if="hasThresholds"
-        class="adv-group__thresh-ref"
-      >
-        <span class="adv-group__thresh-tag adv-group__thresh-tag--minor">
-          &lt; {{ firstInstance.thresholds.major }} → 1HP
-        </span>
-        <span class="adv-group__thresh-tag adv-group__thresh-tag--major">
-          {{ firstInstance.thresholds.major }}–{{ firstInstance.thresholds.severe - 1 }} → 2HP
-        </span>
-        <span class="adv-group__thresh-tag adv-group__thresh-tag--severe">
-          ≥ {{ firstInstance.thresholds.severe }} → 3HP
-        </span>
-      </div>
-
       <!-- Calculateur de seuil : le MJ tape les dégâts, le bon tier s'allume -->
       <div
         v-if="hasThresholds && group.activeCount > 0"
