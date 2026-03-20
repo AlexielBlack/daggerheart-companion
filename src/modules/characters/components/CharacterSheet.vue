@@ -2,6 +2,8 @@
   <div
     v-if="char"
     class="char-sheet"
+    :class="{ 'char-sheet--custom-cols': sheetColumns > 0 }"
+    :style="sheetGridStyle"
     :aria-label="`Fiche de ${char.name || 'Nouveau personnage'}`"
   >
     <!-- ═══ Choix du personnage (déroulants) ═══ -->
@@ -749,7 +751,9 @@ export default {
     // Modificateurs actifs
     activeModifiers: { type: Array, default: () => [] },
     permanentEffects: { type: Array, default: () => [] },
-    effectiveArmorScore: { type: Number, default: 0 }
+    effectiveArmorScore: { type: Number, default: 0 },
+    // Layout colonnes
+    sheetColumns: { type: Number, default: 0 }
   },
   emits: [
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',
@@ -767,6 +771,14 @@ export default {
   ],
   setup(props, { emit }) {
     const conditions = CONDITIONS
+
+    // ── Style grille colonnes ──
+    const sheetGridStyle = computed(() => {
+      if (!props.sheetColumns || props.sheetColumns === 0) return {}
+      return {
+        'grid-template-columns': `repeat(${props.sheetColumns}, 1fr)`
+      }
+    })
 
     // ── Constantes tier ──
     const TIER_LABELS = {
@@ -867,7 +879,8 @@ export default {
       conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
       resolveArmorName, resolvePrimaryName, resolveSecondaryName,
       primaryIsTwoHanded, armorTiers, recommendedArmors,
-      hpSources, stressSources, armorSources
+      hpSources, stressSources, armorSources,
+      sheetGridStyle
     }
   }
 }
@@ -875,9 +888,21 @@ export default {
 
 <style scoped>
 .char-sheet {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-md);
+}
+
+@media (min-width: 900px) {
+  .char-sheet:not(.char-sheet--custom-cols) {
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  }
+}
+
+@media (min-width: 1400px) {
+  .char-sheet:not(.char-sheet--custom-cols) {
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  }
 }
 
 .sheet-section {
