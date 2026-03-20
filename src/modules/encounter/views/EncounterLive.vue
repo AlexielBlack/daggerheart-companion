@@ -598,9 +598,9 @@ export default {
 .live__tablet-tabs { display: none; }
 
 /* ══ Grille 3 colonnes — chaque colonne scrolle indépendamment ══ */
-.live__grid { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(240px, 1.5fr) minmax(300px, 2.5fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
+.live__grid { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(300px, 2.5fr) minmax(180px, 1fr); gap: 0; flex: 1; min-height: 0; overflow: hidden; }
 .live__col-pc { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-sm); overflow-y: auto; border-right: 1px solid var(--color-border); }
-.live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; }
+.live__col-adv { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm); overflow-y: auto; border-left: 1px solid var(--color-border); }
 
 /* ══ Bandeau évasions PJ (mode adversaryAttack) ══ */
 .live__evasion-bar {
