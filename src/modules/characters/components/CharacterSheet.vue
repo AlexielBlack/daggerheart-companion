@@ -6,106 +6,6 @@
     :style="sheetGridStyle"
     :aria-label="`Fiche de ${char.name || 'Nouveau personnage'}`"
   >
-    <!-- ═══ Choix du personnage (déroulants) ═══ -->
-    <section class="sheet-section sheet-section--choices">
-      <div class="section-header section-header--choices">
-        <h3 class="section-heading">
-          📋 Choix du personnage
-        </h3>
-        <button
-          v-if="char.selectionsLocked"
-          class="choices-toggle-btn choices-toggle-btn--edit"
-          aria-label="Modifier les choix du personnage"
-          @click="emit('update', 'selectionsLocked', false)"
-        >
-          ✏️ Modifier
-        </button>
-      </div>
-
-      <!-- Mode verrouillé : résumé compact -->
-      <div
-        v-if="char.selectionsLocked"
-        class="choices-summary"
-      >
-        <div
-          v-if="subclassData"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Sous-classe</span>
-          <span class="choices-summary__value">{{ subclassData.name }}</span>
-        </div>
-        <div
-          v-if="ancestryData"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Ascendance</span>
-          <span class="choices-summary__value">{{ ancestryData.emoji || '' }} {{ ancestryData.name }}</span>
-        </div>
-        <div
-          v-if="communityData"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Communauté</span>
-          <span class="choices-summary__value">{{ communityData.emoji || '' }} {{ communityData.name }}</span>
-        </div>
-        <div
-          v-if="char.armorId"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Armure</span>
-          <span class="choices-summary__value">{{ resolveArmorName(char.armorId) }}</span>
-        </div>
-        <div
-          v-if="char.primaryWeaponId"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Arme 1re</span>
-          <span class="choices-summary__value">{{ resolvePrimaryName(char.primaryWeaponId) }}{{ primaryIsTwoHanded ? ' ⚔ Deux mains' : '' }}</span>
-        </div>
-        <div
-          v-if="char.secondaryWeaponId && !primaryIsTwoHanded"
-          class="choices-summary__item"
-        >
-          <span class="choices-summary__label">Arme 2de</span>
-          <span class="choices-summary__value">{{ resolveSecondaryName(char.secondaryWeaponId) }}</span>
-        </div>
-        <p
-          v-if="!subclassData && !ancestryData && !communityData && !char.armorId && !char.primaryWeaponId"
-          class="choices-summary__empty"
-        >
-          Aucun choix effectué. Cliquez sur « Modifier » pour commencer.
-        </p>
-      </div>
-
-      <!-- Mode déverrouillé : sélecteurs complets -->
-      <template v-else>
-        <CharacterSelectors
-          :char="char"
-          :subclasses="subclasses"
-          :subclass-data="subclassData"
-          :ancestry-data="ancestryData"
-          :community-data="communityData"
-          :ancestries="ancestries"
-          :communities="communities"
-          :armor="armor"
-          :primary-weapons="primaryWeapons"
-          :secondary-weapons="secondaryWeapons"
-          :class-id="char.classId || ''"
-          @select="(field, value) => emit('applySelection', field, value)"
-          @update-mixed="(field, value) => emit('updateMixed', field, value)"
-        />
-        <div class="choices-actions">
-          <button
-            class="choices-toggle-btn choices-toggle-btn--validate"
-            aria-label="Valider les choix du personnage"
-            @click="emit('update', 'selectionsLocked', true)"
-          >
-            ✅ Valider les choix
-          </button>
-        </div>
-      </template>
-    </section>
-
     <!-- ═══ Identité ═══ -->
     <section class="sheet-section">
       <div class="identity-grid">
@@ -196,15 +96,207 @@
       </div>
     </section>
 
-    <!-- ═══ Ascendance (features) ═══ -->
-    <section
-      v-if="ancestryData"
-      class="sheet-section"
-    >
+    <!-- ═══ Origines (Ascendance + Communauté + Expériences) ═══ -->
+    <section class="sheet-section">
       <h3 class="section-heading">
-        {{ ancestryData.emoji }} Ascendance : {{ ancestryData.name }}
+        Origines
       </h3>
-      <div class="feature-list">
+
+      <!-- Ascendance — sélecteur -->
+      <div class="selector-field">
+        <label
+          class="selector-label"
+          for="sel-ancestry"
+        >Ascendance</label>
+        <select
+          id="sel-ancestry"
+          class="selector-select"
+          :value="char.ancestryId"
+          aria-label="Choisir une ascendance"
+          @change="emit('applySelection', 'ancestryId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <optgroup label="Officielles (SRD)">
+            <option
+              v-for="a in srdAncestries"
+              :key="a.id"
+              :value="a.id"
+            >
+              {{ a.emoji }} {{ a.name }}
+            </option>
+          </optgroup>
+          <optgroup label="Personnalisées">
+            <option
+              v-for="a in customAncestries"
+              :key="a.id"
+              :value="a.id"
+            >
+              {{ a.emoji }} {{ a.name }}
+            </option>
+          </optgroup>
+        </select>
+        <p
+          v-if="ancestryData && char.ancestryId !== 'mixed-ancestry'"
+          class="selector-hint"
+        >
+          {{ ancestryData.description }}
+        </p>
+      </div>
+
+      <!-- Mixed Ancestry -->
+      <template v-if="char.ancestryId === 'mixed-ancestry'">
+        <div class="mixed-intro-block">
+          <p class="mixed-intro">
+            🔀 Choisissez deux ascendances parentes, puis <strong>une feature par ascendance</strong> (top ou bottom, librement).
+          </p>
+        </div>
+        <div class="selectors-row">
+          <div class="selector-field">
+            <label
+              class="selector-label"
+              for="sel-mixed-a1"
+            >Ascendance parente 1</label>
+            <select
+              id="sel-mixed-a1"
+              class="selector-select"
+              :value="mixedConfig.ancestry1Id"
+              aria-label="Première ascendance parente"
+              @change="emit('updateMixed', 'ancestry1Id', $event.target.value)"
+            >
+              <option value="">
+                — Choisir —
+              </option>
+              <option
+                v-for="a in selectableAncestries"
+                :key="a.id"
+                :value="a.id"
+                :disabled="a.id === mixedConfig.ancestry2Id"
+              >
+                {{ a.emoji }} {{ a.name }}
+              </option>
+            </select>
+          </div>
+          <div class="selector-field">
+            <label
+              class="selector-label"
+              for="sel-mixed-a2"
+            >Ascendance parente 2</label>
+            <select
+              id="sel-mixed-a2"
+              class="selector-select"
+              :value="mixedConfig.ancestry2Id"
+              aria-label="Seconde ascendance parente"
+              @change="emit('updateMixed', 'ancestry2Id', $event.target.value)"
+            >
+              <option value="">
+                — Choisir —
+              </option>
+              <option
+                v-for="a in selectableAncestries"
+                :key="a.id"
+                :value="a.id"
+                :disabled="a.id === mixedConfig.ancestry1Id"
+              >
+                {{ a.emoji }} {{ a.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <fieldset
+          v-if="mixedAncestry1"
+          class="mixed-feature-fieldset"
+          :aria-label="`Feature de ${mixedAncestry1.name}`"
+        >
+          <legend class="mixed-feature-legend">
+            {{ mixedAncestry1.emoji }} Feature de {{ mixedAncestry1.name }}
+          </legend>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry1Feature === 'top' }"
+          >
+            <input
+              type="radio"
+              name="mixed-a1-feature"
+              value="top"
+              :checked="mixedConfig.ancestry1Feature === 'top'"
+              @change="emit('updateMixed', 'ancestry1Feature', 'top')"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry1.topFeature.name }}</span>
+            <span class="mixed-feature-option__badge">Top</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry1.topFeature.description }}
+            </p>
+          </label>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry1Feature === 'bottom' }"
+          >
+            <input
+              type="radio"
+              name="mixed-a1-feature"
+              value="bottom"
+              :checked="mixedConfig.ancestry1Feature === 'bottom'"
+              @change="emit('updateMixed', 'ancestry1Feature', 'bottom')"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry1.bottomFeature.name }}</span>
+            <span class="mixed-feature-option__badge">Bottom</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry1.bottomFeature.description }}
+            </p>
+          </label>
+        </fieldset>
+        <fieldset
+          v-if="mixedAncestry2"
+          class="mixed-feature-fieldset"
+          :aria-label="`Feature de ${mixedAncestry2.name}`"
+        >
+          <legend class="mixed-feature-legend">
+            {{ mixedAncestry2.emoji }} Feature de {{ mixedAncestry2.name }}
+          </legend>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry2Feature === 'top' }"
+          >
+            <input
+              type="radio"
+              name="mixed-a2-feature"
+              value="top"
+              :checked="mixedConfig.ancestry2Feature === 'top'"
+              @change="emit('updateMixed', 'ancestry2Feature', 'top')"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry2.topFeature.name }}</span>
+            <span class="mixed-feature-option__badge">Top</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry2.topFeature.description }}
+            </p>
+          </label>
+          <label
+            class="mixed-feature-option"
+            :class="{ 'mixed-feature-option--selected': mixedConfig.ancestry2Feature === 'bottom' }"
+          >
+            <input
+              type="radio"
+              name="mixed-a2-feature"
+              value="bottom"
+              :checked="mixedConfig.ancestry2Feature === 'bottom'"
+              @change="emit('updateMixed', 'ancestry2Feature', 'bottom')"
+            />
+            <span class="mixed-feature-option__name">{{ mixedAncestry2.bottomFeature.name }}</span>
+            <span class="mixed-feature-option__badge">Bottom</span>
+            <p class="mixed-feature-option__desc">
+              {{ mixedAncestry2.bottomFeature.description }}
+            </p>
+          </label>
+        </fieldset>
+      </template>
+
+      <!-- Ascendance — features -->
+      <div
+        v-if="ancestryData && char.ancestryId !== 'mixed-ancestry'"
+        class="feature-list"
+      >
         <div class="feature-block">
           <span class="feature-name">{{ ancestryData.topFeature.name }}</span>
           <p class="feature-desc">
@@ -218,17 +310,38 @@
           </p>
         </div>
       </div>
-    </section>
 
-    <!-- ═══ Communauté (feature) ═══ -->
-    <section
-      v-if="communityData"
-      class="sheet-section"
-    >
-      <h3 class="section-heading">
-        {{ communityData.emoji }} Communauté : {{ communityData.name }}
-      </h3>
-      <div class="feature-list">
+      <!-- Communauté — sélecteur -->
+      <div class="selector-field selector-field--spaced">
+        <label
+          class="selector-label"
+          for="sel-community"
+        >Communauté</label>
+        <select
+          id="sel-community"
+          class="selector-select"
+          :value="char.communityId"
+          aria-label="Choisir une communauté"
+          @change="emit('applySelection', 'communityId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <option
+            v-for="c in communities"
+            :key="c.id"
+            :value="c.id"
+          >
+            {{ c.emoji }} {{ c.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Communauté — features -->
+      <div
+        v-if="communityData"
+        class="feature-list"
+      >
         <div class="feature-block">
           <span class="feature-name">{{ communityData.feature.name }}</span>
           <p class="feature-desc">
@@ -238,6 +351,50 @@
         <div class="community-adjectives">
           <span class="adjective-label">Adjectifs :</span>
           {{ communityData.adjectives.join(', ') }}
+        </div>
+      </div>
+
+      <!-- Expériences -->
+      <div class="section-header section-header--spaced">
+        <h4 class="section-subheading">
+          Expériences
+        </h4>
+        <button
+          class="add-btn"
+          aria-label="Ajouter une expérience"
+          @click="emit('addExperience')"
+        >
+          +
+        </button>
+      </div>
+      <div class="exp-list">
+        <div
+          v-for="(exp, i) in char.experiences"
+          :key="i"
+          class="exp-row"
+        >
+          <input
+            type="text"
+            class="field-input"
+            :value="exp.name"
+            placeholder="Expérience"
+            :aria-label="`Expérience ${i + 1} nom`"
+            @input="emit('update', `experiences.${i}.name`, $event.target.value)"
+          />
+          <input
+            type="number"
+            class="field-input field-input--xs"
+            :value="exp.bonus"
+            :aria-label="`Expérience ${i + 1} bonus`"
+            @input="emit('update', `experiences.${i}.bonus`, parseInt($event.target.value) || 0)"
+          />
+          <button
+            class="remove-btn"
+            :aria-label="`Supprimer expérience ${i + 1}`"
+            @click="emit('removeExperience', i)"
+          >
+            ✕
+          </button>
         </div>
       </div>
     </section>
@@ -254,10 +411,10 @@
       />
     </section>
 
-    <!-- ═══ Combat (Évasion, Armor, Seuils) ═══ -->
+    <!-- ═══ Combat & Équipement ═══ -->
     <section class="sheet-section">
       <h3 class="section-heading">
-        Combat
+        Combat & Équipement
       </h3>
       <div class="combat-grid">
         <div class="combat-stat">
@@ -381,6 +538,134 @@
           </span>
         </div>
       </div>
+
+      <!-- Armes -->
+      <h4 class="section-subheading section-subheading--spaced">
+        Armes
+      </h4>
+      <div class="weapon-block">
+        <label
+          class="weapon-label"
+          for="sheet-primary-weapon"
+        >Principale</label>
+        <select
+          id="sheet-primary-weapon"
+          class="weapon-select"
+          :value="char.primaryWeaponId"
+          aria-label="Choisir une arme principale"
+          @change="emit('applySelection', 'primaryWeaponId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <optgroup
+            v-if="recommendedPrimary.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="w in recommendedPrimary"
+              :key="'rec-' + w.id"
+              :value="w.id"
+            >
+              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
+            </option>
+          </optgroup>
+          <optgroup
+            v-for="tier in primaryWeaponTiers"
+            :key="tier.label"
+            :label="tier.label"
+          >
+            <option
+              v-for="w in tier.items"
+              :key="w.id"
+              :value="w.id"
+            >
+              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}{{ w.burden === 'Two-Handed' ? ' ⚔ Deux mains' : '' }}
+            </option>
+          </optgroup>
+        </select>
+        <div
+          v-if="char.primaryWeapon && char.primaryWeapon.name"
+          class="weapon-details"
+        >
+          <span class="weapon-stat">{{ char.primaryWeapon.trait }}</span>
+          <span class="weapon-stat">{{ char.primaryWeapon.range }}</span>
+          <span class="weapon-stat weapon-stat--dmg">{{ char.primaryWeapon.damage }}</span>
+          <span
+            v-if="char.primaryWeapon.burden === 'Two-Handed'"
+            class="weapon-stat weapon-stat--burden"
+          >⚔ Deux mains</span>
+          <span
+            v-if="char.primaryWeapon.feature"
+            class="weapon-stat weapon-stat--feature"
+          >{{ char.primaryWeapon.feature }}</span>
+        </div>
+      </div>
+      <div
+        class="weapon-block"
+        :class="{ 'weapon-block--disabled': isTwoHanded }"
+      >
+        <label
+          class="weapon-label"
+          for="sheet-secondary-weapon"
+        >Secondaire</label>
+        <select
+          v-if="!isTwoHanded"
+          id="sheet-secondary-weapon"
+          class="weapon-select"
+          :value="char.secondaryWeaponId"
+          aria-label="Choisir une arme secondaire"
+          @change="emit('applySelection', 'secondaryWeaponId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <optgroup
+            v-if="recommendedSecondary.length"
+            label="★ Recommandé"
+          >
+            <option
+              v-for="w in recommendedSecondary"
+              :key="'rec-' + w.id"
+              :value="w.id"
+            >
+              ★ {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+          <optgroup
+            v-for="tier in secondaryWeaponTiers"
+            :key="tier.label"
+            :label="tier.label"
+          >
+            <option
+              v-for="w in tier.items"
+              :key="w.id"
+              :value="w.id"
+            >
+              {{ w.name }} — {{ w.trait }} {{ w.range }} — {{ w.damage }}
+            </option>
+          </optgroup>
+        </select>
+        <p
+          v-else
+          class="weapon-twohanded-notice"
+          aria-live="polite"
+        >
+          ⚔ Slot occupé — arme principale à deux mains
+        </p>
+        <div
+          v-if="!isTwoHanded && char.secondaryWeapon && char.secondaryWeapon.name"
+          class="weapon-details"
+        >
+          <span class="weapon-stat">{{ char.secondaryWeapon.trait }}</span>
+          <span class="weapon-stat">{{ char.secondaryWeapon.range }}</span>
+          <span class="weapon-stat weapon-stat--dmg">{{ char.secondaryWeapon.damage }}</span>
+          <span
+            v-if="char.secondaryWeapon.feature"
+            class="weapon-stat weapon-stat--feature"
+          >{{ char.secondaryWeapon.feature }}</span>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ Modificateurs de cartes actifs ═══ -->
@@ -490,80 +775,6 @@
       </div>
     </section>
 
-    <!-- ═══ Conditions ═══ -->
-    <section class="sheet-section">
-      <h3 class="section-heading">
-        Conditions
-      </h3>
-      <div class="conditions-grid">
-        <button
-          v-for="cond in conditions"
-          :key="cond.id"
-          class="condition-chip"
-          :class="{ 'condition-chip--active': char.conditions.includes(cond.id) }"
-          :title="cond.description"
-          :aria-pressed="char.conditions.includes(cond.id) ? 'true' : 'false'"
-          @click="toggleCondition(cond.id)"
-        >
-          {{ cond.label }}
-        </button>
-      </div>
-    </section>
-
-    <!-- ═══ Expériences ═══ -->
-    <section class="sheet-section">
-      <div class="section-header">
-        <h3 class="section-heading">
-          Expériences
-        </h3>
-        <button
-          class="add-btn"
-          aria-label="Ajouter une expérience"
-          @click="emit('addExperience')"
-        >
-          +
-        </button>
-      </div>
-      <div class="exp-list">
-        <div
-          v-for="(exp, i) in char.experiences"
-          :key="i"
-          class="exp-row"
-        >
-          <input
-            type="text"
-            class="field-input"
-            :value="exp.name"
-            placeholder="Expérience"
-            :aria-label="`Expérience ${i + 1} nom`"
-            @input="emit('update', `experiences.${i}.name`, $event.target.value)"
-          />
-          <input
-            type="number"
-            class="field-input field-input--xs"
-            :value="exp.bonus"
-            :aria-label="`Expérience ${i + 1} bonus`"
-            @input="emit('update', `experiences.${i}.bonus`, parseInt($event.target.value) || 0)"
-          />
-          <button
-            class="remove-btn"
-            :aria-label="`Supprimer expérience ${i + 1}`"
-            @click="emit('removeExperience', i)"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Armes ═══ -->
-    <WeaponsPanel
-      :char="char"
-      :primary-weapons="primaryWeapons"
-      :secondary-weapons="secondaryWeapons"
-      @select="(field, value) => emit('applySelection', field, value)"
-    />
-
     <!-- ═══ Inventaire ═══ -->
     <section class="sheet-section">
       <h3 class="section-heading">
@@ -580,14 +791,51 @@
       />
     </section>
 
-    <!-- ═══ Class Feature (read-only SRD) ═══ -->
+    <!-- ═══ Classe (Capacité + Sous-classe) ═══ -->
     <section
       v-if="classData"
       class="sheet-section"
     >
       <h3 class="section-heading">
-        {{ classData.emoji }} Capacité de classe
+        {{ classData.emoji }} Classe
       </h3>
+
+      <!-- Sous-classe — sélecteur -->
+      <div class="selector-field">
+        <label
+          class="selector-label"
+          for="sel-subclass"
+        >Sous-classe</label>
+        <select
+          id="sel-subclass"
+          class="selector-select"
+          :value="char.subclassId"
+          aria-label="Choisir une sous-classe"
+          @change="emit('applySelection', 'subclassId', $event.target.value)"
+        >
+          <option value="">
+            — Choisir —
+          </option>
+          <option
+            v-for="sub in subclasses"
+            :key="sub.id"
+            :value="sub.id"
+          >
+            {{ sub.name }}
+          </option>
+        </select>
+        <p
+          v-if="subclassData"
+          class="selector-hint"
+        >
+          {{ subclassData.description }}
+        </p>
+      </div>
+
+      <!-- Capacité de classe -->
+      <h4 class="section-subheading section-subheading--spaced">
+        Capacités de classe
+      </h4>
       <div class="class-features">
         <p class="hope-feature">
           <strong>Hope Feature:</strong>
@@ -607,6 +855,57 @@
           🎒 <strong>Objets de classe :</strong> {{ classData.classItems }}
         </p>
       </div>
+
+      <!-- Sous-classe Features -->
+      <template v-if="subclassData">
+        <h4 class="section-subheading section-subheading--spaced">
+          🎯 {{ subclassData.name }}
+        </h4>
+        <div class="class-features">
+          <p
+            v-if="subclassData.spellcastTrait"
+            class="spellcast-trait"
+          >
+            <strong>Spellcast Trait :</strong> {{ subclassData.spellcastTrait }}
+          </p>
+          <div class="subclass-tier-block">
+            <span class="subclass-tier-label">Fondation (Niv. 1–4)</span>
+            <p
+              v-for="(feat, i) in subclassData.foundation"
+              :key="'f'+i"
+              class="class-feature-text"
+            >
+              {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
+            </p>
+          </div>
+          <div
+            v-if="char.level >= 5 && subclassData.specialization.length"
+            class="subclass-tier-block"
+          >
+            <span class="subclass-tier-label">Spécialisation (Niv. 5–7)</span>
+            <p
+              v-for="(feat, i) in subclassData.specialization"
+              :key="'s'+i"
+              class="class-feature-text"
+            >
+              {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
+            </p>
+          </div>
+          <div
+            v-if="char.level >= 8 && subclassData.mastery.length"
+            class="subclass-tier-block"
+          >
+            <span class="subclass-tier-label">Maîtrise (Niv. 8+)</span>
+            <p
+              v-for="(feat, i) in subclassData.mastery"
+              :key="'m'+i"
+              class="class-feature-text"
+            >
+              {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
+            </p>
+          </div>
+        </div>
+      </template>
     </section>
 
     <!-- ═══ Cartes de domaine ═══ -->
@@ -631,63 +930,6 @@
       />
     </section>
 
-    <!-- ═══ Sous-classe Features ═══ -->
-    <section
-      v-if="subclassData"
-      class="sheet-section"
-    >
-      <h3 class="section-heading">
-        🎯 Sous-classe : {{ subclassData.name }}
-      </h3>
-      <div class="class-features">
-        <p
-          v-if="subclassData.spellcastTrait"
-          class="spellcast-trait"
-        >
-          <strong>Spellcast Trait :</strong> {{ subclassData.spellcastTrait }}
-        </p>
-        <!-- Foundation (toujours affiché) -->
-        <div class="subclass-tier-block">
-          <span class="subclass-tier-label">Fondation (Niv. 1–4)</span>
-          <p
-            v-for="(feat, i) in subclassData.foundation"
-            :key="'f'+i"
-            class="class-feature-text"
-          >
-            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
-          </p>
-        </div>
-        <!-- Spécialisation (si niveau 5+) -->
-        <div
-          v-if="char.level >= 5 && subclassData.specialization.length"
-          class="subclass-tier-block"
-        >
-          <span class="subclass-tier-label">Spécialisation (Niv. 5–7)</span>
-          <p
-            v-for="(feat, i) in subclassData.specialization"
-            :key="'s'+i"
-            class="class-feature-text"
-          >
-            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
-          </p>
-        </div>
-        <!-- Maîtrise (si niveau 8+) -->
-        <div
-          v-if="char.level >= 8 && subclassData.mastery.length"
-          class="subclass-tier-block"
-        >
-          <span class="subclass-tier-label">Maîtrise (Niv. 8+)</span>
-          <p
-            v-for="(feat, i) in subclassData.mastery"
-            :key="'m'+i"
-            class="class-feature-text"
-          >
-            {{ typeof feat === 'object' ? `${feat.name} : ${feat.description}` : feat }}
-          </p>
-        </div>
-      </div>
-    </section>
-
     <!-- ═══ Notes ═══ -->
     <section class="sheet-section">
       <h3 class="section-heading">
@@ -707,22 +949,21 @@
 
 <script>
 import { computed } from 'vue'
-import { CONDITIONS } from '@data/classes'
+import { getAncestryById, ALL_ANCESTRIES } from '@data/ancestries'
 import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
 import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
 import { getArmorById } from '@data/equipment/armor.js'
 import { getRecommendedIds } from '@data/equipment/classRecommendations.js'
+import { TIER_LABELS } from '@core/utils/constants.js'
 import SlotTracker from './SlotTracker.vue'
 import TraitBlock from './TraitBlock.vue'
-import CharacterSelectors from './CharacterSelectors.vue'
 import DomainCardPicker from './DomainCardPicker.vue'
 import ActiveModifiersPanel from './ActiveModifiersPanel.vue'
 import InventoryPanel from './InventoryPanel.vue'
-import WeaponsPanel from './WeaponsPanel.vue'
 
 export default {
   name: 'CharacterSheet',
-  components: { SlotTracker, TraitBlock, CharacterSelectors, DomainCardPicker, ActiveModifiersPanel, InventoryPanel, WeaponsPanel },
+  components: { SlotTracker, TraitBlock, DomainCardPicker, ActiveModifiersPanel, InventoryPanel },
   props: {
     char: { type: Object, default: null },
     classData: { type: Object, default: null },
@@ -759,7 +1000,6 @@ export default {
     'update', 'markHP', 'clearHP', 'markStress', 'clearStress',
     'markArmor', 'clearArmor', 'setHope',
     'addExperience', 'removeExperience',
-    'addCondition', 'removeCondition',
     'applySelection',
     'updateMixed',
     'addCardToLoadout', 'addCardToVault',
@@ -770,8 +1010,6 @@ export default {
     'updateGold'
   ],
   setup(props, { emit }) {
-    const conditions = CONDITIONS
-
     // ── Style grille colonnes ──
     const sheetGridStyle = computed(() => {
       if (!props.sheetColumns || props.sheetColumns === 0) return {}
@@ -779,14 +1017,6 @@ export default {
         'grid-template-columns': `repeat(${props.sheetColumns}, 1fr)`
       }
     })
-
-    // ── Constantes tier ──
-    const TIER_LABELS = {
-      1: 'Tier 1 (Niveau 1)',
-      2: 'Tier 2 (Niveaux 2–4)',
-      3: 'Tier 3 (Niveaux 5–7)',
-      4: 'Tier 4 (Niveaux 8+)'
-    }
 
     function groupByTier(items) {
       const tiers = {}
@@ -800,18 +1030,59 @@ export default {
         .map((t) => ({ label: TIER_LABELS[t] || `Tier ${t}`, items: tiers[t] }))
     }
 
-    // ── Arme à deux mains ? (utilisé dans le résumé des choix) ──
-    const primaryIsTwoHanded = computed(() =>
+    // ── Ascendances (pour sélecteur inline) ──
+    const srdAncestries = computed(() =>
+      props.ancestries.filter((a) => a.source === 'srd')
+    )
+    const customAncestries = computed(() =>
+      props.ancestries.filter((a) => a.source === 'custom')
+    )
+
+    // ── Mixed Ancestry ──
+    const mixedConfig = computed(() =>
+      props.char?.mixedAncestryConfig || {
+        ancestry1Id: '', ancestry2Id: '',
+        ancestry1Feature: '', ancestry2Feature: ''
+      }
+    )
+    const selectableAncestries = computed(() =>
+      ALL_ANCESTRIES.filter((a) => a.id !== 'mixed-ancestry')
+    )
+    const mixedAncestry1 = computed(() =>
+      mixedConfig.value.ancestry1Id
+        ? getAncestryById(mixedConfig.value.ancestry1Id)
+        : null
+    )
+    const mixedAncestry2 = computed(() =>
+      mixedConfig.value.ancestry2Id
+        ? getAncestryById(mixedConfig.value.ancestry2Id)
+        : null
+    )
+
+    // ── Armes à deux mains ──
+    const isTwoHanded = computed(() =>
       props.char?.primaryWeapon?.burden === 'Two-Handed'
     )
 
-    // ── Armures groupées par tier ──
+    // ── Équipement groupé par tier ──
     const armorTiers = computed(() => groupByTier(props.armor))
+    const primaryWeaponTiers = computed(() => groupByTier(props.primaryWeapons))
+    const secondaryWeaponTiers = computed(() => groupByTier(props.secondaryWeapons))
 
-    // ── Recommandations armure par classe ──
+    // ── Recommandations par classe ──
     const recommendedArmors = computed(() =>
       getRecommendedIds(props.char?.classId || '', 'armor')
         .map(getArmorById)
+        .filter(Boolean)
+    )
+    const recommendedPrimary = computed(() =>
+      getRecommendedIds(props.char?.classId || '', 'primaryWeapon')
+        .map(getPrimaryWeaponById)
+        .filter(Boolean)
+    )
+    const recommendedSecondary = computed(() =>
+      getRecommendedIds(props.char?.classId || '', 'secondaryWeapon')
+        .map(getSecondaryWeaponById)
         .filter(Boolean)
     )
 
@@ -824,24 +1095,6 @@ export default {
     function clampInt(val, min, max) {
       const num = parseInt(val) || min
       return Math.max(min, Math.min(max, num))
-    }
-
-    function toggleCondition(condId) {
-      if (props.char.conditions.includes(condId)) {
-        emit('removeCondition', condId)
-      } else {
-        emit('addCondition', condId)
-      }
-    }
-
-    /**
-     * Détermine le tier de features de sous-classe à afficher
-     * selon le niveau du personnage.
-     */
-    function getSubclassFeatureTier(level) {
-      if (level >= 8) return 'mastery'
-      if (level >= 5) return 'specialization'
-      return 'foundation'
     }
 
     // ── Détail des bonus par stat pour la section Santé ──
@@ -861,24 +1114,12 @@ export default {
       return list
     })
 
-    // ── Résolution noms pour le résumé verrouillé ──
-    function resolveArmorName(id) {
-      const a = getArmorById(id) || props.armor.find((x) => x.id === id)
-      return a ? a.name : id
-    }
-    function resolvePrimaryName(id) {
-      const w = getPrimaryWeaponById(id) || props.primaryWeapons.find((x) => x.id === id)
-      return w ? w.name : id
-    }
-    function resolveSecondaryName(id) {
-      const w = getSecondaryWeaponById(id) || props.secondaryWeapons.find((x) => x.id === id)
-      return w ? w.name : id
-    }
-
     return {
-      conditions, acquiredCardIds, clampInt, toggleCondition, emit, getSubclassFeatureTier,
-      resolveArmorName, resolvePrimaryName, resolveSecondaryName,
-      primaryIsTwoHanded, armorTiers, recommendedArmors,
+      acquiredCardIds, clampInt, emit,
+      srdAncestries, customAncestries,
+      mixedConfig, selectableAncestries, mixedAncestry1, mixedAncestry2,
+      isTwoHanded, armorTiers, primaryWeaponTiers, secondaryWeaponTiers,
+      recommendedArmors, recommendedPrimary, recommendedSecondary,
       hpSources, stressSources, armorSources,
       sheetGridStyle
     }
@@ -929,97 +1170,168 @@ export default {
 
 .section-header .section-heading { margin: 0; }
 
-/* ── Choix du personnage (verrouillage) ── */
-.sheet-section--choices {
-  border-color: var(--color-accent-hope, #53a8b6);
-  border-width: 1px 1px 1px 3px;
-}
-
-.section-header--choices {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-sm);
-}
-
-.section-header--choices .section-heading { margin: 0; }
-
-.choices-toggle-btn {
-  padding: 4px 12px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--color-border, #3a3a5a);
-  transition: background 150ms, border-color 150ms, opacity 150ms;
-}
-
-.choices-toggle-btn--edit {
-  background: transparent;
-  color: var(--color-accent-hope, #53a8b6);
-  border-color: var(--color-accent-hope, #53a8b6);
-}
-
-.choices-toggle-btn--edit:hover {
-  background: rgba(83, 168, 182, 0.1);
-}
-
-.choices-toggle-btn--validate {
-  background: var(--color-accent-hope, #53a8b6);
-  color: #fff;
-  border-color: var(--color-accent-hope, #53a8b6);
-}
-
-.choices-toggle-btn--validate:hover {
-  opacity: 0.9;
-}
-
-.choices-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--space-sm);
-}
-
-.choices-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: var(--space-xs) var(--space-sm);
-}
-
-.choices-summary__item {
+/* ── Sélecteurs inline ── */
+.selector-field {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  padding: 4px 8px;
-  background: rgba(83, 168, 182, 0.06);
-  border-radius: 4px;
-  border-left: 2px solid var(--color-accent-hope, #53a8b6);
+  gap: 2px;
+  min-width: 0;
 }
 
-.choices-summary__label {
-  font-size: 0.6rem;
+.selector-field--spaced {
+  margin-top: var(--space-md);
+}
+
+.selector-label {
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-muted, #6b7280);
 }
 
-.choices-summary__value {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--color-text-primary, #e5e7eb);
-  white-space: nowrap;
+.selector-select {
+  padding: 5px 8px;
+  background: var(--color-bg-tertiary, #2a2a4a);
+  border: 1px solid var(--color-border, #3a3a5a);
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.selector-select:focus {
+  outline: 2px solid var(--color-accent-hope, #53a8b6);
+  outline-offset: 1px;
+}
+
+.selector-select option,
+.selector-select optgroup {
+  background: var(--color-bg-secondary, #1f1f3a);
+  color: var(--color-text-primary);
+}
+
+.selector-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #6b7280);
+  margin: 2px 0 0;
+  line-height: 1.3;
+  max-height: 3.9em;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.choices-summary__empty {
-  grid-column: 1 / -1;
-  font-size: 0.82rem;
-  color: var(--color-text-muted, #6b7280);
-  font-style: italic;
+.selectors-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 480px) { .selectors-row { grid-template-columns: 1fr; } }
+
+/* ── Mixed Ancestry ── */
+.mixed-intro-block {
+  margin-top: var(--space-sm);
+}
+
+.mixed-intro {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #9ca3af);
+  line-height: 1.4;
   margin: 0;
-  padding: 4px 0;
+  padding: 6px 8px;
+  background: rgba(83, 168, 182, 0.06);
+  border-left: 2px solid var(--color-accent-hope, #53a8b6);
+  border-radius: 0 4px 4px 0;
+}
+
+.mixed-feature-fieldset {
+  border: 1px solid var(--color-border, #3a3a5a);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+.mixed-feature-legend {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-hope, #53a8b6);
+  padding: 0 4px;
+}
+
+.mixed-feature-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--color-border, #3a3a5a);
+  border-radius: 4px;
+  margin: 4px 0;
+  cursor: pointer;
+  transition: border-color 150ms, background 150ms;
+}
+
+.mixed-feature-option:hover { border-color: var(--color-text-secondary, #9ca3af); }
+.mixed-feature-option--selected {
+  border-color: var(--color-accent-hope, #53a8b6);
+  background: rgba(83, 168, 182, 0.08);
+}
+
+.mixed-feature-option input[type="radio"] {
+  accent-color: var(--color-accent-hope, #53a8b6);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.mixed-feature-option__name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.mixed-feature-option__badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(83, 168, 182, 0.15);
+  color: var(--color-accent-hope, #53a8b6);
+  margin-left: auto;
+}
+
+.mixed-feature-option__desc {
+  width: 100%;
+  font-size: 0.72rem;
+  color: var(--color-text-secondary, #9ca3af);
+  line-height: 1.35;
+  margin: 2px 0 0;
+}
+
+/* ── Section sub-headings ── */
+.section-subheading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #9ca3af);
+  margin: 0 0 var(--space-xs);
+  font-weight: 600;
+}
+
+.section-subheading--spaced {
+  margin-top: var(--space-md);
+}
+
+.section-header--spaced {
+  margin-top: var(--space-md);
 }
 
 /* ── Fields ── */
@@ -1234,32 +1546,6 @@ export default {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-text-secondary);
-}
-
-/* ── Conditions ── */
-.conditions-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-}
-
-.condition-chip {
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid var(--color-border, #3a3a5a);
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all var(--transition-fast, 150ms);
-}
-
-.condition-chip:hover { border-color: var(--color-text-secondary); }
-
-.condition-chip--active {
-  border-color: #f97316;
-  color: #f97316;
-  background: rgba(249, 115, 22, 0.1);
 }
 
 /* ── Experiences ── */
