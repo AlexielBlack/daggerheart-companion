@@ -52,6 +52,16 @@
       @touchstart.passive="onTouchStart"
       @touchend.passive="onTouchEnd"
     >
+      <!-- Bouton Action (visible quand le bandeau est fermé) -->
+      <button
+        v-if="!actionBarOpen"
+        class="ctx-panel__action-btn"
+        aria-label="Ouvrir le panneau d'action"
+        @click="$emit('open-action')"
+      >
+        ⚡ Action
+      </button>
+
       <!-- ═══════════════════════════════════════════════════════ -->
       <!--  Contenu PJ : features filtrées par tags / mode scène  -->
       <!-- ═══════════════════════════════════════════════════════ -->
@@ -620,9 +630,11 @@ export default {
     /** Info spellcast du PJ actif (depuis usePlayerActions) */
     spellcastInfo: { type: Object, default: null },
     /** Features enrichies par usePlayerActions */
-    enrichedFeatures: { type: Array, default: () => [] }
+    enrichedFeatures: { type: Array, default: () => [] },
+    /** État du bandeau d'actions */
+    actionBarOpen: { type: Boolean, default: false }
   },
-  emits: ['select-npc'],
+  emits: ['select-npc', 'open-action'],
   setup(props) {
     const activeTab  = ref('pc')
     const swipeZone  = ref(null)
@@ -912,6 +924,27 @@ export default {
   border-left: 1px solid var(--color-border);
   background: var(--color-bg-primary);
   overflow: hidden;
+}
+
+/* ── Bouton Action ── */
+
+.ctx-panel__action-btn {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border: 2px solid var(--color-accent, #a855f7);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-accent, #a855f7);
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.ctx-panel__action-btn:hover {
+  background: rgba(168, 85, 247, 0.1);
 }
 
 /* ── Dots indicateur de position ── */
