@@ -72,100 +72,89 @@
       </li>
     </ul>
 
-    <!-- Onglets integres : Profil | Notes -->
+    <!-- Profil complet + Notes (vue unifiee) -->
     <div
-      v-if="cardTabs.length > 0"
-      class="npc-scene-card__tabs"
+      v-if="hasProfile || true"
+      class="npc-scene-card__body"
     >
-      <div
-        class="npc-scene-card__tablist"
-        role="tablist"
-        :aria-label="'Sections de ' + npc.name"
+      <!-- Champs profil narratif -->
+      <p
+        v-if="npc.ancestry"
+        class="npc-scene-card__field"
       >
-        <button
-          v-for="tab in cardTabs"
-          :id="'npc-tab-' + npc.id + '-' + tab.id"
-          :key="tab.id"
-          class="npc-scene-card__tab"
-          :class="{ 'npc-scene-card__tab--active': activeTab === tab.id }"
-          role="tab"
-          :aria-selected="String(activeTab === tab.id)"
-          :aria-controls="'npc-panel-' + npc.id + '-' + tab.id"
-          :tabindex="activeTab === tab.id ? 0 : -1"
-          @click.stop="activeTab = tab.id"
-          @keydown.left.prevent="navigateTab(-1)"
-          @keydown.right.prevent="navigateTab(1)"
-        >
-          <span aria-hidden="true">{{ tab.icon }}</span>
-          <span class="npc-scene-card__tab-label">{{ tab.label }}</span>
-        </button>
-      </div>
-
-      <!-- Panneau Profil -->
-      <div
-        v-show="activeTab === 'profil'"
-        :id="'npc-panel-' + npc.id + '-profil'"
-        class="npc-scene-card__tabpanel"
-        role="tabpanel"
-        :aria-labelledby="'npc-tab-' + npc.id + '-profil'"
+        <span class="npc-scene-card__label">Ascendance</span>
+        {{ npc.ancestry }}
+      </p>
+      <p
+        v-if="npc.description"
+        class="npc-scene-card__field"
       >
-        <p
-          v-if="npc.description"
-          class="npc-scene-card__field"
-        >
-          {{ npc.description }}
-        </p>
-        <p
-          v-if="npc.personality"
-          class="npc-scene-card__field"
-        >
-          <span class="npc-scene-card__label">Personnalite</span>
-          {{ npc.personality }}
-        </p>
-        <p
-          v-if="npc.motives"
-          class="npc-scene-card__field"
-        >
-          <span class="npc-scene-card__label">Motifs</span>
-          {{ npc.motives }}
-        </p>
-        <p
-          v-if="npc.tactics"
-          class="npc-scene-card__field"
-        >
-          <span class="npc-scene-card__label">Tactiques</span>
-          {{ npc.tactics }}
-        </p>
-
-        <!-- Relations PNJ dans l'onglet profil -->
-        <ul
-          v-if="npcRelationsList.length"
-          class="npc-scene-card__relations npc-scene-card__relations--inner"
-        >
-          <li
-            v-for="rel in npcRelationsList"
-            :key="rel.targetNpcId"
-            class="npc-scene-card__relation"
-          >
-            <span class="npc-scene-card__rel-type">{{ rel.typeLabel }}</span>
-            <span class="npc-scene-card__rel-name">{{ rel.name }}</span>
-            <span
-              v-if="rel.note"
-              class="npc-scene-card__rel-note"
-            >— {{ rel.note }}</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Panneau Notes -->
-      <div
-        v-show="activeTab === 'notes'"
-        :id="'npc-panel-' + npc.id + '-notes'"
-        class="npc-scene-card__tabpanel"
-        role="tabpanel"
-        :aria-labelledby="'npc-tab-' + npc.id + '-notes'"
+        {{ npc.description }}
+      </p>
+      <p
+        v-if="npc.personality"
+        class="npc-scene-card__field"
       >
-        <!-- Indicateur de sauvegarde -->
+        <span class="npc-scene-card__label">Personnalite</span>
+        {{ npc.personality }}
+      </p>
+      <p
+        v-if="npc.contradiction"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Contradiction</span>
+        {{ npc.contradiction }}
+      </p>
+      <p
+        v-if="npc.importance"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Importance</span>
+        {{ npc.importance }}
+      </p>
+      <p
+        v-if="npc.ambition"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Ambition</span>
+        {{ npc.ambition }}
+      </p>
+      <p
+        v-if="npc.moyens"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Moyens</span>
+        {{ npc.moyens }}
+      </p>
+      <p
+        v-if="npc.activeProblem"
+        class="npc-scene-card__field"
+      >
+        <span class="npc-scene-card__label">Probleme actif</span>
+        {{ npc.activeProblem }}
+      </p>
+
+      <!-- Relations PNJ -->
+      <ul
+        v-if="npcRelationsList.length"
+        class="npc-scene-card__relations npc-scene-card__relations--inner"
+      >
+        <li
+          v-for="rel in npcRelationsList"
+          :key="rel.targetNpcId"
+          class="npc-scene-card__relation"
+        >
+          <span class="npc-scene-card__rel-type">{{ rel.typeLabel }}</span>
+          <span class="npc-scene-card__rel-name">{{ rel.name }}</span>
+          <span
+            v-if="rel.note"
+            class="npc-scene-card__rel-note"
+          >— {{ rel.note }}</span>
+        </li>
+      </ul>
+
+      <!-- Notes de session -->
+      <div class="npc-scene-card__notes-section">
         <span
           v-if="isSaving"
           class="npc-scene-card__saving"
@@ -185,7 +174,7 @@
 </template>
 
 <script>
-import { computed, ref, nextTick } from 'vue'
+import { computed } from 'vue'
 import { useNpcStore, NPC_STATUS_META, DISPOSITION_META, RELATION_TYPE_META } from '@modules/npcs'
 import { useCharacterStore } from '@modules/characters'
 import { useSaveIndicator } from '../composables/useSaveIndicator'
@@ -254,39 +243,11 @@ export default {
     /** Verifie si le PNJ a du contenu profil */
     const hasProfile = computed(() => {
       return !!(props.npc.description || props.npc.personality ||
-                props.npc.motives || props.npc.tactics ||
+                props.npc.contradiction || props.npc.ancestry ||
+                props.npc.importance || props.npc.ambition ||
+                props.npc.moyens || props.npc.activeProblem ||
                 (npcRelationsList.value && npcRelationsList.value.length > 0))
     })
-
-    /** Onglets disponibles */
-    const cardTabs = computed(() => {
-      const tabs = []
-      if (hasProfile.value) {
-        tabs.push({ id: 'profil', label: 'Profil', icon: '\uD83D\uDCCB' })
-      }
-      tabs.push({ id: 'notes', label: 'Notes', icon: '\uD83D\uDCDD' })
-      return tabs
-    })
-
-    /** Onglet actif — profil par defaut si du contenu, sinon notes */
-    const activeTab = computed({
-      get: () => activeTabRef.value,
-      set: (v) => { activeTabRef.value = v }
-    })
-    const hasProfileContent = !!(props.npc.description || props.npc.personality ||
-                                  props.npc.motives || props.npc.tactics)
-    const activeTabRef = ref(hasProfileContent ? 'profil' : 'notes')
-
-    function navigateTab(direction) {
-      const tabs = cardTabs.value
-      const currentIdx = tabs.findIndex(t => t.id === activeTab.value)
-      const nextIdx = (currentIdx + direction + tabs.length) % tabs.length
-      activeTab.value = tabs[nextIdx].id
-      nextTick(() => {
-        const el = document.getElementById('npc-tab-' + props.npc.id + '-' + tabs[nextIdx].id)
-        if (el) el.focus()
-      })
-    }
 
     function onNotesInput(value) {
       markDirty()
@@ -304,7 +265,7 @@ export default {
     return {
       statusMeta, subheader,
       pcRelationsList, npcRelationsList,
-      hasProfile, cardTabs, activeTab, navigateTab,
+      hasProfile,
       onNotesInput, isSaving
     }
   }
@@ -436,56 +397,18 @@ export default {
   color: var(--color-text-muted, #888);
 }
 
-/* ── Onglets ── */
+/* ── Corps unifie (profil + notes) ── */
 
-.npc-scene-card__tabs {
+.npc-scene-card__body {
   border-top: 1px solid var(--color-border, rgba(255,255,255,0.1));
   margin-top: var(--space-xs, 0.25rem);
-}
-
-.npc-scene-card__tablist {
-  display: flex;
-  background: var(--color-bg-secondary, #16162a);
-}
-
-.npc-scene-card__tab {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs, 0.25rem);
-  min-height: var(--touch-min, 2.75rem);
-  padding: var(--space-xs) var(--space-sm);
-  border: none;
-  background: transparent;
-  color: var(--color-text-muted, #888);
-  font-size: var(--font-size-sm, 0.875rem);
-  font-weight: var(--font-weight-medium, 500);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: color var(--transition-fast, 0.15s), border-color var(--transition-fast, 0.15s), background var(--transition-fast, 0.15s);
-}
-
-.npc-scene-card__tab:hover {
-  color: var(--color-text-secondary, #aaa);
-  background: var(--color-bg-hover, rgba(255,255,255,0.05));
-}
-
-.npc-scene-card__tab--active {
-  color: var(--color-accent-hope, #53a8b6);
-  border-bottom-color: var(--color-accent-hope, #53a8b6);
-}
-
-.npc-scene-card__tab--active:hover {
-  color: var(--color-accent-hope, #53a8b6);
-}
-
-.npc-scene-card__tab-label {
-  font-size: var(--font-size-xs, 0.75rem);
-}
-
-.npc-scene-card__tabpanel {
   padding: var(--space-sm, 0.5rem);
+}
+
+.npc-scene-card__notes-section {
+  margin-top: var(--space-sm, 0.5rem);
+  padding-top: var(--space-sm, 0.5rem);
+  border-top: 1px solid var(--color-border, rgba(255,255,255,0.08));
 }
 
 /* ── Champs profil ── */
