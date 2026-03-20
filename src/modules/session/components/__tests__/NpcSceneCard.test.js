@@ -118,14 +118,10 @@ describe('NpcSceneCard', () => {
     expect(dot.attributes('style')).toContain('#dc2626')
   })
 
-  it('affiche les notes dans le textarea via l\'onglet Notes', async () => {
+  it('affiche les notes dans le textarea directement', () => {
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
-    // Cliquer sur l'onglet Notes
-    const tabs = wrapper.findAll('.npc-scene-card__tab')
-    const notesTab = tabs.find(t => t.text().includes('Notes'))
-    expect(notesTab).toBeTruthy()
-    await notesTab.trigger('click')
     const textarea = wrapper.find('textarea')
+    expect(textarea.exists()).toBe(true)
     expect(textarea.element.value).toBe('A un secret')
   })
 
@@ -170,10 +166,6 @@ describe('NpcSceneCard', () => {
     vi.useFakeTimers()
     mockGetById.mockReturnValue({ ...fullNpc })
     const wrapper = mount(NpcSceneCard, { props: { npc: fullNpc } })
-    // Aller sur l'onglet Notes
-    const tabs = wrapper.findAll('.npc-scene-card__tab')
-    const notesTab = tabs.find(t => t.text().includes('Notes'))
-    await notesTab.trigger('click')
     const textarea = wrapper.find('textarea')
     await textarea.setValue('Nouvelle note')
     vi.advanceTimersByTime(600)
@@ -190,24 +182,21 @@ describe('NpcSceneCard', () => {
       expect(wrapper.find('.npc-scene-card__expand-btn').exists()).toBe(false)
     })
 
-    it('affiche l\'onglet Profil quand le PNJ a du contenu profil', () => {
+    it('affiche le profil et les notes sur une meme page quand le PNJ a du contenu', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: detailedNpc, isSpotlight: false }
       })
-      const tabs = wrapper.findAll('.npc-scene-card__tab')
-      const allText = tabs.map(t => t.text()).join(' ')
-      expect(allText).toContain('Profil')
-      expect(allText).toContain('Notes')
+      expect(wrapper.find('.npc-scene-card__body').exists()).toBe(true)
+      expect(wrapper.text()).toContain('Un vieil homme mysterieux')
+      expect(wrapper.find('textarea').exists()).toBe(true)
     })
 
-    it('n\'affiche pas l\'onglet Profil quand pas de contenu profil', () => {
+    it('affiche le textarea notes meme sans contenu profil', () => {
       const wrapper = mount(NpcSceneCard, {
         props: { npc: minimalNpc, isSpotlight: false }
       })
-      const tabs = wrapper.findAll('.npc-scene-card__tab')
-      const allText = tabs.map(t => t.text()).join(' ')
-      expect(allText).not.toContain('Profil')
-      expect(allText).toContain('Notes')
+      expect(wrapper.find('.npc-scene-card__body').exists()).toBe(true)
+      expect(wrapper.find('textarea').exists()).toBe(true)
     })
 
     it('affiche le header et subheader directement', () => {
