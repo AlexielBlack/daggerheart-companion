@@ -42,175 +42,188 @@
       </router-link>
     </div>
 
-    <!-- Grille de classes -->
+    <!-- Layout split : liste + détails -->
     <div
       v-if="filteredClasses.length"
-      class="class-grid"
-      :class="{ 'class-grid--custom': compendiumColumns > 0 }"
-      :style="gridStyle"
-      role="list"
-      aria-label="Liste des classes"
+      class="browser-split"
     >
-      <article
-        v-for="cls in filteredClasses"
-        :key="cls.id"
-        class="class-card"
-        :class="{ 'class-card--expanded': expandedClassId === cls.id }"
-        role="listitem"
+      <!-- Colonne gauche : liste de sélection -->
+      <div
+        class="browser-split__list"
+        role="listbox"
+        aria-label="Liste des classes"
       >
-        <!-- En-tete de la carte -->
         <button
-          class="class-card__header"
-          :aria-expanded="expandedClassId === cls.id"
-          :aria-controls="`class-details-${cls.id}`"
+          v-for="cls in filteredClasses"
+          :key="cls.id"
+          class="browser-split__item"
+          :class="{ 'browser-split__item--active': expandedClassId === cls.id }"
+          role="option"
+          :aria-selected="expandedClassId === cls.id"
           @click="toggleClass(cls.id)"
         >
           <span
-            class="class-card__emoji"
+            class="browser-split__emoji"
             aria-hidden="true"
           >{{ cls.emoji }}</span>
-          <div class="class-card__info">
-            <span class="class-card__name">
+          <div class="browser-split__info">
+            <span class="browser-split__name">
               {{ cls.name }}
               <SourceBadge :source="cls.source" />
             </span>
-            <span class="class-card__domains">{{ cls.domains.join(' + ') }}</span>
+            <span class="browser-split__sub">{{ cls.domains.join(' + ') }}</span>
           </div>
-          <span
-            class="class-card__chevron"
-            aria-hidden="true"
-          >{{ expandedClassId === cls.id ? '&#9650;' : '&#9660;' }}</span>
+        </button>
+      </div>
+
+      <!-- Colonne droite : détails -->
+      <div
+        v-if="selectedClass"
+        ref="detailPanel"
+        class="browser-split__detail"
+      >
+        <h2 class="detail-title">
+          <span aria-hidden="true">{{ selectedClass.emoji }}</span>
+          {{ selectedClass.name }}
+          <SourceBadge :source="selectedClass.source" />
+        </h2>
+
+        <!-- Stats -->
+        <div class="class-stats">
+          <div class="stat-item">
+            <span class="stat-item__label">Evasion de depart</span>
+            <span class="stat-item__value">{{ selectedClass.baseEvasion }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item__label">PV de depart</span>
+            <span class="stat-item__value">{{ selectedClass.baseHP }}</span>
+          </div>
+        </div>
+
+        <!-- Feature Espoir -->
+        <section class="class-section">
+          <h3 class="class-section__title">
+            Feature d'Espoir
+          </h3>
+          <p class="class-section__text">
+            {{ typeof selectedClass.hopeFeature === 'object' ? `${selectedClass.hopeFeature.name} : ${selectedClass.hopeFeature.description}` : selectedClass.hopeFeature }}
+          </p>
+        </section>
+
+        <!-- Features de Classe -->
+        <section class="class-section">
+          <h3 class="class-section__title">
+            Features de Classe
+          </h3>
+          <ul class="feature-list">
+            <li
+              v-for="(feature, i) in selectedClass.classFeatures"
+              :key="i"
+              class="feature-list__item"
+            >
+              {{ typeof feature === 'object' ? `${feature.name} : ${feature.description}` : feature }}
+            </li>
+          </ul>
+        </section>
+
+        <!-- Sous-classes -->
+        <section
+          v-if="getSubclasses(selectedClass.id).length"
+          class="class-section"
+        >
+          <h3 class="class-section__title">
+            Specialisations
+          </h3>
+          <div class="subclass-grid">
+            <article
+              v-for="sub in getSubclasses(selectedClass.id)"
+              :key="sub.id"
+              class="subclass-card"
+            >
+              <header class="subclass-card__header">
+                <h4 class="subclass-card__name">
+                  {{ sub.name }}
+                </h4>
+                <span
+                  v-if="sub.spellcastTrait"
+                  class="badge badge--spell"
+                  :aria-label="`Sort : ${sub.spellcastTrait}`"
+                >Sort : {{ sub.spellcastTrait }}</span>
+              </header>
+              <p class="subclass-card__description">
+                {{ sub.description }}
+              </p>
+              <div class="subclass-tiers">
+                <div class="tier-block">
+                  <span class="tier-block__label">Fondation (Niv. 1-4)</span>
+                  <ul class="tier-block__list">
+                    <li
+                      v-for="(f, i) in sub.foundation"
+                      :key="i"
+                    >
+                      {{ typeof f === 'object' ? `${f.name} : ${f.description}` : f }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="tier-block">
+                  <span class="tier-block__label">Specialisation (Niv. 5-7)</span>
+                  <ul class="tier-block__list">
+                    <li
+                      v-for="(s, si) in sub.specialization"
+                      :key="si"
+                    >
+                      {{ typeof s === 'object' ? `${s.name} : ${s.description}` : s }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="tier-block">
+                  <span class="tier-block__label">Maitrise (Niv. 8+)</span>
+                  <ul class="tier-block__list">
+                    <li
+                      v-for="(m, mi) in sub.mastery"
+                      :key="mi"
+                    >
+                      {{ typeof m === 'object' ? `${m.name} : ${m.description}` : m }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Bouton Modifier (custom uniquement) -->
+        <button
+          v-if="selectedClass.source === 'custom'"
+          class="btn btn--secondary btn--sm class-card__edit-btn"
+          aria-label="Modifier cette classe custom"
+          @click.stop="startEdit(selectedClass)"
+        >
+          Modifier
         </button>
 
-        <!-- Details de la classe -->
-        <div
-          :id="`class-details-${cls.id}`"
-          class="class-card__body"
-          :hidden="expandedClassId !== cls.id"
+        <!-- Dupliquer en homebrew -->
+        <button
+          class="btn btn--secondary btn--sm class-card__duplicate-btn"
+          @click.stop="duplicateToHomebrew(selectedClass)"
         >
-          <!-- Stats -->
-          <div class="class-stats">
-            <div class="stat-item">
-              <span class="stat-item__label">Evasion de depart</span>
-              <span class="stat-item__value">{{ cls.baseEvasion }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-item__label">PV de depart</span>
-              <span class="stat-item__value">{{ cls.baseHP }}</span>
-            </div>
-          </div>
+          Dupliquer en homebrew
+        </button>
+      </div>
 
-          <!-- Feature Espoir -->
-          <section class="class-section">
-            <h3 class="class-section__title">
-              Feature d'Espoir
-            </h3>
-            <p class="class-section__text">
-              {{ typeof cls.hopeFeature === 'object' ? `${cls.hopeFeature.name} : ${cls.hopeFeature.description}` : cls.hopeFeature }}
-            </p>
-          </section>
-
-          <!-- Features de Classe -->
-          <section class="class-section">
-            <h3 class="class-section__title">
-              Features de Classe
-            </h3>
-            <ul class="feature-list">
-              <li
-                v-for="(feature, i) in cls.classFeatures"
-                :key="i"
-                class="feature-list__item"
-              >
-                {{ typeof feature === 'object' ? `${feature.name} : ${feature.description}` : feature }}
-              </li>
-            </ul>
-          </section>
-
-          <!-- Sous-classes -->
-          <section
-            v-if="getSubclasses(cls.id).length"
-            class="class-section"
-          >
-            <h3 class="class-section__title">
-              Specialisations
-            </h3>
-            <div class="subclass-grid">
-              <article
-                v-for="sub in getSubclasses(cls.id)"
-                :key="sub.id"
-                class="subclass-card"
-              >
-                <header class="subclass-card__header">
-                  <h4 class="subclass-card__name">
-                    {{ sub.name }}
-                  </h4>
-                  <span
-                    v-if="sub.spellcastTrait"
-                    class="badge badge--spell"
-                    :aria-label="`Sort : ${sub.spellcastTrait}`"
-                  >Sort : {{ sub.spellcastTrait }}</span>
-                </header>
-                <p class="subclass-card__description">
-                  {{ sub.description }}
-                </p>
-                <div class="subclass-tiers">
-                  <div class="tier-block">
-                    <span class="tier-block__label">Fondation (Niv. 1-4)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(f, i) in sub.foundation"
-                        :key="i"
-                      >
-                        {{ typeof f === 'object' ? `${f.name} : ${f.description}` : f }}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="tier-block">
-                    <span class="tier-block__label">Specialisation (Niv. 5-7)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(s, si) in sub.specialization"
-                        :key="si"
-                      >
-                        {{ typeof s === 'object' ? `${s.name} : ${s.description}` : s }}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="tier-block">
-                    <span class="tier-block__label">Maitrise (Niv. 8+)</span>
-                    <ul class="tier-block__list">
-                      <li
-                        v-for="(m, mi) in sub.mastery"
-                        :key="mi"
-                      >
-                        {{ typeof m === 'object' ? `${m.name} : ${m.description}` : m }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <!-- Bouton Modifier (custom uniquement) -->
-          <button
-            v-if="cls.source === 'custom'"
-            class="btn btn--secondary btn--sm class-card__edit-btn"
-            aria-label="Modifier cette classe custom"
-            @click.stop="startEdit(cls)"
-          >
-            Modifier
-          </button>
-
-          <!-- Dupliquer en homebrew -->
-          <button
-            class="btn btn--secondary btn--sm class-card__duplicate-btn"
-            @click.stop="duplicateToHomebrew(cls)"
-          >
-            Dupliquer en homebrew
-          </button>
-        </div>
-      </article>
+      <!-- Placeholder -->
+      <div
+        v-else
+        class="browser-split__placeholder"
+      >
+        <p
+          class="browser-split__placeholder-icon"
+          aria-hidden="true"
+        >
+          &#128269;
+        </p>
+        <p>Sélectionnez une classe pour voir ses détails</p>
+      </div>
     </div>
 
     <!-- Panneau d'edition inline -->
@@ -290,11 +303,8 @@ export default {
     const homebrewStore = useClassHomebrewStore()
     const searchQuery = ref('')
     const expandedClassId = ref(null)
+    const detailPanel = ref(null)
     const compendiumColumns = inject('compendiumColumns', ref(0))
-    const gridStyle = computed(() => {
-      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
-      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
-    })
 
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
@@ -316,6 +326,12 @@ export default {
           cls.domains.some((d) => d.toLowerCase().includes(q))
         return matchSource && matchSearch
       })
+    })
+
+    // Classe sélectionnée pour le panneau de détails
+    const selectedClass = computed(() => {
+      if (!expandedClassId.value) return null
+      return charStore.allClasses.find((c) => c.id === expandedClassId.value) || null
     })
 
     function scrollToEditPanel() {
@@ -345,6 +361,11 @@ export default {
 
     function toggleClass(id) {
       expandedClassId.value = expandedClassId.value === id ? null : id
+      if (expandedClassId.value) {
+        nextTick(() => {
+          detailPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+      }
     }
 
     function getSubclasses(classId) {
@@ -417,6 +438,7 @@ export default {
       homebrewStore,
       searchQuery,
       expandedClassId,
+      selectedClass,
       filteredClasses,
       toggleClass,
       getSubclasses,
@@ -425,6 +447,7 @@ export default {
       creatingNew,
       editingClassId,
       editPanel,
+      detailPanel,
       scrollToEditPanel,
       formData,
       isDirty,
@@ -433,8 +456,7 @@ export default {
       toRawData,
       reset,
       classSchema,
-      compendiumColumns,
-      gridStyle
+      compendiumColumns
     }
   },
 
@@ -495,11 +517,13 @@ export default {
 
 <style scoped>
 .class-browser {
+  display: flex;
+  flex-direction: column;
 }
 
 /* -- Header -- */
 .browser-header {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 .browser-header__title {
   font-size: var(--font-size-xl);
@@ -519,7 +543,7 @@ export default {
   align-items: center;
   gap: var(--space-md);
   flex-wrap: wrap;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .class-browser__create-btn {
@@ -534,7 +558,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
   align-items: center;
 }
 .filter-input {
@@ -552,61 +576,126 @@ export default {
   outline-offset: 1px;
 }
 
-/* -- Grille -- */
-.class-grid {
+/* ══ Split layout ══ */
+.browser-split {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  flex: 1;
+  min-height: 0;
 }
 
-.class-grid--custom {
-  display: grid;
+@media (min-width: 768px) {
+  .class-browser {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .browser-split {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+  }
+
+  .browser-split__list,
+  .browser-split__detail,
+  .browser-split__placeholder {
+    overflow-y: auto;
+  }
 }
 
-/* -- Carte de classe -- */
-.class-card {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color var(--transition-fast);
+.browser-split__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-.class-card--expanded {
-  border-color: var(--color-accent-hope);
-}
-.class-card__header {
-  width: 100%;
+
+.browser-split__item {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-md);
-  background: none;
-  border: none;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   color: var(--color-text-primary);
   cursor: pointer;
   text-align: left;
-  transition: background-color var(--transition-fast);
+  width: 100%;
+  transition: all var(--transition-fast);
 }
-.class-card__header:hover { background: var(--color-bg-surface); }
-.class-card__header:focus-visible { outline: 2px solid var(--color-accent-hope); outline-offset: -2px; }
 
-.class-card__emoji { font-size: 1.5rem; width: 2rem; text-align: center; }
-.class-card__info { flex: 1; }
-.class-card__name { display: block; font-weight: var(--font-weight-bold); font-size: var(--font-size-md); }
-.class-card__domains { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
-.class-card__chevron { color: var(--color-text-muted); font-size: 0.75rem; }
+.browser-split__item:hover {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+}
 
-/* -- Body de la carte -- */
-.class-card__body {
-  border-top: 1px solid var(--color-border);
+.browser-split__item--active {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+  box-shadow: inset 3px 0 0 var(--color-accent-hope);
+}
+
+.browser-split__emoji {
+  font-size: 1.25rem;
+  width: 1.75rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.browser-split__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.browser-split__name {
+  display: block;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browser-split__sub {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.browser-split__detail {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   padding: var(--space-md);
-  animation: slideDown 0.25s ease-out;
 }
-.class-card__body[hidden] { display: none; }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+.browser-split__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  padding: var(--space-xl);
+  text-align: center;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.browser-split__placeholder-icon {
+  font-size: 2rem;
+  margin: 0 0 var(--space-sm);
+}
+
+/* -- Titre détail -- */
+.detail-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 /* -- Stats -- */

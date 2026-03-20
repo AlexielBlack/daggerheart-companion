@@ -53,23 +53,119 @@
       </router-link>
     </div>
 
-    <!-- Grille -->
+    <!-- Layout split : liste + détails -->
     <div
       v-if="store.filteredCommunities.length"
-      class="community-grid"
-      :class="{ 'community-grid--custom': compendiumColumns > 0 }"
-      :style="gridStyle"
-      role="list"
-      aria-label="Liste des communautés"
+      class="browser-split"
     >
-      <CommunityCard
-        v-for="community in store.filteredCommunities"
-        :key="community.id"
-        :community="community"
-        :is-expanded="store.expandedId === community.id"
-        @toggle="store.toggleExpand"
-        @duplicate="duplicateToHomebrew"
-      />
+      <!-- Colonne gauche : liste de sélection -->
+      <div
+        class="browser-split__list"
+        role="listbox"
+        aria-label="Liste des communautés"
+      >
+        <button
+          v-for="community in store.filteredCommunities"
+          :key="community.id"
+          class="browser-split__item"
+          :class="{ 'browser-split__item--active': store.expandedId === community.id }"
+          role="option"
+          :aria-selected="store.expandedId === community.id"
+          @click="store.toggleExpand(community.id)"
+        >
+          <span
+            class="browser-split__emoji"
+            aria-hidden="true"
+          >{{ community.emoji }}</span>
+          <div class="browser-split__info">
+            <span class="browser-split__name">
+              {{ community.name }}
+              <SourceBadge :source="community.source" />
+            </span>
+            <span class="browser-split__sub">{{ community.feature.name }}</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Colonne droite : détails -->
+      <div
+        v-if="selectedCommunity"
+        ref="detailPanel"
+        class="browser-split__detail"
+      >
+        <h2 class="detail-title">
+          <span aria-hidden="true">{{ selectedCommunity.emoji }}</span>
+          {{ selectedCommunity.name }}
+          <SourceBadge :source="selectedCommunity.source" />
+        </h2>
+
+        <!-- Description -->
+        <p class="community-description">
+          {{ selectedCommunity.description }}
+        </p>
+
+        <!-- Feature de communauté -->
+        <div
+          class="community-feature"
+          role="region"
+          :aria-label="`Feature : ${selectedCommunity.feature.name}`"
+        >
+          <header class="community-feature__header">
+            <h3 class="community-feature__name">
+              {{ selectedCommunity.feature.name }}
+            </h3>
+          </header>
+          <p class="community-feature__desc">
+            {{ selectedCommunity.feature.description }}
+          </p>
+        </div>
+
+        <!-- Phrase exemple (flavor) -->
+        <blockquote
+          v-if="selectedCommunity.flavor"
+          class="community-flavor"
+        >
+          <p>« {{ selectedCommunity.flavor }} »</p>
+        </blockquote>
+
+        <!-- Adjectifs de personnalité -->
+        <div
+          class="community-adjectives"
+          role="region"
+          :aria-label="`Adjectifs de personnalité pour ${selectedCommunity.name}`"
+        >
+          <span class="community-adjectives__label">Adjectifs suggérés :</span>
+          <div class="community-adjectives__row">
+            <span
+              v-for="adj in selectedCommunity.adjectives"
+              :key="adj"
+              class="adjective-tag"
+            >{{ adj }}</span>
+          </div>
+        </div>
+
+        <!-- Dupliquer en homebrew -->
+        <button
+          class="btn btn--secondary btn--sm community-duplicate-btn"
+          @click.stop="duplicateToHomebrew(selectedCommunity)"
+        >
+          Dupliquer en homebrew
+        </button>
+      </div>
+
+      <!-- Placeholder -->
+      <div
+        v-else
+        class="browser-split__placeholder"
+      >
+        <p
+          class="browser-split__placeholder-icon"
+          aria-hidden="true"
+        >
+          &#128269;
+        </p>
+        <p>Sélectionnez une communauté pour voir ses détails</p>
+      </div>
     </div>
 
     <!-- Etat vide -->
@@ -139,8 +235,8 @@ import { ref, inject, computed, nextTick } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useCommunityStore } from '../stores/communityStore.js'
 import { useCommunityHomebrewStore } from '@modules/homebrew/categories/community/useCommunityHomebrewStore.js'
-import CommunityCard from '../components/CommunityCard.vue'
 import SourceFilter from '@core/components/SourceFilter.vue'
+import SourceBadge from '@core/components/SourceBadge.vue'
 import HomebrewForm from '@modules/homebrew/core/components/HomebrewForm.vue'
 import { communitySchema } from '@modules/homebrew/schemas/communitySchema.js'
 import { useFormSchema } from '@modules/homebrew/core/composables/useFormSchema.js'
@@ -149,8 +245,8 @@ export default {
   name: 'CommunityBrowser',
 
   components: {
-    CommunityCard,
     SourceFilter,
+    SourceBadge,
     HomebrewForm
   },
 
@@ -159,11 +255,8 @@ export default {
     const homebrewStore = useCommunityHomebrewStore()
     const router = useRouter()
     const route = useRoute()
+    const detailPanel = ref(null)
     const compendiumColumns = inject('compendiumColumns', ref(0))
-    const gridStyle = computed(() => {
-      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
-      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
-    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -179,6 +272,12 @@ export default {
 
     // --- Composable formulaire ---
     const { formData, isDirty, hydrate, setField, toRawData, reset } = useFormSchema(communitySchema)
+
+    // Communauté sélectionnée pour le panneau de détails
+    const selectedCommunity = computed(() => {
+      if (!store.expandedId) return null
+      return store.filteredCommunities.find((c) => c.id === store.expandedId) || null
+    })
 
     // --- Deep-linking : sélection depuis la route ---
     function selectFromRoute(id) {
@@ -209,6 +308,7 @@ export default {
     return {
       store,
       homebrewStore,
+      selectedCommunity,
       duplicateToHomebrew,
       editingInline,
       creatingNew,
@@ -221,9 +321,9 @@ export default {
       reset,
       communitySchema,
       editPanel,
+      detailPanel,
       scrollToEditPanel,
-      compendiumColumns,
-      gridStyle
+      compendiumColumns
     }
   },
 
@@ -269,11 +369,13 @@ export default {
 
 <style scoped>
 .community-browser {
+  display: flex;
+  flex-direction: column;
 }
 
 /* -- Header -- */
 .browser-header {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .browser-header__title {
@@ -295,7 +397,7 @@ export default {
   align-items: center;
   gap: var(--space-md);
   flex-wrap: wrap;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .community-browser__create-btn {
@@ -307,7 +409,7 @@ export default {
 .browser-filters {
   display: flex;
   gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
   align-items: center;
 }
 
@@ -347,16 +449,211 @@ export default {
   outline-offset: 1px;
 }
 
-/* -- Grille -- */
-.community-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xl);
+/* ══ Split layout ══ */
+.browser-split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1;
+  min-height: 0;
 }
 
-.community-grid--custom {
-  grid-template-columns: unset;
+@media (min-width: 768px) {
+  .community-browser {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .browser-split {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+  }
+
+  .browser-split__list,
+  .browser-split__detail,
+  .browser-split__placeholder {
+    overflow-y: auto;
+  }
+}
+
+.browser-split__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.browser-split__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all var(--transition-fast);
+}
+
+.browser-split__item:hover {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+}
+
+.browser-split__item--active {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+  box-shadow: inset 3px 0 0 var(--color-accent-hope);
+}
+
+.browser-split__emoji {
+  font-size: 1.25rem;
+  width: 1.75rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.browser-split__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.browser-split__name {
+  display: block;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browser-split__sub {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-hope);
+  opacity: 0.85;
+}
+
+.browser-split__detail {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.browser-split__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  padding: var(--space-xl);
+  text-align: center;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.browser-split__placeholder-icon {
+  font-size: 2rem;
+  margin: 0 0 var(--space-sm);
+}
+
+/* -- Titre détail -- */
+.detail-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* -- Description -- */
+.community-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-md);
+  line-height: 1.6;
+}
+
+/* -- Feature -- */
+.community-feature {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent-hope);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.community-feature__header {
+  margin-bottom: var(--space-xs);
+}
+
+.community-feature__name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: var(--color-accent-hope);
+}
+
+.community-feature__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* -- Flavor -- */
+.community-flavor {
+  border: none;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0 0 var(--space-md);
+  font-style: italic;
+}
+
+.community-flavor p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* -- Adjectifs -- */
+.community-adjectives__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.community-adjectives__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.adjective-tag {
+  font-size: var(--font-size-xs);
+  padding: 2px var(--space-sm);
+  background: rgba(83, 168, 182, 0.1);
+  border: 1px solid rgba(83, 168, 182, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--color-accent-hope);
+  text-transform: capitalize;
+}
+
+.community-duplicate-btn {
+  margin-top: var(--space-md);
+  width: 100%;
 }
 
 /* -- Edit panel -- */
@@ -379,6 +676,8 @@ export default {
   border-left: 3px solid #ca8a04;
   border-radius: var(--radius-md);
   padding: var(--space-sm) var(--space-md);
+  margin-top: var(--space-md);
+  flex-shrink: 0;
 }
 
 .rule-note p {
@@ -438,11 +737,5 @@ export default {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-@media (max-width: 600px) {
-  .community-grid {
-    grid-template-columns: 1fr;
-  }
 }
 </style>

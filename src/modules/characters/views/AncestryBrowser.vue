@@ -58,193 +58,162 @@
       </router-link>
     </div>
 
-    <!-- Section Ascendances -->
-    <section
-      v-if="showAncestries && filteredAncestries.length"
-      aria-label="Ascendances jouables"
+    <!-- Layout split : liste + détails -->
+    <div
+      v-if="allItems.length"
+      class="browser-split"
     >
-      <h2 class="section-title">
-        Ascendances
-      </h2>
+      <!-- Colonne gauche : liste de sélection -->
       <div
-        class="ancestry-grid"
-        :class="{ 'ancestry-grid--custom': compendiumColumns > 0 }"
-        :style="gridStyle"
-        role="list"
+        class="browser-split__list"
+        role="listbox"
         aria-label="Liste des ascendances"
       >
-        <article
-          v-for="ancestry in filteredAncestries"
-          :key="ancestry.id"
-          class="ancestry-card"
-          role="listitem"
-        >
-          <!-- En-tete -->
+        <!-- Ascendances -->
+        <template v-if="showAncestries && filteredAncestries.length">
+          <div class="browser-split__group-label">
+            Ascendances
+          </div>
           <button
-            class="ancestry-card__header"
-            :aria-expanded="expandedId === ancestry.id"
-            :aria-controls="`ancestry-details-${ancestry.id}`"
+            v-for="ancestry in filteredAncestries"
+            :key="ancestry.id"
+            class="browser-split__item"
+            :class="{ 'browser-split__item--active': expandedId === ancestry.id }"
+            role="option"
+            :aria-selected="expandedId === ancestry.id"
             @click="toggleAncestry(ancestry.id)"
           >
             <span
-              class="ancestry-card__emoji"
+              class="browser-split__emoji"
               aria-hidden="true"
             >{{ ancestry.emoji }}</span>
-            <div class="ancestry-card__meta">
-              <span class="ancestry-card__name">
+            <div class="browser-split__info">
+              <span class="browser-split__name">
                 {{ ancestry.name }}
                 <SourceBadge :source="ancestry.source" />
               </span>
             </div>
-            <span
-              class="ancestry-card__chevron"
-              aria-hidden="true"
-            >{{ expandedId === ancestry.id ? '&#9650;' : '&#9660;' }}</span>
           </button>
+        </template>
 
-          <!-- Corps -->
-          <div
-            :id="`ancestry-details-${ancestry.id}`"
-            class="ancestry-card__body"
-            :hidden="expandedId !== ancestry.id"
-          >
-            <p class="ancestry-description">
-              {{ ancestry.description }}
-            </p>
-            <div class="features-grid">
-              <!-- Feature Haute -->
-              <div class="feature-block feature-block--top">
-                <div
-                  class="feature-block__badge"
-                  aria-label="Feature haute (Top)"
-                >
-                  Haute
-                </div>
-                <h3 class="feature-block__name">
-                  {{ ancestry.topFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ ancestry.topFeature.description }}
-                </p>
-              </div>
-              <!-- Feature Basse -->
-              <div class="feature-block feature-block--bottom">
-                <div
-                  class="feature-block__badge"
-                  aria-label="Feature basse (Bottom)"
-                >
-                  Basse
-                </div>
-                <h3 class="feature-block__name">
-                  {{ ancestry.bottomFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ ancestry.bottomFeature.description }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Bouton Modifier (custom uniquement) -->
-            <button
-              v-if="ancestry.source === 'custom'"
-              class="btn btn--secondary btn--sm ancestry-card__edit-btn"
-              aria-label="Modifier cette ascendance custom"
-              @click.stop="startEdit(ancestry)"
-            >
-              Modifier
-            </button>
-
-            <!-- Dupliquer en homebrew -->
-            <button
-              class="btn btn--secondary btn--sm ancestry-card__duplicate-btn"
-              @click.stop="duplicateToHomebrew(ancestry)"
-            >
-              Dupliquer en homebrew
-            </button>
+        <!-- Transformations -->
+        <template v-if="showTransformations && filteredTransformations.length">
+          <div class="browser-split__group-label browser-split__group-label--transform">
+            Transformations
           </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- Section Transformations -->
-    <section
-      v-if="showTransformations"
-      class="transformations-section"
-      aria-label="Cartes de transformation"
-    >
-      <h2 class="section-title">
-        Transformations
-        <span class="section-title__note">Cartes speciales SRD</span>
-      </h2>
-      <div
-        class="ancestry-grid"
-        :class="{ 'ancestry-grid--custom': compendiumColumns > 0 }"
-        :style="gridStyle"
-        role="list"
-        aria-label="Liste des transformations"
-      >
-        <article
-          v-for="transform in filteredTransformations"
-          :key="transform.id"
-          class="ancestry-card ancestry-card--transform"
-          role="listitem"
-        >
           <button
-            class="ancestry-card__header"
-            :aria-expanded="expandedId === `t_${transform.id}`"
-            :aria-controls="`transform-details-${transform.id}`"
+            v-for="transform in filteredTransformations"
+            :key="`t_${transform.id}`"
+            class="browser-split__item browser-split__item--transform"
+            :class="{ 'browser-split__item--active': expandedId === `t_${transform.id}` }"
+            role="option"
+            :aria-selected="expandedId === `t_${transform.id}`"
             @click="toggleAncestry(`t_${transform.id}`)"
           >
             <span
-              class="ancestry-card__emoji"
+              class="browser-split__emoji"
               aria-hidden="true"
             >{{ transform.emoji }}</span>
-            <div class="ancestry-card__meta">
-              <span class="ancestry-card__name">{{ transform.name }}</span>
-              <span class="badge badge--transform">Transformation</span>
+            <div class="browser-split__info">
+              <span class="browser-split__name">
+                {{ transform.name }}
+                <span class="badge badge--transform">Transformation</span>
+              </span>
             </div>
-            <span
-              class="ancestry-card__chevron"
-              aria-hidden="true"
-            >{{ expandedId === `t_${transform.id}` ? '&#9650;' : '&#9660;' }}</span>
           </button>
-
-          <div
-            :id="`transform-details-${transform.id}`"
-            class="ancestry-card__body"
-            :hidden="expandedId !== `t_${transform.id}`"
-          >
-            <p class="ancestry-description">
-              {{ transform.description }}
-            </p>
-            <div class="features-grid">
-              <div class="feature-block feature-block--top">
-                <div class="feature-block__badge">
-                  Haute
-                </div>
-                <h3 class="feature-block__name">
-                  {{ transform.topFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ transform.topFeature.description }}
-                </p>
-              </div>
-              <div class="feature-block feature-block--bottom">
-                <div class="feature-block__badge">
-                  Basse
-                </div>
-                <h3 class="feature-block__name">
-                  {{ transform.bottomFeature.name }}
-                </h3>
-                <p class="feature-block__desc">
-                  {{ transform.bottomFeature.description }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </article>
+        </template>
       </div>
-    </section>
+
+      <!-- Colonne droite : détails -->
+      <div
+        v-if="selectedItem"
+        ref="detailPanel"
+        class="browser-split__detail"
+      >
+        <h2 class="detail-title">
+          <span aria-hidden="true">{{ selectedItem.emoji }}</span>
+          {{ selectedItem.name }}
+          <SourceBadge
+            v-if="selectedItem.source"
+            :source="selectedItem.source"
+          />
+          <span
+            v-if="selectedItem.isTransformation"
+            class="badge badge--transform"
+          >Transformation</span>
+        </h2>
+
+        <p class="ancestry-description">
+          {{ selectedItem.description }}
+        </p>
+
+        <div class="features-grid">
+          <!-- Feature Haute -->
+          <div class="feature-block feature-block--top">
+            <div
+              class="feature-block__badge"
+              aria-label="Feature haute (Top)"
+            >
+              Haute
+            </div>
+            <h3 class="feature-block__name">
+              {{ selectedItem.topFeature.name }}
+            </h3>
+            <p class="feature-block__desc">
+              {{ selectedItem.topFeature.description }}
+            </p>
+          </div>
+          <!-- Feature Basse -->
+          <div class="feature-block feature-block--bottom">
+            <div
+              class="feature-block__badge"
+              aria-label="Feature basse (Bottom)"
+            >
+              Basse
+            </div>
+            <h3 class="feature-block__name">
+              {{ selectedItem.bottomFeature.name }}
+            </h3>
+            <p class="feature-block__desc">
+              {{ selectedItem.bottomFeature.description }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Bouton Modifier (custom uniquement, ascendances seulement) -->
+        <button
+          v-if="selectedItem.source === 'custom' && !selectedItem.isTransformation"
+          class="btn btn--secondary btn--sm ancestry-card__edit-btn"
+          aria-label="Modifier cette ascendance custom"
+          @click.stop="startEdit(selectedItem)"
+        >
+          Modifier
+        </button>
+
+        <!-- Dupliquer en homebrew (ascendances seulement) -->
+        <button
+          v-if="!selectedItem.isTransformation"
+          class="btn btn--secondary btn--sm ancestry-card__duplicate-btn"
+          @click.stop="duplicateToHomebrew(selectedItem)"
+        >
+          Dupliquer en homebrew
+        </button>
+      </div>
+
+      <!-- Placeholder -->
+      <div
+        v-else
+        class="browser-split__placeholder"
+      >
+        <p
+          class="browser-split__placeholder-icon"
+          aria-hidden="true"
+        >
+          &#128269;
+        </p>
+        <p>Sélectionnez une ascendance pour voir ses détails</p>
+      </div>
+    </div>
 
     <!-- Panneau d'edition inline -->
     <aside
@@ -268,7 +237,7 @@
 
     <!-- Etat vide -->
     <div
-      v-if="!filteredAncestries.length && !filteredTransformations.length && !editingInline"
+      v-if="!allItems.length && !editingInline"
       class="empty-state"
       role="status"
       aria-live="polite"
@@ -312,11 +281,8 @@ export default {
     const homebrewStore = useAncestryHomebrewStore()
     const searchQuery = ref('')
     const expandedId = ref(null)
+    const detailPanel = ref(null)
     const compendiumColumns = inject('compendiumColumns', ref(0))
-    const gridStyle = computed(() => {
-      if (!compendiumColumns.value || compendiumColumns.value === 0) return {}
-      return { 'grid-template-columns': `repeat(${compendiumColumns.value}, 1fr)` }
-    })
 
     // --- Refs pour l'edition inline ---
     const editingInline = ref(false)
@@ -382,6 +348,28 @@ export default {
       )
     })
 
+    // Tous les items visibles (pour le v-if de l'état vide)
+    const allItems = computed(() => [
+      ...(showAncestries.value ? filteredAncestries.value : []),
+      ...(showTransformations.value ? filteredTransformations.value : [])
+    ])
+
+    // Item sélectionné pour le panneau de détails
+    const selectedItem = computed(() => {
+      if (!expandedId.value) return null
+      // Vérifier les ascendances
+      const ancestry = [...SRD_ANCESTRIES, ...CUSTOM_ANCESTRIES, ...homebrewAncestries.value]
+        .find((a) => a.id === expandedId.value)
+      if (ancestry) return { ...ancestry, isTransformation: false }
+      // Vérifier les transformations (prefixe t_)
+      if (expandedId.value.startsWith('t_')) {
+        const transformId = expandedId.value.slice(2)
+        const transform = TRANSFORMATIONS.find((t) => t.id === transformId)
+        if (transform) return { ...transform, isTransformation: true }
+      }
+      return null
+    })
+
     // --- Deep-linking : sélection depuis la route ---
     function selectFromRoute(id) {
       if (!id) return
@@ -403,6 +391,11 @@ export default {
 
     function toggleAncestry(id) {
       expandedId.value = expandedId.value === id ? null : id
+      if (expandedId.value) {
+        nextTick(() => {
+          detailPanel.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        })
+      }
     }
 
     function duplicateToHomebrew(ancestry) {
@@ -424,12 +417,15 @@ export default {
       showTransformations,
       filteredAncestries,
       filteredTransformations,
+      allItems,
+      selectedItem,
       toggleAncestry,
       duplicateToHomebrew,
       editingInline,
       creatingNew,
       editingAncestryId,
       editPanel,
+      detailPanel,
       scrollToEditPanel,
       formData,
       isDirty,
@@ -438,8 +434,7 @@ export default {
       toRawData,
       reset,
       ancestrySchema,
-      compendiumColumns,
-      gridStyle
+      compendiumColumns
     }
   },
 
@@ -484,10 +479,13 @@ export default {
 </script>
 
 <style scoped>
-.ancestry-browser { }
+.ancestry-browser {
+  display: flex;
+  flex-direction: column;
+}
 
 /* -- Header -- */
-.browser-header { margin-bottom: var(--space-lg); }
+.browser-header { margin-bottom: var(--space-sm); }
 .browser-header__title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0 0 var(--space-xs); }
 .browser-header__subtitle { color: var(--color-text-secondary); margin: 0; font-size: var(--font-size-sm); }
 
@@ -497,7 +495,7 @@ export default {
   align-items: center;
   gap: var(--space-md);
   flex-wrap: wrap;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-sm);
 }
 
 .ancestry-browser__create-btn {
@@ -506,7 +504,7 @@ export default {
 }
 
 /* -- Filtres -- */
-.browser-filters { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-md); align-items: center; }
+.browser-filters { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-sm); align-items: center; }
 .filter-input { flex: 1; min-width: 200px; padding: var(--space-sm) var(--space-md); background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text-primary); font-size: var(--font-size-sm); }
 .filter-input:focus { outline: 2px solid var(--color-accent-hope); outline-offset: 1px; }
 .filter-group { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
@@ -514,44 +512,149 @@ export default {
 .filter-chip:hover { border-color: var(--color-accent-hope); color: var(--color-accent-hope); }
 .filter-chip--active { background: var(--color-accent-hope); border-color: var(--color-accent-hope); color: #fff; font-weight: var(--font-weight-medium); }
 
-/* -- Titres de section -- */
-.section-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0 0 var(--space-md); display: flex; align-items: center; gap: var(--space-sm); }
-.section-title__note { font-size: var(--font-size-xs); font-weight: normal; color: var(--color-text-muted); }
-.transformations-section { margin-top: var(--space-xl); }
+/* ══ Split layout ══ */
+.browser-split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1;
+  min-height: 0;
+}
 
-/* -- Grille -- */
-.ancestry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-sm); margin-bottom: var(--space-lg); }
-.ancestry-grid--custom { grid-template-columns: unset; }
+@media (min-width: 768px) {
+  .ancestry-browser {
+    height: 100%;
+    overflow: hidden;
+  }
 
-/* -- Carte -- */
-.ancestry-card { background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color var(--transition-fast); }
-.ancestry-card--transform { border-color: rgba(139, 92, 246, 0.3); }
+  .browser-split {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+  }
 
-.ancestry-card__header {
-  width: 100%;
+  .browser-split__list,
+  .browser-split__detail,
+  .browser-split__placeholder {
+    overflow-y: auto;
+  }
+}
+
+.browser-split__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.browser-split__group-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.browser-split__group-label:first-child {
+  margin-top: 0;
+}
+
+.browser-split__group-label--transform {
+  color: #7c3aed;
+}
+
+.browser-split__item {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-md);
-  background: none;
-  border: none;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   color: var(--color-text-primary);
   cursor: pointer;
   text-align: left;
-  transition: background-color var(--transition-fast);
+  width: 100%;
+  transition: all var(--transition-fast);
 }
-.ancestry-card__header:hover { background: var(--color-bg-surface); }
-.ancestry-card__header:focus-visible { outline: 2px solid var(--color-accent-hope); outline-offset: -2px; }
 
-.ancestry-card__emoji { font-size: 1.5rem; width: 2rem; text-align: center; }
-.ancestry-card__meta { flex: 1; display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; }
-.ancestry-card__name { font-weight: var(--font-weight-bold); font-size: var(--font-size-md); }
-.ancestry-card__chevron { color: var(--color-text-muted); font-size: 0.75rem; }
+.browser-split__item:hover {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+}
 
-/* -- Corps -- */
-.ancestry-card__body { border-top: 1px solid var(--color-border); padding: var(--space-md); animation: slideDown 0.2s ease; }
-.ancestry-card__body[hidden] { display: none; }
-@keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.browser-split__item--active {
+  background: var(--color-bg-surface);
+  border-color: var(--color-accent-hope);
+  box-shadow: inset 3px 0 0 var(--color-accent-hope);
+}
+
+.browser-split__item--transform {
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+.browser-split__item--transform:hover,
+.browser-split__item--transform.browser-split__item--active {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: inset 3px 0 0 #7c3aed;
+}
+
+.browser-split__emoji {
+  font-size: 1.25rem;
+  width: 1.75rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.browser-split__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.browser-split__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+}
+
+.browser-split__detail {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.browser-split__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  padding: var(--space-xl);
+  text-align: center;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.browser-split__placeholder-icon {
+  font-size: 2rem;
+  margin: 0 0 var(--space-sm);
+}
+
+/* -- Titre détail -- */
+.detail-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
 
 .ancestry-description { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-md); line-height: 1.6; }
 
@@ -619,8 +722,4 @@ export default {
 
 /* -- Accessibilite -- */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
-
-@media (max-width: 600px) {
-  .ancestry-grid { grid-template-columns: 1fr; }
-}
 </style>
