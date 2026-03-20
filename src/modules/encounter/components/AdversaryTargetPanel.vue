@@ -75,12 +75,14 @@
         class="adv-panel__instance"
         :class="{
           'adv-panel__instance--selected': inst.instanceId === adversary.instanceId,
-          'adv-panel__instance--defeated': inst.isDefeated
+          'adv-panel__instance--defeated': inst.isDefeated,
+          'adv-panel__instance--targeted': isTargetSelected(inst.instanceId)
         }"
         role="button"
         tabindex="0"
-        :aria-label="'Sélectionner instance #' + (idx + 1)"
-        @click="selectInstance(inst.instanceId)"
+        :aria-pressed="isTargeting ? isTargetSelected(inst.instanceId) : undefined"
+        :aria-label="isTargeting ? 'Sélectionner ' + inst.name + ' comme cible' : 'Sélectionner instance #' + (idx + 1)"
+        @click="isTargeting ? $emit('toggle-target', inst.instanceId, 'adversary') : selectInstance(inst.instanceId)"
         @keydown.enter="selectInstance(inst.instanceId)"
         @keydown.space.prevent="selectInstance(inst.instanceId)"
       >
@@ -407,9 +409,11 @@ export default {
     sceneMode: { type: String, required: true },
     isActor: { type: Boolean, default: false },
     pcs: { type: Array, default: () => [] },
-    aoeActive: { type: Boolean, default: false }
+    aoeActive: { type: Boolean, default: false },
+    isTargeting: { type: Boolean, default: false },
+    isTargetSelected: { type: Function, default: () => false }
   },
-  emits: ['aoe-click'],
+  emits: ['aoe-click', 'toggle-target'],
   setup(props) {
     const store = useEncounterLiveStore()
 
@@ -749,6 +753,11 @@ export default {
 
 .adv-panel__instance--defeated {
   opacity: 0.4;
+}
+
+.adv-panel__instance--targeted {
+  border: 2px solid var(--color-success, #22c55e);
+  background: rgba(34, 197, 94, 0.1);
 }
 
 .adv-panel__inst-header {

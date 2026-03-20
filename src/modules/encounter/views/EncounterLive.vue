@@ -149,9 +149,12 @@
               :is-down="!!store.pcDownStatus[pc.id]"
               :active-conditions="store.pcConditions[pc.id] || []"
               :spotlight-count="store.pcSpotlights[pc.id] || 0"
+              :is-targeting="actionBarOpen"
+              :is-targeted="isTargetSelected(pc.id)"
               @select="onSelectPc"
               @toggle-condition="onTogglePcCondition"
               @long-press="onLongPressPc"
+              @toggle-target="toggleTarget"
             />
           </div>
 

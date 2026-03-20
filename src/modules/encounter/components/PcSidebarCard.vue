@@ -3,11 +3,14 @@
     class="pc-sidebar"
     :class="{
       'pc-sidebar--selected': isSelected,
-      'pc-sidebar--down': isDown
+      'pc-sidebar--down': isDown,
+      'pc-sidebar--targeting': isTargeting,
+      'pc-sidebar--targeted': isTargeted
     }"
     role="button"
     tabindex="0"
-    :aria-label="pc.name + (isDown ? ' (à terre)' : '') + ' — Évasion ' + effectiveEvasion"
+    :aria-pressed="isTargeting ? isTargeted : undefined"
+    :aria-label="isTargeting ? 'Sélectionner ' + pc.name + ' comme cible' : pc.name + (isDown ? ' (à terre)' : '') + ' — Évasion ' + effectiveEvasion"
     @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
@@ -153,9 +156,11 @@ export default {
     isSelected: { type: Boolean, default: false },
     isDown: { type: Boolean, default: false },
     activeConditions: { type: Array, default: () => [] },
-    spotlightCount: { type: Number, default: 0 }
+    spotlightCount: { type: Number, default: 0 },
+    isTargeting: { type: Boolean, default: false },
+    isTargeted: { type: Boolean, default: false }
   },
-  emits: ['select', 'toggle-condition', 'long-press'],
+  emits: ['select', 'toggle-condition', 'long-press', 'toggle-target'],
   setup(props, { emit }) {
     const lp = useLongPress(() => {
       emit('long-press', props.pc.id)
@@ -163,6 +168,10 @@ export default {
 
     /** Bloque le clic normal si le long press a été déclenché */
     function onClick() {
+      if (props.isTargeting) {
+        emit('toggle-target', props.pc.id, 'pc')
+        return
+      }
       if (!lp.wasFired()) {
         emit('select', props.pc.id)
       }
@@ -247,6 +256,16 @@ export default {
   border-color: var(--color-accent-hope);
   background: rgba(83, 168, 182, 0.12);
   box-shadow: 0 0 0 1px var(--color-accent-hope);
+}
+
+.pc-sidebar--targeting {
+  cursor: crosshair;
+  border: 2px dashed var(--color-accent, #a855f7);
+}
+
+.pc-sidebar--targeted {
+  border: 2px solid var(--color-success, #22c55e);
+  background: rgba(34, 197, 94, 0.1);
 }
 
 .pc-sidebar--down {
