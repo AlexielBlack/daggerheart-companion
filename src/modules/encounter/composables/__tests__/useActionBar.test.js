@@ -47,6 +47,7 @@ const mockStore = {
   pushUndo: vi.fn(),
   toggleAdversaryCondition: vi.fn(),
   togglePcCondition: vi.fn(),
+  togglePcSpotlight: vi.fn(),
   logActionEntry: vi.fn()
 }
 

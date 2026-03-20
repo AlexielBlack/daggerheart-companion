@@ -112,11 +112,27 @@
 
     <!-- Espoir -->
     <div
-      v-if="(pc.hope || 0) > 0"
-      class="pc-sidebar__hope"
-      :aria-label="'Espoir : ' + pc.hope"
+      class="pc-sidebar__hope-row"
+      :aria-label="'Espoir : ' + (pc.hope || 0)"
     >
-      ✨ {{ pc.hope }}
+      <button
+        class="pc-sidebar__mini-btn"
+        :disabled="(pc.hope || 0) <= 0"
+        aria-label="Retirer 1 espoir"
+        @click.stop="decrementHope()"
+      >
+        &minus;
+      </button>
+      <span class="pc-sidebar__hope-text">
+        &#x2728; {{ pc.hope || 0 }}
+      </span>
+      <button
+        class="pc-sidebar__mini-btn"
+        aria-label="Ajouter 1 espoir"
+        @click.stop="incrementHope()"
+      >
+        +
+      </button>
     </div>
 
     <!-- Résumé compact des conditions actives (visible quand non sélectionné) -->
@@ -213,13 +229,26 @@ export default {
       characterStore.patchCharacterById(props.pc.id, { currentStress: newVal })
     }
 
+    /** Ajouter 1 espoir */
+    function incrementHope() {
+      characterStore.patchCharacterById(props.pc.id, { hope: (props.pc.hope || 0) + 1 })
+    }
+
+    /** Retirer 1 espoir */
+    function decrementHope() {
+      const newVal = Math.max(0, (props.pc.hope || 0) - 1)
+      characterStore.patchCharacterById(props.pc.id, { hope: newVal })
+    }
+
     return {
       lp,
       onClick,
       incrementHP,
       decrementHP,
       incrementStress,
-      decrementStress
+      decrementStress,
+      incrementHope,
+      decrementHope
     }
   },
   computed: {
@@ -348,11 +377,18 @@ export default {
 }
 
 /* ── Espoir ── */
-.pc-sidebar__hope {
+.pc-sidebar__hope-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  justify-content: center;
+}
+.pc-sidebar__hope-text {
   font-size: var(--font-size-xs);
   color: var(--color-accent-hope);
   font-weight: var(--font-weight-bold);
   text-align: center;
+  min-width: 2.5em;
 }
 
 /* ── Résumé conditions (non-sélectionné) ── */
