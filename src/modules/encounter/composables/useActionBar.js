@@ -3,6 +3,7 @@
 
 import { ref, computed } from 'vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
+import { useCharacterStore } from '@modules/characters/stores/characterStore'
 import { ACTION_EFFECTS, ACTION_EFFECT_META } from '@data/encounters/actionEffects'
 
 // État module-level = singleton partagé entre tous les consommateurs
@@ -11,6 +12,7 @@ let actionCounter = 0
 
 export function useActionBar () {
   const store = useEncounterLiveStore()
+  const charStore = useCharacterStore()
 
   const isOpen = computed(() => pendingAction.value !== null)
 
@@ -149,6 +151,14 @@ export function useActionBar () {
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             store.logActionEntry({ ...logCtx, action: 'damage', instanceId: t.id, advName: adv?.name, type: 'hp', amount: t.amount })
           }
+          // PJ : currentHP = dégâts marqués, augmente quand on prend des dégâts
+          if (t.type === 'pc') {
+            const char = charStore.characters.find(c => c.id === t.id)
+            if (char) {
+              charStore.patchCharacterById(t.id, { currentHP: Math.min(char.currentHP + t.amount, char.maxHP) })
+              store.logActionEntry({ ...logCtx, action: 'pc_hit', pcId: t.id, pcName: char.name, type: 'hp', amount: t.amount })
+            }
+          }
         }
         break
 
@@ -158,6 +168,14 @@ export function useActionBar () {
             store.markAdversaryStress(t.id, t.amount, skipOpt)
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             store.logActionEntry({ ...logCtx, action: 'damage', instanceId: t.id, advName: adv?.name, type: 'stress', amount: t.amount })
+          }
+          // PJ : currentStress = stress marqué, augmente quand on prend du stress
+          if (t.type === 'pc') {
+            const char = charStore.characters.find(c => c.id === t.id)
+            if (char) {
+              charStore.patchCharacterById(t.id, { currentStress: Math.min(char.currentStress + t.amount, char.maxStress) })
+              store.logActionEntry({ ...logCtx, action: 'pc_hit', pcId: t.id, pcName: char.name, type: 'stress', amount: t.amount })
+            }
           }
         }
         break
@@ -169,6 +187,14 @@ export function useActionBar () {
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             store.logActionEntry({ ...logCtx, action: 'heal_hp', instanceId: t.id, advName: adv?.name, amount: t.amount })
           }
+          // PJ : currentHP = dégâts marqués, diminue quand on soigne
+          if (t.type === 'pc') {
+            const char = charStore.characters.find(c => c.id === t.id)
+            if (char) {
+              charStore.patchCharacterById(t.id, { currentHP: Math.max(0, char.currentHP - t.amount) })
+              store.logActionEntry({ ...logCtx, action: 'heal_hp', pcId: t.id, pcName: char.name, amount: t.amount })
+            }
+          }
         }
         break
 
@@ -178,6 +204,14 @@ export function useActionBar () {
             store.clearAdversaryStress(t.id, t.amount, skipOpt)
             const adv = store.liveAdversaries.find(a => a.instanceId === t.id)
             store.logActionEntry({ ...logCtx, action: 'heal_stress', instanceId: t.id, advName: adv?.name, amount: t.amount })
+          }
+          // PJ : currentStress = stress marqué, diminue quand on soigne
+          if (t.type === 'pc') {
+            const char = charStore.characters.find(c => c.id === t.id)
+            if (char) {
+              charStore.patchCharacterById(t.id, { currentStress: Math.max(0, char.currentStress - t.amount) })
+              store.logActionEntry({ ...logCtx, action: 'heal_stress', pcId: t.id, pcName: char.name, amount: t.amount })
+            }
           }
         }
         break
@@ -204,11 +238,24 @@ export function useActionBar () {
             }
             store.logActionEntry({ ...logCtx, action: 'down', instanceId: t.id, advName: adv?.name })
           }
+          // PJ : toggle du statut à terre
+          if (t.type === 'pc') {
+            const current = store.pcDownStatus[t.id] || false
+            store.pcDownStatus[t.id] = !current
+            const pc = store.participantPcs.find(p => p.id === t.id)
+            store.logActionEntry({ ...logCtx, action: current ? 'pc_revive' : 'pc_down', pcId: t.id, pcName: pc?.name })
+          }
         }
         break
 
       case ACTION_EFFECTS.HOPE:
-        // Espoir par PJ via characterStore — Task 7
+        for (const t of targets) {
+          const char = charStore.characters.find(c => c.id === t.id)
+          if (char) {
+            charStore.patchCharacterById(t.id, { hope: char.hope + t.amount })
+            store.logActionEntry({ ...logCtx, action: 'hope_change', pcId: t.id, pcName: char.name, amount: t.amount })
+          }
+        }
         break
 
       case ACTION_EFFECTS.MISS:

@@ -6,6 +6,21 @@ import { useActionBar, _resetActionBar } from '../useActionBar'
 import { useEncounterLiveStore } from '../../stores/encounterLiveStore'
 import { ACTION_EFFECTS } from '@data/encounters/actionEffects'
 
+// Mock characterStore — données PJ pour les tests d'actions sur personnages
+const mockCharacters = [
+  { id: 'kael', name: 'Kael', currentHP: 2, maxHP: 15, currentStress: 1, maxStress: 6, hope: 2 },
+  { id: 'lyra', name: 'Lyra', currentHP: 5, maxHP: 12, currentStress: 3, maxStress: 4, hope: 0 }
+]
+
+const mockCharStore = {
+  patchCharacterById: vi.fn(),
+  characters: mockCharacters
+}
+
+vi.mock('@modules/characters/stores/characterStore', () => ({
+  useCharacterStore: () => mockCharStore
+}))
+
 // Mock encounterLiveStore — singleton partagé entre composable et tests
 // Valeurs directes (pas de ref), car le composable accède aux propriétés comme un store Pinia (auto-unwrap)
 const mockStore = {
@@ -210,5 +225,87 @@ describe('applyAction dispatch', () => {
     bar.applyAction()
 
     expect(store.defeatAdversary).toHaveBeenCalledWith('goblin_0', { skipUndo: true, skipLog: true })
+  })
+})
+
+describe('applyAction effets PJ', () => {
+  let bar
+
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    _resetActionBar()
+    vi.clearAllMocks()
+    // Réinitialiser les valeurs des personnages mock
+    mockCharacters[0].currentHP = 2
+    mockCharacters[0].currentStress = 1
+    mockCharacters[0].hope = 2
+    mockCharacters[1].currentHP = 5
+    mockCharacters[1].currentStress = 3
+    mockCharacters[1].hope = 0
+    bar = useActionBar()
+  })
+
+  it('damage_hp sur PJ augmente currentHP (dégâts marqués)', () => {
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.DAMAGE_HP)
+    bar.toggleTarget('lyra', 'pc')
+    bar.setDefaultAmount(2)
+    bar.applyAction()
+
+    // currentHP=5, damage +2 → 7 (plafonné à maxHP=12)
+    expect(mockCharStore.patchCharacterById).toHaveBeenCalledWith('lyra', { currentHP: 7 })
+  })
+
+  it('heal_hp sur PJ diminue currentHP (retire des dégâts marqués)', () => {
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.HEAL_HP)
+    bar.toggleTarget('kael', 'pc')
+    bar.setDefaultAmount(1)
+    bar.applyAction()
+
+    // currentHP=2, heal -1 → 1 (plancher à 0)
+    expect(mockCharStore.patchCharacterById).toHaveBeenCalledWith('kael', { currentHP: 1 })
+  })
+
+  it('damage_stress sur PJ augmente currentStress', () => {
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.DAMAGE_STRESS)
+    bar.toggleTarget('kael', 'pc')
+    bar.setDefaultAmount(2)
+    bar.applyAction()
+
+    // currentStress=1, damage +2 → 3 (plafonné à maxStress=6)
+    expect(mockCharStore.patchCharacterById).toHaveBeenCalledWith('kael', { currentStress: 3 })
+  })
+
+  it('heal_stress sur PJ diminue currentStress', () => {
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.HEAL_STRESS)
+    bar.toggleTarget('lyra', 'pc')
+    bar.setDefaultAmount(2)
+    bar.applyAction()
+
+    // currentStress=3, heal -2 → 1 (plancher à 0)
+    expect(mockCharStore.patchCharacterById).toHaveBeenCalledWith('lyra', { currentStress: 1 })
+  })
+
+  it('hope sur PJ ajoute au hope existant', () => {
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.HOPE)
+    bar.toggleTarget('kael', 'pc')
+    bar.setDefaultAmount(1)
+    bar.applyAction()
+
+    expect(mockCharStore.patchCharacterById).toHaveBeenCalledWith('kael', { hope: 3 })
+  })
+
+  it('down sur PJ toggle pcDownStatus', () => {
+    const store = useEncounterLiveStore()
+    bar.openAction()
+    bar.setEffect(ACTION_EFFECTS.DOWN)
+    bar.toggleTarget('kael', 'pc')
+    bar.applyAction()
+
+    expect(store.pcDownStatus['kael']).toBe(true)
   })
 })
