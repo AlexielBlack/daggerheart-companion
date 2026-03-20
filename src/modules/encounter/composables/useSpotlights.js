@@ -21,7 +21,8 @@ export function useSpotlights(deps) {
     groupedAdversaries,
     participantPcs,
     encounterLog,
-    persistState
+    persistState,
+    onRoundComplete
   } = deps
 
   /**
@@ -53,6 +54,7 @@ export function useSpotlights(deps) {
       participantPcIds.value.every((id) => pcSpotlights.value[id] >= 1)
     if (allPlayed) {
       pcSpotlights.value = {}
+      if (onRoundComplete) onRoundComplete()
     }
     persistState()
   }

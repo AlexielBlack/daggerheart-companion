@@ -40,6 +40,7 @@ import { scaleAdversaryToTier } from '../utils/tierScaling'
 import { useUndoStack } from '../composables/useUndoStack'
 import { useCombatLog } from '../composables/useCombatLog'
 import { useSpotlights } from '../composables/useSpotlights'
+import { useSessionTimer } from '../composables/useSessionTimer'
 
 /**
  * Crée un état live pour un adversaire depuis ses données SRD.
@@ -404,12 +405,34 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pushUndo, persistState
   })
 
+  const sessionTimer = useSessionTimer()
+
+  function onRoundComplete() {
+    const roundMs = sessionTimer.lapAndRestart()
+    const round = sessionTimer.currentRound.value
+    sessionTimer.advanceRound()
+    combatLog.value.push({
+      action: 'round_complete',
+      round,
+      durationMs: roundMs,
+      timestamp: Date.now()
+    })
+    encounterLog.value.push({
+      action: 'round_complete',
+      round,
+      durationMs: roundMs,
+      timestamp: Date.now()
+    })
+    persistState()
+  }
+
   const {
     togglePcSpotlight, decrementPcSpotlight,
     toggleAdvSpotlight, decrementAdvSpotlight
   } = useSpotlights({
     pcSpotlights, advSpotlights, participantPcIds,
-    groupedAdversaries, participantPcs, encounterLog, persistState
+    groupedAdversaries, participantPcs, encounterLog, persistState,
+    onRoundComplete
   })
 
   // ═══════════════════════════════════════════════════════

@@ -263,6 +263,11 @@ export function useActionBar () {
         break
     }
 
+    // Marquer un spotlight sur le PJ acteur
+    if (pendingAction.value.actorType === 'pc' && pendingAction.value.actorId) {
+      store.togglePcSpotlight(pendingAction.value.actorId)
+    }
+
     cancelAction()
   }
 

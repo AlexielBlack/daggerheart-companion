@@ -98,7 +98,8 @@ const ACTION_ICONS = {
   hope_change: '✨',
   down: '💀',
   condition_add: '⚡',
-  condition_remove: '⚡'
+  condition_remove: '⚡',
+  round_complete: '🔔'
 }
 
 export default {
@@ -181,6 +182,13 @@ export default {
         return `${src} → ${entry.advName || entry.pcName || '?'} : +${entry.condition}`
       case 'condition_remove':
         return `${src} → ${entry.advName || entry.pcName || '?'} : -${entry.condition}`
+      case 'round_complete': {
+        const secs = Math.floor((entry.durationMs || 0) / 1000)
+        const min = Math.floor(secs / 60)
+        const sec = secs % 60
+        const time = min > 0 ? `${min}m${String(sec).padStart(2, '0')}s` : `${sec}s`
+        return `Fin du tour ${entry.round} (${time})`
+      }
       default:
         return entry.action
       }

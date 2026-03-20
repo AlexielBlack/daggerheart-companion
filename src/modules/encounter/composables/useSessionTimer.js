@@ -124,6 +124,24 @@ export function useSessionTimer() {
   }
 
   /**
+   * Retourne le temps écoulé en ms et redémarre le timer à zéro.
+   * Utile pour capturer le temps d'un tour avant reset.
+   * @returns {number} Temps écoulé en millisecondes
+   */
+  function lapAndRestart() {
+    const currentElapsed = elapsed.value
+    stopTicking()
+    storage.save({
+      ...DEFAULT_STATE,
+      startedAt: Date.now(),
+      isRunning: true,
+      currentRound: storage.data.value.currentRound
+    })
+    startTicking()
+    return currentElapsed
+  }
+
+  /**
    * Avance au round suivant.
    */
   function advanceRound() {
@@ -180,6 +198,7 @@ export function useSessionTimer() {
     start,
     pause,
     reset,
+    lapAndRestart,
     advanceRound,
     decrementRound,
     resetRounds
