@@ -148,11 +148,11 @@ export const useEncounterStore = defineStore('encounter', () => {
     return allEnvironments.find((e) => e.id === selectedEnvironmentId.value) || null
   })
 
-  /** Personnages disponibles depuis le store characters */
+  /** Personnages disponibles (uniquement les PJ visibles, pas les masqués) */
   const availableCharacters = computed(() => {
     try {
       const charStore = useCharacterStore()
-      return Array.isArray(charStore.characters) ? charStore.characters : []
+      return Array.isArray(charStore.visibleCharacters) ? charStore.visibleCharacters : []
     } catch {
       return []
     }
@@ -562,6 +562,16 @@ export const useEncounterStore = defineStore('encounter', () => {
 
   // Restaure le brouillon au démarrage
   loadDraft()
+
+  // Nettoyer les PJ sélectionnés masqués et synchroniser pcCount
+  watch(availableCharacters, (visible) => {
+    if (selectedPcIds.value.length === 0) return
+    const visibleIds = new Set(visible.map((c) => c.id))
+    const cleaned = selectedPcIds.value.filter((id) => visibleIds.has(id))
+    if (cleaned.length !== selectedPcIds.value.length) {
+      setSelectedPcIds(cleaned)
+    }
+  })
 
   // Auto-save brouillon sur changement (debounced via watch)
   watch(
