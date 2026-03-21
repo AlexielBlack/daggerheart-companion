@@ -228,11 +228,11 @@ export default {
   padding: var(--space-sm, 0.5rem);
   font-family: inherit;
   font-size: 0.9em;
-  transition: max-height var(--transition-fast, 0.15s);
+  transition: min-height var(--transition-fast, 0.15s);
 }
 
 .session-notes--expanded .session-notes__textarea {
-  min-height: 12lh;
+  min-height: 40vh;
 }
 
 .session-notes__header-actions {
