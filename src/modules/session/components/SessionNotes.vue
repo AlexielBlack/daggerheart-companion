@@ -96,10 +96,11 @@
     <!-- Zone de texte libre (EXISTANTE — ne pas modifier la structure) -->
     <textarea
       :id="textareaId"
-      :value="sessionStore.sessionNotes"
+      :value="localNotes"
       class="session-notes__textarea"
       placeholder="Quêtes, secrets, rappels..."
       @input="onInput"
+      @blur="flushNotes"
     ></textarea>
   </section>
 </template>
@@ -117,6 +118,14 @@ export default {
     const expanded = ref(false)
     const textareaId = `session-notes-${Math.random().toString(36).slice(2, 8)}`
     let debounceTimer = null
+
+    // Ref locale pour éviter le reset du curseur
+    const localNotes = ref(sessionStore.sessionNotes || '')
+
+    // Synchronise depuis le store si la valeur change en dehors du champ
+    watch(() => sessionStore.sessionNotes, (v) => {
+      if (!debounceTimer) localNotes.value = v || ''
+    })
 
     // ── Entrees structurees ──
     const showEntryInput = ref(false)
@@ -146,12 +155,23 @@ export default {
 
     function onInput(event) {
       markDirty()
-      clearTimeout(debounceTimer)
       const text = event.target.value
+      localNotes.value = text
+      clearTimeout(debounceTimer)
       debounceTimer = setTimeout(() => {
         sessionStore.setSessionNotes(text)
         markSaved()
+        debounceTimer = null
       }, 500)
+    }
+
+    function flushNotes() {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+        debounceTimer = null
+        sessionStore.setSessionNotes(localNotes.value)
+        markSaved()
+      }
     }
 
     return {
@@ -159,7 +179,9 @@ export default {
       isSaving,
       expanded,
       textareaId,
+      localNotes,
       onInput,
+      flushNotes,
       showEntryInput,
       newEntryText,
       entryInputRef,
