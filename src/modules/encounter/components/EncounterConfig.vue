@@ -26,11 +26,12 @@
       <textarea
         id="encounter-notes"
         class="config-input config-textarea"
-        :value="notes"
+        :value="localNotes"
         rows="3"
         placeholder="Notes de session, contexte narratif, rappels…"
         aria-label="Notes de la rencontre"
-        @input="$emit('update:notes', $event.target.value)"
+        @input="onNotesInput($event.target.value)"
+        @blur="flushNotes"
       ></textarea>
     </div>
 
@@ -198,6 +199,7 @@
 </template>
 
 <script>
+import { ref, watch, onBeforeUnmount } from 'vue'
 import { SCENE_INTENSITY, BP_ADJUSTMENTS } from '@data/encounters/constants'
 import PcPicker from './PcPicker.vue'
 
@@ -219,9 +221,45 @@ export default {
     selectedPcIds: { type: Array, default: () => [] }
   },
   emits: ['update:name', 'update:notes', 'update:pcCount', 'update:tier', 'update:intensity', 'toggleAdjustment', 'update:selectedPcIds'],
-  setup() {
+  setup(props, { emit }) {
+    // Debounce des notes pour éviter le reset du curseur
+    const localNotes = ref(props.notes)
+    let _notesTimer = null
+
+    // Synchronise depuis le parent si la prop change en dehors du champ
+    watch(() => props.notes, (v) => {
+      if (!_notesTimer) localNotes.value = v
+    })
+
+    function onNotesInput(value) {
+      localNotes.value = value
+      if (_notesTimer) clearTimeout(_notesTimer)
+      _notesTimer = setTimeout(() => {
+        emit('update:notes', localNotes.value)
+        _notesTimer = null
+      }, 400)
+    }
+
+    function flushNotes() {
+      if (_notesTimer) {
+        clearTimeout(_notesTimer)
+        _notesTimer = null
+      }
+      emit('update:notes', localNotes.value)
+    }
+
+    onBeforeUnmount(() => {
+      if (_notesTimer) {
+        clearTimeout(_notesTimer)
+        emit('update:notes', localNotes.value)
+      }
+    })
+
     return {
-      intensityOptions: SCENE_INTENSITY
+      intensityOptions: SCENE_INTENSITY,
+      localNotes,
+      onNotesInput,
+      flushNotes
     }
   },
   computed: {

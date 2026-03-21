@@ -167,6 +167,7 @@
           placeholder="Notes sur ce PNJ..."
           rows="3"
           @input="onNotesInput($event.target.value)"
+          @blur="flushNotes"
         ></textarea>
       </div>
     </div>
@@ -262,11 +263,25 @@ export default {
       }, 500)
     }
 
+    function flushNotes(event) {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+        debounceTimer = null
+        const value = event.target.value
+        const clone = npcStore.getById(props.npc.id)
+        if (clone) {
+          clone.notes = value
+          npcStore.update(props.npc.id, clone)
+        }
+        markSaved()
+      }
+    }
+
     return {
       statusMeta, subheader,
       pcRelationsList, npcRelationsList,
       hasProfile,
-      onNotesInput, isSaving
+      onNotesInput, flushNotes, isSaving
     }
   }
 }

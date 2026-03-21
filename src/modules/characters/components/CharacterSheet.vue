@@ -937,18 +937,19 @@
       </h3>
       <textarea
         class="field-textarea"
-        :value="char.notes"
+        :value="localNotes"
         placeholder="Notes, rappels, inventaire…"
         rows="3"
         aria-label="Notes"
-        @input="emit('update', 'notes', $event.target.value)"
+        @input="onNotesInput($event.target.value)"
+        @blur="flushNotes"
       ></textarea>
     </section>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { getAncestryById, ALL_ANCESTRIES } from '@data/ancestries'
 import { getPrimaryWeaponById } from '@data/equipment/primaryWeapons.js'
 import { getSecondaryWeaponById } from '@data/equipment/secondaryWeapons.js'
@@ -1114,6 +1115,38 @@ export default {
       return list
     })
 
+    // ── Notes avec debounce pour éviter le reset du curseur ──
+    const localNotes = ref(props.char?.notes || '')
+    let _notesTimer = null
+
+    watch(() => props.char?.notes, (v) => {
+      if (!_notesTimer) localNotes.value = v || ''
+    })
+
+    function onNotesInput(value) {
+      localNotes.value = value
+      if (_notesTimer) clearTimeout(_notesTimer)
+      _notesTimer = setTimeout(() => {
+        emit('update', 'notes', localNotes.value)
+        _notesTimer = null
+      }, 400)
+    }
+
+    function flushNotes() {
+      if (_notesTimer) {
+        clearTimeout(_notesTimer)
+        _notesTimer = null
+      }
+      emit('update', 'notes', localNotes.value)
+    }
+
+    onBeforeUnmount(() => {
+      if (_notesTimer) {
+        clearTimeout(_notesTimer)
+        emit('update', 'notes', localNotes.value)
+      }
+    })
+
     return {
       acquiredCardIds, clampInt, emit,
       srdAncestries, customAncestries,
@@ -1121,7 +1154,8 @@ export default {
       isTwoHanded, armorTiers, primaryWeaponTiers, secondaryWeaponTiers,
       recommendedArmors, recommendedPrimary, recommendedSecondary,
       hpSources, stressSources, armorSources,
-      sheetGridStyle
+      sheetGridStyle,
+      localNotes, onNotesInput, flushNotes
     }
   }
 }

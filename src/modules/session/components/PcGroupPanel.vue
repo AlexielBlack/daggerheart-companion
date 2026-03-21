@@ -464,6 +464,7 @@
               :aria-label="'Notes de ' + (pc.name || 'Sans nom')"
               rows="4"
               @input="onNotesInput(pc.id, $event.target.value)"
+              @blur="flushNotes(pc.id, $event.target.value)"
             ></textarea>
           </div>
         </div>
@@ -813,7 +814,15 @@ export default {
       clearTimeout(notesTimers[pcId])
       notesTimers[pcId] = setTimeout(() => {
         characterStore.patchCharacterById(pcId, { notes: value })
+        delete notesTimers[pcId]
       }, 500)
+    }
+    function flushNotes(pcId, value) {
+      if (notesTimers[pcId]) {
+        clearTimeout(notesTimers[pcId])
+        delete notesTimers[pcId]
+      }
+      characterStore.patchCharacterById(pcId, { notes: value })
     }
 
     // ── Inventaire interactif ──
@@ -987,7 +996,7 @@ export default {
       editingStat, editingValue,
       startEditStat, commitEditStat, cancelEditStat, isEditing,
       // Notes
-      onNotesInput,
+      onNotesInput, flushNotes,
       // Inventaire interactif
       onAddItem, onRemoveItem, onUpdateItem, onUpdateGold, onUpdateEquipment,
       // Onglets
