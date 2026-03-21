@@ -282,6 +282,7 @@
           placeholder="Notes…"
           :aria-label="'Notes pour ' + inst.name + (hasSiblings ? ' #' + (idx + 1) : '')"
           @input="updateNotes(inst.instanceId, $event.target.value)"
+          @blur="flushNotes(inst.instanceId, $event.target.value)"
           @click.stop
         />
       </div>
@@ -515,7 +516,20 @@ export default {
       store.toggleAdversaryCondition(instanceId, condId)
     }
 
+    // Debounce des notes pour éviter le reset du curseur à chaque frappe
+    const _notesTimers = {}
     function updateNotes(instanceId, text) {
+      if (_notesTimers[instanceId]) clearTimeout(_notesTimers[instanceId])
+      _notesTimers[instanceId] = setTimeout(() => {
+        store.setAdversaryNotes(instanceId, text)
+        delete _notesTimers[instanceId]
+      }, 400)
+    }
+    function flushNotes(instanceId, text) {
+      if (_notesTimers[instanceId]) {
+        clearTimeout(_notesTimers[instanceId])
+        delete _notesTimers[instanceId]
+      }
       store.setAdversaryNotes(instanceId, text)
     }
 
@@ -534,6 +548,7 @@ export default {
       advConditions,
       toggleAdvCond,
       updateNotes,
+      flushNotes,
       hpQuickButtons,
       stressQuickButtons,
       applyCustomHP,
