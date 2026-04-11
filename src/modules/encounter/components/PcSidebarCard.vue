@@ -17,6 +17,8 @@
     @pointerdown="lp.onPointerDown($event)"
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
+    @touchstart.passive="swipe.onTouchStart($event)"
+    @touchend.passive="swipe.onTouchEnd($event)"
   >
     <!-- Ligne 1 : nom + indicateurs -->
     <div class="pc-sidebar__header">
@@ -182,6 +184,7 @@
 <script>
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 import { useLongPress } from '../composables/useLongPress'
+import { useSwipe } from '../composables/useSwipe'
 import { useCharacterStore } from '@modules/characters'
 import { getPrimaryWeaponById } from '@data/equipment'
 
@@ -196,11 +199,23 @@ export default {
     isTargeting: { type: Boolean, default: false },
     isTargeted: { type: Boolean, default: false }
   },
-  emits: ['select', 'toggle-condition', 'long-press', 'toggle-target'],
+  emits: ['select', 'toggle-condition', 'long-press', 'toggle-target', 'swipe-damage', 'swipe-armor'],
   setup(props, { emit }) {
-    const lp = useLongPress(() => {
-      emit('long-press', props.pc.id)
+    const lp = useLongPress((e) => {
+      emit('long-press', props.pc.id, e)
     }, { delay: 400 })
+
+    const swipe = useSwipe({
+      onSwipeLeft() {
+        if (props.isTargeting) return
+        emit('swipe-damage', props.pc.id)
+      },
+      onSwipeRight() {
+        if (props.isTargeting) return
+        emit('swipe-armor', props.pc.id)
+      },
+      threshold: 50
+    })
 
     /** Bloque le clic normal si le long press a été déclenché */
     function onClick() {
@@ -253,6 +268,7 @@ export default {
 
     return {
       lp,
+      swipe,
       onClick,
       incrementHP,
       decrementHP,

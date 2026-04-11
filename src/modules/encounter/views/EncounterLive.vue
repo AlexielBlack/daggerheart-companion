@@ -158,6 +158,8 @@
             @toggle-condition="onTogglePcCondition"
             @long-press="onLongPressPc"
             @toggle-target="toggleTarget"
+            @swipe-damage="onSwipeDamage"
+            @swipe-armor="onSwipeArmor"
           />
         </div>
 
@@ -251,6 +253,17 @@
         @clear="clearCombatLog"
       />
 
+      <!-- ══ Quick-action menu (long-press PJ) ══ -->
+      <QuickActionMenu
+        :visible="!!quickActionPcId"
+        :pc-name="quickActionPcId && store.participantPcs.find(p => p.id === quickActionPcId) ? store.participantPcs.find(p => p.id === quickActionPcId).name : ''"
+        :active-conditions="quickActionPcId ? (store.pcConditions[quickActionPcId] || []) : []"
+        :anchor-x="quickActionAnchor.x"
+        :anchor-y="quickActionAnchor.y"
+        @action="onQuickAction"
+        @close="quickActionPcId = null"
+      />
+
       <!-- ══ Bandeau d'actions (ciblage) ══ -->
       <ActionBar />
 
@@ -331,20 +344,23 @@ import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
 import ActionBar from '../components/ActionBar.vue'
+import QuickActionMenu from '../components/QuickActionMenu.vue'
 import FearHopeTracker from '../components/FearHopeTracker.vue'
 import { useHaptic } from '../composables/useHaptic'
 import { useFearHope } from '../composables/useFearHope'
 import { useActionBar } from '../composables/useActionBar'
+import { useCharacterStore } from '@modules/characters'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, FearHopeTracker },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, FearHopeTracker, QuickActionMenu },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
     const fearHope = useFearHope()
+    const characterStore = useCharacterStore()
 
     // Bandeau d'actions (ciblage)
     const actionBar = useActionBar()
@@ -369,11 +385,50 @@ export default {
     function onSelectPc(pcId) { store.selectPc(pcId) }
     function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
 
-    // ── Long-press PJ : ouvre le side-sheet contexte en tablette ──
-    function onLongPressPc(pcId) {
+    // ── Long-press PJ : ouvre le quick-action menu ──
+    const quickActionPcId = ref(null)
+    const quickActionAnchor = ref({ x: 0, y: 0 })
+
+    function onLongPressPc(pcId, event) {
       store.selectPc(pcId)
       haptic.swap()
-      tabletCtxOpen.value = true
+      // Position du menu près du point de press
+      if (event) {
+        quickActionAnchor.value = { x: event.clientX || 100, y: event.clientY || 100 }
+      }
+      quickActionPcId.value = pcId
+    }
+
+    function onQuickAction({ type, amount, conditionId }) {
+      const pcId = quickActionPcId.value
+      if (!pcId) return
+      const pc = store.participantPcs.find((p) => p.id === pcId)
+      if (!pc) return
+
+      haptic.tap()
+
+      if (type === 'damage') {
+        const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + amount)
+        characterStore.patchCharacterById(pcId, { currentHP: newVal })
+        store.logPcHit(pcId, amount)
+      } else if (type === 'heal') {
+        const newVal = Math.max(0, (pc.currentHP || 0) - amount)
+        characterStore.patchCharacterById(pcId, { currentHP: newVal })
+      } else if (type === 'stress') {
+        const newVal = Math.min(pc.maxStress, (pc.currentStress || 0) + amount)
+        characterStore.patchCharacterById(pcId, { currentStress: newVal })
+      } else if (type === 'heal-stress') {
+        const newVal = Math.max(0, (pc.currentStress || 0) - amount)
+        characterStore.patchCharacterById(pcId, { currentStress: newVal })
+      } else if (type === 'armor') {
+        store.logPcArmorUsed(pcId)
+      } else if (type === 'down') {
+        store.logPcDown(pcId)
+      } else if (type === 'condition') {
+        store.togglePcCondition(pcId, conditionId)
+      }
+
+      quickActionPcId.value = null
     }
 
     // ── Actions adversaire (avec haptique) ──
@@ -410,6 +465,20 @@ export default {
     function onToggleAdvCondition({ instanceId, conditionId }) {
       haptic.tap()
       store.toggleAdversaryCondition(instanceId, conditionId)
+    }
+
+    // ── Swipe PJ : dégâts / armure rapides ──
+    function onSwipeDamage(pcId) {
+      haptic.tap()
+      const pc = store.participantPcs.find((p) => p.id === pcId)
+      if (!pc) return
+      const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + 1)
+      characterStore.patchCharacterById(pcId, { currentHP: newVal })
+      store.logPcHit(pcId, 1)
+    }
+    function onSwipeArmor(pcId) {
+      haptic.tap()
+      store.logPcArmorUsed(pcId)
     }
 
     // ── Marqueur "a agi" ──
@@ -541,6 +610,8 @@ export default {
       onSelectPc, onSelectAdversaryGroup, onLongPressPc,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
+      onSwipeDamage, onSwipeArmor,
+      quickActionPcId, quickActionAnchor, onQuickAction,
       showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       showCountdownBar,
