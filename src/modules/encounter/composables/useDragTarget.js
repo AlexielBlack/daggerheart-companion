@@ -37,15 +37,16 @@ export function useDragTarget() {
    * @param {{ id: string, type: 'pc'|'adversary', name: string }} source
    * @param {PointerEvent} e
    */
-  /** Bloque le scroll natif iPadOS (rubber-banding / pull-to-refresh) */
-  function preventTouchMove(e) { e.preventDefault() }
+  /**
+   * Bloque le scroll natif iPadOS pendant le drag.
+   * Ne bloque que si un drag est actif (vérifié dans le handler).
+   */
+  function preventTouchMove(e) {
+    if (isDragging.value) e.preventDefault()
+  }
 
-  function freezeScroll() {
-    document.body.style.overflow = 'hidden'
-    document.body.style.touchAction = 'none'
-    document.documentElement.style.overscrollBehavior = 'none'
-    document.body.style.overscrollBehavior = 'none'
-    // preventDefault sur touchmove est le seul moyen fiable sur iPadOS
+  // Listener permanent mais conditionnel — pas de risque de fuite
+  if (typeof document !== 'undefined') {
     document.addEventListener('touchmove', preventTouchMove, { passive: false })
   }
 
@@ -55,7 +56,6 @@ export function useDragTarget() {
     isDragging.value = true
     dropResult.value = null
     dragOver.value = null
-    freezeScroll()
   }
 
   /**
@@ -79,14 +79,6 @@ export function useDragTarget() {
    * Termine le drag. Si une cible valide est survolee (camp oppose),
    * enregistre le dropResult pour afficher le popup.
    */
-  function unfreezeScroll() {
-    document.body.style.overflow = ''
-    document.body.style.touchAction = ''
-    document.documentElement.style.overscrollBehavior = ''
-    document.body.style.overscrollBehavior = ''
-    document.removeEventListener('touchmove', preventTouchMove)
-  }
-
   function endDrag() {
     if (isDragging.value && dragSource.value && dragOver.value) {
       if (dragSource.value.type !== dragOver.value.type) {
@@ -101,7 +93,6 @@ export function useDragTarget() {
     isDragging.value = false
     dragSource.value = null
     dragOver.value = null
-    unfreezeScroll()
   }
 
   function cancelDrag() {
@@ -109,7 +100,6 @@ export function useDragTarget() {
     dragSource.value = null
     dragOver.value = null
     dragPos.value = { x: 0, y: 0 }
-    unfreezeScroll()
   }
 
   /**
