@@ -92,7 +92,9 @@ export function useDragTarget() {
    */
   function endDrag() {
     if (isDragging.value && dragSource.value && dragOver.value) {
-      if (dragSource.value.type !== dragOver.value.type) {
+      // Accepter tout ciblage sauf soi-même
+      const sameEntity = dragSource.value.id === dragOver.value.id && dragSource.value.type === dragOver.value.type
+      if (!sameEntity) {
         dropResult.value = {
           source: { ...dragSource.value },
           target: { ...dragOver.value },
