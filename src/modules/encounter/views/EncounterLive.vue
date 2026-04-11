@@ -143,7 +143,7 @@
             :is-targeted="isTargetSelected(pc.id)"
             @select="onSelectPc"
             @toggle-condition="onTogglePcCondition"
-            @long-press="onLongPressPc"
+            @open-quick-menu="onOpenQuickMenu"
             @toggle-target="toggleTarget"
             @swipe-damage="onSwipeDamage"
             @swipe-armor="onSwipeArmor"
@@ -393,14 +393,13 @@ export default {
     function onSelectPc(pcId) { store.selectPc(pcId) }
     function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
 
-    // ── Long-press PJ : ouvre le quick-action menu ──
+    // ── Quick-action menu (bouton ⚡ sur carte PJ) ──
     const quickActionPcId = ref(null)
     const quickActionAnchor = ref({ x: 0, y: 0 })
 
-    function onLongPressPc(pcId, event) {
+    function onOpenQuickMenu(pcId, event) {
       store.selectPc(pcId)
-      haptic.swap()
-      // Position du menu près du point de press
+      haptic.tap()
       if (event) {
         quickActionAnchor.value = { x: event.clientX || 100, y: event.clientY || 100 }
       }
@@ -703,7 +702,7 @@ export default {
       pcAllFeatures: pcFeatures.allFeatures,
       playerActionsSpellcast: playerActions.spellcastInfo,
       playerActionsEnriched: playerActions.enrichedFeatures,
-      onSelectPc, onSelectAdversaryGroup, onLongPressPc,
+      onSelectPc, onSelectAdversaryGroup, onOpenQuickMenu,
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       onSwipeDamage, onSwipeArmor,

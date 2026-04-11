@@ -17,7 +17,7 @@
     @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
-    @pointerdown="onPointerDown"
+    @pointerdown="lp.onPointerDown($event)"
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
     @touchstart.passive="swipe.onTouchStart($event)"
@@ -36,6 +36,14 @@
         class="pc-sidebar__spot"
         :title="spotlightCount + ' spotlight(s) ce cycle'"
       >✦{{ spotlightCount > 1 ? spotlightCount : '' }}</span>
+      <button
+        class="pc-sidebar__quick-btn"
+        title="Actions rapides"
+        aria-label="Actions rapides"
+        @click.stop="$emit('open-quick-menu', pc.id, $event)"
+      >
+        ⚡
+      </button>
     </div>
 
     <!-- Ligne 2 : évasion (info n°1 pour le MJ) + armure -->
@@ -158,39 +166,15 @@ export default {
     isTargeting: { type: Boolean, default: false },
     isTargeted: { type: Boolean, default: false }
   },
-  emits: ['select', 'toggle-condition', 'long-press', 'toggle-target', 'swipe-damage', 'swipe-armor'],
+  emits: ['select', 'toggle-condition', 'toggle-target', 'swipe-damage', 'swipe-armor', 'open-quick-menu'],
   setup(props, { emit }) {
     const drag = useDragTarget()
 
+    // ── Long-press → initie le drag (setPointerCapture empêche le scroll) ──
     const lp = useLongPress((e) => {
-      emit('long-press', props.pc.id, e)
-    }, { delay: 400 })
-
-    // ── Drag : pointerdown demarre le drag après un seuil de mouvement ──
-    let dragStartPos = null
-    function onPointerDown(e) {
-      lp.onPointerDown(e)
-      dragStartPos = { x: e.clientX, y: e.clientY }
-      function onMove(me) {
-        if (!dragStartPos) return
-        const dx = me.clientX - dragStartPos.x
-        const dy = me.clientY - dragStartPos.y
-        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-          // Seuil atteint → drag
-          lp.onPointerUp() // annuler le long-press
-          drag.startDrag({ id: props.pc.id, type: 'pc', name: props.pc.name }, me)
-          dragStartPos = null
-          cleanup()
-        }
-      }
-      function onUp() { dragStartPos = null; cleanup() }
-      function cleanup() {
-        window.removeEventListener('pointermove', onMove)
-        window.removeEventListener('pointerup', onUp)
-      }
-      window.addEventListener('pointermove', onMove)
-      window.addEventListener('pointerup', onUp)
-    }
+      if (e.target) e.target.setPointerCapture(e.pointerId)
+      drag.startDrag({ id: props.pc.id, type: 'pc', name: props.pc.name }, e)
+    }, { delay: 300 })
 
     // ── Drop target : signaler le survol quand un drag adversaire passe dessus ──
     const isDragOver = computed(() =>
@@ -263,7 +247,6 @@ export default {
     return {
       lp,
       swipe,
-      onPointerDown,
       isDragOver,
       onClick,
       incrementHP,
@@ -311,7 +294,6 @@ export default {
   cursor: pointer;
   transition: border-color var(--transition-fast), background var(--transition-fast);
   user-select: none;
-  touch-action: pan-y;
 }
 
 .pc-sidebar:hover {
@@ -376,6 +358,26 @@ export default {
   color: var(--color-accent-gold);
   font-weight: var(--font-weight-bold);
 }
+
+.pc-sidebar__quick-btn {
+  margin-left: auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  transition: opacity 0.15s, background 0.15s;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.pc-sidebar__quick-btn:hover { opacity: 1; background: var(--color-bg-elevated); }
 
 /* ── Stats ── */
 

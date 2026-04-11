@@ -12,7 +12,9 @@
     :data-drag-id="group.adversaryId"
     data-drag-type="adversary"
     :aria-label="group.name + ' — ' + group.instances.length + ' instance(s)'"
-    @pointerdown="onDragPointerDown"
+    @pointerdown="lp.onPointerDown($event)"
+    @pointerup="lp.onPointerUp()"
+    @pointerleave="lp.onPointerLeave()"
   >
     <!-- ── Header : toujours visible ── -->
     <div
@@ -374,6 +376,7 @@
 import { computed } from 'vue'
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 import { useDragTarget } from '../composables/useDragTarget'
+import { useLongPress } from '../composables/useLongPress'
 
 export default {
   name: 'AdversaryGroupCard',
@@ -400,34 +403,18 @@ export default {
       drag.dragOver.value?.type === 'adversary'
     )
 
-    let dragStartPos = null
-    function onDragPointerDown(e) {
+    // ── Long-press → initie le drag (setPointerCapture empêche le scroll) ──
+    const lp = useLongPress((e) => {
       if (props.group.activeCount === 0) return
-      dragStartPos = { x: e.clientX, y: e.clientY }
-      function onMove(me) {
-        if (!dragStartPos) return
-        const dx = me.clientX - dragStartPos.x
-        const dy = me.clientY - dragStartPos.y
-        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-          drag.startDrag({
-            id: props.group.adversaryId,
-            type: 'adversary',
-            name: props.group.name
-          }, me)
-          dragStartPos = null
-          cleanup()
-        }
-      }
-      function onUp() { dragStartPos = null; cleanup() }
-      function cleanup() {
-        window.removeEventListener('pointermove', onMove)
-        window.removeEventListener('pointerup', onUp)
-      }
-      window.addEventListener('pointermove', onMove)
-      window.addEventListener('pointerup', onUp)
-    }
+      if (e.target) e.target.setPointerCapture(e.pointerId)
+      drag.startDrag({
+        id: props.group.adversaryId,
+        type: 'adversary',
+        name: props.group.name
+      }, e)
+    }, { delay: 300 })
 
-    return { isDragOverGroup, onDragPointerDown }
+    return { isDragOverGroup, lp }
   },
   data() {
     return {
@@ -576,7 +563,6 @@ export default {
   background: var(--color-bg-secondary);
   overflow: hidden;
   transition: border-color var(--transition-fast);
-  touch-action: pan-y;
 }
 
 .adv-group--selected {
