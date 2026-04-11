@@ -251,12 +251,49 @@
         @close="quickActionPcId = null"
       />
 
-      <!-- ══ Overlay visuel de drag ══ -->
+      <!-- ══ Overlay visuel de drag : courbe de visée ══ -->
+      <svg
+        v-if="drag.isDragging.value"
+        class="live__drag-svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <marker
+            id="drag-arrow"
+            markerWidth="8"
+            markerHeight="8"
+            refX="6"
+            refY="4"
+            orient="auto"
+          >
+            <path
+              d="M0,0 L8,4 L0,8 Z"
+              :fill="drag.dragOver.value ? 'var(--color-accent-danger)' : 'var(--color-accent-hope)'"
+            />
+          </marker>
+        </defs>
+        <path
+          :d="dragCurvePath"
+          fill="none"
+          :stroke="drag.dragOver.value ? 'var(--color-accent-danger)' : 'var(--color-accent-hope)'"
+          stroke-width="2.5"
+          stroke-dasharray="6 4"
+          stroke-linecap="round"
+          marker-end="url(#drag-arrow)"
+          opacity="0.8"
+        />
+        <circle
+          :cx="drag.dragOrigin.value.x"
+          :cy="drag.dragOrigin.value.y"
+          r="5"
+          :fill="drag.dragSource.value?.type === 'pc' ? 'var(--color-accent-hope)' : 'var(--color-accent-danger)'"
+          opacity="0.6"
+        />
+      </svg>
       <div
         v-if="drag.isDragging.value"
-        class="live__drag-indicator"
+        class="live__drag-label"
         :style="{ left: drag.dragPos.value.x + 'px', top: drag.dragPos.value.y + 'px' }"
-        aria-hidden="true"
       >
         {{ drag.dragSource.value?.name }}
       </div>
@@ -389,6 +426,25 @@ export default {
     })
 
     const hasAdversaries = computed(() => store.liveAdversaries.length > 0)
+
+    // ── Courbe de Bézier pour le drag visuel ──
+    const dragCurvePath = computed(() => {
+      const ox = drag.dragOrigin.value.x
+      const oy = drag.dragOrigin.value.y
+      const px = drag.dragPos.value.x
+      const py = drag.dragPos.value.y
+      // Point de contrôle : décalé verticalement pour créer l'arc
+      const dx = px - ox
+      const dy = py - oy
+      const dist = Math.sqrt(dx * dx + dy * dy)
+      const curve = Math.min(dist * 0.3, 80)
+      // Perpendiculaire au vecteur, vers le haut
+      const nx = -dy / (dist || 1)
+      const ny = dx / (dist || 1)
+      const cx = (ox + px) / 2 + nx * curve
+      const cy = (oy + py) / 2 + ny * curve
+      return `M${ox},${oy} Q${cx},${cy} ${px},${py}`
+    })
 
     // ── Sélection ──
     function onSelectPc(pcId) { store.selectPc(pcId) }
@@ -707,7 +763,7 @@ export default {
     })
 
     return {
-      store, isPcActor, hasAdversaries, drag, onDragApply, dropTargetInstances,
+      store, isPcActor, hasAdversaries, drag, onDragApply, dropTargetInstances, dragCurvePath,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -1047,17 +1103,26 @@ export default {
 .live__end-actions button { padding: var(--space-xs) var(--space-md); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; color: var(--color-text-secondary); cursor: pointer; touch-action: manipulation; }
 .live__end-confirm { border-color: var(--color-accent-danger) !important; background: var(--color-accent-danger) !important; color: white !important; font-weight: var(--font-weight-bold); }
 
-/* ══ Indicateur de drag ══ */
-.live__drag-indicator {
+/* ══ Visuel de drag : SVG courbe + label ══ */
+.live__drag-svg {
   position: fixed;
+  inset: 0;
   z-index: 500;
   pointer-events: none;
-  transform: translate(-50%, -120%);
-  padding: var(--space-xs) var(--space-sm);
+  width: 100%;
+  height: 100%;
+}
+
+.live__drag-label {
+  position: fixed;
+  z-index: 501;
+  pointer-events: none;
+  transform: translate(-50%, -130%);
+  padding: 2px var(--space-sm);
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-accent-hope);
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-hope);

@@ -17,6 +17,9 @@ const dragSource = ref(null) // { id, type: 'pc' | 'adversary', name }
 /** Cible survolee */
 const dragOver = ref(null) // { id, type: 'pc' | 'adversary', name }
 
+/** Position d'origine du drag (centre de la carte source) */
+const dragOrigin = ref({ x: 0, y: 0 })
+
 /** Position courante du pointeur */
 const dragPos = ref({ x: 0, y: 0 })
 
@@ -53,6 +56,14 @@ export function useDragTarget() {
   function startDrag(source, e) {
     dragSource.value = source
     dragPos.value = { x: e.clientX, y: e.clientY }
+    // Origine = centre de la carte source (via data-drag-id)
+    const card = e.target?.closest?.('[data-drag-id]')
+    if (card) {
+      const rect = card.getBoundingClientRect()
+      dragOrigin.value = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+    } else {
+      dragOrigin.value = { x: e.clientX, y: e.clientY }
+    }
     isDragging.value = true
     dropResult.value = null
     dragOver.value = null
@@ -112,6 +123,7 @@ export function useDragTarget() {
   return {
     dragSource: readonly(dragSource),
     dragOver: readonly(dragOver),
+    dragOrigin: readonly(dragOrigin),
     dragPos: readonly(dragPos),
     isDragging: readonly(isDragging),
     dropResult,
