@@ -37,15 +37,25 @@ export function useDragTarget() {
    * @param {{ id: string, type: 'pc'|'adversary', name: string }} source
    * @param {PointerEvent} e
    */
+  /** Bloque le scroll natif iPadOS (rubber-banding / pull-to-refresh) */
+  function preventTouchMove(e) { e.preventDefault() }
+
+  function freezeScroll() {
+    document.body.style.overflow = 'hidden'
+    document.body.style.touchAction = 'none'
+    document.documentElement.style.overscrollBehavior = 'none'
+    document.body.style.overscrollBehavior = 'none'
+    // preventDefault sur touchmove est le seul moyen fiable sur iPadOS
+    document.addEventListener('touchmove', preventTouchMove, { passive: false })
+  }
+
   function startDrag(source, e) {
     dragSource.value = source
     dragPos.value = { x: e.clientX, y: e.clientY }
     isDragging.value = true
     dropResult.value = null
     dragOver.value = null
-    // Bloquer tout scroll pendant le drag
-    document.body.style.overflow = 'hidden'
-    document.body.style.touchAction = 'none'
+    freezeScroll()
   }
 
   /**
@@ -72,6 +82,9 @@ export function useDragTarget() {
   function unfreezeScroll() {
     document.body.style.overflow = ''
     document.body.style.touchAction = ''
+    document.documentElement.style.overscrollBehavior = ''
+    document.body.style.overscrollBehavior = ''
+    document.removeEventListener('touchmove', preventTouchMove)
   }
 
   function endDrag() {
