@@ -430,6 +430,11 @@ export default {
         characterStore.patchCharacterById(pcId, { currentStress: newVal })
       } else if (type === 'armor') {
         store.logPcArmorUsed(pcId)
+      } else if (type === 'restore-armor') {
+        const currentMarked = pc.armorSlotsMarked || 0
+        if (currentMarked > 0) {
+          characterStore.patchCharacterById(pcId, { armorSlotsMarked: currentMarked - 1 })
+        }
       } else if (type === 'down') {
         store.logPcDown(pcId)
       } else if (type === 'condition') {

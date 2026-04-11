@@ -81,7 +81,13 @@
               class="qam__btn qam__btn--armor"
               @click="$emit('action', { type: 'armor' })"
             >
-              🛡️ Armure
+              🛡️ Utiliser
+            </button>
+            <button
+              class="qam__btn qam__btn--heal"
+              @click="$emit('action', { type: 'restore-armor' })"
+            >
+              🛡️ Regagner
             </button>
             <button
               class="qam__btn qam__btn--down"

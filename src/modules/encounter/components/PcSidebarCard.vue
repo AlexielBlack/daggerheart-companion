@@ -17,14 +17,16 @@
     @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
-    @pointerdown="onPointerDown"
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
     @touchstart.passive="swipe.onTouchStart($event)"
     @touchend.passive="swipe.onTouchEnd($event)"
   >
-    <!-- Ligne 1 : nom + indicateurs -->
-    <div class="pc-sidebar__header">
+    <!-- Ligne 1 : nom + indicateurs (zone de drag) -->
+    <div
+      class="pc-sidebar__header"
+      @pointerdown="onPointerDown"
+    >
       <span class="pc-sidebar__name">{{ pc.name }}</span>
       <span
         v-if="isDown"
@@ -80,6 +82,17 @@
     >
       <span class="pc-sidebar__stress-text">
         &#x1F4A2; {{ pc.currentStress || 0 }}/{{ pc.maxStress }}
+      </span>
+    </div>
+
+    <!-- Slots d'armure -->
+    <div
+      v-if="(pc.armorScore || 0) > 0"
+      class="pc-sidebar__armor-row"
+      :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' utilises sur ' + (pc.armorScore || 0)"
+    >
+      <span class="pc-sidebar__armor-text">
+        &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.armorScore || 0 }}
       </span>
     </div>
 
@@ -343,6 +356,12 @@ export default {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  touch-action: none;
+  cursor: grab;
+}
+
+.pc-sidebar__header:active {
+  cursor: grabbing;
 }
 
 .pc-sidebar__name {
@@ -499,14 +518,16 @@ export default {
 /* ── HP / Stress compacts ── */
 
 .pc-sidebar__hp-row,
-.pc-sidebar__stress-row {
+.pc-sidebar__stress-row,
+.pc-sidebar__armor-row {
   display: flex;
   align-items: center;
   gap: 2px;
 }
 
 .pc-sidebar__hp-text,
-.pc-sidebar__stress-text {
+.pc-sidebar__stress-text,
+.pc-sidebar__armor-text {
   flex: 1;
   text-align: center;
   font-size: var(--font-size-xs);

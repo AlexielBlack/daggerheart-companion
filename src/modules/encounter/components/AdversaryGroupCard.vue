@@ -19,6 +19,7 @@
       role="button"
       tabindex="0"
       :aria-expanded="!collapsed"
+      style="touch-action: none;"
       @click="onHeaderClick"
       @pointerdown="onDragPointerDown"
       @keydown.enter="onHeaderClick"
