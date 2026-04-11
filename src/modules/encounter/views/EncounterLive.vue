@@ -642,6 +642,8 @@ export default {
 
       if (target.type === 'adversary') {
         // PJ → Adversaire : marquer HP/Stress sur l'adversaire
+        // Sélectionner le PJ source pour que le log soit correct
+        if (drop.source?.type === 'pc') store.selectPc(drop.source.id)
         const instances = store.liveAdversaries.filter(a => a.adversaryId === target.id && !a.isDefeated)
         const inst = instances[0]
         if (!inst) { drag.clearDropResult(); return }
@@ -659,11 +661,12 @@ export default {
         // Adversaire → PJ : marquer HP/Stress sur le PJ
         const pc = store.participantPcs.find(p => p.id === target.id)
         if (!pc) { drag.clearDropResult(); return }
+        const sourceName = drop.source?.name || '?'
 
         if (mode === 'damage-hp') {
           const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + amount)
           characterStore.patchCharacterById(target.id, { currentHP: newVal })
-          store.logPcHit(target.id, amount)
+          store.logPcHit(target.id, amount, { advName: sourceName })
         } else if (mode === 'damage-stress') {
           const newVal = Math.min(pc.maxStress, (pc.currentStress || 0) + amount)
           characterStore.patchCharacterById(target.id, { currentStress: newVal })

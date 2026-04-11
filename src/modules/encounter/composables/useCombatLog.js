@@ -128,8 +128,11 @@ export function useCombatLog(deps) {
    * Enregistre qu'un PJ a pris des dégâts de l'adversaire actif.
    * @param {string} pcId
    * @param {number} hpAmount
+   * @param {Object} [options]
+   * @param {string} [options.advName] - Nom de l'adversaire source (override activeAdversary)
+   * @param {string} [options.instanceId] - ID instance adversaire source
    */
-  function logPcHit(pcId, hpAmount) {
+  function logPcHit(pcId, hpAmount, options = {}) {
     pushUndo()
     const pc = participantPcs.value.find((p) => p.id === pcId)
     const adv = activeAdversary.value
@@ -138,8 +141,8 @@ export function useCombatLog(deps) {
       action: 'pc_hit',
       pcId,
       pcName: pc.name,
-      instanceId: adv ? adv.instanceId : null,
-      advName: adv ? adv.name : '?',
+      instanceId: options.instanceId || (adv ? adv.instanceId : null),
+      advName: options.advName || (adv ? adv.name : '?'),
       hpMarked: hpAmount,
       timestamp: Date.now()
     }

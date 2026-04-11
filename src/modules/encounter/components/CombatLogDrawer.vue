@@ -408,7 +408,7 @@ export default {
           ? `${src} → ${entry.advName} : ${entry.amount} HP`
           : `${src} → ${entry.advName} : ${entry.amount} Stress`
       case 'pc_hit':
-        return `${src} → ${entry.pcName} : ${entry.amount || entry.hpMarked} ${entry.type === 'stress' ? 'Stress' : 'HP'}`
+        return `${entry.advName || '?'} → ${entry.pcName} : ${entry.amount || entry.hpMarked} ${entry.type === 'stress' ? 'Stress' : 'HP'}`
       case 'pc_armor':
         return `${entry.pcName} utilise un slot d'armure`
       case 'miss':
