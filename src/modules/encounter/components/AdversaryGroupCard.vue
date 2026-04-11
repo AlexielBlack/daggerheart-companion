@@ -117,36 +117,6 @@
       v-show="!collapsed"
       class="adv-group__body"
     >
-      <!-- Calculateur de seuil : le MJ tape les dégâts, le bon tier s'allume -->
-      <div
-        v-if="hasThresholds && group.activeCount > 0"
-        class="adv-group__dmg-calc"
-      >
-        <input
-          v-model="dmgInput"
-          class="adv-group__dmg-input"
-          type="number"
-          inputmode="numeric"
-          min="0"
-          placeholder="Dmg?"
-          aria-label="Dégâts pour calcul de seuil"
-          @click.stop
-        />
-        <span
-          class="adv-group__dmg-result"
-          :class="{
-            'adv-group__dmg-result--1': suggestedTier === 1,
-            'adv-group__dmg-result--2': suggestedTier === 2,
-            'adv-group__dmg-result--3': suggestedTier === 3
-          }"
-        >
-          <template v-if="suggestedTier === 1">→ 1HP</template>
-          <template v-else-if="suggestedTier === 2">→ 2HP</template>
-          <template v-else-if="suggestedTier === 3">→ 3HP</template>
-          <template v-else>&nbsp;</template>
-        </span>
-      </div>
-
       <!-- ══ MINION : grille compacte de coches ══ -->
       <div
         v-if="isMinion"
@@ -237,75 +207,16 @@
               </button>
             </div>
 
-            <!-- Ligne 2 : boutons seuils élargis + heal -->
-            <div
-              v-if="hasThresholds"
-              class="adv-group__inst-row2"
-            >
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--minor"
-                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 1 }"
-                :title="'Mineur — marquer 1 HP'"
-                :aria-label="'1 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="applyDamageAndClear(inst.instanceId, 1)"
-              >
-                1
-              </button>
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--major"
-                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 2 }"
-                :title="'Majeur — marquer 2 HP'"
-                :aria-label="'2 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="applyDamageAndClear(inst.instanceId, 2)"
-              >
-                2
-              </button>
-              <button
-                class="adv-group__thresh-btn adv-group__thresh-btn--severe"
-                :class="{ 'adv-group__thresh-btn--suggested': suggestedTier === 3 }"
-                :title="'Sévère — marquer 3 HP'"
-                :aria-label="'3 HP sur ' + inst.name + (group.instances.length > 1 ? ' #' + (inst.originalIdx + 1) : '')"
-                @click.stop="applyDamageAndClear(inst.instanceId, 3)"
-              >
-                3
-              </button>
-              <button
-                class="adv-group__action-btn adv-group__action-btn--heal"
-                :disabled="inst.markedHP <= 0"
-                title="Retirer 1 HP"
-                aria-label="Retirer 1 HP"
-                @click.stop="$emit('clear-hp', inst.instanceId)"
-              >
-                −
-              </button>
-            </div>
-
-            <!-- Ligne secondaire : stress + conditions -->
+            <!-- Ligne secondaire : stress (lecture seule) + conditions -->
             <div
               v-if="inst.maxStress > 0 || inst.conditions.length > 0"
               class="adv-group__inst-secondary"
             >
-              <template v-if="inst.maxStress > 0">
-                <span class="adv-group__stress-label">ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
-                <button
-                  class="adv-group__micro-btn"
-                  :disabled="inst.markedStress >= inst.maxStress"
-                  title="Marquer 1 Stress"
-                  aria-label="Marquer 1 Stress"
-                  @click.stop="$emit('mark-stress', inst.instanceId)"
-                >
-                  +
-                </button>
-                <button
-                  class="adv-group__micro-btn"
-                  :disabled="inst.markedStress <= 0"
-                  title="Retirer 1 Stress"
-                  aria-label="Retirer 1 Stress"
-                  @click.stop="$emit('clear-stress', inst.instanceId)"
-                >
-                  −
-                </button>
-              </template>
+              <span
+                v-if="inst.maxStress > 0"
+                class="adv-group__stress-label"
+                :style="{ color: stressColor(inst) }"
+              >ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
               <div class="adv-group__inst-conds">
                 <button
                   v-for="cond in conditions"
@@ -507,6 +418,13 @@ export default {
     stressPercent(inst) {
       if (!inst.maxStress) return 0
       return Math.round((inst.markedStress / inst.maxStress) * 100)
+    },
+    stressColor(inst) {
+      if (!inst.maxStress) return 'var(--color-text-muted)'
+      const ratio = inst.markedStress / inst.maxStress
+      if (ratio < 0.5) return 'var(--color-text-muted)'
+      if (ratio < 0.75) return 'var(--color-accent-warning)'
+      return 'var(--color-accent-danger)'
     },
     /** Détecte le début du swipe sur une instance */
     onInstTouchStart(e, instanceId) {

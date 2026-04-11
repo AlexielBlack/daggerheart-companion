@@ -69,143 +69,6 @@
         v-if="activeTab === 'pc' && pc"
         class="ctx-panel__content"
       >
-        <!-- Stats interactives PJ -->
-        <div class="ctx-panel__pc-stats">
-          <!-- Barre HP -->
-          <div
-            class="ctx-panel__bar"
-            :aria-label="'PV : ' + (pc.currentHP || 0) + ' marques sur ' + pc.maxHP"
-          >
-            <button
-              class="ctx-panel__bar-btn"
-              :disabled="(pc.currentHP || 0) <= 0"
-              aria-label="Soigner 1 PV"
-              @click="decrementHP()"
-            >
-              &minus;
-            </button>
-            <div class="ctx-panel__bar-track">
-              <div
-                class="ctx-panel__bar-fill"
-                :style="{ width: hpFillPercent() + '%', backgroundColor: hpColor() }"
-              ></div>
-            </div>
-            <span class="ctx-panel__bar-text">
-              &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.maxHP }}
-            </span>
-            <button
-              class="ctx-panel__bar-btn"
-              :disabled="(pc.currentHP || 0) >= pc.maxHP"
-              aria-label="Marquer 1 degat"
-              @click="incrementHP()"
-            >
-              +
-            </button>
-          </div>
-
-          <!-- Barre Stress -->
-          <div
-            class="ctx-panel__bar"
-            :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.maxStress"
-          >
-            <button
-              class="ctx-panel__bar-btn"
-              :disabled="(pc.currentStress || 0) <= 0"
-              aria-label="Reduire 1 stress"
-              @click="decrementStress()"
-            >
-              &minus;
-            </button>
-            <div class="ctx-panel__bar-track">
-              <div
-                class="ctx-panel__bar-fill"
-                :style="{ width: stressFillPercent() + '%', backgroundColor: stressColor() }"
-              ></div>
-            </div>
-            <span class="ctx-panel__bar-text">
-              &#x1F4A2; {{ pc.currentStress || 0 }}/{{ pc.maxStress }}
-            </span>
-            <button
-              class="ctx-panel__bar-btn"
-              :disabled="(pc.currentStress || 0) >= pc.maxStress"
-              aria-label="Marquer 1 stress"
-              @click="incrementStress()"
-            >
-              +
-            </button>
-          </div>
-
-          <!-- Seuils (Majeur / Sévère) -->
-          <div
-            v-if="pc.armorBaseThresholds"
-            class="ctx-panel__thresholds"
-          >
-            <span class="ctx-panel__threshold">
-              ⚔️ Seuils :
-              <strong>{{ pc.armorBaseThresholds.major || 0 }}</strong> Maj
-              / <strong>{{ pc.armorBaseThresholds.severe || 0 }}</strong> Sév
-            </span>
-          </div>
-
-          <!-- Armure + Espoir (ligne compacte) -->
-          <div class="ctx-panel__bar-row">
-            <div
-              class="ctx-panel__bar ctx-panel__bar--half"
-              :aria-label="'Armure : ' + (pc.armorSlotsMarked || 0) + ' sur ' + (pc.armorScore || 0)"
-            >
-              <button
-                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
-                :disabled="(pc.armorSlotsMarked || 0) <= 0"
-                aria-label="Restaurer 1 armure"
-                @click="decrementArmor()"
-              >
-                &minus;
-              </button>
-              <div class="ctx-panel__bar-track">
-                <div
-                  class="ctx-panel__bar-fill ctx-panel__bar-fill--armor"
-                  :style="{ width: armorFillPercent() + '%' }"
-                ></div>
-              </div>
-              <span class="ctx-panel__bar-text ctx-panel__bar-text--sm">
-                &#x1F6E1;&#xFE0F; {{ pc.armorSlotsMarked || 0 }}/{{ pc.armorScore || 0 }}
-              </span>
-              <button
-                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
-                :disabled="(pc.armorSlotsMarked || 0) >= (pc.armorScore || 0)"
-                aria-label="Utiliser 1 armure"
-                @click="incrementArmor()"
-              >
-                +
-              </button>
-            </div>
-            <div
-              class="ctx-panel__bar ctx-panel__bar--half"
-              :aria-label="'Espoir : ' + (pc.hope || 0)"
-            >
-              <button
-                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
-                :disabled="(pc.hope || 0) <= 0"
-                aria-label="Depenser 1 espoir"
-                @click="decrementHope()"
-              >
-                &minus;
-              </button>
-              <span class="ctx-panel__bar-text ctx-panel__bar-text--sm">
-                &#x2728; {{ pc.hope || 0 }}
-              </span>
-              <button
-                class="ctx-panel__bar-btn ctx-panel__bar-btn--sm"
-                :disabled="(pc.hope || 0) >= 6"
-                aria-label="Gagner 1 espoir"
-                @click="incrementHope()"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-
         <!-- Armes — info jet d'attaque + dégâts -->
         <div
           v-if="primaryWeapon || secondaryWeapon"
@@ -283,30 +146,33 @@
           </div>
         </div>
 
-        <!-- Trait de spellcast -->
+        <!-- Spellcast + Expériences côte à côte -->
         <div
-          v-if="spellcastInfo"
-          class="ctx-panel__spellcast"
+          v-if="spellcastInfo || pcExperiences.length > 0"
+          class="ctx-panel__two-col"
         >
-          <span class="ctx-panel__spellcast-badge">
-            🔮 {{ spellcastInfo.label }}
-          </span>
-        </div>
-
-        <!-- Expériences -->
-        <div
-          v-if="pcExperiences.length > 0"
-          class="ctx-panel__section"
-        >
-          <h4 class="ctx-panel__section-title">
-            📋 Expériences
-          </h4>
-          <div class="ctx-panel__exp-list">
-            <span
-              v-for="exp in pcExperiences"
-              :key="exp.name"
-              class="ctx-panel__exp"
-            >{{ exp.name }} <strong v-if="exp.bonus">+{{ exp.bonus }}</strong></span>
+          <div
+            v-if="spellcastInfo"
+            class="ctx-panel__section"
+          >
+            <span class="ctx-panel__spellcast-badge">
+              🔮 {{ spellcastInfo.label }}
+            </span>
+          </div>
+          <div
+            v-if="pcExperiences.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title">
+              📋 Expériences
+            </h4>
+            <div class="ctx-panel__exp-list">
+              <span
+                v-for="exp in pcExperiences"
+                :key="exp.name"
+                class="ctx-panel__exp"
+              >{{ exp.name }} <strong v-if="exp.bonus">+{{ exp.bonus }}</strong></span>
+            </div>
           </div>
         </div>
 
@@ -477,34 +343,37 @@
         v-if="activeTab === 'adversary' && adversary"
         class="ctx-panel__content"
       >
-        <!-- Expériences adversaire -->
+        <!-- Expériences + Motives côte à côte -->
         <div
-          v-if="adversary.experiences && adversary.experiences.length > 0"
-          class="ctx-panel__section"
+          v-if="(adversary.experiences && adversary.experiences.length > 0) || (adversary.motives && adversary.motives.length > 0)"
+          class="ctx-panel__two-col"
         >
-          <h4 class="ctx-panel__section-title">
-            📋 Expériences
-          </h4>
-          <div class="ctx-panel__exp-list">
-            <span
-              v-for="exp in adversary.experiences"
-              :key="typeof exp === 'string' ? exp : exp.name"
-              class="ctx-panel__exp"
-            >{{ typeof exp === 'string' ? exp : (exp.name + (exp.bonus ? ' +' + exp.bonus : '')) }}</span>
+          <div
+            v-if="adversary.experiences && adversary.experiences.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title">
+              📋 Expériences
+            </h4>
+            <div class="ctx-panel__exp-list">
+              <span
+                v-for="exp in adversary.experiences"
+                :key="typeof exp === 'string' ? exp : exp.name"
+                class="ctx-panel__exp"
+              >{{ typeof exp === 'string' ? exp : (exp.name + (exp.bonus ? ' +' + exp.bonus : '')) }}</span>
+            </div>
           </div>
-        </div>
-
-        <!-- Motives / Tactiques -->
-        <div
-          v-if="adversary.motives && adversary.motives.length > 0"
-          class="ctx-panel__section"
-        >
-          <h4 class="ctx-panel__section-title">
-            🎯 Motives &amp; Tactiques
-          </h4>
-          <p class="ctx-panel__motives">
-            {{ adversary.motives.join(', ') }}
-          </p>
+          <div
+            v-if="adversary.motives && adversary.motives.length > 0"
+            class="ctx-panel__section"
+          >
+            <h4 class="ctx-panel__section-title">
+              🎯 Motives &amp; Tactiques
+            </h4>
+            <p class="ctx-panel__motives">
+              {{ adversary.motives.join(', ') }}
+            </p>
+          </div>
         </div>
 
         <!-- Features adversaire classifiées -->
@@ -1401,6 +1270,17 @@ export default {
 .context-panel__npc-chip--neutral { border-left: 3px solid #9ca3af; }
 .context-panel__npc-chip--dead { border-left: 3px solid #6b7280; opacity: 0.6; }
 .context-panel__npc-chip--missing { border-left: 3px solid #f97316; }
+
+/* ══ Layout 2 colonnes (expériences + motives côte à côte) ══ */
+.ctx-panel__two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 480px) {
+  .ctx-panel__two-col { grid-template-columns: 1fr; }
+}
 
 /* ══ iPad paysage — panel condensé ══ */
 @media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
