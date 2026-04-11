@@ -3,6 +3,7 @@
     :id="`module-${moduleId}`"
     role="region"
     :aria-label="moduleName"
+    style="height: 100%; min-height: 0;"
   >
     <slot v-if="!error"></slot>
     <ErrorFallback

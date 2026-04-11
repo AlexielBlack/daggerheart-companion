@@ -78,13 +78,15 @@ export default {
 .table-view {
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - var(--header-height, 56px) - 2 * var(--space-md, 1rem));
+  height: 100%;
+  min-height: 0;
 }
 
 .table-view__content {
   flex: 1;
   overflow-y: auto;
   padding: var(--space-md, 1rem);
+  min-height: 0;
 }
 
 .table-view__content--fullscreen {

@@ -23,3 +23,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.table-combat-view {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+</style>

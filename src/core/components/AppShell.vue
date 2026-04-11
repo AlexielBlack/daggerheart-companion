@@ -105,7 +105,9 @@ export default {
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 .app-shell__header {
@@ -179,6 +181,7 @@ export default {
   padding: var(--space-md);
   overflow-y: auto;
   width: 100%;
+  min-height: 0;
 }
 
 /* ── Notifications ── */
