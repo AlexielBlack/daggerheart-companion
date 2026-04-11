@@ -11,10 +11,10 @@
         class="qam__menu"
         :style="menuStyle"
         role="menu"
-        :aria-label="'Actions rapides — ' + pcName"
+        :aria-label="'Actions rapides — ' + entityName"
       >
         <div class="qam__header">
-          <span class="qam__pc-name">{{ pcName }}</span>
+          <span class="qam__pc-name">{{ entityName }}</span>
           <button
             class="qam__close"
             aria-label="Fermer"
@@ -74,8 +74,11 @@
           </div>
         </div>
 
-        <!-- Armure & À terre -->
-        <div class="qam__section">
+        <!-- Armure (PJ uniquement) -->
+        <div
+          v-if="entityType === 'pc'"
+          class="qam__section"
+        >
           <div class="qam__row">
             <button
               class="qam__btn qam__btn--armor"
@@ -94,6 +97,27 @@
               @click="$emit('action', { type: 'down' })"
             >
               💀 À terre
+            </button>
+          </div>
+        </div>
+
+        <!-- Vaincre / Réanimer (Adversaire uniquement) -->
+        <div
+          v-if="entityType === 'adversary'"
+          class="qam__section"
+        >
+          <div class="qam__row">
+            <button
+              class="qam__btn qam__btn--down"
+              @click="$emit('action', { type: 'defeat' })"
+            >
+              💀 Vaincre
+            </button>
+            <button
+              class="qam__btn qam__btn--heal"
+              @click="$emit('action', { type: 'revive' })"
+            >
+              💚 Réanimer
             </button>
           </div>
         </div>
@@ -127,7 +151,8 @@ export default {
 
   props: {
     visible: { type: Boolean, default: false },
-    pcName: { type: String, default: '' },
+    entityName: { type: String, default: '' },
+    entityType: { type: String, default: 'pc' },
     activeConditions: { type: Array, default: () => [] },
     anchorX: { type: Number, default: 0 },
     anchorY: { type: Number, default: 0 }

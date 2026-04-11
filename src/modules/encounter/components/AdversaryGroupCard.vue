@@ -46,6 +46,14 @@
         {{ hasActed ? '●' : '○' }}
       </button>
       <button
+        class="adv-group__quick-btn"
+        title="Actions rapides"
+        aria-label="Actions rapides"
+        @click.stop="$emit('open-quick-menu', group.adversaryId, $event)"
+      >
+        ⚡
+      </button>
+      <button
         class="adv-group__collapse-btn"
         :aria-label="collapsed ? 'Déplier' : 'Replier'"
         :title="collapsed ? 'Déplier' : 'Replier'"
@@ -193,7 +201,7 @@
               </button>
             </div>
 
-            <!-- Ligne secondaire : stress (lecture seule) + conditions -->
+            <!-- Ligne secondaire : stress + conditions (lecture seule) -->
             <div
               v-if="inst.maxStress > 0 || inst.conditions.length > 0"
               class="adv-group__inst-secondary"
@@ -202,20 +210,13 @@
                 v-if="inst.maxStress > 0"
                 class="adv-group__stress-label"
                 :style="{ color: stressColor(inst) }"
-              >ST {{ inst.markedStress }}/{{ inst.maxStress }}</span>
-              <div class="adv-group__inst-conds">
-                <button
-                  v-for="cond in conditions"
-                  :key="cond.id"
-                  class="adv-group__cond"
-                  :class="{ 'adv-group__cond--on': inst.conditions.includes(cond.id) }"
-                  :title="cond.label"
-                  :aria-label="cond.label"
-                  @click.stop="$emit('toggle-condition', { instanceId: inst.instanceId, conditionId: cond.id })"
-                >
-                  {{ cond.emoji }}
-                </button>
-              </div>
+              >💢{{ inst.markedStress }}/{{ inst.maxStress }}</span>
+              <span
+                v-for="cond in activeConditionsFor(inst)"
+                :key="cond.id"
+                class="adv-group__cond adv-group__cond--on"
+                :title="cond.label"
+              >{{ cond.emoji }}</span>
             </div>
           </div>
         </div>
@@ -289,7 +290,7 @@ export default {
     'apply-damage', 'mark-stress', 'clear-stress',
     'clear-hp', 'defeat', 'revive',
     'toggle-condition', 'toggle-acted',
-    'toggle-target'
+    'toggle-target', 'open-quick-menu'
   ],
   setup(props) {
     const drag = useDragTarget()
@@ -431,6 +432,9 @@ export default {
       if (ratio < 0.5) return 'var(--color-text-muted)'
       if (ratio < 0.75) return 'var(--color-accent-warning)'
       return 'var(--color-accent-danger)'
+    },
+    activeConditionsFor(inst) {
+      return LIVE_CONDITIONS.filter(c => inst.conditions.includes(c.id))
     },
     /** Détecte le début du swipe sur une instance */
     onInstTouchStart(e, instanceId) {
@@ -582,6 +586,25 @@ export default {
 .adv-group__weapon-mod { font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
 .adv-group__weapon-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
 .adv-group__weapon-dmg { font-weight: var(--font-weight-bold); color: var(--color-text-primary); flex-shrink: 0; }
+
+.adv-group__quick-btn {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  transition: opacity 0.15s, background 0.15s;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.adv-group__quick-btn:hover { opacity: 1; background: var(--color-bg-elevated); }
 
 .adv-group__collapse-btn {
   min-width: var(--touch-min);

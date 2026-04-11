@@ -220,6 +220,7 @@
             @clear-hp="onClearHP"
             @defeat="onDefeat"
             @revive="onRevive"
+            @open-quick-menu="onOpenQuickMenu"
             @toggle-condition="onToggleAdvCondition"
             @toggle-acted="onToggleActed"
           />
@@ -242,13 +243,14 @@
 
       <!-- ══ Quick-action menu (long-press PJ) ══ -->
       <QuickActionMenu
-        :visible="!!quickActionPcId"
-        :pc-name="quickActionPcId && store.participantPcs.find(p => p.id === quickActionPcId) ? store.participantPcs.find(p => p.id === quickActionPcId).name : ''"
-        :active-conditions="quickActionPcId ? (store.pcConditions[quickActionPcId] || []) : []"
+        :visible="!!quickActionEntity"
+        :entity-name="quickActionEntity?.name || ''"
+        :entity-type="quickActionEntity?.type || 'pc'"
+        :active-conditions="quickActionConditions"
         :anchor-x="quickActionAnchor.x"
         :anchor-y="quickActionAnchor.y"
         @action="onQuickAction"
-        @close="quickActionPcId = null"
+        @close="quickActionEntity = null"
       />
 
       <!-- ══ Overlay visuel de drag : courbe de visée ══ -->
@@ -450,54 +452,92 @@ export default {
     function onSelectPc(pcId) { store.selectPc(pcId) }
     function onSelectAdversaryGroup(adversaryId) { store.selectAdversaryGroup(adversaryId) }
 
-    // ── Quick-action menu (bouton ⚡ sur carte PJ) ──
-    const quickActionPcId = ref(null)
+    // ── Quick-action menu (bouton ⚡ sur carte PJ ou adversaire) ──
+    const quickActionEntity = ref(null) // { id, type: 'pc'|'adversary', name }
+    const quickActionConditions = computed(() => {
+      const e = quickActionEntity.value
+      if (!e) return []
+      if (e.type === 'pc') return store.pcConditions[e.id] || []
+      const inst = store.liveAdversaries.find(a => a.adversaryId === e.id && !a.isDefeated)
+      return inst?.conditions || []
+    })
     const quickActionAnchor = ref({ x: 0, y: 0 })
 
-    function onOpenQuickMenu(pcId, event) {
-      store.selectPc(pcId)
+    function onOpenQuickMenu(id, event) {
       haptic.tap()
       if (event) {
         quickActionAnchor.value = { x: event.clientX || 100, y: event.clientY || 100 }
       }
-      quickActionPcId.value = pcId
+      // Déterminer le type : PJ ou adversaire
+      const pc = store.participantPcs.find(p => p.id === id)
+      if (pc) {
+        store.selectPc(id)
+        quickActionEntity.value = { id, type: 'pc', name: pc.name }
+      } else {
+        store.selectAdversaryGroup(id)
+        const group = store.groupedAdversaries.find(g => g.adversaryId === id)
+        quickActionEntity.value = { id, type: 'adversary', name: group?.name || id }
+      }
     }
 
     function onQuickAction({ type, amount, conditionId }) {
-      const pcId = quickActionPcId.value
-      if (!pcId) return
-      const pc = store.participantPcs.find((p) => p.id === pcId)
-      if (!pc) return
+      const entity = quickActionEntity.value
+      if (!entity) return
 
       haptic.tap()
 
-      if (type === 'damage') {
-        const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + amount)
-        characterStore.patchCharacterById(pcId, { currentHP: newVal })
-        store.logPcHit(pcId, amount)
-      } else if (type === 'heal') {
-        const newVal = Math.max(0, (pc.currentHP || 0) - amount)
-        characterStore.patchCharacterById(pcId, { currentHP: newVal })
-      } else if (type === 'stress') {
-        const newVal = Math.min(pc.maxStress, (pc.currentStress || 0) + amount)
-        characterStore.patchCharacterById(pcId, { currentStress: newVal })
-      } else if (type === 'heal-stress') {
-        const newVal = Math.max(0, (pc.currentStress || 0) - amount)
-        characterStore.patchCharacterById(pcId, { currentStress: newVal })
-      } else if (type === 'armor') {
-        store.logPcArmorUsed(pcId)
-      } else if (type === 'restore-armor') {
-        const currentMarked = pc.armorSlotsMarked || 0
-        if (currentMarked > 0) {
-          characterStore.patchCharacterById(pcId, { armorSlotsMarked: currentMarked - 1 })
+      if (entity.type === 'pc') {
+        const pc = store.participantPcs.find((p) => p.id === entity.id)
+        if (!pc) { quickActionEntity.value = null; return }
+
+        if (type === 'damage') {
+          const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + amount)
+          characterStore.patchCharacterById(entity.id, { currentHP: newVal })
+          store.logPcHit(entity.id, amount)
+        } else if (type === 'heal') {
+          const newVal = Math.max(0, (pc.currentHP || 0) - amount)
+          characterStore.patchCharacterById(entity.id, { currentHP: newVal })
+        } else if (type === 'stress') {
+          const newVal = Math.min(pc.maxStress, (pc.currentStress || 0) + amount)
+          characterStore.patchCharacterById(entity.id, { currentStress: newVal })
+        } else if (type === 'heal-stress') {
+          const newVal = Math.max(0, (pc.currentStress || 0) - amount)
+          characterStore.patchCharacterById(entity.id, { currentStress: newVal })
+        } else if (type === 'armor') {
+          store.logPcArmorUsed(entity.id)
+        } else if (type === 'restore-armor') {
+          const currentMarked = pc.armorSlotsMarked || 0
+          if (currentMarked > 0) {
+            characterStore.patchCharacterById(entity.id, { armorSlotsMarked: currentMarked - 1 })
+          }
+        } else if (type === 'down') {
+          store.logPcDown(entity.id)
+        } else if (type === 'condition') {
+          store.togglePcCondition(entity.id, conditionId)
         }
-      } else if (type === 'down') {
-        store.logPcDown(pcId)
-      } else if (type === 'condition') {
-        store.togglePcCondition(pcId, conditionId)
+      } else if (entity.type === 'adversary') {
+        // Trouver la première instance active du groupe
+        const inst = store.liveAdversaries.find(a => a.adversaryId === entity.id && !a.isDefeated)
+
+        if (type === 'damage' && inst) {
+          store.markAdversaryHP(inst.instanceId, amount)
+        } else if (type === 'heal' && inst) {
+          for (let i = 0; i < amount; i++) store.clearAdversaryHP(inst.instanceId, 1)
+        } else if (type === 'stress' && inst) {
+          store.markAdversaryStress(inst.instanceId, amount)
+        } else if (type === 'heal-stress' && inst) {
+          for (let i = 0; i < amount; i++) store.clearAdversaryStress(inst.instanceId, 1)
+        } else if (type === 'defeat' && inst) {
+          store.defeatAdversary(inst.instanceId)
+        } else if (type === 'revive') {
+          const dead = store.liveAdversaries.find(a => a.adversaryId === entity.id && a.isDefeated)
+          if (dead) store.reviveAdversary(dead.instanceId)
+        } else if (type === 'condition' && inst) {
+          store.toggleAdversaryCondition(inst.instanceId, conditionId)
+        }
       }
 
-      quickActionPcId.value = null
+      quickActionEntity.value = null
     }
 
     // ── Actions adversaire (avec haptique) ──
@@ -775,7 +815,7 @@ export default {
       onApplyDamage, onMarkStress, onClearStress, onClearHP, onDefeat, onRevive,
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       onSwipeDamage, onSwipeArmor,
-      quickActionPcId, quickActionAnchor, onQuickAction,
+      quickActionEntity, quickActionAnchor, quickActionConditions, onQuickAction,
       showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       showCountdownBar,

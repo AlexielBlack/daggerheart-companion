@@ -94,7 +94,7 @@
       <span class="pc-sidebar__weapon-dmg">{{ weapon.damage }}</span>
     </div>
 
-    <!-- Conditions actives (toujours visibles si > 0) -->
+    <!-- Conditions actives (lecture seule — gérées via ⚡ menu) -->
     <div
       v-if="activeConditions.length > 0"
       class="pc-sidebar__cond-summary"
@@ -106,24 +106,6 @@
         class="pc-sidebar__cond-dot"
         :title="cond.label"
       >{{ cond.emoji }}</span>
-    </div>
-
-    <!-- Conditions togglables (visible quand sélectionné) -->
-    <div
-      v-if="isSelected"
-      class="pc-sidebar__conditions"
-    >
-      <button
-        v-for="cond in conditions"
-        :key="cond.id"
-        class="pc-sidebar__cond"
-        :class="{ 'pc-sidebar__cond--on': hasCond(cond.id) }"
-        :title="cond.label"
-        :aria-label="cond.label + (hasCond(cond.id) ? ' — actif' : '')"
-        @click.stop="$emit('toggle-condition', { pcId: pc.id, conditionId: cond.id })"
-      >
-        {{ cond.emoji }}
-      </button>
     </div>
   </div>
 </template>
