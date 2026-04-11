@@ -49,19 +49,6 @@
           </span>
         </div>
 
-        <!-- Fear/Hope compact inline -->
-        <FearHopeTracker
-          :compact="true"
-          :fear="fearHope.fear.value"
-          :hope="fearHope.hope.value"
-          :fear-spent="fearHope.fearSpent.value"
-          :hope-spent="fearHope.hopeSpent.value"
-          @add-fear="onAddFear"
-          @spend-fear="onSpendFear"
-          @add-hope="onAddHope"
-          @spend-hope="onSpendHope"
-        />
-
         <!-- Groupe droit : actions rapides -->
         <div class="live__header-actions">
           <button
@@ -264,6 +251,27 @@
         @close="quickActionPcId = null"
       />
 
+      <!-- ══ Overlay visuel de drag ══ -->
+      <div
+        v-if="drag.isDragging.value"
+        class="live__drag-indicator"
+        :style="{ left: drag.dragPos.value.x + 'px', top: drag.dragPos.value.y + 'px' }"
+        aria-hidden="true"
+      >
+        {{ drag.dragSource.value?.name }}
+      </div>
+
+      <!-- ══ Popup d'action (drag-and-drop) ══ -->
+      <DragActionPopup
+        :visible="!!drag.dropResult.value"
+        :source-name="drag.dropResult.value?.source?.name || ''"
+        :target-name="drag.dropResult.value?.target?.name || ''"
+        :anchor-x="drag.dropResult.value?.x || 0"
+        :anchor-y="drag.dropResult.value?.y || 0"
+        @apply="onDragApply"
+        @close="drag.clearDropResult()"
+      />
+
       <!-- ══ Bandeau d'actions (ciblage) ══ -->
       <ActionBar />
 
@@ -345,22 +353,22 @@ import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
 import ActionBar from '../components/ActionBar.vue'
 import QuickActionMenu from '../components/QuickActionMenu.vue'
-import FearHopeTracker from '../components/FearHopeTracker.vue'
+import DragActionPopup from '../components/DragActionPopup.vue'
+import { useDragTarget } from '../composables/useDragTarget'
 import { useHaptic } from '../composables/useHaptic'
-import { useFearHope } from '../composables/useFearHope'
 import { useActionBar } from '../composables/useActionBar'
 import { useCharacterStore } from '@modules/characters'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, FearHopeTracker, QuickActionMenu },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, QuickActionMenu, DragActionPopup },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
-    const fearHope = useFearHope()
     const characterStore = useCharacterStore()
+    const drag = useDragTarget()
 
     // Bandeau d'actions (ciblage)
     const actionBar = useActionBar()
@@ -430,16 +438,6 @@ export default {
 
       quickActionPcId.value = null
     }
-
-    // ── Fear/Hope (avec logging) ──
-    function logFearHope(action, pool, amount) {
-      store.encounterLog.push({ action, pool, amount, timestamp: Date.now() })
-      store.persistState()
-    }
-    function onAddFear() { fearHope.addFear(); logFearHope('fear_hope', 'fear', 1) }
-    function onSpendFear() { fearHope.spendFear(); logFearHope('fear_hope_spent', 'fear', 1) }
-    function onAddHope() { fearHope.addHope(); logFearHope('fear_hope', 'hope', 1) }
-    function onSpendHope() { fearHope.spendHope(); logFearHope('fear_hope_spent', 'hope', 1) }
 
     // ── Actions adversaire (avec haptique) ──
     function onApplyDamage({ instanceId, hpToMark }) {
@@ -602,14 +600,94 @@ export default {
       }
     }
 
+    // ── Drag-and-drop : listeners globaux ──
+    function onGlobalPointerMove(e) {
+      if (!drag.isDragging.value) return
+      drag.moveDrag(e)
+      // Detecter la cible sous le curseur via data-attributes
+      const el = document.elementFromPoint(e.clientX, e.clientY)
+      if (el) {
+        const card = el.closest('[data-drag-id]')
+        if (card) {
+          const id = card.getAttribute('data-drag-id')
+          const type = card.getAttribute('data-drag-type')
+          drag.setDragOver({ id, type, name: card.getAttribute('aria-label') || id })
+        } else {
+          drag.setDragOver(null)
+        }
+      }
+    }
+
+    function onGlobalPointerUp() {
+      if (drag.isDragging.value) {
+        drag.endDrag()
+      }
+    }
+
+    /**
+     * Applique l'action selectionnee dans le popup de drag.
+     * @param {{ mode: string, amount: number }} action
+     */
+    function onDragApply({ mode, amount }) {
+      const drop = drag.dropResult.value
+      if (!drop) return
+
+      haptic.tap()
+      const { target } = drop
+
+      if (target.type === 'adversary') {
+        // PJ → Adversaire : marquer HP/Stress sur l'adversaire
+        const instances = store.liveAdversaries.filter(a => a.adversaryId === target.id && !a.isDefeated)
+        const inst = instances[0]
+        if (!inst) { drag.clearDropResult(); return }
+
+        if (mode === 'damage-hp') {
+          store.markAdversaryHP(inst.instanceId, amount)
+        } else if (mode === 'damage-stress') {
+          store.markAdversaryStress(inst.instanceId, amount)
+        } else if (mode === 'heal-hp') {
+          for (let i = 0; i < amount; i++) store.clearAdversaryHP(inst.instanceId, 1)
+        } else if (mode === 'heal-stress') {
+          for (let i = 0; i < amount; i++) store.clearAdversaryStress(inst.instanceId, 1)
+        }
+      } else if (target.type === 'pc') {
+        // Adversaire → PJ : marquer HP/Stress sur le PJ
+        const pc = store.participantPcs.find(p => p.id === target.id)
+        if (!pc) { drag.clearDropResult(); return }
+
+        if (mode === 'damage-hp') {
+          const newVal = Math.min(pc.maxHP, (pc.currentHP || 0) + amount)
+          characterStore.patchCharacterById(target.id, { currentHP: newVal })
+          store.logPcHit(target.id, amount)
+        } else if (mode === 'damage-stress') {
+          const newVal = Math.min(pc.maxStress, (pc.currentStress || 0) + amount)
+          characterStore.patchCharacterById(target.id, { currentStress: newVal })
+        } else if (mode === 'heal-hp') {
+          const newVal = Math.max(0, (pc.currentHP || 0) - amount)
+          characterStore.patchCharacterById(target.id, { currentHP: newVal })
+        } else if (mode === 'heal-stress') {
+          const newVal = Math.max(0, (pc.currentStress || 0) - amount)
+          characterStore.patchCharacterById(target.id, { currentStress: newVal })
+        }
+      }
+
+      drag.clearDropResult()
+    }
+
     onMounted(() => {
       if (!store.isActive) store.restoreState()
       window.addEventListener('keydown', onKeydown)
+      window.addEventListener('pointermove', onGlobalPointerMove)
+      window.addEventListener('pointerup', onGlobalPointerUp)
     })
-    onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
+    onUnmounted(() => {
+      window.removeEventListener('keydown', onKeydown)
+      window.removeEventListener('pointermove', onGlobalPointerMove)
+      window.removeEventListener('pointerup', onGlobalPointerUp)
+    })
 
     return {
-      store, isPcActor, hasAdversaries, fearHope,
+      store, isPcActor, hasAdversaries, drag, onDragApply,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -622,7 +700,6 @@ export default {
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       onSwipeDamage, onSwipeArmor,
       quickActionPcId, quickActionAnchor, onQuickAction,
-      onAddFear, onSpendFear, onAddHope, onSpendHope,
       showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       showCountdownBar,
@@ -932,4 +1009,21 @@ export default {
 .live__end-actions { display: flex; justify-content: flex-end; gap: var(--space-sm); padding-top: var(--space-sm); }
 .live__end-actions button { padding: var(--space-xs) var(--space-md); min-height: var(--touch-min); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: transparent; color: var(--color-text-secondary); cursor: pointer; touch-action: manipulation; }
 .live__end-confirm { border-color: var(--color-accent-danger) !important; background: var(--color-accent-danger) !important; color: white !important; font-weight: var(--font-weight-bold); }
+
+/* ══ Indicateur de drag ══ */
+.live__drag-indicator {
+  position: fixed;
+  z-index: 500;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-accent-hope);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-hope);
+  white-space: nowrap;
+}
 </style>

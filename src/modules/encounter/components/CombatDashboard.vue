@@ -40,18 +40,6 @@
 
           <!-- Corps du panneau : tracker Fear/Hope + vue d'ensemble -->
           <div class="cdash__body">
-            <FearHopeTracker
-              :fear="fearHope.fear.value"
-              :hope="fearHope.hope.value"
-              :fear-spent="fearHope.fearSpent.value"
-              :hope-spent="fearHope.hopeSpent.value"
-              @add-fear="fearHope.addFear()"
-              @spend-fear="fearHope.spendFear()"
-              @add-hope="fearHope.addHope()"
-              @spend-hope="fearHope.spendHope()"
-              @roll-result="onRollResult"
-            />
-
             <BattlefieldOverview
               :pcs="store.participantPcs"
               :pc-down-status="store.pcDownStatus"
@@ -74,10 +62,8 @@
 </template>
 
 <script>
-import FearHopeTracker from './FearHopeTracker.vue'
 import BattlefieldOverview from './BattlefieldOverview.vue'
 import { useEncounterLiveStore } from '../stores/encounterLiveStore'
-import { useFearHope } from '../composables/useFearHope'
 import { useLiveStats } from '../composables/useLiveStats'
 
 /**
@@ -90,13 +76,12 @@ import { useLiveStats } from '../composables/useLiveStats'
 export default {
   name: 'CombatDashboard',
 
-  components: { FearHopeTracker, BattlefieldOverview },
+  components: { BattlefieldOverview },
 
   setup() {
     const store = useEncounterLiveStore()
-    const fearHope = useFearHope()
     const liveStats = useLiveStats(store)
-    return { store, fearHope, liveStats }
+    return { store, liveStats }
   },
 
   data() {
@@ -133,13 +118,6 @@ export default {
       }
     },
 
-    /**
-     * Applique l'effet Fear/Hope d'un resultat de jet de dualite.
-     * @param {string} rollResultId - Identifiant du resultat (ex: 'criticalSuccess')
-     */
-    onRollResult(rollResultId) {
-      this.fearHope.applyRollResult(rollResultId)
-    }
   }
 }
 </script>

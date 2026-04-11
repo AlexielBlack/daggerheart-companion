@@ -67,10 +67,10 @@ describe('CombatDashboard', () => {
   // ── Contenu ──────────────────────────────────────────
 
   describe('contenu', () => {
-    it('contient FearHopeTracker quand ouvert', async () => {
+    it('ne contient plus FearHopeTracker (retire du combat)', async () => {
       const wrapper = mountDashboard()
       await wrapper.find('.cdash__toggle').trigger('click')
-      expect(wrapper.findComponent(FearHopeTracker).exists()).toBe(true)
+      expect(wrapper.findComponent(FearHopeTracker).exists()).toBe(false)
     })
 
     it('contient BattlefieldOverview quand ouvert', async () => {

@@ -5,16 +5,19 @@
       'pc-sidebar--selected': isSelected,
       'pc-sidebar--down': isDown,
       'pc-sidebar--targeting': isTargeting,
-      'pc-sidebar--targeted': isTargeted
+      'pc-sidebar--targeted': isTargeted,
+      'pc-sidebar--drag-over': isDragOver
     }"
     role="button"
     tabindex="0"
+    :data-drag-id="pc.id"
+    data-drag-type="pc"
     :aria-pressed="isTargeting ? isTargeted : undefined"
     :aria-label="isTargeting ? 'Sélectionner ' + pc.name + ' comme cible' : pc.name + (isDown ? ' (à terre)' : '') + ' — Évasion ' + effectiveEvasion"
     @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
-    @pointerdown="lp.onPointerDown($event)"
+    @pointerdown="onPointerDown"
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
     @touchstart.passive="swipe.onTouchStart($event)"
@@ -61,80 +64,23 @@
       </div>
     </div>
 
-    <!-- HP / Stress compacts -->
+    <!-- HP / Stress (lecture seule — modifiés via swipe ou long-press) -->
     <div
       class="pc-sidebar__hp-row"
       :aria-label="'PV : ' + (pc.currentHP || 0) + ' marques sur ' + pc.maxHP"
     >
-      <button
-        class="pc-sidebar__mini-btn"
-        :disabled="(pc.currentHP || 0) <= 0"
-        aria-label="Soigner 1 PV"
-        @click.stop="decrementHP()"
-      >
-        &minus;
-      </button>
       <span class="pc-sidebar__hp-text">
         &#x2764;&#xFE0F; {{ pc.currentHP || 0 }}/{{ pc.maxHP }}
       </span>
-      <button
-        class="pc-sidebar__mini-btn"
-        :disabled="(pc.currentHP || 0) >= pc.maxHP"
-        aria-label="Marquer 1 degat"
-        @click.stop="incrementHP()"
-      >
-        +
-      </button>
     </div>
 
     <div
       class="pc-sidebar__stress-row"
       :aria-label="'Stress : ' + (pc.currentStress || 0) + ' sur ' + pc.maxStress"
     >
-      <button
-        class="pc-sidebar__mini-btn"
-        :disabled="(pc.currentStress || 0) <= 0"
-        aria-label="Reduire 1 stress"
-        @click.stop="decrementStress()"
-      >
-        &minus;
-      </button>
       <span class="pc-sidebar__stress-text">
         &#x1F4A2; {{ pc.currentStress || 0 }}/{{ pc.maxStress }}
       </span>
-      <button
-        class="pc-sidebar__mini-btn"
-        :disabled="(pc.currentStress || 0) >= pc.maxStress"
-        aria-label="Marquer 1 stress"
-        @click.stop="incrementStress()"
-      >
-        +
-      </button>
-    </div>
-
-    <!-- Espoir -->
-    <div
-      class="pc-sidebar__hope-row"
-      :aria-label="'Espoir : ' + (pc.hope || 0)"
-    >
-      <button
-        class="pc-sidebar__mini-btn"
-        :disabled="(pc.hope || 0) <= 0"
-        aria-label="Retirer 1 espoir"
-        @click.stop="decrementHope()"
-      >
-        &minus;
-      </button>
-      <span class="pc-sidebar__hope-text">
-        &#x2728; {{ pc.hope || 0 }}
-      </span>
-      <button
-        class="pc-sidebar__mini-btn"
-        aria-label="Ajouter 1 espoir"
-        @click.stop="incrementHope()"
-      >
-        +
-      </button>
     </div>
 
     <!-- Arme équipée (compact) -->
@@ -182,9 +128,11 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 import { useLongPress } from '../composables/useLongPress'
 import { useSwipe } from '../composables/useSwipe'
+import { useDragTarget } from '../composables/useDragTarget'
 import { useCharacterStore } from '@modules/characters'
 import { getPrimaryWeaponById } from '@data/equipment'
 
@@ -201,9 +149,44 @@ export default {
   },
   emits: ['select', 'toggle-condition', 'long-press', 'toggle-target', 'swipe-damage', 'swipe-armor'],
   setup(props, { emit }) {
+    const drag = useDragTarget()
+
     const lp = useLongPress((e) => {
       emit('long-press', props.pc.id, e)
     }, { delay: 400 })
+
+    // ── Drag : pointerdown demarre le drag après un seuil de mouvement ──
+    let dragStartPos = null
+    function onPointerDown(e) {
+      lp.onPointerDown(e)
+      dragStartPos = { x: e.clientX, y: e.clientY }
+      function onMove(me) {
+        if (!dragStartPos) return
+        const dx = me.clientX - dragStartPos.x
+        const dy = me.clientY - dragStartPos.y
+        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+          // Seuil atteint → drag
+          lp.onPointerUp() // annuler le long-press
+          drag.startDrag({ id: props.pc.id, type: 'pc', name: props.pc.name }, me)
+          dragStartPos = null
+          cleanup()
+        }
+      }
+      function onUp() { dragStartPos = null; cleanup() }
+      function cleanup() {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+      }
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
+    }
+
+    // ── Drop target : signaler le survol quand un drag adversaire passe dessus ──
+    const isDragOver = computed(() =>
+      drag.isDragging.value &&
+      drag.dragOver.value?.id === props.pc.id &&
+      drag.dragOver.value?.type === 'pc'
+    )
 
     const swipe = useSwipe({
       onSwipeLeft() {
@@ -269,6 +252,8 @@ export default {
     return {
       lp,
       swipe,
+      onPointerDown,
+      isDragOver,
       onClick,
       incrementHP,
       decrementHP,
@@ -344,6 +329,12 @@ export default {
 
 .pc-sidebar--down.pc-sidebar--selected {
   opacity: 0.8;
+}
+
+.pc-sidebar--drag-over {
+  border-color: var(--color-accent-hope);
+  box-shadow: 0 0 0 2px var(--color-accent-hope), 0 0 12px rgba(83, 168, 182, 0.3);
+  background: rgba(83, 168, 182, 0.1);
 }
 
 /* ── Header ── */

@@ -6,8 +6,11 @@
       'adv-group--all-defeated': group.activeCount === 0,
       'adv-group--collapsed': collapsed,
       'adv-group--targeting': isTargeting,
-      'adv-group--targeted': isTargeting && allGroupTargeted
+      'adv-group--targeted': isTargeting && allGroupTargeted,
+      'adv-group--drag-over': isDragOverGroup
     }"
+    :data-drag-id="group.adversaryId"
+    data-drag-type="adversary"
     :aria-label="group.name + ' — ' + group.instances.length + ' instance(s)'"
   >
     <!-- ── Header : toujours visible ── -->
@@ -17,6 +20,7 @@
       tabindex="0"
       :aria-expanded="!collapsed"
       @click="onHeaderClick"
+      @pointerdown="onDragPointerDown"
       @keydown.enter="onHeaderClick"
       @keydown.space.prevent="onHeaderClick"
     >
@@ -367,7 +371,9 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
+import { useDragTarget } from '../composables/useDragTarget'
 
 export default {
   name: 'AdversaryGroupCard',
@@ -385,6 +391,44 @@ export default {
     'toggle-condition', 'toggle-acted',
     'toggle-target'
   ],
+  setup(props) {
+    const drag = useDragTarget()
+
+    const isDragOverGroup = computed(() =>
+      drag.isDragging.value &&
+      drag.dragOver.value?.id === props.group.adversaryId &&
+      drag.dragOver.value?.type === 'adversary'
+    )
+
+    let dragStartPos = null
+    function onDragPointerDown(e) {
+      if (props.group.activeCount === 0) return
+      dragStartPos = { x: e.clientX, y: e.clientY }
+      function onMove(me) {
+        if (!dragStartPos) return
+        const dx = me.clientX - dragStartPos.x
+        const dy = me.clientY - dragStartPos.y
+        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+          drag.startDrag({
+            id: props.group.adversaryId,
+            type: 'adversary',
+            name: props.group.name
+          }, me)
+          dragStartPos = null
+          cleanup()
+        }
+      }
+      function onUp() { dragStartPos = null; cleanup() }
+      function cleanup() {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+      }
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
+    }
+
+    return { isDragOverGroup, onDragPointerDown }
+  },
   data() {
     return {
       manualCollapsed: null,
@@ -540,6 +584,12 @@ export default {
 }
 
 .adv-group--all-defeated { opacity: 0.5; }
+
+.adv-group--drag-over {
+  border-color: var(--color-accent-danger);
+  box-shadow: 0 0 0 2px var(--color-accent-danger), 0 0 12px rgba(244, 67, 54, 0.3);
+  background: rgba(244, 67, 54, 0.05);
+}
 
 .adv-group--targeting {
   cursor: crosshair;
