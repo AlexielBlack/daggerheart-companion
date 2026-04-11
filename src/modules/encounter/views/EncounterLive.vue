@@ -56,10 +56,10 @@
           :hope="fearHope.hope.value"
           :fear-spent="fearHope.fearSpent.value"
           :hope-spent="fearHope.hopeSpent.value"
-          @add-fear="fearHope.addFear()"
-          @spend-fear="fearHope.spendFear()"
-          @add-hope="fearHope.addHope()"
-          @spend-hope="fearHope.spendHope()"
+          @add-fear="onAddFear"
+          @spend-fear="onSpendFear"
+          @add-hope="onAddHope"
+          @spend-hope="onSpendHope"
         />
 
         <!-- Groupe droit : actions rapides -->
@@ -431,6 +431,16 @@ export default {
       quickActionPcId.value = null
     }
 
+    // ── Fear/Hope (avec logging) ──
+    function logFearHope(action, pool, amount) {
+      store.encounterLog.push({ action, pool, amount, timestamp: Date.now() })
+      store.persistState()
+    }
+    function onAddFear() { fearHope.addFear(); logFearHope('fear_hope', 'fear', 1) }
+    function onSpendFear() { fearHope.spendFear(); logFearHope('fear_hope_spent', 'fear', 1) }
+    function onAddHope() { fearHope.addHope(); logFearHope('fear_hope', 'hope', 1) }
+    function onSpendHope() { fearHope.spendHope(); logFearHope('fear_hope_spent', 'hope', 1) }
+
     // ── Actions adversaire (avec haptique) ──
     function onApplyDamage({ instanceId, hpToMark }) {
       haptic.tap()
@@ -612,6 +622,7 @@ export default {
       onTogglePcCondition, onToggleAdvCondition, onToggleActed,
       onSwipeDamage, onSwipeArmor,
       quickActionPcId, quickActionAnchor, onQuickAction,
+      onAddFear, onSpendFear, onAddHope, onSpendHope,
       showReinforcementPanel, addReinforcement, addNpcReinforcement, onUndo,
       showCombatLog, clearCombatLog,
       showCountdownBar,

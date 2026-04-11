@@ -482,9 +482,11 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function setSceneMode(mode) {
     if (isValidSceneMode(mode)) {
+      const prev = sceneMode.value
       sceneMode.value = mode
       spotlight.value = mode === SCENE_MODE_PC_ATTACK ? SPOTLIGHT_PC : SPOTLIGHT_GM
       advActedThisTurn.value = {}
+      encounterLog.value.push({ action: 'scene_mode', from: prev, to: mode, timestamp: Date.now() })
       persistState()
     }
   }
@@ -518,6 +520,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function swapSpotlight() {
+    const prev = sceneMode.value
     if (sceneMode.value === SCENE_MODE_PC_ATTACK) {
       sceneMode.value = SCENE_MODE_ADVERSARY_ATTACK
       spotlight.value = SPOTLIGHT_GM
@@ -526,6 +529,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
       spotlight.value = SPOTLIGHT_PC
     }
     advActedThisTurn.value = {}
+    encounterLog.value.push({ action: 'scene_mode', from: prev, to: sceneMode.value, timestamp: Date.now() })
     persistState()
   }
 

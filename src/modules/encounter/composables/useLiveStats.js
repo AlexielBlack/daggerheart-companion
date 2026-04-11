@@ -89,6 +89,62 @@ export function useLiveStats(store) {
     return map
   })
 
+  // ── Dégâts reçus par PJ ─────────────────────────────
+
+  /**
+   * Dégâts reçus ventilés par PJ (hits + armor + downs).
+   * @returns {{ [pcId: string]: { pcName: string, hitsReceived: number, hpTaken: number, armorUsed: number, downs: number, stressReceived: number } }}
+   */
+  const damageReceivedByPc = computed(() => {
+    const map = {}
+    for (const entry of store.encounterLog) {
+      if (entry.action === 'pc_hit' && entry.pcId) {
+        if (!map[entry.pcId]) map[entry.pcId] = { pcName: entry.pcName, hitsReceived: 0, hpTaken: 0, armorUsed: 0, downs: 0, stressReceived: 0 }
+        map[entry.pcId].hitsReceived++
+        map[entry.pcId].hpTaken += entry.hpMarked || 0
+      }
+      if (entry.action === 'pc_armor' && entry.pcId) {
+        if (!map[entry.pcId]) map[entry.pcId] = { pcName: entry.pcName, hitsReceived: 0, hpTaken: 0, armorUsed: 0, downs: 0, stressReceived: 0 }
+        map[entry.pcId].armorUsed++
+      }
+      if (entry.action === 'pc_down' && entry.pcId) {
+        if (!map[entry.pcId]) map[entry.pcId] = { pcName: entry.pcName, hitsReceived: 0, hpTaken: 0, armorUsed: 0, downs: 0, stressReceived: 0 }
+        map[entry.pcId].downs++
+      }
+    }
+    return map
+  })
+
+  /** Nombre total d'utilisations d'armure par les PJ */
+  const totalArmorUsed = computed(() =>
+    store.encounterLog.filter(e => e.action === 'pc_armor').length
+  )
+
+  /** Nombre total de PJ tombés à terre */
+  const totalPcDowns = computed(() =>
+    store.encounterLog.filter(e => e.action === 'pc_down').length
+  )
+
+  // ── Breakdown adversaires ──────────────────────────
+
+  /**
+   * HP marqués ventilés par groupe d'adversaires.
+   * @returns {{ [adversaryId: string]: { name: string, type: string, totalHP: number, markedHP: number, defeated: number, total: number } }}
+   */
+  const damageByAdversaryGroup = computed(() => {
+    const map = {}
+    for (const adv of store.liveAdversaries) {
+      if (!map[adv.adversaryId]) {
+        map[adv.adversaryId] = { name: adv.name, type: adv.type, totalHP: 0, markedHP: 0, defeated: 0, total: 0 }
+      }
+      map[adv.adversaryId].totalHP += adv.maxHP || 0
+      map[adv.adversaryId].markedHP += adv.markedHP || 0
+      map[adv.adversaryId].total++
+      if (adv.isDefeated) map[adv.adversaryId].defeated++
+    }
+    return map
+  })
+
   // ── Résumé des adversaires ──────────────────────────
 
   /**
@@ -101,6 +157,13 @@ export function useLiveStats(store) {
     return { active: total - defeated, defeated, total }
   })
 
+  // ── Conditions infligées ───────────────────────────
+
+  /** Nombre de conditions ajoutées (PJ + adversaires) */
+  const conditionsAdded = computed(() =>
+    store.encounterLog.filter(e => e.action === 'condition_added').length
+  )
+
   return {
     totalDamageDealt,
     totalStressDealt,
@@ -110,6 +173,11 @@ export function useLiveStats(store) {
     pcHitCount,
     damageByPc,
     killsByPc,
-    adversaryStatusSummary
+    damageReceivedByPc,
+    totalArmorUsed,
+    totalPcDowns,
+    damageByAdversaryGroup,
+    adversaryStatusSummary,
+    conditionsAdded
   }
 }
