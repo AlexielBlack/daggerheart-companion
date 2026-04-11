@@ -49,6 +49,19 @@
           </span>
         </div>
 
+        <!-- Fear/Hope compact inline -->
+        <FearHopeTracker
+          :compact="true"
+          :fear="fearHope.fear.value"
+          :hope="fearHope.hope.value"
+          :fear-spent="fearHope.fearSpent.value"
+          :hope-spent="fearHope.hopeSpent.value"
+          @add-fear="fearHope.addFear()"
+          @spend-fear="fearHope.spendFear()"
+          @add-hope="fearHope.addHope()"
+          @spend-hope="fearHope.spendHope()"
+        />
+
         <!-- Groupe droit : actions rapides -->
         <div class="live__header-actions">
           <button
@@ -111,16 +124,20 @@
         @reset="onResetCountdown"
       />
 
-      <!-- ══ Bouton flottant contexte (tablette uniquement) ══ -->
+      <!-- ══ Barre peek contexte (tablette portrait uniquement) ══ -->
       <button
         v-if="hasAdversaries"
-        class="live__ctx-fab"
-        :class="{ 'live__ctx-fab--open': tabletCtxOpen }"
+        class="live__ctx-peek"
+        :class="{ 'live__ctx-peek--open': tabletCtxOpen }"
         :aria-label="tabletCtxOpen ? 'Fermer le panneau contexte' : 'Ouvrir le panneau contexte'"
-        :title="tabletCtxOpen ? 'Fermer le contexte' : 'Voir le contexte'"
         @click="tabletCtxOpen = !tabletCtxOpen"
       >
-        {{ tabletCtxOpen ? '✕' : '📋' }}
+        <span class="live__ctx-peek-label">
+          {{ store.activePc ? '🧑 ' + store.activePc.name : '' }}
+          {{ store.activePc && store.activeAdversary ? ' · ' : '' }}
+          {{ store.activeAdversary ? '👹 ' + store.activeAdversary.name : '' }}
+        </span>
+        <span class="live__ctx-peek-hint">{{ tabletCtxOpen ? '▼ Fermer' : '▲ Features' }}</span>
       </button>
 
       <!-- ══ Grille 3 colonnes (desktop) / 2 colonnes + side-sheet (tablette) ══ -->
@@ -314,17 +331,20 @@ import SessionTimer from '../components/SessionTimer.vue'
 import QuickReferencePanel from '../components/QuickReferencePanel.vue'
 import CombatDashboard from '../components/CombatDashboard.vue'
 import ActionBar from '../components/ActionBar.vue'
+import FearHopeTracker from '../components/FearHopeTracker.vue'
 import { useHaptic } from '../composables/useHaptic'
+import { useFearHope } from '../composables/useFearHope'
 import { useActionBar } from '../composables/useActionBar'
 import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, FearHopeTracker },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
     const haptic = useHaptic()
+    const fearHope = useFearHope()
 
     // Bandeau d'actions (ciblage)
     const actionBar = useActionBar()
@@ -510,7 +530,7 @@ export default {
     onUnmounted(() => { window.removeEventListener('keydown', onKeydown) })
 
     return {
-      store, isPcActor, hasAdversaries,
+      store, isPcActor, hasAdversaries, fearHope,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
@@ -645,18 +665,18 @@ export default {
 .live__col-ctx-wrapper { display: contents; }
 .live__col-ctx { overflow-y: auto; overflow-x: hidden; }
 
-/* Bouton flottant contexte — masqué par défaut (visible uniquement en tablette) */
-.live__ctx-fab { display: none; }
+/* Barre peek contexte — masquée par défaut (visible uniquement en tablette portrait) */
+.live__ctx-peek { display: none; }
 
-/* ══ Breakpoint tablette : 768px – 1023px ══ */
+/* ══ Breakpoint tablette portrait : 768px – 1024px ══ */
 @media (min-width: 768px) and (max-width: 1024px) {
   /* Header : titre plus lisible */
   .live__title { font-size: var(--font-size-lg); max-width: 20rem; }
   .live__tier { font-size: var(--font-size-sm); }
 
-  /* Grille 2 colonnes : PC sidebar | Adversaires (toujours visible) */
+  /* Grille 2 colonnes égales : PJ | Adversaires */
   .live__grid {
-    grid-template-columns: minmax(180px, 220px) 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     position: relative;
   }
@@ -672,10 +692,9 @@ export default {
   .live__col-adv {
     grid-column: 2;
     grid-row: 1;
-    order: 2;
   }
 
-  /* Side-sheet contexte — overlay coulissant depuis la droite */
+  /* Bottom-sheet contexte — overlay coulissant depuis le bas */
   .live__col-ctx-wrapper {
     display: block;
     position: fixed;
@@ -691,50 +710,63 @@ export default {
   }
   .live__col-ctx {
     position: absolute;
-    top: 0;
+    left: 0;
     right: 0;
     bottom: 0;
-    width: min(380px, 75vw);
+    height: min(60vh, 500px);
     background: var(--color-bg-primary);
-    border-left: 1px solid var(--color-border);
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
-    transform: translateX(100%);
+    border-top: 1px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(100%);
     transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
   .live__col-ctx-wrapper--open .live__col-ctx {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 
-  /* Bouton flottant contexte visible en tablette */
-  .live__ctx-fab {
+  /* Barre peek contexte — visible en tablette portrait */
+  .live__ctx-peek {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: fixed;
-    bottom: var(--space-lg);
-    right: var(--space-md);
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 60;
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border);
+    min-height: var(--touch-min);
+    padding: var(--space-xs) var(--space-md);
+    border: none;
+    border-top: 1px solid var(--color-border);
     background: var(--color-bg-secondary);
     color: var(--color-text-primary);
-    font-size: var(--font-size-lg);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: var(--font-size-sm);
     cursor: pointer;
     touch-action: manipulation;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.2s;
   }
-  .live__ctx-fab:hover { background: var(--color-bg-elevated); }
-  .live__ctx-fab:active { transform: scale(0.93); }
-  .live__ctx-fab--open {
-    background: var(--color-accent-hope);
-    color: white;
-    border-color: var(--color-accent-hope);
+  .live__ctx-peek:active { background: var(--color-bg-elevated); }
+  .live__ctx-peek--open {
+    display: none;
+  }
+  .live__ctx-peek-label {
+    font-weight: var(--font-weight-bold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+  .live__ctx-peek-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-hope);
+    font-weight: var(--font-weight-bold);
+    white-space: nowrap;
+    margin-left: var(--space-sm);
   }
 }
 
@@ -746,7 +778,7 @@ export default {
   /* En mobile, le contexte est une colonne visible inline */
   .live__col-ctx-wrapper { display: contents; }
   .live__col-ctx { border-top: 1px solid var(--color-border); max-height: 40vh; overflow-y: auto; }
-  .live__ctx-fab { display: none; }
+  .live__ctx-peek { display: none; }
 }
 
 /* ══ Paysage tablette / petit laptop (768–1279px landscape) ══ */
@@ -758,17 +790,20 @@ export default {
     min-width: 200px;
     max-width: 200px;
   }
-  /* En paysage tablette, le side-sheet n'est pas nécessaire : on affiche les 3 colonnes */
+  /* En paysage tablette, le bottom-sheet n'est pas nécessaire : on affiche les 3 colonnes */
   .live__col-ctx-wrapper { display: contents; }
   .live__col-ctx {
     border-left: 1px solid var(--color-border);
     position: static;
     transform: none;
     width: auto;
+    height: auto;
     box-shadow: none;
     background: var(--color-bg-primary);
+    border-radius: 0;
+    border-top: none;
   }
-  .live__ctx-fab { display: none; }
+  .live__ctx-peek { display: none; }
 }
 
 /* ══ Bouton Renforts (header) ══ */

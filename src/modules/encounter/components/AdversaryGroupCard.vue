@@ -88,6 +88,24 @@
       </span>
     </div>
 
+    <!-- ── Attaque standard (toujours visible) ── -->
+    <div
+      v-if="firstInstance.attack"
+      class="adv-group__attack"
+    >
+      <span class="adv-group__atk-label">ATK</span>
+      <span class="adv-group__atk-mod">{{ firstInstance.attack.modifier >= 0 ? '+' : '' }}{{ firstInstance.attack.modifier }}</span>
+      <span class="adv-group__atk-name">
+        {{ firstInstance.attack.name }}
+      </span>
+      <span class="adv-group__atk-range">
+        {{ firstInstance.attack.range }}
+      </span>
+      <span class="adv-group__atk-dmg">
+        {{ firstInstance.attack.damage }}
+      </span>
+    </div>
+
     <!-- ── Contenu dépliable ── -->
     <div
       v-show="!collapsed"
@@ -120,24 +138,6 @@
           <template v-else-if="suggestedTier === 2">→ 2HP</template>
           <template v-else-if="suggestedTier === 3">→ 3HP</template>
           <template v-else>&nbsp;</template>
-        </span>
-      </div>
-
-      <!-- Attaque standard -->
-      <div
-        v-if="firstInstance.attack"
-        class="adv-group__attack"
-      >
-        <span class="adv-group__atk-label">ATK</span>
-        <span class="adv-group__atk-mod">{{ firstInstance.attack.modifier >= 0 ? '+' : '' }}{{ firstInstance.attack.modifier }}</span>
-        <span class="adv-group__atk-name">
-          {{ firstInstance.attack.name }}
-        </span>
-        <span class="adv-group__atk-range">
-          {{ firstInstance.attack.range }}
-        </span>
-        <span class="adv-group__atk-dmg">
-          {{ firstInstance.attack.damage }}
         </span>
       </div>
 

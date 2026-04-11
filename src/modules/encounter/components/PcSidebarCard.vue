@@ -135,9 +135,19 @@
       </button>
     </div>
 
-    <!-- Résumé compact des conditions actives (visible quand non sélectionné) -->
+    <!-- Arme équipée (compact) -->
     <div
-      v-if="!isSelected && activeConditions.length > 0"
+      v-if="weapon"
+      class="pc-sidebar__weapon"
+    >
+      <span class="pc-sidebar__weapon-icon">{{ weapon.damageType === 'mag' ? '✨' : '🗡️' }}</span>
+      <span class="pc-sidebar__weapon-name">{{ weapon.name }}</span>
+      <span class="pc-sidebar__weapon-dmg">{{ weapon.damage }}</span>
+    </div>
+
+    <!-- Conditions actives (toujours visibles si > 0) -->
+    <div
+      v-if="activeConditions.length > 0"
       class="pc-sidebar__cond-summary"
       :aria-label="activeConditions.length + ' condition(s) active(s)'"
     >
@@ -173,6 +183,7 @@
 import { LIVE_CONDITIONS } from '@data/encounters/liveConstants'
 import { useLongPress } from '../composables/useLongPress'
 import { useCharacterStore } from '@modules/characters'
+import { getPrimaryWeaponById } from '@data/equipment'
 
 export default {
   name: 'PcSidebarCard',
@@ -261,6 +272,11 @@ export default {
     /** Détails des conditions actuellement actives (pour le résumé compact) */
     activeConditionDetails() {
       return LIVE_CONDITIONS.filter((c) => this.activeConditions.includes(c.id))
+    },
+    /** Arme principale équipée */
+    weapon() {
+      if (!this.pc.primaryWeaponId) return null
+      return getPrimaryWeaponById(this.pc.primaryWeaponId) || null
     }
   },
   methods: {
@@ -410,6 +426,34 @@ export default {
   border-radius: var(--radius-sm);
   line-height: 1;
 }
+
+.pc-sidebar__cond-dot--toggle {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pc-sidebar__cond-dot--toggle:hover {
+  background: rgba(244, 67, 54, 0.3);
+}
+
+/* ── Arme équipée (compact) ── */
+
+.pc-sidebar__weapon {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  padding: 1px var(--space-xs);
+  background: var(--color-bg-input);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pc-sidebar__weapon-icon { flex-shrink: 0; }
+.pc-sidebar__weapon-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.pc-sidebar__weapon-dmg { font-weight: var(--font-weight-bold); color: var(--color-text-primary); flex-shrink: 0; }
 
 /* ── Conditions togglables (sélectionné) ── */
 

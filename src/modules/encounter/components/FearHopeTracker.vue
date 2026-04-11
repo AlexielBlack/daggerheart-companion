@@ -1,5 +1,56 @@
 <template>
+  <!-- ══ Mode compact (inline header) ══ -->
   <div
+    v-if="compact"
+    class="fh-compact"
+    role="region"
+    aria-label="Économie Fear et Hope"
+  >
+    <div class="fh-compact__group fh-compact__group--hope">
+      <button
+        type="button"
+        class="fh-compact__btn"
+        aria-label="Dépenser 1 Hope"
+        :disabled="hope <= 0"
+        @click="$emit('spend-hope')"
+      >
+        −
+      </button>
+      <span class="fh-compact__val fh-compact__val--hope">☀️ {{ hope }}</span>
+      <button
+        type="button"
+        class="fh-compact__btn"
+        aria-label="Ajouter 1 Hope"
+        @click="$emit('add-hope')"
+      >
+        +
+      </button>
+    </div>
+    <div class="fh-compact__group fh-compact__group--fear">
+      <button
+        type="button"
+        class="fh-compact__btn"
+        aria-label="Dépenser 1 Fear"
+        :disabled="fear <= 0"
+        @click="$emit('spend-fear')"
+      >
+        −
+      </button>
+      <span class="fh-compact__val fh-compact__val--fear">🌙 {{ fear }}</span>
+      <button
+        type="button"
+        class="fh-compact__btn"
+        aria-label="Ajouter 1 Fear"
+        @click="$emit('add-fear')"
+      >
+        +
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ Mode complet (panneau) ══ -->
+  <div
+    v-else
     class="fh"
     role="region"
     aria-label="Économie Fear et Hope"
@@ -128,7 +179,9 @@ export default {
     /** Total de Fear dépensés durant la rencontre */
     fearSpent: { type: Number, default: 0 },
     /** Total de Hope dépensés durant la rencontre */
-    hopeSpent: { type: Number, default: 0 }
+    hopeSpent: { type: Number, default: 0 },
+    /** Mode compact pour affichage inline (ex: dans le header) */
+    compact: { type: Boolean, default: false }
   },
 
   emits: ['add-fear', 'spend-fear', 'add-hope', 'spend-hope', 'roll-result'],
@@ -317,5 +370,70 @@ export default {
 .fh__roll-btn:hover {
   background: var(--color-bg-elevated, #1a3a6a);
   border-color: var(--color-border-active, #53a8b6);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Mode compact — inline dans le header
+   ═══════════════════════════════════════════════════════════ */
+
+.fh-compact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+}
+
+.fh-compact__group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.fh-compact__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-border, #2a2a4a);
+  border-radius: var(--radius-sm, 4px);
+  background: transparent;
+  color: var(--color-text-secondary, #a0a0b8);
+  font-size: var(--font-size-sm, 0.875rem);
+  cursor: pointer;
+  touch-action: manipulation;
+  line-height: 1;
+  transition: background var(--transition-fast, 150ms ease);
+}
+
+.fh-compact__btn:hover:not(:disabled) {
+  background: var(--color-bg-elevated, #1a3a6a);
+}
+
+.fh-compact__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.fh-compact__val {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.fh-compact__val--hope { color: var(--color-accent-hope, #53a8b6); }
+.fh-compact__val--fear { color: var(--color-fh-fear, #7c3aed); }
+
+.fh-compact__group--hope .fh-compact__btn:last-child {
+  border-color: var(--color-accent-hope, #53a8b6);
+  color: var(--color-accent-hope, #53a8b6);
+}
+
+.fh-compact__group--fear .fh-compact__btn:last-child {
+  border-color: var(--color-fh-fear, #7c3aed);
+  color: var(--color-fh-fear, #7c3aed);
 }
 </style>
