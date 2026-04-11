@@ -17,16 +17,14 @@
     @click="onClick"
     @keydown.enter="$emit('select', pc.id)"
     @keydown.space.prevent="$emit('select', pc.id)"
+    @pointerdown="onPointerDown"
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
     @touchstart.passive="swipe.onTouchStart($event)"
     @touchend.passive="swipe.onTouchEnd($event)"
   >
-    <!-- Ligne 1 : nom + indicateurs (zone de drag) -->
-    <div
-      class="pc-sidebar__header"
-      @pointerdown="onPointerDown"
-    >
+    <!-- Ligne 1 : nom + indicateurs -->
+    <div class="pc-sidebar__header">
       <span class="pc-sidebar__name">{{ pc.name }}</span>
       <span
         v-if="isDown"
@@ -313,6 +311,7 @@ export default {
   cursor: pointer;
   transition: border-color var(--transition-fast), background var(--transition-fast);
   user-select: none;
+  touch-action: pan-y;
 }
 
 .pc-sidebar:hover {
@@ -356,12 +355,6 @@ export default {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  touch-action: none;
-  cursor: grab;
-}
-
-.pc-sidebar__header:active {
-  cursor: grabbing;
 }
 
 .pc-sidebar__name {

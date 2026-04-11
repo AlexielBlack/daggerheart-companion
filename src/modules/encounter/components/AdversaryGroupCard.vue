@@ -12,6 +12,7 @@
     :data-drag-id="group.adversaryId"
     data-drag-type="adversary"
     :aria-label="group.name + ' — ' + group.instances.length + ' instance(s)'"
+    @pointerdown="onDragPointerDown"
   >
     <!-- ── Header : toujours visible ── -->
     <div
@@ -19,9 +20,7 @@
       role="button"
       tabindex="0"
       :aria-expanded="!collapsed"
-      style="touch-action: none;"
       @click="onHeaderClick"
-      @pointerdown="onDragPointerDown"
       @keydown.enter="onHeaderClick"
       @keydown.space.prevent="onHeaderClick"
     >
@@ -577,6 +576,7 @@ export default {
   background: var(--color-bg-secondary);
   overflow: hidden;
   transition: border-color var(--transition-fast);
+  touch-action: pan-y;
 }
 
 .adv-group--selected {
