@@ -43,6 +43,9 @@ export function useDragTarget() {
     isDragging.value = true
     dropResult.value = null
     dragOver.value = null
+    // Bloquer tout scroll pendant le drag
+    document.body.style.overflow = 'hidden'
+    document.body.style.touchAction = 'none'
   }
 
   /**
@@ -66,9 +69,13 @@ export function useDragTarget() {
    * Termine le drag. Si une cible valide est survolee (camp oppose),
    * enregistre le dropResult pour afficher le popup.
    */
+  function unfreezeScroll() {
+    document.body.style.overflow = ''
+    document.body.style.touchAction = ''
+  }
+
   function endDrag() {
     if (isDragging.value && dragSource.value && dragOver.value) {
-      // Ciblage valide : camps opposes
       if (dragSource.value.type !== dragOver.value.type) {
         dropResult.value = {
           source: { ...dragSource.value },
@@ -81,16 +88,15 @@ export function useDragTarget() {
     isDragging.value = false
     dragSource.value = null
     dragOver.value = null
+    unfreezeScroll()
   }
 
-  /**
-   * Annule le drag sans action.
-   */
   function cancelDrag() {
     isDragging.value = false
     dragSource.value = null
     dragOver.value = null
     dragPos.value = { x: 0, y: 0 }
+    unfreezeScroll()
   }
 
   /**
