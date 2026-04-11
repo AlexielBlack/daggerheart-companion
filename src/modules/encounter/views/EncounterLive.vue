@@ -962,13 +962,25 @@ export default {
 
 /* ══ Paysage tablette / petit laptop (768–1279px landscape) ══ */
 @media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
+  /* Header condensé */
+  .live__header { min-height: 2.2rem; padding: 2px var(--space-sm); }
+  .live__title { font-size: var(--font-size-sm); max-width: 12rem; }
+
+  /* Grille 3 colonnes condensée */
   .live__grid {
-    grid-template-columns: 200px 2fr 1.5fr;
+    grid-template-columns: 170px 2fr 1.5fr;
   }
   .live__col-pc {
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: var(--space-xs);
+    gap: 3px;
   }
+  .live__col-adv {
+    padding: var(--space-xs);
+    gap: var(--space-xs);
+  }
+
   /* En paysage tablette, le bottom-sheet n'est pas nécessaire : on affiche les 3 colonnes */
   .live__col-ctx-wrapper { display: contents; }
   .live__col-ctx {
@@ -981,8 +993,13 @@ export default {
     background: var(--color-bg-primary);
     border-radius: 0;
     border-top: none;
+    padding: var(--space-xs);
   }
   .live__ctx-peek { display: none; }
+
+  /* Bandeau évasions condensé */
+  .live__evasion-bar { padding: 2px var(--space-xs); gap: 2px; }
+  .live__evasion-chip { padding: 1px var(--space-xs); font-size: 0.65rem; }
 }
 
 /* ══ Bouton Renforts (header) ══ */

@@ -1401,4 +1401,15 @@ export default {
 .context-panel__npc-chip--neutral { border-left: 3px solid #9ca3af; }
 .context-panel__npc-chip--dead { border-left: 3px solid #6b7280; opacity: 0.6; }
 .context-panel__npc-chip--missing { border-left: 3px solid #f97316; }
+
+/* ══ iPad paysage — panel condensé ══ */
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
+  .ctx-panel__tab { min-height: 2.2rem; padding: 2px var(--space-xs); font-size: var(--font-size-xs); }
+  .ctx-panel__dots { padding: 2px 0; gap: 3px; }
+  .ctx-panel__content { padding: var(--space-xs); gap: var(--space-xs); }
+  .ctx-panel__bar { gap: 2px; }
+  .ctx-panel__bar-btn { min-width: 2rem; min-height: 2rem; font-size: var(--font-size-xs); }
+  .ctx-panel__bar-text { font-size: 0.65rem; }
+  .ctx-panel__pc-stats { gap: var(--space-xs); }
+}
 </style>

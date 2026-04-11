@@ -560,4 +560,22 @@ export default {
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+/* ══ iPad paysage — carte condensée ══ */
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
+  .pc-sidebar { padding: var(--space-xs); gap: 2px; }
+  .pc-sidebar__header { gap: 2px; }
+  .pc-sidebar__name { font-size: var(--font-size-xs); }
+  .pc-sidebar__quick-btn { width: 1.3rem; height: 1.3rem; font-size: 0.6rem; }
+  .pc-sidebar__stats { gap: var(--space-xs); }
+  .pc-sidebar__stat { min-width: 2rem; }
+  .pc-sidebar__stat-val { font-size: var(--font-size-sm); }
+  .pc-sidebar__stat-lbl { font-size: 0.55rem; }
+  .pc-sidebar__stat--evasion .pc-sidebar__stat-val { font-size: var(--font-size-md); }
+  .pc-sidebar__hp-text,
+  .pc-sidebar__stress-text,
+  .pc-sidebar__armor-text { font-size: 0.65rem; }
+  .pc-sidebar__weapon { font-size: 0.6rem; padding: 1px 3px; }
+  .pc-sidebar__cond-dot { width: 1.1rem; height: 1.1rem; font-size: 0.6rem; }
+}
 </style>

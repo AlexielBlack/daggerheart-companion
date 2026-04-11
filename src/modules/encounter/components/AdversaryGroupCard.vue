@@ -1099,4 +1099,27 @@ export default {
   font-size: 0.6rem;
   color: var(--color-text-muted);
 }
+
+/* ══ iPad paysage — carte condensée ══ */
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1280px) {
+  .adv-group__header { padding: var(--space-xs); gap: 2px; }
+  .adv-group__name { font-size: var(--font-size-xs); }
+  .adv-group__diff { font-size: var(--font-size-md); min-width: 1.5rem; }
+  .adv-group__thresh-tag { padding: 1px var(--space-xs); font-size: 0.65rem; }
+  .adv-group__attack { padding: 2px var(--space-xs); font-size: 0.65rem; }
+  .adv-group__dmg-calc { padding: 2px var(--space-xs); }
+  .adv-group__dmg-input { width: 3rem; min-height: 2rem; font-size: var(--font-size-sm); }
+  .adv-group__instances { padding: 2px; gap: 2px; }
+  .adv-group__inst { padding: 2px; gap: 2px; }
+  .adv-group__thresh-btn { min-height: 2.2rem; font-size: var(--font-size-sm); }
+  .adv-group__action-btn { min-width: 2.2rem; min-height: 2.2rem; font-size: var(--font-size-xs); }
+  .adv-group__hp-bar { height: 0.3rem; }
+  .adv-group__minion-btn { width: 2.2rem; height: 2.2rem; font-size: var(--font-size-sm); }
+  .adv-group__minion-grid { padding: var(--space-xs); gap: 2px; }
+  .adv-group__inst-secondary { padding-left: 0; margin-top: 1px; }
+  .adv-group__micro-btn { min-width: 1.6rem; min-height: 1.6rem; }
+  .adv-group__cond { min-width: 1.6rem; min-height: 1.6rem; }
+  .adv-group__collapse-btn { min-width: 2rem; min-height: 2rem; }
+  .adv-group__acted-btn { min-width: 1.5rem; min-height: 2rem; font-size: var(--font-size-sm); }
+}
 </style>
