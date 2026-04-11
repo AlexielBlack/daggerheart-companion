@@ -4,7 +4,10 @@
     :module-id="`table-${currentTab}`"
   >
     <div class="table-view">
-      <div class="table-view__content">
+      <div
+        class="table-view__content"
+        :class="{ 'table-view__content--fullscreen': currentTab === 'combat' }"
+      >
         <router-view />
       </div>
 
@@ -82,6 +85,11 @@ export default {
   flex: 1;
   overflow-y: auto;
   padding: var(--space-md, 1rem);
+}
+
+.table-view__content--fullscreen {
+  padding: 0;
+  overflow: hidden;
 }
 
 .table-view__tabs {

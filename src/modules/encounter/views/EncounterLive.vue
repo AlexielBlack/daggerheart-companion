@@ -758,7 +758,7 @@ export default {
 
 <style scoped>
 /* ══ Racine ══ */
-.live { display: flex; flex-direction: column; height: 100vh; transition: background-color 0.3s; }
+.live { display: flex; flex-direction: column; height: 100%; transition: background-color 0.3s; }
 .live--pcAttack { background-color: rgba(83, 168, 182, 0.03); }
 .live--adversaryAttack { background-color: rgba(200, 75, 49, 0.05); }
 .live--social { background-color: rgba(8, 145, 178, 0.03); }
