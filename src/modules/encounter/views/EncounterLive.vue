@@ -268,6 +268,7 @@
         :target-name="drag.dropResult.value?.target?.name || ''"
         :anchor-x="drag.dropResult.value?.x || 0"
         :anchor-y="drag.dropResult.value?.y || 0"
+        :instances="dropTargetInstances"
         @apply="onDragApply"
         @close="drag.clearDropResult()"
       />
@@ -628,11 +629,18 @@ export default {
       }
     }
 
+    // ── Instances du groupe adversaire cible (pour le popup) ──
+    const dropTargetInstances = computed(() => {
+      const drop = drag.dropResult.value
+      if (!drop || drop.target?.type !== 'adversary') return []
+      return store.liveAdversaries.filter(a => a.adversaryId === drop.target.id)
+    })
+
     /**
      * Applique l'action selectionnee dans le popup de drag.
-     * @param {{ mode: string, amount: number }} action
+     * @param {{ mode: string, amount: number, instanceId: string }} action
      */
-    function onDragApply({ mode, amount }) {
+    function onDragApply({ mode, amount, instanceId }) {
       const drop = drag.dropResult.value
       if (!drop) return
 
@@ -640,21 +648,26 @@ export default {
       const { target } = drop
 
       if (target.type === 'adversary') {
-        // PJ → Adversaire : marquer HP/Stress sur l'adversaire
-        // Sélectionner le PJ source pour que le log soit correct
+        // PJ → Adversaire
         if (drop.source?.type === 'pc') store.selectPc(drop.source.id)
-        const instances = store.liveAdversaries.filter(a => a.adversaryId === target.id && !a.isDefeated)
-        const inst = instances[0]
-        if (!inst) { drag.clearDropResult(); return }
 
-        if (mode === 'damage-hp') {
-          store.markAdversaryHP(inst.instanceId, amount)
-        } else if (mode === 'damage-stress') {
-          store.markAdversaryStress(inst.instanceId, amount)
-        } else if (mode === 'heal-hp') {
-          for (let i = 0; i < amount; i++) store.clearAdversaryHP(inst.instanceId, 1)
-        } else if (mode === 'heal-stress') {
-          for (let i = 0; i < amount; i++) store.clearAdversaryStress(inst.instanceId, 1)
+        // Résoudre les instances cibles
+        const allActive = store.liveAdversaries.filter(a => a.adversaryId === target.id && !a.isDefeated)
+        const targets = instanceId === '__all__'
+          ? allActive
+          : allActive.filter(a => a.instanceId === instanceId)
+        if (targets.length === 0) { drag.clearDropResult(); return }
+
+        for (const inst of targets) {
+          if (mode === 'damage-hp') {
+            store.markAdversaryHP(inst.instanceId, amount)
+          } else if (mode === 'damage-stress') {
+            store.markAdversaryStress(inst.instanceId, amount)
+          } else if (mode === 'heal-hp') {
+            for (let i = 0; i < amount; i++) store.clearAdversaryHP(inst.instanceId, 1)
+          } else if (mode === 'heal-stress') {
+            for (let i = 0; i < amount; i++) store.clearAdversaryStress(inst.instanceId, 1)
+          }
         }
       } else if (target.type === 'pc') {
         // Adversaire → PJ : marquer HP/Stress sur le PJ
@@ -694,7 +707,7 @@ export default {
     })
 
     return {
-      store, isPcActor, hasAdversaries, drag, onDragApply,
+      store, isPcActor, hasAdversaries, drag, onDragApply, dropTargetInstances,
       pcPrimary: pcFeatures.primaryFeatures,
       pcSecondary: pcFeatures.secondaryFeatures,
       pcPassive: pcFeatures.passiveFeatures,
