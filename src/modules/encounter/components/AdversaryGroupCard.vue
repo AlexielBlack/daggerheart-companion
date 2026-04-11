@@ -16,7 +16,7 @@
     @pointerup="lp.onPointerUp()"
     @pointerleave="lp.onPointerLeave()"
   >
-    <!-- ── Header : toujours visible ── -->
+    <!-- ── Ligne 1 : nom + type + quantité + acted ── -->
     <div
       class="adv-group__header"
       role="button"
@@ -26,37 +26,16 @@
       @keydown.enter="onHeaderClick"
       @keydown.space.prevent="onHeaderClick"
     >
-      <div class="adv-group__identity">
-        <span class="adv-group__name">
-          {{ group.name }}
-        </span>
-        <span class="adv-group__type">
-          {{ group.type }}
-        </span>
-        <span
-          v-if="group.instances.length > 1"
-          class="adv-group__qty"
-        >×{{ group.instances.length }}</span>
-        <span
-          v-if="group.defeatedCount > 0"
-          class="adv-group__dead-count"
-        >{{ group.defeatedCount }}💀</span>
-      </div>
-
-      <!-- Résumé HP (toujours visible) -->
-      <span class="adv-group__hp-summary">
-        ❤️{{ totalMarkedHP }}/{{ totalMaxHP }}
-      </span>
-
-      <!-- Difficulté -->
-      <div
-        class="adv-group__diff"
-        title="Difficulté"
-      >
-        {{ firstInstance.difficulty }}
-      </div>
-
-      <!-- Marqueur "a agi ce tour" -->
+      <span class="adv-group__name">{{ group.name }}</span>
+      <span class="adv-group__type">{{ group.type }}</span>
+      <span
+        v-if="group.instances.length > 1"
+        class="adv-group__qty"
+      >×{{ group.instances.length }}</span>
+      <span
+        v-if="group.defeatedCount > 0"
+        class="adv-group__dead-count"
+      >{{ group.defeatedCount }}💀</span>
       <button
         class="adv-group__acted-btn"
         :class="{ 'adv-group__acted-btn--on': hasActed }"
@@ -66,8 +45,6 @@
       >
         {{ hasActed ? '●' : '○' }}
       </button>
-
-      <!-- Bouton collapse dédié -->
       <button
         class="adv-group__collapse-btn"
         :aria-label="collapsed ? 'Déplier' : 'Replier'"
@@ -78,38 +55,47 @@
       </button>
     </div>
 
-    <!-- ── Seuils : toujours visibles ── -->
-    <div
-      v-if="hasThresholds"
-      class="adv-group__thresh-ref"
-    >
-      <span class="adv-group__thresh-tag adv-group__thresh-tag--minor">
-        &lt; {{ firstInstance.thresholds.major }} → 1HP
-      </span>
-      <span class="adv-group__thresh-tag adv-group__thresh-tag--major">
-        {{ firstInstance.thresholds.major }}–{{ firstInstance.thresholds.severe - 1 }} → 2HP
-      </span>
-      <span class="adv-group__thresh-tag adv-group__thresh-tag--severe">
-        ≥ {{ firstInstance.thresholds.severe }} → 3HP
-      </span>
+    <!-- ── Ligne 2 : stats inline (comme PcSidebarCard) ── -->
+    <div class="adv-group__stats-line">
+      <span
+        class="adv-group__sv"
+        title="Difficulté"
+      >🎯{{ firstInstance.difficulty }}</span>
+      <span class="adv-group__sv-sep">·</span>
+      <span
+        class="adv-group__sv"
+        title="HP marqués / total"
+        :style="{ color: groupHpColor }"
+      >❤️{{ totalMarkedHP }}/{{ totalMaxHP }}</span>
+      <span
+        v-if="firstInstance.maxStress > 0"
+        class="adv-group__sv-sep"
+      >·</span>
+      <span
+        v-if="firstInstance.maxStress > 0"
+        class="adv-group__sv"
+        title="Stress"
+        :style="{ color: groupStressColor }"
+      >💢{{ totalMarkedStress }}/{{ totalMaxStress }}</span>
+      <span
+        v-if="hasThresholds"
+        class="adv-group__sv-sep"
+      >·</span>
+      <span
+        v-if="hasThresholds"
+        class="adv-group__sv adv-group__sv--muted"
+        title="Seuils (Majeur/Sévère)"
+      >{{ firstInstance.thresholds.major }}/{{ firstInstance.thresholds.severe }}</span>
     </div>
 
-    <!-- ── Attaque standard (toujours visible) ── -->
+    <!-- ── Ligne 3 : attaque (comme arme PJ) ── -->
     <div
       v-if="firstInstance.attack"
-      class="adv-group__attack"
+      class="adv-group__weapon"
     >
-      <span class="adv-group__atk-label">ATK</span>
-      <span class="adv-group__atk-mod">{{ firstInstance.attack.modifier >= 0 ? '+' : '' }}{{ firstInstance.attack.modifier }}</span>
-      <span class="adv-group__atk-name">
-        {{ firstInstance.attack.name }}
-      </span>
-      <span class="adv-group__atk-range">
-        {{ firstInstance.attack.range }}
-      </span>
-      <span class="adv-group__atk-dmg">
-        {{ firstInstance.attack.damage }}
-      </span>
+      <span class="adv-group__weapon-mod">{{ firstInstance.attack.modifier >= 0 ? '+' : '' }}{{ firstInstance.attack.modifier }}</span>
+      <span class="adv-group__weapon-name">{{ firstInstance.attack.name }}</span>
+      <span class="adv-group__weapon-dmg">{{ firstInstance.attack.damage }} · {{ firstInstance.attack.range }}</span>
     </div>
 
     <!-- ── Contenu dépliable ── -->
@@ -369,6 +355,26 @@ export default {
     totalMaxHP() {
       return this.group.instances.reduce((s, i) => s + i.maxHP, 0)
     },
+    totalMarkedStress() {
+      return this.group.instances.reduce((s, i) => s + (i.markedStress || 0), 0)
+    },
+    totalMaxStress() {
+      return this.group.instances.reduce((s, i) => s + (i.maxStress || 0), 0)
+    },
+    groupHpColor() {
+      if (!this.totalMaxHP) return 'var(--color-text-muted)'
+      const ratio = this.totalMarkedHP / this.totalMaxHP
+      if (ratio < 0.5) return 'var(--color-accent-success)'
+      if (ratio < 0.75) return 'var(--color-accent-warning)'
+      return 'var(--color-accent-danger)'
+    },
+    groupStressColor() {
+      if (!this.totalMaxStress) return 'var(--color-text-muted)'
+      const ratio = this.totalMarkedStress / this.totalMaxStress
+      if (ratio < 0.5) return 'var(--color-text-muted)'
+      if (ratio < 0.75) return 'var(--color-accent-warning)'
+      return 'var(--color-accent-danger)'
+    },
     /** Instances actives (non vaincues) avec leur index original */
     activeInstances() {
       return this.group.instances
@@ -504,27 +510,18 @@ export default {
   background: rgba(34, 197, 94, 0.1);
 }
 
-/* ── Header ── */
+/* ── Header (layout proche de PcSidebarCard) ── */
 
 .adv-group__header {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-sm);
-  background: var(--color-bg-surface);
+  padding: var(--space-xs) var(--space-sm);
   cursor: pointer;
   user-select: none;
 }
 
 .adv-group__header:hover { background: var(--color-bg-elevated); }
-
-.adv-group__identity {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  flex: 1;
-  min-width: 0;
-}
 
 .adv-group__name {
   font-size: var(--font-size-sm);
@@ -533,27 +530,58 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
 }
 
 .adv-group__type { font-size: var(--font-size-xs); color: var(--color-text-muted); }
 .adv-group__qty { font-size: var(--font-size-xs); color: var(--color-accent-gold); font-weight: var(--font-weight-bold); }
 .adv-group__dead-count { font-size: var(--font-size-xs); }
 
-.adv-group__hp-summary {
-  font-size: var(--font-size-xs);
+/* ── Stats inline (miroir de pc-sidebar__stats-line) ── */
+
+.adv-group__stats-line {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+  padding: 0 var(--space-sm) var(--space-xs);
   font-variant-numeric: tabular-nums;
-  color: var(--color-text-secondary);
+}
+
+.adv-group__sv {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
-.adv-group__diff {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-accent-fear);
-  min-width: 2rem;
-  text-align: center;
-  line-height: 1;
+.adv-group__sv--muted {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
 }
+
+.adv-group__sv-sep {
+  color: var(--color-border);
+  font-size: 0.5rem;
+}
+
+/* ── Arme/Attaque (miroir de pc-sidebar__weapon) ── */
+
+.adv-group__weapon {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  padding: 1px var(--space-sm) var(--space-xs);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.adv-group__weapon-mod { font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+.adv-group__weapon-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.adv-group__weapon-dmg { font-weight: var(--font-weight-bold); color: var(--color-text-primary); flex-shrink: 0; }
 
 .adv-group__collapse-btn {
   min-width: var(--touch-min);
