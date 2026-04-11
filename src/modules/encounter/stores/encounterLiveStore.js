@@ -704,11 +704,17 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     persistState()
   }
 
-  function reviveAdversary(instanceId, { skipUndo = false } = {}) {
+  function reviveAdversary(instanceId, { skipUndo = false, skipLog = false } = {}) {
     if (!skipUndo) pushUndo('↩ ' + advShortName(instanceId))
     const adv = liveAdversaries.value.find((a) => a.instanceId === instanceId)
     if (!adv) return
     adv.isDefeated = false
+    if (!skipLog) {
+      encounterLog.value.push({
+        action: 'adv_revive', instanceId, advName: adv.name,
+        timestamp: Date.now()
+      })
+    }
     persistState()
   }
 
@@ -920,6 +926,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   }
 
   function removeCountdown(countdownId) {
+    const cd = countdowns.value.find((c) => c.id === countdownId)
+    if (cd) {
+      encounterLog.value.push({
+        action: 'countdown_removed', countdownId, countdownName: cd.name,
+        timestamp: Date.now()
+      })
+    }
     countdowns.value = countdowns.value.filter((c) => c.id !== countdownId)
     persistState()
   }
@@ -933,13 +946,18 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     const cd = countdowns.value.find((c) => c.id === countdownId)
     if (!cd || cd.triggered) return
     cd.current = Math.max(0, cd.current - amount)
-    if (cd.current <= 0) {
+    const triggered = cd.current <= 0
+    if (triggered) {
       if (cd.loop) {
         cd.current = cd.startValue
       } else {
         cd.triggered = true
       }
     }
+    encounterLog.value.push({
+      action: 'countdown_tick', countdownId, countdownName: cd.name,
+      amount, remaining: cd.current, triggered, timestamp: Date.now()
+    })
     persistState()
   }
 
@@ -976,6 +994,10 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (!cd) return
     cd.current = cd.startValue
     cd.triggered = false
+    encounterLog.value.push({
+      action: 'countdown_reset', countdownId, countdownName: cd.name,
+      timestamp: Date.now()
+    })
     persistState()
   }
 

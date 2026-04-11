@@ -99,7 +99,10 @@ const ACTION_ICONS = {
   adv_revive: '💚',
   condition_add: '⚡',
   condition_remove: '⚡',
-  round_complete: '🔔'
+  round_complete: '🔔',
+  countdown_tick: '⏳',
+  countdown_reset: '🔄',
+  countdown_removed: '🗑️'
 }
 
 export default {
@@ -182,6 +185,12 @@ export default {
         return `${src} → ${entry.advName || entry.pcName || '?'} : +${entry.condition}`
       case 'condition_remove':
         return `${src} → ${entry.advName || entry.pcName || '?'} : -${entry.condition}`
+      case 'countdown_tick':
+        return `${entry.countdownName} : avancé de ${entry.amount}` + (entry.triggered ? ' — déclenché !' : ` (reste ${entry.remaining})`)
+      case 'countdown_reset':
+        return `${entry.countdownName} : réinitialisé`
+      case 'countdown_removed':
+        return `${entry.countdownName} : retiré`
       case 'round_complete': {
         const secs = Math.floor((entry.durationMs || 0) / 1000)
         const min = Math.floor(secs / 60)
