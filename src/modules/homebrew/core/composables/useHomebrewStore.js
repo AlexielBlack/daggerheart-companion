@@ -70,7 +70,23 @@ export function createHomebrewStore(schema) {
 
   return defineStore(storeId, () => {
     // ── Persistence ────────────────────────────────────────
-    const { data: storedItems, error: storageError } = useStorage(schema.storageKey, [])
+    const { data: storedItems, save: persist, error: storageError } = useStorage(schema.storageKey, [])
+
+    /**
+     * Écrit la liste sur disque et signale tout échec (quota plein, etc.).
+     * @param {Array} nextItems - Nouvelle liste à persister
+     * @returns {{ ok: boolean, error?: string }}
+     */
+    function commit(nextItems) {
+      const ok = persist(nextItems)
+      if (!ok) {
+        return {
+          ok: false,
+          error: storageError.value || 'Impossible d\'enregistrer : espace de stockage insuffisant.'
+        }
+      }
+      return { ok: true }
+    }
 
     // ── État ────────────────────────────────────────────────
     const searchQuery = ref('')
@@ -163,7 +179,10 @@ export function createHomebrewStore(schema) {
         updatedAt: now
       }
 
-      storedItems.value = [...items.value, item]
+      const result = commit([...items.value, item])
+      if (!result.ok) {
+        return { success: false, error: result.error }
+      }
 
       return { success: true, id: item.id, item: deepClone(item) }
     }
@@ -198,7 +217,11 @@ export function createHomebrewStore(schema) {
 
       const newItems = [...items.value]
       newItems[index] = updated
-      storedItems.value = newItems
+
+      const result = commit(newItems)
+      if (!result.ok) {
+        return { success: false, error: result.error }
+      }
 
       return { success: true, id: updated.id, item: deepClone(updated) }
     }
@@ -215,7 +238,10 @@ export function createHomebrewStore(schema) {
         return { success: false, error: `Item introuvable : "${id}".` }
       }
 
-      storedItems.value = items.value.filter((item) => item.id !== id)
+      const result = commit(items.value.filter((item) => item.id !== id))
+      if (!result.ok) {
+        return { success: false, error: result.error }
+      }
       return { success: true, id }
     }
 
@@ -286,7 +312,10 @@ export function createHomebrewStore(schema) {
         updatedAt: now
       }
 
-      storedItems.value = [...items.value, item]
+      const result = commit([...items.value, item])
+      if (!result.ok) {
+        return { success: false, error: result.error }
+      }
       return { success: true, id: item.id, item: deepClone(item), warnings: validated.errors }
     }
 
@@ -333,6 +362,7 @@ export function createHomebrewStore(schema) {
         }
 
         const existingIds = new Set(items.value.map((i) => i.id))
+        const nextItems = [...items.value]
         let imported = 0
         let skipped = 0
 
@@ -358,9 +388,15 @@ export function createHomebrewStore(schema) {
             updatedAt: now
           }
 
-          storedItems.value = [...storedItems.value, safeItem]
+          nextItems.push(safeItem)
           existingIds.add(safeItem.id)
           imported++
+        }
+
+        // Écriture unique de toute la liste (signale un éventuel quota plein)
+        const result = commit(nextItems)
+        if (!result.ok) {
+          return { success: false, imported: 0, skipped, error: result.error }
         }
 
         return { success: true, imported, skipped }
@@ -374,7 +410,10 @@ export function createHomebrewStore(schema) {
      * @returns {StoreOperationResult}
      */
     function clearAll() {
-      storedItems.value = []
+      const result = commit([])
+      if (!result.ok) {
+        return { success: false, error: result.error }
+      }
       return { success: true }
     }
 

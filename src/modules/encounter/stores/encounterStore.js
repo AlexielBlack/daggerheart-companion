@@ -22,6 +22,7 @@ import {
 } from '@data/encounters/constants'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 import { scaleAdversaryToTier } from '../utils/tierScaling'
 
 /**
@@ -41,6 +42,22 @@ export const useEncounterStore = defineStore('encounter', () => {
   // ── Persistence ────────────────────────────────────────
   const savedEncountersStorage = useStorage('encounters', [])
   const currentEncounterStorage = useStorage('encounter-current', null)
+
+  // ── Résolution d'adversaires (SRD + homebrew custom) ───
+  const adversaryHomebrewStore = useAdversaryHomebrewStore()
+
+  /**
+   * Résout un adversaire par son id : SRD d'abord, puis homebrew custom.
+   * Garantit que les adversaires custom ajoutés à une rencontre ne sont pas
+   * silencieusement ignorés (avant : seul `allAdversaries` était consulté).
+   * @param {string} id
+   * @returns {object|null}
+   */
+  function resolveAdversary(id) {
+    return allAdversaries.find((a) => a.id === id)
+      || adversaryHomebrewStore.items.find((a) => a.id === id)
+      || null
+  }
 
   // ── Configuration ──────────────────────────────────────
   const pcCount = ref(4)
@@ -85,7 +102,7 @@ export const useEncounterStore = defineStore('encounter', () => {
   const adversarySlotsDetailed = computed(() => {
     return adversarySlots.value
       .map((slot) => {
-        const baseAdversary = allAdversaries.find((a) => a.id === slot.adversaryId)
+        const baseAdversary = resolveAdversary(slot.adversaryId)
         if (!baseAdversary) return null
         const originalTier = baseAdversary.tier
         // Appliquer le scaling si tierOverride présent et différent
@@ -426,7 +443,7 @@ export const useEncounterStore = defineStore('encounter', () => {
   function setSlotTierOverride(adversaryId, tier) {
     const slot = adversarySlots.value.find((s) => s.adversaryId === adversaryId)
     if (!slot) return
-    const adversary = allAdversaries.find((a) => a.id === adversaryId)
+    const adversary = resolveAdversary(adversaryId)
     if (!adversary) return
     if (tier === null || tier === adversary.tier) {
       delete slot.tierOverride

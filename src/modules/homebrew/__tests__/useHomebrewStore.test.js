@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { createHomebrewStore } from '../core/composables/useHomebrewStore.js'
 import { FIELD_TYPES } from '../core/utils/schemaTypes.js'
@@ -374,6 +374,61 @@ describe('createHomebrewStore', () => {
       store.clearAll()
       expect(store.count).toBe(0)
       expect(store.items).toHaveLength(0)
+    })
+  })
+
+  // Régression : un échec d'écriture (quota localStorage plein, données corrompues)
+  // ne doit PAS être avalé silencieusement. create/update doivent le signaler et
+  // ne pas laisser d'item fantôme en mémoire (sinon il manque à l'export).
+  describe('persistance non silencieuse', () => {
+    afterEach(() => vi.restoreAllMocks())
+
+    it('create retourne success:false quand localStorage refuse (quota)', () => {
+      const store = useTestStore()
+      expect(store.create({ ...validData, name: 'Alpha' }).success).toBe(true)
+
+      vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+        const err = new Error('quota')
+        err.name = 'QuotaExceededError'
+        throw err
+      })
+
+      const result = store.create({ ...validData, name: 'Bravo' })
+      expect(result.success).toBe(false)
+      expect(result.error).toMatch(/stockage|insuffisant/i)
+      // Pas d'item fantôme : la mémoire reste alignée sur le disque (1 item réel)
+      expect(store.count).toBe(1)
+    })
+
+    it('update retourne success:false quand localStorage refuse', () => {
+      const store = useTestStore()
+      const created = store.create({ ...validData, name: 'Alpha' })
+
+      vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+        const err = new Error('quota')
+        err.name = 'QuotaExceededError'
+        throw err
+      })
+
+      const result = store.update(created.id, { ...validData, name: 'Alpha modifié' })
+      expect(result.success).toBe(false)
+    })
+
+    // Régression critique : la persistance doit être SYNCHRONE. L'ancienne version
+    // se reposait sur un watcher asynchrone, donc un create() suivi immédiatement
+    // d'une navigation (router.push) perdait l'écriture → l'item restait en mémoire
+    // mais jamais sur disque (invisible au rechargement et absent de l'export).
+    it('create écrit sur disque immédiatement, sans attendre de tick', () => {
+      const store = useTestStore()
+      store.create({ ...validData, name: 'Un' })
+      store.create({ ...validData, name: 'Deux' })
+      store.create({ ...validData, name: 'Trois' })
+      store.create({ ...validData, name: 'Quatre' })
+
+      // Lecture directe du disque, AUCUN await/nextTick
+      const onDisk = JSON.parse(localStorage.getItem('dh-test-homebrew-adv') || '[]')
+      expect(onDisk).toHaveLength(4)
+      expect(onDisk.map((a) => a.name)).toEqual(['Un', 'Deux', 'Trois', 'Quatre'])
     })
   })
 })

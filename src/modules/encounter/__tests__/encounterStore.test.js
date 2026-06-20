@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useEncounterStore } from '../stores/encounterStore'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 import { allAdversaries } from '@data/adversaries'
 import {
   BATTLE_POINT_COSTS,
@@ -687,6 +688,34 @@ describe('encounterStore', () => {
         const tierWarns = store.warnings.filter((w) => w.message.includes('Écart de tier'))
         expect(tierWarns).toHaveLength(0)
       }
+    })
+  })
+
+  // Régression : un adversaire homebrew custom ajouté à une rencontre doit être
+  // résolu (avant : seul `allAdversaries` SRD était consulté → le slot custom
+  // était silencieusement filtré et disparaissait).
+  describe('résolution des adversaires custom (homebrew)', () => {
+    it('résout un adversaire custom dans adversarySlotsDetailed', () => {
+      const advStore = useAdversaryHomebrewStore()
+      const created = advStore.create({
+        name: 'Liche Maison',
+        tier: 1,
+        type: 'Standard',
+        difficulty: 12,
+        thresholds: { major: 7, severe: 12 },
+        hp: 6,
+        stress: 3,
+        attack: { name: 'Toucher glacial', modifier: 1, range: 'Melee', damage: '1d8+2', damageType: 'mag' },
+        motives: ['Corrompre'],
+        features: [],
+        experiences: []
+      })
+      expect(created.success).toBe(true)
+
+      store.addAdversary(created.id)
+      const slot = store.adversarySlotsDetailed.find((s) => s.adversaryId === created.id)
+      expect(slot).toBeTruthy()
+      expect(slot.adversary.name).toBe('Liche Maison')
     })
   })
 })

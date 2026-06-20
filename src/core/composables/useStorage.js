@@ -35,6 +35,7 @@ export function useStorage(key, defaultValue = null) {
       localStorage.setItem(prefixedKey, JSON.stringify(toSave))
       data.value = toSave
       error.value = null
+      return true
     } catch (err) {
       console.error(`[useStorage] Erreur d'écriture pour "${prefixedKey}":`, err)
       if (err?.name === 'QuotaExceededError') {
@@ -42,6 +43,7 @@ export function useStorage(key, defaultValue = null) {
       } else {
         error.value = `Impossible de sauvegarder "${key}".`
       }
+      return false
     }
   }
 

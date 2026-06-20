@@ -22,6 +22,7 @@ import { allEnvironments } from '@data/environments'
 import { useStorage } from '@core/composables/useStorage'
 import { useCharacterStore } from '@modules/characters/stores/characterStore'
 import { useNpcStore } from '@modules/npcs/stores/npcStore'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 import { useEncounterHistoryStore } from './encounterHistoryStore'
 import { computeStatBonuses } from '@data/statModifiers'
 import { getClassById } from '@data/classes'
@@ -134,6 +135,22 @@ function createLiveAdversaryFromNpc(npc, instanceIndex = 0) {
 export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Persistence ────────────────────────────────────────
   const liveStorage = useStorage('encounter-live', null)
+
+  // ── Résolution d'adversaires (SRD + homebrew custom) ───
+  const adversaryHomebrewStore = useAdversaryHomebrewStore()
+
+  /**
+   * Résout un adversaire par son id : SRD d'abord, puis homebrew custom.
+   * Sans cela, un adversaire custom dans une rencontre est ignoré au passage
+   * en combat live (renforts compris).
+   * @param {string} id
+   * @returns {object|null}
+   */
+  function resolveAdversary(id) {
+    return allAdversaries.find((a) => a.id === id)
+      || adversaryHomebrewStore.items.find((a) => a.id === id)
+      || null
+  }
 
   // ── État de la rencontre ───────────────────────────────
   const isActive = ref(false)
@@ -454,7 +471,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (Array.isArray(builderData.adversarySlots)) {
       const instances = []
       for (const slot of builderData.adversarySlots) {
-        let adversaryData = allAdversaries.find((a) => a.id === slot.adversaryId)
+        let adversaryData = resolveAdversary(slot.adversaryId)
         if (!adversaryData) continue
         // Appliquer le tier override si présent (scaling du builder)
         if (slot.tierOverride && slot.tierOverride !== adversaryData.tier) {
@@ -728,7 +745,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function addReinforcement(adversaryId, quantity = 1) {
     pushUndo('Renfort ×' + quantity)
-    const adversaryData = allAdversaries.find((a) => a.id === adversaryId)
+    const adversaryData = resolveAdversary(adversaryId)
     if (!adversaryData) return []
 
     const existingCount = liveAdversaries.value.filter((a) => a.adversaryId === adversaryId).length
