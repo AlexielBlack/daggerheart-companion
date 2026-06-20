@@ -190,7 +190,7 @@ export const adversarySchema = {
       key: 'attack',
       type: FIELD_TYPES.GROUP,
       label: 'Attaque standard',
-      required: true,
+      required: false,
       children: [
         {
           key: 'modifier',
@@ -206,7 +206,7 @@ export const adversarySchema = {
           key: 'name',
           type: FIELD_TYPES.TEXT,
           label: 'Nom de l\'attaque',
-          required: true,
+          required: false,
           placeholder: 'Ex: Griffes, Épée longue, Souffle de feu'
         },
         {
@@ -221,10 +221,10 @@ export const adversarySchema = {
           key: 'damage',
           type: FIELD_TYPES.TEXT,
           label: 'Dégâts',
-          required: true,
-          placeholder: 'Ex: 2d8+4',
-          pattern: '^\\d+d\\d+(\\+\\d+)?$',
-          helpText: 'Format : XdY ou XdY+Z (ex: 2d8+4).'
+          required: false,
+          placeholder: 'Ex: 2d8+4 ou 5',
+          pattern: '^(\\d+d\\d+(\\+\\d+)?|\\d+)$',
+          helpText: 'Format : XdY, XdY+Z (ex: 2d8+4) ou un nombre simple (ex: 5).'
         },
         {
           key: 'damageType',

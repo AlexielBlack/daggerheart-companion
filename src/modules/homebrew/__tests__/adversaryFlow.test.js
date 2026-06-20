@@ -147,13 +147,14 @@ describe('Flux adversaire homebrew', () => {
       expect(result.errors.some((e) => e.field === 'name')).toBe(true)
     })
 
-    it('refuse un adversaire sans nom d attaque', () => {
+    it('accepte un adversaire sans attaque (attaque optionnelle)', () => {
       const { formData, setField } = useFormSchema(adversarySchema)
       setField('name', 'Valide')
-      // attack.name est vide par défaut
+      // attack.name / attack.damage vides : l'attaque est optionnelle
+      // (adversaires sans combat / Social)
       const result = validateHomebrewData(formData.value, adversarySchema)
-      expect(result.valid).toBe(false)
-      expect(result.errors.some((e) => e.field.includes('attack.name'))).toBe(true)
+      expect(result.errors.some((e) => e.field.includes('attack.name'))).toBe(false)
+      expect(result.errors.some((e) => e.field.includes('attack.damage'))).toBe(false)
     })
   })
 
