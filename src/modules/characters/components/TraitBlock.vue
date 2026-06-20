@@ -55,7 +55,24 @@
       >
         ↺ Réinitialiser
       </button>
+      <button
+        class="trait-action-btn trait-action-btn--correct"
+        :class="{ 'trait-action-btn--correct-active': correctionMode }"
+        :aria-pressed="correctionMode"
+        aria-label="Corriger manuellement les valeurs de traits"
+        @click="correctionMode = !correctionMode"
+      >
+        ✏️ {{ correctionMode ? 'Terminer' : 'Corriger' }}
+      </button>
     </div>
+
+    <!-- ═══ Aide correction manuelle ═══ -->
+    <p
+      v-if="correctionMode"
+      class="trait-correct-hint"
+    >
+      Ajustez chaque trait à la main pour corriger une erreur de montée de niveau.
+    </p>
 
     <!-- ═══ Grille des 6 traits ═══ -->
     <div class="trait-grid">
@@ -90,6 +107,39 @@
           {{ isAssigned(trait.id) ? formatModifier(values[trait.id]) : '?' }}
         </span>
 
+        <!-- ═══ Correction manuelle (steppers + saisie) ═══ -->
+        <div
+          v-if="correctionMode"
+          class="trait-correct"
+          @click.stop
+          @keydown.enter.stop
+        >
+          <button
+            type="button"
+            class="trait-correct__btn"
+            :aria-label="`Diminuer ${trait.label}`"
+            @click.stop="adjustTrait(trait.id, -1)"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            class="trait-correct__input"
+            :value="values[trait.id] ?? 0"
+            :aria-label="`Valeur de ${trait.label}`"
+            @click.stop
+            @change="setTrait(trait.id, $event.target.value)"
+          />
+          <button
+            type="button"
+            class="trait-correct__btn"
+            :aria-label="`Augmenter ${trait.label}`"
+            @click.stop="adjustTrait(trait.id, 1)"
+          >
+            +
+          </button>
+        </div>
+
         <span
           v-if="suggestedTraits"
           class="trait-card__recommended"
@@ -111,6 +161,10 @@ import { TRAITS } from '@data/classes'
 /** Pool de valeurs de base au niveau 1 */
 const BASE_POOL = [2, 1, 1, 0, 0, -1]
 
+/** Bornes de sécurité pour la correction manuelle d'un trait */
+const MIN_TRAIT = -5
+const MAX_TRAIT = 12
+
 export default {
   name: 'TraitBlock',
   props: {
@@ -126,7 +180,25 @@ export default {
     const selectedPoolIdx = ref(null)
     const isDragging = ref(false)
     const dragOverTrait = ref(null)
+    const correctionMode = ref(false)
     let draggedPoolIdx = null
+
+    /** Borne une valeur de trait dans l'intervalle de sécurité. */
+    function clampTrait(value) {
+      if (Number.isNaN(value)) return 0
+      return Math.max(MIN_TRAIT, Math.min(MAX_TRAIT, value))
+    }
+
+    /** Ajuste un trait de ±1 (steppers de correction). */
+    function adjustTrait(traitId, delta) {
+      const current = props.values[traitId] ?? 0
+      emit('update', traitId, clampTrait(current + delta))
+    }
+
+    /** Définit directement la valeur d'un trait (saisie de correction). */
+    function setTrait(traitId, rawValue) {
+      emit('update', traitId, clampTrait(parseInt(rawValue, 10)))
+    }
 
     /**
      * Vérifie si un trait a été explicitement assigné
@@ -231,6 +303,9 @@ export default {
       selectedPoolIdx,
       isDragging,
       dragOverTrait,
+      correctionMode,
+      adjustTrait,
+      setTrait,
       isAssigned,
       formatModifier,
       onPoolClick,
@@ -346,6 +421,73 @@ export default {
 }
 
 .trait-action-btn--reset:hover { background: rgba(107, 114, 128, 0.1); }
+
+.trait-action-btn--correct {
+  border-color: var(--color-accent-gold, #d4af37);
+  color: var(--color-accent-gold, #d4af37);
+}
+
+.trait-action-btn--correct:hover { background: rgba(212, 175, 55, 0.1); }
+
+.trait-action-btn--correct-active {
+  background: var(--color-accent-gold, #d4af37);
+  color: var(--color-bg-primary, #1a1a2e);
+}
+
+/* ── Aide correction ── */
+.trait-correct-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
+}
+
+/* ── Contrôles de correction par trait ── */
+.trait-correct {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.trait-correct__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid var(--color-accent-gold, #d4af37);
+  background: transparent;
+  color: var(--color-accent-gold, #d4af37);
+  transition: background 150ms;
+}
+
+.trait-correct__btn:hover { background: rgba(212, 175, 55, 0.15); }
+
+.trait-correct__input {
+  width: 42px;
+  height: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border-radius: 5px;
+  border: 1px solid var(--color-border, #3a3a5a);
+  background: var(--color-bg-primary, #1a1a2e);
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.trait-correct__input:focus {
+  outline: none;
+  border-color: var(--color-accent-gold, #d4af37);
+}
 
 /* ── Grille de traits ── */
 .trait-grid {

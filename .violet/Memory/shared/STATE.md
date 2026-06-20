@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-03-07 02:00 — Violet
+**Last updated:** 2026-06-20 14:24 — Violet
 
 ---
 
@@ -40,6 +40,7 @@
 | **Gestion interactive stats** | ✅ Complet | ✓ | patchCharacterById, boutons +/− HP/Stress/Armure/Espoir — mode Table (PcGroupPanel) + mode Combat (PcSidebarCard + ContextPanel), 7 tests |
 | **Tier Scaling** | ✅ Complet | ✓ | tierScaling.js (5 fonctions pures), scaling stats delta-based via benchmarks SRD, select tier par slot, 50 tests |
 | **BP Tier-Adjusted Cost** | ✅ Complet | ✓ | calculateTierAdjustedCost, coût unitaire ±1 BP/tier delta, Minions exemptés, scalés=0, warning ≥2 tiers, lower-tier→manuel, 15 tests |
+| **Correction manuelle des Traits** | ✅ Complet | ✓ | TraitBlock mode « Corriger » : steppers −/+ et saisie directe par trait, valeurs bornées [-5,12], pour corriger les erreurs de level-up, 7 tests |
 
 ## Architecture 3 Modes
 
