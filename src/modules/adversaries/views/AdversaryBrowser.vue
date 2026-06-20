@@ -114,7 +114,8 @@
                 :form-data="formData"
                 :is-dirty="isDirty"
                 :is-edit-mode="!creatingNew"
-                :errors="[]"
+                :errors="validationErrors"
+                :submit-error="submitError"
                 @submit="onSaveInline"
                 @cancel="onCancelEdit"
                 @update:field="onFieldUpdate"
@@ -200,6 +201,10 @@ export default {
     // --- Refs pour l'édition inline ---
     const editingInline = ref(false)
     const creatingNew = ref(false)
+    /** Erreurs de validation affichées dans le formulaire inline */
+    const validationErrors = ref([])
+    /** Message d'erreur global (échec de sauvegarde) */
+    const submitError = ref('')
     const editPanel = ref(null)
 
     function scrollToEditPanel() {
@@ -217,6 +222,8 @@ export default {
       if (id === 'new') {
         editingInline.value = true
         creatingNew.value = true
+        validationErrors.value = []
+        submitError.value = ''
         reset()
         scrollToEditPanel()
         return
@@ -235,6 +242,8 @@ export default {
       homebrewStore,
       editingInline,
       creatingNew,
+      validationErrors,
+      submitError,
       formData,
       isDirty,
       hydrate,
@@ -276,6 +285,8 @@ export default {
     // --- Edition inline ---
     startEdit() {
       if (this.store.selectedAdversary) {
+        this.validationErrors = []
+        this.submitError = ''
         this.hydrate(this.store.selectedAdversary)
         this.editingInline = true
         this.creatingNew = false
@@ -287,18 +298,28 @@ export default {
     },
     onSaveInline() {
       const data = this.toRawData()
-      if (this.creatingNew) {
-        const result = this.homebrewStore.create(data)
-        if (result.success) {
-          this.store.selectAdversary(result.id)
-        }
-        this.creatingNew = false
-      } else {
-        this.homebrewStore.update(this.store.selectedAdversary.id, data)
+      const result = this.creatingNew
+        ? this.homebrewStore.create(data)
+        : this.homebrewStore.update(this.store.selectedAdversary.id, data)
+
+      // Ne jamais avaler un échec : on garde l'éditeur ouvert et on affiche pourquoi.
+      if (!result.success) {
+        this.validationErrors = result.errors || []
+        this.submitError = result.error || 'Échec de l\'enregistrement.'
+        return
       }
+
+      if (this.creatingNew) {
+        this.store.selectAdversary(result.id)
+      }
+      this.validationErrors = []
+      this.submitError = ''
+      this.creatingNew = false
       this.editingInline = false
     },
     onCancelEdit() {
+      this.validationErrors = []
+      this.submitError = ''
       this.editingInline = false
       this.creatingNew = false
     }
