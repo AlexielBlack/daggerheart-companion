@@ -132,9 +132,19 @@ function createLiveAdversaryFromNpc(npc, instanceIndex = 0) {
   return null
 }
 
+/** Génère un identifiant unique de rencontre (« battle »). */
+let _battleSeq = 0
+function createBattleId() {
+  return 'battle_' + Date.now().toString(36) + '_' + (++_battleSeq)
+}
+
 export const useEncounterLiveStore = defineStore('encounter-live', () => {
   // ── Persistence ────────────────────────────────────────
   const liveStorage = useStorage('encounter-live', null)
+  // Collection des rencontres simultanées (métadonnées + snapshots des
+  // rencontres en arrière-plan). La rencontre active vit dans les refs ci-dessous
+  // et dans liveStorage ; son snapshot dans cette collection reste null.
+  const battlesStorage = useStorage('encounter-battles', null)
 
   // ── Résolution d'adversaires (SRD + homebrew custom) ───
   const adversaryHomebrewStore = useAdversaryHomebrewStore()
@@ -156,6 +166,12 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   const isActive = ref(false)
   const encounterName = ref('')
   const encounterTier = ref(1)
+
+  // ── Rencontres simultanées ─────────────────────────────
+  /** Liste ordonnée des rencontres ouvertes : { id, name, tier, snapshot|null }.
+   *  La rencontre active a snapshot=null (ses données vivent dans les refs). */
+  const battles = ref([])
+  const activeBattleId = ref(null)
 
   // ── Mode de scène et projecteur ────────────────────────
   const sceneMode = ref(SCENE_MODE_PC_ATTACK)
@@ -344,6 +360,24 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
   })
   const liveBpRemaining = computed(() => liveBpTotal.value - liveBpSpent.value)
 
+  // ── Multi-rencontres (getters) ─────────────────────────
+  /** Synthèse pour l'UI (onglets) : nom, tier, état actif, compteurs d'adversaires. */
+  const battleList = computed(() => battles.value.map((b) => {
+    const isAct = b.id === activeBattleId.value
+    const advs = isAct ? liveAdversaries.value : (b.snapshot?.liveAdversaries || [])
+    return {
+      id: b.id,
+      name: b.name || 'Rencontre',
+      tier: b.tier || 1,
+      isActive: isAct,
+      activeCount: advs.filter((a) => !a.isDefeated).length,
+      defeatedCount: advs.filter((a) => a.isDefeated).length
+    }
+  }))
+
+  /** Vrai si plusieurs rencontres sont ouvertes en parallèle. */
+  const hasMultipleBattles = computed(() => battles.value.length > 1)
+
   // ═══════════════════════════════════════════════════════
   //  Persistence (déclaré avant les composables qui en dépendent)
   // ═══════════════════════════════════════════════════════
@@ -395,6 +429,34 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     if (_persistTimer) clearTimeout(_persistTimer)
     _persistTimer = null
     liveStorage.save(serializeLiveState())
+  }
+
+  /** Persiste la collection des rencontres (la rencontre active a un snapshot null). */
+  function persistBattles() {
+    if (battles.value.length === 0) {
+      battlesStorage.remove()
+      return
+    }
+    battlesStorage.save({
+      battles: battles.value.map((b) => ({
+        id: b.id,
+        name: b.name,
+        tier: b.tier,
+        snapshot: b.id === activeBattleId.value ? null : (b.snapshot || null)
+      })),
+      activeBattleId: activeBattleId.value
+    })
+  }
+
+  /** Capture l'état live courant dans l'entrée de la rencontre active. */
+  function captureActiveSnapshot() {
+    if (!activeBattleId.value) return
+    const b = battles.value.find((x) => x.id === activeBattleId.value)
+    if (b) {
+      b.snapshot = serializeLiveState()
+      b.name = encounterName.value
+      b.tier = encounterTier.value
+    }
   }
 
   // ═══════════════════════════════════════════════════════
@@ -457,7 +519,14 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
   function startEncounter(builderData) {
     if (!builderData) return
-    resetLive()
+    // Si une rencontre est déjà active, on la met en arrière-plan plutôt que de
+    // l'écraser → plusieurs rencontres simultanées. Sinon, simple remise à zéro
+    // de l'espace de travail (les autres rencontres ouvertes sont conservées).
+    if (isActive.value && activeBattleId.value) {
+      captureActiveSnapshot()
+    } else {
+      clearWorkingState()
+    }
 
     encounterName.value = builderData.name || ''
     encounterTier.value = builderData.tier || 1
@@ -490,7 +559,79 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
 
     environmentId.value = builderData.environmentId || null
     isActive.value = true
+
+    // Enregistre la nouvelle rencontre dans la collection et l'active
+    const id = createBattleId()
+    battles.value.push({ id, name: encounterName.value, tier: encounterTier.value, snapshot: null })
+    activeBattleId.value = id
+
     persistStateNow()
+    persistBattles()
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  Actions — Rencontres simultanées
+  // ═══════════════════════════════════════════════════════
+
+  /**
+   * Bascule vers une autre rencontre ouverte.
+   * Sauvegarde l'état courant, puis restaure la rencontre cible.
+   * @param {string} id
+   */
+  function switchToBattle(id) {
+    if (id === activeBattleId.value) return
+    const target = battles.value.find((b) => b.id === id)
+    if (!target) return
+    captureActiveSnapshot()
+    activeBattleId.value = id
+    applyLiveSnapshot(target.snapshot || {})
+    isActive.value = true
+    target.snapshot = null
+    clearUndo()
+    persistStateNow()
+    persistBattles()
+  }
+
+  /**
+   * Ferme une rencontre ouverte (sans l'archiver dans l'historique).
+   * Si c'est la rencontre active, bascule vers une autre ou réinitialise tout.
+   * @param {string} id
+   */
+  function closeBattle(id) {
+    const idx = battles.value.findIndex((b) => b.id === id)
+    if (idx < 0) return
+    if (id === activeBattleId.value) {
+      const others = battles.value.filter((b) => b.id !== id)
+      if (others.length > 0) {
+        battles.value = others
+        const next = others[0]
+        activeBattleId.value = next.id
+        applyLiveSnapshot(next.snapshot || {})
+        isActive.value = true
+        next.snapshot = null
+        clearUndo()
+        persistStateNow()
+        persistBattles()
+      } else {
+        resetLive()
+      }
+    } else {
+      battles.value = battles.value.filter((b) => b.id !== id)
+      persistBattles()
+    }
+  }
+
+  /**
+   * Renomme une rencontre ouverte.
+   * @param {string} id
+   * @param {string} name
+   */
+  function renameBattle(id, name) {
+    const b = battles.value.find((x) => x.id === id)
+    if (!b) return
+    b.name = name
+    if (id === activeBattleId.value) encounterName.value = name
+    persistBattles()
   }
 
   // ═══════════════════════════════════════════════════════
@@ -1043,11 +1184,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     return !!(data && data.isActive)
   })
 
-  function restoreState() {
-    const data = liveStorage.data.value
-    if (!data || !data.isActive) return false
-
-    isActive.value = true
+  /**
+   * Applique un snapshot d'état live aux refs de travail.
+   * Ne touche pas à isActive / battles / activeBattleId.
+   * @param {Object} data - Snapshot issu de serializeLiveState() (ou {} pour vider)
+   */
+  function applyLiveSnapshot(data) {
+    data = data || {}
     encounterName.value = data.encounterName || ''
     encounterTier.value = data.encounterTier || 1
     sceneMode.value = isValidSceneMode(data.sceneMode) ? data.sceneMode : SCENE_MODE_PC_ATTACK
@@ -1066,31 +1209,55 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     pcDownStatus.value = data.pcDownStatus && typeof data.pcDownStatus === 'object' ? { ...data.pcDownStatus } : {}
     pcConditions.value = data.pcConditions && typeof data.pcConditions === 'object'
       ? JSON.parse(JSON.stringify(data.pcConditions)) : {}
+    advActedThisTurn.value = {}
+  }
+
+  function restoreState() {
+    const data = liveStorage.data.value
+    if (!data || !data.isActive) return false
+
+    isActive.value = true
+    applyLiveSnapshot(data)
+
+    // Restaure la collection des rencontres simultanées
+    const bdata = battlesStorage.data.value
+    if (bdata && Array.isArray(bdata.battles) && bdata.battles.length > 0) {
+      battles.value = bdata.battles.map((b) => ({
+        id: b.id, name: b.name, tier: b.tier, snapshot: b.snapshot || null
+      }))
+      const found = battles.value.find((b) => b.id === bdata.activeBattleId)
+      if (found) {
+        activeBattleId.value = found.id
+        found.snapshot = null // données dans les refs
+      } else {
+        // Incohérence : synthétise une entrée pour l'état live courant
+        const id = createBattleId()
+        battles.value.unshift({ id, name: encounterName.value, tier: encounterTier.value, snapshot: null })
+        activeBattleId.value = id
+      }
+    } else {
+      // Sauvegarde héritée (mono-rencontre) → synthétise une rencontre unique
+      const id = createBattleId()
+      battles.value = [{ id, name: encounterName.value, tier: encounterTier.value, snapshot: null }]
+      activeBattleId.value = id
+    }
 
     return true
   }
 
-  function resetLive() {
-    isActive.value = false
-    encounterName.value = ''
-    encounterTier.value = 1
-    sceneMode.value = SCENE_MODE_PC_ATTACK
-    spotlight.value = SPOTLIGHT_PC
-    participantPcIds.value = []
-    activePcId.value = null
-    liveAdversaries.value = []
-    activeAdversaryId.value = null
-    environmentId.value = null
-    lastClickCategory.value = 'pc'
-    countdowns.value = []
-    pcSpotlights.value = {}
-    advSpotlights.value = {}
-    combatLog.value = []
-    encounterLog.value = []
-    pcDownStatus.value = {}
-    pcConditions.value = {}
+  /** Réinitialise uniquement l'espace de travail (pas la collection de rencontres). */
+  function clearWorkingState() {
+    applyLiveSnapshot({})
     clearUndo()
+  }
+
+  function resetLive() {
+    clearWorkingState()
+    isActive.value = false
+    battles.value = []
+    activeBattleId.value = null
     liveStorage.remove()
+    battlesStorage.remove()
   }
 
   /** Dernier résumé de rencontre (survit au reset, pas persisté) */
@@ -1142,7 +1309,23 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     // Persiste dans l'historique
     const historyStore = useEncounterHistoryStore()
     historyStore.add(lastEncounterSummary.value)
-    resetLive()
+
+    // Retire la rencontre active de la collection. S'il reste des rencontres
+    // ouvertes, on bascule vers la suivante au lieu de tout réinitialiser.
+    const others = battles.value.filter((b) => b.id !== activeBattleId.value)
+    if (others.length > 0) {
+      battles.value = others
+      const next = others[0]
+      activeBattleId.value = next.id
+      applyLiveSnapshot(next.snapshot || {})
+      isActive.value = true
+      next.snapshot = null
+      clearUndo()
+      persistStateNow()
+      persistBattles()
+    } else {
+      resetLive()
+    }
   }
 
   // ═══════════════════════════════════════════════════════
@@ -1159,6 +1342,7 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     advActedThisTurn,
     pcSpotlights, advSpotlights,
     combatLog, encounterLog, pcDownStatus, pcConditions,
+    battles, activeBattleId,
 
     // Getters
     currentSceneModeMeta, participantPcs, activePc,
@@ -1167,9 +1351,13 @@ export const useEncounterLiveStore = defineStore('encounter-live', () => {
     activeEnvironment, adversaryCombatSummary,
     isPlayerSpotlight, isGmSpotlight,
     liveBpTotal, liveBpSpent, liveBpRemaining,
+    battleList, hasMultipleBattles,
 
     // Actions — Initialisation
     startEncounter,
+
+    // Actions — Rencontres simultanées
+    switchToBattle, closeBattle, renameBattle, persistBattles,
 
     // Actions — Mode & Projecteur
     setSceneMode, setPlayerSpotlight, setGmSpotlight, toggleSpotlight,

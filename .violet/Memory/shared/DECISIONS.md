@@ -161,3 +161,11 @@ Append-only log of architectural and design decisions.
 **Context:** L'ajustement `lower-tier` SRD était binaire (+1 BP budget si au moins 1 adversaire de tier inférieur). Trop grossier — pas de proportionnalité, et les tiers supérieurs ignorés.
 **Rationale:** `effectiveCost = max(1, baseCost + tierDelta) × quantity`. Le coût est ajusté par unité, proportionnellement au nombre d'adversaires et à l'écart de tier. Les Minions sont exemptés (coût groupe fixe 1 BP). Les adversaires scalés (tierOverride) ont tierDelta=0 car leurs stats correspondent déjà au tier cible. Warning pour écarts ≥ 2 tiers. `lower-tier` conservé en manuel pour les MJ préférant l'heuristique SRD simple.
 **Alternatives considered:** Approche A — multiplicateur per-slot (trop volatile, un Solo passe de 5 à 2.5 BP), Approche B — ajustement progressif du budget total (manque de granularité, n'affecte pas les coûts individuels).
+
+---
+
+## 2026-06-21 10:45 — Violet
+**Decision:** Gestion de plusieurs rencontres simultanées — couche « battles » dans encounterLiveStore
+**Context:** Le store live ne gérait qu'une seule rencontre active (refs + storage `encounter-live`). Besoin MJ : faire tourner plusieurs combats en parallèle (ex. groupe scindé) et basculer entre eux.
+**Rationale:** On garde les refs existantes comme « rencontre active de travail » (UI inchangée). Ajout d'une collection `battles` (`{id,name,tier,snapshot}`) + `activeBattleId`. La rencontre active a `snapshot=null` (données dans les refs) ; les rencontres en arrière-plan stockent un `serializeLiveState()`. Bascule = capture du snapshot courant + `applyLiveSnapshot()` de la cible. Persistance séparée dans `encounter-battles` (les snapshots de fond ne changent pas pendant le combat → pas de re-sérialisation par tick). `startEncounter` ajoute désormais une rencontre parallèle au lieu d'écraser. `endEncounter` archive l'active et bascule vers la suivante s'il en reste. Migration transparente des sauvegardes héritées (mono-rencontre → 1 battle synthétisé). Refactor : `applyLiveSnapshot()` extrait de `restoreState`, `clearWorkingState()` séparé de `resetLive()`.
+**Alternatives considered:** Réécrire tout le store pour indexer chaque champ par battleId (très invasif, casse l'UI et les 90 tests), store séparé dupliquant la logique combat (duplication massive).

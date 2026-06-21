@@ -99,6 +99,9 @@
         </div>
       </header>
 
+      <!-- ══ Onglets de rencontres simultanées ══ -->
+      <EncounterBattleTabs />
+
       <!-- ══ Countdowns ══ -->
       <CountdownTracker
         v-if="store.countdowns.length > 0 || showCountdownBar"
@@ -394,6 +397,7 @@ import CombatDashboard from '../components/CombatDashboard.vue'
 import ActionBar from '../components/ActionBar.vue'
 import QuickActionMenu from '../components/QuickActionMenu.vue'
 import DragActionPopup from '../components/DragActionPopup.vue'
+import EncounterBattleTabs from '../components/EncounterBattleTabs.vue'
 import { useDragTarget } from '../composables/useDragTarget'
 import { useHaptic } from '../composables/useHaptic'
 import { useActionBar } from '../composables/useActionBar'
@@ -402,7 +406,7 @@ import { useFocusTrap } from '@core/composables/useFocusTrap.js'
 
 export default {
   name: 'EncounterLive',
-  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, QuickActionMenu, DragActionPopup },
+  components: { PcSidebarCard, AdversaryGroupCard, ContextPanel, CountdownTracker, ReinforcementDrawer, CombatLogDrawer, SessionTimer, QuickReferencePanel, CombatDashboard, ActionBar, QuickActionMenu, DragActionPopup, EncounterBattleTabs },
   emits: ['select-npc'],
   setup() {
     const store = useEncounterLiveStore()
@@ -842,7 +846,9 @@ export default {
       this.showEndSummary = false
       this.endSummaryData = null
       this.store.endEncounter()
-      this.$router.push('/table/rencontres')
+      // S'il reste des rencontres ouvertes, on bascule dessus en restant en combat ;
+      // sinon, retour au builder de rencontres.
+      if (!this.store.isActive) this.$router.push('/table/rencontres')
     },
     cancelEndEncounter() {
       this.showEndSummary = false
