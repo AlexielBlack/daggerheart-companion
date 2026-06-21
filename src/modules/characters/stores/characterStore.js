@@ -545,22 +545,35 @@ export const useCharacterStore = defineStore('characters', () => {
   })
 
   /**
-   * Cartes de domaine éligibles pour le personnage sélectionné.
-   * Filtrées par : domaines de la classe + niveau <= niveau du personnage.
+   * Construit la liste des cartes de domaine du personnage sélectionné
+   * éligibles jusqu'à un niveau donné (inclus).
+   * Utilisé par availableDomainCards (niveau courant) et par l'assistant de
+   * montée de niveau (niveau cible = niveau courant + 1).
+   * @param {number} maxLevel - Niveau maximum des cartes à inclure.
    */
-  const availableDomainCards = computed(() => {
+  function domainCardsUpToLevel(maxLevel) {
     const char = selectedCharacter.value
     if (!char) return []
     const domains = availableDomains.value
     const results = []
     for (const domain of domains) {
       for (const card of domain.cards) {
-        if (card.level <= char.level) {
+        if (card.level <= maxLevel) {
           results.push({ ...card, domainId: domain.id, domainName: domain.name, domainColor: domain.color, domainEmoji: domain.emoji })
         }
       }
     }
     return results
+  }
+
+  /**
+   * Cartes de domaine éligibles pour le personnage sélectionné.
+   * Filtrées par : domaines de la classe + niveau <= niveau du personnage.
+   */
+  const availableDomainCards = computed(() => {
+    const char = selectedCharacter.value
+    if (!char) return []
+    return domainCardsUpToLevel(char.level)
   })
 
   /**
@@ -1631,6 +1644,7 @@ export const useCharacterStore = defineStore('characters', () => {
     // Getters domaines
     availableDomains,
     availableDomainCards,
+    domainCardsUpToLevel,
     selectedLoadoutCards,
     selectedVaultCards,
     isLoadoutFull,

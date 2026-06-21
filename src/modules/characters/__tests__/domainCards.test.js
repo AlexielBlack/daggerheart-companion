@@ -47,6 +47,28 @@ describe('Domain Cards Management', () => {
     })
   })
 
+  describe('domainCardsUpToLevel (catalogue montée de niveau)', () => {
+    it('au niveau cible, inclut les cartes du nouveau niveau (régression level-up)', () => {
+      // Personnage niveau 1 : le catalogue courant se limite au niveau 1.
+      expect(store.availableDomainCards.every((c) => c.level <= 1)).toBe(true)
+      // Montée vers le niveau 2 : le catalogue doit inclure des cartes de niveau 2.
+      const upToTwo = store.domainCardsUpToLevel(2)
+      expect(upToTwo.length).toBeGreaterThan(store.availableDomainCards.length)
+      expect(upToTwo.some((c) => c.level === 2)).toBe(true)
+      expect(upToTwo.every((c) => c.level <= 2)).toBe(true)
+    })
+
+    it('au niveau courant, équivaut à availableDomainCards', () => {
+      expect(store.domainCardsUpToLevel(1).length).toBe(store.availableDomainCards.length)
+    })
+
+    it('conserve les métadonnées de domaine (domainName, domainId)', () => {
+      const cards = store.domainCardsUpToLevel(2)
+      expect(cards[0]).toHaveProperty('domainId')
+      expect(cards[0]).toHaveProperty('domainName')
+    })
+  })
+
   describe('addCardToLoadout', () => {
     it('should add a card to loadout', () => {
       const result = store.addCardToLoadout(ALL_L1[0])

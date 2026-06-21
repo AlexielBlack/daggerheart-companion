@@ -222,9 +222,13 @@ export default {
       return charStore.selectedThresholds
     })
 
-    /** Cartes de domaine éligibles pour la sélection */
+    /**
+     * Cartes de domaine éligibles pour la sélection — jusqu'au NIVEAU CIBLE
+     * (niveau courant + 1), car la montée de niveau n'est pas encore appliquée.
+     * availableDomainCards (≤ niveau courant) exclurait les cartes du nouveau niveau.
+     */
     const catalogCards = computed(() => {
-      return charStore.availableDomainCards || []
+      return charStore.domainCardsUpToLevel(store.targetLevel) || []
     })
 
     /** Domaines disponibles pour le personnage */
