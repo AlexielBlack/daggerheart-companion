@@ -376,6 +376,28 @@
           </div>
         </div>
 
+        <!-- Attaque standard (capacité offensive de base, toujours visible) -->
+        <div
+          v-if="advAttack"
+          class="ctx-panel__attack"
+        >
+          <div class="ctx-panel__attack-header">
+            <span class="ctx-panel__attack-icon">{{ advAttack.damageType === 'mag' ? '✨' : '🗡️' }}</span>
+            <span class="ctx-panel__attack-name">{{ advAttack.name || 'Attaque standard' }}</span>
+          </div>
+          <div class="ctx-panel__attack-stats">
+            <span title="Modificateur d'attaque">⚔️ {{ advAttack.modifier >= 0 ? '+' : '' }}{{ advAttack.modifier }}</span>
+            <span
+              v-if="advAttack.damage"
+              title="Dégâts"
+            >🎲 {{ advAttack.damage }}</span>
+            <span
+              v-if="advAttack.range"
+              title="Portée"
+            >📏 {{ advAttack.range }}</span>
+          </div>
+        </div>
+
         <!-- Features adversaire classifiées -->
         <div
           v-if="advPassives.length > 0"
@@ -466,7 +488,7 @@
 
 <script>
 import { computed, ref, watch } from 'vue'
-import { SCENE_MODE_META, SCENE_MODE_PC_ATTACK } from '@data/encounters/liveConstants'
+import { SCENE_MODE_META, SCENE_MODE_PC_ATTACK, SCENE_MODE_ADVERSARY_ATTACK } from '@data/encounters/liveConstants'
 import { classifyAdversaryFeatures } from '../composables/useEncounterFeatures'
 import { useSwipe } from '../composables/useSwipe'
 import { getPrimaryWeaponById, getSecondaryWeaponById } from '@data/equipment'
@@ -748,15 +770,26 @@ export default {
       return 'var(--color-accent-danger)'
     }
 
-    // Features adversaire classifiées
+    // Features adversaire classifiées. Le panneau de contexte est l'outil de
+    // consultation du MJ : on force le mode « tour MJ » pour que les actions
+    // (capacités offensives) soient TOUJOURS visibles, quel que soit le mode de
+    // scène courant. Les passives/réactions sont renvoyées indépendamment du mode.
     const advClassified = computed(() => {
       if (!props.adversary) return { passiveFeatures: [], actionFeatures: [], reactionFeatures: [] }
-      return classifyAdversaryFeatures(props.adversary, props.sceneMode)
+      return classifyAdversaryFeatures(props.adversary, SCENE_MODE_ADVERSARY_ATTACK)
     })
 
     const advPassives = computed(() => advClassified.value.passiveFeatures)
     const advActions = computed(() => advClassified.value.actionFeatures)
     const advReactions = computed(() => advClassified.value.reactionFeatures)
+
+    // Attaque standard de l'adversaire (capacité offensive de base, toujours
+    // visible). Affichée seulement si un modificateur est défini.
+    const advAttack = computed(() => {
+      const atk = props.adversary?.attack
+      if (!atk || atk.modifier === null || atk.modifier === undefined) return null
+      return atk
+    })
 
     // PNJs en scène (depuis la session)
     const sessionStore = useSessionStore()
@@ -771,7 +804,7 @@ export default {
       tagFilteredActions, tagFilteredReactions, tagFilteredPassives, tagFilteredTotal,
       pcExperiences,
       primaryWeapon, secondaryWeapon, pcProficiency,
-      advPassives, advActions, advReactions,
+      advPassives, advActions, advReactions, advAttack,
       sessionNpcs,
       // Gestion interactive stats PJ
       incrementHP, decrementHP,
@@ -1121,6 +1154,43 @@ export default {
   color: var(--color-text-secondary);
   margin: 0;
   font-style: italic;
+}
+
+/* ── Attaque standard adversaire ── */
+
+.ctx-panel__attack {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  border-left: 3px solid #7c3aed;
+}
+
+.ctx-panel__attack-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.ctx-panel__attack-icon {
+  font-size: 0.9rem;
+}
+
+.ctx-panel__attack-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.ctx-panel__attack-stats {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Empty ── */
