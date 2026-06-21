@@ -1,6 +1,6 @@
 # STATE — Daggerheart Companion
 
-**Last updated:** 2026-06-20 14:24 — Violet
+**Last updated:** 2026-06-21 09:40 — Violet
 
 ---
 
@@ -41,6 +41,7 @@
 | **Tier Scaling** | ✅ Complet | ✓ | tierScaling.js (5 fonctions pures), scaling stats delta-based via benchmarks SRD, select tier par slot, 50 tests |
 | **BP Tier-Adjusted Cost** | ✅ Complet | ✓ | calculateTierAdjustedCost, coût unitaire ±1 BP/tier delta, Minions exemptés, scalés=0, warning ≥2 tiers, lower-tier→manuel, 15 tests |
 | **Correction manuelle des Traits** | ✅ Complet | ✓ | TraitBlock mode « Corriger » : steppers −/+ et saisie directe par trait, valeurs bornées [-5,12], pour corriger les erreurs de level-up, 7 tests |
+| **Adversaires perso dans rencontres** | ✅ Complet | ✓ | AdversaryPicker fusionne homebrew + SRD (perso en tête, badge ✦), filtre « Perso » + compteur, lien création, fenêtre agrandie (min(75vh,720px) + liste min 240px), 5 tests |
 
 ## Architecture 3 Modes
 

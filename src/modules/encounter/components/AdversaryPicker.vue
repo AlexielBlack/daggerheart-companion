@@ -24,6 +24,18 @@
           >
             T{{ t }}
           </button>
+          <button
+            class="filter-chip filter-chip--custom"
+            :class="{ 'filter-chip--active': filterCustom }"
+            :aria-pressed="filterCustom ? 'true' : 'false'"
+            title="N'afficher que les adversaires personnalisés"
+            @click="filterCustom = !filterCustom"
+          >
+            ✦ Perso<span
+              v-if="customCount > 0"
+              class="filter-chip__count"
+            >{{ customCount }}</span>
+          </button>
         </div>
       </div>
 
@@ -61,13 +73,22 @@
         </button>
       </div>
 
-      <button
-        v-if="filterTypes.size > 0 || filterGenres.size > 0"
-        class="filter-clear"
-        @click="clearAdvancedFilters"
-      >
-        Effacer filtres
-      </button>
+      <div class="picker-footer">
+        <button
+          v-if="filterTypes.size > 0 || filterGenres.size > 0 || filterCustom"
+          class="filter-clear"
+          @click="clearAdvancedFilters"
+        >
+          Effacer filtres
+        </button>
+        <router-link
+          to="/compendium/adversaires"
+          class="picker-create-link"
+          title="Créer un adversaire personnalisé"
+        >
+          ✦ Créer un adversaire perso →
+        </router-link>
+      </div>
     </div>
 
     <ul
@@ -85,6 +106,12 @@
             class="picker-item__tier"
             :class="`tier-badge--${adv.tier}`"
           >T{{ adv.tier }}</span>
+          <span
+            v-if="adv.__custom"
+            class="picker-item__custom"
+            title="Adversaire personnalisé"
+            aria-label="Adversaire personnalisé"
+          >✦</span>
           <span class="picker-item__name">{{ adv.name }}</span>
           <span class="picker-item__type">{{ adv.type }}</span>
           <span class="picker-item__cost">{{ getCost(adv.type) }} BP{{ adv.type === 'Minion' ? '/grp' : '' }}</span>
@@ -119,7 +146,18 @@
         v-if="filteredAdversaries.length === 0"
         class="picker-empty"
       >
-        Aucun adversaire trouvé.
+        <template v-if="filterCustom && customCount === 0">
+          Aucun adversaire personnalisé.
+          <router-link
+            to="/compendium/adversaires"
+            class="picker-create-link"
+          >
+            Créez-en un →
+          </router-link>
+        </template>
+        <template v-else>
+          Aucun adversaire trouvé.
+        </template>
       </li>
     </ul>
   </div>
@@ -135,6 +173,7 @@ import {
   GENRE_META
 } from '@data/adversaries'
 import { BATTLE_POINT_COSTS } from '@data/encounters/constants'
+import { useAdversaryHomebrewStore } from '@modules/homebrew/categories/adversary/useAdversaryHomebrewStore.js'
 
 export default {
   name: 'AdversaryPicker',
@@ -144,10 +183,22 @@ export default {
   },
   emits: ['add', 'remove'],
   setup(props) {
+    const homebrewStore = useAdversaryHomebrewStore()
     const search = ref('')
     const filterTier = ref(null)
+    const filterCustom = ref(false)
     const filterTypes = reactive(new Set())
     const filterGenres = reactive(new Set())
+
+    /** Adversaires personnalisés (homebrew), marqués pour l'affichage. */
+    const customAdversaries = computed(() =>
+      homebrewStore.items.map((a) => ({ ...a, __custom: true }))
+    )
+
+    const customCount = computed(() => customAdversaries.value.length)
+
+    /** Catalogue complet : perso en tête, puis SRD. */
+    const catalogue = computed(() => [...customAdversaries.value, ...allAdversaries])
 
     function toggleType(type) {
       if (filterTypes.has(type)) filterTypes.delete(type)
@@ -162,10 +213,15 @@ export default {
     function clearAdvancedFilters() {
       filterTypes.clear()
       filterGenres.clear()
+      filterCustom.value = false
     }
 
     const filteredAdversaries = computed(() => {
-      let result = allAdversaries
+      let result = catalogue.value
+
+      if (filterCustom.value) {
+        result = result.filter((a) => a.__custom)
+      }
 
       if (filterTier.value) {
         result = result.filter((a) => a.tier === filterTier.value)
@@ -202,8 +258,8 @@ export default {
     }
 
     return {
-      search, filterTier, filterTypes, filterGenres,
-      filteredAdversaries, getCost, getQuantity,
+      search, filterTier, filterCustom, filterTypes, filterGenres,
+      customCount, filteredAdversaries, getCost, getQuantity,
       toggleType, toggleGenre, clearAdvancedFilters,
       ADVERSARY_TYPES, ADVERSARY_TYPE_LABELS,
       ADVERSARY_GENRES, GENRE_META
@@ -217,7 +273,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  max-height: 400px;
+  max-height: min(75vh, 720px);
 }
 
 .picker-header {
@@ -248,8 +304,15 @@ export default {
   padding: 1px 6px;
 }
 
+.picker-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
 .filter-clear {
-  align-self: flex-start;
   padding: 2px 8px;
   border-radius: 12px;
   border: 1px solid var(--color-border, #3a3a5a);
@@ -263,6 +326,47 @@ export default {
 .filter-clear:hover {
   border-color: var(--color-accent-fear, #c84b31);
   color: var(--color-accent-fear, #c84b31);
+}
+
+.picker-create-link {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-accent-gold, #d4af37);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.picker-create-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Chip « Perso » (homebrew) ── */
+.filter-chip--custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.filter-chip--custom.filter-chip--active {
+  border-color: var(--color-accent-gold, #d4af37);
+  color: var(--color-accent-gold, #d4af37);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.filter-chip__count {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--color-accent-gold, #d4af37);
+}
+
+.picker-item__custom {
+  font-size: 0.75rem;
+  color: var(--color-accent-gold, #d4af37);
+  flex-shrink: 0;
 }
 
 .picker-search {
@@ -315,6 +419,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1 1 auto;
+  min-height: 240px;
 }
 
 .picker-item {
